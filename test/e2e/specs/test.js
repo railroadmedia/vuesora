@@ -3,6 +3,7 @@
 describe("My First Test", () => {
   it("Visits the Kitchen Sink", () => {
     cy.visit(Cypress.env("VUE_DEV_SERVER_URL"));
-    cy.contains("h1", "Welcome to Your Vue.js App");
+    cy.contains("h1", "Welcome to Your App");
+    cy.contains("h4", "This is a second test");
   });
 });
