@@ -29,7 +29,8 @@
         name: "media-element",
         data () {
             return {
-                playerInstance: Object,
+                mediaElement: Object,
+                player: Object,
                 events: [
                     'loadedmetadata',
                     'progress',
@@ -78,7 +79,7 @@
         mounted (){
             const vm = this;
 
-            let player = new MediaElementPlayer(vm.playerId, {
+            vm.player = new MediaElementPlayer(vm.playerId, {
                 defaultVideoWidth: 1280,
                 defaultVideoHeight: 720,
                 autosizeProgress: false,
@@ -90,8 +91,8 @@
                 timeAndDurationSeparator: ' / ',
                 qualityText: 'Video Quality',
                 success: (mediaElement) => {
-                    vm.addMediaElementEventListeners(mediaElement);
-                    vm.playerInstance = mediaElement;
+                    vm.mediaElement = mediaElement;
+                    vm.addMediaElementEventListeners(vm.mediaElement);
                 },
                 error: (error) => {
                     console.error(error);
@@ -101,8 +102,8 @@
         beforeDestroy () {
             const vm = this;
 
-            vm.removeMediaElementEventListeners(vm.playerInstance);
-            vm.playerInstance.remove();
+            vm.removeMediaElementEventListeners(vm.mediaElement);
+            vm.player.remove();
         }
     };
 </script>
@@ -110,6 +111,7 @@
 <style lang="scss">
 
     .media-element {
+        
         .mejs__time-rail {
             position:absolute;
             bottom:2em;
