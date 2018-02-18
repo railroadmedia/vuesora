@@ -102,6 +102,7 @@
             const vm = this;
 
             vm.removeMediaElementEventListeners(vm.player);
+            vm.player.remove();
         }
     };
 </script>
