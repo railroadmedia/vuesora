@@ -3,7 +3,7 @@
         <video :poster="poster"
                :id="playerId"
                class="mejs__player">
-            
+
             <source v-for="(source, i) in sources"
                     :key="i"
                     :src="source.file"
@@ -29,7 +29,21 @@
         name: "media-element",
         data () {
             return {
-
+                player: Object,
+                events: [
+                    'loadedmetadata',
+                    'progress',
+                    'timeupdate',
+                    'seeking',
+                    'seeked',
+                    'canplay',
+                    'play',
+                    'playing',
+                    'pause',
+                    'ended',
+                    'volumechange',
+                    'captionschange'
+                ]
             };
         },
         props: {
@@ -46,33 +60,26 @@
             addMediaElementEventListeners(mediaElement){
                 const vm = this;
 
-                let events = [
-                    'loadedmetadata',
-                    'progress',
-                    'timeupdate',
-                    'seeking',
-                    'seeked',
-                    'canplay',
-                    'play',
-                    'playing',
-                    'pause',
-                    'ended',
-                    'volumechange',
-                    'captionschange'
-                ];
-
-                events.forEach((event) => {
+                vm.events.forEach((event) => {
 
                     mediaElement.addEventListener(event, (payload) => {
                         vm.$emit(event, payload);
                     });
+                });
+            },
+            removeMediaElementEventListeners(mediaElement){
+                const vm = this;
+
+                vm.events.forEach((event) => {
+
+                    mediaElement.removeEventListener(event);
                 });
             }
         },
         mounted (){
             const vm = this;
 
-            let player = new MediaElementPlayer(vm.playerId, {
+            vm.player = new MediaElementPlayer(vm.playerId, {
                 defaultVideoWidth: 1280,
                 defaultVideoHeight: 720,
                 autosizeProgress: false,
@@ -90,6 +97,11 @@
                     console.error(error);
                 }
             });
+        },
+        beforeDestroy () {
+            const vm = this;
+
+            vm.removeMediaElementEventListeners(vm.player);
         }
     };
 </script>
