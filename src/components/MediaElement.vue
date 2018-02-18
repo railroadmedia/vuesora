@@ -29,7 +29,7 @@
         name: "media-element",
         data () {
             return {
-                player: Object,
+                playerInstance: Object,
                 events: [
                     'loadedmetadata',
                     'progress',
@@ -57,29 +57,28 @@
             poster: String
         },
         methods: {
+            emitEvent(e){
+                this.$emit(e.type, e);
+            },
             addMediaElementEventListeners(mediaElement){
                 const vm = this;
 
                 vm.events.forEach((event) => {
-
-                    mediaElement.addEventListener(event, (payload) => {
-                        vm.$emit(event, payload);
-                    });
+                    mediaElement.addEventListener(event, vm.emitEvent);
                 });
             },
             removeMediaElementEventListeners(mediaElement){
                 const vm = this;
 
                 vm.events.forEach((event) => {
-
-                    mediaElement.removeEventListener(event);
+                    mediaElement.removeEventListener(event, vm.emitEvent);
                 });
             }
         },
         mounted (){
             const vm = this;
 
-            vm.player = new MediaElementPlayer(vm.playerId, {
+            let player = new MediaElementPlayer(vm.playerId, {
                 defaultVideoWidth: 1280,
                 defaultVideoHeight: 720,
                 autosizeProgress: false,
@@ -92,6 +91,7 @@
                 qualityText: 'Video Quality',
                 success: (mediaElement) => {
                     vm.addMediaElementEventListeners(mediaElement);
+                    vm.playerInstance = mediaElement;
                 },
                 error: (error) => {
                     console.error(error);
@@ -101,8 +101,8 @@
         beforeDestroy () {
             const vm = this;
 
-            vm.removeMediaElementEventListeners(vm.player);
-            vm.player.remove();
+            vm.removeMediaElementEventListeners(vm.playerInstance);
+            vm.playerInstance.remove();
         }
     };
 </script>
