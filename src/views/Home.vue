@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         handlePlayEvent(e){
-            console.log(e);
+
         }
     }
 };

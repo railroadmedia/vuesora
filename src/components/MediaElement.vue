@@ -79,7 +79,7 @@
         mounted (){
             const vm = this;
 
-            vm.player = new MediaElementPlayer(vm.playerId, {
+            window.player = new MediaElementPlayer(vm.playerId, {
                 defaultVideoWidth: 1280,
                 defaultVideoHeight: 720,
                 autosizeProgress: false,
@@ -103,7 +103,7 @@
             const vm = this;
 
             vm.removeMediaElementEventListeners(vm.mediaElement);
-            vm.player.remove();
+            window.player.remove();
         }
     };
 </script>
@@ -114,13 +114,14 @@
         
         .mejs__time-rail {
             position:absolute;
-            bottom:2em;
+            bottom:4em;
             left:0;
             right:0;
             width:100%;
             box-sizing:border-box;
             padding:1em 1em 0;
             margin:0;
+            height:16px;
 
             .mejs__time-total {
                 width:calc(100% - 2em);
