@@ -1,7 +1,13 @@
 {
-  "name": "hello-vue",
+  "name": "vuesora",
   "version": "0.1.0",
-  "private": true,
+  "description": "Vue Component library for Musora members area pages.",
+  "author": {
+    "name": "Curtis Conway",
+    "email": "curtis@drumeo.com"
+  },
+  "license": "MIT",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
