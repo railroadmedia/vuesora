@@ -1,0 +1,157 @@
+@import './_variables.scss';
+
+///////////////////////////////////////
+///
+/// TABLE OF CONTENTS
+///
+/// 1. FLEX CONTAINERS
+/// 2. CONTAINERS
+///
+///////////////////////////////////////
+
+
+///////////////////////////////////////
+/// 1. FLEX CONTAINERS
+///////////////////////////////////////
+
+.flex {
+  display: flex;
+  flex: 1 1 100%;
+}
+
+.flex-row {
+  flex-direction: row;
+
+  &.align-center {
+    justify-content: center;
+    align-items: center;
+  }
+  &.align-v-center {
+    justify-content: center;
+  }
+  &.align-v-top {
+    justify-content: flex-start;
+  }
+  &.align-v-bottom {
+    justify-content: flex-end;
+  }
+  &.align-h-center {
+    align-items: center;
+  }
+  &.align-h-left {
+    align-items: flex-start;
+  }
+  &.align-h-right {
+    align-items: flex-end;
+  }
+}
+
+.flex-column {
+  flex-direction: column;
+
+  &.align-center {
+    justify-content: center;
+    align-items: center;
+  }
+  &.align-v-center {
+    align-items: center;
+  }
+  &.align-v-top {
+    align-items: flex-start;
+  }
+  &.align-v-bottom {
+    align-items: flex-end;
+  }
+  &.align-h-center {
+    justify-content: center;
+  }
+  &.align-h-left {
+    justify-content: flex-start;
+  }
+  &.align-h-right {
+    justify-content: flex-end;
+  }
+}
+
+.flex-wrap {
+  flex-wrap:wrap;
+}
+
+.flex-center {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+///////////////////////////////////////
+/// 2. CONTAINERS
+///////////////////////////////////////
+
+.container {
+  display:block;
+  margin:0 auto;
+  max-width:100%;
+  padding-left:$gutterWidth / 3;
+  padding-right:$gutterWidth / 3;
+
+  @include small {
+    max-width:100%;
+  }
+
+  @include medium {
+    max-width:$medium;
+    padding-left:$gutterWidth / 2;
+    padding-right:$gutterWidth / 2;
+  }
+
+  @include large {
+    max-width:$large;
+  }
+
+  @include xLarge {
+    max-width:$xLarge;
+  }
+
+  &.fluid {
+    max-width:100%;
+  }
+}
+
+@for $i from 1 through 12 {
+  .xs-#{$i} {
+    flex-basis: #{$i / 12 * 100%};
+  }
+}
+
+@include small {
+  @for $i from 1 through 12 {
+    .sm-#{$i} {
+      flex-basis: #{$i / 12 * 100%};
+    }
+  }
+}
+
+@include medium {
+  @for $i from 1 through 12 {
+    .md-#{$i} {
+      flex-basis: #{$i / 12 * 100%};
+    }
+  }
+}
+
+@include large {
+  @for $i from 1 through 12 {
+    .lg-#{$i} {
+      flex-basis: #{$i / 12 * 100%};
+    }
+  }
+}
+
+@include xLarge {
+  @for $i from 1 through 12 {
+    .xl-#{$i} {
+      flex-basis: #{$i / 12 * 100%};
+    }
+  }
+}

@@ -39,6 +39,7 @@
     "mediaelement": "^4.2.8",
     "mediaelement-plugins": "^2.5.0",
     "node-sass": "^4.7.2",
+    "normalize.css": "^8.0.0",
     "sass-loader": "^6.0.6",
     "vue-template-compiler": "^2.5.13"
   },
@@ -48,10 +49,12 @@
     ]
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier"
-    ]
+    "rules": {
+      "indent": [
+        "error",
+        4
+      ]
+    }
   },
   "postcss": {
     "plugins": {

@@ -50,9 +50,7 @@
         props: {
             playerId: {
                 type: String,
-                default () {
-                    return 'mediaElementPlayer';
-                }
+                default: () => 'mediaElementPlayer'
             },
             sources: Array,
             poster: String
