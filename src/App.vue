@@ -6,10 +6,26 @@
 
         <div id="nav" :class="{ 'active': menuActive }">
             <img class="logo" src="https://s3.amazonaws.com/musora-center/logos/vuesora.svg">
-
             <hr>
 
-            <router-link to="/">Home</router-link>
+            <nav-item routerLink="/"
+                      :currentRoute="currentRoute">
+                Home
+            </nav-item>
+
+            <nav-item routerLink="/application-layout"
+                      :currentRoute="currentRoute"
+                      :subNavItems="['Grid & Breakpoints']">
+                Application Layout
+            </nav-item>
+
+            <h4>Components</h4>
+            <nav-item routerLink="/docs/media-element">
+                Media Element
+            </nav-item>
+            <nav-item routerLink="/">
+                Content Table
+            </nav-item>
         </div>
 
         <div id="view">
@@ -19,16 +35,23 @@
 </template>
 
 <script>
-    import NavButton from './components/NavButton.vue'
+    import NavButton from './components/NavButton.vue';
+    import NavItem from './components/NavItem.vue';
 
     export default {
         name: 'app',
         components: {
-            'nav-button': NavButton
+            'nav-button': NavButton,
+            'nav-item': NavItem,
         },
         data() {
             return {
                 menuActive: false
+            }
+        },
+        computed: {
+            currentRoute(){
+                return this.$route.fullPath
             }
         },
         methods: {
@@ -78,6 +101,16 @@
             transform:translateX(0);
         }
 
+        h4 {
+            color:#fff;
+            text-align:left;
+            margin-top:$gutterWidth;
+            margin-bottom:0;
+            padding:$gutterWidth / 4;
+            background-color:$primary;
+            border-radius:5px 5px 0 0;
+        }
+
         hr {
             opacity:.25;
             margin-bottom:$gutterWidth;
@@ -107,14 +140,5 @@
             left:300px;
             width:calc(100% - 300px);
         }
-    }
-
-    #nav a {
-        font-weight: bold;
-        color: $darkGray;
-    }
-
-    #nav a.router-link-exact-active {
-        color: $secondary;
     }
 </style>
