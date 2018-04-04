@@ -4,7 +4,7 @@
                 @click.native="menuActive = !menuActive"
                 :class="{ 'active': menuActive }" />
 
-        <div id="nav" :class="{ 'active': menuActive }">
+        <div id="nav" :class="{ 'active': menuActive }" class="shadow">
             <img class="logo" src="https://s3.amazonaws.com/musora-center/logos/vuesora.svg">
             <hr>
 
@@ -15,7 +15,7 @@
 
             <nav-item routerLink="/application-layout"
                       :currentRoute="currentRoute"
-                      :subNavItems="['Grid & Breakpoints']">
+                      :subNavItems="['Grid System']">
                 Application Layout
             </nav-item>
 
@@ -74,7 +74,7 @@
         font-family: "Avenir", Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        text-align: center;
+        /*text-align: center;*/
         color: #2c3e50;
     }
 
@@ -132,7 +132,6 @@
         height:100%;
         overflow:auto;
         background:$backgroundGray;
-        padding:$gutterWidth / 3;
         z-index:49;
 
         @include medium {

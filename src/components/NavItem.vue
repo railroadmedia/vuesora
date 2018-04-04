@@ -6,7 +6,8 @@
 
         <div class="sub-nav-items" v-if="currentRoute === routerLink && subNavItems.length">
             <a v-for="(item, i) in subNavItems"
-               :key="i">
+               :key="i"
+               @click="emitScrollEvent(item)">
                 {{ item }}
             </a>
         </div>
@@ -32,6 +33,15 @@
                 return this.$route.fullPath
             }
         },
+        methods: {
+            emitScrollEvent(item, e){
+                let elementToScrollTo = item.toLowerCase().replace(/ /g, '-');
+
+                this.$root.$emit('scrollTo', {
+                    element: elementToScrollTo
+                });
+            }
+        }
     }
 </script>
 
@@ -62,6 +72,7 @@
                 display:block;
                 font-weight:400;
                 padding:#{$gutterWidth / 4} #{$gutterWidth / 3};
+                cursor:pointer;
 
                 &:last-child {
                     padding-bottom:0;

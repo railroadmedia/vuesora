@@ -1,0 +1,36 @@
+@import './_variables.scss';
+
+// Drop Shadows
+.shadow {
+  box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+}
+
+// Border Radius
+.corners-3 {
+  border-radius:3px;
+}
+.corners-top-3 {
+  border-radius:3px 3px 0 0;
+}
+.corners-bottom-3 {
+  border-radius:0 0 3px 3px;
+}
+.corners-5 {
+  border-radius:5px;
+}
+.corners-top-5 {
+  border-radius:5px 5px 0 0;
+}
+.corners-bottom-5 {
+  border-radius:0 0 5px 5px;
+}
+
+// Keywords
+.keyword {
+  box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+  color:#fff;
+  background-color:$primary;
+  padding-left:5px;
+  padding-right:5px;
+  border-radius:3px;
+}

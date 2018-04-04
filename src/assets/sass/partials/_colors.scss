@@ -1,0 +1,63 @@
+@import './_variables.scss';
+
+// Text Color
+.text-primary {
+  color: $primary;
+}
+
+.text-secondary {
+  color: $secondary;
+}
+
+.text-drumeo {
+  color: $drumeoBlue;
+}
+
+.text-pianote {
+  color: $pianoteRed;
+}
+
+.text-guitareo {
+  color: $guitareoGreen;
+}
+
+.text-recordeo {
+  color: $recordeoYellow;
+}
+
+.text-white {
+  color: #fff;
+}
+
+// Background Color
+.bg-primary {
+  background-color: $primary;
+}
+
+.bg-secondary {
+  background-color: $secondary;
+}
+
+.bg-drumeo {
+  background-color: $drumeoBlue;
+}
+
+.bg-pianote {
+  background-color: $pianoteRed;
+}
+
+.bg-guitareo {
+  background-color: $guitareoGreen;
+}
+
+.bg-recordeo {
+  background-color: $recordeoYellow;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.bg-light {
+  background-color:transparentize($lightGray, .5);
+}
