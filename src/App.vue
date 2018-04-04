@@ -15,17 +15,17 @@
 
             <nav-item routerLink="/application-layout"
                       :currentRoute="currentRoute"
-                      :subNavItems="['Grid System']">
+                      :subNavItems="['Grid System', 'Spacing', 'Typography']">
                 Application Layout
             </nav-item>
 
-            <h4>Components</h4>
+            <h4 class="body font-bold">Components</h4>
             <nav-item routerLink="/docs/media-element">
                 Media Element
             </nav-item>
-            <nav-item routerLink="/">
-                Content Table
-            </nav-item>
+            <!--<nav-item routerLink="/">-->
+                <!--Content Table-->
+            <!--</nav-item>-->
         </div>
 
         <div id="view">
@@ -68,14 +68,6 @@
 
     body {
         overflow:hidden;
-    }
-
-    #app {
-        font-family: "Avenir", Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        /*text-align: center;*/
-        color: #2c3e50;
     }
 
     #nav {

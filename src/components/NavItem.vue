@@ -1,5 +1,5 @@
 <template>
-    <div class="nav-item">
+    <div class="nav-item body">
         <router-link :to="routerLink">
             <slot></slot>
         </router-link>

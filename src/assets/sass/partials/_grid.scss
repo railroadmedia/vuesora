@@ -6,7 +6,8 @@
 ///
 /// 1. FLEX CONTAINERS
 /// 2. CONTAINERS
-/// 3. SPACING
+/// 3. VISIBILITY
+/// 4. SPACING
 ///
 ///////////////////////////////////////
 
@@ -178,7 +179,69 @@
 
 
 ///////////////////////////////////////
-/// 3. SPACING
+/// 3. VISIBILITY
+///////////////////////////////////////
+
+.hide {
+  display:none!important;
+}
+
+@include xSmallOnly{
+  .hide-xs-only,
+  .hide-xs-up,
+  .hide-sm-down,
+  .hide-md-down,
+  .hide-lg-down,
+  .hide-xl-down {
+    display:none!important;
+  }
+}
+
+@include smallOnly {
+  .hide-sm-only,
+  .hide-xs-up,
+  .hide-sm-up,
+  .hide-sm-down,
+  .hide-md-down,
+  .hide-lg-down,
+  .hide-xl-down {
+    display:none!important;
+  }
+}
+
+@include mediumOnly {
+  .hide-md-only,
+  .hide-xs-up,
+  .hide-sm-up,
+  .hide-md-up,
+  .hide-md-down,
+  .hide-lg-down,
+  .hide-xl-down {
+    display:none!important;
+  }
+}
+
+@include largeOnly {
+  .hide-lg-only,
+  .hide-xs-up,
+  .hide-sm-up,
+  .hide-md-up,
+  .hide-lg-up,
+  .hide-lg-down,
+  .hide-xl-down {
+    display:none!important;
+  }
+}
+
+@include xLarge {
+  .hide-xl-only,
+  .hide-xl-down {
+    display:none!important;
+  }
+}
+
+///////////////////////////////////////
+/// 4. SPACING
 ///////////////////////////////////////
 
 .collapsed {

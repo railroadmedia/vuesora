@@ -60,6 +60,30 @@ $xLarge: 121.25em;        // 1940px
   }
 }
 
+@mixin xSmallOnly {
+  @media screen and (max-width: #{$small - 1}) {
+    @content;
+  }
+}
+
+@mixin smallOnly {
+  @media screen and (min-width: #{$small}) and (max-width: #{$medium - 1}) {
+    @content;
+  }
+}
+
+@mixin mediumOnly {
+  @media screen and (min-width: #{$medium}) and (max-width: #{$large - 1}) {
+    @content;
+  }
+}
+
+@mixin largeOnly {
+  @media screen and (min-width: #{$large}) and (max-width: #{$xLarge - 1}) {
+    @content;
+  }
+}
+
 
 ///////////////////////////////////////
 /// 2. FONTS

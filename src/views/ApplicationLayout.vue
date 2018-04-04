@@ -3,7 +3,8 @@
         <h1 class="heading text-center">Application Layout</h1>
         <p class="body font-light mb-5 text-center">All of the properties for basic page flow and consistency, from the grid, to spacing, to the typography.</p>
 
-        <div id="grid-system" class="flex flex-column bg-white shadow corners-3 pa">
+        <!-- GRID SYSTEM -->
+        <div id="grid-system" class="flex flex-column bg-white shadow corners-3 pa mb-4">
             <h2 class="subheading text-secondary">Grid System</h2>
             <p class="body mb-3">Vuesora uses a 12 point grid system. Built using the <span class="keyword">flex-box</span> css spec, the grid is used to layout an application’s content. It contains 5 types of media breakpoints that are used for targeting specific screen sizes or orientations. The modifier classes represent a fraction of the pages width over 12.</p>
             <h4 class="title text-secondary">Breakpoints</h4>
@@ -44,7 +45,7 @@
                     <td class="pa-1">Extra Large</td>
                     <td class="pa-1 font-bold">xl</td>
                     <td class="pa-1">4k and ultra-wides</td>
-                    <td class="pa-1">< 1940px</td>
+                    <td class="pa-1">> 1940px</td>
                 </tr>
             </table>
 
@@ -162,6 +163,88 @@
             <p class="body font-bold text-secondary">Visibility</p>
             <p class="body mb-3">Responsive visibility is also achieved using the same convention as the grid and offsets, simply prepend the breakpoint acronym with the hide property and append it with the condition <span class="keyword">.hide-{ acronym }-{ condition }</span>. For example <span class="keyword">.hide-sm-only</span> will hide the element ONLY on the small breakpoint, <span class="keyword">.hide-sm-up</span> will hide the element from the small breakpoint and up, only visible on the extra small breakpoint. The same works the other way with <span class="keyword">.hide-sm-down</span>.</p>
         </div>
+
+        <!-- SPACING -->
+        <div id="spacing" class="flex flex-column bg-white shadow corners-3 pa mb-5">
+            <h2 class="subheading text-secondary">Spacing</h2>
+            <p class="body mb-3">Vuesora uses a dyamic spacing system built off of a variable titled <span class="keyword">$gutterWidth</span> which is defined at 1.875rem (roughly 32px). To add spacing to an element either use the margin or padding modifiers using the following convention <span class="keyword">{ type }{ part }-{ amount }</span>.</p>
+
+            <p class="body">The <span class="keyword">{ type }</span> applies the type of spacing:</p>
+            <ul class="body mb-3">
+                <li><span class="keyword">p</span> - applies padding.</li>
+                <li><span class="keyword">m</span> - applies margin.</li>
+            </ul>
+
+            <p class="body">The <span class="keyword">{ part }</span> applies a specific part of the element:</p>
+            <ul class="body mb-3">
+                <li><span class="keyword">a</span> - applies spacing to all sides</li>
+                <li><span class="keyword">v</span> - applies spacing to the top and bottom.</li>
+                <li><span class="keyword">h</span> - applies spacing to the left and right.</li>
+                <li><span class="keyword">t</span> - applies spacing to the top.</li>
+                <li><span class="keyword">b</span> - applies spacing to the bottom.</li>
+                <li><span class="keyword">l</span> - applies spacing to the left.</li>
+                <li><span class="keyword">r</span> - applies spacing to the right.</li>
+            </ul>
+
+            <p class="body">The <span class="keyword">{ amount }</span> applies the amount of spacing:</p>
+            <ul class="body mb-3">
+                <li><span class="keyword">1</span> - $gutterWidth divided by 3</li>
+                <li><span class="keyword">2</span> - $gutterWidth divided by 2</li>
+                <li><span class="keyword">3</span> - $gutterWidth</li>
+                <li><span class="keyword">4</span> - $gutterWidth multiplied by 1.5</li>
+                <li><span class="keyword">5</span> - $gutterWidth multiplied by 1.666</li>
+            </ul>
+
+            <p class="body mb-3">For Example: <span class="keyword">.pa-3</span> will add the base amount of spacing to all edges of an element as padding.</p>
+
+            <p class="body"><i>Alternatively, you can choose to omit the <span class="keyword">{ amount }</span> to give it a responsive spacing amount. (Equivalent to 2 on desktop and tablet sizes and 1 on mobile sizes) Ex: <span class="keyword">.pa</span></i></p>
+        </div>
+
+        <div id="typography" class="flex flex-column bg-white shadow corners-3 pa">
+            <h2 class="subheading text-secondary">Typography</h2>
+            <p class="body mb-3">For the sake of consistency, Vuesora has 4 standards for font sizes. Resize your browser to sample how they respond.</p>
+
+
+            <table class="body">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <td class="pa-1 corners-top-5">Sample</td>
+                        <td class="pa-1 corners-top-5">Large</td>
+                        <td class="pa-1 corners-top-5">Medium</td>
+                        <td class="pa-1 corners-top-5">Small</td>
+                        <td class="pa-1 corners-top-5">Weight</td>
+                    </tr>
+                </thead>
+                <tr class="bg-light">
+                    <td class="heading pa-1">Heading</td>
+                    <td class="pa-1">32px</td>
+                    <td class="pa-1">28px</td>
+                    <td class="pa-1">24px</td>
+                    <td class="pa-1">700</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="subheading pa-1">Subheading</td>
+                    <td class="pa-1">24px</td>
+                    <td class="pa-1">22px</td>
+                    <td class="pa-1">20px</td>
+                    <td class="pa-1">600</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="title pa-1">Title</td>
+                    <td class="pa-1">22px</td>
+                    <td class="pa-1">20px</td>
+                    <td class="pa-1">18px</td>
+                    <td class="pa-1">600</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="body pa-1">Body</td>
+                    <td class="pa-1">16px</td>
+                    <td class="pa-1">14px</td>
+                    <td class="pa-1">12px</td>
+                    <td class="pa-1">400</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -195,7 +278,7 @@
     };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import '../assets/sass/partials/_variables.scss';
 
     .test-col {

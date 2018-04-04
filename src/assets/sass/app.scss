@@ -3,3 +3,9 @@
 @import './partials/_typography.scss';
 @import './partials/_colors.scss';
 @import './partials/_modifiers.scss';
+
+body {
+  font-family: $defaultSansSerif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <h1 class="heading">Media Element</h1>
-        <p class="body font-light mb-3">A Custom Video Player extending the MediaElement.js library.</p>
+        <h1 class="heading text-center">Media Element</h1>
+        <p class="body font-light mb-3 text-center">A Custom Video Player extending the MediaElement.js library.</p>
 
         <div class="video-container">
             <media-element
