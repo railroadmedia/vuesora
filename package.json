@@ -67,6 +67,8 @@
     "not ie <= 8"
   ],
   "files": [
+    "/src/assets/sass/partials/_variables.scss",
+    "/src/assets/sass/app.scss",
     "/src/components/MediaElement.vue"
   ]
 }
