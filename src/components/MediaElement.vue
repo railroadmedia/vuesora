@@ -14,16 +14,16 @@
 </template>
 
 <script>
-    // import 'mediaelement/full';
-    // import 'mediaelement/build/mediaelementplayer.min.css';
-    // import 'mediaelement-plugins/src/quality/quality';
-    // import 'mediaelement-plugins/src/quality/quality.css';
-    // import 'mediaelement-plugins/src/speed/speed';
-    // import 'mediaelement-plugins/src/speed/speed.css';
-    // import 'mediaelement-plugins/src/jump-forward/jump-forward';
-    // import 'mediaelement-plugins/src/jump-forward/jump-forward.css';
-    // import 'mediaelement-plugins/src/skip-back/skip-back';
-    // import 'mediaelement-plugins/src/skip-back/skip-back.css';
+    import 'mediaelement/full';
+    import 'mediaelement/build/mediaelementplayer.min.css';
+    import 'mediaelement-plugins/src/quality/quality';
+    import 'mediaelement-plugins/src/quality/quality.css';
+    import 'mediaelement-plugins/src/speed/speed';
+    import 'mediaelement-plugins/src/speed/speed.css';
+    import 'mediaelement-plugins/src/jump-forward/jump-forward';
+    import 'mediaelement-plugins/src/jump-forward/jump-forward.css';
+    import 'mediaelement-plugins/src/skip-back/skip-back';
+    import 'mediaelement-plugins/src/skip-back/skip-back.css';
 
     export default {
         name: "media-element",
