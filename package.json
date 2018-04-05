@@ -28,7 +28,9 @@
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "mediaelement": "^4.2.8",
+    "mediaelement-plugins": "^2.5.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-alpha.5",
@@ -40,8 +42,6 @@
     "@vue/eslint-config-prettier": "^3.0.0-alpha.5",
     "@vue/test-utils": "^1.0.0-beta.10",
     "chai": "^4.1.2",
-    "mediaelement": "^4.2.8",
-    "mediaelement-plugins": "^2.5.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "vue-template-compiler": "^2.5.13"
