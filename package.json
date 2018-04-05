@@ -21,11 +21,14 @@
     "e2e:open": "vue-cli-service e2e:open"
   },
   "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "normalize.css": "^8.0.0",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "normalize.css": "^8.0.0"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-alpha.5",
@@ -45,7 +48,7 @@
   },
   "babel": {
     "presets": [
-      "@vue/app"
+      "babel-preset-env"
     ]
   },
   "eslintConfig": {
