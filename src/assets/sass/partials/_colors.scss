@@ -61,3 +61,7 @@
 .bg-light {
   background-color:transparentize($lightGray, .5);
 }
+
+.invert-fill {
+  filter:invert(100%);
+}

@@ -259,7 +259,6 @@
 }
 
 $numerators: 2 3 6 9 10;
-
 @each $numerator in $numerators {
   // This operation loops through the $numerators collection above
   // Divides the numerator by 6

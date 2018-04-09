@@ -9,3 +9,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+#nav {
+  height:40px;
+  background:#000;
+
+  @include medium {
+    height:50px;
+  }
+
+  @include large {
+    height:65px;
+  }
+
+  .logo {
+    flex:0 0 175px;
+  }
+}

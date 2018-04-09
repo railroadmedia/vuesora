@@ -4,7 +4,9 @@
                 @click.native="menuActive = !menuActive"
                 :class="{ 'active': menuActive }" />
 
-        <div id="nav" :class="{ 'active': menuActive }" class="shadow">
+        <div id="nav"
+             :class="{ 'active': menuActive }"
+             class="shadow">
             <img class="logo" src="https://s3.amazonaws.com/musora-center/logos/vuesora.svg">
             <hr>
 
