@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <p class="body font-bold text-secondary">Offsets</p>
+            <h4 class="title text-secondary">Offsets</h4>
             <p class="body mb-3">Offsets can also be applied to flex containers if a specific amount of white space is required. Simply use the modifier class with the offset property. It works exactly like the flex basis modifier just with the <span class="keyword">offset</span> keyword added, so it looks something like <span class="keyword">.{ acronym }-offset-{numerator}</span>, where the numerator is still a number between 1-12. For example: the modifier class <span class="keyword">.sm-offset-3</span> will specify an offset of 3/12 units or 25% starting at the small breakpoint.</p>
 
             <div class="flex flex-row collapsed flex-wrap mb-3">
@@ -160,7 +160,7 @@
 
             <p class="body mb-3"><i>Keep in mind that using offsets can have unintended behaviors when it comes to wrapping flex containers. If you have child containers that don't take up the full width of the parent, following children will likely stay on the same row, if you wish to create separate rows, use a another <span class="keyword">.flex-row</span></i></p>
 
-            <p class="body font-bold text-secondary">Visibility</p>
+            <h4 class="title  text-secondary">Visibility</h4>
             <p class="body mb-3">Responsive visibility is also achieved using the same convention as the grid and offsets, simply prepend the breakpoint acronym with the hide property and append it with the condition <span class="keyword">.hide-{ acronym }-{ condition }</span>. For example <span class="keyword">.hide-sm-only</span> will hide the element ONLY on the small breakpoint, <span class="keyword">.hide-sm-up</span> will hide the element from the small breakpoint and up, only visible on the extra small breakpoint. The same works the other way with <span class="keyword">.hide-sm-down</span>.</p>
         </div>
 
