@@ -3,6 +3,16 @@
 @import './partials/_typography.scss';
 @import './partials/_colors.scss';
 @import './partials/_modifiers.scss';
+@import './partials/_forms.scss';
+@import './partials/_button.scss';
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
 body {
   font-family: $defaultSansSerif;

@@ -1,0 +1,38 @@
+// import validator from 'validator';
+
+export default class Forms {
+    constructor(form){
+        this.formElement = form;
+
+        this.removeInputEventListeners();
+
+        Forms.addInputEventListeners();
+    }
+
+    static addInputEventListeners(){
+        const inputs = document.querySelectorAll('input');
+
+        Array.from(inputs).forEach(input => {
+            input.addEventListener('change', Forms.handleInputChange);
+        });
+    }
+
+    removeInputEventListeners(){
+        const inputs = this.formElement.getElementsByTagName('input');
+
+        Array.from(inputs).forEach(input => {
+            input.removeEventListener('change', Forms.handleInputChange);
+        });
+    }
+
+    static handleInputChange(event){
+        const element = event.target;
+
+        if(element.value.length){
+            element.classList.add('has-input');
+        }
+        else {
+            element.classList.remove('has-input');
+        }
+    }
+}

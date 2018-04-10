@@ -1,0 +1,43 @@
+@import './_variables.scss';
+
+a, button, div {
+
+  &.btn {
+    position:relative;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    justify-content:center;
+    align-items:center;
+    height:50px;
+    cursor:pointer;
+    border-radius:5px;
+    //outline:none;
+    border:none;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+
+    &:focus {
+      animation-name: buttonActive;
+      animation-duration: .4s;
+    }
+  }
+}
+
+a {
+  cursor:pointer;
+}
+
+@keyframes buttonActive {
+  0% {
+    transform:scale(1);
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  }
+  50% {
+    transform:scale(1.01);
+    box-shadow: 0 0 8px rgba(0,0,0,0.6);
+  }
+  100% {
+    transform:scale(1);
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  }
+}

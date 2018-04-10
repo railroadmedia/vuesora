@@ -1,0 +1,63 @@
+@import './_variables.scss';
+
+
+.form-group {
+  position:relative;
+
+  label {
+    position:absolute;
+    height:100%;
+    left:$gutterWidth / 2;
+    top:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    will-change:transform, color;
+    transition:transform .2s ease-in-out, color .1s ease-in-out;
+    transform-origin:0 0;
+  }
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+  height:50px;
+  border-radius:5px;
+  background:#fff;
+  box-shadow:none;
+  border:1px solid $lightGray;
+  //outline:none;
+  width:100%;
+  padding-top:12px;
+
+  // Pull in font sizes from the .body class
+  @extend .body;
+
+  // Pull in padding styles from the .ph class
+  @extend .ph;
+
+  &:focus, &.has-input {
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+
+    & ~ label {
+      transform:scale(.7) translateY(-10px);
+      color:$primary;
+
+      &.drumeo {
+        color:$drumeoBlue;
+      }
+
+      &.pianote {
+        color:$pianoteRed;
+      }
+
+      &.guitareo {
+        color:$guitareoGreen;
+      }
+
+      &.recordeo {
+        color:$recordeoYellow;
+      }
+    }
+  }
+}
