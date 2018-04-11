@@ -4,7 +4,7 @@ export default class Forms {
     constructor(form){
         this.formElement = form;
 
-        this.removeInputEventListeners();
+        Forms.removeInputEventListeners();
 
         Forms.addInputEventListeners();
     }
@@ -17,8 +17,8 @@ export default class Forms {
         });
     }
 
-    removeInputEventListeners(){
-        const inputs = this.formElement.getElementsByTagName('input');
+    static removeInputEventListeners(){
+        const inputs = document.querySelectorAll('input');
 
         Array.from(inputs).forEach(input => {
             input.removeEventListener('change', Forms.handleInputChange);

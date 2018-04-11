@@ -21,7 +21,12 @@
                 Application Layout
             </nav-item>
 
-            <h4 class="body font-bold">Components</h4>
+            <h4 class="body font-bold">CSS</h4>
+            <nav-item routerLink="/docs/form-inputs">
+                Form Inputs
+            </nav-item>
+
+            <h4 class="body font-bold">Vue Components</h4>
             <nav-item routerLink="/docs/media-element">
                 Media Element
             </nav-item>
