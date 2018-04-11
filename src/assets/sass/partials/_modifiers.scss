@@ -25,6 +25,10 @@
   border-radius:0 0 5px 5px;
 }
 
+.rounded {
+  border-radius:50%;
+}
+
 // Keywords
 .keyword {
   box-shadow: 0 0 5px rgba(0, 0, 0, .2);
@@ -33,4 +37,16 @@
   padding-left:5px;
   padding-right:5px;
   border-radius:3px;
+}
+
+// No Select
+.noselect {
+  user-select: none;
+}
+
+// Box Ratios
+.square {
+  position:relative;
+  height:0;
+  padding-bottom:100%;
 }

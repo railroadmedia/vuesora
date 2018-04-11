@@ -33,29 +33,63 @@
   color: $lightGray;
 }
 
+.text-dark {
+  color: $darkGray;
+}
+
 // Background Color
 .bg-primary {
   background-color: $primary;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $primary;
+  }
 }
 
 .bg-secondary {
   background-color: $secondary;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $secondary;
+  }
 }
 
 .bg-drumeo {
   background-color: $drumeoBlue;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $drumeoBlue;
+  }
 }
 
 .bg-pianote {
   background-color: $pianoteRed;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $pianoteRed;
+  }
 }
 
 .bg-guitareo {
   background-color: $guitareoGreen;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $guitareoGreen;
+  }
 }
 
 .bg-recordeo {
   background-color: $recordeoYellow;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $recordeoYellow;
+  }
 }
 
 .bg-white {

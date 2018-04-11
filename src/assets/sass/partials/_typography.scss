@@ -1,5 +1,13 @@
 @import './_variables.scss';
 
+.uppercase {
+  text-transform:uppercase;
+}
+
+.capitalize {
+  text-transform:capitalize;
+}
+
 h1, h2, h3, h4, h5, h6, p {
   margin:0;
 }
@@ -44,11 +52,23 @@ h1, h2, h3, h4, h5, h6, p {
   font: 600 18px/1.5em $defaultSansSerif;
 
   @include medium {
-    font-size:20px;
+    font-size:18px;
   }
 
   @include large {
-    font-size:22px;
+    font-size:20px;
+  }
+}
+
+.subtitle {
+  font: 400 16px/1.5em $defaultSansSerif;
+
+  @include medium {
+    font-size:16px;
+  }
+
+  @include large {
+    font-size:18px;
   }
 }
 

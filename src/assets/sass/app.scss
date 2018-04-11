@@ -5,6 +5,7 @@
 @import './partials/_modifiers.scss';
 @import './partials/_forms.scss';
 @import './partials/_button.scss';
+@import './partials/_nav.scss';
 
 html {
   box-sizing: border-box;
@@ -20,19 +21,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nav {
-  height:40px;
-  background:#000;
+img {
+  max-width:100%;
+  height:auto;
+}
 
-  @include medium {
-    height:50px;
-  }
+#pageHeader {
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
 
-  @include large {
-    height:65px;
-  }
-
-  .logo {
-    flex:0 0 175px;
+  .header-avatar {
+    flex:0 0 125px;
   }
 }
