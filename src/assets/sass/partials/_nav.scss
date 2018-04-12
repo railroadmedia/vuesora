@@ -1,9 +1,26 @@
 @import './_variables.scss';
 
+body {
+  padding-top:40px;
+  padding-bottom:40px;
+
+  @include medium {
+    padding-top:50px;
+  }
+
+  @include large {
+    padding-top:65px;
+  }
+}
+
 #nav {
   height:40px;
   background:#000;
   z-index:99;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
 
   @include medium {
     height:50px;
@@ -30,6 +47,39 @@
     }
   }
 
+  .header-button {
+    flex:0 0 40px;
+
+    @include xSmallOnly {
+      padding:$gutterWidth / 5;
+    }
+
+    @include smallOnly {
+      padding:$gutterWidth / 4;
+    }
+
+    @include medium {
+      flex:0 0 50px;
+    }
+
+    @include large {
+      flex:0 0 65px;
+    }
+
+  }
+
+  #notificationButton {
+
+    i {
+      position:absolute;
+      top:0;
+      left:0;
+      height:100%;
+      width:100%;
+      font-size:22px;
+    }
+  }
+
   .menu {
     flex: 0 0 40px;
     cursor:pointer;
@@ -38,7 +88,7 @@
     transition:background-color .2s ease-in-out;
 
     @include medium {
-      flex:0 0 110px;
+      flex:0 0 125px;
     }
 
     &.active {
@@ -124,18 +174,13 @@
 
     .avatar {
       max-width:125px;
-
-      img {
-        padding:2px;
-        background:#fff;
-      }
     }
   }
 
   #pageLinks {
 
     .page-link {
-      border-bottom:1px solid $lightGray;
+      //border-bottom:1px solid $lightGray;
       text-decoration:none;
       will-change: color, background-color;
       transition:color .1s ease-in-out, background-color .1s ease-in-out;
@@ -159,6 +204,29 @@
         font-size:14px;
         text-decoration:none;
       }
+    }
+  }
+}
+
+footer {
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  z-index:97;
+
+  .footer-col {
+    height:20px;
+    font-size:13px;
+    flex:1 1 100%;
+
+    @include small {
+      height:40px;
+      flex:0 0 auto;
+    }
+
+    a {
+      margin:0 3px;
     }
   }
 }

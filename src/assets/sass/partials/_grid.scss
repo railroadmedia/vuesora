@@ -31,22 +31,22 @@
     justify-content: center;
     align-items: center;
   }
-  &.align-v-center {
+  &.align-h-center {
     justify-content: center;
   }
-  &.align-v-top {
+  &.align-h-left {
     justify-content: flex-start;
   }
-  &.align-v-bottom {
+  &.align-h-right {
     justify-content: flex-end;
   }
-  &.align-h-center {
+  &.align-v-center {
     align-items: center;
   }
-  &.align-h-left {
+  &.align-v-left {
     align-items: flex-start;
   }
-  &.align-h-right {
+  &.align-v-right {
     align-items: flex-end;
   }
 }
@@ -88,6 +88,14 @@
   flex-direction:column;
   justify-content:center;
   align-items:center;
+}
+
+.flex-auto {
+  flex:0 0 auto;
+}
+
+.spacer {
+  flex:1 1 auto;
 }
 
 ///////////////////////////////////////

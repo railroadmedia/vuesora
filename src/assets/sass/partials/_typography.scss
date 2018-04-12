@@ -84,6 +84,10 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
+.tiny {
+  font:400 13px/1.5em $defaultSansSerif;
+}
+
 .font-light {
   font-weight:300;
 }

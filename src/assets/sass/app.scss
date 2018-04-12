@@ -9,6 +9,7 @@
 
 html {
   box-sizing: border-box;
+  height:100%;
 }
 
 *, *:before, *:after {
@@ -19,6 +20,18 @@ body {
   font-family: $defaultSansSerif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height:auto;
+  min-height:100%;
+  position:relative;
+
+}
+
+a {
+  color:#0b76db;
+
+  //&:visited {
+  //  color:#0b76db;
+  //}
 }
 
 img {

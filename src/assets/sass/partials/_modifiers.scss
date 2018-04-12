@@ -27,6 +27,64 @@
 
 .rounded {
   border-radius:50%;
+
+  &.inset-border {
+    padding:2px;
+    background:#fff;
+  }
+}
+
+
+// Borders
+@for $i from 1 through 3 {
+
+  .ba-light-#{$i} {
+    border:#{$i}px solid $darkGray;
+  }
+  .bh-light-#{$i} {
+    border-left:#{$i}px solid $lightGray;
+    border-right:#{$i}px solid $lightGray;
+  }
+  .bv-light-#{$i} {
+    border-top:#{$i}px solid $lightGray;
+    border-bottom:#{$i}px solid $lightGray;
+  }
+  .bt-light-#{$i} {
+    border-top:#{$i}px solid $lightGray;
+  }
+  .bb-light-#{$i} {
+    border-bottom:#{$i}px solid $lightGray;
+  }
+  .bl-light-#{$i} {
+    border-left:#{$i}px solid $lightGray;
+  }
+  .br-light-#{$i} {
+    border-right:#{$i}px solid $lightGray;
+  }
+
+  .ba-dark-#{$i} {
+    border:#{$i}px solid $darkGray;
+  }
+  .bh-dark-#{$i} {
+    border-left:#{$i}px solid $darkGray;
+    border-right:#{$i}px solid $darkGray;
+  }
+  .bv-dark-#{$i} {
+    border-top:#{$i}px solid $darkGray;
+    border-bottom:#{$i}px solid $darkGray;
+  }
+  .bt-dark-#{$i} {
+    border-top:#{$i}px solid $darkGray;
+  }
+  .bb-dark-#{$i} {
+    border-bottom:#{$i}px solid $darkGray;
+  }
+  .bl-dark-#{$i} {
+    border-left:#{$i}px solid $darkGray;
+  }
+  .br-dark-#{$i} {
+    border-right:#{$i}px solid $darkGray;
+  }
 }
 
 // Keywords
@@ -49,4 +107,9 @@
   position:relative;
   height:0;
   padding-bottom:100%;
+}
+.widescreen {
+  position:relative;
+  height:0;
+  padding-bottom:56.25%;
 }
