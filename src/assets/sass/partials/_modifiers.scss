@@ -108,8 +108,15 @@
   height:0;
   padding-bottom:100%;
 }
+
 .widescreen {
   position:relative;
   height:0;
   padding-bottom:56.25%;
+}
+
+.bg-center {
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:center;
 }
