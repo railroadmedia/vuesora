@@ -32,6 +32,10 @@ a {
   //&:visited {
   //  color:#0b76db;
   //}
+
+  &.no-decoration {
+    text-decoration:none;
+  }
 }
 
 img {

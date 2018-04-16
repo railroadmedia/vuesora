@@ -102,6 +102,38 @@
   user-select: none;
 }
 
+// Overflow
+.overflow {
+  overflow:hidden;
+}
+
+.overflow-y {
+  overflow-y:hidden;
+}
+
+.overflow-x {
+  overflow-x:hidden;
+}
+
+.overflow-auto {
+  overflow:auto;
+}
+
+.overflow-y-auto {
+  overflow-y:auto;
+}
+
+.overflow-x-auto {
+  overflow-x:auto;
+}
+
+.text-truncate {
+  width:100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
 // Box Ratios
 .square {
   position:relative;
