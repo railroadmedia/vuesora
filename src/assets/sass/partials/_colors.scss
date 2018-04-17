@@ -41,6 +41,18 @@
   color: $darkGray;
 }
 
+.text-success {
+  color: $successGreen;
+}
+
+.text-warning {
+  color: $warningYellow;
+}
+
+.text-error {
+  color: $errorRed;
+}
+
 // Background Color
 .bg-primary {
   background-color: $primary;
@@ -96,12 +108,58 @@
   }
 }
 
+.bg-success {
+  background-color: $successGreen;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $successGreen;
+  }
+}
+
+.bg-warning {
+  background-color: $warningYellow;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $warningYellow;
+  }
+}
+
+.bg-error {
+  background-color: $errorRed;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $errorRed;
+  }
+}
+
 .bg-white {
   background-color: #fff;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid #fff;
+  }
 }
 
 .bg-light {
   background-color:transparentize($lightGray, .5);
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid transparentize($lightGray, .5);
+  }
+}
+
+.bg-dark {
+  background-color:$darkGray;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid $darkGray;
+  }
 }
 
 .invert-fill {

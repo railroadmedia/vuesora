@@ -73,13 +73,9 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .body {
-  font:400 12px/1.5em $defaultSansSerif;
+  font:400 14px/1.5em $defaultSansSerif;
 
   @include medium {
-    font-size:14px;
-  }
-
-  @include large {
     font-size:16px;
   }
 }

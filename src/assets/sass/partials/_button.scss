@@ -1,6 +1,6 @@
 @import './_variables.scss';
 
-a, button, div {
+a, div {
 
   &.btn {
     position:relative;
@@ -9,6 +9,7 @@ a, button, div {
     flex-wrap:nowrap;
     justify-content:center;
     align-items:center;
+    text-align:center;
     height:50px;
     cursor:pointer;
     border-radius:5px;
@@ -27,6 +28,36 @@ a, button, div {
       animation-name: buttonActive;
       animation-duration: .4s;
     }
+  }
+}
+
+button {
+  &.btn {
+    border:none;
+    background:none;
+    padding:0;
+    box-shadow:none;
+    width:100%;
+
+    span {
+      @extend a.btn;
+    }
+
+    &:focus span {
+      animation-name: buttonActive;
+      animation-duration: .4s;
+    }
+  }
+}
+
+.btn {
+
+  &.collapse-250 {
+    max-width:250px;
+  }
+
+  &.collapse-320 {
+    max-width:320px;
   }
 }
 

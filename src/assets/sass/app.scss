@@ -6,6 +6,7 @@
 @import './partials/_forms.scss';
 @import './partials/_button.scss';
 @import './partials/_nav.scss';
+@import './partials/_content-table.scss';
 
 html {
   box-sizing: border-box;
@@ -23,15 +24,10 @@ body {
   height:auto;
   min-height:100%;
   position:relative;
-
 }
 
 a {
   color:#0b76db;
-
-  //&:visited {
-  //  color:#0b76db;
-  //}
 
   &.no-decoration {
     text-decoration:none;
@@ -55,4 +51,25 @@ ul {
   .header-avatar {
     flex:0 0 125px;
   }
+}
+
+.toast {
+  position:fixed;
+  background-color:#242424;
+  bottom:55px;
+  right:15px;
+  width:275px;
+  z-index:101;
+}
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(30px);
+  opacity: 0;
 }

@@ -1,0 +1,84 @@
+@import './_variables.scss';
+
+.content-table-row {
+  flex:0 0 60px;
+  background-color:#fff;
+  transition:background-color .2s ease-in-out;
+
+  &:hover {
+    background-color:#f2f2f2;
+  }
+}
+
+.large-thumbnail {
+  position:relative;
+  z-index:3;
+  margin-bottom:$gutterWidth / 2;
+
+  @include xSmallOnly {
+    padding-left:$gutterWidth / 3;
+    padding-right:$gutterWidth / 3;
+  }
+
+  @include medium {
+    margin-bottom:0;
+  }
+
+  &:before, &:after {
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:-1;
+    width:100%;
+    border-radius:3px;
+
+    @extend .widescreen;
+  }
+
+  &:before {
+    background:transparentize($recordeoYellow, 0.8);
+    transform:scale(0.9) translateY(-15px);
+  }
+
+  &:after {
+    background:transparentize($recordeoYellow, 0.8);
+    transform:scale(0.8) translateY(-35px);
+  }
+}
+
+.content-overview {
+  flex-wrap:wrap;
+
+  @include medium {
+    flex-wrap:nowrap;
+  }
+
+  .large-thumbnail {
+    flex:1 0 100%;
+
+    @include medium {
+      flex:0 0 320px;
+    }
+  }
+}
+
+.thumbnail {
+  flex:0 0 90px;
+}
+
+.basic-col {
+  flex:0 0 100px;
+}
+
+.icon-col {
+  flex:0 0 60px;
+  padding:5px;
+
+  i {
+    position:absolute;
+    font-size:28px;
+    height:100%;
+    width:100%;
+  }
+}

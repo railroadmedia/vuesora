@@ -4,6 +4,12 @@
 .form-group {
   position:relative;
 
+  &.textarea {
+    label {
+      justify-content:flex-start;
+      padding-top:13px;
+    }
+  }
   label {
     position:absolute;
     height:100%;
@@ -28,7 +34,8 @@
 
 input[type='text'],
 input[type='email'],
-input[type='password'] {
+input[type='password'],
+textarea {
   height:50px;
   border-radius:5px;
   background:#fff;
@@ -68,5 +75,14 @@ input[type='password'] {
         color:$recordeoYellow;
       }
     }
+  }
+}
+
+textarea {
+  resize:none;
+  height:150px;
+
+  label {
+    justify-content:flex-start;
   }
 }

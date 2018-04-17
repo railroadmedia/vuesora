@@ -11,16 +11,26 @@ export default class Forms {
 
     static addInputEventListeners(){
         const inputs = document.querySelectorAll('input');
+        const textareas = document.querySelectorAll('textarea');
 
         Array.from(inputs).forEach(input => {
+            input.addEventListener('change', Forms.handleInputChange);
+        });
+
+        Array.from(textareas).forEach(input => {
             input.addEventListener('change', Forms.handleInputChange);
         });
     }
 
     static removeInputEventListeners(){
         const inputs = document.querySelectorAll('input');
+        const textareas = document.querySelectorAll('textarea');
 
         Array.from(inputs).forEach(input => {
+            input.removeEventListener('change', Forms.handleInputChange);
+        });
+
+        Array.from(textareas).forEach(input => {
             input.removeEventListener('change', Forms.handleInputChange);
         });
     }
