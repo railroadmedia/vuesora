@@ -135,6 +135,15 @@
   }
 }
 
+.bg-black {
+  background-color: #000;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid #000;
+  }
+}
+
 .bg-white {
   background-color: #fff;
 

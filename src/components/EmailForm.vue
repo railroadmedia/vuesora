@@ -29,7 +29,6 @@
     export default {
         name: 'email-form',
         components: {
-            ToastNotification,
             'toast-notification': ToastNotification
         },
         props: {

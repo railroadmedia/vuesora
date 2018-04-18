@@ -29,6 +29,7 @@
     position:absolute;
     top:0;
     left:0;
+    transform-origin:50% 0;
     z-index:-1;
     width:100%;
     border-radius:3px;
@@ -38,12 +39,12 @@
 
   &:before {
     background:transparentize($recordeoYellow, 0.8);
-    transform:scale(0.9) translateY(-15px);
+    transform:scale(0.9) translateY(-10px);
   }
 
   &:after {
     background:transparentize($recordeoYellow, 0.8);
-    transform:scale(0.8) translateY(-35px);
+    transform:scale(0.8) translateY(-20px);
   }
 }
 

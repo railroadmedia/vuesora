@@ -24,6 +24,10 @@ a, div {
       font-size:16px;
     }
 
+    &.short {
+      height:35px;
+    }
+
     &:focus {
       animation-name: buttonActive;
       animation-duration: .4s;

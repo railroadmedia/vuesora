@@ -6,6 +6,7 @@
 @import './partials/_forms.scss';
 @import './partials/_button.scss';
 @import './partials/_nav.scss';
+@import './partials/_content.scss';
 @import './partials/_content-table.scss';
 
 html {
@@ -50,6 +51,43 @@ ul {
 
   .header-avatar {
     flex:0 0 125px;
+  }
+}
+
+#subHeader {
+  background-color:#242424;
+
+  @include xSmallOnly {
+    padding-top:$gutterWidth / 2;
+  }
+
+  @include smallOnly {
+    padding-top:$gutterWidth / 2;
+  }
+
+  .flex-column:not(.button-col){
+    flex:1 1 100%;
+    text-align:center;
+
+    @include medium {
+      flex:1 1 auto;
+      padding-right:$gutterWidth / 3;
+      text-align:left;
+    }
+  }
+
+  .button-col {
+    flex:0 0 50%;
+    padding-right:$gutterWidth / 6;
+
+    @include medium {
+      flex:0 0 55px;
+    }
+
+    &:last-of-type {
+      padding-right:0;
+      padding-left:$gutterWidth / 6;
+    }
   }
 }
 

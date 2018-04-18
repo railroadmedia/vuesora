@@ -1,0 +1,34 @@
+.trophy-progress-bar {
+  background-color:rgba(0,0,0,.2);
+  height:35px;
+  border-radius:35px;
+  overflow:hidden;
+
+  @include xSmallOnly {
+    margin-right:0;
+    margin-bottom:$gutterWidth / 3;
+  }
+
+  &.complete {
+    background-color:#fff;
+  }
+
+  .trophy-progress-cutoff {
+    border-radius:55px;
+    height:55px;
+    margin-top:-10px;
+    margin-left:-10px;
+    border-width:10px;
+    overflow:hidden;
+
+    .trophy-progress {
+      height:100%;
+      width:0;
+      border-radius:70px;
+    }
+  }
+
+  .trophy {
+    flex:0 0 60px;
+  }
+}

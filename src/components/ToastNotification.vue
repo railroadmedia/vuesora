@@ -10,7 +10,7 @@
             <p class="body text-light mb" v-else>
                 {{ errorMessage }}
             </p>
-            <p class="tiny text-light mb" v-if="!success">
+            <p class="tiny text-light font-italic mb" v-if="!success">
                 If the problem persists, please <a href="mailto:support@recordeo.com" target="_blank">contact support.</a>
             </p>
             <p class="body text-right font-bold">
@@ -37,11 +37,11 @@
             },
             successMessage: {
                 type: String,
-                default: () => 'Your request was successfully sent, thank you for your input'
+                default: () => 'Your request was successfully sent, thank you for your input.'
             },
             errorMessage: {
                 type: String,
-                default: () => 'We\'re sorry, an unexpected error occured, please refresh the page and try again'
+                default: () => 'We\'re sorry, an unexpected error occured, please refresh the page and try again.'
             }
         },
         computed: {
