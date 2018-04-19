@@ -45,6 +45,10 @@ button {
 
     span {
       @extend a.btn;
+
+      &.short {
+        height:35px;
+      }
     }
 
     &:focus span {

@@ -15,6 +15,7 @@ export default class Forms {
 
         Array.from(inputs).forEach(input => {
             input.addEventListener('change', Forms.handleInputChange);
+
         });
 
         Array.from(textareas).forEach(input => {

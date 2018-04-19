@@ -171,6 +171,15 @@
   }
 }
 
+.bg-x-dark {
+  background-color:#242424;
+
+  &.inverted {
+    background-color:transparent;
+    border:1px solid #242424;
+  }
+}
+
 .invert-fill {
   filter:invert(100%);
 }

@@ -76,6 +76,21 @@ textarea {
       }
     }
   }
+
+  &.borderless {
+    border-top:none;
+    border-left:none;
+    border-right:none;
+    border-bottom:1px solid #d1d1d1;
+    background:none;
+    border-radius:0;
+    outline:none;
+    padding-left:0;
+
+    & ~ label {
+      left:0;
+    }
+  }
 }
 
 textarea {
