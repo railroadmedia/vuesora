@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import Forms from "/app/vuesora/src/assets/js/forms";
+    import Forms from "/app/vuesora/src/assets/js/classes/forms";
 
     export default {
         name: "form-inputs",
