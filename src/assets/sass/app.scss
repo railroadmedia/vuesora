@@ -178,7 +178,7 @@ ul {
 #lessonInfo {
   flex-wrap:wrap;
 
-  @include small {
+  @include medium {
     flex-wrap:nowrap;
   }
 
@@ -186,10 +186,19 @@ ul {
     flex:0 0 100%;
     margin-top:$gutterWidth / 2;
 
-    @include small{
-      flex:0 0 300px;
+    @include medium {
+      flex:0 0 320px;
+      max-width:320px;
       margin-left:$gutterWidth / 2;
       margin-top:0;
+    }
+
+    .content-table {
+      max-width:100%;
+
+      .xs-12 {
+        max-width:100%;
+      }
     }
   }
 }

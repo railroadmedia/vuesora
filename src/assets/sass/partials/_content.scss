@@ -1,14 +1,27 @@
 
 // Progress
-.compact {
 
-  .flex-column {
-    flex:1 1 100%;
+.content-progress {
+
+  &.compact {
+
+    & > .flex-column {
+      flex:1 1 100%;
+    }
+
+    .trophy-progress-bar {
+      margin-right:0;
+      margin-bottom:$gutterWidth / 3;
+    }
   }
+}
 
-  .trophy-progress-bar {
-    margin-right:0;
-    margin-bottom:$gutterWidth / 3;
+.congrats-container {
+  &.compact {
+
+    .subtitle {
+      font-size:16px;
+    }
   }
 }
 
