@@ -43,10 +43,10 @@
   &.align-v-center {
     align-items: center;
   }
-  &.align-v-left {
+  &.align-v-top {
     align-items: flex-start;
   }
-  &.align-v-right {
+  &.align-v-bottom {
     align-items: flex-end;
   }
 }

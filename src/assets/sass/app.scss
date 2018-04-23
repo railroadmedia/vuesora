@@ -173,3 +173,23 @@ ul {
     }
   }
 }
+
+
+#lessonInfo {
+  flex-wrap:wrap;
+
+  @include small {
+    flex-wrap:nowrap;
+  }
+
+  .lesson-sidebar {
+    flex:0 0 100%;
+    margin-top:$gutterWidth / 2;
+
+    @include small{
+      flex:0 0 300px;
+      margin-left:$gutterWidth / 2;
+      margin-top:0;
+    }
+  }
+}

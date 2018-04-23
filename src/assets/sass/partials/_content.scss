@@ -1,5 +1,17 @@
 
 // Progress
+.compact {
+
+  .flex-column {
+    flex:1 1 100%;
+  }
+
+  .trophy-progress-bar {
+    margin-right:0;
+    margin-bottom:$gutterWidth / 3;
+  }
+}
+
 .trophy-progress-bar {
   background-color:rgba(0,0,0,.2);
   height:35px;
