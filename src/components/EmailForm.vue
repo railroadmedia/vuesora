@@ -19,7 +19,7 @@
             <div class="flex flex-column button-col">
                 <button class="btn"
                         @click="submitForm">
-                    <span class="bg-recordeo text-white">
+                    <span class="text-white"  :class="'bg-' + brand">
                         <i class="fas fa-envelope mr-1"></i> Send Question
                     </span>
                 </button>
@@ -33,7 +33,7 @@
             <div class="form-group">
                 <button class="btn"
                         @click="submitForm">
-                    <span class="bg-recordeo text-white">
+                    <span class="text-white" :class="'bg-' + brand">
                         Submit
                     </span>
                 </button>
@@ -48,6 +48,10 @@
     export default {
         name: 'email-form',
         props: {
+            brand: {
+                type: String,
+                default: () => 'recordeo'
+            },
             endpoint: {
                 type: String,
                 default: () => '/'

@@ -1,5 +1,5 @@
 <template>
-    <div class="media-element">
+    <div class="media-element" :id="brand + 'Theme'">
         <video :poster="poster"
                :id="playerId"
                class="mejs__player">
@@ -52,8 +52,18 @@
                 type: String,
                 default: () => 'mediaElementPlayer'
             },
-            sources: Array,
-            poster: String
+            sources: {
+                type: Array,
+                default: () => []
+            },
+            poster: {
+                type: String,
+                default: () => ''
+            },
+            brand: {
+                type: String,
+                default: () => 'recordeo'
+            }
         },
         methods: {
             emitEvent(e){
@@ -91,6 +101,16 @@
                 success: (mediaElement) => {
                     vm.mediaElement = mediaElement;
                     vm.addMediaElementEventListeners(vm.mediaElement);
+
+                    // Below code helps to fix the bug where the speed and
+                    // quality selectors remain visible and bug out after clicking
+                    // Still a work in progress
+                    let interactionInputs = document.querySelectorAll('.mejs__qualities-selector-input, .mejs__speed-selector-input');
+                    Array.from(interactionInputs).forEach(input => {
+                        input.addEventListener('change', event => {
+                            event.target.blur();
+                        })
+                    });
                 },
                 error: (error) => {
                     console.error(error);
@@ -107,6 +127,24 @@
 </script>
 
 <style lang="scss">
+    @import '../assets/sass/partials/_variables.scss';
+
+    #drumeoTheme {
+        .mejs__time-current { background:$drumeoBlue; }
+        .mejs__speed-selected, .mejs__qualities-selected { color:$drumeoBlue; }
+    }
+    #pianoteTheme {
+        .mejs__time-current { background:$pianoteRed; }
+        .mejs__speed-selected, .mejs__qualities-selected { color:$pianoteRed; }
+    }
+    #guitareoTheme {
+        .mejs__time-current { background:$guitareoGreen; }
+        .mejs__speed-selected, .mejs__qualities-selected { color:$guitareoGreen; }
+    }
+    #recordeoTheme {
+        .mejs__time-current { background:$recordeoYellow; }
+        .mejs__speed-selected, .mejs__qualities-selected { color:$recordeoYellow; }
+    }
 
     .media-element {
         
