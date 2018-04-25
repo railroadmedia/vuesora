@@ -139,4 +139,15 @@
             width:calc(100% - 300px);
         }
     }
+
+    a {
+        word-wrap:break-word;
+    }
+
+    .embed-js-applied {
+        iframe {
+            height:400px;
+            max-height:400px;
+        }
+    }
 </style>

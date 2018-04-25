@@ -52,6 +52,7 @@
     "sass-loader": "^6.0.6",
     "sinon": "^4.5.0",
     "validator": "^9.4.1",
+    "vue-embed": "^1.0.0",
     "vue-template-compiler": "^2.5.13"
   },
   "babel": {

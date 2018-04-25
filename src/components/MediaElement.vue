@@ -1,7 +1,7 @@
 <template>
     <div class="media-element" :id="brand + 'Theme'">
         <video :poster="poster"
-               :id="playerId"
+               :id="elementId"
                class="mejs__player">
 
             <source v-for="(source, i) in sources"
@@ -48,7 +48,7 @@
             };
         },
         props: {
-            playerId: {
+            elementId: {
                 type: String,
                 default: () => 'mediaElementPlayer'
             },
@@ -87,7 +87,7 @@
         mounted (){
             const vm = this;
 
-            window.player = new MediaElementPlayer(vm.playerId, {
+            window.player = new MediaElementPlayer(vm.elementId, {
                 defaultVideoWidth: 1280,
                 defaultVideoHeight: 720,
                 autosizeProgress: false,

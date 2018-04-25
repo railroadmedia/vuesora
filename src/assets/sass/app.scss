@@ -10,6 +10,7 @@
 @import './partials/_nav.scss';
 @import './partials/_content.scss';
 @import './partials/_content-table.scss';
+@import './partials/_add-event.scss';
 
 html {
   box-sizing: border-box;
@@ -28,6 +29,10 @@ body {
   height:auto;
   min-height:100%;
   position:relative;
+}
+
+iframe {
+  border:none;
 }
 
 a {
@@ -170,82 +175,6 @@ ul {
       opacity:1;
       visibility:visible;
       transform:translateY(0);
-    }
-  }
-}
-
-#liveVideo {
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-}
-
-#chatContainer {
-  padding-left:0;
-  flex:0 0 100%;
-  height:350px;
-  margin-top:$gutterWidth;
-
-  @include medium {
-    flex:0 0 350px;
-    padding-left:$gutterWidth / 3;
-    height:auto;
-    margin-top:0;
-  }
-
-  .inside {
-    position:relative;
-    overflow:hidden;
-  }
-
-  iframe {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-  }
-}
-
-#breadCrumbs {
-
-  i {
-    height:20px;
-    width:20px;
-  }
-}
-
-#videoContainer {
-  flex:1 1 50%;
-  max-width:100%;
-}
-
-#lessonInfo {
-  flex-wrap:wrap;
-
-  @include medium {
-    flex-wrap:nowrap;
-  }
-
-  .lesson-sidebar {
-    flex:0 0 100%;
-    margin-top:$gutterWidth / 2;
-
-    @include medium {
-      flex:0 0 320px;
-      max-width:320px;
-      margin-left:$gutterWidth / 2;
-      margin-top:0;
-    }
-
-    .content-table {
-      max-width:100%;
-
-      .xs-12 {
-        max-width:100%;
-      }
     }
   }
 }

@@ -1,0 +1,53 @@
+@import './_variables.scss';
+
+.addeventatc {
+  cursor:pointer;
+  visibility:hidden;
+  z-index:50;
+
+  .addeventatc_dropdown {
+    display: none;
+  }
+
+  &.addeventatc-selected {
+
+    .addeventatc_dropdown {
+      position:absolute;
+      display:none;
+      background:#fff;
+
+      @extend .corners-3;
+      @extend .pa;
+      @extend .shadow;
+
+      span {
+        display:block;
+        white-space:nowrap;
+        padding:5px;
+
+        @extend .body;
+
+        em {
+          color:$lightGray;
+          font-style:italic;
+          @extend .tiny;
+        }
+
+        i {
+          position:relative;
+          font-size:16px;
+          margin-right:5px;
+          color:$lightGray;
+          height:auto;
+          width:20px;
+          display:inline-block;
+          text-align:center;
+        }
+      }
+
+      .copyx {
+        display:none;
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import ApplicationLayout from "./views/ApplicationLayout.vue";
-import MediaElementDocs from "./views/docs/MediaElementDocs.vue";
+import MediaElementDocs from "./views/docs/vue-components/MediaElementDocs.vue";
 import FormInputs from "./views/docs/FormInputs.vue";
 
 Vue.use(Router);
