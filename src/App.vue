@@ -30,6 +30,9 @@
             <nav-item routerLink="/docs/media-element">
                 Media Element
             </nav-item>
+            <nav-item routerLink="/docs/text-editor">
+                Text Editor
+            </nav-item>
             <!--<nav-item routerLink="/">-->
                 <!--Content Table-->
             <!--</nav-item>-->

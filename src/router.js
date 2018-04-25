@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import ApplicationLayout from "./views/ApplicationLayout.vue";
 import MediaElementDocs from "./views/docs/vue-components/MediaElementDocs.vue";
+import TextEditorDocs from "./views/docs/vue-components/TextEditorDocs";
 import FormInputs from "./views/docs/FormInputs.vue";
 
 Vue.use(Router);
@@ -28,6 +29,11 @@ export default new Router({
             path: "/docs/form-inputs",
             name: "form-inputs-docs",
             component: FormInputs
+        },
+        {
+            path: "/docs/text-editor",
+            name: "text-editor-docs",
+            component: TextEditorDocs
         },
     ]
 });

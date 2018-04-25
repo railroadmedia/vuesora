@@ -33,6 +33,7 @@
     "mediaelement-plugins": "^2.5.0"
   },
   "devDependencies": {
+    "@tinymce/tinymce-vue": "^1.0.6",
     "@vue/cli-plugin-babel": "^3.0.0-alpha.5",
     "@vue/cli-plugin-e2e-cypress": "^3.0.0-alpha.5",
     "@vue/cli-plugin-eslint": "^3.0.0-alpha.5",
