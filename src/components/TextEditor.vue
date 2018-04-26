@@ -1,5 +1,7 @@
 <template>
-    <tinymce-editor :init="initObject" tag-name="textarea"></tinymce-editor>
+    <tinymce-editor api-key="g84168rl7b45du7fji2nive374o541mhtmzogyolgqng97xc"
+                    :init="initObject"
+                    v-model="contentInterface"></tinymce-editor>
 </template>
 <script>
     import Editor from '@tinymce/tinymce-vue';
@@ -7,31 +9,67 @@
     export default {
         name: 'text-editor',
         props: {
-            branding: {
-                type: Boolean,
-                default: () => false
-            },
             height: {
                 type: Number,
                 default: () => 300
             },
+            toolbar: {
+                type: String,
+                default: () => 'bold italic underline | bullist numlist | link image media'
+            },
+            imageUploadEndpoint: {
+                type: String,
+                default: () => undefined
+            },
+            initialValue: {
+                type: String,
+                default: () => undefined
+            }
+        },
+        data() {
+            return {
+                currentValue: this.initialValue
+            }
         },
         computed: {
-            pluginsArray() {
+            contentInterface: {
+                get(){
+                    return this.initialValue;
+                },
+                set(val){
+                    this.currentValue = val;
 
+                    console.log(this.currentValue)
+                }
             },
+
             initObject() {
                 return {
-                    branding: this.branding,
+                    content_id: '#textEditor',
                     height: this.height,
-                    toolbar: 'bold italic underline | bullist numlist | link image media',
+                    autoresize_min_height: this.height,
+                    toolbar: this.toolbar,
+                    plugins: 'lists link image media autolink autoresize imagetools',
+                    branding: false,
                     elementpath: false,
                     statusbar: false,
                     menubar: false,
                     resize: false,
-                    plugins: 'lists link image media'
+                    image_description: false,
+                    image_dimensions: false,
+                    file_picker_types: 'image',
+                    default_link_target: '_blank',
+                    target_list: false,
+                    link_title: false,
+                    media_poster: false,
+                    media_dimensions: false,
+                    media_alt_source: false,
+                    images_upload_url: this.imageUploadEndpoint,
+                    content_style: "body { font-family: 'Open Sans', sans-serif; font-size:16px; font-weight:400; } p { margin:0; } blockquote { border-left:1px solid #d1d1d1;margin:0 0 0 1em;padding:1em 0 1em 1em; }"
                 }
             }
+        },
+        methods: {
         },
         components: {
             'tinymce-editor': Editor

@@ -3,7 +3,51 @@
         <h1 class="heading text-center">Text Editor</h1>
         <p class="body font-light mb-3 text-center">A Custom WYSIWYG editor extending the TinyMCE library.</p>
 
-        <text-editor></text-editor>
+        <text-editor imageUploadEndpoint="/endpoint" :initialValue="initialValue"></text-editor>
+
+        <div class="flex flex-column bg-white shadow corners-3 pa mv-4">
+            <h2 class="subheading text-secondary mb">Props</h2>
+
+            <table class="body">
+                <thead class="bg-primary text-white">
+                <tr>
+                    <td class="pa-1 corners-top-5">Prop</td>
+                    <td class="pa-1 corners-top-5">Required</td>
+                    <td class="pa-1 corners-top-5">Type</td>
+                    <td class="pa-1 corners-top-5">Default</td>
+                    <td class="pa-1 corners-top-5">Description</td>
+                </tr>
+                </thead>
+                <tr class="bg-light">
+                    <td class="pa-1 font-bold">height</td>
+                    <td class="pa-1">No</td>
+                    <td class="pa-1">Number</td>
+                    <td class="pa-1">300</td>
+                    <td class="pa-1">The default and minimum height of the text area</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="pa-1 font-bold">toolbar</td>
+                    <td class="pa-1">No</td>
+                    <td class="pa-1">String</td>
+                    <td class="pa-1">'bold italic underline | bullist numlist | link image media'</td>
+                    <td class="pa-1">The string representing the toolbar options, additional options and format can be seen <a href="https://www.tinymce.com/docs/configure/editor-appearance/#toolbar" target="_blank">here.</a></td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="pa-1 font-bold">imageUploadEndpoint</td>
+                    <td class="pa-1">No</td>
+                    <td class="pa-1">String</td>
+                    <td class="pa-1 font-italic">undefined</td>
+                    <td class="pa-1">The endpoint for image uploads to be sent. Choosing not to use this prop will result in no upload functionality</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="pa-1 font-bold">initialValue</td>
+                    <td class="pa-1">No</td>
+                    <td class="pa-1">String</td>
+                    <td class="pa-1 font-italic">undefined</td>
+                    <td class="pa-1">The intial value to render the editor with, accepts an html template string as its argument</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -18,20 +62,20 @@
         },
         data() {
             return {
-                sources: [
-                    {
-                        quality: "1080p",
-                        file: "https://player.vimeo.com/external/255087433.hd.mp4?s=41e2cf6a03299ea200bfd7d8a7005b672055a137&profile_id=175"
-                    },
-                    {
-                        quality: "720p",
-                        file: "https://player.vimeo.com/external/255087433.hd.mp4?s=41e2cf6a03299ea200bfd7d8a7005b672055a137&profile_id=174"
-                    },
-                    {
-                        quality: "540p",
-                        file: "https://player.vimeo.com/external/255087433.sd.mp4?s=a0651e42d2e29f0499eea999ee773f05c2d4c437&profile_id=165"
-                    }
-                ]
+                initialValue: '<blockquote data-post-id="1234">' +
+                '<p><em>Replying to <strong>Curtis Conway</strong></em></p><br>' +
+                '<p>This is a test, just checking</p>' +
+                '<p>what happens</p>' +
+                '<p>when I make a template like this</p>' +
+                '<br><p></p>' +
+                '<blockquote data-post-id="1234">' +
+                '<p><em>Replying to <strong>Curtis Conway</strong></em></p><br>' +
+                '<p>This is a test, just checking</p>' +
+                '<p>what happens</p>' +
+                '<p>when I make a template like this</p>' +
+                '</blockquote>' +
+                '</blockquote>' +
+                '<br><p></p>'
             }
         },
         components: {
@@ -42,9 +86,4 @@
 </script>
 
 <style lang="scss">
-
-    .video-container {
-        width: 100%;
-        margin: 0 auto;
-    }
 </style>

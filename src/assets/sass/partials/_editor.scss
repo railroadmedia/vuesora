@@ -1,0 +1,221 @@
+@import './_variables.scss';
+
+/*
+* You might be wondering why the usage of !important is so liberal in this file
+* that's because TinyMCE is not very designer friendly and most positional properties
+* are hardcoded inline css styles generated in the library JS, this is the most effective
+* way to override them
+*/
+
+#mce-modal-block {
+  background:rgba(0,0,0,.5)!important;
+}
+
+.mce-tinymce {
+  border-radius:5px!important;
+  overflow:hidden;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2)!important;
+}
+
+.mce-edit-area {
+  cursor:text!important;
+  z-index:10;
+
+  iframe {
+    cursor:text!important;
+  }
+}
+
+.mce-toolbar-grp {
+  background-color:$lightGray!important;
+  padding:$gutterWidth / 2!important;
+  padding-bottom:0!important;
+
+  .mce-btn-group {
+    padding:0!important;
+    border-radius:5px!important;
+    background:#fff!important;
+    overflow:hidden;
+    margin-left:0!important;
+    margin-right:$gutterWidth / 2!important;
+    margin-bottom:$gutterWidth / 2!important;
+    border:1px solid $darkGray!important;
+
+    .mce-btn {
+      margin:0!important;
+      border:none!important;
+      border-right:1px solid $darkGray!important;
+      box-sizing:border-box!important;
+
+      &:last-child {
+        border-right:none!important;
+      }
+
+      button {
+        height:40px;
+        width:40px;
+        border:none;
+      }
+    }
+  }
+}
+
+.mce-panel {
+  box-sizing:border-box!important;
+
+  *, *:before, *:after {
+    box-sizing: inherit!important;
+  }
+
+  &.mce-floatpanel {
+    width:calc(100% - #{$gutterWidth / 2})!important;
+    max-width:640px!important;
+    height:auto!important;
+    top:50%!important;
+    left:50%!important;
+    transform:translate(-50%, -50%)!important;
+    border-radius:5px;
+  }
+
+  .mce-tabs {
+    display:none!important;
+  }
+
+  .mce-reset {
+    position:relative;
+
+    .mce-window-head {
+      width:100%!important;
+      padding:$gutterWidth #{$gutterWidth / 2}!important;
+
+      .mce-title {
+        text-transform:capitalize;
+        @extend .title;
+      }
+    }
+
+    & > .mce-container-body, & > .mce-foot {
+      padding:$gutterWidth / 2;
+
+
+    }
+
+    .mce-container-body, .mce-formitem, .mce-form, .mce-foot {
+      max-width:100%!important;
+      width:100%!important;
+      height:auto!important;
+      left:0!important;
+      top:0!important;
+
+      label, input {
+        max-width:100%!important;
+        left:0!important;
+        top:0!important;
+        display:block!important;
+        text-transform:capitalize;
+        @extend .body;
+      }
+
+      label {
+        line-height:1.5em!important;
+      }
+      input {
+        height:35px!important;
+        border-radius:3px;
+      }
+
+      .mce-abs-layout-item {
+        max-width:100%!important;
+        left:0!important;
+        top:0!important;
+        height:auto!important;
+        display:block!important;
+        position:relative;
+
+        &.mce-btn {
+          display:inline-block!important;
+          border:none;
+          box-shadow:none!important;
+          width:100px !important;
+          border-radius:5px!important;
+          float:right;
+
+          &.mce-browsebutton {
+            width:100%!important;
+            border:1px solid $darkGray;
+
+            .mce-txt {
+              color:$darkGray!important;
+
+              &:before {
+                font-family:"Font Awesome\ 5 Pro";
+                content:'\f002';
+                margin-right:5px;
+              }
+            }
+
+            & ~ .mce-widget {
+              width:100%!important;
+              text-align:center!important;
+              padding:$gutterWidth / 3;
+              color:$darkGray;
+              font:700 16px $secondarySansSerif;
+              text-transform:uppercase;
+            }
+          }
+
+          &.mce-primary {
+            button {
+              color:#fff;
+
+              span {
+                background:$successGreen;
+              }
+            }
+          }
+          button {
+            color:$lightGray;
+
+            @extend .btn;
+          }
+
+          span {
+            text-transform:uppercase!important;
+            height:35px!important;
+            border-radius:3px!important;
+            box-shadow:none!important;
+          }
+        }
+
+        .mce-dropzone {
+          padding:$gutterWidth!important;
+          width:100%!important;
+          border-color:$darkGray;
+
+          span {
+            font:700 16px $secondarySansSerif;
+            text-transform:uppercase;
+            color:$darkGray;
+          }
+        }
+
+        label, input {
+          max-width:100%!important;
+          width:100%!important;
+          left:0!important;
+          top:0!important;
+          display:block!important;
+        }
+
+        input {
+          height:35px!important;
+          border-radius:3px;
+        }
+      }
+    }
+
+    .mce-formitem {
+      padding-bottom:$gutterWidth / 2;
+    }
+  }
+}
