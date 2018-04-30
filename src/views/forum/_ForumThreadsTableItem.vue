@@ -1,0 +1,76 @@
+<template>
+    <a class="content-table-row flex flex-row bt-light-1 no-decoration">
+        <div class="flex flex-column avatar-col align-v-center pl-1">
+            <div class="thumb-img square rounded bg-center corners-3"
+                 :style="'background-image:url(' + thread.authorAvatar + ');'"></div>
+        </div>
+
+        <div class="flex flex-column align-v-center pl-1 title-column overflow">
+
+            <p class="tiny text-dark uppercase">
+                created <strong :class="brandTextClass">{{ thread.createdOn }}</strong> by <strong :class="brandTextClass">{{ thread.authorUsername }}</strong>
+            </p>
+
+            <p class="tiny text-black font-bold item-title">
+                <i v-if="thread.isPinned" class="fas fa-thumbtack"></i>
+                {{ thread.title }}
+            </p>
+
+            <p class="tiny text-dark text-truncate font-italic hide-md-up capitalize">
+
+                {{ thread.topic }}
+                <span style="margin:0 5px;">&#x25AA;</span>
+                {{ thread.replyAmount }} {{ thread.replyAmount === 1 ? 'reply' : 'replies' }}
+            </p>
+        </div>
+
+        <div v-if="thread.isNew" class="flex flex-column icon-col align-v-center hide-xs-only">
+            <span class="new-post-badge text-white corners-3 uppercase flex flex-row align-center font-bold"
+                  :class="brandBgClass">
+                <i class="fas fa-star"></i> New
+            </span>
+        </div>
+
+        <div class="flex flex-column align-center basic-col text-dark font-italic tiny hide-sm-down capitalize">
+            {{ thread.topic }}
+        </div>
+
+        <div class="flex flex-column align-center basic-col text-dark font-italic tiny hide-sm-down capitalize">
+            {{ thread.replyAmount }} {{ thread.replyAmount === 1 ? 'reply' : 'replies' }}
+        </div>
+
+        <div class="flex flex-column icon-col align-v-center">
+            <div class="square body">
+                <i class="fas fa-arrow-circle-right flex-center rounded"
+                   :class="thread.isRead ? 'text-light' : brandTextClass"></i>
+            </div>
+        </div>
+    </a>
+</template>
+<script>
+    export default {
+        name: 'forum-threads-table-item',
+        props: {
+            thread: {
+                type: Object,
+                default: () => {}
+            },
+            brand: {
+                type: String,
+                default: () => 'recordeo'
+            }
+        },
+        computed: {
+            brandBgClass(){
+                return 'bg-' + this.brand
+            },
+
+            brandTextClass(){
+                return 'text-' + this.brand
+            }
+        }
+    }
+</script>
+<style>
+
+</style>

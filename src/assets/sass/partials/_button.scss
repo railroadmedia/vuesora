@@ -19,6 +19,8 @@ a, div {
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
     font:700 16px $secondarySansSerif;
     text-transform:uppercase;
+    will-change:background-color;
+    transition:background-color .2s ease-in-out;
 
     &.short {
       height:35px;
@@ -56,6 +58,10 @@ button {
 
 .btn {
 
+  &.collapse-150 {
+    max-width:150px;
+  }
+
   &.collapse-250 {
     max-width:250px;
   }
@@ -63,6 +69,17 @@ button {
   &.collapse-320 {
     max-width:320px;
   }
+
+  &.no-border {
+    border:none!important;
+    box-shadow:none!important;
+  }
+
+  &.bg-recordeo:hover { background-color:lighten($recordeoYellow, 10%); }
+  &.bg-pianote:hover { background-color:lighten($pianoteRed, 10%); }
+  &.bg-drumeo:hover { background-color:lighten($drumeoBlue, 10%); }
+  &.bg-guitareo:hover { background-color:lighten($guitareoGreen, 10%); }
+  &.inverted:hover { background-color:rgba(255, 255, 255, .2); }
 }
 
 a {

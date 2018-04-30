@@ -63,13 +63,13 @@
         data() {
             return {
                 initialValue: '<blockquote data-post-id="1234">' +
-                '<p><em>Replying to <strong>Curtis Conway</strong></em></p><br>' +
+                '<p class="quote-heading"><strong>Curtis Conway</strong><em> - Oct 16, 2017</em></p><br>' +
                 '<p>This is a test, just checking</p>' +
                 '<p>what happens</p>' +
                 '<p>when I make a template like this</p>' +
                 '<br><p></p>' +
                 '<blockquote data-post-id="1234">' +
-                '<p><em>Replying to <strong>Curtis Conway</strong></em></p><br>' +
+                '<p class="quote-heading"><strong>Curtis Conway</strong><em> - Oct 16, 2017</em></p><br>' +
                 '<p>This is a test, just checking</p>' +
                 '<p>what happens</p>' +
                 '<p>when I make a template like this</p>' +

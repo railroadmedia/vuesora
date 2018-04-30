@@ -1,0 +1,21 @@
+@import './_variables.scss';
+
+.forum-post {
+
+  .avatar-column {
+    flex: 0 0 150px;
+  }
+}
+
+.new-post-badge {
+  font-size:10px;
+  max-height:25px;
+
+  i {
+    position:relative;
+    width:auto;
+    font-size:10px;
+    display:inline-block;
+    margin-right:5px;
+  }
+}

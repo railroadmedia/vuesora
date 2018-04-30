@@ -33,9 +33,9 @@
             <nav-item routerLink="/docs/text-editor">
                 Text Editor
             </nav-item>
-            <!--<nav-item routerLink="/">-->
-                <!--Content Table-->
-            <!--</nav-item>-->
+            <nav-item routerLink="/docs/pagination">
+                Pagination
+            </nav-item>
         </div>
 
         <div id="view">

@@ -12,6 +12,7 @@
 @import './partials/_content-table.scss';
 @import './partials/_add-event.scss';
 @import './partials/_editor.scss';
+@import './partials/_forum.scss';
 
 html {
   box-sizing: border-box;
@@ -60,6 +61,22 @@ ul {
 
   .header-avatar {
     flex:0 0 125px;
+  }
+
+  .forum-buttons {
+
+    a {
+      @include xSmallOnly {
+        width:100%;
+        max-width:100%;
+        margin-left:0;
+        margin-bottom:$gutterWidth / 2;
+
+        &:last-child {
+          margin-bottom:0;
+        }
+      }
+    }
   }
 }
 
