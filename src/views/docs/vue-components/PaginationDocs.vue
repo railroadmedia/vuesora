@@ -6,6 +6,7 @@
         <pagination
                 :currentPage="currentPage"
                 :totalPages="10"
+                brand="secondary"
                 @pageChange="handlePageChange"></pagination>
 
         <div class="flex flex-column bg-white shadow corners-3 pa mv-4">
@@ -35,6 +36,13 @@
                     <td class="pa-1">0</td>
                     <td class="pa-1">The total number of pages the module can render, module will be disabled if prop is not set or set to 0</td>
                 </tr>
+                <tr class="bg-light">
+                    <td class="pa-1 font-bold">brand</td>
+                    <td class="pa-1">no</td>
+                    <td class="pa-1">String</td>
+                    <td class="pa-1">'recordeo'</td>
+                    <td class="pa-1">The brand override to give the component a specific brand's theme color</td>
+                </tr>
             </table>
         </div>
 
@@ -53,6 +61,15 @@
                     <td class="pa-1">Fired when a page is changed, used to emit events to the parent component, and return the currentPage back down to this component</td>
                 </tr>
             </table>
+        </div>
+
+        <div class="flex flex-column bg-white shadow corners-3 pa mb-4">
+            <h2 class="subheading text-secondary mb">Usage</h2>
+
+            <h4 class="title text-secondary">Vue</h4>
+            <v-embed id="PaginationVue" class="mb-3">
+                https://gist.github.com/CurtisConway/a899b45da091b7e3ca275889e32be8d3.js
+            </v-embed>
         </div>
     </div>
 </template>

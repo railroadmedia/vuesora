@@ -48,25 +48,15 @@
     </a>
 </template>
 <script>
+    import BrandClasses from '../../mixins/BrandClasses.js'
+
     export default {
+        mixins: [BrandClasses],
         name: 'forum-threads-table-item',
         props: {
             thread: {
                 type: Object,
                 default: () => {}
-            },
-            brand: {
-                type: String,
-                default: () => 'recordeo'
-            }
-        },
-        computed: {
-            brandBgClass(){
-                return 'bg-' + this.brand
-            },
-
-            brandTextClass(){
-                return 'text-' + this.brand
             }
         }
     }

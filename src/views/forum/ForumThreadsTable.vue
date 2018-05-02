@@ -8,17 +8,26 @@
                                   :key="thread.id"
                                   :thread="thread"
                                   :brand="brand"></forum-threads-table-item>
+
+        <div class="flex flex-row bg-light pagination-row align-h-right">
+            <pagination
+                    :currentPage="currentPage"
+                    :totalPages="10"
+                    :brand="brand"
+                    @pageChange="handlePageChange"></pagination>
+        </div>
     </div>
 </template>
 <script>
     import ForumThreadsTableItem from './_ForumThreadsTableItem';
-    import Toasts from '../../assets/js/classes/toasts.js';
-    import axios from 'axios';
+    import Pagination from '../../components/Pagination.vue';
+    import Requests from '../../assets/js/classes/requests';
 
     export default {
         name: 'forum-threads-table',
         components: {
-            'forum-threads-table-item': ForumThreadsTableItem
+            'forum-threads-table-item': ForumThreadsTableItem,
+            'pagination': Pagination
         },
         props: {
             threads: {
@@ -32,20 +41,20 @@
         },
         data (){
             return {
-                threadsArray: this.threads
+                threadsArray: this.threads,
+                currentPage: 1
             }
         },
         methods: {
-            getThreads(){
-                return axios.get('/members/forum/threads-json')
-                    .then(response => {
-                        return response.data;
-                    })
-                    .catch(error => {
-                        console.error(error);
+            getThreads: () => Requests.getForumThreads(),
 
-                        Toasts.errorWarning('We\'re sorry! An unexpected error occurred. Please refresh the page and try again.');
-                    })
+            handlePageChange(payload){
+                this.currentPage = payload.page;
+
+                this.getThreads()
+                    .then(data => {
+                        this.threadsArray = data;
+                    });
             }
         },
         mounted (){
