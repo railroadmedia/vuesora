@@ -9,6 +9,16 @@
 
 .pagination-row {
   padding:6px 0;
+  background-color:#e3e8e9;
+}
+
+.topic-col {
+  flex:0 0 100%;
+
+  @include small {
+    flex:0 0 250px;
+    margin-left:$gutterWidth / 2;
+  }
 }
 
 .new-post-badge {

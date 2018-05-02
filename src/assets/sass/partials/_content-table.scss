@@ -3,6 +3,7 @@
 .content-table-row {
   background-color:#fff;
   transition:background-color .2s ease-in-out;
+  padding:#{$gutterWidth / 4} 0;
 
   & > .flex-column {
     justify-content:center;

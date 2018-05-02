@@ -7,13 +7,13 @@
 
         <div class="flex flex-column align-v-center pl-1 title-column overflow">
 
-            <p class="tiny text-dark uppercase">
-                created <strong :class="brandTextClass">{{ thread.createdOn }}</strong> by <strong :class="brandTextClass">{{ thread.authorUsername }}</strong>
-            </p>
-
             <p class="tiny text-black font-bold item-title">
                 <i v-if="thread.isPinned" class="fas fa-thumbtack"></i>
                 {{ thread.title }}
+            </p>
+
+            <p class="tiny text-dark uppercase font-italic">
+                created <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong>
             </p>
 
             <p class="tiny text-dark text-truncate font-italic hide-md-up capitalize">
@@ -31,11 +31,11 @@
             </span>
         </div>
 
-        <div class="flex flex-column align-center basic-col text-dark font-italic tiny hide-sm-down capitalize">
+        <div class="flex flex-column align-center basic-col text-dark font-italic tiny hide-sm-down uppercase">
             {{ thread.topic }}
         </div>
 
-        <div class="flex flex-column align-center basic-col text-dark font-italic tiny hide-sm-down capitalize">
+        <div class="flex flex-column align-center basic-col text-dark font-italic tiny hide-sm-down uppercase">
             {{ thread.replyAmount }} {{ thread.replyAmount === 1 ? 'reply' : 'replies' }}
         </div>
 

@@ -20,7 +20,7 @@
         <div v-for="i in totalPages"
              v-if="i < (currentPage + 2) && i > (currentPage - 2)"
              class="tiny corners-3 page-button flex-center shadow noselect"
-             :class="currentPage === i ? brandBgClass + ' text-white' : 'bg-white text-dark'"
+             :class="currentPage === i ? 'bg-x-dark text-white active' : 'bg-white text-dark'"
              @click="goToPage(i)">
             {{ i }}
         </div>
@@ -44,10 +44,8 @@
     </div>
 </template>
 <script>
-    import BrandClasses from '../mixins/BrandClasses'
 
     export default {
-        mixins: [BrandClasses],
         name: 'pagination',
         props: {
             currentPage: {
@@ -80,7 +78,7 @@
         margin:0 3px;
         cursor:pointer;
 
-        &.filler {
+        &.filler, &.active {
             pointer-events:none;
         }
     }

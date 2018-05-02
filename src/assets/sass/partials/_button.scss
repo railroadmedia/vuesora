@@ -75,11 +75,16 @@ button {
     box-shadow:none!important;
   }
 
+  &.flat {
+    background-color:transparent;
+    border:none;
+  }
+
   &.bg-recordeo:hover { background-color:lighten($recordeoYellow, 10%); }
   &.bg-pianote:hover { background-color:lighten($pianoteRed, 10%); }
   &.bg-drumeo:hover { background-color:lighten($drumeoBlue, 10%); }
   &.bg-guitareo:hover { background-color:lighten($guitareoGreen, 10%); }
-  &.inverted:hover { background-color:rgba(255, 255, 255, .2); }
+  &.inverted:hover, &.flat:hover { background-color:rgba(126, 126, 126, .1); }
 }
 
 a {
