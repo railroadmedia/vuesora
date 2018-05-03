@@ -1,7 +1,8 @@
 <template>
     <tinymce-editor api-key="g84168rl7b45du7fji2nive374o541mhtmzogyolgqng97xc"
                     :init="initObject"
-                    v-model="contentInterface"></tinymce-editor>
+                    v-model="contentInterface"
+                    @input="handleInput"></tinymce-editor>
 </template>
 <script>
     import Editor from '@tinymce/tinymce-vue';
@@ -63,11 +64,17 @@
                     media_dimensions: false,
                     media_alt_source: false,
                     images_upload_url: this.imageUploadEndpoint,
-                    content_style: "body { font-family: 'Open Sans', sans-serif; font-size:16px; font-weight:400; } p { margin:0; } blockquote { border:1px solid #d1d1d1; margin:0 0 0 1em; padding:1em; border-radius:5px; } .quote-heading { background:#e3e8e9; padding:8px 15px; margin:-1em -1em 0 -1em; } .quote-heading em { font-size:13px; font-style:italic; color:#a8a8a8; }"
+                    content_style: "body { font-family: 'Open Sans', sans-serif; font-size:16px; font-weight:400; } p { margin:0; } blockquote { border:1px solid #d1d1d1; margin:0 0 0 1em; padding:1em; border-radius:5px; } .quote-heading { background:#e3e8e9; padding:8px 15px; margin:-1em -1em 0 -1em; } .quote-heading strong { font-size:13px; } .quote-heading em { font-size:10px; font-style:italic;text-transform:uppercase;color:#a8a8a8; }"
                 }
             }
         },
         methods: {
+
+            handleInput(){
+                this.$emit('input', {
+                    currentValue: this.currentValue
+                })
+            }
         },
         components: {
             'tinymce-editor': Editor

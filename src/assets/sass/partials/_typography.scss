@@ -80,6 +80,10 @@ h1, h2, h3, h4, h5, h6, p {
   font:400 13px/1.5em $defaultSansSerif;
 }
 
+.x-tiny {
+  font:400 10px/1.5em $defaultSansSerif;
+}
+
 .font-light {
   font-weight:300;
 }
@@ -90,4 +94,8 @@ h1, h2, h3, h4, h5, h6, p {
 
 .font-italic {
   font-style:italic;
+}
+
+.dense {
+  font-family:$secondarySansSerif;
 }

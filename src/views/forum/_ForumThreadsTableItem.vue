@@ -1,5 +1,6 @@
 <template>
-    <a class="content-table-row flex flex-row bt-light-1 no-decoration">
+    <a href="/members/forum/thread/123"
+       class="content-table-row flex flex-row bt-light-1 no-decoration">
         <div class="flex flex-column avatar-col align-v-center pl-1">
             <div class="thumb-img square rounded bg-center corners-3"
                  :style="'background-image:url(' + thread.authorAvatar + ');'"></div>

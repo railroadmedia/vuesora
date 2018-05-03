@@ -15,6 +15,12 @@
 .corners-bottom-3 {
   border-radius:0 0 3px 3px;
 }
+.corners-right-3 {
+  border-radius:0 3px 3px 0;
+}
+.corners-left-3 {
+  border-radius:3px 0 0 3px;
+}
 .corners-5 {
   border-radius:5px;
 }
@@ -23,6 +29,12 @@
 }
 .corners-bottom-5 {
   border-radius:0 0 5px 5px;
+}
+.corners-right-5 {
+  border-radius:0 5px 5px 0;
+}
+.corners-left-5 {
+  border-radius:5px 0 0 5px;
 }
 
 .rounded {
@@ -41,7 +53,7 @@ $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
 @for $i from 1 through 3 {
 
   .ba-light-#{$i} {
-    border:#{$i}px solid $darkGray;
+    border:#{$i}px solid $lightGray;
   }
   .bh-light-#{$i} {
     border-left:#{$i}px solid $lightGray;
@@ -126,6 +138,10 @@ $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
   padding-left:5px;
   padding-right:5px;
   border-radius:3px;
+}
+
+.pointer {
+  cursor:pointer;
 }
 
 // No Select

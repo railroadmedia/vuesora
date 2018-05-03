@@ -70,21 +70,17 @@ button {
     max-width:320px;
   }
 
-  &.no-border {
-    border:none!important;
-    box-shadow:none!important;
-  }
-
-  &.flat {
+  &.flat, span.flat {
     background-color:transparent;
     border:none;
+    box-shadow:none;
   }
 
   &.bg-recordeo:hover { background-color:lighten($recordeoYellow, 10%); }
   &.bg-pianote:hover { background-color:lighten($pianoteRed, 10%); }
   &.bg-drumeo:hover { background-color:lighten($drumeoBlue, 10%); }
   &.bg-guitareo:hover { background-color:lighten($guitareoGreen, 10%); }
-  &.inverted:hover, &.flat:hover { background-color:rgba(126, 126, 126, .1); }
+  &.inverted:hover, &.flat:hover, span.flat:hover { background-color:rgba(126, 126, 126, .1); }
 }
 
 a {

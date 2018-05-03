@@ -11,7 +11,7 @@ export default class Requests {
      * Get the data for a list of forum threads
      *
      * @static
-     * @returns {Promise} resolved promise with the response.data object
+     * @returns {Promise} - resolved promise with the response.data object
      */
     static getForumThreads(){
         return axios.get('/members/forum/threads-json')
@@ -21,7 +21,25 @@ export default class Requests {
             .catch(error => {
                 console.error(error);
 
-                Toasts.errorWarning('We\'re sorry! An unexpected error occurred. Please refresh the page and try again.');
+                Toasts.errorWarning();
+            })
+    }
+
+    /**
+     * Get the posts data for a specific forum thread
+     *
+     * @static
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static getForumThreadPosts(){
+        return axios.get('/members/forum/post-json')
+            .then(response => {
+                return response.data
+            })
+            .catch(error => {
+                console.error(error);
+
+                Toasts.errorWarning();
             })
     }
 }

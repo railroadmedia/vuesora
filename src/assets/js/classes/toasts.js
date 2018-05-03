@@ -1,7 +1,20 @@
+/**
+ * Toasts
+ * Static methods for handling all success/error/dialog notifications.
+ */
+
+
 import Noty from 'noty';
 
 export default class Toasts {
 
+    /**
+     * Display a basic success message
+     *
+     * @static
+     * @param {string} text - the text to display in the success box
+     * @returns {Object} - Noty object to render the notification
+     */
     static success(text){
         return new Noty({
             type: 'success',
@@ -12,7 +25,14 @@ export default class Toasts {
         }).show();
     }
 
-    static errorWarning(text){
+    /**
+     * Display a basic success message
+     *
+     * @static
+     * @param {string} text - the text to display in the warning box
+     * @returns {Object} - Noty object to render the notification
+     */
+    static errorWarning(text = 'We\'re sorry! An unexpected error occurred. Please refresh the page and try again.'){
         return new Noty({
             type: 'warning',
             theme: 'bootstrap-v4',

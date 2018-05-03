@@ -5,6 +5,31 @@
   .avatar-column {
     flex: 0 0 150px;
   }
+
+  .post-body {
+    blockquote {
+      border:1px solid #d1d1d1;
+      margin:0 0 0 1em;
+      padding:1em;
+      border-radius:5px;
+    }
+
+    .quote-heading {
+      background:#e3e8e9;
+      padding:6px 15px;
+      margin:-1em;
+
+      strong {
+        font-size:13px;
+      }
+      em {
+        font-size:10px;
+        font-style:italic;
+        text-transform:uppercase;
+        color:#a8a8a8;
+      }
+    }
+  }
 }
 
 .pagination-row {

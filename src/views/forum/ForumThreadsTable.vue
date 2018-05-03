@@ -1,53 +1,39 @@
 <template>
     <div class="flex flex-column bg-white shadow corners-3 content-table">
-        <div class="flex flex-row pa align-v-center">
+        <div class="flex flex-row pa-3 align-v-center">
             <div class="flex flex-column align-v-center">
-                <h1 class="heading">All Forums</h1>
-            </div>
-
-            <div class="flex flex-column align-v-center">
-                <div class="flex flex-row align-v-center align-h-right">
-                    <label for="followedCheck" class="body">Only show threads that I follow</label>
-                    <input id="followedCheck" type="checkbox" class="ml-1">
+                <div class="flex flex-row">
+                    <h1 class="heading mr-3 pointer"
+                        :class="!followed ? 'text-black bb-' + brand + '-2' : 'text-dark'"
+                        @click="followed = false">
+                        All Forums
+                    </h1>
+                    <h1 class="heading mr-3 pointer"
+                        :class="followed ? 'text-black bb-' + brand + '-2' : 'text-dark'"
+                        @click="followed = true">
+                        Followed
+                    </h1>
                 </div>
             </div>
         </div>
 
         <div class="flex flex-row flex-wrap pa">
-            <div class="flex flex-column form-group">
-                <input id="threadSearch"
-                       type="text"
-                       v-model="searchInterface">
-                <label for="threadSearch" :class="brand">
-                    Search
-                </label>
+            <div class="flex flex-column search-box">
+                <div class="flex flex-row align-v-center">
+                    <input id="threadSearch"
+                           type="text"
+                           placeholder="Search the Forums"
+                           class="borderless"
+                           v-model="searchInterface">
+                    <i class="fas fa-search search-icon flex-center"></i>
+                </div>
             </div>
             <div class="flex flex-column form-group topic-col">
-                <select id="topicSelect"
-                        title="Filter by Topic"
-                        v-model="filterInterface">
-                    <option selected disabled></option>
-                    <option>
-                        General
-                    </option>
-                    <option>
-                        Tips
-                    </option>
-                    <option>
-                        Courses
-                    </option>
-                    <option>
-                        Website
-                    </option>
-                </select>
-                <label for="topicSelect" :class="brand">Topic</label>
+                <clearable-filter labelText="Select a Filter"
+                                  :filterOptions="['General', 'Courses', 'Tips', 'Website']"
+                                  @change="handleFilterChange"></clearable-filter>
             </div>
         </div>
-
-        <!--<div class="flex flex-row align-v-center ph mb">-->
-            <!--<input id="followedCheck" type="checkbox" class="mr-1">-->
-            <!--<label for="followedCheck" class="body">Only show threads that I follow</label>-->
-        <!--</div>-->
 
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
@@ -55,24 +41,24 @@
                                   :brand="brand"></forum-threads-table-item>
 
         <div class="flex flex-row bg-light pagination-row align-h-right">
-            <pagination
-                    :currentPage="currentPage"
-                    :totalPages="10"
-                    :brand="brand"
-                    @pageChange="handlePageChange"></pagination>
+            <pagination :currentPage="currentPage"
+                        :totalPages="10"
+                        @pageChange="handlePageChange"></pagination>
         </div>
     </div>
 </template>
 <script>
     import ForumThreadsTableItem from './_ForumThreadsTableItem';
     import Pagination from '../../components/Pagination.vue';
+    import ClearableFilter from '../../components/ClearableFilter.vue';
     import Requests from '../../assets/js/classes/requests';
 
     export default {
         name: 'forum-threads-table',
         components: {
             'forum-threads-table-item': ForumThreadsTableItem,
-            'pagination': Pagination
+            'pagination': Pagination,
+            'clearable-filter': ClearableFilter
         },
         props: {
             threads: {
@@ -88,9 +74,10 @@
             return {
                 threadsArray: this.threads,
                 currentPage: 1,
-                searchTerm: "",
-                filter: null,
-                timeout: null
+                searchTerm: '',
+                filter: 'all',
+                timeout: null,
+                followed: false
             }
         },
         computed: {
@@ -107,17 +94,6 @@
                         this.getThreads();
                     }, 800);
                 }
-            },
-
-            filterInterface: {
-                get() {
-                    return this.filter;
-                },
-                set(val) {
-                    this.filter = val;
-
-                    this.getThreads();
-                }
             }
         },
         methods: {
@@ -132,17 +108,35 @@
                 this.currentPage = payload.page;
 
                 this.getThreads();
+            },
+
+            handleFilterChange(payload){
+                this.filter = payload.value;
+
+                this.getThreads();
+            }
+        },
+        watch: {
+            followed(){
+                this.getThreads();
             }
         },
         mounted (){
-            // setInterval(() => {
-            //     this.getThreads().then(resolution => {
-            //         this.threadsArray = resolution;
-            //     })
-            // }, 5000);
+
         }
     }
 </script>
-<style>
+<style lang="scss">
+    @import '../../assets/sass/partials/_variables.scss';
 
+    .search-box {
+        @include xSmallOnly {
+            margin-bottom:$gutterWidth / 2;
+        }
+    }
+    .search-icon {
+        width:50px;
+        height:50px;
+        font-size:20px;
+    }
 </style>
