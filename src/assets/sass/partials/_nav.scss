@@ -44,6 +44,7 @@ body {
     img {
       width:100%;
       height:auto;
+      min-height:1px;
     }
   }
 
@@ -70,8 +71,15 @@ body {
 
   #notificationButton {
 
-    i {
+    .wrap {
       position:absolute;
+      top:0;
+      left:0;
+      height:100%;
+      width:100%;
+    }
+
+    i {
       top:0;
       left:0;
       height:100%;

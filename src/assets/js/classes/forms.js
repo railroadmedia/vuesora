@@ -1,10 +1,3 @@
-/**
- * Forms
- * Custom event listeners and validation for different form inputs
- */
-
-// import validator from 'validator';
-
 export default class Forms {
     constructor(form){
         this.formElement = form;

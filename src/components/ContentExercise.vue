@@ -5,11 +5,11 @@
                 <h3 class="title">{{ title }}</h3>
             </div>
             <div class="flex flex-column practice-column">
-                <button class="btn">
-                    <span class="text-white short" :class="'bg-' + brand">
-                        <i class="fas fa-play-circle mr-1"></i> Practice
-                    </span>
-                </button>
+                <!--<button class="btn">-->
+                    <!--<span class="text-white short" :class="'bg-' + brand">-->
+                        <!--<i class="fas fa-play-circle mr-1"></i> Practice-->
+                    <!--</span>-->
+                <!--</button>-->
             </div>
         </div>
         <div class="flex flex-row">
@@ -120,6 +120,10 @@
             transform:translateX(0);
             will-change:transform;
             transition:transform .4s ease-in-out;
+
+            img {
+                width:100%;
+            }
         }
 
         .side-button {
@@ -156,8 +160,8 @@
             transform:translateX(-50%);
 
             .page-button {
-                height:15px;
-                width:15px;
+                height:12px;
+                width:12px;
                 display:inline-block;
                 border-width:2px;
                 cursor:pointer;
