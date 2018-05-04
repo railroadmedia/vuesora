@@ -18,8 +18,8 @@
 
 .flex {
   display: flex;
-  flex: 1 1 auto;
   box-sizing:border-box;
+  flex: 1 1 auto;
 }
 
 .flex-row {
@@ -95,6 +95,10 @@
 
 .spacer {
   flex:1 1 auto;
+}
+
+.grow {
+  flex:1 1 100%;
 }
 
 .sq-btn-col {

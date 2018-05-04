@@ -51,14 +51,6 @@ body {
   .header-button {
     flex:0 0 40px;
 
-    @include xSmallOnly {
-      padding:$gutterWidth / 5;
-    }
-
-    @include smallOnly {
-      padding:$gutterWidth / 4;
-    }
-
     @include medium {
       flex:0 0 50px;
     }

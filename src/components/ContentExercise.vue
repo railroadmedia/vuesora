@@ -19,11 +19,12 @@
              ref="carouselContainer"
              v-if="totalPages > 0">
 
-            <div class="flex flex-column xs-12 page ph-3"
+
+            <div class="flex flex-column xs-12 grow page"
                  v-for="(page, i) in pages"
                  :key="'page' + (i + 1)"
                  :style="pageScrollPosition">
-                <img :src="page">
+                <img :src="page" class="ph-3">
             </div>
 
             <div class="side-button prev flex-center"

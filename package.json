@@ -1,6 +1,6 @@
 {
   "name": "vuesora",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
@@ -29,11 +29,14 @@
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
+    "@tinymce/tinymce-vue": "^1.0.6",
+    "noty": "^3.2.0-beta",
+    "axios": "^0.18.0",
     "mediaelement": "^4.2.8",
+    "es6-promise": "^4.2.4",
     "mediaelement-plugins": "^2.5.0"
   },
   "devDependencies": {
-    "@tinymce/tinymce-vue": "^1.0.6",
     "@vue/cli-plugin-babel": "^3.0.0-alpha.5",
     "@vue/cli-plugin-e2e-cypress": "^3.0.0-alpha.5",
     "@vue/cli-plugin-eslint": "^3.0.0-alpha.5",
@@ -42,18 +45,17 @@
     "@vue/cli-service": "^3.0.0-alpha.5",
     "@vue/eslint-config-prettier": "^3.0.0-alpha.5",
     "@vue/test-utils": "^1.0.0-beta.10",
-    "alertifyjs": "^1.11.1",
-    "axios": "^0.18.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "chai": "^4.1.2",
     "chai-dom": "^1.7.0",
-    "es6-promise": "^4.2.4",
     "jsdom": "^11.7.0",
-    "node-sass": "^4.7.2",
-    "noty": "^3.2.0-beta",
+    "node-sass": "^4.9.0",
     "sass-loader": "^6.0.6",
     "sinon": "^4.5.0",
     "validator": "^9.4.1",
     "vue-embed": "^1.0.0",
+    "vue-style-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.13"
   },
   "babel": {
