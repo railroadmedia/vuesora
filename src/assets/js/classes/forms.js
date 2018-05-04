@@ -1,3 +1,8 @@
+/**
+ * Forms
+ * Custom event listeners and validation for different form inputs
+ */
+
 // import validator from 'validator';
 
 export default class Forms {
@@ -9,6 +14,11 @@ export default class Forms {
         Forms.addInputEventListeners();
     }
 
+    /**
+     * Add event listeners to all inputs to affect the label on change
+     *
+     * @static
+     */
     static addInputEventListeners(){
         const inputs = document.querySelectorAll('input, textarea, select');
 
@@ -17,6 +27,11 @@ export default class Forms {
         });
     }
 
+    /**
+     * Remove all input event listeners if needed
+     *
+     * @static
+     */
     static removeInputEventListeners(){
         const inputs = document.querySelectorAll('input, textarea, select');
 
@@ -25,6 +40,11 @@ export default class Forms {
         });
     }
 
+    /**
+     * Add a class to inputs on change to affect the label
+     *
+     * @static
+     */
     static handleInputChange(event){
         const element = event.target;
 

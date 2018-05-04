@@ -97,6 +97,8 @@
 <script>
     import TextEditor from '../../components/TextEditor.vue';
     import BrandClasses from '../../mixins/BrandClasses.js'
+    import Toasts from '../../assets/js/classes/toasts';
+    import Noty from 'noty';
 
     export default {
         mixins: [BrandClasses],
@@ -193,21 +195,78 @@
             },
 
             reportPost(){
-                this.$emit('reportPost', {
-                    id: this.id
-                })
+                const notification = new Noty({
+                    layout: 'center',
+                    modal: true,
+                    text: 'Click report to send a notification to a moderator',
+                    theme: 'bootstrap-v4',
+                    closeWith: [],
+                    buttons: [
+                        Noty.button('<span class="bg-error text-white short">Report</span>', 'btn mr-1', () => {
+
+                            this.$emit('reportPost', {
+                                id: this.id
+                            });
+
+                            Toasts.success('A notification has been sent to the moderation team to review this post, thank you for your feedback!');
+
+                            notification.close();
+                        }),
+                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                            notification.close();
+                        })
+                    ]
+                }).show();
             },
 
             hidePost(){
-                this.$emit('hidePost', {
-                    id: this.id
-                })
+                const notification = new Noty({
+                    layout: 'center',
+                    modal: true,
+                    text: 'Are you sure you want to hide this post?',
+                    theme: 'bootstrap-v4',
+                    closeWith: [],
+                    buttons: [
+                        Noty.button('<span class="bg-warning text-white short">Hide</span>', 'btn mr-1', () => {
+
+                            this.$emit('hidePost', {
+                                id: this.id
+                            });
+
+                            Toasts.success('Post ' + this.id + ' has been hidden.');
+
+                            notification.close();
+                        }),
+                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                            notification.close();
+                        })
+                    ]
+                }).show();
             },
 
             deletePost(){
-                this.$emit('deletePost', {
-                    id: this.id
-                })
+                const notification = new Noty({
+                    layout: 'center',
+                    modal: true,
+                    text: 'Are you sure you want to delete this post?',
+                    theme: 'bootstrap-v4',
+                    closeWith: [],
+                    buttons: [
+                        Noty.button('<span class="bg-error text-white short">Delete</span>', 'btn mr-1', () => {
+
+                            this.$emit('deletePost', {
+                                id: this.id
+                            });
+
+                            Toasts.success('Post ' + this.id + ' has been deleted.');
+
+                            notification.close();
+                        }),
+                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                            notification.close();
+                        })
+                    ]
+                }).show();
             },
 
             editPost(){

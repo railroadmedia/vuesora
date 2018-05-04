@@ -26,7 +26,7 @@ export default class Toasts {
     }
 
     /**
-     * Display a basic success message
+     * Display a basic error warning
      *
      * @static
      * @param {string} text - the text to display in the warning box
