@@ -47,14 +47,19 @@
 }
 
 .new-post-badge {
-  font-size:10px;
-  max-height:25px;
+  vertical-align:middle;
 
-  i {
-    position:relative;
-    width:auto;
+  & > span {
     font-size:10px;
-    display:inline-block;
-    margin-right:5px;
+    max-height:25px;
+    width:100%;
+    vertical-align:middle;
+
+    i {
+      position:relative;
+      width:auto;
+      font-size:10px;
+      margin-right:5px;
+    }
   }
 }

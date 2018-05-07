@@ -15,10 +15,9 @@
         <div class="flex flex-row">
             <p class="body">{{ description }}</p>
         </div>
-        <div class="flex flex-row carousel overflow pb-3"
+        <div class="flex flex-row carousel overflow mv pb-3"
              ref="carouselContainer"
              v-if="totalPages > 0">
-
 
             <div class="flex flex-column xs-12 grow page"
                  v-for="(page, i) in pages"
@@ -99,7 +98,10 @@
             }
         },
         mounted(){
-            this.scrollAmount = this.$refs.carouselContainer.clientWidth;
+            if(this.pages.length){
+                this.scrollAmount = this.$refs.carouselContainer.clientWidth;
+            }
+
             window.addEventListener('resize', this.scrollAmountChange);
         },
         beforeDestroy(){

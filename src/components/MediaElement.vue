@@ -4,10 +4,10 @@
                :id="elementId"
                class="mejs__player">
 
-            <source v-for="(source, i) in sources"
+            <source v-for="(source, i) in sortedSourcesArray"
                     :key="i"
                     :src="source.file"
-                    :data-quality="source.quality"
+                    :data-quality="sourceQualityLabel(source.height)"
                     type="video/mp4">
         </video>
     </div>
@@ -24,6 +24,7 @@
     import 'mediaelement-plugins/src/jump-forward/jump-forward.css';
     import 'mediaelement-plugins/src/skip-back/skip-back';
     import 'mediaelement-plugins/src/skip-back/skip-back.css';
+    import Utils from '../assets/js/classes/utils';
 
     export default {
         name: "media-element",
@@ -65,10 +66,50 @@
                 default: () => 'recordeo'
             }
         },
-        methods: {
-            emitEvent(e){
-                this.$emit(e.type, e);
+        computed: {
+            sortedSourcesArray(){
+                return this.sources.sort(
+                    Utils.dynamicSort('-height')
+                );
             },
+
+            defaultQuality: {
+                get(){
+                    let defaultQuality = window.localStorage.getItem("defaultQuality");
+
+                    // Pick a default quality based on the closest size to the client width
+                    if(defaultQuality === undefined || defaultQuality === null){
+                        let guessedQuality = this.sortedSourcesArray.filter(source =>
+                            source.width <= window.innerWidth
+                        )[0].height;
+
+                        defaultQuality = this.sourceQualityLabel(guessedQuality);
+                    }
+
+                    return defaultQuality;
+                },
+                set(val){
+                    window.localStorage.setItem("defaultQuality", val);
+                }
+            }
+        },
+        methods: {
+            emitEvent(event){
+                this.$emit(event.type, event);
+            },
+
+            emitCustomEvent(event){
+                const isQuality = Array.from(event.target.classList).indexOf('mejs__qualities-selector-input') !== -1;
+
+                if(isQuality){
+                    this.$emit('qualityChange', event);
+
+                    this.defaultQuality = event.target.value;
+                }
+
+                event.target.blur();
+            },
+
             addMediaElementEventListeners(mediaElement){
                 const vm = this;
 
@@ -76,13 +117,27 @@
                     mediaElement.addEventListener(event, vm.emitEvent);
                 });
             },
+
             removeMediaElementEventListeners(mediaElement){
                 const vm = this;
 
                 vm.events.forEach((event) => {
                     mediaElement.removeEventListener(event, vm.emitEvent);
                 });
+            },
+
+            sourceQualityLabel(height){
+                if(height >= 2160){
+                    return '4k'
+                }
+
+                return String(height) + 'p';
             }
+        },
+        created(){
+            this.$on('qualityChange', event => {
+                console.log(event.target.value);
+            })
         },
         mounted (){
             const vm = this;
@@ -97,6 +152,7 @@
                 skipBackInterval: 10,
                 speeds: ['0.5', '0.75', '1.00', '1.25', '1.5'],
                 timeAndDurationSeparator: ' / ',
+                defaultQuality: vm.defaultQuality,
                 qualityText: 'Video Quality',
                 success: (mediaElement) => {
                     vm.mediaElement = mediaElement;
@@ -107,9 +163,7 @@
                     // Still a work in progress
                     let interactionInputs = document.querySelectorAll('.mejs__qualities-selector-input, .mejs__speed-selector-input');
                     Array.from(interactionInputs).forEach(input => {
-                        input.addEventListener('change', event => {
-                            event.target.blur();
-                        })
+                        input.addEventListener('change', this.emitCustomEvent)
                     });
                 },
                 error: (error) => {

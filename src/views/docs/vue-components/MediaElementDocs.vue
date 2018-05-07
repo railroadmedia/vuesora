@@ -6,7 +6,7 @@
         <div class="video-container">
             <media-element
                     :sources="sources"
-                    poster="https://i.vimeocdn.com/video/682408925_1280x720.jpg"/>
+                    poster="https://dmmior4id2ysr.cloudfront.net/assets/docs/poster.jpg"/>
         </div>
 
         <div class="flex flex-column bg-white shadow corners-3 pa mv-4">
@@ -34,7 +34,7 @@
                     <td class="pa-1">Yes</td>
                     <td class="pa-1">Array</td>
                     <td class="pa-1">[ ]</td>
-                    <td class="pa-1">An array of sources with 2 properties, <span class="keyword">file</span> and <span class="keyword">quality</span></td>
+                    <td class="pa-1">An array of sources with 3 properties, <span class="keyword">file</span>, <span class="keyword">height</span>, and <span class="keyword">width</span>. (The default object of sources pulled from Vimeo)</td>
                 </tr>
                 <tr class="bg-light">
                     <td class="pa-1 font-bold">poster</td>
@@ -143,16 +143,24 @@
             return {
                 sources: [
                     {
-                        quality: "1080p",
-                        file: "https://player.vimeo.com/external/255087433.hd.mp4?s=41e2cf6a03299ea200bfd7d8a7005b672055a137&profile_id=175"
+                        file: "https://dmmior4id2ysr.cloudfront.net/assets/docs/Splash_Short_Version_4K.mp4",
+                        height: 2160,
+                        width: 3840
                     },
                     {
-                        quality: "720p",
-                        file: "https://player.vimeo.com/external/255087433.hd.mp4?s=41e2cf6a03299ea200bfd7d8a7005b672055a137&profile_id=174"
+                        file: "https://dmmior4id2ysr.cloudfront.net/assets/docs/Splash_Short_Version_1080.mp4",
+                        height: 1080,
+                        width: 1920
                     },
                     {
-                        quality: "540p",
-                        file: "https://player.vimeo.com/external/255087433.sd.mp4?s=a0651e42d2e29f0499eea999ee773f05c2d4c437&profile_id=165"
+                        file: "https://dmmior4id2ysr.cloudfront.net/assets/docs/Splash_Short_Version_720.mp4",
+                        height: 720,
+                        width: 1280
+                    },
+                    {
+                        file: "https://dmmior4id2ysr.cloudfront.net/assets/docs/Splash_Short_Version_540.mp4",
+                        height: 540,
+                        width: 960
                     }
                 ]
             }

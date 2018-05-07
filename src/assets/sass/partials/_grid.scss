@@ -142,6 +142,7 @@
 @for $i from 1 through 12 {
   .xs-#{$i} {
     flex: 0 0 #{$i / 12 * 100%};
+    max-width:#{$i / 12 * 100%};
   }
   .xs-offset-#{$i} {
     margin-left:#{$i / 12 * 100%};
@@ -152,6 +153,7 @@
   @for $i from 1 through 12 {
     .sm-#{$i} {
       flex: 0 0 #{$i / 12 * 100%};
+      max-width:#{$i / 12 * 100%};
     }
     .sm-offset-#{$i} {
       margin-left:#{$i / 12 * 100%};
@@ -163,6 +165,7 @@
   @for $i from 1 through 12 {
     .md-#{$i} {
       flex: 0 0 #{$i / 12 * 100%};
+      max-width:#{$i / 12 * 100%};
     }
     .md-offset-#{$i} {
       margin-left:#{$i / 12 * 100%};
@@ -174,6 +177,7 @@
   @for $i from 1 through 12 {
     .lg-#{$i} {
       flex: 0 0 #{$i / 12 * 100%};
+      max-width:#{$i / 12 * 100%};
     }
     .lg-offset-#{$i} {
       margin-left:#{$i / 12 * 100%};
@@ -185,6 +189,7 @@
   @for $i from 1 through 12 {
     .xl-#{$i} {
       flex: 0 0 #{$i / 12 * 100%};
+      max-width:#{$i / 12 * 100%};
     }
     .xl-offset-#{$i} {
       margin-left:#{$i / 12 * 100%};
