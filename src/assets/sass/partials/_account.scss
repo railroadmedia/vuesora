@@ -1,0 +1,73 @@
+@import './_variables.scss';
+
+// Settings
+.account-link {
+
+  &.drumeo a:hover {
+    background-color:$drumeoBlue;
+    border-color:$drumeoBlue;
+  }
+
+  &.pianote a:hover {
+    background-color:$pianoteRed;
+    border-color:$pianoteRed;
+  }
+
+  &.guitareo a:hover {
+    background-color:$guitareoGreen;
+    border-color:$guitareoGreen;
+  }
+
+  &.recordeo a:hover {
+    background-color:$recordeoYellow;
+    border-color:$recordeoYellow;
+  }
+
+  a {
+    height:100%;
+    will-change:background-color, color, border-color;
+    transition:all .1s ease-in-out;
+
+    &:hover {
+      color:#fff;
+    }
+  }
+}
+
+#settingsSidebar {
+  flex:0 0 275px;
+  overflow:hidden;
+
+  .section-link {
+    flex:0 0 50px;
+    will-change:background-color, font-weight;
+    transition:.1s background-color ease-in-out, .1s font-weight ease-in-out;
+
+    &:hover {
+      background-color:$lightGray;
+      font-weight:700;
+    }
+
+    &.active {
+      pointer-events:none;
+    }
+
+    i {
+      width:20px;
+    }
+  }
+}
+
+#editForm {
+
+  .edit-button {
+    flex:0 0 100px;
+  }
+
+  .text-field {
+
+    .key {
+      flex:0 0 200px;
+    }
+  }
+}

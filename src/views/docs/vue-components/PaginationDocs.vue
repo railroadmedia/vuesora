@@ -1,5 +1,5 @@
 <template>
-    <div class="container pt-3">
+    <div class="container narrow pt-3">
         <h1 class="heading text-center">Pagination</h1>
         <p class="body font-light mb-3 text-center">A Pagination module built to be used anywhere requiring pagination</p>
 

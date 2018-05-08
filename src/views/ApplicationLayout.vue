@@ -1,5 +1,5 @@
 <template>
-    <div class="container pt-3">
+    <div class="container narrow pt-3">
         <h1 class="heading text-center">Application Layout</h1>
         <p class="body font-light mb-5 text-center">All of the properties for basic page flow and consistency, from the grid, to spacing, to the typography.</p>
 

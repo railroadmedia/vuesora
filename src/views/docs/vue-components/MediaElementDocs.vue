@@ -1,5 +1,5 @@
 <template>
-    <div class="container pt-3">
+    <div class="container narrow pt-3">
         <h1 class="heading text-center">Media Element</h1>
         <p class="body font-light mb-3 text-center">A Custom Video Player extending the MediaElement.js library.</p>
 
@@ -8,6 +8,7 @@
                     :sources="sources"
                     poster="https://dmmior4id2ysr.cloudfront.net/assets/docs/poster.jpg"/>
         </div>
+
 
         <div class="flex flex-column bg-white shadow corners-3 pa mv-4">
             <h2 class="subheading text-secondary mb">Props</h2>

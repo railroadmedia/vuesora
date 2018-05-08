@@ -14,7 +14,7 @@ export default class Requests {
      * @returns {Promise} - resolved promise with the response.data object
      */
     static getForumThreads(){
-        return axios.get('/members/forum/threads-json')
+        return axios.get('/members/forums/threads-json')
             .then(response => {
                 return response.data
             })
@@ -32,7 +32,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static getForumThreadPosts(){
-        return axios.get('/members/forum/post-json')
+        return axios.get('/members/forums/post-json')
             .then(response => {
                 return response.data
             })

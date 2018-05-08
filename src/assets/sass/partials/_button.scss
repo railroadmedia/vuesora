@@ -80,7 +80,10 @@ button {
   &.bg-pianote:hover { background-color:lighten($pianoteRed, 10%); }
   &.bg-drumeo:hover { background-color:lighten($drumeoBlue, 10%); }
   &.bg-guitareo:hover { background-color:lighten($guitareoGreen, 10%); }
-  &.inverted:hover, &.flat:hover, span.flat:hover { background-color:rgba(126, 126, 126, .1); }
+  &.inverted:hover,
+  &.flat:hover,
+  span.inverted:hover,
+  span.flat:hover { background-color:rgba(126, 126, 126, .1); }
 }
 
 a {

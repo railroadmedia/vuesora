@@ -137,6 +137,10 @@
   &.fluid {
     max-width:100%;
   }
+
+  &.narrow {
+    max-width:47.5em;
+  }
 }
 
 @for $i from 1 through 12 {

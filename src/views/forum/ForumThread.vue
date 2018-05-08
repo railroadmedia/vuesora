@@ -3,7 +3,7 @@
         <div class="flex flex-column bg-white shadow corners-3">
             <div class="flex flex-row pa-3">
                 <h1 class="heading">
-                    <a href="/members/forum" class="no-decoration mr-1">
+                    <a href="/members/forums" class="no-decoration mr-1">
                         <i class="fas fa-arrow-circle-left text-light"></i>
                     </a>
 

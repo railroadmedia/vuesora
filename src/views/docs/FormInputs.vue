@@ -1,5 +1,5 @@
 <template>
-    <div class="container pt-3">
+    <div class="container narrow pt-3">
         <h1 class="heading text-center">Form Inputs</h1>
         <p class="body font-light mb-3 text-center">Everything you need to create beautiful forms.</p>
 

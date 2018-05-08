@@ -1,6 +1,7 @@
 @import '~normalize.css/normalize.css';
 @import "~noty/src/noty.scss";
 @import "~noty/src/themes/bootstrap-v4.scss";
+@import './partials/_flags.scss';
 @import './partials/_grid.scss';
 @import './partials/_typography.scss';
 @import './partials/_colors.scss';
@@ -13,6 +14,8 @@
 @import './partials/_add-event.scss';
 @import './partials/_editor.scss';
 @import './partials/_forum.scss';
+@import './partials/_account.scss';
+
 
 html {
   box-sizing: border-box;
@@ -61,6 +64,49 @@ ul {
 
   .header-avatar {
     flex:0 0 125px;
+  }
+
+  .account-header {
+    flex-wrap:wrap;
+
+    @include small {
+      flex-wrap:nowrap;
+    }
+
+    .flex-column:not(.header-avatar) {
+      @include xSmallOnly {
+        flex:0 0 100%;
+      }
+    }
+
+    .flag {
+      transform:scale(0.75);
+      transform-origin:0 50%;
+    }
+  }
+
+  .user {
+    align-items:center;
+
+    @include small {
+      align-items:flex-start;
+    }
+  }
+
+  .experience {
+    align-items:center;
+
+    @include small {
+      align-items:flex-end;
+    }
+
+    .heading {
+      font-size:40px;
+
+      @include medium {
+        font-size:54px;
+      }
+    }
   }
 
   .forum-buttons {
