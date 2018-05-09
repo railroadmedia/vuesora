@@ -12,9 +12,9 @@
   }
   label {
     position:absolute;
-    height:100%;
     left:$gutterWidth / 3;
     top:0;
+    height:50px;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -22,6 +22,7 @@
     transition:transform .2s ease-in-out, color .1s ease-in-out;
     transform-origin:0 0;
     color:$lightGray;
+    pointer-events:none;
 
     // Pull in font sizes from the .body class
     @extend .body;
@@ -29,6 +30,12 @@
     @include medium {
       left:$gutterWidth / 2;
     }
+  }
+
+  .errors {
+    list-style-type:none;
+    color:$errorRed;
+    padding-left:$gutterWidth / 2;
   }
 }
 
@@ -42,9 +49,10 @@ textarea {
   background:#fff;
   box-shadow:none;
   border:1px solid $lightGray;
-  //outline:none;
+  outline:none;
   width:100%;
   padding-top:12px;
+  color:#000;
 
   // Pull in font sizes from the .body class
   @extend .body;
@@ -78,6 +86,14 @@ textarea {
     }
   }
 
+  &.has-error {
+    border-color:$errorRed;
+
+    & ~ label {
+      color: $errorRed!important;
+    }
+  }
+
   &.borderless {
     border-top:none;
     border-left:none;
@@ -93,6 +109,11 @@ textarea {
       left:0;
     }
   }
+
+  &:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+  }
 }
 
 textarea {
@@ -101,5 +122,35 @@ textarea {
 
   label {
     justify-content:flex-start;
+  }
+}
+
+.inline-inputs {
+  flex-wrap:wrap;
+
+  .flex-column {
+    margin-bottom:$gutterWidth / 3;
+    flex:0 0 100%;
+
+    @include small {
+      flex:0 0 50%;
+
+      &:first-child {
+        padding-right:$gutterWidth / 6;
+      }
+
+      &:last-child {
+        padding-left:$gutterWidth / 6;
+      }
+    }
+  }
+}
+
+.flatpickr-time {
+  input[type="text"] {
+    height:100%;
+    padding:0;
+    border:none;
+    box-shadow:none;
   }
 }

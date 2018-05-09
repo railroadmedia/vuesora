@@ -67,7 +67,15 @@
   .text-field {
 
     .key {
-      flex:0 0 200px;
+      flex:0 0 150px;
+
+      @include small {
+        flex:0 0 200px;
+      }
     }
+  }
+
+  .image-col {
+    flex:0 0 200px;
   }
 }

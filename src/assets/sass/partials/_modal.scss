@@ -1,0 +1,58 @@
+@import './_variables.scss';
+
+.modal {
+  position:fixed;
+  top:50%;
+  left:50%;
+  width:100%;
+  max-width:800px;
+  max-height:95%;
+  overflow-y:auto;
+  padding:$gutterWidth / 3;
+  transform:translate(-50%, -50%);
+  z-index:101;
+  opacity:0;
+  visibility:hidden;
+  will-change:opacity, visibility;
+  transition:opacity .2s ease-in-out;
+
+  &.active {
+    opacity:1;
+    visibility:visible;
+  }
+
+  .close-button {
+    position:absolute;
+    height:25px;
+    width:25px;
+    top:0;
+    right:0;
+    background:#000;
+    color:#fff;
+    font-size:14px;
+    border-radius:50%;
+    border:2px solid #fff;
+    cursor: pointer;
+
+    @extend .flex-center;
+  }
+}
+
+#modalOverlay {
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:rgba(0,0,0,.6);
+  z-index:100;
+  opacity:0;
+  visibility:hidden;
+  will-change:opacity, visibility;
+  transition:opacity .2s ease-in-out;
+
+  &.active {
+    opacity:1;
+    visibility:visible;
+  }
+}

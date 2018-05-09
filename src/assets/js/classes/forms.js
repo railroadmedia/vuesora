@@ -4,6 +4,7 @@
  */
 
 // import validator from 'validator';
+import flatpickr from "flatpickr";
 
 export default class Forms {
     constructor(form){
@@ -24,6 +25,11 @@ export default class Forms {
 
         Array.from(inputs).forEach(input => {
             input.addEventListener('change', Forms.handleInputChange);
+
+            // Add the has-input class if the input came pre filled out
+            if(input.value){
+                input.classList.add('has-input');
+            }
         });
     }
 
@@ -54,5 +60,34 @@ export default class Forms {
         else {
             element.classList.remove('has-input');
         }
+    }
+
+    /**
+     * Mount the flatpickr component onto any input with the .flatpickr class
+     *
+     * @static
+     */
+    static initializeFlatpickrInputs(){
+        const flatpickrInputs = document.querySelectorAll('.flatpickr');
+
+        Array.from(flatpickrInputs).forEach(input => {
+            // Check for the class .enable-time to enable the time input
+            let enableTime = input.classList.contains('enable-time');
+            let dateFormat = "Y-m-d";
+            let altFormat = "F j, Y";
+
+            // If the time input is enabled the formats need to change
+            if(enableTime){
+                dateFormat = "Y-m-d H:i:s";
+                altFormat = "F j, Y \\a\\t h:i"
+            }
+
+            flatpickr(input, {
+                enableTime: enableTime,
+                altInput: true,
+                altFormat: altFormat,
+                dateFormat: dateFormat
+            });
+        });
     }
 }

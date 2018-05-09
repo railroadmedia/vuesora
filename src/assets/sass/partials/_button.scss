@@ -40,8 +40,10 @@ button {
     padding:0;
     box-shadow:none;
     width:100%;
+    cursor:pointer;
 
     span {
+      pointer-events:none;
       @extend a.btn;
 
       &.short {
