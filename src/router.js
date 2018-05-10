@@ -5,6 +5,7 @@ import ApplicationLayout from "./views/ApplicationLayout.vue";
 import MediaElementDocs from "./views/docs/vue-components/MediaElementDocs.vue";
 import TextEditorDocs from "./views/docs/vue-components/TextEditorDocs";
 import PaginationDocs from "./views/docs/vue-components/PaginationDocs";
+import ImageCropperDocs from "./views/docs/vue-components/ImageCropperDocs";
 import FormInputs from "./views/docs/FormInputs.vue";
 
 Vue.use(Router);
@@ -40,6 +41,11 @@ export default new Router({
             path: "/docs/pagination",
             name: "pagination-docs",
             component: PaginationDocs
+        },
+        {
+            path: "/docs/image-cropper",
+            name: "image-cropper-docs",
+            component: ImageCropperDocs
         },
     ]
 });

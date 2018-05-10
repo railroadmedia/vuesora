@@ -24,7 +24,8 @@
   }
 
   a {
-    height:100%;
+    height:auto;
+    min-height:100%;
     will-change:background-color, color, border-color;
     transition:all .1s ease-in-out;
 

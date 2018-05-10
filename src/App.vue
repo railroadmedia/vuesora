@@ -36,6 +36,9 @@
             <nav-item routerLink="/docs/pagination">
                 Pagination
             </nav-item>
+            <nav-item routerLink="/docs/image-cropper">
+                Image Cropper
+            </nav-item>
         </div>
 
         <div id="view">

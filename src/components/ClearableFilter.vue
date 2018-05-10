@@ -6,7 +6,7 @@
                 {{ parsedLabelText }}
 
                 <i class="fas flex-center"
-                   :class="active ? 'fa-times' : 'fa-chevron-down'"
+                   :class="active ? 'fa-times' : 'fa-caret-down'"
                    @click="closeFilter"></i>
             </span>
         </label>

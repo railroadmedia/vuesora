@@ -1,7 +1,7 @@
 <template>
     <div class="container narrow pt-3">
         <h1 class="heading text-center">Media Element</h1>
-        <p class="body font-light mb-3 text-center">A Custom Video Player extending the MediaElement.js library.</p>
+        <p class="body font-light mb-3 text-center">A custom video player extending the MediaElement.js library.</p>
 
         <div class="video-container">
             <media-element
@@ -136,7 +136,7 @@
     import MediaElement from "@/components/MediaElement.vue";
 
     export default {
-        name: "home",
+        name: "media-element-docs",
         props: {
 
         },
