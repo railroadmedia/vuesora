@@ -294,6 +294,7 @@
 
             img {
                 max-width:250px;
+                max-height:100%;
                 position:absolute;
                 top:50%;
                 left:50%;

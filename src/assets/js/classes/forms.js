@@ -86,7 +86,7 @@ export default class Forms {
                 enableTime: enableTime,
                 altInput: true,
                 altFormat: altFormat,
-                dateFormat: dateFormat
+                dateFormat: dateFormat,
             });
         });
     }
