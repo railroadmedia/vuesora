@@ -80,3 +80,60 @@
     flex:0 0 200px;
   }
 }
+
+.cc-col {
+  padding:5px;
+  position:relative;
+
+  .default-overlay {
+    position:absolute;
+    top:-5px;
+    left:-5px;
+    width:calc(100% + 10px);
+    height:calc(100% + 10px);
+    z-index:2;
+
+    span {
+      padding:5px;
+      box-sizing:border-box;
+      display:inline-block;
+      flex:none;
+      border-radius:5px 0 5px 0;
+    }
+  }
+
+  .credit-card-box {
+    position:relative;
+    height:0;
+    padding-bottom:63%;
+    z-index:1;
+
+    &.visa { background-color:#2d68a9; }
+    &.mastercard { background-color:#33495d; }
+    &.paypal { background-color:#a4bbc6; }
+
+    .card {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+
+      & > .flex-column {
+        height:100%;
+
+        @include xSmallOnly {
+          padding:$gutterWidth / 3;
+        }
+      }
+
+      .card-number {
+        font-size:50%;
+      }
+    }
+
+    .cc-icon {
+      font-size:36px;
+    }
+  }
+}
