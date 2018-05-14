@@ -53,6 +53,7 @@ a {
 img {
   max-width:100%;
   height:auto;
+  min-height:1px; // This line fixes some height:auto; issues on IE
 }
 
 ul {
@@ -243,4 +244,10 @@ ul {
       transform:translateY(0);
     }
   }
+}
+
+.colored-lock {
+  height:auto;
+  width:20px;
+  display:inline-block;
 }

@@ -2,8 +2,6 @@ import axios from 'axios';
 import Noty from 'noty';
 import Toasts from '../classes/toasts';
 
-require('es6-promise').polyfill();
-
 export default (function () {
     const addToListButtons = document.querySelectorAll('.addToList');
     const removeFromListButtons = document.querySelectorAll('.removeFromList');
@@ -32,7 +30,7 @@ export default (function () {
         const notification = new Noty({
             layout: 'center',
             modal: true,
-            text: 'Do you really want to reset your progress? <br><br><span class="tiny font-bold font-italic">This cannot be undone.</span>',
+            text: 'Do you really want to reset your progress? <br><br><span class="tiny text-dark font-italic">This cannot be undone.</span>',
             theme: 'bootstrap-v4',
             closeWith: [],
             buttons: [

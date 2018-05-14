@@ -1,5 +1,9 @@
 @import './_variables.scss';
 
+[data-open-modal] > * {
+  pointer-events:none;
+}
+
 .modal {
   position:fixed;
   top:50%;
