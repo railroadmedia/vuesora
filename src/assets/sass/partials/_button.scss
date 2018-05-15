@@ -83,8 +83,11 @@ button {
   &.bg-drumeo:hover { background-color:lighten($drumeoBlue, 10%); }
   &.bg-guitareo:hover { background-color:lighten($guitareoGreen, 10%); }
   &.bg-x-dark:hover { background-color:lighten(#242424, 10%); }
+
   &.inverted:hover,
   &.flat:hover,
+  &:hover span.inverted,
+  &:hover span.flat,
   span.inverted:hover,
   span.flat:hover { background-color:rgba(126, 126, 126, .1); }
 }
