@@ -35,6 +35,10 @@
       display:none;
     }
   }
+
+  &.is-read {
+    background-color:#f2f2f2;
+  }
 }
 
 .large-thumbnail {
@@ -112,6 +116,27 @@
     font-size:28px;
     height:100%;
     width:100%;
+  }
+
+  .read-icon {
+    transition:color .1s ease-in-out;
+    pointer-events:none;
+
+    &:hover {
+      color:$recordeoYellow;
+    }
+  }
+}
+
+.button-col {
+  flex:0 0 100%;
+  margin-left:0;
+  margin-top:$gutterWidth / 2;
+
+  @include small {
+    flex:0 0 250px;
+    margin-left:$gutterWidth / 3;
+    margin-top:0;
   }
 }
 
