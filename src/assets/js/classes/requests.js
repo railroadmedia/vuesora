@@ -22,7 +22,7 @@ export default class Requests {
                 console.error(error);
 
                 Toasts.errorWarning();
-            })
+            });
     }
 
     /**
@@ -40,6 +40,35 @@ export default class Requests {
                 console.error(error);
 
                 Toasts.errorWarning();
+            });
+    }
+
+
+    /**
+     * Upload a resource to S3 and get a CDN url back
+     *
+     * @static
+     * @param {string} endpoint - the url endpoint to send the request to
+     * @param {Object} formData - the formData object to send with the request
+     * @returns {Promise} resolved promise with the response.data object, containing the cdn url
+     */
+    static remoteResourceUpload(endpoint, formData){
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+                processData: false,
+                contentType: false
+            }
+        };
+
+        return axios.post(endpoint, formData, config)
+            .then(response => {
+                return response.data;
             })
+            .catch(error => {
+                console.error(error);
+
+                Toasts.errorWarning();
+            });
     }
 }

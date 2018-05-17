@@ -80,7 +80,7 @@
 
                     <a class="btn text-white collapse-150 short mr-1"
                        :class="'bg-' + brand"
-                       @click="saveImage">
+                       @click="uploadImage">
                         Save
                     </a>
                 </div>
@@ -94,7 +94,8 @@
     import Cropper from 'cropperjs';
     import Dropzone from 'dropzone';
     import axios from 'axios';
-    import Toasts from '../assets/js/classes/toasts'
+    import Toasts from '../assets/js/classes/toasts';
+    import Requests from '../assets/js/classes/requests';
 
     export default {
         name: 'image-cropper',
@@ -104,7 +105,8 @@
                 cropperInstance: null,
                 dropZoneInstance: null,
                 dropZoneError: null,
-                croppedImage: null
+                croppedImage: null,
+                imageBlob: null
             }
         },
         props: {
@@ -114,6 +116,16 @@
             },
 
             uploadEndpoint: {
+                type: String,
+                default: () => ''
+            },
+
+            saveEndpoint: {
+                type: String,
+                default: () => ''
+            },
+
+            userId: {
                 type: String,
                 default: () => ''
             },
@@ -183,20 +195,34 @@
                     width: 500,
                     height: 500,
                 });
-                this.croppedImage = canvasOutput.toDataURL(blob => {
-                    return URL.createObjectURL(blob);
+
+                canvasOutput.toBlob(blob => {
+                    this.imageBlob = blob;
+                });
+
+                this.croppedImage = canvasOutput.toDataURL(url => {
+                    return URL.createObjectURL(url);
                 });
             },
 
+            uploadImage(){
+                let formData = new FormData();
+                let newFileName = this.userId + '_' + Date.now() + '.png';
+
+                formData.append('file', this.imageBlob, newFileName);
+                formData.append('target', newFileName);
+                formData.append('_method', 'PUT');
+
+                Requests.remoteResourceUpload(this.uploadEndpoint, formData)
+                    .then(resolved => {
+                        if(resolved){
+                            Toasts.success('Avatar successfully updated! Changes will be reflected next page load.')
+                        }
+                    })
+            },
+
             saveImage(){
-                axios.put(this.uploadEndpoint)
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        Toasts.errorWarning();
-                    })
+
             }
         },
         created(){
