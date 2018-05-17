@@ -71,4 +71,8 @@ export default class Requests {
                 Toasts.errorWarning();
             });
     }
+
+    static setUserField(endpoint, data){
+
+    }
 }

@@ -106,7 +106,8 @@
                 dropZoneInstance: null,
                 dropZoneError: null,
                 croppedImage: null,
-                imageBlob: null
+                imageBlob: null,
+                loading: false
             }
         },
         props: {
@@ -216,13 +217,37 @@
                 Requests.remoteResourceUpload(this.uploadEndpoint, formData)
                     .then(resolved => {
                         if(resolved){
-                            Toasts.success('Avatar successfully updated! Changes will be reflected next page load.')
+                            let remoteStorageUrl = resolved.results;
+                            this.setImageAsAvatar(remoteStorageUrl);
                         }
                     })
             },
 
-            saveImage(){
+            setImageAsAvatar(imageUrl){
+                axios.patch(this.saveEndpoint, {
+                    key: 'profile_picture_image_url',
+                    value: imageUrl
+                })
+                    .then(response => {
+                        if(response.data){
+                            this.saveImage();
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
 
+                        this.loading = false;
+                        Toasts.errorWarning();
+                    })
+            },
+
+            saveImage(){
+                this.imageBlob = null;
+                this.croppedImage = null;
+                this.fileToCrop = null;
+                this.loading = false;
+                this.$root.$emit('imageSaved');
+                Toasts.success('Avatar successfully updated! Changes will be reflected next page load.');
             }
         },
         created(){
