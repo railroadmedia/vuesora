@@ -141,3 +141,21 @@
     }
   }
 }
+
+// Complete Button
+
+.completeButton {
+
+  &.is-complete {
+    .incompleted {
+      display:none;
+    }
+    .completed {
+      display:flex;
+    }
+  }
+
+  .completed {
+    display:none;
+  }
+}

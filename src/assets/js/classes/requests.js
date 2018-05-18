@@ -72,7 +72,25 @@ export default class Requests {
             });
     }
 
-    static setUserField(endpoint, data){
+    /**
+     * Flag a piece of content as "complete"
+     *
+     * @static
+     * @param {string} endpoint - the url endpoint to send the request to
+     * @param {Object} contentId - the content ID
+     * @returns {Promise} resolved promise with the response.data object, containing the cdn url
+     */
+    static markContentAsComplete(endpoint, contentId){
+        return axios.put(endpoint, {
+            'content_id': contentId
+        })
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                console.error(error);
 
+                Toasts.errorWarning();
+            })
     }
 }

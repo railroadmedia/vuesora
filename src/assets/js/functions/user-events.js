@@ -1,15 +1,23 @@
 import axios from 'axios';
 import Noty from 'noty';
 import Toasts from '../classes/toasts';
+import Requests from '../classes/requests';
 
 export default (function () {
     const addToListButtons = document.querySelectorAll('.addToList');
     const removeFromListButtons = document.querySelectorAll('.removeFromList');
+    const markAsCompleteButtons = document.querySelectorAll('.completeButton');
     const resetProgressButtons = document.querySelectorAll('.resetProgress');
 
     if(addToListButtons.length){
         Array.from(addToListButtons).forEach(button => {
             button.addEventListener('click', addToList);
+        });
+    }
+
+    if(markAsCompleteButtons.length){
+        Array.from(markAsCompleteButtons).forEach(button => {
+            button.addEventListener('click', markAsComplete);
         });
     }
 
@@ -54,9 +62,24 @@ export default (function () {
         }).show();
     }
 
+    function markAsComplete(event){
+        const element = event.target;
+        const contentId = element.dataset['contentId'];
+        const endpoint = '/railcontent/complete';
+
+        Requests.markContentAsComplete(endpoint, contentId)
+            .then(resolved => {
+                console.log(resolved);
+
+                if(resolved){
+                    Toasts.success('Lesson marked as complete.')
+                }
+            });
+    }
+
     function getEventInfo(event){
         let element = event.target,
-            contentId = element.dataset['content-id'];
+            contentId = element.dataset['contentId'];
 
         return {
             contentId: contentId,
