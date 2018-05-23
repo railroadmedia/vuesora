@@ -224,7 +224,7 @@
             },
 
             setImageAsAvatar(imageUrl){
-                axios.put(this.saveEndpoint, {
+                axios.patch(this.saveEndpoint, {
                     key: 'profile_picture_image_url',
                     value: imageUrl
                 })
@@ -246,8 +246,9 @@
                 this.croppedImage = null;
                 this.fileToCrop = null;
                 this.loading = false;
-                this.$root.$emit('imageSaved');
+
                 Toasts.success('Avatar successfully updated! Changes will be reflected next page load.');
+                this.$root.$emit('imageSaved');
             }
         },
         created(){
