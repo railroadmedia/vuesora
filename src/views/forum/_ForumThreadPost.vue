@@ -96,7 +96,7 @@
 </template>
 <script>
     import TextEditor from '../../components/TextEditor.vue';
-    import BrandClasses from '../../mixins/BrandClasses.js'
+    import BrandClasses from '../../mixins/BrandClasses.js';
     import Toasts from '../../assets/js/classes/toasts';
     import Noty from 'noty';
 
@@ -167,7 +167,7 @@
                 }
 
                 if(this.isLiked){
-                    userLikes =  'You, ' + this.userLikes[0] + ', ' + this.userLikes[1];
+                    userLikes =  'You, ' + this.userLikes;
                 }
 
                 return '<span class="font-bold">' + userLikes + '</span>' + additionalUserLikes;

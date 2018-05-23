@@ -24,15 +24,23 @@
         <notifications-table-row v-for="(item, i) in notifications"
                                  :key="item.id"
                                  v-bind="item"></notifications-table-row>
+
+        <div class="flex flex-row bg-light pagination-row align-h-right">
+            <pagination :currentPage="currentPage"
+                        :totalPages="totalPages"
+                        @pageChange="handlePageChange"></pagination>
+        </div>
     </div>
 </template>
 <script>
     import NotificationsTableRow from './_NotificationsTableRow.vue';
+    import Pagination from '../../components/Pagination.vue';
 
     export default {
         name: 'notifications-table',
         components: {
-            "notifications-table-row": NotificationsTableRow
+            "notifications-table-row": NotificationsTableRow,
+            "pagination": Pagination
         },
         props: {
             brand: {
@@ -52,6 +60,12 @@
                 default: () => ''
             }
         },
+        data(){
+            return {
+                currentPage: 1,
+                totalPages: 10
+            }
+        },
         methods: {
             markAllAsRead(){
                 // Mark all of the rows as read
@@ -63,6 +77,10 @@
                 });
 
                 // Send request to server
+            },
+
+            handlePageChange(payload){
+                this.currentPage = payload.page;
             }
         }
     }

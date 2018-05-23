@@ -224,7 +224,7 @@
             },
 
             setImageAsAvatar(imageUrl){
-                axios.patch(this.saveEndpoint, {
+                axios.put(this.saveEndpoint, {
                     key: 'profile_picture_image_url',
                     value: imageUrl
                 })

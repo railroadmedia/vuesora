@@ -1,9 +1,9 @@
 @import './_variables.scss';
 
-.forum-post {
+.forum-post, .comment-post {
 
   .avatar-column {
-    flex: 0 0 150px;
+    flex: 0 0 125px;
   }
 
   .post-body {

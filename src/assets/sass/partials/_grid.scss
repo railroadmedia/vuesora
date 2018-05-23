@@ -436,6 +436,22 @@ $numerators: 2 3 6 9 10;
   }
 }
 
+.pr {
+  padding-right:$gutterWidth / 3;
+
+  @include medium {
+    padding-right:$gutterWidth / 2;
+  }
+}
+
+.pl {
+  padding-left:$gutterWidth / 3;
+
+  @include medium {
+    padding-left:$gutterWidth / 2;
+  }
+}
+
 .pb {
   padding-bottom:$gutterWidth / 3;
 
