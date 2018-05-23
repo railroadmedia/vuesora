@@ -1,12 +1,10 @@
 <template>
-    <div :id="domID"
-         class="flex flex-row comment-post pa mb-1"
-         :class="{'pinned': pinned}">
+    <div class="flex flex-row comment-post pa mv-1">
         <div class="flex flex-column avatar-column pr">
             <img src="https://placehold.it/250x250" class="rounded">
         </div>
         <div class="flex flex-column grow">
-            <div class="flex flex-row mb-1 comment-meta">
+            <div class="flex flex-row align-v-center mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
                         {{ display_name }}
@@ -15,14 +13,6 @@
                             {{ created_on }}
                         </span>
                     </h2>
-                </div>
-
-                <div class="flex flex-column align-h-right align-v-center flex-auto">
-                    <span class="tiny no-decoration text-dark pointer">
-                        <i class="fas fa-link"
-                           @click="getCommentLink"></i>
-                        <textarea class="comment-id-copy">{{ commentUrl }}</textarea>
-                    </span>
                 </div>
             </div>
 
@@ -52,21 +42,13 @@
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
-                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="replying ? 'text-recordeo' : 'text-dark'"
-                           @click="replyToComment">
-                            <i class="fas fa-reply"></i>
-                            <span class="hide-xs-only">
-                                {{ replying ? 'Replying' : 'Reply' }}
-                            </span>
-                        </p>
 
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
                            :class="isLiked ? 'text-recordeo' : 'text-dark'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
-                                {{ isLiked ? 'Liked' : 'Like' }}
+                            {{ isLiked ? 'Liked' : 'Like' }}
                             </span>
                         </p>
 
@@ -77,59 +59,14 @@
                     </div>
                 </div>
             </div>
-
-            <transition name="slide-fade">
-                <div class="flex flex-row comment-post mv-2" v-if="replying">
-                    <div class="flex flex-column avatar-column pr hide-xs-only">
-                        <img src="https://placehold.it/250x250" class="rounded">
-                    </div>
-                    <div class="flex flex-column">
-                        <div class="flex flex-row">
-                            <text-editor toolbar="bold italic underline | bullist numlist"
-                                         :height="150"></text-editor>
-                        </div>
-                        <div class="flex flex-row align-h-right mv-1">
-                            <a class="btn flat text-black collapse-150 short mr-1"
-                               @click="replying = false">
-                                Cancel
-                            </a>
-                            <a class="btn text-white bg-recordeo collapse-150 short">
-                                Reply
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </transition>
-
-            <transition-group name="slide-fade" tag="div">
-                <comment-reply v-for="(reply, i) in replies"
-                               v-if="i < 2 || showAllReplies"
-                               :key="i"
-                               v-bind="reply"
-                               :currentUser="currentUser"
-                               @likeReply="likeReply"></comment-reply>
-            </transition-group>
-
-            <div class="flex flex-row align-center" v-if="replies.length > 2">
-                <a class="btn btn-tiny flat text-dark collapse-150"
-                   @click="showAllReplies = !showAllReplies">
-                    {{ showAllReplies ? 'Hide Replies' : 'Show All Replies' }}
-                </a>
-            </div>
         </div>
     </div>
 </template>
 <script>
     import Toasts from '../../assets/js/classes/toasts';
-    import TextEditor from '../../components/TextEditor.vue';
-    import CommentReply from './_CommentReply.vue';
 
     export default {
-        name: 'comment-post',
-        components: {
-            'text-editor': TextEditor,
-            'comment-reply': CommentReply
-        },
+        name: 'comment-reply',
         props: {
             currentUser: {
                 type: Object,
@@ -172,27 +109,9 @@
             replies: {
                 type: Array,
                 default: () => []
-            },
-            pinned: {
-                type: Boolean,
-                default: () => false
-            }
-        },
-        data(){
-            return {
-                replying: false,
-                showAllReplies: false
             }
         },
         computed: {
-            domID(){
-                if(this.pinned){
-                    return 'pinnedComment' + this.id
-                }
-
-                return 'comment' + this.id
-            },
-
             isLiked(){
                 return this.like_users.filter(user =>
                     user.display_name === this.currentUser.display_name
@@ -228,32 +147,10 @@
         },
         methods: {
             likeComment(){
-                this.$emit('likeComment', {
+                this.$emit('likeReply', {
                     id: this.id,
                     isLiked: this.isLiked
                 });
-            },
-
-            likeReply(payload){
-                this.$emit('likeReply', {
-                    parent_id: this.id,
-                    id: payload.id,
-                    isLiked: payload.isLiked
-                });
-            },
-
-            replyToComment(){
-                this.replying = !this.replying;
-            },
-
-            getCommentLink(event) {
-                const parentElement = event.target.parentElement;
-                const textArea = parentElement.querySelector('textarea');
-
-                textArea.select();
-                document.execCommand('copy');
-
-                Toasts.success('Comment Url Copied to Clipboard!')
             }
         }
     }

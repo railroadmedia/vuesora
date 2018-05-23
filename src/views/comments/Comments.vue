@@ -1,45 +1,61 @@
 <template>
-    <div id="commentsSection" class="flex flex-column">
-        <div class="flex flex-row pv-3 align-v-center">
-            <div class="flex flex-column xs-12 sm-9">
-                <h1 class="heading">7 Comments</h1>
+    <div id="commentsSection" class="flex flex-column grow">
+        <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
+            <div class="flex flex-column xs-12 sm-9 mb-3">
+                <h1 class="heading">{{ totalComments }} Comments</h1>
             </div>
 
-            <div class="flex flex-column align-h-right xs-12 sm-3">
+            <div class="flex flex-column align-h-right xs-12 sm-3 mb-3">
                 <div class="form-group xs-12" style="width:100%;">
-                    <select id="commentSort">
-                        <option>Popular</option>
-                        <option>Latest First</option>
-                        <option>Oldest First</option>
-                        <option>My Comments</option>
+                    <select id="commentSort" v-model="sortInterface">
+                        <option value="-like_count">Popular</option>
+                        <option value="-created_on">Latest First</option>
+                        <option value="created_on">Oldest First</option>
+                        <option value="">My Comments</option>
                     </select>
                     <label for="commentSort" :class="brand">Sort By</label>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-row comment-post mv-3">
+        <div class="flex flex-row comment-post ph mv-3">
             <div class="flex flex-column avatar-column pr hide-xs-only">
-                <img src="https://placehold.it/250x250" class="rounded">
+                <img :src="currentUser.avatar" class="rounded">
             </div>
             <div class="flex flex-column">
-                <text-editor toolbar="bold italic underline | bullist numlist"></text-editor>
+                <text-editor toolbar="bold italic underline | bullist numlist"
+                             :height="150"></text-editor>
+                <div class="flex flex-row align-h-right mv-1">
+                    <a class="btn text-white bg-recordeo collapse-150 short">
+                        Comment
+                    </a>
+                </div>
             </div>
         </div>
+
+        <comment-post v-if="pinnedComment != null"
+                      v-bind="pinnedComment"
+                      :currentUser="currentUser"
+                      :pinned="true"
+                      @likeComment="handleCommentLike"
+                      @likeReply="handleReplyLike"></comment-post>
 
         <comment-post v-for="(comment, i) in comments"
                       :key="i"
                       v-bind="comment"
                       :currentUser="currentUser"
-                      @likeComment="handleCommentLike"></comment-post>
+                      @likeComment="handleCommentLike"
+                      @likeReply="handleReplyLike"></comment-post>
     </div>
 </template>
 <script>
     import BrandClasses from '../../mixins/BrandClasses.js';
     import TextEditor from '../../components/TextEditor.vue';
+    import Requests from '../../assets/js/classes/requests';
     import CommentPost from './_CommentPost.vue';
     import Toasts from '../../assets/js/classes/toasts';
     import axios from 'axios';
+    import * as QueryString from 'query-string';
 
     export default {
         mixins: [BrandClasses],
@@ -75,25 +91,71 @@
         data(){
             return {
                 currentPage: 1,
-                totalPages: 0,
                 totalComments: 0,
-                comments: []
+                comments: [],
+                pinnedComment: null,
+                requestingData: false,
+                sortOption: '-created_on'
+            }
+        },
+        computed: {
+            sortInterface: {
+                get(){
+                    return this.sortOption;
+                },
+                set(val){
+                    this.sortOption = val;
+
+                    this.getComments(this.requestParams, true);
+                }
+            },
+
+            totalPages(){
+                return Math.ceil(this.totalComments / 25);
+            },
+
+            requestParams(){
+                return {
+                    page: this.currentPage,
+                    limit: 25,
+                    content_id: this.content_id,
+                    sort: this.sortOption
+                }
             }
         },
         methods: {
-            getComments(params){
-                return axios.get('/railcontent/comment', {
-                    params: params
-                })
+            getComments(params, replace = false){
+                this.requestingData = true;
+
+                Requests.getComments(params)
+                    .then(resolved => {
+                        this.requestingData = false;
+
+                        if(resolved){
+                            this.totalComments = resolved['total_results'];
+
+                            if(replace){
+                                this.comments = resolved['results'];
+                            }
+                            else {
+                                this.comments = this.comments.concat(
+                                    resolved['results']
+                                );
+                            }
+                        }
+                    });
+            },
+
+            getCommentById(id){
+                return axios.get('/railcontent/comment/' + id)
                     .then(response => {
-                        return response.data
+                        return response.data;
                     })
                     .catch(error => {
                         console.error(error);
                         Toasts.errorWarning();
-                    })
+                    });
             },
-
 
             handleCommentLike(payload){
                 let index = this.comments.map(comment => comment.id).indexOf(payload.id);
@@ -110,23 +172,72 @@
                         id: this.currentUser.id
                     });
                 }
+            },
+
+            handleReplyLike(payload){
+                let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
+                let likedPostReplies = this.comments[index].replies;
+                let likedPostReplyIndex = likedPostReplies.map(reply => reply.id).indexOf(payload.id);
+                let likedPostReply = likedPostReplies[likedPostReplyIndex];
+
+                if(payload.isLiked){
+                    likedPostReply.like_users = likedPostReply.like_users.filter(user =>
+                        user['display_name'] !== this.currentUser.display_name
+                    )
+                }
+                else {
+                    likedPostReply.like_users.push({
+                        display_name: this.currentUser.display_name,
+                        id: this.currentUser.id
+                    });
+                }
+            },
+
+            goToComment(id){
+                this.getCommentById(id)
+                    .then(resolved => {
+                        if(resolved){
+                            this.pinnedComment = resolved['results'].filter(result =>
+                                result.id === Number(id)
+                            )[0];
+
+                            setTimeout(() => {
+                                let pinned = document.getElementById('pinnedComment' + id);
+                                let oldComment = document.getElementById('comment' + id);
+
+                                window.scrollTo(0, (pinned.offsetTop - 100));
+
+                                if(oldComment){
+                                    oldComment.remove();
+                                }
+                            }, 1000);
+                        }
+                    })
             }
         },
         created(){
-            this.getComments({
-                page: this.currentPage,
-                limit: 25,
-                content_id: this.content_id,
-                sort: '-created_on'
-            })
-                .then(resolved => {
+            this.getComments(this.requestParams);
+        },
+        mounted(){
+            // Check the URI Params if 'goToComment' exists
+            const uriParams = QueryString.parse(location.search);
+            // Run the goToComment method if it does
+            if(Object.keys(uriParams).indexOf('goToComment') !== -1){
+                this.goToComment(uriParams['goToComment']);
+            }
 
-                    if(resolved){
-                        this.comments = this.comments.concat(
-                            resolved.results
-                        )
+            window.addEventListener('scroll', () => {
+                let scrollPosition = window.pageYOffset + window.innerHeight;
+                let bodyHeight = document.body.scrollHeight;
+
+                if((scrollPosition > bodyHeight - 200) && (this.comments.length !== this.totalComments)){
+                    if(!this.requestingData){
+                        this.currentPage += 1;
+
+                        this.getComments(this.requestParams);
                     }
-                })
+                }
+            });
         }
     }
 </script>

@@ -93,4 +93,18 @@ export default class Requests {
                 Toasts.errorWarning();
             })
     }
+
+    static getComments(params){
+        return axios.get('/railcontent/comment', {
+            params: params
+        })
+            .then(response => {
+                return response.data
+            })
+            .catch(error => {
+                console.error(error);
+
+                Toasts.errorWarning();
+            })
+    }
 }

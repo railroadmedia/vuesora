@@ -78,6 +78,11 @@ button {
     box-shadow:none;
   }
 
+  &.btn-tiny {
+    font-size:13px;
+    height:35px;
+  }
+
   &.bg-recordeo:hover { background-color:lighten($recordeoYellow, 10%); }
   &.bg-pianote:hover { background-color:lighten($pianoteRed, 10%); }
   &.bg-drumeo:hover { background-color:lighten($drumeoBlue, 10%); }

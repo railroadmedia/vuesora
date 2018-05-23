@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import 'mediaelement/full';
+    import 'mediaelement';
     import 'mediaelement/build/mediaelementplayer.min.css';
     import 'mediaelement-plugins/src/quality/quality';
     import 'mediaelement-plugins/src/quality/quality.css';
@@ -162,9 +162,9 @@
                     // quality selectors remain visible and bug out after clicking
                     // Still a work in progress
                     let interactionInputs = document.querySelectorAll('.mejs__qualities-selector-input, .mejs__speed-selector-input');
-                    Array.from(interactionInputs).forEach(input => {
-                        input.addEventListener('change', this.emitCustomEvent)
-                    });
+                    for(let i=0; i<interactionInputs.length; i++){
+                        interactionInputs[i].addEventListener('change', this.emitCustomEvent);
+                    }
                 },
                 error: (error) => {
                     console.error(error);
