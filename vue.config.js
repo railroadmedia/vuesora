@@ -1,4 +1,4 @@
 module.exports = {
-    baseUrl: '/docs/',
+    baseUrl: '/vuesora/',
     outputDir: 'docs'
 };
