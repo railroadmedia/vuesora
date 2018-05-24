@@ -33,7 +33,7 @@
                         ref="cropper"></canvas>
             </div>
 
-            <div class="cropper-controls pv-1 bg-dark flex flex-row align-center">
+            <div class="cropper-controls pv-1 bg-grey-2 flex flex-row align-center">
                 <a class="btn bg-x-dark text-error short mh-1"
                    @click="resetCrop">
                     <i class="far fa-times"></i>

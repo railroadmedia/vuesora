@@ -2,7 +2,9 @@
     <div class="media-element" :id="brand + 'Theme'">
         <video :poster="poster"
                :id="elementId"
-               class="mejs__player">
+               data-cast-title="Recordeo Lesson"
+               data-cast-description="This is a recordeo lesson"
+               class="mejs__player" playsinline>
 
             <source v-for="(source, i) in sortedSourcesArray"
                     :key="i"
@@ -24,6 +26,10 @@
     import 'mediaelement-plugins/src/jump-forward/jump-forward.css';
     import 'mediaelement-plugins/src/skip-back/skip-back';
     import 'mediaelement-plugins/src/skip-back/skip-back.css';
+    import 'mediaelement-plugins/src/chromecast/chromecast';
+    import 'mediaelement-plugins/src/chromecast/chromecast.css';
+    import 'mediaelement-plugins/src/airplay/airplay';
+    import 'mediaelement-plugins/src/airplay/airplay.css';
     import Utils from '../assets/js/classes/utils';
 
     export default {
@@ -81,9 +87,20 @@
                     if(defaultQuality === undefined || defaultQuality === null){
                         let guessedQuality = this.sortedSourcesArray.filter(source =>
                             source.width <= window.innerWidth
-                        )[0].height;
+                        );
 
-                        defaultQuality = this.sourceQualityLabel(guessedQuality);
+                        if(guessedQuality.length){
+                            // If we have some guessed qualities take the first one
+                            defaultQuality = this.sourceQualityLabel(
+                                guessedQuality[0].height
+                            );
+                        }
+                        else {
+                            // Otherwise take the last item in the qualities array (the smallest quality)
+                            defaultQuality = this.sourceQualityLabel(
+                                this.sortedSourcesArray[this.sortedSourcesArray.length - 1].height
+                            );
+                        }
                     }
 
                     return defaultQuality;
@@ -147,7 +164,7 @@
                 defaultVideoHeight: 720,
                 autosizeProgress: false,
                 stretching: 'responsive',
-                features: ['playpause', 'skipback', 'jumpforward', 'current', 'duration', 'progress', 'quality', 'speed', 'volume', 'fullscreen'],
+                features: ['playpause', 'skipback', 'jumpforward', 'current', 'duration', 'progress', 'quality', 'speed', 'volume', 'chromecast', 'airplay', 'fullscreen'],
                 jumpForwardInterval: 10,
                 skipBackInterval: 10,
                 speeds: ['0.5', '0.75', '1.00', '1.25', '1.5'],
@@ -250,22 +267,29 @@
             left:1em;
         }
 
-        .mejs__volume-button {
-            position:absolute;
-            bottom:0;
-            left:5em;
-        }
-
         .mejs__time {
             position:absolute;
             bottom:0;
-            left:8.5em;
+            left:5em;
         }
 
         .mejs__fullscreen-button {
             position:absolute;
             bottom:0;
             right:1em;
+        }
+
+        .mejs__volume-button {
+            position:absolute;
+            bottom:0;
+            right:18em;
+        }
+
+        .mejs__chromecast-button,
+        .mejs__airplay-button {
+            position:absolute;
+            bottom:0;
+            right:14em;
         }
 
         .mejs__speed-button {

@@ -32,6 +32,10 @@
                 currentValue: this.initialValue
             }
         },
+        model: {
+            prop: 'contentInterface',
+            event: 'input'
+        },
         computed: {
             contentInterface: {
                 get(){

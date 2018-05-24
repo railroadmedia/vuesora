@@ -86,14 +86,16 @@
                     <div class="flex flex-column">
                         <div class="flex flex-row">
                             <text-editor toolbar="bold italic underline | bullist numlist"
-                                         :height="150"></text-editor>
+                                         :height="150"
+                                         v-model="replyInterface"></text-editor>
                         </div>
                         <div class="flex flex-row align-h-right mv-1">
                             <a class="btn flat text-black collapse-150 short mr-1"
-                               @click="replying = false">
+                               @click="cancelReply">
                                 Cancel
                             </a>
-                            <a class="btn text-white bg-recordeo collapse-150 short">
+                            <a class="btn text-white bg-recordeo collapse-150 short"
+                               @click="postReply">
                                 Reply
                             </a>
                         </div>
@@ -121,6 +123,7 @@
 </template>
 <script>
     import Toasts from '../../assets/js/classes/toasts';
+    import Requests from '../../assets/js/classes/requests';
     import TextEditor from '../../components/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
 
@@ -181,10 +184,20 @@
         data(){
             return {
                 replying: false,
-                showAllReplies: false
+                showAllReplies: false,
+                reply: ''
             }
         },
         computed: {
+            replyInterface: {
+                get(){
+                    return this.reply;
+                },
+                set(val) {
+                    this.reply = val;
+                }
+            },
+
             domID(){
                 if(this.pinned){
                     return 'pinnedComment' + this.id
@@ -227,6 +240,27 @@
             }
         },
         methods: {
+            replyToComment(){
+                this.replying = !this.replying;
+            },
+
+            postReply(){
+                return Requests.postReply({
+                    parent_id: this.id,
+                    comment: this.reply.currentValue
+                })
+                    .then(resolved => {
+                        if(resolved){
+                            this.reply = '';
+                        }
+                    })
+            },
+
+            cancelReply(){
+                this.replying = false;
+                this.reply = '';
+            },
+
             likeComment(){
                 this.$emit('likeComment', {
                     id: this.id,
@@ -240,10 +274,6 @@
                     id: payload.id,
                     isLiked: payload.isLiked
                 });
-            },
-
-            replyToComment(){
-                this.replying = !this.replying;
             },
 
             getCommentLink(event) {

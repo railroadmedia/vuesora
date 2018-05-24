@@ -43,7 +43,7 @@
 
                         <button class="btn collapse-250" type="submit">
                             <span class="bg-recordeo text-white corners-3">
-                                Save Post
+                                Reply
                             </span>
                         </button>
                     </div>

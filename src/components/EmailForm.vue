@@ -111,6 +111,9 @@
 <style lang="scss">
     @import "../assets/sass/partials/_variables";
 
+    #questionInput.text-white {
+        color:#fff;
+    }
     .button-col {
         flex:0 0 100%;
         margin-top:$gutterWidth / 2;

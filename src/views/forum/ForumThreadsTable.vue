@@ -19,13 +19,11 @@
 
         <div class="flex flex-row flex-wrap pa">
             <div class="flex flex-column search-box">
-                <div class="flex flex-row align-v-center">
+                <div class="form-group">
                     <input id="threadSearch"
                            type="text"
-                           placeholder="Search the Forums"
-                           class="borderless"
                            v-model="searchInterface">
-                    <i class="fas fa-search search-icon flex-center"></i>
+                    <label for="threadSearch" class="recordeo">Search</label>
                 </div>
             </div>
             <div class="flex flex-column form-group topic-col">

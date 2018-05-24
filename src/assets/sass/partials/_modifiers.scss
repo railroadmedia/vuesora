@@ -154,6 +154,34 @@ $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
   }
 }
 
+@each $index, $grey in $greys {
+  @for $i from 1 through 3 {
+    .ba-grey-#{$index}-#{$i} {
+      border: #{$i}px solid #{$grey};
+    }
+    .bh-grey-#{$index}-#{$i} {
+      border-left: #{$i}px solid #{$grey};
+      border-right: #{$i}px solid #{$grey};
+    }
+    .bv-grey-#{$index}-#{$i} {
+      border-top: #{$i}px solid #{$grey};
+      border-bottom: #{$i}px solid #{$grey};
+    }
+    .bt-grey-#{$index}-#{$i} {
+      border-top: #{$i}px solid #{$grey};
+    }
+    .bb-grey-#{$index}-#{$i} {
+      border-bottom: #{$i}px solid #{$grey};
+    }
+    .bl-grey-#{$index}-#{$i} {
+      border-left: #{$i}px solid #{$grey};
+    }
+    .br-grey-#{$index}-#{$i} {
+      border-right: #{$i}px solid #{$grey};
+    }
+  }
+}
+
 .dashed {
   border-style:dashed;
 }
@@ -222,8 +250,18 @@ $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
   padding-bottom:56.25%;
 }
 
+.box-4-by-3 {
+  position:relative;
+  height:0;
+  padding-bottom:75%;
+}
+
 .bg-center {
   background-size:cover;
   background-repeat:no-repeat;
   background-position:center;
+}
+
+.desaturate {
+  filter:saturate(0);
 }

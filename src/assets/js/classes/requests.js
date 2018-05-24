@@ -5,6 +5,7 @@
 
 import axios from 'axios';
 import Toasts from './toasts'
+
 export default class Requests {
 
     /**
@@ -18,11 +19,7 @@ export default class Requests {
             .then(response => {
                 return response.data
             })
-            .catch(error => {
-                console.error(error);
-
-                Toasts.errorWarning();
-            });
+            .catch(Requests.handleError);
     }
 
     /**
@@ -36,11 +33,7 @@ export default class Requests {
             .then(response => {
                 return response.data
             })
-            .catch(error => {
-                console.error(error);
-
-                Toasts.errorWarning();
-            });
+            .catch(Requests.handleError);
     }
 
 
@@ -65,11 +58,7 @@ export default class Requests {
             .then(response => {
                 return response.data;
             })
-            .catch(error => {
-                console.error(error);
-
-                Toasts.errorWarning();
-            });
+            .catch(Requests.handleError);
     }
 
     /**
@@ -77,7 +66,7 @@ export default class Requests {
      *
      * @static
      * @param {string} endpoint - the url endpoint to send the request to
-     * @param {Object} contentId - the content ID
+     * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object, containing the cdn url
      */
     static markContentAsComplete(endpoint, contentId){
@@ -87,13 +76,16 @@ export default class Requests {
             .then(response => {
                 return response.data;
             })
-            .catch(error => {
-                console.error(error);
-
-                Toasts.errorWarning();
-            })
+            .catch(Requests.handleError);
     }
 
+    /**
+     * Get a list of comments
+     *
+     * @static
+     * @param {object} params - the params object to filter comments
+     * @returns {Promise} resolved promise with the response.data object, containing the comments array
+     */
     static getComments(params){
         return axios.get('/railcontent/comment', {
             params: params
@@ -101,10 +93,47 @@ export default class Requests {
             .then(response => {
                 return response.data
             })
-            .catch(error => {
-                console.error(error);
+            .catch(Requests.handleError);
+    }
 
-                Toasts.errorWarning();
+    /**
+     * Post a comment
+     *
+     * @static
+     * @param {object} data - the data object with the content_id and comment properties
+     * @returns {Promise} resolved promise with the response.data object, containing the submit comment
+     */
+    static postComment(data){
+        return axios.put('/railcontent/comment', data)
+            .then(response => {
+                return response.data
             })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Post a reply
+     *
+     * @static
+     * @param {object} data - the data object with the parent_id and comment properties
+     * @returns {Promise} resolved promise with the response.data object, containing the submit reply
+     */
+    static postReply(data){
+        return axios.put('/railcontent/comment/reply', data)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Display an error message and console the error if any request fails
+     *
+     * @static
+     * @param {object} error - the error object returned by the request
+     */
+    static handleError(error){
+        console.error(error);
+        Toasts.errorWarning();
     }
 }

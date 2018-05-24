@@ -24,9 +24,12 @@
             </div>
             <div class="flex flex-column">
                 <text-editor toolbar="bold italic underline | bullist numlist"
-                             :height="150"></text-editor>
+                             :height="150"
+                             v-model="commentInterface"></text-editor>
+
                 <div class="flex flex-row align-h-right mv-1">
-                    <a class="btn text-white bg-recordeo collapse-150 short">
+                    <a class="btn text-white bg-recordeo collapse-150 short"
+                       @click="postComment">
                         Comment
                     </a>
                 </div>
@@ -95,7 +98,8 @@
                 comments: [],
                 pinnedComment: null,
                 requestingData: false,
-                sortOption: '-created_on'
+                sortOption: '-created_on',
+                comment: ''
             }
         },
         computed: {
@@ -107,6 +111,15 @@
                     this.sortOption = val;
 
                     this.getComments(this.requestParams, true);
+                }
+            },
+
+            commentInterface: {
+                get(){
+                    return this.comment;
+                },
+                set(val){
+                    this.comment = val;
                 }
             },
 
@@ -151,10 +164,19 @@
                     .then(response => {
                         return response.data;
                     })
-                    .catch(error => {
-                        console.error(error);
-                        Toasts.errorWarning();
-                    });
+                    .catch(Requests.handleError);
+            },
+
+            postComment(){
+                return Requests.postComment({
+                    content_id: this.content_id,
+                    comment: this.comment.currentValue
+                })
+                    .then(resolved => {
+                        if(resolved){
+                            this.comment = undefined
+                        }
+                    })
             },
 
             handleCommentLike(payload){

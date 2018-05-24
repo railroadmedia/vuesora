@@ -157,6 +157,17 @@
   }
 }
 
+@each $i, $grey in $greys {
+  .bg-grey-#{$i} {
+    background-color:$grey;
+
+    &.inverted {
+      background-color:transparent;
+      border:2px solid $grey;
+    }
+  }
+}
+
 .bg-light {
   background-color:transparentize($lightGray, .5);
 
