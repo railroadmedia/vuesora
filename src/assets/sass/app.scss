@@ -258,3 +258,20 @@ ul {
   left:-9999px;
   opacity:0;
 }
+
+.order-product-col {
+  flex:0 0 100%;
+
+  @include small {
+    flex:0 0 150px;
+    text-align:right;
+  }
+
+  &.price {
+    align-items:flex-start;
+
+    @include small {
+      align-items:flex-end;
+    }
+  }
+}
