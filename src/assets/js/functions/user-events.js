@@ -65,9 +65,8 @@ export default (function () {
     function markAsComplete(event){
         const element = event.target;
         const contentId = element.dataset['contentId'];
-        const endpoint = '/railcontent/complete';
 
-        Requests.markContentAsComplete(endpoint, contentId)
+        Requests.markContentAsComplete(contentId)
             .then(resolved => {
                 console.log(resolved);
 
@@ -75,6 +74,16 @@ export default (function () {
                     Toasts.success('Lesson marked as complete.')
                 }
             });
+    }
+
+    function markAsStarted(event){
+        const element = event.target;
+        const contentId = element.dataset['contentId'];
+
+        Requests.markContentAsStarted(contentId)
+            .then(resolved => {
+                console.log(resolved);
+            })
     }
 
     function getEventInfo(event){
@@ -97,9 +106,9 @@ export default (function () {
             return response;
         })
         .catch(error => {
-            Toasts.errorWarning('We\'re sorry! An unexpected error occurred. Please refresh the page and try again.');
-
             console.error(error);
+
+            Toasts.errorWarning();
         })
     }
 })();

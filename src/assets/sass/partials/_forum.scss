@@ -50,6 +50,7 @@
 
 .topic-col {
   flex:0 0 100%;
+  min-height:50px;
 
   @include small {
     flex:0 0 250px;

@@ -66,13 +66,23 @@
   }
 
   .text-field {
+    flex-wrap:wrap;
+
+    @include small {
+      flex-wrap:nowrap;
+    }
 
     .key {
-      flex:0 0 150px;
+      flex:0 0 100%;
 
       @include small {
         flex:0 0 200px;
       }
+    }
+
+    .value {
+      word-break:break-word;
+      word-wrap:break-word;
     }
   }
 

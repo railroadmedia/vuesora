@@ -10,7 +10,7 @@
                         {{ display_name }}
 
                         <span class="x-tiny text-dark font-bold font-italic uppercase ml-1">
-                            {{ created_on }}
+                            {{ dateString }}
                         </span>
                     </h2>
                 </div>
@@ -64,6 +64,7 @@
 </template>
 <script>
     import Toasts from '../../assets/js/classes/toasts';
+    import moment from 'moment';
 
     export default {
         name: 'comment-reply',
@@ -143,6 +144,10 @@
 
             commentUrl(){
                 return window.location + '?goToComment=' + this.id;
+            },
+
+            dateString(){
+                return moment(this.created_on).fromNow();
             }
         },
         methods: {

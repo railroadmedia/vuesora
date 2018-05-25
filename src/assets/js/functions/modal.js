@@ -21,7 +21,7 @@ export default (function(){
         event.stopPropagation();
 
         if(modalToOpen){
-            appendBackgroundOverlay();
+            window.appendBackgroundOverlay();
 
             modalToOpen.classList.add('active');
         }
@@ -43,7 +43,7 @@ export default (function(){
         });
     }
 
-    function appendBackgroundOverlay(){
+    window.appendBackgroundOverlay = function(){
         const modalOverlay = document.createElement('div');
 
         // Add ID to overlay

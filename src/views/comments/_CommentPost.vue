@@ -12,7 +12,7 @@
                         {{ display_name }}
 
                         <span class="x-tiny text-dark font-bold font-italic uppercase ml-1">
-                            {{ created_on }}
+                            {{ dateString }}
                         </span>
                     </h2>
                 </div>
@@ -126,6 +126,7 @@
     import Requests from '../../assets/js/classes/requests';
     import TextEditor from '../../components/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
+    import moment from 'moment';
 
     export default {
         name: 'comment-post',
@@ -237,6 +238,10 @@
 
             commentUrl(){
                 return window.location + '?goToComment=' + this.id;
+            },
+
+            dateString(){
+                return moment(this.created_on).fromNow();
             }
         },
         methods: {

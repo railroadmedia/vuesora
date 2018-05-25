@@ -65,13 +65,29 @@ export default class Requests {
      * Flag a piece of content as "complete"
      *
      * @static
-     * @param {string} endpoint - the url endpoint to send the request to
      * @param {number} contentId - the content ID
-     * @returns {Promise} resolved promise with the response.data object, containing the cdn url
+     * @returns {Promise} resolved promise with the response.data object
      */
-    static markContentAsComplete(endpoint, contentId){
-        return axios.put(endpoint, {
-            'content_id': contentId
+    static markContentAsComplete(contentId){
+        return axios.put('/railcontent/complete', {
+            content_id: contentId
+        })
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Flag a piece of content as "started"
+     *
+     * @static
+     * @param {number} contentId - the content ID
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static markContentAsStarted(contentId){
+        return axios.put('/railcontent/start', {
+            content_id: contentId
         })
             .then(response => {
                 return response.data;

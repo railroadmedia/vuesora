@@ -90,4 +90,21 @@ export default class Forms {
             });
         });
     }
+
+    static checkErrorsInModalForms(){
+        const erroredInputs = document.querySelectorAll('input.has-error');
+
+        if(erroredInputs.length > 0){
+            let parentModal = erroredInputs[0].parentElement;
+
+            while(parentModal != null && !parentModal.classList.contains('modal')){
+                parentModal = parentModal.parentElement;
+            }
+
+            if(parentModal){
+                parentModal.classList.add('active');
+                window.appendBackgroundOverlay();
+            }
+        }
+    }
 }
