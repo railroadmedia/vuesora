@@ -39,7 +39,7 @@
         computed: {
             contentInterface: {
                 get(){
-                    return this.initialValue;
+                    return this.currentValue;
                 },
                 set(val){
                     this.currentValue = val;

@@ -23,8 +23,10 @@
                 <img :src="currentUser.avatar" class="rounded">
             </div>
             <div class="flex flex-column">
+
                 <text-editor toolbar="bold italic underline | bullist numlist"
                              :height="150"
+                             ref="textEditor"
                              v-model="commentInterface"></text-editor>
 
                 <div class="flex flex-row align-h-right mv-1">
@@ -168,15 +170,22 @@
             },
 
             postComment(){
-                return Requests.postComment({
-                    content_id: this.content_id,
-                    comment: this.comment.currentValue
-                })
-                    .then(resolved => {
-                        if(resolved){
-                            this.comment = undefined
-                        }
+                if(this.comment.currentValue){
+
+                    return Requests.postComment({
+                        content_id: this.content_id,
+                        comment: this.comment.currentValue
                     })
+                        .then(resolved => {
+                            if(resolved){
+                                this.commentInterface = '';
+                                this.$refs.textEditor.currentValue = '';
+                                Toasts.success('Comment successfully posted!');
+
+                                this.comments.splice(0, 0, resolved['results']);
+                            }
+                        });
+                }
             },
 
             handleCommentLike(payload){
@@ -186,13 +195,15 @@
                 if(payload.isLiked){
                     likedPost.like_users = likedPost.like_users.filter(user =>
                         user['display_name'] !== this.currentUser.display_name
-                    )
+                    );
+                    likedPost.like_count -= 1;
                 }
                 else {
                     likedPost.like_users.push({
                         display_name: this.currentUser.display_name,
                         id: this.currentUser.id
                     });
+                    likedPost.like_count += 1;
                 }
             },
 

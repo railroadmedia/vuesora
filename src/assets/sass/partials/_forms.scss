@@ -72,8 +72,7 @@ textarea {
   }
 
   &:focus,
-  &.has-input,
-  &[value=''] {
+  &.has-input {
 
     & ~ label {
       transform:scale(.7) translateY(-10px);

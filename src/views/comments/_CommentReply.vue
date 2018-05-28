@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row comment-post pa mv-1">
         <div class="flex flex-column avatar-column pr">
-            <img src="https://placehold.it/250x250" class="rounded">
+            <img :src="user['fields.profile_picture_image_url']" class="rounded">
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row align-v-center mb-1 comment-meta">
@@ -17,7 +17,8 @@
             </div>
 
             <div class="flex flex-row body mb-1">
-                <div class="flex flex-column post-body grow">
+                <div class="flex flex-column post-body grow"
+                     v-html="comment">
                     {{ comment }}
                 </div>
 
@@ -110,6 +111,16 @@
             replies: {
                 type: Array,
                 default: () => []
+            },
+            user: {
+                type: Object,
+                default: () => {
+                    return {
+                        'fields.profile_picture_image_url': '',
+                        id: 0,
+                        display_name: ''
+                    }
+                }
             }
         },
         computed: {
@@ -139,7 +150,9 @@
                     }
                 }
 
-                return '<span class="font-bold">' + userLikesString + '</span>' + additionalUserLikes;
+                if(this.like_count > 0){
+                    return '<span class="font-bold">' + userLikesString + '</span>' + additionalUserLikes;
+                }
             },
 
             commentUrl(){

@@ -3,7 +3,7 @@
          class="flex flex-row comment-post pa mb-1"
          :class="{'pinned': pinned}">
         <div class="flex flex-column avatar-column pr">
-            <img src="https://placehold.it/250x250" class="rounded">
+            <img :src="user['fields.profile_picture_image_url']" class="rounded">
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row mb-1 comment-meta">
@@ -27,7 +27,8 @@
             </div>
 
             <div class="flex flex-row body mb-1">
-                <div class="flex flex-column post-body grow">
+                <div class="flex flex-column post-body grow"
+                     v-html="comment">
                     {{ comment }}
                 </div>
 
@@ -87,6 +88,7 @@
                         <div class="flex flex-row">
                             <text-editor toolbar="bold italic underline | bullist numlist"
                                          :height="150"
+                                         ref="textEditor"
                                          v-model="replyInterface"></text-editor>
                         </div>
                         <div class="flex flex-row align-h-right mv-1">
@@ -180,6 +182,16 @@
             pinned: {
                 type: Boolean,
                 default: () => false
+            },
+            user: {
+                type: Object,
+                default: () => {
+                    return {
+                        'fields.profile_picture_image_url': '',
+                        id: 0,
+                        display_name: ''
+                    }
+                }
             }
         },
         data(){
@@ -233,7 +245,10 @@
                     }
                 }
 
-                return '<span class="font-bold">' + userLikesString + '</span>' + additionalUserLikes;
+                if(this.like_count > 0){
+
+                    return '<span class="font-bold">' + userLikesString + '</span>' + additionalUserLikes;
+                }
             },
 
             commentUrl(){
@@ -241,7 +256,7 @@
             },
 
             dateString(){
-                return moment(this.created_on).fromNow();
+                return moment.utc(this.created_on).local().fromNow();
             }
         },
         methods: {
@@ -250,15 +265,22 @@
             },
 
             postReply(){
-                return Requests.postReply({
-                    parent_id: this.id,
-                    comment: this.reply.currentValue
-                })
-                    .then(resolved => {
-                        if(resolved){
-                            this.reply = '';
-                        }
+                if(this.reply.currentValue){
+
+                    return Requests.postReply({
+                        parent_id: this.id,
+                        comment: this.reply.currentValue
                     })
+                        .then(resolved => {
+                            if(resolved){
+                                this.replyInterface = '';
+                                this.$refs.textEditor.currentValue = '';
+                                Toasts.success('Reply successfully posted!');
+
+                                this.replies.splice(0, 0, resolved['results']);
+                            }
+                        });
+                }
             },
 
             cancelReply(){
