@@ -66,24 +66,28 @@ export default (function () {
         const element = event.target;
         const contentId = element.dataset['contentId'];
 
-        Requests.markContentAsComplete(contentId)
-            .then(resolved => {
-                console.log(resolved);
+        if(element.classList.contains('is-complete')){
 
-                if(resolved){
-                    Toasts.success('Lesson marked as complete.')
-                }
-            });
-    }
+            Requests.markContentAsStarted(contentId)
+                .then(resolved => {
+                    console.log(resolved);
 
-    function markAsStarted(event){
-        const element = event.target;
-        const contentId = element.dataset['contentId'];
+                    if(resolved){
+                        element.classList.remove('is-complete');
+                    }
+                });
+        }
+        else {
+            Requests.markContentAsComplete(contentId)
+                .then(resolved => {
+                    console.log(resolved);
 
-        Requests.markContentAsStarted(contentId)
-            .then(resolved => {
-                console.log(resolved);
-            })
+                    if(resolved){
+                        element.classList.add('is-complete');
+                    }
+                });
+        }
+
     }
 
     function getEventInfo(event){

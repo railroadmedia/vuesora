@@ -92,11 +92,15 @@ body {
     transition:background-color .2s ease-in-out;
 
     @include medium {
-      flex:0 0 125px;
+      flex:0 0 50px;
+    }
+
+    @include large {
+      flex:0 0 65px;
     }
 
     &.active {
-      background-color:lighten(#000, 25%);
+      background-color:nth($greys, 4);
 
       i {
         background-color:transparent;
@@ -122,10 +126,6 @@ body {
       height: 2px;
       top: -1px;
       transition: background .2s ease-in-out;
-
-      @include medium {
-        margin-left:5px;
-      }
 
       &:before, &:after {
         background-color: #fff;
@@ -154,7 +154,7 @@ body {
   height:calc(100% - 40px);
   right:0;
   width:320px;
-  z-index:98;
+  z-index:99;
   transform:translateX(100%);
   will-change:transform;
   transition:transform .4s ease-in-out;
@@ -174,7 +174,6 @@ body {
   }
 
   #userInfo {
-    background-color:lighten(#000, 25%);
     flex:0 0 300px;
 
     .avatar {
@@ -234,5 +233,25 @@ footer {
     a {
       margin:0 3px;
     }
+  }
+}
+
+#backgroundOverlay {
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:rgba(0,0,0,.6);
+  z-index:98;
+  opacity:0;
+  visibility:hidden;
+  will-change:opacity, visibility;
+  transition:all .2s ease-in-out;
+  cursor:pointer;
+
+  &.active {
+    opacity:1;
+    visibility:visible;
   }
 }

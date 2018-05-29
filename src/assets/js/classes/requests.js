@@ -143,6 +143,21 @@ export default class Requests {
     }
 
     /**
+     * Delete a Comment or Reply
+     *
+     * @static
+     * @param {object} id - the comment ID to delete
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static deleteComment(id){
+        return axios.delete('/railcontent/comment/' + id)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Display an error message and console the error if any request fails
      *
      * @static

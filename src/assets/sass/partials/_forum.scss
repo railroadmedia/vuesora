@@ -3,14 +3,7 @@
 .forum-post, .comment-post {
 
   .avatar-column {
-    flex: 0 0 75px;
-
-    @include small {
-      flex: 0 0 100px;
-    }
-    @include medium {
-      flex: 0 0 125px;
-    }
+    flex: 0 0 50px;
   }
 
   .post-body {

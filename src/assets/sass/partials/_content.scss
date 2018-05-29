@@ -145,17 +145,33 @@
 // Complete Button
 
 .completeButton {
+  span {
+    transition: opacity .2s ease-in-out, visibility .2s ease-in-out;
+    will-change:opacity, visibility;
+  }
 
   &.is-complete {
+
     .incompleted {
+      opacity:0;
+      visibility:hidden;
       display:none;
     }
     .completed {
+      opacity:1;
+      visibility:visible;
       display:flex;
     }
   }
 
+  .incompleted {
+    opacity:1;
+    visibility:visible;
+    display:flex;
+  }
   .completed {
+    opacity:0;
+    visibility:hidden;
     display:none;
   }
 }

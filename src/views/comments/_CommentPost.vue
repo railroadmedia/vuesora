@@ -18,11 +18,26 @@
                 </div>
 
                 <div class="flex flex-column align-h-right align-v-center flex-auto">
-                    <span class="tiny no-decoration text-dark pointer">
-                        <i class="fas fa-link"
-                           @click="getCommentLink"></i>
-                        <textarea class="comment-id-copy">{{ commentUrl }}</textarea>
-                    </span>
+                    <div class="flex flex-row">
+                        <!--<span class="tiny no-decoration text-dark pointer mr-1" -->
+                              <!--v-if="canEditOrDelete">-->
+                            <!--<i class="fas fa-edit"-->
+                               <!--@click="editComment"></i>-->
+                        <!--</span>-->
+
+                        <span class="tiny no-decoration text-dark pointer mr-1"
+                              v-if="canEditOrDelete">
+                            <i class="fas fa-trash"
+                               @click="deleteComment"></i>
+                        </span>
+
+                        <!--<span class="tiny no-decoration text-dark pointer">-->
+                            <!--<i class="fas fa-link"-->
+                               <!--@click="getCommentLink"></i>-->
+                            <!--<textarea class="comment-id-copy"-->
+                                      <!--contenteditable="true">{{ commentUrl }}</textarea>-->
+                        <!--</span>-->
+                    </div>
                 </div>
             </div>
 
@@ -125,6 +140,7 @@
 </template>
 <script>
     import Toasts from '../../assets/js/classes/toasts';
+    import Noty from 'noty';
     import Requests from '../../assets/js/classes/requests';
     import TextEditor from '../../components/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
@@ -257,6 +273,10 @@
 
             dateString(){
                 return moment.utc(this.created_on).local().fromNow();
+            },
+
+            canEditOrDelete(){
+                return String(this.currentUser.id) === String(this.user.id);
             }
         },
         methods: {
@@ -295,6 +315,28 @@
                 });
             },
 
+            deleteComment(){
+                const notification = new Noty({
+                    layout: 'center',
+                    modal: true,
+                    text: 'Are you sure you want to delete this comment?',
+                    theme: 'bootstrap-v4',
+                    closeWith: [],
+                    buttons: [
+                        Noty.button('<span class="bg-error text-white short">Delete</span>', 'btn mr-1', () => {
+                            this.$emit('deleteComment', {
+                                id: this.id
+                            });
+
+                            notification.close();
+                        }),
+                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                            notification.close();
+                        })
+                    ]
+                }).show();
+            },
+
             likeReply(payload){
                 this.$emit('likeReply', {
                     parent_id: this.id,
@@ -305,10 +347,18 @@
 
             getCommentLink(event) {
                 const parentElement = event.target.parentElement;
-                const textArea = parentElement.querySelector('textarea');
+                const commentId = parentElement.querySelector('.comment-id-copy');
 
-                textArea.select();
+                commentId.focus();
+                commentId.select();
+
+                console.log(commentId.contentEditable);
+
                 document.execCommand('copy');
+
+                setTimeout(() => {
+                    commentId.blur();
+                }, 50);
 
                 Toasts.success('Comment Url Copied to Clipboard!')
             }
