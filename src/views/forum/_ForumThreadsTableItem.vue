@@ -20,7 +20,7 @@
             <p class="tiny text-dark text-truncate font-italic hide-md-up capitalize">
 
                 {{ thread.topic }}
-                <span style="margin:0 5px;">&#x25AA;</span>
+                <span class="bullet">&#x25CF;</span>
                 {{ thread.replyAmount }} {{ thread.replyAmount === 1 ? 'reply' : 'replies' }}
             </p>
         </div>

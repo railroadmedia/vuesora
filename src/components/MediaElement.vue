@@ -282,7 +282,7 @@
         .mejs__volume-button {
             position:absolute;
             bottom:0;
-            right:18em;
+            left:14.5em;
         }
 
         .mejs__chromecast-button,
