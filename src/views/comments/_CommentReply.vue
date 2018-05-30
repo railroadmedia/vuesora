@@ -75,7 +75,7 @@
     </div>
 </template>
 <script>
-    import Toasts from '../../assets/js/classes/toasts';
+    import Noty from 'noty';
     import moment from 'moment';
 
     export default {

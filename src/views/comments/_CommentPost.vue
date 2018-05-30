@@ -127,7 +127,8 @@
                                :key="i"
                                v-bind="reply"
                                :currentUser="currentUser"
-                               @likeReply="likeReply"></comment-reply>
+                               @likeReply="likeReply"
+                               @deleteReply="deleteReply"></comment-reply>
             </transition-group>
 
             <div class="flex flex-row align-center" v-if="replies.length > 2">
