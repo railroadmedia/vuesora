@@ -103,7 +103,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static resetContentProgress(contentId){
-        return axios.put('/railcontent/reset/', {
+        return axios.put('/railcontent/reset', {
             content_id: contentId
         })
             .then(response => {
