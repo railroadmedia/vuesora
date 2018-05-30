@@ -34,9 +34,9 @@
             </div>
 
             <div class="cropper-controls pv-1 bg-grey-2 flex flex-row align-center">
-                <a class="btn bg-x-dark text-error short mh-1"
+                <a class="btn normal bg-dark inverted text-dark short mh-1"
                    @click="resetCrop">
-                    <i class="far fa-times"></i>
+                    Cancel
                 </a>
 
                 <div class="flex flex-column"></div>
@@ -58,9 +58,9 @@
 
                 <div class="flex flex-column"></div>
 
-                <a class="btn bg-x-dark text-success short mh-1"
+                <a class="btn normal bg-recordeo text-white short mh-1"
                    @click="cropImage">
-                    <i class="far fa-check"></i>
+                    Crop
                 </a>
             </div>
 
@@ -230,7 +230,7 @@
                 })
                     .then(response => {
                         if(response.data){
-                            this.saveImage();
+                            this.saveImage(imageUrl);
                         }
                     })
                     .catch(error => {
@@ -241,13 +241,19 @@
                     })
             },
 
-            saveImage(){
+            saveImage(imageUrl){
+                const avatarsToUpdate = document.querySelectorAll('img[data-avatar-update]');
+
+                Array.from(avatarsToUpdate).forEach(avatar => {
+                    avatar.setAttribute('src', imageUrl);
+                });
+
                 this.imageBlob = null;
                 this.croppedImage = null;
                 this.fileToCrop = null;
                 this.loading = false;
 
-                Toasts.success('Avatar successfully updated! Changes will be reflected next page load.');
+                Toasts.success('Avatar successfully updated!');
                 this.$root.$emit('imageSaved');
             }
         },
@@ -360,6 +366,10 @@
         .cropper-controls {
             a {
                 width:35px;
+
+                &.normal {
+                    width:100px;
+                }
             }
         }
 

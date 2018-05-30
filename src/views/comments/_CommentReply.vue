@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row comment-post pa mv-1">
+    <div class="flex flex-row comment-post pl pv mv-1">
         <div class="flex flex-column avatar-column pr">
             <img :src="user['fields.profile_picture_image_url']" class="rounded">
         </div>
@@ -13,6 +13,16 @@
                             {{ dateString }}
                         </span>
                     </h2>
+                </div>
+
+                <div class="flex flex-column align-h-right align-v-center flex-auto">
+                    <div class="flex flex-row">
+                        <span class="tiny no-decoration text-dark pointer mr-1"
+                              v-if="isUsersPost">
+                            <i class="fas fa-trash"
+                               @click="deleteComment"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -44,7 +54,8 @@
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
 
-                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        <p v-if="!isUsersPost"
+                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
                            :class="isLiked ? 'text-recordeo' : 'text-dark'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
@@ -160,7 +171,11 @@
             },
 
             dateString(){
-                return moment(this.created_on).fromNow();
+                return moment.utc(this.created_on).local().fromNow();
+            },
+
+            isUsersPost(){
+                return String(this.currentUser.id) === String(this.user.id);
             }
         },
         methods: {
@@ -169,7 +184,29 @@
                     id: this.id,
                     isLiked: this.isLiked
                 });
-            }
+            },
+
+            deleteComment(){
+                const notification = new Noty({
+                    layout: 'center',
+                    modal: true,
+                    text: 'Are you sure you want to delete this comment?',
+                    theme: 'bootstrap-v4',
+                    closeWith: [],
+                    buttons: [
+                        Noty.button('<span class="bg-error text-white short">Delete</span>', 'btn mr-1', () => {
+                            this.$emit('deleteReply', {
+                                id: this.id
+                            });
+
+                            notification.close();
+                        }),
+                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                            notification.close();
+                        })
+                    ]
+                }).show();
+            },
         }
     }
 </script>

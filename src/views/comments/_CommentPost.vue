@@ -20,13 +20,13 @@
                 <div class="flex flex-column align-h-right align-v-center flex-auto">
                     <div class="flex flex-row">
                         <!--<span class="tiny no-decoration text-dark pointer mr-1" -->
-                              <!--v-if="canEditOrDelete">-->
+                              <!--v-if="isUsersPost">-->
                             <!--<i class="fas fa-edit"-->
                                <!--@click="editComment"></i>-->
                         <!--</span>-->
 
                         <span class="tiny no-decoration text-dark pointer mr-1"
-                              v-if="canEditOrDelete">
+                              v-if="isUsersPost">
                             <i class="fas fa-trash"
                                @click="deleteComment"></i>
                         </span>
@@ -77,7 +77,8 @@
                             </span>
                         </p>
 
-                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        <p v-if="!isUsersPost"
+                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
                            :class="isLiked ? 'text-recordeo' : 'text-dark'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
@@ -275,7 +276,7 @@
                 return moment.utc(this.created_on).local().fromNow();
             },
 
-            canEditOrDelete(){
+            isUsersPost(){
                 return String(this.currentUser.id) === String(this.user.id);
             }
         },
@@ -294,6 +295,7 @@
                         .then(resolved => {
                             if(resolved){
                                 this.replyInterface = '';
+                                this.replying = false;
                                 this.$refs.textEditor.currentValue = '';
                                 Toasts.success('Reply successfully posted!');
 
@@ -343,6 +345,13 @@
                     id: payload.id,
                     isLiked: payload.isLiked
                 });
+            },
+
+            deleteReply(payload){
+                this.$emit('deleteReply', {
+                    parent_id: this.id,
+                    id: payload.id
+                })
             },
 
             getCommentLink(event) {

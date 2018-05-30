@@ -32,7 +32,8 @@ export default (function () {
     }
 
     function resetProgress(event){
-        let eventInfo = getEventInfo(event);
+        const element = event.target;
+        const contentId = element.dataset['contentId'];
 
         // Create a confirmation dialogue using Noty
         const notification = new Noty({
@@ -45,12 +46,10 @@ export default (function () {
                 // Confirm Button
                 Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
 
-                    sendRequest(eventInfo.endpoint, 'DELETE', { contentId: eventInfo.contentId })
+                    Requests.resetContentProgress(contentId)
                         .then(resolved => {
-                            notification.close();
-
                             if(resolved){
-                                Toasts.success('Success! Your Progress has been reset.');
+                                Toasts.success('Progress has been reset.');
                             }
                         })
                 }),
@@ -96,7 +95,7 @@ export default (function () {
 
         return {
             contentId: contentId,
-            endpoint: '/event-endpoint'
+            endpoint: '/railcontent/reset'
         }
     }
 

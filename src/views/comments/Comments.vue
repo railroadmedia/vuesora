@@ -25,19 +25,20 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-row align-h-left ph">
-            <div class="flex flex-column xs-12 sm-4 md-3 mb-3">
-                <div class="form-group xs-12" style="width:100%;">
-                    <select id="commentSort" v-model="sortInterface">
-                        <option value="-like_count">Popular</option>
-                        <option value="-created_on">Latest First</option>
-                        <option value="created_on">Oldest First</option>
-                        <option value="">My Comments</option>
-                    </select>
-                    <label for="commentSort" :class="brand">Sort By</label>
-                </div>
-            </div>
-        </div>
+
+        <!--<div class="flex flex-row align-h-left ph">-->
+            <!--<div class="flex flex-column xs-12 sm-4 md-3 mb-3">-->
+                <!--<div class="form-group xs-12" style="width:100%;">-->
+                    <!--<select id="commentSort" v-model="sortInterface">-->
+                        <!--<option value="-like_count">Popular</option>-->
+                        <!--<option value="-created_on">Latest First</option>-->
+                        <!--<option value="created_on">Oldest First</option>-->
+                        <!--<option value="">My Comments</option>-->
+                    <!--</select>-->
+                    <!--<label for="commentSort" :class="brand">Sort By</label>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <comment-post v-if="pinnedComment != null"
                       v-bind="pinnedComment"
@@ -52,7 +53,8 @@
                       :currentUser="currentUser"
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
-                      @deleteComment="handleCommentDelete"></comment-post>
+                      @deleteComment="handleCommentDelete"
+                      @deleteReply="handleReplyDelete"></comment-post>
     </div>
 </template>
 <script>
@@ -235,6 +237,24 @@
                         if(resolved){
                             this.comments = this.comments.filter(comment =>
                                 comment.id !== payload.id
+                            );
+
+                            Toasts.success('Comment successfully deleted');
+                        }
+                    })
+            },
+
+            handleReplyDelete(payload){
+                let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
+                let deletedPostReplies = this.comments[index].replies;
+                let deletedPostReplyIndex = deletedPostReplies.map(reply => reply.id).indexOf(payload.id);
+                let deletedPostReply = deletedPostReplies[deletedPostReplyIndex];
+
+                Requests.deleteComment(payload.id)
+                    .then(resolved => {
+                        if(resolved){
+                            this.comments[index].replies = this.comments[index].replies.filter(reply =>
+                                reply.id !== payload.id
                             );
 
                             Toasts.success('Comment successfully deleted');

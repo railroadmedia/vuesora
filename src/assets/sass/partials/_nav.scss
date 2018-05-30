@@ -157,7 +157,7 @@ body {
   z-index:99;
   transform:translateX(100%);
   will-change:transform;
-  transition:transform .4s ease-in-out;
+  transition:transform .3s ease-in-out;
   overflow-y:auto;
 
   &.active {

@@ -25,14 +25,15 @@
                             :totalPages="totalPages"
                             @pageChange="handlePageChange"></pagination>
             </div>
-            <div class="flex flex-row pa">
-                <div class="flex flex-column pa avatar-column hide-xs-only">
+            <div class="flex flex-row ph pv-3">
+                <div class="flex flex-column avatar-column hide-xs-only">
                     <div class="square">
                         <img class="rounded" :src="currentUser.avatar">
                     </div>
                 </div>
-                <div id="replyContainer" class="flex flex-column pa">
-                    <text-editor :initialValue="postReplyBody"
+                <div id="replyContainer" class="flex flex-column ph">
+                    <text-editor v-model="postReplyInterface"
+                                 ref="textEditor"
                                  @input="handleInput"></text-editor>
 
                     <div class="flex flex-row align-h-right mt-2">
@@ -91,7 +92,15 @@
             }
         },
         computed: {
-
+            postReplyInterface: {
+                get(){
+                    return this.postReplyBody;
+                },
+                set(val){
+                    this.postReplyBody = val;
+                    this.$refs.textEditor.contentInterface = this.postReplyBody;
+                }
+            }
         },
         methods: {
             getPosts(){
@@ -131,11 +140,11 @@
                     '<br><p></p>';
 
                 window.scrollTo(0, document.getElementById('replyContainer').offsetTop);
-                this.postReplyBody += blockQuoteHtmlString;
+                this.postReplyInterface += blockQuoteHtmlString;
             },
 
             handleInput(payload){
-                this.postReplyBody = payload.currentValue;
+                this.postReplyInterface = payload.currentValue;
             },
 
             cancelReply(){

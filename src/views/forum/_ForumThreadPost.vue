@@ -1,11 +1,11 @@
 <template>
-    <div class="flex flex-row pa bb-light-1">
-        <div class="flex flex-column pa avatar-column hide-xs-only">
+    <div class="flex flex-row ph pv-3 bb-light-1">
+        <div class="flex flex-column avatar-column hide-xs-only">
             <div class="square">
                 <img class="rounded" :src="authorAvatar">
             </div>
         </div>
-        <div class="flex flex-column pa">
+        <div class="flex flex-column ph">
             <div class="flex flex-row align-v-center mb-1">
                 <div class="flex flex-column">
                     <h2 class="title">{{ authorUsername }}</h2>

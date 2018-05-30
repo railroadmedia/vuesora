@@ -7,6 +7,9 @@
   }
 
   .post-body {
+    word-break:break-word;
+    word-wrap:break-word;
+
     blockquote {
       border:1px solid #d1d1d1;
       margin:0 0 0 1em;

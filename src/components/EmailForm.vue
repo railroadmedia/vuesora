@@ -13,7 +13,7 @@
                            class="borderless text-white"
                            v-model="valueInterface"
                            :class="{ 'has-input': this.value.length }">
-                    <label for="questionInput" class="recordeo">Ask a Question...</label>
+                    <label for="questionInput" class="recordeo">{{ inputLabel }}</label>
                 </div>
             </div>
             <div class="flex flex-column button-col">
@@ -28,7 +28,7 @@
         <div class="flex flex-column" v-if="!lessonPage">
             <div class="form-group mb textarea">
                 <textarea id="questionBox" v-model="valueInterface" :class="{ 'has-input': this.value.length }"></textarea>
-                <label for="questionBox" class="recordeo">Put your suggestion here...</label>
+                <label for="questionBox" class="recordeo">{{ inputLabel }}</label>
             </div>
             <div class="form-group">
                 <button class="btn"
@@ -63,6 +63,10 @@
             userAvatar: {
                 type: String,
                 default: () => ''
+            },
+            inputLabel: {
+                type: String,
+                default: () => 'Ask a Question...'
             }
         },
         data (){

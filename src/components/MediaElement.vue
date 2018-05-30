@@ -218,6 +218,10 @@
     }
 
     .media-element {
+
+        .mejs__controls {
+            height:96px;
+        }
         
         .mejs__time-rail {
             position:absolute;

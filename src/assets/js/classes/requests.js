@@ -96,6 +96,23 @@ export default class Requests {
     }
 
     /**
+     * Reset your progress for a piece of content
+     *
+     * @static
+     * @param {number} contentId - the content ID
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static resetContentProgress(contentId){
+        return axios.put('/railcontent/reset/', {
+            content_id: contentId
+        })
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Get a list of comments
      *
      * @static
