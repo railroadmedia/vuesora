@@ -46,6 +46,8 @@ export default (function () {
                 // Confirm Button
                 Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
 
+                    notification.close();
+
                     Requests.resetContentProgress(contentId)
                         .then(resolved => {
                             if(resolved){
