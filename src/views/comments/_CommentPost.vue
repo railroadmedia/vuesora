@@ -98,7 +98,7 @@
             <transition name="slide-fade">
                 <div class="flex flex-row comment-post mv-2" v-if="replying">
                     <div class="flex flex-column avatar-column pr hide-xs-only">
-                        <img src="https://placehold.it/250x250" class="rounded">
+                        <img :src="currentUser.avatar" class="rounded">
                     </div>
                     <div class="flex flex-column">
                         <div class="flex flex-row">
@@ -112,10 +112,17 @@
                                @click="cancelReply">
                                 Cancel
                             </a>
-                            <a class="btn text-white bg-recordeo collapse-150 short"
+                            <button class="btn collapse-150" :disabled="loading"
                                @click="postReply">
-                                Reply
-                            </a>
+                                <span class="text-white bg-recordeo short">
+                                    Reply
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="loading-reply flex-center" v-show="loading">
+                            <i class="fas fa-spinner fa-spin text-recordeo"></i>
+                            <p class="x-tiny text-dark">loading...</p>
                         </div>
                     </div>
                 </div>
@@ -161,7 +168,8 @@
                     return {
                         display_name: '',
                         id: 0,
-                        isAdmin: false
+                        isAdmin: false,
+                        avatar: ''
                     }
                 }
             },
@@ -216,7 +224,8 @@
             return {
                 replying: false,
                 showAllReplies: false,
-                reply: ''
+                reply: '',
+                loading: false
             }
         },
         computed: {
@@ -288,6 +297,7 @@
 
             postReply(){
                 if(this.reply.currentValue){
+                    this.loading = true;
 
                     return Requests.postReply({
                         parent_id: this.id,
@@ -302,6 +312,8 @@
 
                                 this.replies.splice(0, 0, resolved['results']);
                             }
+
+                            this.loading = false;
                         });
                 }
             },
@@ -375,6 +387,20 @@
         }
     }
 </script>
-<style>
+<style lang="scss">
+    @import '../../assets/sass/partials/_variables.scss';
 
+    .comment-post {
+        position:relative;
+
+        .loading-reply {
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(255,255,255,.8);
+            font-size:40px;
+        }
+    }
 </style>

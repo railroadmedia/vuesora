@@ -68,24 +68,19 @@ export default (function () {
         const contentId = element.dataset['contentId'];
 
         if(element.classList.contains('is-complete')){
+            element.classList.remove('is-complete');
 
             Requests.markContentAsStarted(contentId)
                 .then(resolved => {
-                    console.log(resolved);
 
-                    if(resolved){
-                        element.classList.remove('is-complete');
-                    }
                 });
         }
         else {
+            element.classList.add('is-complete');
+
             Requests.markContentAsComplete(contentId)
                 .then(resolved => {
-                    console.log(resolved);
 
-                    if(resolved){
-                        element.classList.add('is-complete');
-                    }
                 });
         }
 
