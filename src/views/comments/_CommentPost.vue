@@ -387,20 +387,5 @@
         }
     }
 </script>
-<style lang="scss">
-    @import '../../assets/sass/partials/_variables.scss';
-
-    .comment-post {
-        position:relative;
-
-        .loading-reply {
-            position:absolute;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-            background:rgba(255,255,255,.8);
-            font-size:40px;
-        }
-    }
+<style>
 </style>

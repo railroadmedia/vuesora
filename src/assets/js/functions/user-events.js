@@ -52,6 +52,10 @@ export default (function () {
                         .then(resolved => {
                             if(resolved){
                                 Toasts.success('Progress has been reset.');
+
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 100);
                             }
                         })
                 }),
@@ -84,31 +88,5 @@ export default (function () {
                 });
         }
 
-    }
-
-    function getEventInfo(event){
-        let element = event.target,
-            contentId = element.dataset['contentId'];
-
-        return {
-            contentId: contentId,
-            endpoint: '/railcontent/reset'
-        }
-    }
-
-    function sendRequest(endpoint, method, data = {}){
-        return axios({
-            method: method,
-            url: endpoint,
-            data: data
-        })
-        .then(response => {
-            return response;
-        })
-        .catch(error => {
-            console.error(error);
-
-            Toasts.errorWarning();
-        })
     }
 })();

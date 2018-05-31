@@ -18,10 +18,17 @@
                              v-model="commentInterface"></text-editor>
 
                 <div class="flex flex-row align-h-right mv-1">
-                    <a class="btn text-white bg-recordeo collapse-150 short"
-                       @click="postComment">
-                        Comment
-                    </a>
+                    <button class="btn collapse-150" :disabled="loading"
+                            @click="postComment">
+                        <span class="text-white bg-recordeo short">
+                            Comment
+                        </span>
+                    </button>
+                </div>
+
+                <div class="loading-reply flex-center" v-show="loading">
+                    <i class="fas fa-spinner fa-spin text-recordeo"></i>
+                    <p class="x-tiny text-dark">loading...</p>
                 </div>
             </div>
         </div>
@@ -105,7 +112,8 @@
                 pinnedComment: null,
                 requestingData: false,
                 sortOption: '-created_on',
-                comment: ''
+                comment: '',
+                loading: false
             }
         },
         computed: {
@@ -176,6 +184,8 @@
             postComment(){
                 if(this.comment.currentValue){
 
+                    this.loading = true;
+
                     return Requests.postComment({
                         content_id: this.content_id,
                         comment: this.comment.currentValue
@@ -188,6 +198,8 @@
 
                                 this.comments.splice(0, 0, resolved['results']);
                             }
+
+                            this.loading = false;
                         });
                 }
             },
