@@ -3,13 +3,17 @@
         <div class="flex flex-row pa-3 align-v-center">
             <div class="flex flex-column align-v-center">
                 <div class="flex flex-row">
-                    <a href="/members/forums">
-                        <h1 class="heading mr-3 pointer">
+                    <a href="/members/forums"
+                       class="no-decoration text-black mr-3"
+                       :class="{ 'bb-recordeo-2': !isFollowedSection }">
+                        <h1 class="heading pointer">
                             All Forums
                         </h1>
                     </a>
-                    <a href="/members/forums?followed=true">
-                        <h1 class="heading mr-3 pointer">
+                    <a href="/members/forums?followed=true"
+                       class="no-decoration text-black"
+                       :class="{ 'bb-recordeo-2': isFollowedSection }">
+                        <h1 class="heading pointer">
                             Followed
                         </h1>
                     </a>
@@ -28,7 +32,6 @@
             </div>
         </div>
 
-        <!--<div class="flex flex-row flex-wrap pa">-->
             <!--<div class="flex flex-column search-box">-->
                 <!--<div class="form-group">-->
                     <!--<input id="threadSearch"-->
@@ -103,6 +106,9 @@
                         this.getThreads();
                     }, 800);
                 }
+            },
+            isFollowedSection() {
+                return String(location.search).includes('followed=true');
             }
         },
         methods: {

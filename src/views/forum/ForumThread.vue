@@ -33,13 +33,13 @@
                 </div>
                 <div id="replyContainer" class="flex flex-column ph">
                     <form method="post" action="/post/store">
-                        <!--<text-editor v-model="postReplyInterface"-->
-                                     <!--ref="textEditor"-->
-                                     <!--@input="handleInput"></text-editor>-->
+                        <text-editor v-model="postReplyInterface"
+                                     ref="textEditor"
+                                     @input="handleInput"></text-editor>
 
                         <input type="hidden" name="_method" value="PUT">
 
-                        <textarea name="content"></textarea>
+                        <!--<textarea name="content"></textarea>-->
                         <input type="hidden" name="thread_id" :value="this.thread.id">
 
                         <div class="flex flex-row align-h-right mt-2">
@@ -65,6 +65,7 @@
     import Pagination from '../../components/Pagination.vue';
     import Requests from '../../assets/js/classes/requests';
     import TextEditor from '../../components/TextEditor.vue';
+    import * as QueryString from 'query-string';
 
     export default {
         name: 'forum-thread',
@@ -93,8 +94,8 @@
         data(){
             return {
                 posts: this.thread.posts,
-                currentPage: this.thread.currentPage,
-                totalPages: this.thread.totalPages,
+                currentPage: Number(this.thread.currentPage),
+                totalPages: Number(this.thread.totalPages),
                 postReplyBody: ''
             }
         },
@@ -121,7 +122,13 @@
             handlePageChange(payload){
                 this.currentPage = payload.page;
 
-                this.getPosts();
+                let urlParams =QueryString.parse(location.search);
+
+                urlParams.page = this.currentPage;
+
+                window.location.href = location.protocol + '//' + location.host + location.pathname + '?' + QueryString.stringify(urlParams);
+
+                // this.getPosts();
             },
 
             handlePostLike(payload){
