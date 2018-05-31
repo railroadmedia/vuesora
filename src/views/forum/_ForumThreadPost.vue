@@ -29,20 +29,23 @@
                 </div>
 
                 <div v-if="editing" class="flex flex-column mb-1">
-                    <text-editor :initialValue="postBody"></text-editor>
+                    <form :action="'/post/update/' + this.id" method="post">
+                        <input type="hidden" name="_method" value="patch">
+                        <text-editor :initialValue="postBody"></text-editor>
 
-                    <div class="flex flex-row align-h-right mt-2">
-                        <a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"
-                           @click="editing = false">
-                            Cancel
-                        </a>
+                        <div class="flex flex-row align-h-right mt-2">
+                            <a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"
+                               @click="editing = false">
+                                Cancel
+                            </a>
 
-                        <button class="btn collapse-250" type="submit">
-                            <span class="bg-recordeo text-white corners-3">
-                                Save Post
-                            </span>
-                        </button>
-                    </div>
+                            <button class="btn collapse-250" type="submit">
+                                <span class="bg-recordeo text-white corners-3">
+                                    Save Post
+                                </span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -69,22 +72,22 @@
                 </div>
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center align-h-right">
-                        <p v-if="isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        <p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
                            @click="reportPost">
                             Report
                         </p>
 
-                        <p v-if="isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        <p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
                            @click="hidePost">
                             Hide
                         </p>
 
-                        <p v-if="isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        <p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
                            @click="deletePost">
                             Delete
                         </p>
 
-                        <p v-if="isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        <p v-if="canEdit" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
                            @click="editing = !editing">
                             Edit
                         </p>
@@ -114,6 +117,10 @@
             authorUsername: {
                 type: String,
                 default: () => ''
+            },
+            authorId: {
+                type: Number,
+                default: () => 0
             },
             createdOn: {
                 type: String,
@@ -147,9 +154,16 @@
                 type: Number,
                 default: () => 1
             },
-            isAdmin: {
-                type: Boolean,
-                default: () => false
+            currentUser: {
+                type: Object,
+                default: () => {
+                    return {
+                        name: '',
+                        avatar: '',
+                        id: 0,
+                        isAdmin: false
+                    }
+                }
             }
         },
         data(){
@@ -158,19 +172,47 @@
             }
         },
         computed: {
+            canEdit(){
+                return this.currentUser.id === this.authorId;
+            },
+
             userLikeString(){
-                let userLikes = this.userLikes.join(', ');
-                let additionalUserLikes = ' like this';
+                let userNames = [];
+                let userNameString;
+                let suffixString = 'like this';
+
+                for(let i = 0; i < this.userLikes.length; i++){
+                    let nameExistsOrIsntCurrentUser = this.userLikes[i]['name'] != null
+                        && this.userLikes[i]['name'] !== this.currentUser.name;
+
+                    if(nameExistsOrIsntCurrentUser){
+                        userNames.push(this.userLikes[i]['name']);
+                    }
+                }
+
+                if(userNames.length){
+                    userNameString = userNames.join(', ');
+                }
 
                 if(this.totalLikes > 3){
-                    additionalUserLikes = ' & ' + String(this.totalLikes - 3) + ' others like this';
+                    suffixString = ' & ' + String(this.totalLikes - 3) + ' others like this';
+                }
+                else if(this.totalLikes === 0) {
+                    suffixString = '';
                 }
 
                 if(this.isLiked){
-                    userLikes =  'You, ' + this.userLikes;
+                    userNames.splice((userNames.length - 1), 1);
+
+                    return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                }
+                else {
+                    if(this.totalLikes > 0){
+                        return '<span class="font-bold">' + userNameString + '</span>' + suffixString;
+                    }
                 }
 
-                return '<span class="font-bold">' + userLikes + '</span>' + additionalUserLikes;
+                return 'Be the first to like this!';
             },
 
             postNumber(){

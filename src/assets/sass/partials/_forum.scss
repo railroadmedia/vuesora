@@ -10,6 +10,10 @@
     word-break:break-word;
     word-wrap:break-word;
 
+    span.post-id {
+      display:none;
+    }
+
     blockquote {
       border:1px solid #d1d1d1;
       margin:0 0 0 1em;

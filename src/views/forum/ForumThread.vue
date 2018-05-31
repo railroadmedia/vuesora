@@ -15,8 +15,8 @@
                                :key="post.id"
                                :index="i"
                                v-bind="post"
-                               :isAdmin="currentUser.isAdmin"
                                :currentPage="currentPage"
+                               :currentUser="currentUser"
                                @likePost="handlePostLike"
                                @replyToPost="handleReplyToPost"></forum-thread-post>
 
@@ -43,15 +43,11 @@
                         <input type="hidden" name="thread_id" :value="this.thread.id">
 
                         <div class="flex flex-row align-h-right mt-2">
-                            <a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"
-                               @click="cancelReply">
-                                Cancel
-                            </a>
 
                             <button class="btn collapse-250" type="submit">
-                            <span class="bg-recordeo text-white corners-3">
-                                Reply
-                            </span>
+                                <span class="bg-recordeo text-white corners-3">
+                                    Reply
+                                </span>
                             </button>
                         </div>
                     </form>
@@ -137,16 +133,27 @@
 
                 if(likedPost.isLiked){
                     likedPost.totalLikes -= 1;
+
+                    Requests.unlikeForumPost(payload.id)
+                        .then(resolved => {
+
+                        })
                 }
                 else {
                     likedPost.totalLikes += 1;
+
+                    Requests.likeForumPost(payload.id)
+                        .then(resolved => {
+
+                        })
                 }
 
                 likedPost.isLiked = !likedPost.isLiked;
             },
 
             handleReplyToPost(payload){
-                let blockQuoteHtmlString = '<blockquote data-post-id="' + payload.id + '">' +
+                let blockQuoteHtmlString = '<blockquote>' +
+                    '<span class="post-id">' + payload.id + '</span>' +
                     '<p class="quote-heading"><strong>' + payload.userName + '</strong>' +
                     '<em> - ' + payload.createdOn + '</em></p><br>' +
                     payload.postBody +
@@ -159,10 +166,6 @@
 
             handleInput(payload){
                 this.postReplyInterface = payload.currentValue;
-            },
-
-            cancelReply(){
-                this.postReplyBody = '';
             },
         }
     }

@@ -175,6 +175,36 @@ export default class Requests {
     }
 
     /**
+     * Like a forum thread
+     *
+     * @static
+     * @param {object} id - the comment ID to delete
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static likeForumPost(id){
+        return axios.put('/forums/post/like/' + id)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Unlike a forum thread
+     *
+     * @static
+     * @param {object} id - the comment ID to delete
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static unlikeForumPost(id){
+        return axios.delete('/forums/post/unlike/' + id)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Display an error message and console the error if any request fails
      *
      * @static
