@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column">
-        <input type="hidden" name="content" v-model="contentInterface">
+        <input type="hidden" :name="fieldKey" v-model="contentInterface">
 
         <tinymce-editor api-key="g84168rl7b45du7fji2nive374o541mhtmzogyolgqng97xc"
                         :init="initObject"
@@ -29,6 +29,10 @@
             initialValue: {
                 type: String,
                 default: () => undefined
+            },
+            fieldKey: {
+                type: String,
+                default: () => 'content'
             }
         },
         data() {

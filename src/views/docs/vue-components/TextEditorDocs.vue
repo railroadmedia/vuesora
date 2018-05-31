@@ -46,6 +46,13 @@
                     <td class="pa-1 font-italic">undefined</td>
                     <td class="pa-1">The intial value to render the editor with, accepts an html template string as its argument</td>
                 </tr>
+                <tr class="bg-light">
+                    <td class="pa-1 font-bold">fieldKey</td>
+                    <td class="pa-1">No</td>
+                    <td class="pa-1">String</td>
+                    <td class="pa-1 font-italic">'content'</td>
+                    <td class="pa-1">The key to be used as the form name or key for async requests</td>
+                </tr>
             </table>
         </div>
     </div>
