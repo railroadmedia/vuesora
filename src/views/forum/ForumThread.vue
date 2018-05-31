@@ -32,22 +32,29 @@
                     </div>
                 </div>
                 <div id="replyContainer" class="flex flex-column ph">
-                    <text-editor v-model="postReplyInterface"
-                                 ref="textEditor"
-                                 @input="handleInput"></text-editor>
+                    <form method="post" action="/post/store">
+                        <!--<text-editor v-model="postReplyInterface"-->
+                                     <!--ref="textEditor"-->
+                                     <!--@input="handleInput"></text-editor>-->
 
-                    <div class="flex flex-row align-h-right mt-2">
-                        <a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"
-                           @click="cancelReply">
-                            Cancel
-                        </a>
+                        <input type="hidden" name="_method" value="PUT">
 
-                        <button class="btn collapse-250" type="submit">
+                        <textarea name="content"></textarea>
+                        <input type="hidden" name="thread_id" :value="this.thread.id">
+
+                        <div class="flex flex-row align-h-right mt-2">
+                            <a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"
+                               @click="cancelReply">
+                                Cancel
+                            </a>
+
+                            <button class="btn collapse-250" type="submit">
                             <span class="bg-recordeo text-white corners-3">
                                 Reply
                             </span>
-                        </button>
-                    </div>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

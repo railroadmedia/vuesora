@@ -3,46 +3,57 @@
         <div class="flex flex-row pa-3 align-v-center">
             <div class="flex flex-column align-v-center">
                 <div class="flex flex-row">
-                    <h1 class="heading mr-3 pointer"
-                        :class="!followed ? 'text-black bb-' + brand + '-2' : 'text-dark'"
-                        @click="followed = false">
-                        All Forums
-                    </h1>
-                    <h1 class="heading mr-3 pointer"
-                        :class="followed ? 'text-black bb-' + brand + '-2' : 'text-dark'"
-                        @click="followed = true">
-                        Followed
-                    </h1>
+                    <a href="/members/forums">
+                        <h1 class="heading mr-3 pointer">
+                            All Forums
+                        </h1>
+                    </a>
+                    <a href="/members/forums?followed=true">
+                        <h1 class="heading mr-3 pointer">
+                            Followed
+                        </h1>
+                    </a>
+
+                    <!--<h1 class="heading mr-3 pointer"-->
+                    <!--:class="!followed ? 'text-black bb-' + brand + '-2' : 'text-dark'"-->
+                    <!--@click="followed = false">-->
+                    <!--All Forums-->
+                    <!--</h1>-->
+                    <!--<h1 class="heading mr-3 pointer"-->
+                    <!--:class="followed ? 'text-black bb-' + brand + '-2' : 'text-dark'"-->
+                    <!--@click="followed = true">-->
+                    <!--Followed-->
+                    <!--</h1>-->
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-row flex-wrap pa">
-            <div class="flex flex-column search-box">
-                <div class="form-group">
-                    <input id="threadSearch"
-                           type="text"
-                           v-model="searchInterface">
-                    <label for="threadSearch" class="recordeo">Search</label>
-                </div>
-            </div>
-            <div class="flex flex-column form-group topic-col">
-                <clearable-filter labelText="Select a Filter"
-                                  :filterOptions="['General', 'Courses', 'Tips', 'Website']"
-                                  @change="handleFilterChange"></clearable-filter>
-            </div>
-        </div>
+        <!--<div class="flex flex-row flex-wrap pa">-->
+            <!--<div class="flex flex-column search-box">-->
+                <!--<div class="form-group">-->
+                    <!--<input id="threadSearch"-->
+                           <!--type="text"-->
+                           <!--v-model="searchInterface">-->
+                    <!--<label for="threadSearch" class="recordeo">Search</label>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="flex flex-column form-group topic-col">-->
+                <!--<clearable-filter labelText="Select a Filter"-->
+                                  <!--:filterOptions="['General', 'Courses', 'Tips', 'Website']"-->
+                                  <!--@change="handleFilterChange"></clearable-filter>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
                                   :thread="thread"
                                   :brand="brand"></forum-threads-table-item>
 
-        <div class="flex flex-row bg-light pagination-row align-h-right">
-            <pagination :currentPage="currentPage"
-                        :totalPages="10"
-                        @pageChange="handlePageChange"></pagination>
-        </div>
+        <!--<div class="flex flex-row bg-light pagination-row align-h-right">-->
+            <!--<pagination :currentPage="currentPage"-->
+                        <!--:totalPages="10"-->
+                        <!--@pageChange="handlePageChange"></pagination>-->
+        <!--</div>-->
     </div>
 </template>
 <script>
@@ -68,7 +79,7 @@
                 default: () => 'recordeo'
             }
         },
-        data (){
+        data() {
             return {
                 threadsArray: this.threads,
                 currentPage: 1,
@@ -80,10 +91,10 @@
         },
         computed: {
             searchInterface: {
-                get(){
+                get() {
                     return this.searchTerm;
                 },
-                set(val){
+                set(val) {
                     clearTimeout(this.timeout);
 
                     this.timeout = setTimeout(() => {
@@ -95,31 +106,31 @@
             }
         },
         methods: {
-            getThreads (){
+            getThreads() {
                 return Requests.getForumThreads()
                     .then(data => {
                         this.threadsArray = data;
                     });
             },
 
-            handlePageChange(payload){
+            handlePageChange(payload) {
                 this.currentPage = payload.page;
 
                 this.getThreads();
             },
 
-            handleFilterChange(payload){
+            handleFilterChange(payload) {
                 this.filter = payload.value;
 
                 this.getThreads();
             }
         },
         watch: {
-            followed(){
+            followed() {
                 this.getThreads();
             }
         },
-        mounted (){
+        mounted() {
 
         }
     }
@@ -129,12 +140,13 @@
 
     .search-box {
         @include xSmallOnly {
-            margin-bottom:$gutterWidth / 2;
+            margin-bottom: $gutterWidth / 2;
         }
     }
+
     .search-icon {
-        width:50px;
-        height:50px;
-        font-size:20px;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
     }
 </style>
