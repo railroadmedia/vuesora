@@ -42,8 +42,8 @@
     </div>
 </template>
 <script>
+    import Requests from '../assets/js/classes/requests';
     import Toasts from '../assets/js/classes/toasts';
-    import axios from 'axios';
 
     export default {
         name: 'email-form',
@@ -52,9 +52,13 @@
                 type: String,
                 default: () => 'recordeo'
             },
-            endpoint: {
+            subject: {
                 type: String,
-                default: () => '/'
+                default: () => 'Email from ' + this.brand
+            },
+            emailType: {
+                type: String,
+                default: () => 'general'
             },
             lessonPage: {
                 type: Boolean,
@@ -88,13 +92,18 @@
         methods: {
             submitForm (){
                 if(this.value){
-                    this.sendRequest()
+                    Requests.sendEmail(
+                        this.value,
+                        this.emailType,
+                        this.subject
+                    )
                         .then(resolved => {
-
                             if(resolved){
-                                Toasts.success('Success! Your Progress has been reset.');
+                                Toasts.success('Your email has been sent! Thank you for your input.');
+
+                                this.valueInterface = '';
                             }
-                        });
+                        })
                 }
             },
 

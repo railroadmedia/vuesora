@@ -205,6 +205,27 @@ export default class Requests {
     }
 
     /**
+     * Unlike a forum thread
+     *
+     * @static
+     * @param {string} message - the content of the text area element within the email form
+     * @param {string} type - the type of email to send ['general', 'ask-question', 'support', 'suggest-learning-path']
+     * @param {string} subject - the subject for the email
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static sendEmail(message, type, subject){
+        return axios.post('/members/mail', {
+            message: message,
+            type: type,
+            subject: subject
+        })
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Display an error message and console the error if any request fails
      *
      * @static
