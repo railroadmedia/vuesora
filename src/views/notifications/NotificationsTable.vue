@@ -21,6 +21,8 @@
             </div>
         </div>
 
+        <p class="body pa-3 font-italic">You do not have any notifications.</p>
+
         <notifications-table-row v-for="(item, i) in notifications"
                                  :key="item.id"
                                  v-bind="item"></notifications-table-row>
@@ -63,7 +65,7 @@
         data(){
             return {
                 currentPage: 1,
-                totalPages: 10
+                totalPages: 1
             }
         },
         methods: {
