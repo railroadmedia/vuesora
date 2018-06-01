@@ -7,7 +7,7 @@
                         <i class="fas fa-arrow-circle-left text-light"></i>
                     </a>
 
-                    This is a Forum Title
+                    {{ thread.title }}
                 </h1>
             </div>
 
