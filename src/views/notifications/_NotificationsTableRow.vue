@@ -1,7 +1,8 @@
 <template>
     <a :href="linkedContent.url"
        class="content-table-row flex flex-row bt-light-1 no-decoration"
-       :class="{'is-read': isRead}">
+       :class="{'is-read': isRead}"
+       @click="markAsRead">
         <div class="flex flex-column avatar-col align-v-center pl-1">
             <div class="thumb-img square rounded bg-center"
                  :style="'background-image:url(' + userAvatar + ');'"></div>
@@ -96,6 +97,10 @@
                 if(!thisRow.classList.contains('is-read')){
                     thisRow.classList.add('is-read');
                 }
+
+                this.$emit('notificationRead', {
+                    id: this.id
+                });
             }
         }
     }

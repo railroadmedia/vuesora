@@ -50,27 +50,29 @@
                 <!--</div>-->
             </div>
 
-            <div class="flex flex-row flex-wrap">
-                <div class="flex flex-column mb-1">
-                    <div class="flex flex-row align-v-center">
 
-                        <p v-if="!isUsersPost"
-                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? 'text-recordeo' : 'text-dark'"
-                           @click="likeComment">
-                            <i class="fas fa-thumbs-up"></i>
-                            <span class="hide-xs-only">
-                            {{ isLiked ? 'Liked' : 'Like' }}
-                            </span>
-                        </p>
+            <!--TODO: UNCOMMENT ME WHEN LIKING IS READY-->
+            <!--<div class="flex flex-row flex-wrap">-->
+                <!--<div class="flex flex-column mb-1">-->
+                    <!--<div class="flex flex-row align-v-center">-->
 
-                        <p class="x-tiny text-dark uppercase font-italic"
-                           v-html="userLikeString">
-                            {{ userLikeString }}
-                        </p>
-                    </div>
-                </div>
-            </div>
+                        <!--<p v-if="!isUsersPost"-->
+                           <!--class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"-->
+                           <!--:class="isLiked ? 'text-recordeo' : 'text-dark'"-->
+                           <!--@click="likeComment">-->
+                            <!--<i class="fas fa-thumbs-up"></i>-->
+                            <!--<span class="hide-xs-only">-->
+                            <!--{{ isLiked ? 'Liked' : 'Like' }}-->
+                            <!--</span>-->
+                        <!--</p>-->
+
+                        <!--<p class="x-tiny text-dark uppercase font-italic"-->
+                           <!--v-html="userLikeString">-->
+                            <!--{{ userLikeString }}-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </div>
 </template>

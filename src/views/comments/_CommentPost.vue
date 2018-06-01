@@ -77,15 +77,16 @@
                             </span>
                         </p>
 
-                        <p v-if="!isUsersPost"
-                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? 'text-recordeo' : 'text-dark'"
-                           @click="likeComment">
-                            <i class="fas fa-thumbs-up"></i>
-                            <span class="hide-xs-only">
-                                {{ isLiked ? 'Liked' : 'Like' }}
-                            </span>
-                        </p>
+                        <!--TODO: UNCOMMENT ME WHEN LIKING IS READY-->
+                        <!--<p v-if="!isUsersPost"-->
+                           <!--class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"-->
+                           <!--:class="isLiked ? 'text-recordeo' : 'text-dark'"-->
+                           <!--@click="likeComment">-->
+                            <!--<i class="fas fa-thumbs-up"></i>-->
+                            <!--<span class="hide-xs-only">-->
+                                <!--{{ isLiked ? 'Liked' : 'Like' }}-->
+                            <!--</span>-->
+                        <!--</p>-->
 
                         <p class="x-tiny text-dark uppercase font-italic"
                            v-html="userLikeString">

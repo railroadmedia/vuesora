@@ -226,6 +226,34 @@ export default class Requests {
     }
 
     /**
+     * Mark a specific notification as read
+     *
+     * @static
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static markNotificationAsRead(id){
+        return axios.post('/notifications/read/' + id)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Mark all of the current users notifications as read
+     *
+     * @static
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static markAllNotificationsAsRead(){
+        return axios.post('/notifications/read/all')
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Display an error message and console the error if any request fails
      *
      * @static

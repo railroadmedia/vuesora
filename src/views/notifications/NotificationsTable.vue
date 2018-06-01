@@ -21,13 +21,20 @@
             </div>
         </div>
 
-        <p class="body pa-3 font-italic">You do not have any notifications.</p>
+        <div class="flex flex-row pa-3">
+            <p v-if="notifications.length === 0"
+               class="tiny text-dark font-italic">
+                You do not appear to have any notifications at this time.
+            </p>
+        </div>
 
         <notifications-table-row v-for="(item, i) in notifications"
                                  :key="item.id"
-                                 v-bind="item"></notifications-table-row>
+                                 v-bind="item"
+                                 @notificationRead="markAsRead"></notifications-table-row>
 
-        <div class="flex flex-row bg-light pagination-row align-h-right">
+        <div class="flex flex-row bg-light pagination-row align-h-right"
+             v-if="totalPages > 1">
             <pagination :currentPage="currentPage"
                         :totalPages="totalPages"
                         @pageChange="handlePageChange"></pagination>
@@ -37,6 +44,7 @@
 <script>
     import NotificationsTableRow from './_NotificationsTableRow.vue';
     import Pagination from '../../components/Pagination.vue';
+    import Requests from '../../assets/js/classes/requests';
 
     export default {
         name: 'notifications-table',
@@ -79,6 +87,13 @@
                 });
 
                 // Send request to server
+                Requests.markAllNotificationsAsRead()
+                    .then(resolved => {});
+            },
+
+            markAsRead(payload){
+                Requests.markNotificationAsRead(payload.id)
+                    .then(resolved => {});
             },
 
             handlePageChange(payload){
