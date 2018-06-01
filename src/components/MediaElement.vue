@@ -163,6 +163,7 @@
                 defaultVideoWidth: 1280,
                 defaultVideoHeight: 720,
                 autosizeProgress: false,
+                startVolume: 0.5,
                 stretching: 'responsive',
                 features: ['playpause', 'skipback', 'jumpforward', 'current', 'duration', 'progress', 'quality', 'speed', 'volume', 'chromecast', 'airplay', 'fullscreen'],
                 jumpForwardInterval: 10,
