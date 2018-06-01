@@ -246,13 +246,11 @@
 
                 Requests.deleteComment(payload.id)
                     .then(resolved => {
-                        if(resolved){
-                            this.comments = this.comments.filter(comment =>
-                                comment.id !== payload.id
-                            );
+                        this.comments = this.comments.filter(comment =>
+                            comment.id !== payload.id
+                        );
 
-                            Toasts.success('Comment successfully deleted');
-                        }
+                        Toasts.success('Comment successfully deleted');
                     })
             },
 

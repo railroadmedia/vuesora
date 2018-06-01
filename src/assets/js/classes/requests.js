@@ -169,7 +169,7 @@ export default class Requests {
     static deleteComment(id){
         return axios.delete('/railcontent/comment/' + id)
             .then(response => {
-                return response.data
+                return response
             })
             .catch(Requests.handleError);
     }
