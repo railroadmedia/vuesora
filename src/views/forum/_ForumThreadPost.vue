@@ -179,7 +179,7 @@
             userLikeString(){
                 let userNames = [];
                 let userNameString;
-                let suffixString = 'like this';
+                let suffixString = ' like this';
 
                 for(let i = 0; i < this.userLikes.length; i++){
                     let nameExistsOrIsntCurrentUser = this.userLikes[i]['name'] != null

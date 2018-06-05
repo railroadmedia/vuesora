@@ -10,14 +10,15 @@
 
             <p class="tiny text-black font-bold item-title">
                 <i v-if="thread.isPinned" class="fas fa-thumbtack"></i>
+                <i v-if="thread.isLocked" class="fas fa-lock"></i>
                 {{ thread.title }}
             </p>
 
-            <p class="tiny text-dark uppercase font-italic">
-                created <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong>
+            <p class="x-tiny text-dark uppercase font-italic">
+                last post <strong>{{ thread.lastPostDate }}</strong> by <strong>{{ thread.authorUsername }}</strong>
             </p>
 
-            <p class="tiny text-dark text-truncate font-italic hide-md-up capitalize">
+            <p class="x-tiny text-dark text-truncate font-italic hide-md-up capitalize">
 
                 {{ thread.topic }}
                 <span class="bullet">&#x25CF;</span>
@@ -32,11 +33,11 @@
             </span>
         </div>
 
-        <div class="flex flex-column align-center basic-col text-dark font-italic tiny hide-sm-down uppercase">
-            {{ thread.topic }}
+        <div class="flex flex-column align-center basic-col text-dark font-italic x-tiny hide-sm-down uppercase">
+            {{ topicIdMap }}
         </div>
 
-        <div class="flex flex-column align-center basic-col text-dark font-italic tiny hide-sm-down uppercase">
+        <div class="flex flex-column align-center basic-col text-dark font-italic x-tiny hide-sm-down uppercase">
             {{ thread.replyAmount }} {{ thread.replyAmount === 1 ? 'reply' : 'replies' }}
         </div>
 
@@ -58,6 +59,18 @@
             thread: {
                 type: Object,
                 default: () => {}
+            }
+        },
+        computed: {
+            topicIdMap(){
+                const topics = {
+                    1: 'general',
+                    2: 'gear',
+                    3: 'website feedback',
+                    4: 'off topic'
+                };
+
+                return topics[this.thread.topic];
             }
         }
     }

@@ -1,14 +1,43 @@
 <template>
     <div class="container mv-3 forum-post">
         <div class="flex flex-column bg-white shadow corners-3">
-            <div class="flex flex-row pa-3">
-                <h1 class="heading">
-                    <a href="/members/forums" class="no-decoration mr-1">
-                        <i class="fas fa-arrow-circle-left text-light"></i>
-                    </a>
+            <div class="flex flex-row pa-3 flex-wrap align-v-center">
+                <div class="flex flex-column mb-1 xs-12 sm-6">
+                    <h1 class="heading">
+                        <a href="/members/forums" class="no-decoration mr-1">
+                            <i class="fas fa-arrow-circle-left text-light"></i>
+                        </a>
 
-                    {{ thread.title }}
-                </h1>
+                        {{ thread.title }}
+                    </h1>
+                </div>
+
+                <div class="flex flex-column mb-1 xs-12 sm-6">
+                    <div class="flex flex-row align-h-right">
+                        <button class="btn collapse-square mr-1" @click="pinPost"
+                                v-if="currentUser.isAdmin">
+                            <span class="bg-recordeo corners-3"
+                                  :class="isPinned ? 'text-white' : 'inverted text-recordeo'">
+                                <i class="fas fa-thumbtack"></i>
+                            </span>
+                        </button>
+
+                        <button class="btn collapse-square mr-1" @click="lockPost"
+                                v-if="currentUser.isAdmin">
+                            <span class="bg-recordeo corners-3"
+                                  :class="isLocked ? 'text-white' : 'inverted text-recordeo'">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </button>
+
+                        <!--<button class="btn collapse-150" @click="followPost">-->
+                            <!--<span class="bg-recordeo corners-3"-->
+                                  <!--:class="isFollowed ? 'text-white' : 'inverted text-recordeo'">-->
+                                <!--{{ isFollowed ? 'Followed' : 'Follow' }}-->
+                            <!--</span>-->
+                        <!--</button>-->
+                    </div>
+                </div>
             </div>
 
             <forum-thread-post v-for="(post, i) in posts"
@@ -25,7 +54,8 @@
                             :totalPages="totalPages"
                             @pageChange="handlePageChange"></pagination>
             </div>
-            <div class="flex flex-row ph pv-3">
+
+            <div class="flex flex-row ph pv-3" v-if="!thread.isLocked">
                 <div class="flex flex-column avatar-column hide-xs-only">
                     <div class="square">
                         <img class="rounded" :src="currentUser.avatar">
@@ -39,7 +69,6 @@
 
                         <input type="hidden" name="_method" value="PUT">
 
-                        <!--<textarea name="content"></textarea>-->
                         <input type="hidden" name="thread_id" :value="this.thread.id">
 
                         <div class="flex flex-row align-h-right mt-2">
@@ -92,6 +121,9 @@
                 posts: this.thread.posts,
                 currentPage: Number(this.thread.currentPage),
                 totalPages: Number(this.thread.totalPages),
+                isFollowed: this.thread.isFollowed,
+                isLocked: this.thread.isLocked,
+                isPinned: this.thread.isPinned,
                 postReplyBody: ''
             }
         },
@@ -167,6 +199,18 @@
             handleInput(payload){
                 this.postReplyInterface = payload.currentValue;
             },
+
+            pinPost(){
+                this.isPinned = !this.isPinned;
+            },
+
+            lockPost(){
+                this.isLocked = !this.isLocked;
+            },
+
+            followPost(){
+                this.isFollowed = !this.isFollowed;
+            }
         }
     }
 </script>

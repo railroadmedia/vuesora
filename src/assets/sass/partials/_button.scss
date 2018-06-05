@@ -60,6 +60,10 @@ button {
 
 .btn {
 
+  &.collapse-square {
+    max-width:50px;
+  }
+
   &.collapse-150 {
     max-width:150px;
   }

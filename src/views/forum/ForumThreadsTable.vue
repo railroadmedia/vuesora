@@ -47,6 +47,11 @@
             <!--</div>-->
         <!--</div>-->
 
+        <forum-threads-table-item v-for="thread in pinnedThreads"
+                                  :key="thread.id"
+                                  :thread="thread"
+                                  :brand="brand"></forum-threads-table-item>
+
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
                                   :thread="thread"
@@ -73,6 +78,10 @@
             'clearable-filter': ClearableFilter
         },
         props: {
+            pinnedThreads: {
+                type: Array,
+                default: () => []
+            },
             threads: {
                 type: Array,
                 default: () => []
