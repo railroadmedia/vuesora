@@ -14,7 +14,7 @@ export default class Requests {
      * @static
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static getForumThreads(){
+    static getForumThreads() {
         return axios.get('/members/forums/threads-json')
             .then(response => {
                 return response.data
@@ -28,7 +28,7 @@ export default class Requests {
      * @static
      * @returns {Promise} resolved promise with the response.data object
      */
-    static getForumThreadPosts(){
+    static getForumThreadPosts() {
         return axios.get('/members/forums/post-json')
             .then(response => {
                 return response.data
@@ -45,7 +45,7 @@ export default class Requests {
      * @param {Object} formData - the formData object to send with the request
      * @returns {Promise} resolved promise with the response.data object, containing the cdn url
      */
-    static remoteResourceUpload(endpoint, formData){
+    static remoteResourceUpload(endpoint, formData) {
         const config = {
             headers: {
                 'content-type': 'multipart/form-data',
@@ -68,7 +68,7 @@ export default class Requests {
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markContentAsComplete(contentId){
+    static markContentAsComplete(contentId) {
         return axios.put('/railcontent/complete', {
             content_id: contentId
         })
@@ -85,7 +85,7 @@ export default class Requests {
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markContentAsStarted(contentId){
+    static markContentAsStarted(contentId) {
         return axios.put('/railcontent/start', {
             content_id: contentId
         })
@@ -102,7 +102,7 @@ export default class Requests {
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
-    static resetContentProgress(contentId){
+    static resetContentProgress(contentId) {
         return axios.put('/railcontent/reset', {
             content_id: contentId
         })
@@ -119,7 +119,7 @@ export default class Requests {
      * @param {object} params - the params object to filter comments
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
-    static getComments(params){
+    static getComments(params) {
         return axios.get('/railcontent/comment', {
             params: params
         })
@@ -136,7 +136,7 @@ export default class Requests {
      * @param {object} data - the data object with the content_id and comment properties
      * @returns {Promise} resolved promise with the response.data object, containing the submit comment
      */
-    static postComment(data){
+    static postComment(data) {
         return axios.put('/railcontent/comment', data)
             .then(response => {
                 return response.data
@@ -151,7 +151,7 @@ export default class Requests {
      * @param {object} data - the data object with the parent_id and comment properties
      * @returns {Promise} resolved promise with the response.data object, containing the submit reply
      */
-    static postReply(data){
+    static postReply(data) {
         return axios.put('/railcontent/comment/reply', data)
             .then(response => {
                 return response.data
@@ -166,7 +166,7 @@ export default class Requests {
      * @param {object} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
-    static deleteComment(id){
+    static deleteComment(id) {
         return axios.delete('/railcontent/comment/' + id)
             .then(response => {
                 return response
@@ -181,7 +181,7 @@ export default class Requests {
      * @param {object} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
-    static likeForumPost(id){
+    static likeForumPost(id) {
         return axios.put('/forums/post/like/' + id)
             .then(response => {
                 return response.data
@@ -196,8 +196,53 @@ export default class Requests {
      * @param {object} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
-    static unlikeForumPost(id){
+    static unlikeForumPost(id) {
         return axios.delete('/forums/post/unlike/' + id)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * @static
+     * @param {object} id - thread id
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static followForumsThread(id) {
+        return axios.put('/forums/thread/follow/' + id)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * @static
+     * @param {object} id - thread id
+     * @param {boolean} pinned
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static pinForumsThread(id, pinned) {
+        return axios.patch('/forums/thread/update/' + id, {
+            pinned: pinned
+        })
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * @static
+     * @param {object} id - thread id
+     * @param {boolean} locked
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static lockForumsThread(id, locked) {
+        return axios.patch('/forums/thread/update/' + id, {
+            locked: locked
+        })
             .then(response => {
                 return response.data
             })
@@ -213,7 +258,7 @@ export default class Requests {
      * @param {string} subject - the subject for the email
      * @returns {Promise} resolved promise with the response.data object
      */
-    static sendEmail(message, type, subject){
+    static sendEmail(message, type, subject) {
         return axios.post('/members/mail', {
             message: message,
             type: type,
@@ -231,7 +276,7 @@ export default class Requests {
      * @static
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markNotificationAsRead(id){
+    static markNotificationAsRead(id) {
         return axios.post('/notifications/read/' + id)
             .then(response => {
                 return response.data
@@ -245,7 +290,7 @@ export default class Requests {
      * @static
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markAllNotificationsAsRead(){
+    static markAllNotificationsAsRead() {
         return axios.post('/notifications/read/all')
             .then(response => {
                 return response.data
@@ -259,7 +304,7 @@ export default class Requests {
      * @static
      * @param {object} error - the error object returned by the request
      */
-    static handleError(error){
+    static handleError(error) {
         console.error(error);
         Toasts.errorWarning();
     }

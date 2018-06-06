@@ -53,7 +53,8 @@
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
                         <p class="tiny text-dark mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           @click="replyToPost">
+                           @click="replyToPost"
+                           v-if="!isLocked">
                             <i class="fas fa-reply"></i> Reply
                         </p>
 
@@ -153,6 +154,10 @@
             currentPage: {
                 type: Number,
                 default: () => 1
+            },
+            isLocked: {
+                type: Boolean,
+                default: () => false
             },
             currentUser: {
                 type: Object,

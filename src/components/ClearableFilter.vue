@@ -15,7 +15,7 @@
             <option disabled selected style="display:none;" value="all"></option>
             <option v-for="(option, i) in filterOptions"
                     :key="i"
-                    :value="option">
+                    :value="i + 1">
                 {{ option }}
             </option>
         </select>
@@ -36,12 +36,16 @@
             filterOptions: {
                 type: Array,
                 default: () => []
+            },
+            initialValue: {
+                type: String,
+                default: () => ''
             }
         },
         data(){
             return {
-                active: false,
-                activeFilter: ''
+                active: this.initialValue != null,
+                activeFilter: this.initialValue
             }
         },
         computed: {

@@ -52,6 +52,7 @@
                                v-bind="post"
                                :currentPage="currentPage"
                                :currentUser="currentUser"
+                               :isLocked="thread.isLocked"
                                @likePost="handlePostLike"
                                @replyToPost="handleReplyToPost"></forum-thread-post>
 
@@ -102,13 +103,14 @@
         name: 'forum-thread',
         components: {
             "forum-thread-post": ForumThreadPost,
-            "pagination" : Pagination,
+            "pagination": Pagination,
             "text-editor": TextEditor
         },
         props: {
             thread: {
                 type: Object,
-                default: () => {}
+                default: () => {
+                }
             },
             currentUser: {
                 type: Object,
@@ -122,7 +124,7 @@
                 }
             }
         },
-        data(){
+        data() {
             return {
                 posts: this.thread.posts,
                 currentPage: Number(this.thread.currentPage),
@@ -135,17 +137,17 @@
         },
         computed: {
             postReplyInterface: {
-                get(){
+                get() {
                     return this.postReplyBody;
                 },
-                set(val){
+                set(val) {
                     this.postReplyBody = val;
                     this.$refs.textEditor.contentInterface = this.postReplyBody;
                 }
             }
         },
         methods: {
-            getPosts(){
+            getPosts() {
 
                 return Requests.getForumThreadPosts()
                     .then(data => {
@@ -153,10 +155,10 @@
                     });
             },
 
-            handlePageChange(payload){
+            handlePageChange(payload) {
                 this.currentPage = payload.page;
 
-                let urlParams =QueryString.parse(location.search);
+                let urlParams = QueryString.parse(location.search);
 
                 urlParams.page = this.currentPage;
 
@@ -165,11 +167,11 @@
                 // this.getPosts();
             },
 
-            handlePostLike(payload){
+            handlePostLike(payload) {
                 let index = this.posts.map(post => post.id).indexOf(payload.id);
                 let likedPost = this.posts[index];
 
-                if(likedPost.isLiked){
+                if (likedPost.isLiked) {
                     likedPost.totalLikes -= 1;
 
                     Requests.unlikeForumPost(payload.id)
@@ -189,7 +191,7 @@
                 likedPost.isLiked = !likedPost.isLiked;
             },
 
-            handleReplyToPost(payload){
+            handleReplyToPost(payload) {
                 let blockQuoteHtmlString = '<blockquote>' +
                     '<span class="post-id">' + payload.id + '</span>' +
                     '<p class="quote-heading"><strong>' + payload.userName + '</strong>' +
@@ -202,19 +204,37 @@
                 this.postReplyInterface += blockQuoteHtmlString;
             },
 
-            handleInput(payload){
+            handleInput(payload) {
                 this.postReplyInterface = payload.currentValue;
             },
 
-            pinPost(){
+            pinPost() {
+                Requests.pinForumsThread(this.thread.id, !this.isPinned)
+                    .then(resolved => {
+
+                        }
+                    );
+
                 this.isPinned = !this.isPinned;
             },
 
-            lockPost(){
+            lockPost() {
+                Requests.lockForumsThread(this.thread.id, !this.isLocked)
+                    .then(resolved => {
+
+                        }
+                    );
+
                 this.isLocked = !this.isLocked;
             },
 
-            followPost(){
+            followPost() {
+                Requests.followForumsThread(this.thread.id)
+                    .then(resolved => {
+
+                        }
+                    );
+
                 this.isFollowed = !this.isFollowed;
             }
         }
@@ -222,6 +242,6 @@
 </script>
 <style lang="scss">
     .reply-like {
-        min-width:50px;
+        min-width: 50px;
     }
 </style>

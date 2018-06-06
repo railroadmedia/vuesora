@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column bg-white shadow corners-3 content-table">
-        <div class="flex flex-row pa-3 align-v-center">
+        <div class="flex flex-row flex-wrap pa-3 align-v-center">
             <div class="flex flex-column align-v-center">
                 <div class="flex flex-row">
                     <a href="/members/forums"
@@ -10,42 +10,32 @@
                             All Forums
                         </h1>
                     </a>
-                    <!--<a href="/members/forums?followed=true"-->
-                       <!--class="no-decoration text-black"-->
-                       <!--:class="{ 'bb-recordeo-2': isFollowedSection }">-->
-                        <!--<h1 class="heading pointer">-->
-                            <!--Followed-->
-                        <!--</h1>-->
-                    <!--</a>-->
-
-                    <!--<h1 class="heading mr-3 pointer"-->
-                    <!--:class="!followed ? 'text-black bb-' + brand + '-2' : 'text-dark'"-->
-                    <!--@click="followed = false">-->
-                    <!--All Forums-->
-                    <!--</h1>-->
-                    <!--<h1 class="heading mr-3 pointer"-->
-                    <!--:class="followed ? 'text-black bb-' + brand + '-2' : 'text-dark'"-->
-                    <!--@click="followed = true">-->
-                    <!--Followed-->
-                    <!--</h1>-->
+                    <a href="/members/forums?followed=true"
+                       class="no-decoration text-black"
+                       :class="{ 'bb-recordeo-2': isFollowedSection }">
+                        <h1 class="heading pointer">
+                            Followed
+                        </h1>
+                    </a>
                 </div>
+            </div>
+
+            <div class="flex flex-column search-box">
+                <!--<div class="form-group">-->
+                <!--<input id="threadSearch"-->
+                <!--type="text"-->
+                <!--v-model="searchInterface">-->
+                <!--<label for="threadSearch" class="recordeo">Search</label>-->
+                <!--</div>-->
+            </div>
+            <div class="flex flex-column form-group topic-col">
+                <!--<clearable-filter labelText="Select a Filter"-->
+                                  <!--:filterOptions="['General', 'Courses', 'Tips', 'Website']"-->
+                                  <!--:initialValue="topicIdMap"-->
+                                  <!--@change="handleFilterChange"></clearable-filter>-->
             </div>
         </div>
 
-            <!--<div class="flex flex-column search-box">-->
-                <!--<div class="form-group">-->
-                    <!--<input id="threadSearch"-->
-                           <!--type="text"-->
-                           <!--v-model="searchInterface">-->
-                    <!--<label for="threadSearch" class="recordeo">Search</label>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="flex flex-column form-group topic-col">-->
-                <!--<clearable-filter labelText="Select a Filter"-->
-                                  <!--:filterOptions="['General', 'Courses', 'Tips', 'Website']"-->
-                                  <!--@change="handleFilterChange"></clearable-filter>-->
-            <!--</div>-->
-        <!--</div>-->
 
         <forum-threads-table-item v-for="thread in pinnedThreads"
                                   :key="thread.id"
@@ -57,11 +47,12 @@
                                   :thread="thread"
                                   :brand="brand"></forum-threads-table-item>
 
-        <!--<div class="flex flex-row bg-light pagination-row align-h-right">-->
-            <!--<pagination :currentPage="currentPage"-->
-                        <!--:totalPages="10"-->
-                        <!--@pageChange="handlePageChange"></pagination>-->
-        <!--</div>-->
+        <div class="flex flex-row bg-light pagination-row align-h-right"
+             v-if="totalPages > 1">
+            <pagination :currentPage="currentPage"
+                        :totalPages="totalPages"
+                        @pageChange="handlePageChange"></pagination>
+        </div>
     </div>
 </template>
 <script>
@@ -69,6 +60,7 @@
     import Pagination from '../../components/Pagination.vue';
     import ClearableFilter from '../../components/ClearableFilter.vue';
     import Requests from '../../assets/js/classes/requests';
+    import * as QueryString from 'query-string';
 
     export default {
         name: 'forum-threads-table',
@@ -89,12 +81,15 @@
             brand: {
                 type: String,
                 default: () => 'recordeo'
+            },
+            threadCount: {
+                type: Number,
+                default: () => 0
             }
         },
         data() {
             return {
                 threadsArray: this.threads,
-                currentPage: 1,
                 searchTerm: '',
                 filter: 'all',
                 timeout: null,
@@ -102,6 +97,9 @@
             }
         },
         computed: {
+            totalPages() {
+                return Math.ceil(this.threadCount / 20);
+            },
             searchInterface: {
                 get() {
                     return this.searchTerm;
@@ -118,7 +116,33 @@
             },
             isFollowedSection() {
                 return String(location.search).includes('followed=true');
+            },
+            currentPage() {
+                const urlParams = QueryString.parse(location.search);
+
+                if (urlParams.page != null) {
+                    return Number(urlParams.page);
+                }
+
+                return 1;
+            },
+            topicIdMap(){
+                const topics = {
+                    1: 'general',
+                    2: 'gear',
+                    3: 'website feedback',
+                    4: 'off topic'
+                };
+
+                const urlParams = QueryString.parse(location.search);
+
+                if (urlParams["category_ids[]"] != null) {
+                    return urlParams["category_ids[]"];
+                }
+
+                return 0;
             }
+
         },
         methods: {
             getThreads() {
@@ -129,15 +153,22 @@
             },
 
             handlePageChange(payload) {
-                this.currentPage = payload.page;
 
-                this.getThreads();
+                let urlParams = QueryString.parse(location.search);
+
+                urlParams.page = payload.page;
+
+                window.location.href = location.protocol + '//' + location.host +
+                    location.pathname + '?' + QueryString.stringify(urlParams);
             },
 
             handleFilterChange(payload) {
-                this.filter = payload.value;
+                let urlParams = QueryString.parse(location.search);
 
-                this.getThreads();
+                urlParams.category_ids = [payload.value];
+
+                window.location.href = location.protocol + '//' + location.host +
+                    location.pathname + '?' + QueryString.stringify(urlParams, {arrayFormat: 'bracket'});
             }
         },
         watch: {
@@ -146,7 +177,6 @@
             }
         },
         mounted() {
-
         }
     }
 </script>
