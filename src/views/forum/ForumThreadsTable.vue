@@ -100,15 +100,15 @@
                         value: '1'
                     },
                     {
-                        label: 'Courses',
+                        label: 'Gear',
                         value: '2'
                     },
                     {
-                        label: 'Tips',
+                        label: 'Website Feedback',
                         value: '3'
                     },
                     {
-                        label: 'Website Feedback',
+                        label: 'Off Topic',
                         value: '4'
                     },
                 ]
