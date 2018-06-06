@@ -247,7 +247,7 @@ footer {
   opacity:0;
   visibility:hidden;
   will-change:opacity, visibility;
-  transition:all .2s ease-in-out;
+  transition:opacity .2s ease-in-out, visibility .2s ease-in-out;
   cursor:pointer;
 
   &.active {

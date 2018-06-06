@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row">
-        <div class="flex flex-row flex-wrap" v-if="lessonPage">
-            <div class="flex flex-column avatar-col">
+        <div class="flex flex-row" v-if="lessonPage">
+            <div class="flex flex-column avatar-col hide-xs-only">
                 <div class="square">
                     <img class="rounded" :src="userAvatar">
                 </div>
@@ -16,13 +16,13 @@
                     <label for="questionInput" class="recordeo">{{ inputLabel }}</label>
                 </div>
             </div>
-            <div class="flex flex-column button-col">
-                <button class="btn"
-                        @click="submitForm">
-                    <span class="text-white"  :class="'bg-' + brand">
-                        <i class="fas fa-envelope mr-1"></i> Send Question
-                    </span>
-                </button>
+            <div class="flex flex-column send-button-col">
+                <a class="btn text-white"
+                   :class="'bg-' + brand"
+                   @click="submitForm">
+                    <i class="fas fa-envelope"></i>
+                    <span class="hide-xs-only ml-1">Send Question</span>
+                </a>
             </div>
         </div>
         <div class="flex flex-column" v-if="!lessonPage">
@@ -127,13 +127,11 @@
     #questionInput.text-white {
         color:#fff;
     }
-    .button-col {
-        flex:0 0 100%;
-        margin-top:$gutterWidth / 2;
+    .send-button-col {
+        flex:0 0 50px;
 
         @include small {
             flex:0 0 175px;
-            margin-top:0;
         }
     }
     .avatar-col {

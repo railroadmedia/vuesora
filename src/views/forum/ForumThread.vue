@@ -30,14 +30,20 @@
                             </span>
                         </button>
 
-                        <!--<button class="btn collapse-150" @click="followPost">-->
-                            <!--<span class="bg-recordeo corners-3"-->
-                                  <!--:class="isFollowed ? 'text-white' : 'inverted text-recordeo'">-->
-                                <!--{{ isFollowed ? 'Followed' : 'Follow' }}-->
-                            <!--</span>-->
-                        <!--</button>-->
+                        <button class="btn collapse-150" @click="followPost">
+                            <span class="bg-recordeo corners-3"
+                                  :class="isFollowed ? 'text-white' : 'inverted text-recordeo'">
+                                {{ isFollowed ? 'Followed' : 'Follow' }}
+                            </span>
+                        </button>
                     </div>
                 </div>
+            </div>
+
+            <div class="flex flex-row pagination-row align-h-right bb-grey-1-1">
+                <pagination :currentPage="currentPage"
+                            :totalPages="totalPages"
+                            @pageChange="handlePageChange"></pagination>
             </div>
 
             <forum-thread-post v-for="(post, i) in posts"
@@ -49,7 +55,7 @@
                                @likePost="handlePostLike"
                                @replyToPost="handleReplyToPost"></forum-thread-post>
 
-            <div class="flex flex-row pagination-row align-h-right bb-light-1">
+            <div class="flex flex-row pagination-row align-h-right bb-grey-1-1">
                 <pagination :currentPage="currentPage"
                             :totalPages="totalPages"
                             @pageChange="handlePageChange"></pagination>

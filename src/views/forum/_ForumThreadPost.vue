@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row ph pv-3 bb-light-1">
+    <div class="flex flex-row ph pv-3 bb-grey-1-1">
         <div class="flex flex-column avatar-column hide-xs-only">
             <div class="square">
                 <img class="rounded" :src="authorAvatar">

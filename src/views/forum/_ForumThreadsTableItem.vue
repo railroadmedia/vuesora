@@ -1,6 +1,6 @@
 <template>
     <a :href="thread.url"
-       class="content-table-row flex flex-row bt-light-1 no-decoration">
+       class="content-table-row flex flex-row bt-grey-1-1 no-decoration">
         <div class="flex flex-column avatar-col align-v-center pl-1">
             <div class="thumb-img square rounded bg-center"
                  :style="'background-image:url(' + thread.authorAvatar + ');'"></div>
@@ -22,7 +22,7 @@
 
                 {{ thread.topic }}
                 <span class="bullet">&#x25CF;</span>
-                {{ thread.replyAmount }} {{ thread.replyAmount === 1 ? 'reply' : 'replies' }}
+                {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
             </p>
         </div>
 
@@ -38,7 +38,7 @@
         </div>
 
         <div class="flex flex-column align-center basic-col text-dark font-italic x-tiny hide-sm-down uppercase">
-            {{ thread.replyAmount }} {{ thread.replyAmount === 1 ? 'reply' : 'replies' }}
+            {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
         </div>
 
         <div class="flex flex-column icon-col align-v-center">
