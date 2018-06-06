@@ -10,13 +10,13 @@
                             All Forums
                         </h1>
                     </a>
-                    <a href="/members/forums?followed=true"
-                       class="no-decoration text-black"
-                       :class="{ 'bb-recordeo-2': isFollowedSection }">
-                        <h1 class="heading pointer">
-                            Followed
-                        </h1>
-                    </a>
+                    <!--<a href="/members/forums?followed=true"-->
+                       <!--class="no-decoration text-black"-->
+                       <!--:class="{ 'bb-recordeo-2': isFollowedSection }">-->
+                        <!--<h1 class="heading pointer">-->
+                            <!--Followed-->
+                        <!--</h1>-->
+                    <!--</a>-->
                 </div>
             </div>
 
@@ -29,7 +29,7 @@
                 <!--</div>-->
             </div>
             <div class="flex flex-column form-group topic-col">
-                <clearable-filter labelText="Select a Filter"
+                <clearable-filter labelText="Select a Category"
                                   :filterOptions="filterOptions"
                                   :initialValue="topicIdMap"
                                   @change="handleFilterChange"></clearable-filter>

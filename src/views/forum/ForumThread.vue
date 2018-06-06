@@ -30,12 +30,12 @@
                             </span>
                         </button>
 
-                        <button class="btn collapse-150" @click="followPost">
-                            <span class="bg-recordeo corners-3"
-                                  :class="isFollowed ? 'text-white' : 'inverted text-recordeo'">
-                                {{ isFollowed ? 'Followed' : 'Follow' }}
-                            </span>
-                        </button>
+                        <!--<button class="btn collapse-150" @click="followPost">-->
+                            <!--<span class="bg-recordeo corners-3"-->
+                                  <!--:class="isFollowed ? 'text-white' : 'inverted text-recordeo'">-->
+                                <!--{{ isFollowed ? 'Followed' : 'Follow' }}-->
+                            <!--</span>-->
+                        <!--</button>-->
                     </div>
                 </div>
             </div>
