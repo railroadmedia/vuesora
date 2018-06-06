@@ -12,11 +12,11 @@
         </label>
         <select :id="elementId"
                 v-model="activeFilterInterface">
-            <option disabled selected style="display:none;" value="all"></option>
+            <option disabled selected style="display:none;" value="0"></option>
             <option v-for="(option, i) in filterOptions"
                     :key="i"
-                    :value="i + 1">
-                {{ option }}
+                    :value="option.value">
+                {{ option.label }}
             </option>
         </select>
     </div>
@@ -44,7 +44,7 @@
         },
         data(){
             return {
-                active: this.initialValue != null,
+                active: this.initialValue != 0,
                 activeFilter: this.initialValue
             }
         },
@@ -52,7 +52,9 @@
 
             parsedLabelText(){
                 if(this.active){
-                    return this.activeFilter;
+                    return this.filterOptions.filter(option =>
+                        option.value === this.activeFilter
+                    )[0].label;
                 }
 
                 return this.labelText;
@@ -63,9 +65,9 @@
                     return this.activeFilter;
                 },
                 set(val){
-                    if(val === 'all'){
+                    if(val === '0'){
                         this.active = false;
-                        this.activeFilter = '';
+                        this.activeFilter = '0';
                     }
                     else {
                         this.active = true;
@@ -81,7 +83,7 @@
 
         methods: {
             closeFilter(){
-                this.activeFilterInterface = 'all';
+                this.activeFilterInterface = '0';
             }
         }
     }

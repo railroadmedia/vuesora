@@ -29,10 +29,10 @@
                 <!--</div>-->
             </div>
             <div class="flex flex-column form-group topic-col">
-                <!--<clearable-filter labelText="Select a Filter"-->
-                                  <!--:filterOptions="['General', 'Courses', 'Tips', 'Website']"-->
-                                  <!--:initialValue="topicIdMap"-->
-                                  <!--@change="handleFilterChange"></clearable-filter>-->
+                <clearable-filter labelText="Select a Filter"
+                                  :filterOptions="filterOptions"
+                                  :initialValue="topicIdMap"
+                                  @change="handleFilterChange"></clearable-filter>
             </div>
         </div>
 
@@ -93,7 +93,25 @@
                 searchTerm: '',
                 filter: 'all',
                 timeout: null,
-                followed: false
+                followed: false,
+                filterOptions: [
+                    {
+                        label: 'General',
+                        value: '1'
+                    },
+                    {
+                        label: 'Courses',
+                        value: '2'
+                    },
+                    {
+                        label: 'Tips',
+                        value: '3'
+                    },
+                    {
+                        label: 'Website Feedback',
+                        value: '4'
+                    },
+                ]
             }
         },
         computed: {
@@ -140,7 +158,7 @@
                     return urlParams["category_ids[]"];
                 }
 
-                return 0;
+                return '0';
             }
 
         },
@@ -165,10 +183,17 @@
             handleFilterChange(payload) {
                 let urlParams = QueryString.parse(location.search);
 
-                urlParams.category_ids = [payload.value];
+                if(payload.value != 0){
+                    urlParams.category_ids = [payload.value];
 
-                window.location.href = location.protocol + '//' + location.host +
-                    location.pathname + '?' + QueryString.stringify(urlParams, {arrayFormat: 'bracket'});
+                    window.location.href = location.protocol + '//' + location.host +
+                        location.pathname + '?' + QueryString.stringify(urlParams, {arrayFormat: 'bracket'});
+                }
+                else {
+                    window.location.href = location.protocol + '//' + location.host +
+                        location.pathname
+                }
+
             }
         },
         watch: {
