@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-column bg-white shadow corners-3 content-table">
-        <div class="flex flex-row flex-wrap pa-3 align-v-center">
-            <div class="flex flex-column align-v-center">
+        <div class="flex flex-row flex-wrap ph-3 pt-3 align-v-center">
+            <div class="flex flex-column mb-3 align-v-center">
                 <div class="flex flex-row">
                     <a href="/members/forums"
                        class="no-decoration text-black mr-3"
@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-column search-box">
+            <div class="flex flex-column mb-3 search-box">
                 <!--<div class="form-group">-->
                 <!--<input id="threadSearch"-->
                 <!--type="text"-->
@@ -28,8 +28,8 @@
                 <!--<label for="threadSearch" class="recordeo">Search</label>-->
                 <!--</div>-->
             </div>
-            <div class="flex flex-column form-group topic-col">
-                <clearable-filter labelText="Select a Category"
+            <div class="flex flex-column mb-3 form-group topic-col">
+                <clearable-filter labelText="Select a Topic"
                                   :filterOptions="filterOptions"
                                   :initialValue="topicIdMap"
                                   @change="handleFilterChange"></clearable-filter>

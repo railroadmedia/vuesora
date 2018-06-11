@@ -160,6 +160,36 @@ export default class Requests {
     }
 
     /**
+     * Like a Comment or Reply
+     *
+     * @static
+     * @param {object} id - the comment ID to like
+     * @returns {Promise} resolved promise with the response object
+     */
+    static likeComment(id) {
+        return axios.put('/railcontent/comment-like/', { 'comment_id': id })
+            .then(response => {
+                return response
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Un-Like a Comment or Reply
+     *
+     * @static
+     * @param {object} id - the comment ID to unlike
+     * @returns {Promise} resolved promise with the response object
+     */
+    static unlikeComment(id) {
+        return axios.delete('/railcontent/comment-like/', { 'comment_id': id })
+            .then(response => {
+                return response
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Delete a Comment or Reply
      *
      * @static
@@ -245,6 +275,19 @@ export default class Requests {
         })
             .then(response => {
                 return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * @static
+     * @param {object} id - thread id
+     * @returns {Promise} resolved promise with the response object
+     */
+    static deleteForumsPost(id) {
+        return axios.delete('/forums/post/delete/' + id)
+            .then(response => {
+                return response
             })
             .catch(Requests.handleError);
     }

@@ -209,12 +209,22 @@
                 let likedPost = this.comments[index];
 
                 if(payload.isLiked){
+                    Requests.unlikeComment(payload.id)
+                        .then(response => {
+
+                        });
+
                     likedPost.like_users = likedPost.like_users.filter(user =>
                         user['display_name'] !== this.currentUser.display_name
                     );
                     likedPost.like_count -= 1;
                 }
                 else {
+                    Requests.likeComment(payload.id)
+                        .then(response => {
+
+                        });
+
                     likedPost.like_users.push({
                         display_name: this.currentUser.display_name,
                         id: this.currentUser.id

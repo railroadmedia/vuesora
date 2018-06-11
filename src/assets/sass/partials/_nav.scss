@@ -2,7 +2,7 @@
 
 body {
   padding-top:40px;
-  padding-bottom:40px;
+  padding-bottom:60px;
 
   @include medium {
     padding-top:50px;
@@ -221,12 +221,12 @@ footer {
   z-index:97;
 
   .footer-col {
-    height:20px;
+    height:30px;
     font-size:13px;
     flex:1 1 100%;
 
     @include small {
-      height:40px;
+      height:60px;
       flex:0 0 auto;
     }
 

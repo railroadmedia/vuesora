@@ -73,17 +73,17 @@
                 </div>
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center align-h-right">
-                        <p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
-                           @click="reportPost">
-                            Report
-                        </p>
+                        <!--<p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"-->
+                           <!--@click="reportPost">-->
+                            <!--Report-->
+                        <!--</p>-->
 
-                        <p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
-                           @click="hidePost">
-                            Hide
-                        </p>
+                        <!--<p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"-->
+                           <!--@click="hidePost">-->
+                            <!--Hide-->
+                        <!--</p>-->
 
-                        <p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        <p v-if="canEdit" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
                            @click="deletePost">
                             Delete
                         </p>
@@ -178,7 +178,7 @@
         },
         computed: {
             canEdit(){
-                return this.currentUser.id === this.authorId;
+                return this.currentUser.id === this.authorId || this.currentUser.isAdmin;
             },
 
             userLikeString(){
@@ -304,8 +304,6 @@
                             this.$emit('deletePost', {
                                 id: this.id
                             });
-
-                            Toasts.success('Post ' + this.id + ' has been deleted.');
 
                             notification.close();
                         }),

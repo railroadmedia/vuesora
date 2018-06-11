@@ -4,7 +4,7 @@
             <div class="flex flex-row pa-3 flex-wrap align-v-center">
                 <div class="flex flex-column mb-1 xs-12 sm-6">
                     <h1 class="heading">
-                        <a href="/members/forums" class="no-decoration mr-1">
+                        <a href="/members/forums" class="no-decoration mr-1 back-arrow">
                             <i class="fas fa-arrow-circle-left text-light"></i>
                         </a>
 
@@ -36,11 +36,17 @@
                                 <!--{{ isFollowed ? 'Followed' : 'Follow' }}-->
                             <!--</span>-->
                         <!--</button>-->
+
+                        <button class="btn collapse-150" @click="scrollToReply">
+                            <span class="bg-recordeo corners-3 inverted text-recordeo">
+                                  Add Reply
+                            </span>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-row pagination-row align-h-right bb-grey-1-1">
+            <div class="flex flex-row pagination-row align-h-right bb-grey-1-1" v-if="totalPages > 1">
                 <pagination :currentPage="currentPage"
                             :totalPages="totalPages"
                             @pageChange="handlePageChange"></pagination>
@@ -54,9 +60,10 @@
                                :currentUser="currentUser"
                                :isLocked="thread.isLocked"
                                @likePost="handlePostLike"
+                               @deletePost="handlePostDelete"
                                @replyToPost="handleReplyToPost"></forum-thread-post>
 
-            <div class="flex flex-row pagination-row align-h-right bb-grey-1-1">
+            <div class="flex flex-row pagination-row align-h-right bb-grey-1-1" v-if="totalPages > 1">
                 <pagination :currentPage="currentPage"
                             :totalPages="totalPages"
                             @pageChange="handlePageChange"></pagination>
@@ -97,6 +104,7 @@
     import Pagination from '../../components/Pagination.vue';
     import Requests from '../../assets/js/classes/requests';
     import TextEditor from '../../components/TextEditor.vue';
+    import Toasts from '../../assets/js/classes/toasts';
     import * as QueryString from 'query-string';
 
     export default {
@@ -167,6 +175,17 @@
                 // this.getPosts();
             },
 
+            handlePostDelete(payload) {
+                Requests.deleteForumsPost(payload.id)
+                    .then(response => {
+                        Toasts.success('Post ' + payload.id + ' has been deleted.');
+
+                        this.posts = this.posts.filter(post =>
+                            post.id !== payload.id
+                        )
+                    })
+            },
+
             handlePostLike(payload) {
                 let index = this.posts.map(post => post.id).indexOf(payload.id);
                 let likedPost = this.posts[index];
@@ -200,7 +219,7 @@
                     '</blockquote>' +
                     '<br><p></p>';
 
-                window.scrollTo(0, document.getElementById('replyContainer').offsetTop);
+                this.scrollToReply();
                 this.postReplyInterface += blockQuoteHtmlString;
             },
 
@@ -236,11 +255,26 @@
                     );
 
                 this.isFollowed = !this.isFollowed;
+            },
+
+            scrollToReply(){
+                window.scrollTo(0, document.getElementById('replyContainer').offsetTop);
             }
         }
     }
 </script>
 <style lang="scss">
+    .back-arrow i {
+        transition:color .1s ease-in-out;
+        will-change:color;
+    }
+
+    .back-arrow:hover {
+        i {
+            color:#000;
+        }
+    }
+
     .reply-like {
         min-width: 50px;
     }

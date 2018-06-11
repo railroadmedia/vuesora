@@ -77,7 +77,6 @@
                             </span>
                         </p>
 
-                        <!--TODO: UNCOMMENT ME WHEN LIKING IS READY-->
                         <!--<p v-if="!isUsersPost"-->
                            <!--class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"-->
                            <!--:class="isLiked ? 'text-recordeo' : 'text-dark'"-->
@@ -88,10 +87,10 @@
                             <!--</span>-->
                         <!--</p>-->
 
-                        <p class="x-tiny text-dark uppercase font-italic"
-                           v-html="userLikeString">
-                            {{ userLikeString }}
-                        </p>
+                        <!--<p class="x-tiny text-dark uppercase font-italic"-->
+                           <!--v-html="userLikeString">-->
+                            <!--{{ userLikeString }}-->
+                        <!--</p>-->
                     </div>
                 </div>
             </div>
@@ -254,29 +253,35 @@
             },
 
             userLikeString(){
-                let userLikes = this.like_users.map(user =>
-                    user['display_name']
-                );
-                let userLikesString = userLikes.join(', ');
-                let additionalUserLikes = ' like this';
-
-                if(this.like_count > 3){
-                    additionalUserLikes = ' & ' + String(this.like_count - 3) + ' others like this';
-                }
-
-                if(this.isLiked && this.like_count > 3){
-                    if(this.like_count > 3){
-                        userLikesString =  'You, ' + userLikes[0] + ', ' + userLikes[1];
-                    }
-                    else {
-                        userLikesString = 'You, ' + userLikes.join(', ');
-                    }
-                }
+                // let userLikes = this.like_users.map(user =>
+                //     user['display_name']
+                // );
+                // let userLikesString = userLikes.join(', ');
+                // let additionalUserLikes = ' like this';
+                //
+                // if(this.like_count > 3){
+                //     additionalUserLikes = ' & ' + String(this.like_count - 3) + ' others like this';
+                // }
+                //
+                // if(this.isLiked && this.like_count > 3){
+                //     if(this.like_count > 3){
+                //         userLikesString =  'You, ' + userLikes[0] + ', ' + userLikes[1];
+                //     }
+                //     else {
+                //         userLikesString = 'You, ' + userLikes.join(', ');
+                //     }
+                // }
+                //
+                // if(this.like_count > 0){
+                //
+                //     return '<span class="font-bold">' + userLikesString + '</span>' + additionalUserLikes;
+                // }
 
                 if(this.like_count > 0){
-
-                    return '<span class="font-bold">' + userLikesString + '</span>' + additionalUserLikes;
+                    return String(this.like_count) + 'users like this';
                 }
+
+                return 'Be the first to like this!';
             },
 
             commentUrl(){
