@@ -117,6 +117,12 @@
       flex:0 0 320px;
     }
   }
+
+  .go-to-button {
+    @include xSmallOnly {
+      max-width:100%;
+    }
+  }
 }
 
 .thumbnail-col {
