@@ -209,28 +209,19 @@
                 let likedPost = this.comments[index];
 
                 if(payload.isLiked){
-                    Requests.unlikeComment(payload.id)
-                        .then(response => {
-
-                        });
-
-                    likedPost.like_users = likedPost.like_users.filter(user =>
-                        user['display_name'] !== this.currentUser.display_name
-                    );
                     likedPost.like_count -= 1;
+
+                    Requests.unlikeComment(payload.id)
+                        .then(response => {});
                 }
                 else {
-                    Requests.likeComment(payload.id)
-                        .then(response => {
-
-                        });
-
-                    likedPost.like_users.push({
-                        display_name: this.currentUser.display_name,
-                        id: this.currentUser.id
-                    });
                     likedPost.like_count += 1;
+
+                    Requests.likeComment(payload.id)
+                        .then(response => {});
                 }
+
+                likedPost.isLiked = !likedPost.isLiked;
             },
 
             handleReplyLike(payload){
@@ -240,16 +231,19 @@
                 let likedPostReply = likedPostReplies[likedPostReplyIndex];
 
                 if(payload.isLiked){
-                    likedPostReply.like_users = likedPostReply.like_users.filter(user =>
-                        user['display_name'] !== this.currentUser.display_name
-                    )
+                    likedPostReply.like_count -= 1;
+
+                    Requests.unlikeComment(payload.id)
+                        .then(response => {});
                 }
                 else {
-                    likedPostReply.like_users.push({
-                        display_name: this.currentUser.display_name,
-                        id: this.currentUser.id
-                    });
+                    likedPostReply.like_count += 1;
+
+                    Requests.likeComment(payload.id)
+                        .then(response => {});
                 }
+                
+                likedPostReply.isLiked = !likedPostReply.isLiked;
             },
 
             handleCommentDelete(payload){
