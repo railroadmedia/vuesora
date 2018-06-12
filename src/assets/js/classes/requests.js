@@ -167,7 +167,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response object
      */
     static likeComment(id) {
-        return axios.put('/railcontent/comment-like/', { 'comment_id': id })
+        return axios.put('/railcontent/comment-like', { 'comment_id': id })
             .then(response => {
                 return response
             })
@@ -182,7 +182,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response object
      */
     static unlikeComment(id) {
-        return axios.delete('/railcontent/comment-like/', { 'comment_id': id })
+        return axios.delete('/railcontent/comment-like', { 'comment_id': id })
             .then(response => {
                 return response
             })

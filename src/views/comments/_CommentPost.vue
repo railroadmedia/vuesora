@@ -262,11 +262,11 @@
                 let suffixString = ' like this';
 
                 for(let i = 0; i < this.like_users.length; i++){
-                    let nameExistsOrIsntCurrentUser = this.like_users[i]['name'] != null
-                        && this.like_users[i]['name'] !== this.currentUser.name;
+                    let nameExistsOrIsntCurrentUser = this.like_users[i]['display_name'] != null
+                        && this.like_users[i]['display_name'] !== this.currentUser.name;
 
                     if(nameExistsOrIsntCurrentUser){
-                        userNames.push(this.like_users[i]['name']);
+                        userNames.push(this.like_users[i]['display_name']);
                     }
                 }
 
