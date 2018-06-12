@@ -320,7 +320,21 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static markNotificationAsRead(id) {
-        return axios.post('/notifications/read/' + id)
+        return axios.post('/members/notifications/mark-read/' + id)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Mark a specific notification as read
+     *
+     * @static
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static markNotificationAsUnRead(id) {
+        return axios.post('/members/notifications/mark-unread/' + id)
             .then(response => {
                 return response.data
             })
@@ -334,7 +348,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static markAllNotificationsAsRead() {
-        return axios.post('/notifications/read/all')
+        return axios.post('/members/notifications/mark-all-read')
             .then(response => {
                 return response.data
             })
