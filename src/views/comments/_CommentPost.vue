@@ -77,20 +77,20 @@
                             </span>
                         </p>
 
-                        <!--<p v-if="!isUsersPost"-->
-                           <!--class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"-->
-                           <!--:class="isLiked ? 'text-recordeo' : 'text-dark'"-->
-                           <!--@click="likeComment">-->
-                            <!--<i class="fas fa-thumbs-up"></i>-->
-                            <!--<span class="hide-xs-only">-->
-                                <!--{{ isLiked ? 'Liked' : 'Like' }}-->
-                            <!--</span>-->
-                        <!--</p>-->
+                        <p v-if="!isUsersPost"
+                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                           :class="is_liked ? 'text-recordeo' : 'text-dark'"
+                           @click="likeComment">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span class="hide-xs-only">
+                                {{ is_liked ? 'Liked' : 'Like' }}
+                            </span>
+                        </p>
 
-                        <!--<p class="x-tiny text-dark uppercase font-italic"-->
-                           <!--v-html="userLikeString">-->
-                            <!--{{ userLikeString }}-->
-                        <!--</p>-->
+                        <p class="x-tiny text-dark uppercase font-italic"
+                           v-html="userLikeString">
+                            {{ userLikeString }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -193,6 +193,10 @@
                 type: String,
                 default: () => ''
             },
+            is_liked: {
+                type: Boolean,
+                default: () => false
+            },
             like_count: {
                 type: Number,
                 default: () => 0
@@ -253,32 +257,39 @@
             },
 
             userLikeString(){
-                // let userLikes = this.like_users.map(user =>
-                //     user['display_name']
-                // );
-                // let userLikesString = userLikes.join(', ');
-                // let additionalUserLikes = ' like this';
-                //
-                // if(this.like_count > 3){
-                //     additionalUserLikes = ' & ' + String(this.like_count - 3) + ' others like this';
-                // }
-                //
-                // if(this.isLiked && this.like_count > 3){
-                //     if(this.like_count > 3){
-                //         userLikesString =  'You, ' + userLikes[0] + ', ' + userLikes[1];
-                //     }
-                //     else {
-                //         userLikesString = 'You, ' + userLikes.join(', ');
-                //     }
-                // }
-                //
-                // if(this.like_count > 0){
-                //
-                //     return '<span class="font-bold">' + userLikesString + '</span>' + additionalUserLikes;
-                // }
+                let userNames = [];
+                let userNameString;
+                let suffixString = ' like this';
 
-                if(this.like_count > 0){
-                    return String(this.like_count) + 'users like this';
+                for(let i = 0; i < this.like_users.length; i++){
+                    let nameExistsOrIsntCurrentUser = this.like_users[i]['name'] != null
+                        && this.like_users[i]['name'] !== this.currentUser.name;
+
+                    if(nameExistsOrIsntCurrentUser){
+                        userNames.push(this.like_users[i]['name']);
+                    }
+                }
+
+                if(userNames.length){
+                    userNameString = userNames.join(', ');
+                }
+
+                if(this.like_count > 3){
+                    suffixString = ' & ' + String(this.like_count - 3) + ' others like this';
+                }
+                else if(this.like_count === 0) {
+                    suffixString = '';
+                }
+
+                if(this.is_liked){
+                    userNames.splice((userNames.length - 1), 1);
+
+                    return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                }
+                else {
+                    if(this.like_count > 0){
+                        return '<span class="font-bold">' + userNameString + '</span>' + suffixString;
+                    }
                 }
 
                 return 'Be the first to like this!';
@@ -332,7 +343,7 @@
             likeComment(){
                 this.$emit('likeComment', {
                     id: this.id,
-                    isLiked: this.isLiked
+                    isLiked: this.is_liked
                 });
             },
 
