@@ -81,11 +81,19 @@
                     case 'comment-reply':
                         return 'replied to your comment on:';
                     case 'comment-like':
-                        return 'liked your comment on:';
+                        if (this.userName == '1') {
+                            return 'person liked your comment on:';
+                        } else {
+                            return 'people liked your comment on:';
+                        }
                     case 'forum-reply':
                         return 'replied to your post in:';
                     case 'forum-like':
-                        return 'liked your post in:';
+                        if (this.userName == '1') {
+                            return 'person liked your post in:';
+                        } else {
+                            return 'people liked your post in:';
+                        }
                     case 'thread-reply':
                         return 'replied to a thread you follow:';
                 }
