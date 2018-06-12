@@ -45,6 +45,7 @@
     import NotificationsTableRow from './_NotificationsTableRow.vue';
     import Pagination from '../../components/Pagination.vue';
     import Requests from '../../assets/js/classes/requests';
+    import * as QueryString from 'query-string';
 
     export default {
         name: 'notifications-table',
@@ -68,36 +69,55 @@
             notificationsEndpoint: {
                 type: String,
                 default: () => ''
+            },
+            notificationCount: {
+                type: Number,
+                default: () => 1
             }
         },
-        data(){
-            return {
-                currentPage: 1,
-                totalPages: 1
+        computed: {
+            totalPages() {
+                return Math.ceil(this.notificationCount / 20);
+            },
+            currentPage() {
+                const urlParams = QueryString.parse(location.search);
+
+                if (urlParams.page != null) {
+                    return Number(urlParams.page);
+                }
+
+                return 1;
             }
         },
         methods: {
-            markAllAsRead(){
+            markAllAsRead() {
                 // Mark all of the rows as read
                 const notificationRows = document.querySelectorAll('.content-table-row');
                 Array.from(notificationRows).forEach(row => {
-                    if(!row.classList.contains('is-read')){
+                    if (!row.classList.contains('is-read')) {
                         row.classList.add('is-read');
                     }
                 });
 
                 // Send request to server
                 Requests.markAllNotificationsAsRead()
-                    .then(resolved => {});
+                    .then(resolved => {
+                    });
             },
 
-            markAsRead(payload){
+            markAsRead(payload) {
                 Requests.markNotificationAsRead(payload.id)
-                    .then(resolved => {});
+                    .then(resolved => {
+                    });
             },
 
-            handlePageChange(payload){
-                this.currentPage = payload.page;
+            handlePageChange(payload) {
+                let urlParams = QueryString.parse(location.search);
+
+                urlParams.page = payload.page;
+
+                window.location.href = location.protocol + '//' + location.host +
+                    location.pathname + '?' + QueryString.stringify(urlParams);
             }
         }
     }
