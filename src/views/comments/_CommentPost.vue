@@ -263,7 +263,7 @@
 
                 for(let i = 0; i < this.like_users.length; i++){
                     let nameExistsOrIsntCurrentUser = this.like_users[i]['display_name'] != null
-                        && this.like_users[i]['display_name'] !== this.currentUser.name;
+                        && this.like_users[i]['display_name'] !== this.currentUser.display_name;
 
                     if(nameExistsOrIsntCurrentUser){
                         userNames.push(this.like_users[i]['display_name']);
@@ -284,7 +284,7 @@
                 if(this.is_liked){
                     userNames.splice((userNames.length - 1), 1);
 
-                    return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                    return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
                 }
                 else {
                     if(this.like_count > 0){

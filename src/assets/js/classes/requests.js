@@ -163,11 +163,11 @@ export default class Requests {
      * Like a Comment or Reply
      *
      * @static
-     * @param {object} id - the comment ID to like
+     * @param {number} id - the comment ID to like
      * @returns {Promise} resolved promise with the response object
      */
     static likeComment(id) {
-        return axios.put('/railcontent/comment-like', { 'comment_id': id })
+        return axios.put('/railcontent/comment-like/' + id)
             .then(response => {
                 return response
             })
@@ -178,11 +178,11 @@ export default class Requests {
      * Un-Like a Comment or Reply
      *
      * @static
-     * @param {object} id - the comment ID to unlike
+     * @param {number} id - the comment ID to unlike
      * @returns {Promise} resolved promise with the response object
      */
     static unlikeComment(id) {
-        return axios.delete('/railcontent/comment-like', { 'comment_id': id })
+        return axios.delete('/railcontent/comment-like/' + id)
             .then(response => {
                 return response
             })
@@ -193,7 +193,7 @@ export default class Requests {
      * Delete a Comment or Reply
      *
      * @static
-     * @param {object} id - the comment ID to delete
+     * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
     static deleteComment(id) {
@@ -208,7 +208,7 @@ export default class Requests {
      * Like a forum thread
      *
      * @static
-     * @param {object} id - the comment ID to delete
+     * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
     static likeForumPost(id) {
@@ -223,7 +223,7 @@ export default class Requests {
      * Unlike a forum thread
      *
      * @static
-     * @param {object} id - the comment ID to delete
+     * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
     static unlikeForumPost(id) {
@@ -236,7 +236,7 @@ export default class Requests {
 
     /**
      * @static
-     * @param {object} id - thread id
+     * @param {number} id - thread id
      * @returns {Promise} resolved promise with the response.data object
      */
     static followForumsThread(id) {
@@ -249,7 +249,7 @@ export default class Requests {
 
     /**
      * @static
-     * @param {object} id - thread id
+     * @param {number} id - thread id
      * @param {boolean} pinned
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -265,7 +265,7 @@ export default class Requests {
 
     /**
      * @static
-     * @param {object} id - thread id
+     * @param {number} id - thread id
      * @param {boolean} locked
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -281,7 +281,7 @@ export default class Requests {
 
     /**
      * @static
-     * @param {object} id - thread id
+     * @param {number} id - thread id
      * @returns {Promise} resolved promise with the response object
      */
     static deleteForumsPost(id) {
@@ -317,6 +317,7 @@ export default class Requests {
      * Mark a specific notification as read
      *
      * @static
+     * @param {number} id - notification id
      * @returns {Promise} resolved promise with the response.data object
      */
     static markNotificationAsRead(id) {
@@ -328,9 +329,10 @@ export default class Requests {
     }
 
     /**
-     * Mark a specific notification as read
+     * Mark a specific notification as unread
      *
      * @static
+     * @param {number} id - notification id
      * @returns {Promise} resolved promise with the response.data object
      */
     static markNotificationAsUnRead(id) {

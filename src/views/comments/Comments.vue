@@ -221,7 +221,7 @@
                         .then(response => {});
                 }
 
-                likedPost.isLiked = !likedPost.isLiked;
+                likedPost.is_liked = !likedPost.is_liked;
             },
 
             handleReplyLike(payload){
@@ -242,8 +242,8 @@
                     Requests.likeComment(payload.id)
                         .then(response => {});
                 }
-                
-                likedPostReply.isLiked = !likedPostReply.isLiked;
+
+                likedPostReply.is_liked = !likedPostReply.is_liked;
             },
 
             handleCommentDelete(payload){

@@ -28,7 +28,7 @@
             </p>
         </div>
 
-        <notifications-table-row v-for="(item, i) in notifications"
+        <notifications-table-row v-for="(item, i) in notificationsArray"
                                  :key="item.id"
                                  v-bind="item"
                                  @notificationRead="markAsRead"></notifications-table-row>
@@ -75,6 +75,11 @@
                 default: () => 1
             }
         },
+        data(){
+            return {
+                notificationsArray: this.notifications
+            }
+        },
         computed: {
             totalPages() {
                 return Math.ceil(this.notificationCount / 20);
@@ -106,9 +111,20 @@
             },
 
             markAsRead(payload) {
-                Requests.markNotificationAsRead(payload.id)
-                    .then(resolved => {
-                    });
+                let index = this.notifications.map(notification => notification.id).indexOf(payload.id);
+
+                if(payload.isRead){
+                    Requests.markNotificationAsUnRead(payload.id)
+                        .then(resolved => {
+                        });
+                }
+                else {
+                    Requests.markNotificationAsRead(payload.id)
+                        .then(resolved => {
+                        });
+                }
+
+                this.notificationsArray[index].isRead = !this.notificationsArray[index].isRead;
             },
 
             handlePageChange(payload) {

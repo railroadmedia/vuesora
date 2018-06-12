@@ -209,7 +209,7 @@
                 if(this.isLiked){
                     userNames.splice((userNames.length - 1), 1);
 
-                    return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                    return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
                 }
                 else {
                     if(this.totalLikes > 0){

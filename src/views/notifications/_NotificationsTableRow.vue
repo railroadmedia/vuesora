@@ -57,10 +57,7 @@
                 type: String,
                 default: () => ''
             },
-            userName: {
-                type: String,
-                default: () => ''
-            },
+            userName: '',
             linkedContent: {
                 type: Object,
                 default: () => {
@@ -102,12 +99,10 @@
         methods: {
             markAsRead(event){
                 const thisRow = event.target.parentElement.parentElement;
-                if(!thisRow.classList.contains('is-read')){
-                    thisRow.classList.add('is-read');
-                }
 
                 this.$emit('notificationRead', {
-                    id: this.id
+                    id: this.id,
+                    isRead: this.isRead
                 });
             }
         }
