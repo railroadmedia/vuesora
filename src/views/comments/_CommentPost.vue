@@ -231,7 +231,7 @@
                 showAllReplies: false,
                 reply: '',
                 loading: false,
-                isLiked: this.isLiked
+                isLiked: this.is_liked
             }
         },
         computed: {
