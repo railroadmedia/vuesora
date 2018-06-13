@@ -52,7 +52,9 @@
                       :currentUser="currentUser"
                       :pinned="true"
                       @likeComment="handleCommentLike"
-                      @likeReply="handleReplyLike"></comment-post>
+                      @likeReply="handleReplyLike"
+                      @deleteComment="handleCommentDelete"
+                      @deleteReply="handleReplyDelete"></comment-post>
 
         <comment-post v-for="(comment, i) in comments"
                       :key="i"
@@ -206,7 +208,7 @@
 
             handleCommentLike(payload){
                 let index = this.comments.map(comment => comment.id).indexOf(payload.id);
-                let likedPost = this.comments[index];
+                let likedPost = payload.isPinned ? this.pinnedComment : this.comments[index];
 
                 if(payload.isLiked){
                     likedPost.like_count -= 1;
@@ -220,15 +222,14 @@
                     Requests.likeComment(payload.id)
                         .then(response => {});
                 }
-
-                likedPost.is_liked = !likedPost.is_liked;
             },
 
             handleReplyLike(payload){
                 let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
-                let likedPostReplies = this.comments[index].replies;
+                let likedPostReplies = payload.isPinned ? this.pinnedComment.replies : this.comments[index].replies;
                 let likedPostReplyIndex = likedPostReplies.map(reply => reply.id).indexOf(payload.id);
                 let likedPostReply = likedPostReplies[likedPostReplyIndex];
+
 
                 if(payload.isLiked){
                     likedPostReply.like_count -= 1;
@@ -242,8 +243,6 @@
                     Requests.likeComment(payload.id)
                         .then(response => {});
                 }
-
-                likedPostReply.is_liked = !likedPostReply.is_liked;
             },
 
             handleCommentDelete(payload){

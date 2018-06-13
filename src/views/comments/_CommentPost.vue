@@ -79,11 +79,11 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="is_liked ? 'text-recordeo' : 'text-dark'"
+                           :class="isLiked ? 'text-recordeo' : 'text-dark'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
-                                {{ is_liked ? 'Liked' : 'Like' }}
+                                {{ isLiked ? 'Liked' : 'Like' }}
                             </span>
                         </p>
 
@@ -134,6 +134,7 @@
                                :key="i"
                                v-bind="reply"
                                :currentUser="currentUser"
+                               :pinned="pinned"
                                @likeReply="likeReply"
                                @deleteReply="deleteReply"></comment-reply>
             </transition-group>
@@ -229,7 +230,8 @@
                 replying: false,
                 showAllReplies: false,
                 reply: '',
-                loading: false
+                loading: false,
+                isLiked: this.isLiked
             }
         },
         computed: {
@@ -248,12 +250,6 @@
                 }
 
                 return 'comment' + this.id
-            },
-
-            isLiked(){
-                return this.like_users.filter(user =>
-                    user.display_name === this.currentUser.display_name
-                ).length > 0;
             },
 
             userLikeString(){
@@ -281,7 +277,7 @@
                     suffixString = '';
                 }
 
-                if(this.is_liked){
+                if(this.isLiked){
                     userNames.splice((userNames.length - 1), 1);
 
                     return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
@@ -341,9 +337,12 @@
             },
 
             likeComment(){
+                this.isLiked = !this.isLiked;
+
                 this.$emit('likeComment', {
                     id: this.id,
-                    isLiked: this.is_liked
+                    isLiked: this.is_liked,
+                    isPinned: this.pinned
                 });
             },
 

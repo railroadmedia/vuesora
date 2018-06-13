@@ -57,11 +57,11 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="is_liked ? 'text-recordeo' : 'text-dark'"
+                           :class="isLiked ? 'text-recordeo' : 'text-dark'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
-                                {{ is_liked ? 'Liked' : 'Like' }}
+                                {{ isLiked ? 'Liked' : 'Like' }}
                             </span>
                         </p>
 
@@ -128,6 +128,10 @@
                 type: Array,
                 default: () => []
             },
+            pinned: {
+                type: Boolean,
+                default: () => false
+            },
             user: {
                 type: Object,
                 default: () => {
@@ -139,13 +143,12 @@
                 }
             }
         },
+        data(){
+            return {
+                isLiked: this.is_liked
+            }
+        },
         computed: {
-            isLiked(){
-                return this.like_users.filter(user =>
-                    user.display_name === this.currentUser.display_name
-                ).length > 0;
-            },
-
             userLikeString(){
                 let userNames = [];
                 let userNameString;
@@ -171,7 +174,7 @@
                     suffixString = '';
                 }
 
-                if(this.is_liked){
+                if(this.isLiked){
                     userNames.splice((userNames.length - 1), 1);
 
                     return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
@@ -199,9 +202,12 @@
         },
         methods: {
             likeComment(){
+                this.isLiked = !this.isLiked;
+
                 this.$emit('likeReply', {
                     id: this.id,
-                    isLiked: this.isLiked
+                    isLiked: this.isLiked,
+                    isPinned: this.pinned
                 });
             },
 
