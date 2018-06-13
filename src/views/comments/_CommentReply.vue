@@ -18,7 +18,7 @@
                 <div class="flex flex-column align-h-right align-v-center flex-auto">
                     <div class="flex flex-row">
                         <span class="tiny no-decoration text-dark pointer mr-1"
-                              v-if="isUsersPost">
+                              v-if="(isUsersPost || isCurrentUserAdmin)">
                             <i class="fas fa-trash"
                                @click="deleteComment"></i>
                         </span>
@@ -199,7 +199,11 @@
 
             isUsersPost(){
                 return String(this.currentUser.id) === String(this.user.id);
-            }
+            },
+
+            isCurrentUserAdmin(){
+                return this.currentUser.isAdmin === true;
+            },
         },
         methods: {
             likeComment(){

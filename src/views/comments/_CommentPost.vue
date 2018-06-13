@@ -26,7 +26,7 @@
                         <!--</span>-->
 
                         <span class="tiny no-decoration text-dark pointer mr-1"
-                              v-if="isUsersPost">
+                              v-if="(isUsersPost || isCurrentUserAdmin)">
                             <i class="fas fa-trash"
                                @click="deleteComment"></i>
                         </span>
@@ -79,11 +79,11 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? 'text-recordeo' : 'text-dark'"
+                           :class="is_liked ? 'text-recordeo' : 'text-dark'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
-                                {{ isLiked ? 'Liked' : 'Like' }}
+                                {{ is_liked ? 'Liked' : 'Like' }}
                             </span>
                         </p>
 
@@ -134,7 +134,6 @@
                                :key="i"
                                v-bind="reply"
                                :currentUser="currentUser"
-                               :pinned="pinned"
                                @likeReply="likeReply"
                                @deleteReply="deleteReply"></comment-reply>
             </transition-group>
@@ -230,8 +229,7 @@
                 replying: false,
                 showAllReplies: false,
                 reply: '',
-                loading: false,
-                isLiked: this.is_liked
+                loading: false
             }
         },
         computed: {
@@ -252,6 +250,12 @@
                 return 'comment' + this.id
             },
 
+            isLiked(){
+                return this.like_users.filter(user =>
+                    user.display_name === this.currentUser.display_name
+                ).length > 0;
+            },
+
             userLikeString(){
                 let userNames = [];
                 let userNameString;
@@ -259,7 +263,7 @@
 
                 for(let i = 0; i < this.like_users.length; i++){
                     let nameExistsOrIsntCurrentUser = this.like_users[i]['display_name'] != null
-                        && this.like_users[i]['display_name'] !== this.currentUser.display_name;
+                        && this.like_users[i]['display_name'] !== this.currentUser.name;
 
                     if(nameExistsOrIsntCurrentUser){
                         userNames.push(this.like_users[i]['display_name']);
@@ -277,10 +281,10 @@
                     suffixString = '';
                 }
 
-                if(this.isLiked){
+                if(this.is_liked){
                     userNames.splice((userNames.length - 1), 1);
 
-                    return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
+                    return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
                 }
                 else {
                     if(this.like_count > 0){
@@ -301,7 +305,11 @@
 
             isUsersPost(){
                 return String(this.currentUser.id) === String(this.user.id);
-            }
+            },
+
+            isCurrentUserAdmin(){
+                return this.currentUser.isAdmin === true;
+            },
         },
         methods: {
             replyToComment(){
@@ -337,12 +345,10 @@
             },
 
             likeComment(){
-                this.isLiked = !this.isLiked;
-
                 this.$emit('likeComment', {
                     id: this.id,
                     isLiked: this.is_liked,
-                    isPinned: this.pinned
+                    pinned: this.pinned,
                 });
             },
 
