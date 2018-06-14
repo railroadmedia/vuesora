@@ -10,13 +10,13 @@
                             All Forums
                         </h1>
                     </a>
-                    <!--<a href="/members/forums?followed=true"-->
-                       <!--class="no-decoration text-black"-->
-                       <!--:class="{ 'bb-recordeo-2': isFollowedSection }">-->
-                        <!--<h1 class="heading pointer">-->
-                            <!--Followed-->
-                        <!--</h1>-->
-                    <!--</a>-->
+                    <a href="/members/forums?followed=true"
+                       class="no-decoration text-black"
+                       :class="{ 'bb-recordeo-2': isFollowedSection }">
+                        <h1 class="heading pointer">
+                            Followed
+                        </h1>
+                    </a>
                 </div>
             </div>
 
