@@ -50,13 +50,16 @@ body {
 
   .header-button {
     flex:0 0 40px;
+    max-width:40px;
 
     @include medium {
       flex:0 0 50px;
+      max-width:50px;
     }
 
     @include large {
       flex:0 0 65px;
+      max-width:65px;
     }
 
   }
