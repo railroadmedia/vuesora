@@ -37,9 +37,9 @@
             <!--<div class="flex flex-column xs-12 sm-4 md-3 mb-3">-->
                 <!--<div class="form-group xs-12" style="width:100%;">-->
                     <!--<select id="commentSort" v-model="sortInterface">-->
-                        <!--<option value="-like_count">Popular</option>-->
                         <!--<option value="-created_on">Latest First</option>-->
                         <!--<option value="created_on">Oldest First</option>-->
+                        <!--<option value="-like_count">Popular</option>-->
                         <!--<option value="">My Comments</option>-->
                     <!--</select>-->
                     <!--<label for="commentSort" :class="brand">Sort By</label>-->

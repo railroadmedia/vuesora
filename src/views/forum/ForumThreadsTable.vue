@@ -29,16 +29,20 @@
                 <!--</div>-->
             </div>
             <div class="flex flex-column mb-3 form-group topic-col">
-                <clearable-filter labelText="Select a Topic"
-                                  :filterOptions="filterOptions"
-                                  :initialValue="topicIdMap"
-                                  @change="handleFilterChange"></clearable-filter>
+
+                    <div class="form-group xs-12" style="width:100%;">
+                        <select id="commentSort" v-model="filterInterface">
+                            <option v-for="option in filterOptions"
+                                    :key="option.label"
+                                    :value="option.value">{{ option.label }}</option>
+                        </select>
+                        <label for="commentSort" :class="brand">Select a Topic</label>
+                    </div>
             </div>
         </div>
 
-
         <forum-threads-table-item v-for="thread in pinnedThreads"
-                                  :key="thread.id"
+                                  :key="'pinned' + thread.id"
                                   :thread="thread"
                                   :brand="brand"></forum-threads-table-item>
 
@@ -96,6 +100,10 @@
                 followed: false,
                 filterOptions: [
                     {
+                        label: 'All',
+                        value: '0'
+                    },
+                    {
                         label: 'General',
                         value: '1'
                     },
@@ -118,6 +126,15 @@
             totalPages() {
                 return Math.ceil(this.threadCount / 20);
             },
+            currentFilter(){
+                const urlParams = QueryString.parse(location.search);
+
+                if (urlParams["category_ids[]"] != null) {
+                    return urlParams["category_ids[]"];
+                }
+
+                return '0';
+            },
             searchInterface: {
                 get() {
                     return this.searchTerm;
@@ -130,6 +147,18 @@
 
                         this.getThreads();
                     }, 800);
+                }
+            },
+            filterInterface: {
+                get(){
+                    return this.filterOptions.filter(option =>
+                        option.value === this.currentFilter
+                    )[0].value;
+                },
+                set(value){
+                    this.currentFilter = value;
+
+                    this.handleFilterChange(value);
                 }
             },
             isFollowedSection() {
@@ -180,14 +209,10 @@
                     location.pathname + '?' + QueryString.stringify(urlParams);
             },
 
-            handleFilterChange(payload) {
-                let urlParams = QueryString.parse(location.search);
-
-                if(payload.value != 0){
-                    urlParams.category_ids = [payload.value];
-
+            handleFilterChange(value) {
+                if(value != 0){
                     window.location.href = location.protocol + '//' + location.host +
-                        location.pathname + '?' + QueryString.stringify(urlParams, {arrayFormat: 'bracket'});
+                        location.pathname + '?category_ids[]=' + value;
                 }
                 else {
                     window.location.href = location.protocol + '//' + location.host +

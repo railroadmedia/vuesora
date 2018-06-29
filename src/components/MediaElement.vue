@@ -172,7 +172,7 @@
                 timeAndDurationSeparator: ' / ',
                 defaultQuality: vm.defaultQuality,
                 qualityText: 'Video Quality',
-                success: (mediaElement) => {
+                success: (mediaElement, node, player) => {
                     vm.mediaElement = mediaElement;
                     vm.addMediaElementEventListeners(vm.mediaElement);
 
@@ -183,6 +183,14 @@
                     for(let i=0; i<interactionInputs.length; i++){
                         interactionInputs[i].addEventListener('change', this.emitCustomEvent);
                     }
+
+                    player.container.addEventListener('touchstart', function () {
+                        player.showControls();
+
+                        if (!player.paused) {
+                            player.startControlsTimer(player.options.controlsTimeoutMouseLeave);
+                        }
+                    });
                 },
                 error: (error) => {
                     console.error(error);
@@ -223,7 +231,7 @@
         .mejs__controls {
             height:96px;
         }
-        
+
         .mejs__time-rail {
             position:absolute;
             bottom:4em;
