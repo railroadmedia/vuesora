@@ -10,12 +10,14 @@
             <div class="flex flex-column avatar-column pr hide-xs-only">
                 <img :src="currentUser.avatar" class="rounded">
             </div>
+
             <div class="flex flex-column">
 
                 <text-editor toolbar="bold italic underline | bullist numlist"
+                             v-model="commentInterface"
                              :height="150"
                              ref="textEditor"
-                             v-model="commentInterface"></text-editor>
+                             @input="handleInput"></text-editor>
 
                 <div class="flex flex-row align-h-right mv-1">
                     <button class="btn collapse-150" :disabled="loading"
@@ -204,6 +206,10 @@
                             this.loading = false;
                         });
                 }
+            },
+
+            handleInput(payload) {
+                this.commentInterface = payload.currentValue;
             },
 
             handleCommentLike(payload){

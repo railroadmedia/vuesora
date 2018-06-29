@@ -3,7 +3,7 @@
         <div class="flex flex-column bg-white shadow corners-3">
             <div class="flex flex-row pa-3 flex-wrap align-v-center">
                 <div class="flex flex-column mb-1 xs-12 sm-6">
-                    <h1 class="heading">
+                    <h1 class="heading thread-title">
                         <a href="/members/forums" class="no-decoration mr-1 back-arrow">
                             <i class="fas fa-arrow-circle-left text-light"></i>
                         </a>
@@ -87,7 +87,7 @@
 
                         <div class="flex flex-row align-h-right mt-2">
 
-                            <button class="btn collapse-250" type="submit">
+                            <button class="btn collapse-250 thread-reply-button" type="submit">
                                 <span class="bg-recordeo text-white corners-3">
                                     Reply
                                 </span>
@@ -264,6 +264,20 @@
     }
 </script>
 <style lang="scss">
+    @import '../../assets/sass/partials/_variables.scss';
+
+    .thread-title {
+        @include xSmallOnly {
+            font-size:20px;
+        }
+    }
+
+    .btn.thread-reply-button {
+        @include xSmallOnly {
+            max-width:100%;
+        }
+    }
+
     .back-arrow i {
         transition:color .1s ease-in-out;
         will-change:color;

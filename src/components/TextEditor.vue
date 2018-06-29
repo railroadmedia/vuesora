@@ -24,11 +24,11 @@
             },
             imageUploadEndpoint: {
                 type: String,
-                default: () => undefined
+                default: () => null
             },
             initialValue: {
                 type: String,
-                default: () => undefined
+                default: () => null
             },
             fieldKey: {
                 type: String,
@@ -91,10 +91,13 @@
                 this.$emit('input', {
                     currentValue: this.currentValue
                 })
-            }
+            },
         },
         components: {
             'tinymce-editor': Editor
+        },
+        mounted(){
+
         }
     }
 </script>

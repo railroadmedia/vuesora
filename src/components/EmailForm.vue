@@ -71,6 +71,10 @@
             inputLabel: {
                 type: String,
                 default: () => 'Ask a Question...'
+            },
+            successMessage: {
+                type: String,
+                default: () => 'Your email has been sent! Thank you for your input.'
             }
         },
         data (){
@@ -99,7 +103,7 @@
                     )
                         .then(resolved => {
                             if(resolved){
-                                Toasts.success('Your email has been sent! Thank you for your input.');
+                                Toasts.success(this.successMessage);
 
                                 this.valueInterface = '';
                             }
