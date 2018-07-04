@@ -16,8 +16,7 @@
                 <text-editor toolbar="bold italic underline | bullist numlist"
                              v-model="commentInterface"
                              :height="150"
-                             ref="textEditor"
-                             @input="handleInput"></text-editor>
+                             ref="textEditor"></text-editor>
 
                 <div class="flex flex-row align-h-right mv-1">
                     <button class="btn collapse-150" :disabled="loading"
@@ -186,8 +185,9 @@
             },
 
             postComment(){
-                if(this.comment.currentValue){
+                console.log(this.comment.currentValue);
 
+                if(!!this.comment.currentValue){
                     this.loading = true;
 
                     return Requests.postComment({

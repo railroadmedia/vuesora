@@ -194,17 +194,13 @@
                     likedPost.totalLikes -= 1;
 
                     Requests.unlikeForumPost(payload.id)
-                        .then(resolved => {
-
-                        })
+                        .then(resolved => resolved);
                 }
                 else {
                     likedPost.totalLikes += 1;
 
                     Requests.likeForumPost(payload.id)
-                        .then(resolved => {
-
-                        })
+                        .then(resolved => resolved);
                 }
 
                 likedPost.isLiked = !likedPost.isLiked;
@@ -229,30 +225,21 @@
 
             pinPost() {
                 Requests.pinForumsThread(this.thread.id, !this.isPinned)
-                    .then(resolved => {
-
-                        }
-                    );
+                    .then(resolved => resolved);
 
                 this.isPinned = !this.isPinned;
             },
 
             lockPost() {
                 Requests.lockForumsThread(this.thread.id, !this.isLocked)
-                    .then(resolved => {
-
-                        }
-                    );
+                    .then(resolved => resolved);
 
                 this.isLocked = !this.isLocked;
             },
 
             followPost() {
                 Requests.followForumsThread(this.thread.id)
-                    .then(resolved => {
-
-                        }
-                    );
+                    .then(resolved => resolved);
 
                 this.isFollowed = !this.isFollowed;
             },
