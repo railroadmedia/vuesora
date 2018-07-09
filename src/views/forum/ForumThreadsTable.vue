@@ -21,12 +21,12 @@
             </div>
 
             <div class="flex flex-column mb-3 search-box">
-                <!--<div class="form-group">-->
-                <!--<input id="threadSearch"-->
-                <!--type="text"-->
-                <!--v-model="searchInterface">-->
-                <!--<label for="threadSearch" class="recordeo">Search</label>-->
-                <!--</div>-->
+                <div class="form-group">
+                    <input id="threadSearch"
+                        type="text"
+                        v-model="searchInterface">
+                    <label for="threadSearch" class="recordeo">Search</label>
+                </div>
             </div>
             <div class="flex flex-column mb-3 form-group topic-col">
 
@@ -44,12 +44,25 @@
         <forum-threads-table-item v-for="thread in pinnedThreads"
                                   :key="'pinned' + thread.id"
                                   :thread="thread"
-                                  :brand="brand"></forum-threads-table-item>
+                                  :brand="brand"
+                                  v-if="!searching"></forum-threads-table-item>
 
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
                                   :thread="thread"
-                                  :brand="brand"></forum-threads-table-item>
+                                  :brand="brand"
+                                  v-if="!searching"></forum-threads-table-item>
+
+        <div v-for="item in results" v-if="searching">
+            <forum-threads-table-item :key="item.id"
+                                  :thread="item"
+                                  :brand="brand"
+                                  v-if="!item.threadId"></forum-threads-table-item>
+
+            <forum-thread-post :key="item.id"
+                               v-bind="item"
+                               v-if="item.threadId"></forum-thread-post>
+        </div>
 
         <div class="flex flex-row bg-light pagination-row align-h-right"
              v-if="totalPages > 1">
@@ -61,6 +74,7 @@
 </template>
 <script>
     import ForumThreadsTableItem from './_ForumThreadsTableItem';
+    import ForumThreadPost from './_ForumThreadPost.vue';
     import Pagination from '../../components/Pagination.vue';
     import ClearableFilter from '../../components/ClearableFilter.vue';
     import Requests from '../../assets/js/classes/requests';
@@ -70,6 +84,7 @@
         name: 'forum-threads-table',
         components: {
             'forum-threads-table-item': ForumThreadsTableItem,
+            'forum-thread-post': ForumThreadPost,
             'pagination': Pagination,
             'clearable-filter': ClearableFilter
         },
@@ -89,6 +104,14 @@
             threadCount: {
                 type: Number,
                 default: () => 0
+            },
+            searching: {
+                type: Boolean,
+                default: () => false
+            },
+            results: {
+                type: Array,
+                default: () => []
             }
         },
         data() {
@@ -145,7 +168,7 @@
                     this.timeout = setTimeout(() => {
                         this.searchTerm = val;
 
-                        this.getThreads();
+                        this.getSearchResults();
                     }, 800);
                 }
             },
@@ -192,6 +215,14 @@
 
         },
         methods: {
+            getSearchResults() {
+                this.searching = true;
+                return Requests.getSearchResults(this.searchTerm)
+                    .then(data => {
+                        this.results = data;
+                    });
+            },
+
             getThreads() {
                 return Requests.getForumThreads()
                     .then(data => {

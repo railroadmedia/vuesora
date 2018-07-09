@@ -9,6 +9,39 @@ import Toasts from './toasts'
 export default class Requests {
 
     /**
+     * Get the search results
+     *
+     * @static
+     * @param {string} term - the search terms
+     * @param {string} type - the search type, 'posts' or 'threads' - default null
+     * @param {number} page - the results page - default 1
+     * @param {number} limit - the results page amount - 10
+     * @param {string} sort - the column to sort - default 'score'
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static getSearchResults(term, type, page, limit, sort) {
+
+        let params = {
+            term: term,
+            page: page || 1,
+            limit: limit || 10,
+            sort: sort || 'score'
+        };
+
+        if (type) {
+            params.type = type;
+        }
+
+        return axios.get('/members/forums/search', {
+                params: params
+            })
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Get the data for a list of forum threads
      *
      * @static
