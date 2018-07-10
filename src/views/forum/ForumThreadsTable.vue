@@ -25,7 +25,7 @@
                     <input id="threadSearch"
                         type="text"
                         v-model="searchInterface">
-                    <label for="threadSearch" class="recordeo">Search</label>
+                    <label for="threadSearch" class="recordeo">Searching</label>
                 </div>
             </div>
             <div class="flex flex-column mb-3 form-group topic-col">
@@ -59,8 +59,9 @@
                                   :brand="brand"
                                   v-if="!item.threadId"></forum-threads-table-item>
 
-            <forum-thread-post :key="item.id"
-                               v-bind="item"
+            <forum-thread-post-search-result :key="item.id"
+                               :post="item"
+                               :brand="brand"
                                v-if="item.threadId"></forum-thread-post>
         </div>
 
@@ -74,7 +75,7 @@
 </template>
 <script>
     import ForumThreadsTableItem from './_ForumThreadsTableItem';
-    import ForumThreadPost from './_ForumThreadPost.vue';
+    import ForumThreadPostSearchResult from './_ForumThreadPostSearchResult.vue';
     import Pagination from '../../components/Pagination.vue';
     import ClearableFilter from '../../components/ClearableFilter.vue';
     import Requests from '../../assets/js/classes/requests';
@@ -84,7 +85,7 @@
         name: 'forum-threads-table',
         components: {
             'forum-threads-table-item': ForumThreadsTableItem,
-            'forum-thread-post': ForumThreadPost,
+            'forum-thread-post-search-result': ForumThreadPostSearchResult,
             'pagination': Pagination,
             'clearable-filter': ClearableFilter
         },
