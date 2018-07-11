@@ -155,6 +155,9 @@
             }
         },
         methods: {
+            postId(post) {
+                return 'post' + post.id;
+            },
             getPosts() {
 
                 return Requests.getForumThreadPosts()

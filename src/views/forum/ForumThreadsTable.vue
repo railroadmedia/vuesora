@@ -53,7 +53,7 @@
                                   :brand="brand"
                                   v-if="!searching"></forum-threads-table-item>
 
-        <div v-for="item in results" v-if="searching">
+        <div v-for="item in searchResults" v-if="searching">
             <forum-threads-table-item :key="item.id"
                                   :thread="item"
                                   :brand="brand"
@@ -66,10 +66,17 @@
         </div>
 
         <div class="flex flex-row bg-light pagination-row align-h-right"
-             v-if="totalPages > 1">
+             v-if="!searching && totalPages > 1">
             <pagination :currentPage="currentPage"
                         :totalPages="totalPages"
                         @pageChange="handlePageChange"></pagination>
+        </div>
+
+        <div class="flex flex-row bg-light pagination-row align-h-right"
+             v-if="searching && totalSearchPages > 1">
+            <pagination :currentPage="searchResultsPage"
+                        :totalPages="totalSearchPages"
+                        @pageChange="handleSearchPageChange"></pagination>
         </div>
     </div>
 </template>
@@ -105,14 +112,6 @@
             threadCount: {
                 type: Number,
                 default: () => 0
-            },
-            searching: {
-                type: Boolean,
-                default: () => false
-            },
-            results: {
-                type: Array,
-                default: () => []
             }
         },
         data() {
@@ -143,12 +142,20 @@
                         label: 'Off Topic',
                         value: '4'
                     },
-                ]
+                ],
+                searching: false,
+                searchResults: [],
+                searchResultsCount: 0,
+                searchResultsPage: 1,
+                searchResultsPageLength: 10,
             }
         },
         computed: {
             totalPages() {
                 return Math.ceil(this.threadCount / 20);
+            },
+            totalSearchPages() {
+                return Math.ceil(this.searchResultsCount / this.searchResultsPageLength);
             },
             currentFilter(){
                 const urlParams = QueryString.parse(location.search);
@@ -164,13 +171,23 @@
                     return this.searchTerm;
                 },
                 set(val) {
+
                     clearTimeout(this.timeout);
 
-                    this.timeout = setTimeout(() => {
-                        this.searchTerm = val;
+                    this.searchTerm = val;
 
-                        this.getSearchResults();
-                    }, 800);
+                    if (val) {
+                        this.timeout = setTimeout(() => {
+
+                            this.searching = true;
+
+                            this.searchResultsPage = 1;
+
+                            this.getSearchResults();
+                        }, 800);
+                    } else {
+                        this.searching = false;
+                    }
                 }
             },
             filterInterface: {
@@ -217,10 +234,14 @@
         },
         methods: {
             getSearchResults() {
-                this.searching = true;
-                return Requests.getSearchResults(this.searchTerm)
-                    .then(data => {
-                        this.results = data;
+                return Requests.getSearchResults(
+                        this.searchTerm,
+                        null,
+                        this.searchResultsPage,
+                        this.searchResultsPageLength
+                    ).then(data => {
+                        this.searchResults = data.results;
+                        this.searchResultsCount = data.count;
                     });
             },
 
@@ -239,6 +260,12 @@
 
                 window.location.href = location.protocol + '//' + location.host +
                     location.pathname + '?' + QueryString.stringify(urlParams);
+            },
+
+            handleSearchPageChange(payload) {
+
+                this.searchResultsPage = payload.page;
+                this.getSearchResults();
             },
 
             handleFilterChange(value) {
