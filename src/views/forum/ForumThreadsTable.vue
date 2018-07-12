@@ -234,9 +234,12 @@
         },
         methods: {
             getSearchResults() {
+
+                let type = this.isFollowedSection ? 'followed' : null;
+
                 return Requests.getSearchResults(
                         this.searchTerm,
-                        null,
+                        type,
                         this.searchResultsPage,
                         this.searchResultsPageLength
                     ).then(data => {
