@@ -25,7 +25,7 @@
                     <input id="threadSearch"
                         type="text"
                         v-model="searchInterface">
-                    <label for="threadSearch" class="recordeo">Searching</label>
+                    <label for="threadSearch" class="recordeo">Search</label>
                 </div>
             </div>
             <div class="flex flex-column mb-3 form-group topic-col">
@@ -45,24 +45,28 @@
                                   :key="'pinned' + thread.id"
                                   :thread="thread"
                                   :brand="brand"
-                                  v-if="!searching"></forum-threads-table-item>
+                                  v-if="!searching"
+                                  :currentUser="currentUser"></forum-threads-table-item>
 
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
                                   :thread="thread"
                                   :brand="brand"
-                                  v-if="!searching"></forum-threads-table-item>
+                                  v-if="!searching"
+                                  :currentUser="currentUser"></forum-threads-table-item>
 
         <div v-for="item in searchResults" v-if="searching">
             <forum-threads-table-item :key="item.id"
                                   :thread="item"
                                   :brand="brand"
-                                  v-if="!item.threadId"></forum-threads-table-item>
+                                  v-if="!item.threadId"
+                                  :currentUser="currentUser"></forum-threads-table-item>
 
             <forum-thread-post-search-result :key="item.id"
                                :post="item"
                                :brand="brand"
-                               v-if="item.threadId"></forum-thread-post>
+                               v-if="item.threadId"
+                               :currentUser="currentUser"></forum-thread-post>
         </div>
 
         <div class="flex flex-row bg-light pagination-row align-h-right"
@@ -112,6 +116,15 @@
             threadCount: {
                 type: Number,
                 default: () => 0
+            },
+            currentUser: {
+                type: Object,
+                default: () => {
+                    return {
+                        id: 0,
+                        isAdmin: false
+                    }
+                }
             }
         },
         data() {
