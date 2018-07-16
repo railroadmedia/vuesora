@@ -45,28 +45,24 @@
                                   :key="'pinned' + thread.id"
                                   :thread="thread"
                                   :brand="brand"
-                                  v-if="!searching"
-                                  :currentUser="currentUser"></forum-threads-table-item>
+                                  v-if="!searching"></forum-threads-table-item>
 
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
                                   :thread="thread"
                                   :brand="brand"
-                                  v-if="!searching"
-                                  :currentUser="currentUser"></forum-threads-table-item>
+                                  v-if="!searching"></forum-threads-table-item>
 
         <div v-for="item in searchResults" v-if="searching">
             <forum-threads-table-item :key="item.id"
                                   :thread="item"
                                   :brand="brand"
-                                  v-if="!item.threadId"
-                                  :currentUser="currentUser"></forum-threads-table-item>
+                                  v-if="!item.threadId"></forum-threads-table-item>
 
             <forum-thread-post-search-result :key="item.id"
                                :post="item"
                                :brand="brand"
-                               v-if="item.threadId"
-                               :currentUser="currentUser"></forum-thread-post>
+                               v-if="item.threadId"></forum-thread-post-search-result>
         </div>
 
         <div class="flex flex-row bg-light pagination-row align-h-right"
@@ -116,15 +112,6 @@
             threadCount: {
                 type: Number,
                 default: () => 0
-            },
-            currentUser: {
-                type: Object,
-                default: () => {
-                    return {
-                        id: 0,
-                        isAdmin: false
-                    }
-                }
             }
         },
         data() {
@@ -250,7 +237,7 @@
 
                 let type = this.isFollowedSection ? 'followed' : null;
 
-                return Requests.getSearchResults(
+                Requests.getForumSearchResults(
                         this.searchTerm,
                         type,
                         this.searchResultsPage,

@@ -9,7 +9,7 @@ import Toasts from './toasts'
 export default class Requests {
 
     /**
-     * Get the search results
+     * Get the forum search results
      *
      * @static
      * @param {string} term - the search terms
@@ -19,7 +19,7 @@ export default class Requests {
      * @param {string} sort - the column to sort - default 'score'
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static getSearchResults(term, type, page, limit, sort) {
+    static getForumSearchResults(term, type, page, limit, sort) {
 
         let params = {
             term: term,

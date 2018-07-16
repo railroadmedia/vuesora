@@ -41,13 +41,6 @@
             {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
         </div>
 
-        <div
-            v-if="canEdit"
-            class="flex flex-column align-center basic-col text-dark font-italic x-tiny uppercase"
-            v-on:click.stop.prevent="update()">
-            Update
-        </div>
-
         <div class="flex flex-column icon-col align-v-center">
             <div class="square body">
                 <i class="fas fa-arrow-circle-right flex-center rounded"
@@ -66,22 +59,9 @@
             thread: {
                 type: Object,
                 default: () => {}
-            },
-            currentUser: {
-                type: Object,
-                default: () => {
-                    return {
-                        id: 0,
-                        isAdmin: false
-                    }
-                }
             }
         },
         computed: {
-            canEdit() {
-                return this.currentUser.isAdmin;
-            },
-
             topicIdMap(){
                 const topics = {
                     1: 'general',
@@ -94,9 +74,6 @@
             }
         },
         methods: {
-            update() {
-                window.location.href = this.thread.update;
-            },
         }
     }
 </script>
