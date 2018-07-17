@@ -59,7 +59,6 @@ textarea {
   outline:none;
   width:100%;
   padding-top:12px;
-  color:#000;
 
   // Pull in font sizes from the .body class
   @extend .body;
@@ -123,6 +122,16 @@ textarea {
     & ~ label {
       left:0;
     }
+  }
+
+  &.solo {
+    border:none;
+    background:none;
+    border-radius:0;
+    outline:none;
+    box-shadow:none;
+    padding-left:0;
+    padding-top:0;
   }
 
   &:-moz-focusring {

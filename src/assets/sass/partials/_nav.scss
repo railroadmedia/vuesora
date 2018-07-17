@@ -1,4 +1,5 @@
 @import './_variables.scss';
+@import './_animations.scss';
 
 body {
   padding-top:40px;
@@ -149,6 +150,57 @@ body {
       }
     }
   }
+
+  .search-column {
+
+    #searchIcon {
+      cursor:pointer;
+    }
+
+    #searchBox {
+
+      @include xSmallOnly {
+        position:fixed;
+        top:40px;
+        left:0;
+        right:0;
+        padding-left:$gutterWidth / 3;
+        padding-right:$gutterWidth / 3;
+        background:#000;
+        border-bottom: 1px solid #565d5f;
+        transition:max-height .2s ease-in-out;
+        will-change: max-height;
+        max-height:0;
+        overflow:hidden;
+
+        &.active {
+          max-height:50px;
+        }
+      }
+    }
+  }
+
+  #liveIndicator {
+    position:relative;
+    z-index:2;
+
+    &:before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      transform-origin:50% 50%;
+      transform:scale(1.25);
+      background:$errorRed;
+      filter:blur(8px);
+      z-index:-1;
+      animation-name: growShrink;
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite
+    }
+  }
 }
 
 #navSideBar {
@@ -193,8 +245,43 @@ body {
       will-change: color, background-color;
       transition:color .1s ease-in-out, background-color .1s ease-in-out;
       flex:0 0 auto;
+      cursor:pointer;
 
-      &:hover {
+      .parent-button {
+        width:100%;
+        position:relative;
+
+        &.active {
+          background-color:#f2f2f2;
+
+          .arrow {
+            transform:rotate(180deg);
+          }
+        }
+
+        .arrow {
+          position:absolute;
+          top:0;
+          right:$gutterWidth / 3;
+          bottom:0;
+          will-change: transform;
+          transition:transform .1s ease-in-out;
+          @include flexCenter();
+        }
+      }
+
+      .child-links {
+        max-height:0;
+        overflow:hidden;
+        transition:max-height .2s ease-in-out;
+        will-change:max-height;
+
+        .page-link {
+          padding-left:$gutterWidth;
+        }
+      }
+
+      &:not(.parent):hover {
         color:#000;
         background-color:#f2f2f2;
       }
