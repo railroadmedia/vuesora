@@ -266,6 +266,7 @@ body {
           bottom:0;
           will-change: transform;
           transition:transform .1s ease-in-out;
+          pointer-events:none;
           @include flexCenter();
         }
       }
