@@ -13,6 +13,7 @@
             :brand="brand"
             :stripePublishableKey="stripePublishableKey"
             :modalOpened="modalOpened"
+            :currentUser="currentUser"
             @showLoading="showLoading"
             @hideLoading="hideLoading"
             @closeModal="closeModal">
@@ -38,6 +39,15 @@
             stripePublishableKey: {
                 type: String,
                 default: ''
+            },
+            currentUser: {
+                type: Object,
+                default: () => {
+                    return {
+                        id: 0,
+                        email: ''
+                    }
+                }
             }
         },
         data() {

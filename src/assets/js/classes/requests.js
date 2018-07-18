@@ -9,6 +9,28 @@ import Toasts from './toasts'
 export default class Requests {
 
     /**
+     * Crates a new payment method
+     *
+     * @static
+     * @param {object} payload - the data object with the payment method details
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static createPaymentMethod(payload) {
+
+        return axios.put('/payment-method', payload)
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                if (error.response && error.response.status == 422) {
+                    return error.response.data;
+                } else {
+                    Requests.handleError(error);
+                }
+            });
+    }
+
+    /**
      * Get the forum search results
      *
      * @static
