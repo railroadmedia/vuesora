@@ -378,7 +378,31 @@
                 cardCountry: '',
                 cardRegion: '',
                 validating: false,
-                validForm: false
+                validForm: false,
+                stripeErrorsMap: {
+                    "invalid_expiry_year": {
+                        field: "expiryYear"
+                    },
+                    "invalid_expiry_month": {
+                        field: "expiryMonth"
+                    },
+                    "incorrect_number": {
+                        field: "ccNumber"
+                    },
+                    "invalid_number": {
+                        field: "ccNumber"
+                    },
+                    "incorrect_cvc": {
+                        field: "cvvNumber"
+                    },
+                    "expired_card": {
+                        field: "ccNumber"
+                    },
+                    "card_declined": {
+                        field: "ccNumber",
+                        message: "Your card is declined by our payment processor. Please use an other card."
+                    }
+                }
             }
         },
         computed: {
@@ -402,12 +426,21 @@
         },
         methods: {
             getStripeTokenPayload() {
-                return {
+
+                let payload = {
                     number: this.ccNumber,
                     cvc: this.cvvNumber,
                     exp_month: this.expiryMonth,
-                    exp_year: this.expiryYear
+                    exp_year: this.expiryYear,
+                    name: this.nameOnCard,
+                    address_country: this.cardCountry
                 };
+
+                if (this.cardCountry.toLowerCase() == 'canada') {
+                    payload.address_state = this.cardRegion;
+                }
+
+                return payload;
             },
             getNewCardPaymentMethodPayload(token) {
                 return {
@@ -434,26 +467,45 @@
 
                         Stripe.card.createToken(tokenObject, this.handleStripeResponse);
 
-                        // this.handleStripeResponse(200, {id: "tok_1CpB2gB6xr2nEDAFOko7z4rN"});
-
                     } // else handle paypal
                 }
             },
             handleStripeResponse(status, response) {
+
                 this.$emit('hideLoading', {});
+
                 if (response.error) {
-                    // var errorContainers = document.getElementsByClassName('orderFormErrors');
 
-                    // Array.prototype.forEach.call(errorContainers, function (element) {
-                    //     element.innerHTML = response.error.message;
-                    // });
+                    this.handleStripeError(response.error);
 
-                    // handle stripe errors
                 } else {
+
                     let payload = this.getNewCardPaymentMethodPayload(response.id);
 
                     this.createPaymentMethod(payload);
                 }
+            },
+            handleStripeError(error) {
+
+                if (error && error.code && this.stripeErrorsMap[error.code]) {
+
+                    let fieldName = this.stripeErrorsMap[error.code].field;
+                    let errorMessage = this.stripeErrorsMap[error.code].message || error.message;
+
+                    this.formFields[fieldName].hasError = true;
+                    this.formFields[fieldName].errors = [errorMessage];
+
+                } else {
+                    this.showGenericError();
+                }
+                this.validForm = false;
+            },
+            showGenericError() {
+                let message = "An error has been reported by our payment processor, please try again. " +
+                        '<br><br><span class="tiny font-italic">If the problem persists, please ' +
+                        '<a href="mailto:support@recordeo.com" target="_blank">contact support.</a></span>';
+
+                Toasts.errorWarning(message);
             },
             createPaymentMethod(payload) {
 
@@ -467,16 +519,40 @@
 
                 this.$emit('hideLoading', {});
 
-                if (!response || !response.data || !response.errors) {
+                if (
+                    !response ||
+                    (!response.data &&
+                        (!response.meta ||
+                            !response.meta.errors))) {
+
+                    // if no data key in response
+                    // or no meta.errors key path
+                    // the request should have been handled in Request as error
+                    // this would be the 2nd, always executed, .then
+                    // https://github.com/axios/axios#example
                     return;
                 }
 
-                if (response.data) {
+                if (response.meta && response.meta.errors) {
+                    if (response.meta.errors.detail &&
+                        response.meta.errors.detail.code) {
+                        // backend stripe exception
+                        this.handleStripeError(response.meta.errors.detail);
+                    } else {
+                        // other type of error
+                        let message = "[PaymentMethodModal Component]::handleCreatePaymentMethodResponse " +
+                                    "backend reported exception: \n" + JSON.stringify(response);
+                        console.log(message);
+                        this.showGenericError();
+                    }
+                } else if (response.data) {
+
                     Toasts.success(this.successMessage);
                     this.closeModal();
-                    // refresh page to be added
-                } else if (response.errors) {
-                    // handle backend errors
+
+                    setTimeout(() => {
+                        window.location.reload(true);
+                    }, 5000);
                 }
             },
             closeModal() {

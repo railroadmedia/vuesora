@@ -9,6 +9,22 @@ import Toasts from './toasts'
 export default class Requests {
 
     /**
+     * Delete a payment method
+     *
+     * @static
+     * @param {number} id - the id of payment method to delete
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static deletePaymentMethod(id) {
+
+        return axios.delete('/payment-method/' + id)
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Crates a new payment method
      *
      * @static
