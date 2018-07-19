@@ -129,18 +129,29 @@ $warningYellow:#FFCC00;
 $errorRed:#F71B26;
 
 // Content Colors
-$coursesBlue:#07A0FF;
-$libraryGreen:#00C278;
-$songsPink:#F8004F;
-$playalongsYellow:#FFB500;
-$studentfocusPurple:#A82FFF;
-$dftGreen:#0DD3BF;
+$content_colors: (
+  course: #07A0FF,
+  pack: #07A0FF,
+  show: #00C278,
+  song: #F8004F,
+  play-along: #FFB500,
+  student-focus: #A82FFF,
+  rudiment: #d06835,
+  dft: #0DD3BF
+);
+
 
 // Left to right gradient. Accepts two colors as paramaters.
 @mixin leftToRightGradient($primaryColor, $secondaryColor){
   background: -moz-linear-gradient(left, $primaryColor 0%, $secondaryColor 100%);
   background: -webkit-linear-gradient(left, $primaryColor 0%,$secondaryColor 100%);
   background: linear-gradient(to right, $primaryColor 0%,$secondaryColor 100%);
+}
+// Top to Bottom gradient. Accepts two colors as paramaters.
+@mixin topToBottomGradient($primaryColor, $secondaryColor){
+  background: -moz-linear-gradient(top, $primaryColor 0%, $secondaryColor 100%);
+  background: -webkit-linear-gradient(top, $primaryColor 0%,$secondaryColor 100%);
+  background: linear-gradient(to bottom, $primaryColor 0%,$secondaryColor 100%);
 }
 
 ///////////////////////////////////////

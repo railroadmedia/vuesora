@@ -1,0 +1,29 @@
+<template>
+    <div class="flex flex-row flex-wrap">
+        <catalogue-card
+                v-for="(item, i) in $_content"
+                :key="item.id"
+                :$_item="item"
+                :class="$_card_grid_classes"></catalogue-card>
+    </div>
+</template>
+<script>
+    import CatalogueCard from './_CatalogueCard.vue';
+
+    export default {
+        name: 'grid-catalogue',
+        components: {
+            'catalogue-card': CatalogueCard
+        },
+        props: {
+            $_content: {
+                type: Array,
+                default: () => []
+            },
+            $_card_grid_classes: {
+                type: String,
+                default: () => ''
+            }
+        }
+    }
+</script>

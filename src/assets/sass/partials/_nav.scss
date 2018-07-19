@@ -304,6 +304,26 @@ body {
   }
 }
 
+#subNav {
+
+  .subnav-link {
+    transition:color .1s ease-in-out, background-color .1s ease-in-out;
+    will-change:color, background-color;
+    flex:0 0 20%;
+
+    &:last-of-type {
+      border-right:none;
+    }
+
+    @each $key, $value in $content_colors {
+      &.#{$key}:hover {
+        color: $value;
+        background-color:nth(nth($greys, 5), 2)
+      }
+    }
+  }
+}
+
 footer {
   position:absolute;
   bottom:0;

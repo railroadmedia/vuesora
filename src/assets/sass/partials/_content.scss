@@ -176,3 +176,34 @@
     display:none;
   }
 }
+
+
+// Catalogues
+.catalogue-card {
+  flex:0 0 50%;
+
+  @include small(){
+    flex:0 0 33.33%;
+  }
+
+  @include medium {
+    flex:0 0 25%;
+  }
+
+  .card-media {
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:relative;
+    overflow:hidden;
+
+    .thumbnail-title {
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:100%;
+      padding:$gutterWidth #{$gutterWidth / 3} #{$gutterWidth / 3};
+      @include topToBottomGradient(transparent, #000);
+    }
+  }
+}

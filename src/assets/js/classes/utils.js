@@ -5,6 +5,90 @@
 
 export default {
 
+
+    /**
+     * Loop through every post in a content response and flatten each one
+     *
+     * @param {array} content_posts - the results array returned from the endpoint
+     * @returns {array} - The new array of flattened objects
+     */
+    flattenContent(content_posts){
+        let flattened_posts = [];
+
+        content_posts.forEach(post => {
+            this.flattenContentObjectFields(post, flattened_posts);
+        });
+
+        return flattened_posts;
+    },
+
+    /**
+     * Flatten a content object
+     *
+     * @param {object} post - the results array returned from the endpoint
+     * @param flattened - the flattened copy of the object to map the fields to
+     * @returns {array} - The new array of flattened objects
+     */
+    flattenContentObjectFields(post, flattened){
+        let this_post = post;
+
+        post['fields'].forEach(field => {
+            this.createOrPushArray(field.key, field.value, this_post);
+        });
+
+        post['data'].forEach(data => {
+            this.createOrPushArray(data.key, data.value, this_post);
+        });
+
+        flattened.push(this_post);
+    },
+
+    /**
+     * If a value already exists when flattening an object, we need to turn it into an array
+     * Will also utilize recursing to continue flattening nested objects
+     *
+     * @param key - the key of the field or data you wish to collapse
+     * @param value - the value that gets appended to the target
+     * @param target - the target key you wish to create a value at or push to
+     */
+    createOrPushArray(key, value, target){
+        let this_value = value;
+
+        // If the value is an object that means we are looking at linked content as a field,
+        // So we need to keep running this method to flatten that object aswell
+        if(typeof value === 'object'){
+            value['fields'].forEach(field => {
+                this.createOrPushArray(field.key, field.value, this_value);
+            });
+
+            value['data'].forEach(data => {
+                this.createOrPushArray(data.key, data.value, this_value);
+            });
+        }
+
+        // If the target key doesn't exist then we just append the value,
+        // Otherwise we need to create an array and push new items into it
+        if(target[key] == null){
+            target[key] = this_value;
+        }
+        else {
+            // If the target is already an array then we need to combine the arrays,
+            // Otherwise we create an array and merge the two values
+            if(Array.isArray(target[key])){
+                target[key] = [
+                    ...target[key],
+                    this_value
+                ]
+            }
+            else {
+                target[key] = [
+                    target[key],
+                    this_value
+                ]
+            }
+        }
+    },
+
     /**
      * Sort an array of objects based on a specific property
      *

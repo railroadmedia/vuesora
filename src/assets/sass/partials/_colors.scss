@@ -157,6 +157,21 @@
   }
 }
 
+@each $key, $value in $content_colors {
+  .text-#{$key} {
+    color: $value;
+  }
+  .bg-#{$key} {
+    color: $value;
+  }
+  .text-#{$key}s {
+    color: $value;
+  }
+  .bg-#{$key}s {
+    color: $value;
+  }
+}
+
 @each $i, $grey in $greys {
   .bg-grey-#{$i} {
     background-color:$grey;
