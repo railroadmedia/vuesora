@@ -315,10 +315,16 @@ body {
       border-right:none;
     }
 
+    &:hover {
+      background-color:nth(nth($greys, 5), 2)
+    }
+
     @each $key, $value in $content_colors {
       &.#{$key}:hover {
         color: $value;
-        background-color:nth(nth($greys, 5), 2)
+      }
+      &.#{$key}s:hover {
+        color: $value;
       }
     }
   }

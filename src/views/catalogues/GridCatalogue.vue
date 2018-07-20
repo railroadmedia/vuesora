@@ -4,6 +4,7 @@
                 v-for="(item, i) in $_content"
                 :key="item.id"
                 :$_item="item"
+                :$_brand="$_brand"
                 :class="$_card_grid_classes"></catalogue-card>
     </div>
 </template>
@@ -19,6 +20,10 @@
             $_content: {
                 type: Array,
                 default: () => []
+            },
+            $_brand: {
+                type: String,
+                default: () => 'drumeo'
             },
             $_card_grid_classes: {
                 type: String,

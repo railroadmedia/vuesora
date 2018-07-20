@@ -1,47 +1,301 @@
+import moment from 'moment';
+
 export default class DataMapper {
+    /**
+     *
+     * @param {string} content_type
+     * @param {string} card_type
+     * @param {object} post
+     * @returns {object} - A mutated object representing the post
+     */
     constructor({content_type, card_type = 'card', post}){
         this.content_type = content_type;
         this.card_type = card_type;
         this.post = post;
 
         this.data_mappers = {
-            // COURSES
+
             'course': {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.mapDifficulty(),
+                        '9 Parts', // TODO: REPLACE ME WHEN DATA EXISTS
+                        this.getPostDate()
+                    ]
                 }
             },
 
-            // SONGS
+            'recording': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.mapDifficulty(),
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'live': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.mapDifficulty(),
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'gear-guides': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'challenges': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.mapDifficulty(),
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'bootcamps': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.mapDifficulty(),
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'quick-tips': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.mapDifficulty(),
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'podcasts': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'on-the-road': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'behind-the-scenes': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'study-the-greats': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'solos': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+            'performances': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
+
             'song': {
                 card: {
                     color_title: this.post['artist'],
                     black_title: this.post['title'],
                     grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.mapDifficulty(),
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
                 }
             },
 
-            // PLAY ALONGS
             'play-along': {
                 card: {
                     color_title: this.post['style'],
                     black_title: this.post['title'],
                     grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.mapDifficulty(),
+                        this.getPostDuration(),
+                        this.post['bpm']
+                    ]
                 }
             },
 
-            // STUDENT FOCUS
+            'rudiments': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
             'student-focus': {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
                 }
             },
 
-            // DEFAULT IF FOR WHATEVER REASON THE TYPE DOESNT EXIST
             default: {
                 card: {
                     color_title: this.post['type'],
@@ -60,6 +314,14 @@ export default class DataMapper {
 
     getPostInstructor(){
         return this.post['instructor'] ? this.post['instructor']['name'] : 'No Instructor'
+    }
+
+    getPostDuration(){
+        return this.post['video'] ? this.post['video']['length_in_seconds'] : 0
+    }
+
+    getPostDate(){
+        return moment(this.post['published_on']).format('MMM d/YY');
     }
 
     mapDifficulty(){

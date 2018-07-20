@@ -20,6 +20,10 @@
             $_item: {
                 type: Object
             },
+            $_brand: {
+                type: String,
+                default: () => 'drumeo'
+            },
             $_flex_basis: {
                 type: String,
                 default: () => '20%'
