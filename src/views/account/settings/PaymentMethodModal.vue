@@ -467,7 +467,21 @@
 
                         Stripe.card.createToken(tokenObject, this.handleStripeResponse);
 
-                    } // else handle paypal
+                    } else {
+
+                        Requests
+                            .getPaypalAgreementUrl()
+                            .then((response) => {
+                                if (response.url) {
+
+                                    window.location.href = response.url;
+
+                                } else {
+                                    this.validForm = false;
+                                    this.showGenericError();
+                                }
+                            });
+                    }
                 }
             },
             handleStripeResponse(status, response) {
@@ -616,11 +630,33 @@
                     this.formFields[fieldName].errors = [this.errors[fieldName]];
                     this.validForm = false;
                 }
+            },
+            validateMethodType() {
+
+                if (this.methodType) {
+
+                    let hadError = this.formFields.cardRegion.hasError;
+
+                    this.formFields.methodType.hasError = false;
+                    this.formFields.methodType.errors = [];
+
+                    if (this.methodType.toLowerCase() == 'paypal') {
+                        this.validForm = true;
+                    } else if (hadError) {
+                        this.validateForm();
+                    }
+
+                } else {
+
+                    this.formFields.methodType.hasError = true;
+                    this.formFields.methodType.errors = [this.errors.methodType];
+                    this.validForm = false;
+                }
             }
         },
         watch: {
             methodType: function () {
-                this.validateField('methodType');
+                this.validateMethodType();
             },
             ccNumber: function () {
                 this.validateField('ccNumber', value => value.length == 15 || value.length == 16);
@@ -634,14 +670,14 @@
             cvvNumber: function () {
                 this.validateField('cvvNumber', value => value.length == 3 || value.length == 4);
             },
-            nameOnCard: function (newVal, oldVal) {
+            nameOnCard: function () {
                 this.validateField('nameOnCard', value => value.length > 3);
             },
-            cardCountry: function (newVal, oldVal) {
+            cardCountry: function () {
                 this.validateField('cardCountry');
                 this.validateCardRegion();
             },
-            cardRegion: function (newVal, oldVal) {
+            cardRegion: function () {
                 this.validateCardRegion();
             }
         }

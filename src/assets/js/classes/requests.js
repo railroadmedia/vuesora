@@ -9,6 +9,21 @@ import Toasts from './toasts'
 export default class Requests {
 
     /**
+     * Get Paypal agreement url
+     *
+     * @static
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static getPaypalAgreementUrl() {
+
+        return axios.get('/members/account/settings/paypal-url')
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Delete a payment method
      *
      * @static
