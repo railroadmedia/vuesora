@@ -28,7 +28,7 @@
                     </i>
                 </span>
 
-                <div class="type-fields">
+                <div class="type-fields" v-if="!editing">
                     <div class="flex flex-row ph-3">
                         <div class="flex flex-column mb-1">
                             <div class="form-group">
@@ -60,8 +60,8 @@
                     </div>
                 </div>
 
-                <div class="credit-card-fields" v-if="isCreditCardMethod">
-                    <div class="flex flex-row ph-3">
+                <div class="credit-card-fields" v-if="isCreditCardMethod || editing">
+                    <div class="flex flex-row ph-3" v-if="isCreditCardMethod">
                         <div class="flex flex-column mb-1">
                             <div class="form-group">
                                 <input id="ccNumber"
@@ -71,7 +71,7 @@
                                        :class="{ 'has-error': validating && formFields.ccNumber.hasError, 'has-input': ccNumber }"
                                        autocomplete="off"
                                        spellcheck="false">
-                                <label for="ccNumber":class="brand">
+                                <label for="ccNumber" :class="brand">
                                     Credit Card Number
                                 </label>
                                 <ul
@@ -82,6 +82,21 @@
                                         {{ error }}
                                     </li>
                                 </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row ph-3" v-if="editing">
+                        <div class="flex flex-column mb-1">
+                            <div class="form-group">
+                                <input class="has-input"
+                                       v-model="lastFourDigits"
+                                       type="text"
+                                       spellcheck="false"
+                                       readonly="true">
+                                <label for="lastFourDigits" :class="brand">
+                                    Credit Card Number
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -141,7 +156,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="flex flex-column smaller">
+                        <div class="flex flex-column smaller" v-if="isCreditCardMethod">
                             <div class="form-group">
                                 <input id="cvvNumber"
                                        name="cvv"
@@ -305,18 +320,25 @@
                         email: ''
                     }
                 }
+            },
+            editMethod: {
+                type: Object,
+                default: () => {
+                    return {
+                        id: 0,
+                        type: '',
+                        lastFourDigits: '',
+                        nameOnCard: '',
+                        expiryMonth: '',
+                        expiryYear: '',
+                        country: '',
+                        region: ''
+                    }
+                }
             }
         },
         mounted() {
-            // when opened as edit payment map prop payment method data to data() props
-            for (var prop in this.formFields) {
-                // initial empty fields are invalid
-                this.formFields[prop].hasError = true;
-                this.formFields[prop].errors = [this.errors[prop]];
-            }
-
-            this.formFields.cardRegion.hasError = false;
-            this.formFields.cardRegion.errors = [];
+            this.init();
         },
         data() {
             return {
@@ -374,9 +396,11 @@
                 expiryMonth: '',
                 expiryYear: '',
                 cvvNumber: '',
+                lastFourDigits: '',
                 nameOnCard: '',
                 cardCountry: '',
                 cardRegion: '',
+                editing: false,
                 validating: false,
                 validForm: false,
                 stripeErrorsMap: {
@@ -408,7 +432,8 @@
         computed: {
             subheading() {
                 // edit payment method to be added
-                return 'Add New Payment Method';
+                return this.editing ? 'Update Payment Method':
+                        'Add New Payment Method';
             },
             isCreditCardMethod() {
                 return this.methodType && this.methodType.toLowerCase() != 'paypal';
@@ -425,6 +450,29 @@
             }
         },
         methods: {
+            init() {
+                this.methodType = '';
+                this.ccNumber = '';
+                this.lastFourDigits = '';
+                this.expiryMonth = '';
+                this.expiryYear = '';
+                this.cvvNumber = '';
+                this.nameOnCard = '';
+                this.cardCountry = '';
+                this.cardRegion = '';
+
+                this.validating = false;
+                this.validForm = false;
+
+                for (var prop in this.formFields) {
+                    // initial empty fields are invalid
+                    this.formFields[prop].hasError = true;
+                    this.formFields[prop].errors = [this.errors[prop]];
+                }
+
+                this.formFields.cardRegion.hasError = false;
+                this.formFields.cardRegion.errors = [];
+            },
             getStripeTokenPayload() {
 
                 let payload = {
@@ -679,6 +727,23 @@
             },
             cardRegion: function () {
                 this.validateCardRegion();
+            },
+            editMethod: function(newVal, oldVal) {
+
+                if (newVal.id) {
+                    this.editing = true;
+                    this.methodType = '';
+                    this.lastFourDigits = '**** **** **** ' + newVal.lastFourDigits;
+                    this.expiryMonth = newVal.expiryMonth;
+                    this.expiryYear = newVal.expiryYear;
+                    this.cvvNumber = '';
+                    this.nameOnCard = newVal.nameOnCard;
+                    this.cardCountry = newVal.country;
+                    this.cardRegion = newVal.region;
+                } else {
+                    this.editing = false;
+                    this.init();
+                }
             }
         }
     }
