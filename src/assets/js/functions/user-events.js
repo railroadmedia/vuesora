@@ -4,16 +4,8 @@ import Toasts from '../classes/toasts';
 import Requests from '../classes/requests';
 
 export default (function () {
-    const addToListButtons = document.querySelectorAll('.addToList');
-    const removeFromListButtons = document.querySelectorAll('.removeFromList');
     const markAsCompleteButtons = document.querySelectorAll('.completeButton');
     const resetProgressButtons = document.querySelectorAll('.resetProgress');
-
-    if(addToListButtons.length){
-        Array.from(addToListButtons).forEach(button => {
-            button.addEventListener('click', addToList);
-        });
-    }
 
     if(markAsCompleteButtons.length){
         Array.from(markAsCompleteButtons).forEach(button => {
@@ -25,10 +17,6 @@ export default (function () {
         Array.from(resetProgressButtons).forEach(button => {
             button.addEventListener('click', resetProgress);
         });
-    }
-
-    function addToList(event){
-        let eventInfo = getEventInfo(event);
     }
 
     function resetProgress(event){

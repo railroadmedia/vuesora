@@ -9,22 +9,6 @@
   color: $secondary;
 }
 
-.text-drumeo {
-  color: $drumeoBlue;
-}
-
-.text-pianote {
-  color: $pianoteRed;
-}
-
-.text-guitareo {
-  color: $guitareoGreen;
-}
-
-.text-recordeo {
-  color: $recordeoYellow;
-}
-
 .text-white {
   color: #fff;
 }
@@ -76,42 +60,6 @@
   }
 }
 
-.bg-drumeo {
-  background-color: $drumeoBlue;
-
-  &.inverted {
-    background-color:transparent;
-    border:2px solid $drumeoBlue;
-  }
-}
-
-.bg-pianote {
-  background-color: $pianoteRed;
-
-  &.inverted {
-    background-color:transparent;
-    border:2px solid $pianoteRed;
-  }
-}
-
-.bg-guitareo {
-  background-color: $guitareoGreen;
-
-  &.inverted {
-    background-color:transparent;
-    border:2px solid $guitareoGreen;
-  }
-}
-
-.bg-recordeo {
-  background-color: $recordeoYellow;
-
-  &.inverted {
-    background-color:transparent;
-    border:2px solid $recordeoYellow;
-  }
-}
-
 .bg-success {
   background-color: $successGreen;
 
@@ -157,18 +105,42 @@
   }
 }
 
+@each $key, $value in $brand_colors {
+  .text-#{$key} {
+    color: $value;
+  }
+  .bg-#{$key} {
+    background-color: $value;
+
+    &.inverted {
+      background-color:transparent;
+      border:2px solid $value;
+    }
+  }
+}
+
 @each $key, $value in $content_colors {
   .text-#{$key} {
     color: $value;
   }
   .bg-#{$key} {
-    color: $value;
+    background-color: $value;
+
+    &.inverted {
+      background-color:transparent;
+      border:2px solid $value;
+    }
   }
   .text-#{$key}s {
     color: $value;
   }
   .bg-#{$key}s {
     color: $value;
+
+    &.inverted {
+      background-color:transparent;
+      border:2px solid $value;
+    }
   }
 }
 

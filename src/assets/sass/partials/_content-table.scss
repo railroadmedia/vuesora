@@ -18,8 +18,14 @@
   }
 
   &:hover:not(.scheduled) {
-    .basic-col {
+    .basic-col, .icon-col {
       color:#000;
+    }
+
+    .icon-col {
+      i.text-light {
+        color:#000;
+      }
     }
 
     .thumb-wrap {
@@ -86,8 +92,33 @@
     transform-origin:50% 0;
     width:100%;
     border-radius:3px;
+    height:100%;
+  }
 
-    @extend .widescreen;
+  @each $key, $value in $brand_colors {
+    &.#{$key} {
+
+      &:before {
+        background:lighten($value, 20%);
+      }
+
+      &:after {
+        background:lighten($value, 30%);
+      }
+    }
+  }
+
+  @each $key, $value in $content_colors {
+    &.#{$key} {
+
+      &:before {
+        background:lighten($value, 20%);
+      }
+
+      &:after {
+        background:lighten($value, 30%);
+      }
+    }
   }
 
   &:before {
@@ -127,6 +158,10 @@
 
 .thumbnail-col {
   flex:0 0 75px;
+
+  &.large-thumbnail {
+    flex:0 0 320px;
+  }
 
   .thumb-img {
     background-size:100%;
@@ -190,6 +225,12 @@
     font-size:28px;
     height:100%;
     width:100%;
+    transition:color .1s ease-in-out, transform .1s ease-in-out;
+    will-change: color, transform;
+
+    &.is-added {
+      transform:rotate(45deg);
+    }
   }
 
   .read-icon {

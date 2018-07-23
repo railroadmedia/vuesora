@@ -5,13 +5,16 @@
                 :key="item.id"
                 :$_item="item"
                 :$_brand="$_brand"
-                :class="$_card_grid_classes"></catalogue-card>
+                :class="$_card_grid_classes"
+                @addToList="emitAddToList"></catalogue-card>
     </div>
 </template>
 <script>
     import CatalogueCard from './_CatalogueCard.vue';
+    import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 
     export default {
+        mixins: [UserCatalogueEvents],
         name: 'grid-catalogue',
         components: {
             'catalogue-card': CatalogueCard

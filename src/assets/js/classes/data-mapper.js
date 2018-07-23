@@ -19,11 +19,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
                         '9 Parts', // TODO: REPLACE ME WHEN DATA EXISTS
@@ -36,11 +38,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
                         this.getPostDuration(),
@@ -53,11 +57,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
                         this.getPostDuration(),
@@ -70,11 +76,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -86,11 +94,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
                         this.getPostDuration(),
@@ -103,11 +113,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
                         this.getPostDuration(),
@@ -120,11 +132,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
                         this.getPostDuration(),
@@ -137,11 +151,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -153,11 +169,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -169,11 +187,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -185,11 +205,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -201,11 +223,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -217,11 +241,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -234,11 +260,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.post['artist'],
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
                         this.getPostDuration(),
@@ -251,11 +279,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.post['style'],
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
                         this.getPostDuration(),
@@ -268,11 +298,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -284,11 +316,13 @@ export default class DataMapper {
                 card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
@@ -300,7 +334,17 @@ export default class DataMapper {
                 card: {
                     color_title: this.post['type'],
                     black_title: this.post['title'],
+                    description: this.post['description'],
                     grey_title: this.mapDifficulty()
+                },
+                list: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
                 }
             }
         };
@@ -313,11 +357,28 @@ export default class DataMapper {
     }
 
     getPostInstructor(){
-        return this.post['instructor'] ? this.post['instructor']['name'] : 'No Instructor'
+        if(this.post['instructor']){
+            if(Array.isArray(this.post['instructor'])){
+                let instructors = [];
+
+                this.post['instructor'].forEach(instructor => {
+                    instructors.push(instructor['name']);
+                });
+
+                return instructors;
+            }
+            else {
+                return this.post['instructor']['name'];
+            }
+        }
+
+        return 'N/A';
     }
 
     getPostDuration(){
-        return this.post['video'] ? this.post['video']['length_in_seconds'] : 0
+        return this.post['video'] ?
+            moment(this.post['video']['length_in_seconds'] * 1000).format('m') + ' mins' :
+            'N/A'
     }
 
     getPostDate(){

@@ -1,7 +1,9 @@
 <template>
-    <a class="content-table-row flex flex-row bt-grey-1-1 no-decoration">
+    <a class="content-overview flex flex-row bt-grey-1-1 no-decoration pv-3"
+       :class="$_overview ? 'content-overview pv-3' : 'content-table-row'">
 
-        <div class="flex flex-column thumbnail-col align-v-center pl-1">
+        <div class="flex flex-column align-v-center pl-1"
+             :class="$_overview ? 'large-thumbnail ' + $_item.type : 'thumbnail-col'">
             <div class="thumb-wrap">
                 <div class="thumb-img box-4-by-3 bg-center corners-3"
                      :style="'background-image:url( ' + $_thumbnail + ' );'"></div>
@@ -28,6 +30,10 @@
                 {{ mappedData.black_title }}
             </p>
 
+            <p class="tiny text-black" v-if="$_overview && mappedData.description">
+                {{ mappedData.description }}
+            </p>
+
             <p class="x-tiny text-dark text-truncate font-italic uppercase hide-md-up">
                 <span v-for="(item, i) in mappedData.column_data">
                     <span v-if="i > 0" class="bullet">&#x25CF;</span>
@@ -44,10 +50,12 @@
 
         <div class="flex flex-column icon-col align-v-center">
             <div class="square body">
-
-                <!--TODO: FIX THIS TO REACT DYNAMICALLY-->
-
-                <i class="fas fa-plus flex-center text-light"></i>
+                <i class="add-to-list fas fa-plus flex-center"
+                   :class="$_item.is_added ? 'is-added text-' + $_item.type : 'text-light'"
+                   :title="$_item.is_added ? 'Remove from list' : 'Add to list'"
+                   :data-content-id="$_item.id"
+                   :data-content-type="$_item.type"
+                   @click.stop="addToList"></i>
             </div>
         </div>
 
@@ -68,8 +76,10 @@
 </template>
 <script>
     import DataMapper from '../../assets/js/classes/data-mapper.js';
+    import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 
     export default {
+        mixins: [UserCatalogueEvents],
         name: 'catalogue-list-item',
         props: {
             $_item: {
@@ -78,6 +88,10 @@
             $_brand: {
                 type: String,
                 default:() => 'drumeo'
+            },
+            $_overview: {
+                type: Boolean,
+                default: () => false
             }
         },
         data(){
@@ -87,10 +101,18 @@
         },
         computed: {
 
+            $_is_added:{
+                cache: false,
+                get(){
+                    return this.$_item.is_added;
+                }
+            },
+
             $_thumbnail(){
                 return this.$_item['thumbnail_url'] ||
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
             },
+
             mappedData(){
                 return new DataMapper({
                     content_type: this.$_item.type,

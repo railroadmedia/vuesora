@@ -357,6 +357,18 @@ export default class Requests {
             .catch(Requests.handleError);
     }
 
+    static addOrRemoveContentFromList(content_id, is_added){
+        const delete_endpoint = '/laravel/public/members-area/event-json-api/remove-from-primary-playlist-list';
+        const put_endpoint = '/laravel/public/members-area/event-json-api/add-to-primary-playlist-list';
+
+        return axios.post(is_added ? delete_endpoint : put_endpoint, {
+            content_id: content_id,
+            type: is_added ? 'remove-from-list' : 'my-list-addition'
+        })
+            .then(response => response)
+            .catch(Requests.handleError);
+    }
+
     /**
      * Display an error message and console the error if any request fails
      *

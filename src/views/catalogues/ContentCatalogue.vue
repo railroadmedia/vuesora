@@ -19,11 +19,14 @@
 
         <grid-catalogue v-if="catalogue_type === 'grid'"
                         :$_content="content"
-                        :$_brand="$_brand"></grid-catalogue>
+                        :$_brand="$_brand"
+                        @addToList="addToListEventHandler"></grid-catalogue>
 
         <list-catalogue v-if="catalogue_type === 'list'"
                         :$_content="content"
-                        :$_brand="$_brand"></list-catalogue>
+                        :$_brand="$_brand"
+                        :$_display_items_as_overview="$_display_items_as_overview"
+                        @addToList="addToListEventHandler"></list-catalogue>
 
         <div v-if="$_infinite_scroll && $_load_more_button"
              class="flex flex-row pa">
@@ -51,8 +54,10 @@
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
     import Pagination from '../../components/Pagination.vue';
+    import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 
     export default {
+        mixins: [UserCatalogueEvents],
         name: 'content-catalogue',
         components: {
             'grid-catalogue': GridCatalogue,
@@ -82,7 +87,7 @@
             },
             $_content_endpoint: {
                 type: String,
-                default: () => '/content'
+                default: () => '/railcontent/content'
             },
             $_paginate: {
                 type: Boolean,
@@ -93,6 +98,14 @@
                 default: () => false
             },
             $_load_more_button: {
+                type: Boolean,
+                default: () => false
+            },
+            $_destroy_on_list_removal: {
+                type: Boolean,
+                default: () => false
+            },
+            $_display_items_as_overview: {
                 type: Boolean,
                 default: () => false
             }

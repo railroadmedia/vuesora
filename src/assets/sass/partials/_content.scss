@@ -197,6 +197,22 @@
     position:relative;
     overflow:hidden;
 
+    .add-to-list {
+      position:absolute;
+      top:0;
+      right:0;
+      height:35px;
+      width:35px;
+      @include flexCenter();
+      font-size:16px;
+      transition:color .1s ease-in-out, transform .1s ease-in-out;
+      will-change: color, transform;
+
+      &.is-added {
+        transform:rotate(45deg);
+      }
+    }
+
     .thumbnail-title {
       position:absolute;
       bottom:0;
