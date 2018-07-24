@@ -179,6 +179,29 @@
 
 
 // Catalogues
+.catalogue-filter {
+  flex:1;
+
+  .cancel-filter {
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    width:50px;
+    border-radius:5px;
+    background:#fff;
+    font-size:20px;
+    color:#000;
+    border:1px solid #d1d1d1;
+    cursor:pointer;
+    @include flexCenter();
+
+    i {
+      font-size:20px;
+    }
+  }
+}
+
 .catalogue-card {
   flex:0 0 50%;
 

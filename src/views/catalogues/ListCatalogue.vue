@@ -2,11 +2,11 @@
     <div class="flex flex-column">
         <catalogue-list-item
                 v-for="(item, i) in $_content"
-                :key="item.id"
+                :key="'list' + item.id"
                 :$_item="item"
                 :$_brand="$_brand"
                 :class="$_card_grid_classes"
-                :$_overview="$_display_items_as_overview"
+                :$_overview="$_displayItemsAsOverview"
                 @addToList="emitAddToList"></catalogue-list-item>
     </div>
 </template>
@@ -29,7 +29,7 @@
                 type: String,
                 default: () => 'drumeo'
             },
-            $_display_items_as_overview: {
+            $_displayItemsAsOverview: {
                 type: Boolean,
                 default: () => false
             },

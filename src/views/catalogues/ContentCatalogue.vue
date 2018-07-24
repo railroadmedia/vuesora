@@ -1,6 +1,7 @@
 <template>
     <div class="flex flex-column">
-        <div class="flex flex-row">
+        <div v-if="$_gridOrListButtons"
+             class="flex flex-row pv">
             <button class="btn mh-1"
                     @click="toggleCatalogueType('list')">
                 <span class="bg-drumeo"
@@ -17,6 +18,13 @@
             </button>
         </div>
 
+        <catalogue-filters v-if="$_filterableValues.length"
+                           :$_filters="filters"
+                           :$_filterableValues="$_filterableValues"
+                           :loading="loading"
+                           :$_themeColor="$_themeColor"
+                           @filterChange="handleFilterChange"></catalogue-filters>
+
         <grid-catalogue v-if="catalogue_type === 'grid'"
                         :$_content="content"
                         :$_brand="$_brand"
@@ -25,22 +33,21 @@
         <list-catalogue v-if="catalogue_type === 'list'"
                         :$_content="content"
                         :$_brand="$_brand"
-                        :$_display_items_as_overview="$_display_items_as_overview"
+                        :$_displayItemsAsOverview="$_displayItemsAsOverview"
                         @addToList="addToListEventHandler"></list-catalogue>
 
-        <div v-if="$_infinite_scroll && $_load_more_button"
+        <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
              class="flex flex-row pa">
-            <button class="btn"
-                    @click="getContent"
+            <button class="btn collapse-150 short"
+                    @click="loadMore"
                     :disabled="loading">
-                <span class="flat"
-                      :class="'text-' + $_brand">
+                <span class="flat text-grey-2">
                     Load More...
                 </span>
             </button>
         </div>
 
-        <div v-if="$_paginate && total_pages > 1 && !$_infinite_scroll"
+        <div v-if="$_paginate && total_pages > 1 && !$_infiniteScroll"
              class="flex flex-row bg-light pagination-row align-h-right">
             <pagination :currentPage="page"
                         :totalPages="total_pages"
@@ -51,6 +58,7 @@
 <script>
     import GridCatalogue from './GridCatalogue.vue';
     import ListCatalogue from './ListCatalogue.vue';
+    import CatalogueFilters from './_CatalogueFilters.vue';
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
     import Pagination from '../../components/Pagination.vue';
@@ -63,49 +71,70 @@
             'grid-catalogue': GridCatalogue,
             'list-catalogue': ListCatalogue,
             'pagination': Pagination,
+            'catalogue-filters': CatalogueFilters
         },
         props: {
-            $_catalogue_type: {
+            $_catalogueType: {
                 type: String,
-                default: () => true
+                default: () => 'grid'
+            },
+            $_gridOrListButtons: {
+                type: Boolean,
+                default: () => false
             },
             $_brand: {
                 type: String,
                 default: () => 'drumeo'
             },
-            $_pre_loaded_content: {
+            $_preLoadedContent: {
                 type: Array,
                 default: () => []
             },
             $_limit: {
-                type: Number,
-                default: () => 10
+                type: String,
+                default: () => '10'
+            },
+            $_totalPages: {
+                type: String,
+                default: () => ''
+            },
+            $_themeColor: {
+                type: String,
+                default: () => 'drumeo'
             },
             $_statuses: {
                 type: Array,
                 default: () => ['published']
             },
-            $_content_endpoint: {
+            $_contentEndpoint: {
                 type: String,
                 default: () => '/railcontent/content'
+            },
+            $_includedTypes: {
+                type: Array,
+                default: () => ['recording', 'course', 'song', 'play-along', 'student-focus', 'learning-path', 'pack']
+            },
+            $_filterableValues: {
+                type: Array,
+                default: () => []
             },
             $_paginate: {
                 type: Boolean,
                 default: () => false
             },
-            $_infinite_scroll: {
+            $_infiniteScroll: {
                 type: Boolean,
                 default: () => false
             },
-            $_load_more_button: {
+            $_loadMoreButton: {
                 type: Boolean,
                 default: () => false
             },
-            $_destroy_on_list_removal: {
+            $_destroyOnListRemoval: {
                 type: Boolean,
                 default: () => false
             },
-            $_display_items_as_overview: {
+            $_displayItemsAsOverview: {
                 type: Boolean,
                 default: () => false
             }
@@ -113,36 +142,62 @@
         data(){
             return {
                 page: 1,
-                content: this.$_pre_loaded_content || [],
-                catalogue_type: this.$_catalogue_type || 'grid',
-                total_pages: 0,
+                content: Utils.flattenContent(this.$_preLoadedContent) || [],
+                filters: {},
+                catalogue_type: this.$_catalogueType,
+                total_pages: this.$_totalPages || '0',
                 loading: false,
+                filter_params: {
+                    artist: null,
+                    bpm: null,
+                    difficulty: null,
+                    instructor: null,
+                    style: null,
+                    topic: null
+                },
             }
         },
+        computed: {
 
+            $_required_fields(){
+                let filter_keys = Object.keys(this.filter_params);
+                let included_fields = [];
+
+                filter_keys.forEach(filter => {
+                    if(this.filter_params[filter] != null){
+                        included_fields.push(
+                            filter + ',' + this.filter_params[filter]
+                        )
+                    }
+                });
+
+                return included_fields;
+            },
+        },
         methods: {
             toggleCatalogueType(type){
                 this.catalogue_type = type;
             },
 
-            getContent(){
+            getContent(replace = true){
                 if(!this.loading){
                     this.loading = true;
 
-                    axios.get(this.$_content_endpoint, {
+                    axios.get(this.$_contentEndpoint, {
                         params: {
                             brand: this.$_brand,
                             page: this.page,
                             limit: this.$_limit,
                             statuses: this.$_statuses,
-                            included_types: ['recording', 'course', 'song', 'play-along', 'student-focus', 'learning-path', 'pack']
+                            included_types: this.$_includedTypes,
+                            'filter[required_fields]': this.$_required_fields
                         }
                     })
                         .then(response => {
                             if(response){
                                 // If infinite scroll is enabled:
                                 // Just add it to the array, don't replace it
-                                if(this.$_infinite_scroll && this.content.length > 0){
+                                if(!replace){
                                     this.content = [
                                         ...this.content,
                                         ...Utils.flattenContent(response.data.results)
@@ -153,6 +208,7 @@
                                 }
                                 this.page = Number(response.data.page);
                                 this.total_pages = Math.ceil(response.data.total_results / this.$_limit);
+                                this.filters = Utils.flattenFilters(response.data.filter_options);
                             }
 
                             this.loading = false;
@@ -168,11 +224,15 @@
                 let scroll_buffer = document.body.scrollHeight - 50;
 
                 if(scroll_position >= scroll_buffer){
-                    if(!this.loading){
-                        this.page += 1;
-                    }
+                    this.loadMore();
+                }
+            },
 
-                    this.getContent();
+            loadMore(){
+                if(!this.loading){
+                    this.page += 1;
+
+                    this.getContent(false);
                 }
             },
 
@@ -180,19 +240,26 @@
                 this.page = payload.page;
 
                 this.getContent();
+            },
+
+            handleFilterChange(payload){
+                this.filter_params = payload;
+                this.page = 1;
+
+                this.getContent();
             }
         },
         mounted(){
-            if(!this.$_pre_loaded_content.length){
+            if(!this.$_preLoadedContent.length){
                 this.getContent();
             }
 
-            if(this.$_infinite_scroll && !this.$_load_more_button){
+            if(this.$_infiniteScroll && !this.$_loadMoreButton){
                 window.addEventListener('scroll', this.infiniteScrollEventHandler);
             }
         },
         beforeDestroy(){
-            if(this.$_infinite_scroll && !this.$_load_more_button){
+            if(this.$_infiniteScroll && !this.$_loadMoreButton){
                 window.removeEventListener('scroll', this.infiniteScrollEventHandler);
             }
         }

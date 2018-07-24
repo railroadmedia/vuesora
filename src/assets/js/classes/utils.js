@@ -40,6 +40,9 @@ export default {
             this.createOrPushArray(data.key, data.value, this_post);
         });
 
+        // TODO: REMOVE ME ONCE THE BACKEND ACTUALLY RETURNS THIS (I NEED IT FOR REACTIVITY)
+        this_post['is_added'] = false;
+
         flattened.push(this_post);
     },
 
@@ -87,6 +90,61 @@ export default {
                 ]
             }
         }
+    },
+
+
+    /**
+     * Flatten the filters returned from railcontent
+     *
+     * @param {object} filter_options - the filter_options object returned by railcontent
+     * @returns {Object} - The new flattened object
+     */
+    flattenFilters(filter_options){
+        let keys = Object.keys(filter_options);
+        let filter_map = {
+            artist: [],
+            bpm: [],
+            difficulty: [],
+            instructor: [],
+            style: [],
+            topic: []
+        };
+
+        keys.forEach(key => {
+
+            // Instructors need to have the name as the label but their id as the value,
+            // So it makes sense to map every array as a key/value pair
+            if(key === 'instructor'){
+                let instructor_array = this.flattenContent(filter_options[key]);
+
+                instructor_array.forEach(filter => {
+
+                    filter_map[key].push({
+                        key: filter['name'],
+                        value: filter['id']
+                    });
+                })
+            }
+            else {
+                for(let i = 0; i < filter_options[key].length; i++){
+                    // Some of the legacy data can give us duplicate keys,
+                    // Since we can't avoid this we gotta check whether or not
+                    // We've added the key already
+                    let value_exists = filter_map[key].filter(map =>
+                        map.value === filter_options[key][i]
+                    ).length > 0;
+
+                    if(!value_exists){
+                        filter_map[key].push({
+                            key: filter_options[key][i],
+                            value: filter_options[key][i]
+                        });
+                    }
+                }
+            }
+        });
+
+        return filter_map;
     },
 
     /**

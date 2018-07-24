@@ -113,7 +113,10 @@ ul {
     }
   }
 
-  .forum-buttons {
+  .header-buttons {
+    @include xSmallOnly {
+      flex-wrap:wrap;
+    }
 
     a {
       @include xSmallOnly {
@@ -121,6 +124,7 @@ ul {
         max-width:100%;
         margin-left:0;
         margin-bottom:$gutterWidth / 2;
+        flex:0 0 100%;
 
         &:last-child {
           margin-bottom:0;

@@ -365,7 +365,7 @@ export default class DataMapper {
                     instructors.push(instructor['name']);
                 });
 
-                return instructors;
+                return instructors.join(', ');
             }
             else {
                 return this.post['instructor']['name'];
