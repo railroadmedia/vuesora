@@ -272,7 +272,15 @@
 
                 <div class="flex flex-row ph-3 mt-2 mb-3">
                     <button class="btn collapse-150 mr-1"
-                            v-on:click.stop.prevent="saveMethod">
+                            v-on:click.stop.prevent="save"
+                            v-if="!editing">
+                        <span class="bg-recordeo text-white corners-3 short">
+                            Save
+                        </span>
+                    </button>
+                    <button class="btn collapse-150 mr-1"
+                            v-on:click.stop.prevent="update"
+                            v-if="editing">
                         <span class="bg-recordeo text-white corners-3 short">
                             Save
                         </span>
@@ -431,7 +439,6 @@
         },
         computed: {
             subheading() {
-                // edit payment method to be added
                 return this.editing ? 'Update Payment Method':
                         'Add New Payment Method';
             },
@@ -499,7 +506,7 @@
                     user_email: this.currentUser.email
                 };
             },
-            saveMethod() {
+            save() {
 
                 this.validating = true;
 
@@ -531,6 +538,23 @@
                             });
                     }
                 }
+            },
+            update() {
+                let id = this.editMethod.id;
+                let payload = {
+                    gateway: this.brand,
+                    month: this.expiryMonth,
+                    year: this.expiryYear,
+                    country: this.cardCountry,
+                    state: this.cardCountry.toLowerCase() == 'canada' ?
+                            this.cardRegion : ''
+                };
+
+                Requests
+                    .updatePaymentMethod(id, payload)
+                    .then((response) => {
+                        console.log('update response: %s', JSON.stringify(response));
+                    });
             },
             handleStripeResponse(status, response) {
 

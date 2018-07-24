@@ -24,6 +24,23 @@ export default class Requests {
     }
 
     /**
+     * Update a credit card payment method
+     *
+     * @static
+     * @param {number} id - the id of payment method to delete
+     * @param {object} payload - the data object with the payment method details
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static updatePaymentMethod(id, payload) {
+
+        return axios.patch('/payment-method/' + id, payload)
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Delete a payment method
      *
      * @static
