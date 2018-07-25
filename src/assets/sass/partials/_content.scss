@@ -213,6 +213,10 @@
     flex:0 0 25%;
   }
 
+  @include large {
+    flex:0 0 20%;
+  }
+
   .card-media {
     background-size:cover;
     background-position:center;

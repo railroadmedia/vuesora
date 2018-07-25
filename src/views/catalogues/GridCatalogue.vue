@@ -1,5 +1,6 @@
 <template>
-    <div class="flex flex-row flex-wrap">
+    <div class="flex flex-row"
+         :class="$_noWrap ? 'overflow' : 'flex-wrap'">
         <catalogue-card
                 v-for="(item, i) in $_content"
                 :key="'grid' + item.id"
@@ -31,6 +32,10 @@
             $_card_grid_classes: {
                 type: String,
                 default: () => ''
+            },
+            $_noWrap: {
+                type: Boolean,
+                default: () => false
             }
         }
     }

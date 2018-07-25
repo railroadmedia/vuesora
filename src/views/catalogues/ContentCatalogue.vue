@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column">
+    <div class="flex flex-column grow">
         <div v-if="$_gridOrListButtons"
              class="flex flex-row pv">
             <button class="btn mh-1"
@@ -42,6 +42,7 @@
         <grid-catalogue v-if="catalogue_type === 'grid'"
                         :$_content="content"
                         :$_brand="$_brand"
+                        :$_noWrap="$_noWrapGrid"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
         <list-catalogue v-if="catalogue_type === 'list'"
@@ -161,6 +162,10 @@
                 default: () => false
             },
             $_showContentTabs: {
+                type: Boolean,
+                default: () => false
+            },
+            $_noWrapGrid: {
                 type: Boolean,
                 default: () => false
             }
