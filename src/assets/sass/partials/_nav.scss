@@ -63,6 +63,10 @@ body {
       max-width:65px;
     }
 
+    &.live-button {
+      flex:0 0 auto;
+      max-width:none;
+    }
   }
 
   #notificationButton {
@@ -183,6 +187,7 @@ body {
   #liveIndicator {
     position:relative;
     z-index:2;
+    padding:0 3px;
 
     &:before {
       content:'';

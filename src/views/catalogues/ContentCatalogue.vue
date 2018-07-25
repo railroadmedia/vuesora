@@ -18,7 +18,21 @@
             </button>
         </div>
 
-        <catalogue-filters v-if="$_filterableValues.length"
+        <div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">
+            <span class="heading pointer mr-3"
+                  :class="selected_tab === 'new' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
+                  @click="loadNewPosts">
+                New
+            </span>
+
+            <span class="heading pointer"
+                  :class="selected_tab === 'continue' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
+                  @click="loadStartedPosts">
+                Continue
+            </span>
+        </div>
+
+        <catalogue-filters v-if="$_filterableValues.length && !$_showContentTabs"
                            :$_filters="filters"
                            :$_filterableValues="$_filterableValues"
                            :loading="loading"
@@ -61,6 +75,7 @@
     import CatalogueFilters from './_CatalogueFilters.vue';
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
+    import Toasts from '../../assets/js/classes/toasts'
     import Pagination from '../../components/Pagination.vue';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 
@@ -78,6 +93,10 @@
                 type: String,
                 default: () => 'grid'
             },
+            $_userId: {
+                type: String,
+                default: () => ''
+            },
             $_gridOrListButtons: {
                 type: Boolean,
                 default: () => false
@@ -87,8 +106,7 @@
                 default: () => 'drumeo'
             },
             $_preLoadedContent: {
-                type: Array,
-                default: () => []
+                type: Object
             },
             $_limit: {
                 type: String,
@@ -114,6 +132,10 @@
                 type: Array,
                 default: () => ['recording', 'course', 'song', 'play-along', 'student-focus', 'learning-path', 'pack']
             },
+            $_requiredUserStates: {
+                type: Array,
+                default: () => []
+            },
             $_filterableValues: {
                 type: Array,
                 default: () => []
@@ -137,15 +159,19 @@
             $_displayItemsAsOverview: {
                 type: Boolean,
                 default: () => false
+            },
+            $_showContentTabs: {
+                type: Boolean,
+                default: () => false
             }
         },
         data(){
             return {
                 page: 1,
-                content: Utils.flattenContent(this.$_preLoadedContent) || [],
-                filters: {},
+                content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.results) : [],
+                filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.filter_options) : {},
+                total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.total_results / this.$_limit) : 0,
                 catalogue_type: this.$_catalogueType,
-                total_pages: this.$_totalPages || '0',
                 loading: false,
                 filter_params: {
                     artist: null,
@@ -155,6 +181,8 @@
                     style: null,
                     topic: null
                 },
+                required_user_states: this.$_requiredUserStates || [],
+                selected_tab: 'new'
             }
         },
         computed: {
@@ -190,7 +218,8 @@
                             limit: this.$_limit,
                             statuses: this.$_statuses,
                             included_types: this.$_includedTypes,
-                            'filter[required_fields]': this.$_required_fields
+                            'filter[required_fields]': this.$_required_fields,
+                            'filter[required_user_states]': this.required_user_states,
                         }
                     })
                         .then(response => {
@@ -215,6 +244,10 @@
                         })
                         .catch(error => {
                             console.error(error);
+                            Toasts.errorWarning('Oops! Something went wrong trying to pull content for you. ' +
+                                'Refresh the page and try again.');
+
+                            this.loading = false;
                         })
                 }
             },
@@ -226,6 +259,20 @@
                 if(scroll_position >= scroll_buffer){
                     this.loadMore();
                 }
+            },
+
+            loadNewPosts(){
+                this.selected_tab = 'new';
+                this.required_user_states = [];
+
+                this.getContent();
+            },
+
+            loadStartedPosts(){
+                this.selected_tab = 'continue';
+                this.required_user_states = ['started'];
+
+                this.getContent();
             },
 
             loadMore(){
@@ -250,7 +297,7 @@
             }
         },
         mounted(){
-            if(!this.$_preLoadedContent.length){
+            if(!this.$_preLoadedContent && !this.$_preLoadedContent.results.length){
                 this.getContent();
             }
 
