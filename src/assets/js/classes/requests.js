@@ -51,7 +51,7 @@ export default class Requests {
 
         return axios.delete('/payment-method/' + id)
             .then(response => {
-                return response.data;
+                return response;
             })
             .catch(Requests.handleError);
     }

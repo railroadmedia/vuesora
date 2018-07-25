@@ -39,8 +39,8 @@
                                     <option value="" style="display:none;">
                                     </option>
                                     <option
-                                        v-for="option in formFields.methodType.options"
-                                        v-bind:value="option">
+                                        v-for="(option, key) in formFields.methodType.options"
+                                        v-bind:value="key">
                                         {{ option }}
                                     </option>
                                 </select>
@@ -183,28 +183,6 @@
                     <div class="flex flex-row ph-3 mt-1 inline-inputs">
                         <div class="flex flex-column">
                             <div class="form-group">
-                                <input id="nameOnCard"
-                                       name="name"
-                                       v-model="nameOnCard"
-                                       type="text"
-                                       :class="{'has-error': validating && formFields.nameOnCard.hasError, 'has-input': nameOnCard}"
-                                       autocomplete="off"
-                                       spellcheck="false">
-                                <label for="nameOnCard":class="brand">
-                                    Name On Card
-                                </label>
-                                <ul
-                                    class="errors mt-1 tiny"
-                                    v-if="validating && formFields.nameOnCard.hasError">
-                                    <li
-                                        v-for="error in formFields.nameOnCard.errors">
-                                        {{ error }}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="flex flex-column">
-                            <div class="form-group">
                                 <select id="cardCountry"
                                         name="country"
                                         :class="{ 'has-error': validating && formFields.cardCountry.hasError, 'has-input': cardCountry }"
@@ -212,7 +190,7 @@
                                     <option value="" style="display:none;">
                                     </option>
                                     <option
-                                        v-for="option in formFields.cardCountry.options"
+                                        v-for="option in countries"
                                         v-bind:value="option">
                                         {{ option }}
                                     </option>
@@ -343,6 +321,12 @@
                         region: ''
                     }
                 }
+            },
+            countries: {
+                type: Object,
+                default: () => {
+                    return {};
+                }
             }
         },
         mounted() {
@@ -356,13 +340,12 @@
                     expiryMonth: 'The expiration month must be selected',
                     expiryYear: 'The expiration year must be selected',
                     cvvNumber: 'CVV number must be filled',
-                    nameOnCard: 'Name On Card must be filled',
                     cardCountry: 'The card country must be selected',
                     cardRegion: 'The card region must be selected'
                 },
                 formFields: {
                     methodType: {
-                        options: ['Visa', 'Mastercard', 'Amex', 'Paypal'],
+                        options: {'creditCard': 'Credit Card', 'paypal': 'Paypal'},
                         hasError: false,
                         errors: []
                     },
@@ -384,10 +367,6 @@
                         hasError: false,
                         errors: []
                     },
-                    nameOnCard: {
-                        hasError: false,
-                        errors: []
-                    },
                     cardCountry: {
                         options: ['Canada', 'United States'],
                         hasError: false,
@@ -405,7 +384,6 @@
                 expiryYear: '',
                 cvvNumber: '',
                 lastFourDigits: '',
-                nameOnCard: '',
                 cardCountry: '',
                 cardRegion: '',
                 editing: false,
@@ -452,8 +430,9 @@
                 return this.cardCountry && this.cardCountry.toLowerCase() == 'canada';
             },
             successMessage() {
-                // edit payment method to be added
-                return 'The new payment method was successfully created';
+                return this.editing ?
+                        'The payment method was successfully updated' :
+                        'The new payment method was successfully created';
             }
         },
         methods: {
@@ -464,7 +443,6 @@
                 this.expiryMonth = '';
                 this.expiryYear = '';
                 this.cvvNumber = '';
-                this.nameOnCard = '';
                 this.cardCountry = '';
                 this.cardRegion = '';
 
@@ -487,7 +465,6 @@
                     cvc: this.cvvNumber,
                     exp_month: this.expiryMonth,
                     exp_year: this.expiryYear,
-                    name: this.nameOnCard,
                     address_country: this.cardCountry
                 };
 
@@ -540,6 +517,8 @@
                 }
             },
             update() {
+                this.$emit('showLoading', {});
+
                 let id = this.editMethod.id;
                 let payload = {
                     gateway: this.brand,
@@ -553,7 +532,14 @@
                 Requests
                     .updatePaymentMethod(id, payload)
                     .then((response) => {
-                        console.log('update response: %s', JSON.stringify(response));
+
+                        this.$emit('hideLoading', {});
+
+                        if (response.data) {
+                            this.shodSuccess();
+                        } else {
+                            this.showGenericError();
+                        }
                     });
             },
             handleStripeResponse(status, response) {
@@ -633,13 +619,16 @@
                     }
                 } else if (response.data) {
 
-                    Toasts.success(this.successMessage);
-                    this.closeModal();
-
-                    setTimeout(() => {
-                        window.location.reload(true);
-                    }, 5000);
+                    this.shodSuccess();
                 }
+            },
+            shodSuccess() {
+                Toasts.success(this.successMessage);
+                this.closeModal();
+
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 5000);
             },
             closeModal() {
                 this.modalOpened = false;
@@ -742,9 +731,6 @@
             cvvNumber: function () {
                 this.validateField('cvvNumber', value => value.length == 3 || value.length == 4);
             },
-            nameOnCard: function () {
-                this.validateField('nameOnCard', value => value.length > 3);
-            },
             cardCountry: function () {
                 this.validateField('cardCountry');
                 this.validateCardRegion();
@@ -761,7 +747,6 @@
                     this.expiryMonth = newVal.expiryMonth;
                     this.expiryYear = newVal.expiryYear;
                     this.cvvNumber = '';
-                    this.nameOnCard = newVal.nameOnCard;
                     this.cardCountry = newVal.country;
                     this.cardRegion = newVal.region;
                 } else {

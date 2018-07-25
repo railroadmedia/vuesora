@@ -6,7 +6,9 @@
             :key="'activeMethod' + activeMethod.id"
             :paymentMethod="activeMethod"
             :showDelete="showDelete"
-            @editMethod="setEditMethod"></payment-method>
+            @editMethod="setEditMethod"
+            @showLoading="showLoading"
+            @hideLoading="hideLoading"></payment-method>
 
         <div class="flex flex-column xs-12 sm-12 md-6 cc-col ph-2 mb-3">
             <div class="credit-card-box">
@@ -24,6 +26,7 @@
                 :modalOpened="modalOpened"
                 :currentUser="currentUser"
                 :editMethod="editMethod"
+                :countries="countries"
                 @showLoading="showLoading"
                 @hideLoading="hideLoading"
                 @closeModal="closeModal">
@@ -36,6 +39,7 @@
     import PaymentMethod from './PaymentMethod.vue';
     import PaymentMethodModal from './PaymentMethodModal.vue';
     import LoadingDialog from '../../../components/LoadingDialog.vue';
+    import Toasts from '../../../assets/js/classes/toasts';
 
     export default {
         name: 'payments',
@@ -65,6 +69,16 @@
             activeMethods: {
                 type: Array,
                 default: []
+            },
+            countries: {
+                type: Object,
+                default: () => {
+                    return {};
+                }
+            },
+            success: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -98,6 +112,9 @@
                 this.editMethod = eventData;
                 this.openModal();
             }
+        },
+        mounted() {
+            this.success && Toasts.success(this.success);
         }
     }
 </script>
