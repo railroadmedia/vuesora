@@ -1,6 +1,7 @@
 <template>
-    <div class="flex flex-column pa catalogue-card">
-        <a>
+    <div class="flex flex-column pa-1 catalogue-card">
+        <a :href="$_item.url"
+           class="no-decoration">
             <div class="card-media box-4-by-3 corners-5 mb-1"
                  :style="'background-image:url(' + $_thumbnail + ');'">
 
@@ -9,7 +10,7 @@
                    :title="$_is_added ? 'Remove from list' : 'Add to list'"
                    :data-content-id="$_item.id"
                    :data-content-type="$_item.type"
-                   @click.stop="addToList"></i>
+                   @click.stop.prevent="addToList"></i>
 
                 <h3 class="thumbnail-title body capitalize"
                     :class="'text-' + $_item.type">{{ mappedData.color_title }}</h3>

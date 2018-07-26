@@ -179,8 +179,24 @@
 
 
 // Catalogues
+.progress-filters {
+  flex: 0 0 100%;
+  flex-direction:row;
+
+  @include small {
+    flex:0 0 150px;
+    flex-direction:column;
+  }
+}
+
 .catalogue-filter {
-  flex:1;
+  flex:0 0 100%;
+  margin-bottom:$gutterWidth / 2;
+
+  @include small {
+    flex:1;
+    margin-bottom:0;
+  }
 
   .cancel-filter {
     position:absolute;
@@ -248,6 +264,39 @@
       width:100%;
       padding:$gutterWidth #{$gutterWidth / 3} #{$gutterWidth / 3};
       @include topToBottomGradient(transparent, #000);
+    }
+  }
+}
+
+.show-index-card {
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+
+  .new {
+    position:absolute;
+    top:0;
+    left:0;
+    border-radius:5px 0 5px 0;
+    padding:5px;
+  }
+}
+
+#loadingDialog {
+  position:fixed;
+  bottom:$gutterWidth;
+  z-index:98;
+  width:100%;
+  left:0;
+
+  .loading-spinner {
+    max-width:250px;
+    flex:0 0 250px;
+
+    i {
+      font-size:48px;
+      height:50px;
+      width:50px;
     }
   }
 }

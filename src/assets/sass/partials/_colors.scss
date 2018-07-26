@@ -135,7 +135,7 @@
     color: $value;
   }
   .bg-#{$key}s {
-    color: $value;
+    background-color: $value;
 
     &.inverted {
       background-color:transparent;

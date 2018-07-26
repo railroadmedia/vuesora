@@ -325,10 +325,10 @@ body {
     }
 
     @each $key, $value in $content_colors {
-      &.#{$key}:hover {
-        color: $value;
-      }
-      &.#{$key}s:hover {
+      &.#{$key}:hover,
+      &.#{$key}s:hover,
+      &.#{$key}.active,
+      &.#{$key}s.active {
         color: $value;
       }
     }

@@ -124,32 +124,55 @@ $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
     border-right:#{$i}px solid $darkGray;
   }
 
-  @each $brand in $brands {
-    $index: index($brands, $brand);
-    $color: nth($brandColors, $index);
+  @each $key, $value in $brand_colors {
+    .ba-#{$key}-#{$i} {
+      border:#{$i}px solid $value;
+    }
+    .bh-#{$key}-#{$i} {
+      border-left:#{$i}px solid $value;
+      border-right:#{$i}px solid $value;
+    }
+    .bv-#{$key}-#{$i} {
+      border-top:#{$i}px solid $value;
+      border-bottom:#{$i}px solid $value;
+    }
+    .bt-#{$key}-#{$i} {
+      border-top:#{$i}px solid $value;
+    }
+    .bb-#{$key}-#{$i} {
+      border-bottom:#{$i}px solid $value;
+    }
+    .bl-#{$key}-#{$i} {
+      border-left:#{$i}px solid $value;
+    }
+    .br-#{$key}-#{$i} {
+      border-right:#{$i}px solid $value;
+    }
+  }
 
-    .ba-#{$brand}-#{$i} {
-      border:#{$i}px solid $color;
+  @each $key, $value in $content_colors {
+    .ba-#{$key}-#{$i} {
+      border:#{$i}px solid $value;
     }
-    .bh-#{$brand}-#{$i} {
-      border-left:#{$i}px solid $color;
-      border-right:#{$i}px solid $color;
+    .bh-#{$key}-#{$i} {
+      border-left:#{$i}px solid $value;
+      border-right:#{$i}px solid $value;
     }
-    .bv-#{$brand}-#{$i} {
-      border-top:#{$i}px solid $color;
-      border-bottom:#{$i}px solid $color;
+    .bv-#{$key}-#{$i} {
+      border-top:#{$i}px solid $value;
+      border-bottom:#{$i}px solid $value;
     }
-    .bt-#{$brand}-#{$i} {
-      border-top:#{$i}px solid $color;
+    .bt-#{$key}-#{$i} {
+      border-top:#{$i}px solid $value;
     }
-    .bb-#{$brand}-#{$i} {
-      border-bottom:#{$i}px solid $color;
+    .bb-#{$key}-#{$i} {
+      border-bottom:#{$i}px solid $value;
     }
-    .bl-#{$brand}-#{$i} {
-      border-left:#{$i}px solid $color;
+    .bl-#{$key}-#{$i} {
+      border-left:#{$i}px solid $value;
     }
-    .br-#{$brand}-#{$i} {
-      border-right:#{$i}px solid $color;
+    .br-#{$key}-#{$i} {
+      border-right:#{$i}px solid $value;
     }
   }
 }

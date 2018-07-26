@@ -148,6 +148,20 @@ export default {
     },
 
     /**
+     * Take a string and capitalize the first letter of every word
+     *
+     * @param {string} phrase
+     * @returns {String} - The new capitalized string
+     */
+    toTitleCase(phrase){
+        return phrase
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    },
+
+    /**
      * Sort an array of objects based on a specific property
      *
      * @param {string} property - the property to sort the array of objects by, prepending with a '-' will reverse the sort order

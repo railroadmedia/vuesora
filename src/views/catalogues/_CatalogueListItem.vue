@@ -1,6 +1,7 @@
 <template>
-    <a class="content-overview flex flex-row bt-grey-1-1 no-decoration pv-3"
-       :class="$_overview ? 'content-overview pv-3' : 'content-table-row'">
+    <a class="flex flex-row bt-grey-1-1 no-decoration"
+       :class="$_overview === true ? 'content-overview pv-3' : 'content-table-row'"
+       :href="$_item.url">
 
         <div class="flex flex-column align-v-center pl-1"
              :class="$_overview ? 'large-thumbnail ' + $_item.type : 'thumbnail-col'">
@@ -55,11 +56,11 @@
                    :title="$_item.is_added ? 'Remove from list' : 'Add to list'"
                    :data-content-id="$_item.id"
                    :data-content-type="$_item.type"
-                   @click.stop="addToList"></i>
+                   @click.stop.prevent="addToList"></i>
             </div>
         </div>
 
-        <div class="flex flex-column icon-col align-v-center">
+        <div class="flex flex-column icon-col align-v-center hide-sm-down">
             <div class="square body">
 
                 <i v-if="$_item.started || $_item.completed"
@@ -111,6 +112,10 @@
             $_thumbnail(){
                 return this.$_item['thumbnail_url'] ||
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
+            },
+
+            $_route(){
+                return '/members/lessons/' + this.$_item.type + '/' + this.$_item.id
             },
 
             mappedData(){

@@ -37,7 +37,8 @@
                            :$_filterableValues="$_filterableValues"
                            :loading="loading"
                            :$_themeColor="$_themeColor"
-                           @filterChange="handleFilterChange"></catalogue-filters>
+                           @filterChange="handleFilterChange"
+                           @progressChange="handleProgressChange"></catalogue-filters>
 
         <grid-catalogue v-if="catalogue_type === 'grid'"
                         :$_content="content"
@@ -68,6 +69,17 @@
                         :totalPages="total_pages"
                         @pageChange="handlePageChange"></pagination>
         </div>
+
+        <transition name="show-from-bottom">
+            <div id="loadingDialog" v-if="loading && $_showLoadingAnimation"
+                 class="flex flex-row align-center">
+                <div class="loading-spinner corners-5 shadow pa flex-center"
+                     :class="'bg-' + $_themeColor">
+                    <i class="fas fa-spinner fa-spin text-white"></i>
+                    <p class="x-tiny text-white">Loading Please Wait...</p>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
@@ -168,14 +180,18 @@
             $_noWrapGrid: {
                 type: Boolean,
                 default: () => false
+            },
+            $_showLoadingAnimation: {
+                type: Boolean,
+                default: () => false
             }
         },
         data(){
             return {
                 page: 1,
-                content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.results) : [],
-                filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.filter_options) : {},
-                total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.total_results / this.$_limit) : 0,
+                content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.data) : [],
+                filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.meta.filterOptions) : {},
+                total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.meta.totalResults / this.$_limit) : 0,
                 catalogue_type: this.$_catalogueType,
                 loading: false,
                 filter_params: {
@@ -234,15 +250,15 @@
                                 if(!replace){
                                     this.content = [
                                         ...this.content,
-                                        ...Utils.flattenContent(response.data.results)
+                                        ...Utils.flattenContent(response.data.data)
                                     ]
                                 }
                                 else {
-                                    this.content = Utils.flattenContent(response.data.results);
+                                    this.content = Utils.flattenContent(response.data.data);
                                 }
-                                this.page = Number(response.data.page);
-                                this.total_pages = Math.ceil(response.data.total_results / this.$_limit);
-                                this.filters = Utils.flattenFilters(response.data.filter_options);
+                                this.page = Number(response.data.meta.page);
+                                this.total_pages = Math.ceil(response.data.meta.totalResults / this.$_limit);
+                                this.filters = Utils.flattenFilters(response.data.meta.filterOptions);
                             }
 
                             this.loading = false;
@@ -261,7 +277,7 @@
                 let scroll_position = window.pageYOffset + window.innerHeight;
                 let scroll_buffer = document.body.scrollHeight - 50;
 
-                if(scroll_position >= scroll_buffer){
+                if((scroll_position >= scroll_buffer) && (this.page < this.total_pages)){
                     this.loadMore();
                 }
             },
@@ -297,6 +313,16 @@
             handleFilterChange(payload){
                 this.filter_params = payload;
                 this.page = 1;
+
+                this.getContent();
+            },
+
+            handleProgressChange(payload){
+                this.required_user_states = [];
+
+                if(payload.type){
+                    this.required_user_states.push(payload.type);
+                }
 
                 this.getContent();
             }

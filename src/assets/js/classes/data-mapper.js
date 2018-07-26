@@ -28,7 +28,7 @@ export default class DataMapper {
                     description: this.post['description'],
                     column_data: [
                         this.mapDifficulty(),
-                        '9 Parts', // TODO: REPLACE ME WHEN DATA EXISTS
+                        this.post['lesson_count'] + ' Parts',
                         this.getPostDate()
                     ]
                 }
@@ -396,6 +396,8 @@ export default class DataMapper {
             return 'advanced'
         }
 
-        return 'all'
+        // Some content has difficulty already parsed as a word, if its undefined,
+        // Just default it to 'all'
+        return this.post['difficulty'] || 'all';
     }
 }
