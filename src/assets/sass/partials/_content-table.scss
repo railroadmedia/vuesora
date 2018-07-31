@@ -11,6 +11,12 @@
     padding-bottom:5px;
   }
 
+  &.wrap-on-mobile {
+    @include xSmallOnly {
+      flex-wrap:wrap;
+    }
+  }
+
   @include medium {
     & > .flex-column {
       justify-content:center;
@@ -30,7 +36,7 @@
 
     .thumb-wrap {
       .thumb-img {
-        background-size:115%;
+        transform:scale(1.2);
       }
 
       .thumb-hover {
@@ -163,14 +169,24 @@
     flex:0 0 320px;
   }
 
+  &.book-thumbnail {
+    @include xSmallOnly{
+      flex:0 0 100%;
+    }
+
+    flex:0 0 200px;
+  }
+
   .thumb-img {
-    background-size:100%;
-    transition:background-size .2s ease-in-out;
-    will-change:background-size;
+    background-size:cover;
+    transform:scale(1);
+    transition:transform .2s ease-in-out;
+    will-change:transform;
   }
 
   .thumb-wrap {
     position:relative;
+    overflow:hidden;
 
     .thumb-hover {
       opacity:0;
@@ -204,6 +220,14 @@
       }
     }
   }
+}
+
+.login-col {
+  @include xSmallOnly {
+    flex:0 0 100%;
+  }
+
+  flex:0 0 215px;
 }
 
 .avatar-col {

@@ -120,7 +120,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
     static getComments(params) {
-        return axios.get('/railcontent/comment', {
+        return axios.get('/laravel/public/railcontent/comment', {
             params: params
         })
             .then(response => {
@@ -357,6 +357,15 @@ export default class Requests {
             .catch(Requests.handleError);
     }
 
+    /**
+     * Add or Remove content from your list
+     *
+     * @param content_id {string}
+     * @param is_added {boolean}
+     *
+     * @static
+     * @returns {Promise} resolved promise with the response.data object
+     */
     static addOrRemoveContentFromList(content_id, is_added){
         const delete_endpoint = '/laravel/public/members-area/event-json-api/remove-from-primary-playlist-list';
         const put_endpoint = '/laravel/public/members-area/event-json-api/add-to-primary-playlist-list';

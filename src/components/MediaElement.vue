@@ -1,6 +1,7 @@
 <template>
-    <div class="media-element" :id="brand + 'Theme'">
-        <video :poster="poster"
+    <div class="media-element" :id="themeColor + 'Theme'">
+        <video v-if="sortedSourcesArray.length"
+               :poster="poster"
                :id="elementId"
                data-cast-title="Recordeo Lesson"
                data-cast-description="This is a recordeo lesson"
@@ -12,6 +13,25 @@
                     :data-quality="sourceQualityLabel(source.height)"
                     type="video/mp4">
         </video>
+
+        <div v-else class="flex flex-row pv-5">
+            <div class="flex flex-column align-center text-center">
+                <h1 class="title text-white">
+                    We're sorry, there was an issue finding this video.
+                </h1>
+                <h3 class="title text-white mb-2">
+                    Please refresh the page to try again.
+                </h3>
+                <h6 class="tiny text-white">
+
+                </h6>
+                <h6 class="tiny text-white">
+                    If the problem persists please contact support, either by clicking the chat widget
+                    on the bottom of your screen, or by emailing
+                    <a href="mailto:support@drumeo.com">support@drumeo.com</a>.
+                </h6>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -70,13 +90,22 @@
             brand: {
                 type: String,
                 default: () => 'recordeo'
+            },
+            themeColor: {
+                type: String,
+                default: () => 'drumeo'
             }
         },
         computed: {
             sortedSourcesArray(){
-                return this.sources.sort(
-                    Utils.dynamicSort('-height')
-                );
+                if(this.sources.length){
+
+                    return this.sources.sort(
+                        Utils.dynamicSort('-height')
+                    );
+                }
+
+                return [];
             },
 
             defaultQuality: {
@@ -84,7 +113,7 @@
                     let defaultQuality = window.localStorage.getItem("defaultQuality");
 
                     // Pick a default quality based on the closest size to the client width
-                    if(defaultQuality === undefined || defaultQuality === null){
+                    if((defaultQuality === undefined || defaultQuality === null) && (this.sortedSourcesArray.length > 0)){
                         let guessedQuality = this.sortedSourcesArray.filter(source =>
                             source.width <= window.innerWidth
                         );
@@ -209,21 +238,17 @@
 <style lang="scss">
     @import '../assets/sass/partials/_variables.scss';
 
-    #drumeoTheme {
-        .mejs__time-current { background:$drumeoBlue; }
-        .mejs__speed-selected, .mejs__qualities-selected { color:$drumeoBlue; }
+    @each $key, $value in $brand_colors {
+        ##{$key}Theme {
+            .mejs__time-current { background:$value; }
+            .mejs__speed-selected, .mejs__qualities-selected { color:$value; }
+        }
     }
-    #pianoteTheme {
-        .mejs__time-current { background:$pianoteRed; }
-        .mejs__speed-selected, .mejs__qualities-selected { color:$pianoteRed; }
-    }
-    #guitareoTheme {
-        .mejs__time-current { background:$guitareoGreen; }
-        .mejs__speed-selected, .mejs__qualities-selected { color:$guitareoGreen; }
-    }
-    #recordeoTheme {
-        .mejs__time-current { background:$recordeoYellow; }
-        .mejs__speed-selected, .mejs__qualities-selected { color:$recordeoYellow; }
+    @each $key, $value in $content_colors {
+        ##{$key}Theme {
+            .mejs__time-current { background:$value; }
+            .mejs__speed-selected, .mejs__qualities-selected { color:$value; }
+        }
     }
 
     .media-element {

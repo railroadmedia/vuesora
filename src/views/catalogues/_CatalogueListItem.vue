@@ -3,10 +3,16 @@
        :class="$_overview === true ? 'content-overview pv-3' : 'content-table-row'"
        :href="$_item.url">
 
+        <div v-if="mappedData.show_numbers"
+             class="flex flex-column align-center icon-col title text-black hide-xs-only">
+            {{ $_index }}
+        </div>
+
         <div class="flex flex-column align-v-center pl-1"
              :class="$_overview ? 'large-thumbnail ' + $_item.type : 'thumbnail-col'">
-            <div class="thumb-wrap">
-                <div class="thumb-img box-4-by-3 bg-center corners-3"
+            <div class="thumb-wrap corners-3">
+                <div class="thumb-img bg-center corners-3"
+                     :class="thumbnailType"
                      :style="'background-image:url( ' + $_thumbnail + ' );'"></div>
 
                 <!--<span class="new-badge flex-center text-white bg-recordeo">-->
@@ -93,6 +99,9 @@
             $_overview: {
                 type: Boolean,
                 default: () => false
+            },
+            $_index: {
+                type: Number
             }
         },
         data(){
@@ -124,6 +133,10 @@
                     card_type: 'list',
                     post: this.$_item
                 });
+            },
+
+            thumbnailType(){
+                return this.$_item['type'] === 'song' ? 'square' : 'box-4-by-3';
             }
         },
         mounted(){

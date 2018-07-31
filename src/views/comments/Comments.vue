@@ -21,7 +21,8 @@
                 <div class="flex flex-row align-h-right mv-1">
                     <button class="btn collapse-150" :disabled="loading"
                             @click="postComment">
-                        <span class="text-white bg-recordeo short">
+                        <span class="text-white short"
+                              :class="'bg-' + themeColor">
                             Comment
                         </span>
                     </button>
@@ -52,6 +53,7 @@
                       v-bind="pinnedComment"
                       :currentUser="currentUser"
                       :pinned="true"
+                      :themeColor="themeColor"
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
                       @deleteComment="handleCommentDelete"
@@ -61,6 +63,7 @@
                       :key="i"
                       v-bind="comment"
                       :currentUser="currentUser"
+                      :themeColor="themeColor"
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
                       @deleteComment="handleCommentDelete"
@@ -92,7 +95,7 @@
                 type: Number,
                 default: () => 0
             },
-            brand: {
+            themeColor: {
                 type: String,
                 default: () => 'recordeo'
             },
@@ -162,14 +165,14 @@
                         this.requestingData = false;
 
                         if(resolved){
-                            this.totalComments = resolved['total_results'];
+                            this.totalComments = resolved['meta']['totalResults'];
 
                             if(replace){
-                                this.comments = resolved['results'];
+                                this.comments = resolved['data'];
                             }
                             else {
                                 this.comments = this.comments.concat(
-                                    resolved['results']
+                                    resolved['data']
                                 );
                             }
                         }

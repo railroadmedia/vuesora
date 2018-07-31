@@ -34,6 +34,24 @@ export default class DataMapper {
                 }
             },
 
+            'course-part': {
+                card: {
+                    color_title: this.getPostInstructor(),
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    show_numbers: true,
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
             'recording': {
                 card: {
                     color_title: this.getPostInstructor(),

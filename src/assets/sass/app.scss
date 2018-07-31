@@ -169,6 +169,42 @@ ul {
   }
 }
 
+#instructorInfo {
+  max-height:0;
+  overflow:hidden;
+  will-change:max-height;
+  transition:max-height .2s ease-in-out;
+}
+#toggleInstructorInfo {
+  height:20px;
+  width:40px;
+  border-bottom-left-radius:40px;
+  border-bottom-right-radius:40px;
+
+  &.active {
+    i {
+      transform:rotate(180deg);
+    }
+  }
+
+  & > * {
+    pointer-events:none;
+  }
+
+  .x-tiny {
+    font-size:8px;
+    line-height:8px;
+    display:block;
+  }
+
+  i {
+    font-size:8px;
+    will-change:transform;
+    transition:transform .2s ease-in-out;
+    display:block;
+  }
+}
+
 #noty_layout__topRight {
   top:55px;
 

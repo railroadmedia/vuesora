@@ -30,6 +30,7 @@
     "dropzone": "^5.4.0",
     "es6-promise": "^4.2.4",
     "flatpickr": "^4.4.6",
+    "lodash": "^4.17.10",
     "mediaelement": "^4.2.8",
     "mediaelement-plugins": "^2.5.0",
     "moment": "^2.22.1",

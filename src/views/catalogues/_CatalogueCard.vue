@@ -2,7 +2,8 @@
     <div class="flex flex-column pa-1 catalogue-card">
         <a :href="$_item.url"
            class="no-decoration">
-            <div class="card-media box-4-by-3 corners-5 mb-1"
+            <div class="card-media corners-5 mb-1"
+                 :class="thumbnailType"
                  :style="'background-image:url(' + $_thumbnail + ');'">
 
                 <i class="add-to-list fas fa-plus"
@@ -61,6 +62,10 @@
                     card_type: 'card',
                     post: this.$_item
                 });
+            },
+
+            thumbnailType(){
+                return this.$_item['type'] === 'song' ? 'square' : 'box-4-by-3';
             }
         },
         mounted(){

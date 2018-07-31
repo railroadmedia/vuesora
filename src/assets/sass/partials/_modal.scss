@@ -53,7 +53,7 @@
   opacity:0;
   visibility:hidden;
   will-change:opacity, visibility;
-  transition:opacity .2s ease-in-out;
+  transition:all .2s ease-in-out;
 
   &.active {
     opacity:1;

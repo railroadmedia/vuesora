@@ -19,11 +19,6 @@
 
                 <div class="flex flex-column align-h-right align-v-center flex-auto">
                     <div class="flex flex-row">
-                        <!--<span class="tiny no-decoration text-dark pointer mr-1" -->
-                              <!--v-if="isUsersPost">-->
-                            <!--<i class="fas fa-edit"-->
-                               <!--@click="editComment"></i>-->
-                        <!--</span>-->
 
                         <span class="tiny no-decoration text-dark pointer mr-1"
                               v-if="(isUsersPost || isCurrentUserAdmin)">
@@ -46,30 +41,13 @@
                      v-html="comment">
                     {{ comment }}
                 </div>
-
-                <!--<div v-if="editing" class="flex flex-column mb-1">-->
-                <!--<text-editor :initialValue="postBody"></text-editor>-->
-
-                <!--<div class="flex flex-row align-h-right mt-2">-->
-                <!--<a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"-->
-                <!--@click="editing = false">-->
-                <!--Cancel-->
-                <!--</a>-->
-
-                <!--<button class="btn collapse-250" type="submit">-->
-                <!--<span class="bg-recordeo text-white corners-3">-->
-                <!--Save Post-->
-                <!--</span>-->
-                <!--</button>-->
-                <!--</div>-->
-                <!--</div>-->
             </div>
 
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="replying ? 'text-recordeo' : 'text-dark'"
+                           :class="replying ? 'text-' + themeColor : 'text-dark'"
                            @click="replyToComment">
                             <i class="fas fa-reply"></i>
                             <span class="hide-xs-only">
@@ -79,7 +57,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="is_liked ? 'text-recordeo' : 'text-dark'"
+                           :class="is_liked ? 'text-' + themeColor : 'text-dark'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
@@ -114,14 +92,15 @@
                             </a>
                             <button class="btn collapse-150" :disabled="loading"
                                @click="postReply">
-                                <span class="text-white bg-recordeo short">
+                                <span class="text-white short"
+                                      :class="'bg-' + themeColor">
                                     Reply
                                 </span>
                             </button>
                         </div>
 
                         <div class="loading-reply flex-center" v-show="loading">
-                            <i class="fas fa-spinner fa-spin text-recordeo"></i>
+                            <i class="fas fa-spinner fa-spin" :class="'text-' + themeColor"></i>
                             <p class="x-tiny text-dark">loading...</p>
                         </div>
                     </div>
@@ -134,6 +113,7 @@
                                :key="i"
                                v-bind="reply"
                                :currentUser="currentUser"
+                               :themeColor="themeColor"
                                @likeReply="likeReply"
                                @deleteReply="deleteReply"></comment-reply>
             </transition-group>
@@ -162,6 +142,10 @@
             'comment-reply': CommentReply
         },
         props: {
+            themeColor: {
+                type: String,
+                default: () => 'recordeo'
+            },
             currentUser: {
                 type: Object,
                 default: () => {

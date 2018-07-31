@@ -109,7 +109,8 @@ $greys: (
   2: #ccd3d3,
   3: #8c9698,
   4: #565d5f,
-  5: #191b1c
+  5: #191b1c,
+  6: #1a222b
 );
 
 // Vuesora Colors
@@ -138,7 +139,9 @@ $errorRed:#F71B26;
 // Content Colors
 $content_colors: (
   course: #07A0FF,
+  course-part: #07A0FF,
   pack: #07A0FF,
+  pack-part: #07A0FF,
   show: #00C278,
   gear-guide: #00C278,
   challenge: #00C278,

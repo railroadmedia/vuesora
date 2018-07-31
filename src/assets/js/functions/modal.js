@@ -18,6 +18,8 @@ export default (function(){
         const modalId = buttonClicked.dataset['openModal'];
         const modalToOpen = document.getElementById(modalId);
 
+        closeModal();
+
         event.stopPropagation();
 
         if(modalToOpen){
@@ -34,8 +36,10 @@ export default (function(){
         const modalOverlay = document.getElementById('modalOverlay');
 
         // Remove the event listeners from the overlay and remove it from the DOM
-        modalOverlay.removeEventListener('click', closeModal);
-        document.body.removeChild(modalOverlay);
+        if(modalOverlay){
+            modalOverlay.removeEventListener('click', closeModal);
+            document.body.removeChild(modalOverlay);
+        }
 
         // Remove the active class from all Modals (easier than finding the specific one open)
         Array.from(modalDialogs).forEach(dialog => {

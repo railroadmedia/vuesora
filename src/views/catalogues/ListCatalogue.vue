@@ -3,6 +3,7 @@
         <catalogue-list-item
                 v-for="(item, i) in $_content"
                 :key="'list' + item.id"
+                :$_index="i + 1"
                 :$_item="item"
                 :$_brand="$_brand"
                 :class="$_card_grid_classes"

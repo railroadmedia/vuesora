@@ -31,24 +31,6 @@
                      v-html="comment">
                     {{ comment }}
                 </div>
-
-                <!--<div v-if="editing" class="flex flex-column mb-1">-->
-                <!--<text-editor :initialValue="postBody"></text-editor>-->
-
-                <!--<div class="flex flex-row align-h-right mt-2">-->
-                <!--<a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"-->
-                <!--@click="editing = false">-->
-                <!--Cancel-->
-                <!--</a>-->
-
-                <!--<button class="btn collapse-250" type="submit">-->
-                <!--<span class="bg-recordeo text-white corners-3">-->
-                <!--Save Post-->
-                <!--</span>-->
-                <!--</button>-->
-                <!--</div>-->
-                <!--</div>-->
-
             </div>
 
 
@@ -58,7 +40,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? 'text-recordeo' : 'text-dark'"
+                           :class="isLiked ? 'text-' + themeColor : 'text-dark'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
@@ -83,6 +65,10 @@
     export default {
         name: 'comment-reply',
         props: {
+            themeColor: {
+                type: String,
+                default: () => 'recordeo'
+            },
             currentUser: {
                 type: Object,
                 default: () => {

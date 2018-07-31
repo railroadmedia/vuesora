@@ -9,7 +9,7 @@
                 <option selected disabled :value="null">
                     {{ $_placeholderLabel + '...' }}
                 </option>
-                <option v-for="filter in $_item"
+                <option v-for="filter in $_sortedOptions"
                         :key="filter.key"
                         :value="filter.value">
                     {{ toTitleCase(filter.key) }}
@@ -33,6 +33,7 @@
 </template>
 <script>
     import Utils from '../../assets/js/classes/utils';
+    import collection from 'lodash/collection';
 
     export default {
         name: 'catalogue-filter',
@@ -72,6 +73,10 @@
                         value: this.filter_value
                     });
                 }
+            },
+
+            $_sortedOptions(){
+                return collection.sortBy(this.$_item, function(o) { return o.key; });
             },
 
             $_placeholderLabel(){

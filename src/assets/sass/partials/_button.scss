@@ -42,7 +42,7 @@ button {
     width:100%;
     cursor:pointer;
 
-    span {
+    & > span {
       pointer-events:none;
       @extend a.btn;
 
@@ -51,7 +51,7 @@ button {
       }
     }
 
-    &:focus span {
+    &:focus > span {
       animation-name: buttonActive;
       animation-duration: .4s;
     }
@@ -76,7 +76,7 @@ button {
     max-width:320px;
   }
 
-  &.flat, span.flat {
+  &.flat, & > span.flat {
     background-color:transparent;
     border:none;
     box-shadow:none;
@@ -95,10 +95,10 @@ button {
 
   &.inverted:hover,
   &.flat:hover,
-  &:hover span.inverted,
-  &:hover span.flat,
-  span.inverted:hover,
-  span.flat:hover { background-color:rgba(126, 126, 126, .1); }
+  &:hover > span.inverted,
+  &:hover > span.flat,
+  & > span.inverted:hover,
+  & > span.flat:hover { background-color:rgba(126, 126, 126, .1); }
 }
 
 a {
