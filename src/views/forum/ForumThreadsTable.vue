@@ -12,7 +12,7 @@
                     </a>
                     <a href="/members/forums?followed=true"
                        class="no-decoration text-black"
-                       :class="{ 'bb-recordeo-2': isFollowedSection }">
+                       :class="{ 'bb-recordeo-2': isFollowedSection, 'hide': searching }">
                         <h1 class="heading pointer">
                             Followed
                         </h1>
@@ -20,18 +20,18 @@
                 </div>
             </div>
 
-            <!-- <div class="flex flex-column mb-3 search-box"> -->
-                <!-- <div class="form-group"> -->
-                    <!-- <input id="threadSearch" -->
-                    <!--     type="text" -->
-                    <!--     v-model="searchInterface"> -->
-                    <!-- <label for="threadSearch" class="recordeo">Search</label> -->
-                <!-- </div> -->
-            <!-- </div> -->
+            <div class="flex flex-column mb-3 search-box">
+                <div class="form-group">
+                    <input id="threadSearch"
+                        type="text"
+                        v-model="searchInterface">
+                    <label for="threadSearch" class="recordeo">Search</label>
+                </div>
+            </div>
             <div class="flex flex-column mb-3 form-group topic-col">
 
-                    <div class="form-group xs-12" style="width:100%;">
-                        <select id="commentSort" v-model="filterInterface">
+                    <div class="form-group xs-12" style="width:100%;" :class="{'hide': searching}">
+                        <select id="commentSort" v-model="filterInterface" class="has-input">
                             <option v-for="option in filterOptions"
                                     :key="option.label"
                                     :value="option.value">{{ option.label }}</option>
@@ -235,11 +235,9 @@
         methods: {
             getSearchResults() {
 
-                let type = this.isFollowedSection ? 'followed' : null;
-
                 Requests.getForumSearchResults(
                         this.searchTerm,
-                        type,
+                        null,
                         this.searchResultsPage,
                         this.searchResultsPageLength
                     ).then(data => {
