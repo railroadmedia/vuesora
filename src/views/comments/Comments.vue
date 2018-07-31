@@ -10,7 +10,7 @@
                         <option value="-created_on">Latest First</option>
                         <option value="created_on">Oldest First</option>
                         <option value="-like_count">Popular</option>
-                        <option value="mine">My Comments</option>
+                        <option value="-mine">My Comments</option>
                     </select>
                     <label for="commentSort" :class="brand">Sort By</label>
                 </div>
