@@ -23,7 +23,7 @@
     }
   }
 
-  &:hover:not(.scheduled) {
+  &:hover:not(.scheduled), &.active {
     .basic-col, .icon-col {
       color:#000;
     }

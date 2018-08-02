@@ -1,6 +1,6 @@
 <template>
     <a class="flex flex-row bt-grey-1-1 no-decoration"
-       :class="$_overview === true ? 'content-overview pv-3' : 'content-table-row'"
+       :class="$_class_object"
        :href="$_item.url">
 
         <div v-if="mappedData.show_numbers"
@@ -9,7 +9,7 @@
         </div>
 
         <div class="flex flex-column align-v-center pl-1"
-             :class="$_overview ? 'large-thumbnail ' + $_item.type : 'thumbnail-col'">
+             :class="[$_overview ? 'large-thumbnail ' + $_item.type : 'thumbnail-col', { 'active': $_active }]">
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img bg-center corners-3"
                      :class="thumbnailType"
@@ -55,18 +55,20 @@
             {{ item }}
         </div>
 
-        <div class="flex flex-column icon-col align-v-center">
+        <div v-if="$_displayUserInteractions"
+             class="flex flex-column icon-col align-v-center">
             <div class="square body">
                 <i class="add-to-list fas fa-plus flex-center"
-                   :class="$_item.is_added ? 'is-added text-' + $_item.type : 'text-light'"
-                   :title="$_item.is_added ? 'Remove from list' : 'Add to list'"
+                   :class="$_is_added ? 'is-added text-' + $_item.type : 'text-light'"
+                   :title="$_is_added ? 'Remove from list' : 'Add to list'"
                    :data-content-id="$_item.id"
                    :data-content-type="$_item.type"
                    @click.stop.prevent="addToList"></i>
             </div>
         </div>
 
-        <div class="flex flex-column icon-col align-v-center hide-sm-down">
+        <div v-if="$_displayUserInteractions"
+             class="flex flex-column icon-col align-v-center hide-sm-down">
             <div class="square body">
 
                 <i v-if="$_item.started || $_item.completed"
@@ -102,6 +104,14 @@
             },
             $_index: {
                 type: Number
+            },
+            $_active: {
+                type: Boolean,
+                default: () => false
+            },
+            $_displayUserInteractions: {
+                type: Boolean,
+                default: () => true
             }
         },
         data(){
@@ -111,10 +121,19 @@
         },
         computed: {
 
+            $_class_object(){
+                return {
+                    'active': this.$_active,
+                    'content-overview': this.$_overview,
+                    'pv-3': this.$_overview,
+                    'content-table-row': !this.$_overview
+                }
+            },
+
             $_is_added:{
                 cache: false,
                 get(){
-                    return this.$_item.is_added;
+                    return this.$_item.is_added_to_primary_playlist;
                 }
             },
 

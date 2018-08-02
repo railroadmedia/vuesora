@@ -92,7 +92,9 @@ export default class Requests {
             .then(response => {
                 return response.data;
             })
-            .catch(Requests.handleError);
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     /**

@@ -47,7 +47,7 @@
             $_is_added:{
                 cache: false,
                 get(){
-                    return this.$_item.is_added;
+                    return this.$_item.is_added_to_primary_playlist;
                 }
             },
 

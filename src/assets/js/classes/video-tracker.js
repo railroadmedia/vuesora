@@ -33,8 +33,6 @@ export default class VideoTracker {
         this.createNewSession()
             .then(response => {
                 if (response) {
-                    console.log(response);
-
                     this.session_id = response.data.session_id;
                 }
             });
@@ -65,10 +63,6 @@ export default class VideoTracker {
      * @returns {Promise} - A resolved promise with the response object
      */
     handlePlayEvent(){
-
-        console.log(this.player_instance.mediaElement.paused);
-        console.log(this.session_id);
-
         if(!this.player_instance.mediaElement.paused && this.session_id){
             this.tracker_interval = setInterval(() => {
 
@@ -76,8 +70,6 @@ export default class VideoTracker {
 
                 this.total_time_watched += 1;
                 this.current_tick = this.current_tick < 4 ? this.current_tick + 1 : 1;
-
-                console.log(this.current_tick);
 
                 if(this.current_tick === 4){
                     this.setLastWatchPosition(currentTime, this.total_time_watched)

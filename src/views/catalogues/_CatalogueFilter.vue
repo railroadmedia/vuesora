@@ -50,6 +50,9 @@
                 type: String,
                 default: () => 'drumeo'
             },
+            $_initial_value: {
+                default: () => null
+            },
             loading: {
                 type: Boolean,
                 default: () => false
@@ -57,13 +60,14 @@
         },
         data(){
             return {
-                filter_value: null
+                filter_value: this.$_initial_value
             }
         },
         computed: {
             valueInterface: {
+                cache: false,
                 get(){
-                    return this.filter_value;
+                    return this.$_initial_value;
                 },
                 set(value){
                     this.filter_value = value;

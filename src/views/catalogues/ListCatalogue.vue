@@ -8,6 +8,7 @@
                 :$_brand="$_brand"
                 :class="$_card_grid_classes"
                 :$_overview="$_displayItemsAsOverview"
+                :$_displayUserInteractions="$_displayUserInteractions"
                 @addToList="emitAddToList"></catalogue-list-item>
     </div>
 </template>
@@ -33,6 +34,10 @@
             $_displayItemsAsOverview: {
                 type: Boolean,
                 default: () => false
+            },
+            $_displayUserInteractions: {
+                type: Boolean,
+                default: () => true
             },
             $_card_grid_classes: {
                 type: String,

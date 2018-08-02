@@ -35,6 +35,7 @@
         <catalogue-filters v-if="$_filterableValues.length && !$_showContentTabs"
                            :$_filters="filters"
                            :$_filterableValues="$_filterableValues"
+                           :filter_params="filter_params"
                            :loading="loading"
                            :$_themeColor="$_themeColor"
                            @filterChange="handleFilterChange"
@@ -50,6 +51,7 @@
                         :$_content="content"
                         :$_brand="$_brand"
                         :$_displayItemsAsOverview="$_displayItemsAsOverview"
+                        :$_displayUserInteractions="$_displayUserInteractions"
                         @addToList="addToListEventHandler"></list-catalogue>
 
         <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
@@ -91,6 +93,7 @@
     import Toasts from '../../assets/js/classes/toasts'
     import Pagination from '../../components/Pagination.vue';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
+    import * as QueryString from 'query-string';
 
     export default {
         mixins: [UserCatalogueEvents],
@@ -173,6 +176,10 @@
                 type: Boolean,
                 default: () => false
             },
+            $_displayUserInteractions: {
+                type: Boolean,
+                default: () => true
+            },
             $_showContentTabs: {
                 type: Boolean,
                 default: () => false
@@ -182,6 +189,10 @@
                 default: () => false
             },
             $_showLoadingAnimation: {
+                type: Boolean,
+                default: () => false
+            },
+            $_useUrlParams: {
                 type: Boolean,
                 default: () => false
             }
@@ -222,10 +233,62 @@
 
                 return included_fields;
             },
+
+            $_request_params(){
+                return {
+                    'required_fields': this.$_required_fields,
+                    'required_user_states': this.required_user_states
+                }
+            }
         },
         methods: {
             toggleCatalogueType(type){
                 this.catalogue_type = type;
+            },
+
+            getUrlParams(){
+                const params = window.location.search;
+                const query_object = QueryString.parse(params, {arrayFormat: 'bracket'});
+                const keys = Object.keys(query_object);
+
+                keys.forEach(key => {
+
+                   if(key === 'required_user_states'){
+                        // query-string is weird and parses arrays with 1 value as a string
+                        if(!Array.isArray(query_object[key])){
+                            this.required_user_states = [query_object[key]];
+                        }
+                        else {
+                            query_object[key].forEach(param => {
+                                this.required_user_states.push(param);
+                            });
+                        }
+                    }
+                    else if(key === 'required_fields'){
+
+                        console.log(query_object[key]);
+
+                        if(!Array.isArray(query_object[key])){
+                            let this_val = query_object[key].split(',');
+                            this.filter_params[this_val[0]] = this_val[1];
+                        }
+                        else {
+                            query_object[key].forEach(param => {
+                                let this_val = param.split(',');
+                                this.filter_params[this_val[0]] = this_val[1];
+                            });
+                        }
+                    }
+                });
+            },
+
+            setUrlParams(){
+                const params = this.$_request_params;
+                const string = QueryString.stringify(params, {arrayFormat: 'bracket'});
+
+                let new_url = window.location.origin + window.location.pathname + '?' + string;
+
+                window.history.pushState(history.state, null, new_url);
             },
 
             getContent(replace = true){
@@ -234,13 +297,12 @@
 
                     axios.get(this.$_contentEndpoint, {
                         params: {
-                            brand: this.$_brand,
                             page: this.page,
+                            brand: this.$_brand,
                             limit: this.$_limit,
                             statuses: this.$_statuses,
-                            included_types: this.$_includedTypes,
-                            'filter[required_fields]': this.$_required_fields,
-                            'filter[required_user_states]': this.required_user_states,
+                            'included_types[]': this.$_includedTypes,
+                            ...this.$_request_params
                         }
                     })
                         .then(response => {
@@ -311,9 +373,12 @@
             },
 
             handleFilterChange(payload){
-                this.filter_params = payload;
+                this.filter_params[payload.key] = payload.value;
                 this.page = 1;
 
+                if(this.$_useUrlParams){
+                    this.setUrlParams();
+                }
                 this.getContent();
             },
 
@@ -334,6 +399,10 @@
 
             if(this.$_infiniteScroll && !this.$_loadMoreButton){
                 window.addEventListener('scroll', this.infiniteScrollEventHandler);
+            }
+
+            if(this.$_useUrlParams){
+                this.getUrlParams();
             }
         },
         beforeDestroy(){

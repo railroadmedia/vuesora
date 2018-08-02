@@ -8,7 +8,7 @@ export default {
         addToList(){
             this.emitAddToList({
                 content_id: this.$_item.id,
-                is_added: this.$_item.is_added || false
+                is_added: this.$_item.is_added_to_primary_playlist || false
             });
         },
 
@@ -21,7 +21,7 @@ export default {
         addToListEventHandler(payload){
             const post_index = this.content.map(post => post.id).indexOf(payload.content_id);
 
-            this.content[post_index].is_added = !this.content[post_index].is_added;
+            this.content[post_index].is_added_to_primary_playlist = !this.content[post_index].is_added_to_primary_playlist;
 
             if(payload.is_added && this.$_destroy_on_list_removal){
                 this.content.splice(post_index, 1);
@@ -30,7 +30,7 @@ export default {
             Requests.addOrRemoveContentFromList(payload.content_id, payload.is_added)
                 .then(response => {
                     if(!response){
-                        this.content[post_index].is_added = !this.content[post_index].is_added;
+                        this.content[post_index].is_added_to_primary_playlist = !this.content[post_index].is_added_to_primary_playlist;
                     }
                 });
         }

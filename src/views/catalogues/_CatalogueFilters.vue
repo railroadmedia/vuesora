@@ -7,6 +7,7 @@
                           :$_item="$_filters[item]"
                           :$_themeColor="$_themeColor"
                           :loading="loading"
+                          :$_initial_value="filter_params[item]"
                           @filterChange="handleFilterChange"></catalogue-filter>
 
         <catalogue-filter v-if="hasProgressFilter"
@@ -40,18 +41,23 @@
             $_themeColor: {
                 type: String,
                 default: () => 'drumeo'
+            },
+            filter_params: {
+                type: Object,
+                default(){
+                    return {
+                        artist: null,
+                        bpm: null,
+                        difficulty: null,
+                        instructor: null,
+                        style: null,
+                        topic: null
+                    }
+                }
             }
         },
         data(){
             return {
-                filter_params: {
-                    artist: null,
-                    bpm: null,
-                    difficulty: null,
-                    instructor: null,
-                    style: null,
-                    topic: null
-                },
                 progress_options: [
                     { key: 'started', value: "started" },
                     { key: 'completed', value: "completed" },
@@ -66,9 +72,7 @@
         methods: {
 
             handleFilterChange(payload){
-                this.filter_params[payload.key] = payload.value;
-
-                this.$emit('filterChange', this.filter_params);
+                this.$emit('filterChange', payload);
             },
 
             handleProgressChange(payload){

@@ -40,9 +40,6 @@ export default {
             this.createOrPushArray(data.key, data.value, this_post);
         });
 
-        // TODO: REMOVE ME ONCE THE BACKEND ACTUALLY RETURNS THIS (I NEED IT FOR REACTIVITY)
-        this_post['is_added'] = false;
-
         flattened.push(this_post);
     },
 
