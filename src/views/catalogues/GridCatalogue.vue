@@ -6,7 +6,10 @@
                 :key="'grid' + item.id"
                 :$_item="item"
                 :$_brand="$_brand"
+                :$_themeColor="$_themeColor"
                 :class="$_card_grid_classes"
+                :$_userId="$_userId"
+                :$_forceWideThumbs="$_forceWideThumbs"
                 @addToList="emitAddToList"></catalogue-card>
     </div>
 </template>
@@ -25,6 +28,14 @@
                 type: Array,
                 default: () => []
             },
+            $_themeColor: {
+                type: String,
+                default: () => 'drumeo'
+            },
+            $_userId: {
+                type: String,
+                default: () => ''
+            },
             $_brand: {
                 type: String,
                 default: () => 'drumeo'
@@ -34,6 +45,10 @@
                 default: () => ''
             },
             $_noWrap: {
+                type: Boolean,
+                default: () => false
+            },
+            $_forceWideThumbs: {
                 type: Boolean,
                 default: () => false
             }

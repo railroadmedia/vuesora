@@ -235,7 +235,7 @@
 
   .card-media {
     background-size:cover;
-    background-position:center;
+    background-position:top center;
     background-repeat:no-repeat;
     position:relative;
     overflow:hidden;
@@ -264,6 +264,22 @@
       width:100%;
       padding:$gutterWidth #{$gutterWidth / 3} #{$gutterWidth / 3};
       @include topToBottomGradient(transparent, #000);
+    }
+
+    .lesson-progress {
+      position:absolute;
+      bottom:0;
+      left:0;
+      right:0;
+      height:5px;
+
+      .progress {
+        position:absolute;
+        height:100%;
+        top:0;
+        left:0;
+        bottom:0;
+      }
     }
   }
 }

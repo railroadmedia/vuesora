@@ -6,8 +6,10 @@
                 :$_index="i + 1"
                 :$_item="item"
                 :$_brand="$_brand"
+                :$_themeColor="$_themeColor"
                 :class="$_card_grid_classes"
                 :$_overview="$_displayItemsAsOverview"
+                :$_userId="$_userId"
                 :$_displayUserInteractions="$_displayUserInteractions"
                 @addToList="emitAddToList"></catalogue-list-item>
     </div>
@@ -26,6 +28,14 @@
             $_content: {
                 type: Array,
                 default: () => []
+            },
+            $_themeColor: {
+                type: String,
+                default: () => 'drumeo'
+            },
+            $_userId: {
+                type: String,
+                default: () => ''
             },
             $_brand: {
                 type: String,

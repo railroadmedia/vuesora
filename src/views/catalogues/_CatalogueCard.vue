@@ -15,6 +15,12 @@
 
                 <h3 class="thumbnail-title body capitalize"
                     :class="'text-' + $_item.type">{{ mappedData.color_title }}</h3>
+
+                <div class="lesson-progress">
+                    <span class="progress"
+                          :class="'bg-' + $_themeColor"
+                          :style="'width:' + $_progress_percent + '%'"></span>
+                </div>
             </div>
             <h1 class="tiny text-black font-bold capitalize">{{ mappedData.black_title }}</h1>
             <h4 class="x-tiny text-grey-2 font-italic uppercase">{{ mappedData.grey_title }}</h4>
@@ -32,9 +38,21 @@
             $_item: {
                 type: Object
             },
+            $_themeColor: {
+                type: String,
+                default: () => 'drumeo'
+            },
             $_brand: {
                 type: String,
                 default: () => 'drumeo'
+            },
+            $_userId: {
+                type: String,
+                default: () => ''
+            },
+            $_forceWideThumbs: {
+                type: Boolean,
+                default: () => false
             }
         },
         data(){
@@ -56,6 +74,10 @@
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
             },
 
+            $_progress_percent(){
+                return this.$_item['progress_percent'];
+            },
+
             mappedData(){
                 return new DataMapper({
                     content_type: this.$_item.type,
@@ -65,7 +87,7 @@
             },
 
             thumbnailType(){
-                return this.$_item['type'] === 'song' ? 'square' : 'box-4-by-3';
+                return this.$_item['type'] === 'song' && this.$_forceWideThumbs === false ? 'square' : 'widescreen';
             }
         },
         mounted(){

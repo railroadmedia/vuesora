@@ -41,17 +41,27 @@
                            @filterChange="handleFilterChange"
                            @progressChange="handleProgressChange"></catalogue-filters>
 
+        <div v-if="content.length === 0 && $_noResultsMessage.length > 0"
+             class="flex flex-row ph pv-3">
+            <h4 class="body">{{ $_noResultsMessage }}</h4>
+        </div>
+
         <grid-catalogue v-if="catalogue_type === 'grid'"
                         :$_content="content"
                         :$_brand="$_brand"
+                        :$_themeColor="$_themeColor"
                         :$_noWrap="$_noWrapGrid"
+                        :$_userId="$_userId"
+                        :$_forceWideThumbs="$_forceWideThumbs"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
         <list-catalogue v-if="catalogue_type === 'list'"
                         :$_content="content"
                         :$_brand="$_brand"
+                        :$_themeColor="$_themeColor"
                         :$_displayItemsAsOverview="$_displayItemsAsOverview"
                         :$_displayUserInteractions="$_displayUserInteractions"
+                        :$_userId="$_userId"
                         @addToList="addToListEventHandler"></list-catalogue>
 
         <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
@@ -193,6 +203,14 @@
                 default: () => false
             },
             $_useUrlParams: {
+                type: Boolean,
+                default: () => false
+            },
+            $_noResultsMessage: {
+                type: String,
+                default: () => ''
+            },
+            $_forceWideThumbs: {
                 type: Boolean,
                 default: () => false
             }

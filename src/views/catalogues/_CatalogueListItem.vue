@@ -11,7 +11,7 @@
         <div class="flex flex-column align-v-center pl-1"
              :class="[$_overview ? 'large-thumbnail ' + $_item.type : 'thumbnail-col', { 'active': $_active }]">
             <div class="thumb-wrap corners-3">
-                <div class="thumb-img bg-center corners-3"
+                <div class="thumb-img corners-3"
                      :class="thumbnailType"
                      :style="'background-image:url( ' + $_thumbnail + ' );'"></div>
 
@@ -93,6 +93,14 @@
         props: {
             $_item: {
                 type: Object
+            },
+            $_userId: {
+                type: String,
+                default: () => ''
+            },
+            $_themeColor: {
+                type: String,
+                default: () => 'drumeo'
             },
             $_brand: {
                 type: String,
