@@ -316,3 +316,26 @@
     }
   }
 }
+
+.addToList {
+
+  span i {
+    transition:transform .1s ease-in-out;
+  }
+
+  &.added {
+
+    &:hover span {
+      background:#fff;
+    }
+
+    span {
+      color:nth(nth($greys, 5), 2);
+      background:#fff;
+
+      i {
+        transform:rotate(45deg);
+      }
+    }
+  }
+}

@@ -5,11 +5,18 @@ import Requests from '../classes/requests';
 
 export default (function () {
     const markAsCompleteButtons = document.querySelectorAll('.completeButton');
+    const addToListButtons = document.querySelectorAll('.addToList');
     const resetProgressButtons = document.querySelectorAll('.resetProgress');
 
     if(markAsCompleteButtons.length){
         Array.from(markAsCompleteButtons).forEach(button => {
             button.addEventListener('click', markAsComplete);
+        });
+    }
+
+    if(addToListButtons.length){
+        Array.from(addToListButtons).forEach(button => {
+            button.addEventListener('click', addToList);
         });
     }
 
@@ -53,6 +60,22 @@ export default (function () {
                 })
             ]
         }).show();
+    }
+
+    function addToList(event){
+        const element = event.target;
+        const contentId = element.dataset['contentId'];
+        const is_added = element.classList.contains('added');
+
+        Requests.addOrRemoveContentFromList(contentId, is_added)
+            .then(response => response);
+
+        if(is_added){
+            element.classList.remove('added');
+        }
+        else {
+            element.classList.add('added');
+        }
     }
 
     function markAsComplete(event){

@@ -1,7 +1,7 @@
 <template>
     <a class="flex flex-row bt-grey-1-1 no-decoration"
        :class="$_class_object"
-       :href="$_item.url">
+       :href="$_noLink ? false : $_item.url">
 
         <div v-if="$_showNumbers"
              class="flex flex-column align-center icon-col title text-black hide-xs-only">
@@ -130,6 +130,10 @@
                 default: () => ''
             },
             $_showNumbers: {
+                type: Boolean,
+                default: () => false
+            },
+            $_noLink: {
                 type: Boolean,
                 default: () => false
             }

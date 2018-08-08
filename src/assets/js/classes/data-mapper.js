@@ -2,6 +2,7 @@ import moment from 'moment';
 
 export default class DataMapper {
     /**
+     * Take a content post and map specific post data to specific keys based on content type
      *
      * @param {string} content_type
      * @param {string} card_type
@@ -352,13 +353,29 @@ export default class DataMapper {
                 card: {
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: this.mapDifficulty()
+                    grey_title: this.mapDifficulty(),
                 },
                 list: {
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
                         this.mapDifficulty()
+                    ]
+                }
+            },
+
+            'pack-bundle': {
+                card: {
+                    show_description: true,
+                    black_title: 'DVD ' + this.post['position'] + ' - ' + this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.post['lesson_count'] + ' Lessons'
+                },
+                list: {
+                    black_title: 'DVD ' + this.post['position'] + ' - ' + this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.post['lesson_count'] + ' Lessons'
                     ]
                 }
             },

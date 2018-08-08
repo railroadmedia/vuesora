@@ -8,6 +8,7 @@
                 :$_brand="$_brand"
                 :$_active="item.id === active_id"
                 :$_displayUserInteractions="false"
+                :$_noLink="true"
                 @addToList="addToListEventHandler"
                 @click.native="playSong(item.id)"></catalogue-list-item>
 
