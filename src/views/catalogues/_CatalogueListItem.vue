@@ -3,13 +3,14 @@
        :class="$_class_object"
        :href="$_item.url">
 
-        <div v-if="mappedData.show_numbers"
+        <div v-if="$_showNumbers"
              class="flex flex-column align-center icon-col title text-black hide-xs-only">
             {{ $_index }}
         </div>
 
-        <div class="flex flex-column align-v-center pl-1"
-             :class="[$_overview ? 'large-thumbnail ' + $_item.type : 'thumbnail-col', { 'active': $_active }]">
+        <div class="flex flex-column align-v-center"
+             :class="[$_overview ? 'large-thumbnail ' + $_themeColor
+             : 'thumbnail-col', { 'active': $_active }]">
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
                      :class="thumbnailType"
@@ -26,7 +27,7 @@
             </div>
         </div>
 
-        <div class="flex flex-column align-v-center pl-1 title-column overflow">
+        <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
             <p class="tiny text-recordeo uppercase text-truncate"
                :class="'text-' + $_item.type">
@@ -37,13 +38,15 @@
                 {{ mappedData.black_title }}
             </p>
 
-            <p class="tiny text-black" v-if="$_overview && mappedData.description">
+            <p class="tiny text-black"
+               v-if="$_overview && mappedData.description"
+               v-html="mappedData.description">
                 {{ mappedData.description }}
             </p>
 
             <p class="x-tiny text-dark text-truncate font-italic uppercase hide-md-up">
                 <span v-for="(item, i) in mappedData.column_data">
-                    <span v-if="i > 0" class="bullet">&#x25CF;</span>
+                    <span v-if="i > 0" class="bullet">-</span>
 
                     {{ item }}
                 </span>
@@ -55,8 +58,9 @@
             {{ item }}
         </div>
 
-        <div v-if="$_displayUserInteractions"
-             class="flex flex-column icon-col align-v-center">
+        <div v-if="$_displayUserInteractions && this.$_item.type !== 'learning-path'"
+             class="flex flex-column icon-col align-v-center"
+             :class="$_overview ? 'hide-xs-only' : ''">
             <div class="square body">
                 <i class="add-to-list fas fa-plus flex-center"
                    :class="$_is_added ? 'is-added text-' + $_item.type : 'text-light'"
@@ -72,8 +76,8 @@
             <div class="square body">
 
                 <i v-if="$_item.started || $_item.completed"
-                   class="fas flex-center text-recordeo rounded"
-                   :class="$_item.completed ? 'fa-check-circle text-' + $_item.type : 'fa-adjust text-' + $_item.type"></i>
+                   class="fas flex-center rounded"
+                   :class="$_item.completed ? 'fa-check-circle text-' + $_themeColor : 'fa-adjust text-' + $_themeColor"></i>
 
                 <i v-else
                    class="fas flex-center text-light rounded"
@@ -120,6 +124,14 @@
             $_displayUserInteractions: {
                 type: Boolean,
                 default: () => true
+            },
+            $_contentTypeOverride: {
+                type: String,
+                default: () => ''
+            },
+            $_showNumbers: {
+                type: Boolean,
+                default: () => false
             }
         },
         data(){
@@ -146,6 +158,11 @@
             },
 
             $_thumbnail(){
+                if(this.$_item.type === 'learning-path'){
+                    return this.$_item['background_image_url'] ||
+                        'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
+                }
+
                 return this.$_item['thumbnail_url'] ||
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
             },
@@ -156,14 +173,14 @@
 
             mappedData(){
                 return new DataMapper({
-                    content_type: this.$_item.type,
+                    content_type: this.$_contentTypeOverride || this.$_item.type,
                     card_type: 'list',
                     post: this.$_item
                 });
             },
 
             thumbnailType(){
-                return this.$_item['type'] === 'song' ? 'square' : 'box-4-by-3';
+                return this.$_item['type'] === 'song' ? 'square' : 'widescreen';
             }
         },
         mounted(){

@@ -348,6 +348,37 @@ export default class DataMapper {
                 }
             },
 
+            'learning-path': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.mapDifficulty()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.mapDifficulty()
+                    ]
+                }
+            },
+
+            'learning-path-part': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['learning_path_description'],
+                    grey_title: this.getPostDuration()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['learning_path_description'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                }
+            },
+
             default: {
                 card: {
                     color_title: this.post['type'],

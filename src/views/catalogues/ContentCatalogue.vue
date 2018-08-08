@@ -35,6 +35,7 @@
         <catalogue-filters v-if="$_filterableValues.length && !$_showContentTabs"
                            :$_filters="filters"
                            :$_filterableValues="$_filterableValues"
+                           :required_user_states="required_user_states"
                            :filter_params="filter_params"
                            :loading="loading"
                            :$_themeColor="$_themeColor"
@@ -53,15 +54,18 @@
                         :$_noWrap="$_noWrapGrid"
                         :$_userId="$_userId"
                         :$_forceWideThumbs="$_forceWideThumbs"
+                        :$_contentTypeOverride="$_contentTypeOverride"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
         <list-catalogue v-if="catalogue_type === 'list'"
                         :$_content="content"
                         :$_brand="$_brand"
                         :$_themeColor="$_themeColor"
+                        :$_userId="$_userId"
                         :$_displayItemsAsOverview="$_displayItemsAsOverview"
                         :$_displayUserInteractions="$_displayUserInteractions"
-                        :$_userId="$_userId"
+                        :$_contentTypeOverride="$_contentTypeOverride"
+                        :$_showNumbers="$_showNumbers"
                         @addToList="addToListEventHandler"></list-catalogue>
 
         <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
@@ -211,6 +215,14 @@
                 default: () => ''
             },
             $_forceWideThumbs: {
+                type: Boolean,
+                default: () => false
+            },
+            $_contentTypeOverride: {
+                type: String,
+                default: () => ''
+            },
+            $_showNumbers: {
                 type: Boolean,
                 default: () => false
             }

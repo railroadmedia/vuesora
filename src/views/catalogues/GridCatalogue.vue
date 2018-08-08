@@ -10,6 +10,7 @@
                 :class="$_card_grid_classes"
                 :$_userId="$_userId"
                 :$_forceWideThumbs="$_forceWideThumbs"
+                :$_contentTypeOverride="$_contentTypeOverride"
                 @addToList="emitAddToList"></catalogue-card>
     </div>
 </template>
@@ -51,6 +52,10 @@
             $_forceWideThumbs: {
                 type: Boolean,
                 default: () => false
+            },
+            $_contentTypeOverride: {
+                type: String,
+                default: () => ''
             }
         }
     }

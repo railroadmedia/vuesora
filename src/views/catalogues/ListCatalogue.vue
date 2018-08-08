@@ -11,6 +11,8 @@
                 :$_overview="$_displayItemsAsOverview"
                 :$_userId="$_userId"
                 :$_displayUserInteractions="$_displayUserInteractions"
+                :$_contentTypeOverride="$_contentTypeOverride"
+                :$_showNumbers="$_showNumbers"
                 @addToList="emitAddToList"></catalogue-list-item>
     </div>
 </template>
@@ -52,6 +54,14 @@
             $_card_grid_classes: {
                 type: String,
                 default: () => ''
+            },
+            $_contentTypeOverride: {
+                type: String,
+                default: () => ''
+            },
+            $_showNumbers: {
+                type: Boolean,
+                default: false
             }
         },
     }

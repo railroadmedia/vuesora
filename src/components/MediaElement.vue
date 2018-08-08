@@ -140,6 +140,14 @@
             }
         },
         methods: {
+            playVideo(){
+                this.mediaElement.play();
+            },
+
+            pauseVideo(){
+                this.mediaElement.pause();
+            },
+
             emitEvent(event){
                 this.$emit(event.type, event);
             },

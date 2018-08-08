@@ -3,6 +3,8 @@ export default (function(){
     const modalDialogs = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close-modal');
 
+    const closeEvent = new Event('modalClose');
+
     // Add event listeners to every trigger button
     Array.from(modalTriggers).forEach(trigger => {
         trigger.addEventListener('click', openModal)
@@ -39,6 +41,8 @@ export default (function(){
         if(modalOverlay){
             modalOverlay.removeEventListener('click', closeModal);
             document.body.removeChild(modalOverlay);
+
+            window.dispatchEvent(closeEvent);
         }
 
         // Remove the active class from all Modals (easier than finding the specific one open)

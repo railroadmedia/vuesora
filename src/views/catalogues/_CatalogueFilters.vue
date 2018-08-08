@@ -15,6 +15,7 @@
                           :$_item="progress_options"
                           :$_themeColor="$_themeColor"
                           :loading="loading"
+                          :$_initial_value="$_user_state"
                           @filterChange="handleProgressChange"></catalogue-filter>
     </div>
 </template>
@@ -42,6 +43,10 @@
                 type: String,
                 default: () => 'drumeo'
             },
+            required_user_states: {
+                type: Array,
+                default: () => []
+            },
             filter_params: {
                 type: Object,
                 default(){
@@ -65,6 +70,10 @@
             }
         },
         computed: {
+            $_user_state(){
+                return this.required_user_states.length ? this.required_user_states[0] : null
+            },
+
             hasProgressFilter(){
                 return this.$_filterableValues.indexOf('progress') !== -1;
             }

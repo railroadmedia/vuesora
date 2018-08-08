@@ -18,7 +18,7 @@
 
                 <div class="lesson-progress">
                     <span class="progress"
-                          :class="'bg-' + $_themeColor"
+                          :class="'bg-' + $_item.type"
                           :style="'width:' + $_progress_percent + '%'"></span>
                 </div>
             </div>
@@ -53,7 +53,11 @@
             $_forceWideThumbs: {
                 type: Boolean,
                 default: () => false
-            }
+            },
+            $_contentTypeOverride: {
+                type: String,
+                default: ''
+            },
         },
         data(){
             return {
@@ -80,7 +84,7 @@
 
             mappedData(){
                 return new DataMapper({
-                    content_type: this.$_item.type,
+                    content_type: this.$_contentTypeOverride || this.$_item.type,
                     card_type: 'card',
                     post: this.$_item
                 });

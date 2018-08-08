@@ -3,7 +3,7 @@
 .content-table-row {
   background-color:#fff;
   transition:background-color .2s ease-in-out;
-  padding:#{$gutterWidth / 4} 0;
+  padding:#{$gutterWidth / 4};
 
   & > .flex-column {
     justify-content:center;
@@ -90,58 +90,71 @@
     margin-bottom:0;
   }
 
-  &:before, &:after {
-    content:'';
-    position:absolute;
-    top:0;
-    left:0;
-    transform-origin:50% 0;
-    width:100%;
-    border-radius:3px;
-    height:100%;
+  .thumb-img {
+    background-size:cover;
+    background-position:top center;
+    background-repeat:no-repeat;
   }
 
-  @each $key, $value in $brand_colors {
-    &.#{$key} {
+  &.learning-path {
+    &:before, &:after {
+      content:'';
+      position:absolute;
+      top:50%;
+      left:0;
+      transform-origin:50% 0;
+      width:100%;
+      border-radius:3px;
+      height:0;
+      padding-bottom:56.25%;
+    }
 
-      &:before {
-        background:lighten($value, 20%);
-      }
+    @each $key, $value in $brand_colors {
+      &.#{$key} {
 
-      &:after {
-        background:lighten($value, 30%);
+        &:before {
+          background:lighten($value, 20%);
+        }
+
+        &:after {
+          background:lighten($value, 30%);
+        }
       }
     }
-  }
 
-  @each $key, $value in $content_colors {
-    &.#{$key} {
+    @each $key, $value in $content_colors {
+      &.#{$key} {
 
-      &:before {
-        background:lighten($value, 20%);
-      }
+        &:before {
+          background:lighten($value, 20%);
+        }
 
-      &:after {
-        background:lighten($value, 30%);
+        &:after {
+          background:lighten($value, 30%);
+        }
       }
     }
-  }
 
-  &:before {
-    background:lighten($recordeoYellow, 20%);
-    transform:scale(0.9) translateY(-10px);
-    z-index:-1;
+    &:before {
+      background:lighten($recordeoYellow, 20%);
+      transform:scale(0.9) translateY(-50%);
+      margin-top:-15px;
+      z-index:-1;
+    }
   }
 
   &:after {
     background:lighten($recordeoYellow, 30%);
-    transform:scale(0.8) translateY(-20px);
+    transform:scale(0.8) translateY(-50%);
+    margin-top:-30px;
     z-index:-2;
   }
 }
 
 .content-overview {
   flex-wrap:wrap;
+  padding-left:#{$gutterWidth / 4};
+  padding-right:#{$gutterWidth / 4};
 
   @include medium {
     flex-wrap:nowrap;
