@@ -71,6 +71,7 @@
                     file_picker_types: 'image',
                     default_link_target: '_blank',
                     target_list: false,
+                    link_assume_external_targets: true,
                     link_title: false,
                     media_poster: false,
                     media_dimensions: false,
