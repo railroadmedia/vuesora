@@ -302,13 +302,11 @@ export default class DataMapper {
                     grey_title: this.mapDifficulty()
                 },
                 list: {
-                    color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
-                        this.mapDifficulty(),
-                        this.getPostDuration(),
-                        this.post['bpm']
+                        this.post['style'],
+                        this.post['bpm'] + ' BPM'
                     ]
                 }
             },
@@ -376,6 +374,21 @@ export default class DataMapper {
                     description: this.post['description'],
                     column_data: [
                         this.post['lesson_count'] + ' Lessons'
+                    ]
+                }
+            },
+
+            'pack-bundle-lesson': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.post['lesson_count'] + ' Lessons'
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration()
                     ]
                 }
             },

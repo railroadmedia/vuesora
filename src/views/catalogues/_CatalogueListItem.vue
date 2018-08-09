@@ -1,5 +1,5 @@
 <template>
-    <a class="flex flex-row bt-grey-1-1 no-decoration"
+    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1"
        :class="$_class_object"
        :href="$_noLink ? false : $_item.url">
 
@@ -71,10 +71,9 @@
             </div>
         </div>
 
-        <div v-if="$_displayUserInteractions"
-             class="flex flex-column icon-col align-v-center hide-sm-down">
-            <div class="square body">
-
+        <div class="flex flex-column icon-col align-v-center"
+             :class="$_displayUserInteractions ? 'hide-sm-down' : ''">
+            <div class="body">
                 <i v-if="$_item.started || $_item.completed"
                    class="fas flex-center rounded"
                    :class="$_item.completed ? 'fa-check-circle text-' + $_themeColor : 'fa-adjust text-' + $_themeColor"></i>

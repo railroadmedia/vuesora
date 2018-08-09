@@ -5,14 +5,16 @@
         <span v-if="loop"
               id="anchorA" class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
               :style="'left:' + anchor_offsets.a + '%;'"
-              @mousedown="initializeDrag('a')">
+              @mousedown="initializeDrag('a')"
+              @touchstart="initializeDrag('a')">
             A
         </span>
 
         <span v-if="loop"
               id="anchorB" class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
               :style="'left:' + anchor_offsets.b + '%;'"
-              @mousedown="initializeDrag('b')">
+              @mousedown="initializeDrag('b')"
+              @touchstart="initializeDrag('b')">
             B
         </span>
 
@@ -228,7 +230,9 @@
             },
 
             handleAnchorDrag(event){
-                const xOffsetPercent = event.clientX / window.innerWidth;
+
+                const xOffset = event.clientX || event.touches[0].clientX;
+                const xOffsetPercent = xOffset / window.innerWidth;
 
                 if(this.dragging){
                     if(this.draggingAnchor === 'a'){
@@ -284,9 +288,8 @@
                 }
             });
 
-            document.body.addEventListener('mousemove', event => {
-                this.handleAnchorDrag(event);
-            });
+            document.body.addEventListener('mousemove', this.handleAnchorDrag);
+            document.body.addEventListener('touchmove', this.handleAnchorDrag);
 
             document.body.addEventListener('mouseup', event => {
                 this.dragging = false;

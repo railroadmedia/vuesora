@@ -3,12 +3,9 @@
 .content-table-row {
   background-color:#fff;
   transition:background-color .2s ease-in-out;
-  padding:#{$gutterWidth / 4};
 
   & > .flex-column {
     justify-content:center;
-    padding-top:5px;
-    padding-bottom:5px;
   }
 
   &.wrap-on-mobile {
@@ -188,6 +185,16 @@
     }
 
     flex:0 0 200px;
+
+    .thumb-wrap {
+
+      .thumb-hover {
+
+        i {
+          font-size:24px;
+        }
+      }
+    }
   }
 
   .thumb-img {
@@ -242,7 +249,7 @@
     flex:0 0 100%;
   }
 
-  flex:0 0 215px;
+  flex:0 0 200px;
 }
 
 .avatar-col {
@@ -256,14 +263,10 @@
 }
 
 .icon-col {
-  flex:0 0 60px;
-  padding:5px;
+  flex:0 0 50px;
 
   i {
-    position:absolute;
     font-size:28px;
-    height:100%;
-    width:100%;
     transition:color .1s ease-in-out, transform .1s ease-in-out;
     will-change: color, transform;
 

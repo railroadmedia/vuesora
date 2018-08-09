@@ -69,7 +69,7 @@ button {
   }
 
   &.collapse-200 {
-    max-width:250px;
+    max-width:200px;
   }
 
   &.collapse-250 {
@@ -86,9 +86,22 @@ button {
     box-shadow:none;
   }
 
+  &.big-text {
+    font-size:20px;
+
+    & > span {
+      font-size:20px;
+    }
+  }
+
   &.btn-tiny {
     font-size:13px;
     height:35px;
+
+    & > span {
+      font-size:13px;
+      height:35px;
+    }
   }
 
   &.bg-recordeo:hover { background-color:lighten($recordeoYellow, 10%); }
