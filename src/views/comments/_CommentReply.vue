@@ -9,7 +9,7 @@
                     <h2 class="body font-bold">
                         {{ display_name }}
 
-                        <span class="x-tiny text-dark font-bold font-italic uppercase ml-1">
+                        <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
                         </span>
                     </h2>
@@ -17,7 +17,7 @@
 
                 <div class="flex flex-column align-h-right align-v-center flex-auto">
                     <div class="flex flex-row">
-                        <span class="tiny no-decoration text-dark pointer mr-1"
+                        <span class="tiny no-decoration text-grey-3 pointer mr-1"
                               v-if="(isUsersPost || isCurrentUserAdmin)">
                             <i class="fas fa-trash"
                                @click="deleteComment"></i>
@@ -40,7 +40,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? 'text-' + themeColor : 'text-dark'"
+                           :class="isLiked ? 'text-' + themeColor : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
@@ -48,7 +48,7 @@
                             </span>
                         </p>
 
-                        <p class="x-tiny text-dark uppercase font-italic"
+                        <p class="x-tiny text-grey-3 uppercase font-italic"
                            v-html="userLikeString">
                             {{ userLikeString }}
                         </p>
@@ -217,7 +217,7 @@
 
                             notification.close();
                         }),
-                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
                             notification.close();
                         })
                     ]

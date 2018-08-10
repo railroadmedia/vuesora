@@ -5,6 +5,10 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, .2);
 }
 
+.rotate-45 {
+  transform:rotate(45deg);
+}
+
 // Border Radius
 .corners-3 {
   border-radius:3px;

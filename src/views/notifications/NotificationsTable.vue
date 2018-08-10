@@ -6,7 +6,7 @@
             </div>
 
             <div class="flex flex-column button-col">
-                <a :href="settingsUrl" class="btn bg-dark inverted short text-dark">
+                <a :href="settingsUrl" class="btn bg-dark inverted short text-grey-3">
                     <i class="fas fa-cog mr-1"></i>
                     My Settings
                 </a>
@@ -23,7 +23,7 @@
 
         <div class="flex flex-row pa-3">
             <p v-if="notifications.length === 0"
-               class="tiny text-dark font-italic">
+               class="tiny text-grey-3 font-italic">
                 You do not appear to have any notifications at this time.
             </p>
         </div>

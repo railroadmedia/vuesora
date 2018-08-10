@@ -30,7 +30,7 @@
 
                 <div class="loading-reply flex-center" v-show="loading">
                     <i class="fas fa-spinner fa-spin text-recordeo"></i>
-                    <p class="x-tiny text-dark">loading...</p>
+                    <p class="x-tiny text-grey-3">loading...</p>
                 </div>
             </div>
         </div>

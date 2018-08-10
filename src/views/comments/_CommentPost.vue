@@ -11,7 +11,7 @@
                     <h2 class="body font-bold">
                         {{ display_name }}
 
-                        <span class="x-tiny text-dark font-bold font-italic uppercase ml-1">
+                        <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
                         </span>
                     </h2>
@@ -20,13 +20,13 @@
                 <div class="flex flex-column align-h-right align-v-center flex-auto">
                     <div class="flex flex-row">
 
-                        <span class="tiny no-decoration text-dark pointer mr-1"
+                        <span class="tiny no-decoration text-grey-3 pointer mr-1"
                               v-if="(isUsersPost || isCurrentUserAdmin)">
                             <i class="fas fa-trash"
                                @click="deleteComment"></i>
                         </span>
 
-                        <!--<span class="tiny no-decoration text-dark pointer">-->
+                        <!--<span class="tiny no-decoration text-grey-3 pointer">-->
                             <!--<i class="fas fa-link"-->
                                <!--@click="getCommentLink"></i>-->
                             <!--<textarea class="comment-id-copy"-->
@@ -47,7 +47,7 @@
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="replying ? 'text-' + themeColor : 'text-dark'"
+                           :class="replying ? 'text-' + themeColor : 'text-grey-3'"
                            @click="replyToComment">
                             <i class="fas fa-reply"></i>
                             <span class="hide-xs-only">
@@ -57,7 +57,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="is_liked ? 'text-' + themeColor : 'text-dark'"
+                           :class="is_liked ? 'text-' + themeColor : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
@@ -65,7 +65,7 @@
                             </span>
                         </p>
 
-                        <p class="x-tiny text-dark uppercase font-italic"
+                        <p class="x-tiny text-grey-3 uppercase font-italic"
                            v-html="userLikeString">
                             {{ userLikeString }}
                         </p>
@@ -101,7 +101,7 @@
 
                         <div class="loading-reply flex-center" v-show="loading">
                             <i class="fas fa-spinner fa-spin" :class="'text-' + themeColor"></i>
-                            <p class="x-tiny text-dark">loading...</p>
+                            <p class="x-tiny text-grey-3">loading...</p>
                         </div>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
             </transition-group>
 
             <div class="flex flex-row align-center" v-if="replies.length > 2">
-                <a class="btn btn-tiny flat text-dark collapse-150"
+                <a class="btn btn-tiny flat text-grey-3 collapse-150"
                    @click="showAllReplies = !showAllReplies">
                     {{ showAllReplies ? 'Hide Replies' : 'Show All Replies' }}
                 </a>
@@ -351,7 +351,7 @@
 
                             notification.close();
                         }),
-                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
                             notification.close();
                         })
                     ]

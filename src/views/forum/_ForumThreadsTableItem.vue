@@ -14,11 +14,11 @@
                 {{ thread.title }}
             </p>
 
-            <p class="x-tiny text-dark uppercase font-italic">
+            <p class="x-tiny text-grey-3 uppercase font-italic">
                 last post <strong>{{ thread.lastPostDate }}</strong> by <strong>{{ thread.authorUsername }}</strong>
             </p>
 
-            <p class="x-tiny text-dark text-truncate font-italic hide-md-up capitalize">
+            <p class="x-tiny text-grey-3 text-truncate font-italic hide-md-up capitalize">
 
                 {{ thread.topic }}
                 <span class="bullet">&#x25CF;</span>
@@ -33,18 +33,18 @@
             </span>
         </div>
 
-        <div class="flex flex-column align-center basic-col text-dark font-italic x-tiny hide-sm-down uppercase">
+        <div class="flex flex-column align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down uppercase">
             {{ topicIdMap }}
         </div>
 
-        <div class="flex flex-column align-center basic-col text-dark font-italic x-tiny hide-sm-down uppercase">
+        <div class="flex flex-column align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down uppercase">
             {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
         </div>
 
         <div class="flex flex-column icon-col align-v-center">
             <div class="square body">
                 <i class="fas fa-arrow-circle-right flex-center rounded"
-                   :class="thread.isRead ? 'text-light' : brandTextClass"></i>
+                   :class="thread.isRead ? 'text-grey-2' : brandTextClass"></i>
             </div>
         </div>
     </a>

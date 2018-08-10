@@ -20,7 +20,7 @@
                     Drop to Upload
                 </a>
 
-                <p class="tiny font-italic text-dark mt-2">
+                <p class="tiny font-italic text-grey-3 mt-2">
                     Max file size: 5MB
                 </p>
             </div>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="cropper-controls pv-1 bg-grey-2 flex flex-row align-center">
-                <a class="btn normal bg-dark inverted text-dark short mh-1"
+                <a class="btn normal bg-dark inverted text-grey-3 short mh-1"
                    @click="resetCrop">
                     Cancel
                 </a>

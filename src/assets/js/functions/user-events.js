@@ -34,7 +34,7 @@ export default (function () {
         const notification = new Noty({
             layout: 'center',
             modal: true,
-            text: 'Do you really want to reset your progress? <br><br><span class="tiny text-dark font-italic">This cannot be undone.</span>',
+            text: 'Do you really want to reset your progress? <br><br><span class="tiny text-grey-3 font-italic">This cannot be undone.</span>',
             theme: 'bootstrap-v4',
             closeWith: [],
             buttons: [
@@ -55,7 +55,7 @@ export default (function () {
                         })
                 }),
                 // Cancel Button
-                Noty.button('<span class="bg-dark inverted text-dark short">NO</span>', 'btn', () => {
+                Noty.button('<span class="bg-dark inverted text-grey-3 short">NO</span>', 'btn', () => {
                     notification.close();
                 })
             ]
@@ -71,10 +71,12 @@ export default (function () {
             .then(response => response);
 
         if(is_added){
-            element.classList.remove('added');
+            element.classList.remove('added', 'text-white');
+            element.classList.add('inverted');
         }
         else {
-            element.classList.add('added');
+            element.classList.add('added', 'text-white');
+            element.classList.remove('inverted');
         }
     }
 

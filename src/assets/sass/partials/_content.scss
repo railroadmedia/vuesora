@@ -318,24 +318,46 @@
 }
 
 .addToList {
-
-  span i {
-    transition:transform .1s ease-in-out;
+  span {
+    transition: opacity .2s ease-in-out, visibility .2s ease-in-out;
+    will-change:opacity, visibility;
   }
 
   &.added {
 
-    &:hover span {
-      background:#fff;
+    .un-added {
+      opacity:0;
+      visibility:hidden;
+      display:none;
     }
-
-    span {
-      color:nth(nth($greys, 5), 2);
-      background:#fff;
-
-      i {
-        transform:rotate(45deg);
-      }
+    .is-added {
+      opacity:1;
+      visibility:visible;
+      display:flex;
     }
+  }
+
+  .un-added {
+    opacity:1;
+    visibility:visible;
+    display:flex;
+  }
+  .is-added {
+    opacity:0;
+    visibility:hidden;
+    display:none;
+  }
+}
+
+#timezoneLabel {
+  position:relative;
+
+  select {
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    opacity:0;
   }
 }

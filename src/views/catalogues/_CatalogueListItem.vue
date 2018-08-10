@@ -44,7 +44,7 @@
                 {{ mappedData.description }}
             </p>
 
-            <p class="x-tiny text-dark text-truncate font-italic uppercase hide-md-up">
+            <p class="x-tiny text-grey-3 text-truncate font-italic uppercase hide-md-up">
                 <span v-for="(item, i) in mappedData.column_data">
                     <span v-if="i > 0" class="bullet">-</span>
 
@@ -53,17 +53,22 @@
             </p>
         </div>
 
+        <div v-if="mappedData.sheet_music"
+             class="flex flex-column sheet-music-col hide-xs-only">
+            <img :src="mappedData.sheet_music">
+        </div>
+
         <div v-for="(item, i) in mappedData.column_data"
-             class="flex flex-column uppercase align-center basic-col text-dark font-italic x-tiny hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
             {{ item }}
         </div>
 
         <div v-if="$_displayUserInteractions && this.$_item.type !== 'learning-path'"
              class="flex flex-column icon-col align-v-center"
              :class="$_overview ? 'hide-xs-only' : ''">
-            <div class="square body">
+            <div class="body">
                 <i class="add-to-list fas fa-plus flex-center"
-                   :class="$_is_added ? 'is-added text-' + $_item.type : 'text-light'"
+                   :class="$_is_added ? 'is-added text-' + $_item.type : 'text-grey-2'"
                    :title="$_is_added ? 'Remove from list' : 'Add to list'"
                    :data-content-id="$_item.id"
                    :data-content-type="$_item.type"
@@ -79,7 +84,7 @@
                    :class="$_item.completed ? 'fa-check-circle text-' + $_themeColor : 'fa-adjust text-' + $_themeColor"></i>
 
                 <i v-else
-                   class="fas flex-center text-light rounded"
+                   class="fas flex-center text-grey-2 rounded"
                    :class="['course', 'learning-path', 'pack', 'pack-bundle'].indexOf($_item.type) !== -1 ?
                             'fa-arrow-circle-right' : 'fa-play-circle'"></i>
             </div>
@@ -148,7 +153,6 @@
                 return {
                     'active': this.$_active,
                     'content-overview': this.$_overview,
-                    'pv-3': this.$_overview,
                     'content-table-row': !this.$_overview
                 }
             },

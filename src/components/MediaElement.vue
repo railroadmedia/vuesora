@@ -111,12 +111,13 @@
             defaultQuality: {
                 get(){
                     let defaultQuality = window.localStorage.getItem("defaultQuality");
+                    let guessedQuality = this.sortedSourcesArray.filter(source =>
+                        source.width <= window.innerWidth
+                    );
 
                     // Pick a default quality based on the closest size to the client width
-                    if((defaultQuality === undefined || defaultQuality === null) && (this.sortedSourcesArray.length > 0)){
-                        let guessedQuality = this.sortedSourcesArray.filter(source =>
-                            source.width <= window.innerWidth
-                        );
+                    if((defaultQuality === undefined || defaultQuality === null)
+                        && (this.sortedSourcesArray.length > 0)){
 
                         if(guessedQuality.length){
                             // If we have some guessed qualities take the first one
@@ -129,6 +130,27 @@
                             defaultQuality = this.sourceQualityLabel(
                                 this.sortedSourcesArray[this.sortedSourcesArray.length - 1].height
                             );
+                        }
+                    }
+                    else {
+                        let thisHeight = Number(defaultQuality.replace('p', ''));
+                        let defaultExists = this.sortedSourcesArray.filter(source =>
+                            source.height === thisHeight
+                        ).length > 0;
+
+                        if(!defaultExists){
+                            if(guessedQuality.length){
+                                // If we have some guessed qualities take the first one
+                                defaultQuality = this.sourceQualityLabel(
+                                    guessedQuality[0].height
+                                );
+                            }
+                            else {
+                                // Otherwise take the last item in the qualities array (the smallest quality)
+                                defaultQuality = this.sourceQualityLabel(
+                                    this.sortedSourcesArray[this.sortedSourcesArray.length - 1].height
+                                );
+                            }
                         }
                     }
 

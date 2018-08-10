@@ -18,19 +18,24 @@
             </button>
         </div>
 
-        <div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">
-            <span class="heading pointer mr-3"
-                  :class="selected_tab === 'new' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
-                  @click="loadNewPosts">
-                New
-            </span>
+        <catalogue-tab-filters v-if="$_filterTabs.length && !$_filterableValues.length"
+                               :$_selected_tab="filter_params.topic"
+                               :$_filters="$_filterTabs"
+                               @filterChange="handleFilterChange"></catalogue-tab-filters>
 
-            <span class="heading pointer"
-                  :class="selected_tab === 'continue' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
-                  @click="loadStartedPosts">
-                Continue
-            </span>
-        </div>
+        <!--<div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">-->
+            <!--<span class="heading pointer mr-3"-->
+                  <!--:class="selected_tab === 'new' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"-->
+                  <!--@click="loadNewPosts">-->
+                <!--New-->
+            <!--</span>-->
+
+            <!--<span class="heading pointer"-->
+                  <!--:class="selected_tab === 'continue' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"-->
+                  <!--@click="loadStartedPosts">-->
+                <!--Continue-->
+            <!--</span>-->
+        <!--</div>-->
 
         <catalogue-filters v-if="$_filterableValues.length && !$_showContentTabs"
                            :$_filters="filters"
@@ -102,6 +107,7 @@
     import GridCatalogue from './GridCatalogue.vue';
     import ListCatalogue from './ListCatalogue.vue';
     import CatalogueFilters from './_CatalogueFilters.vue';
+    import CatalogueTabFilters from './_CatalogueTabFilters.vue';
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
     import Toasts from '../../assets/js/classes/toasts'
@@ -116,7 +122,8 @@
             'grid-catalogue': GridCatalogue,
             'list-catalogue': ListCatalogue,
             'pagination': Pagination,
-            'catalogue-filters': CatalogueFilters
+            'catalogue-filters': CatalogueFilters,
+            'catalogue-tab-filters': CatalogueTabFilters
         },
         props: {
             $_catalogueType: {
@@ -194,9 +201,9 @@
                 type: Boolean,
                 default: () => true
             },
-            $_showContentTabs: {
-                type: Boolean,
-                default: () => false
+            $_filterTabs: {
+                type: Array,
+                default: () => []
             },
             $_noWrapGrid: {
                 type: Boolean,
@@ -244,7 +251,7 @@
                     topic: null
                 },
                 required_user_states: this.$_requiredUserStates || [],
-                selected_tab: 'new'
+                selected_tab: 'all'
             }
         },
         computed: {
@@ -295,8 +302,6 @@
                         }
                     }
                     else if(key === 'required_fields'){
-
-                        console.log(query_object[key]);
 
                         if(!Array.isArray(query_object[key])){
                             let this_val = query_object[key].split(',');

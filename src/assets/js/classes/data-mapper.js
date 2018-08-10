@@ -32,6 +32,14 @@ export default class DataMapper {
                         this.post['lesson_count'] + ' Parts',
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -49,6 +57,14 @@ export default class DataMapper {
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             },
@@ -69,6 +85,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -88,6 +112,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -105,6 +137,14 @@ export default class DataMapper {
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             },
@@ -125,6 +165,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -143,6 +191,14 @@ export default class DataMapper {
                         this.mapDifficulty(),
                         this.getPostDuration(),
                         this.getPostDate()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             },
@@ -163,6 +219,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -180,6 +244,14 @@ export default class DataMapper {
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             },
@@ -199,6 +271,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -216,6 +296,14 @@ export default class DataMapper {
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             },
@@ -235,6 +323,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -253,6 +349,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -270,6 +374,14 @@ export default class DataMapper {
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             },
@@ -291,6 +403,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -308,23 +428,37 @@ export default class DataMapper {
                         this.post['style'],
                         this.post['bpm'] + ' BPM'
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
-            'rudiments': {
+            'rudiment': {
                 card: {
-                    color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: this.mapDifficulty()
+                    sheet_music: this.post['sheet_music_thumbnail_url']
                 },
                 list: {
-                    color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
+                    sheet_music: this.post['sheet_music_thumbnail_url'],
                     description: this.post['description'],
                     column_data: [
-                        this.getPostDuration(),
-                        this.getPostDate()
+                        this.getPostDuration()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             },
@@ -344,6 +478,14 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -357,6 +499,14 @@ export default class DataMapper {
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
+                        this.mapDifficulty()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
                         this.mapDifficulty()
                     ]
                 }
@@ -375,6 +525,14 @@ export default class DataMapper {
                     column_data: [
                         this.post['lesson_count'] + ' Lessons'
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
@@ -389,6 +547,14 @@ export default class DataMapper {
                     description: this.post['description'],
                     column_data: [
                         this.getPostDuration()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             },
@@ -406,12 +572,20 @@ export default class DataMapper {
                         this.getPostDuration(),
                         this.getPostDate()
                     ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
+                    ]
                 }
             },
 
             default: {
                 card: {
-                    color_title: this.post['type'],
+                    color_title: this.getType(),
                     black_title: this.post['title'],
                     description: this.post['description'],
                     grey_title: this.mapDifficulty()
@@ -423,6 +597,14 @@ export default class DataMapper {
                     column_data: [
                         this.getPostDuration(),
                         this.getPostDate()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        this.mapDifficulty()
                     ]
                 }
             }
@@ -462,6 +644,10 @@ export default class DataMapper {
 
     getPostDate(){
         return moment(this.post['published_on']).format('MMM d/YY');
+    }
+
+    getType(){
+        return this.post['type'].replace(/-/g, ' ');
     }
 
     mapDifficulty(){
