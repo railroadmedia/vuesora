@@ -53,17 +53,11 @@
                                   :brand="brand"
                                   v-if="!searching"></forum-threads-table-item>
 
-        <div v-for="item in searchResults" v-if="searching">
-            <forum-threads-table-item :key="item.id"
-                                  :thread="item"
-                                  :brand="brand"
-                                  v-if="!item.threadId"></forum-threads-table-item>
-
-            <forum-thread-post-search-result :key="item.id"
-                               :post="item"
-                               :brand="brand"
-                               v-if="item.threadId"></forum-thread-post-search-result>
-        </div>
+        <forum-search-result v-for="item in searchResults"
+                                :key="item.id"
+                                :item="item"
+                                :brand="brand"
+                                v-if="searching"></forum-search-result>
 
         <div class="flex flex-row bg-light pagination-row align-h-right"
              v-if="!searching && totalPages > 1">
@@ -82,7 +76,7 @@
 </template>
 <script>
     import ForumThreadsTableItem from './_ForumThreadsTableItem';
-    import ForumThreadPostSearchResult from './_ForumThreadPostSearchResult.vue';
+    import ForumSearchResult from './_ForumSearchResult.vue';
     import Pagination from '../../components/Pagination.vue';
     import ClearableFilter from '../../components/ClearableFilter.vue';
     import Requests from '../../assets/js/classes/requests';
@@ -92,7 +86,7 @@
         name: 'forum-threads-table',
         components: {
             'forum-threads-table-item': ForumThreadsTableItem,
-            'forum-thread-post-search-result': ForumThreadPostSearchResult,
+            'forum-search-result': ForumSearchResult,
             'pagination': Pagination,
             'clearable-filter': ClearableFilter
         },
