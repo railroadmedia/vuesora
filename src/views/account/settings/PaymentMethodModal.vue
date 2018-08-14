@@ -89,7 +89,7 @@
                     <div class="flex flex-row ph-3" v-if="editing">
                         <div class="flex flex-column mb-1">
                             <div class="form-group">
-                                <input class="has-input"
+                                <input class="has-input bg-light"
                                        v-model="lastFourDigits"
                                        type="text"
                                        spellcheck="false"
@@ -536,7 +536,7 @@
                         this.$emit('hideLoading', {});
 
                         if (response.data) {
-                            this.shodSuccess();
+                            this.showSuccess();
                         } else {
                             this.showGenericError();
                         }
@@ -619,16 +619,13 @@
                     }
                 } else if (response.data) {
 
-                    this.shodSuccess();
+                    this.showSuccess();
                 }
             },
-            shodSuccess() {
+            showSuccess() {
                 Toasts.success(this.successMessage);
                 this.closeModal();
-
-                setTimeout(() => {
-                    window.location.reload(true);
-                }, 5000);
+                this.$emit('refreshPaymentMethods', {});
             },
             closeModal() {
                 this.modalOpened = false;

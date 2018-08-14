@@ -9,6 +9,21 @@ import Toasts from './toasts'
 export default class Requests {
 
     /**
+     * Get current user payment methods
+     *
+     * @static
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static getPaymentMethods() {
+
+        return axios.get('/members/account/settings/payment-methods')
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Get Paypal agreement url
      *
      * @static

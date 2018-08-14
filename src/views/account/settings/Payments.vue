@@ -2,13 +2,14 @@
     <div class="flex flex-row flex-wrap ph-2">
 
         <payment-method
-            v-for="activeMethod in activeMethods"
-            :key="'activeMethod' + activeMethod.id"
-            :paymentMethod="activeMethod"
+            v-for="method in paymentMethods"
+            :key="'activeMethod' + method.id"
+            :paymentMethod="method"
             :showDelete="showDelete"
             @editMethod="setEditMethod"
             @showLoading="showLoading"
-            @hideLoading="hideLoading"></payment-method>
+            @hideLoading="hideLoading"
+            @refreshPaymentMethods="refreshPaymentMethods"></payment-method>
 
         <div class="flex flex-column xs-12 sm-12 md-6 cc-col ph-2 mb-3">
             <div class="credit-card-box">
@@ -29,13 +30,15 @@
                 :countries="countries"
                 @showLoading="showLoading"
                 @hideLoading="hideLoading"
-                @closeModal="closeModal">
+                @closeModal="closeModal"
+                @refreshPaymentMethods="refreshPaymentMethods">
             </payment-method-modal>
             <loading-dialog :show="loading"></loading-dialog>
         </div>
     </div>
 </template>
 <script>
+    import Requests from '../../../assets/js/classes/requests';
     import PaymentMethod from './PaymentMethod.vue';
     import PaymentMethodModal from './PaymentMethodModal.vue';
     import LoadingDialog from '../../../components/LoadingDialog.vue';
@@ -85,7 +88,8 @@
             return {
                 modalOpened: false,
                 loading: false,
-                editMethod: undefined
+                editMethod: undefined,
+                paymentMethods: undefined
             }
         },
         computed: {
@@ -111,9 +115,20 @@
 
                 this.editMethod = eventData;
                 this.openModal();
+            },
+            refreshPaymentMethods() {
+
+                Requests
+                    .getPaymentMethods()
+                    .then((response) => {
+                        if (response && response.paymentMethods) {
+                            this.paymentMethods = response.paymentMethods;
+                        }
+                    });
             }
         },
         mounted() {
+            this.paymentMethods = this.activeMethods;
             this.success && Toasts.success(this.success);
         }
     }

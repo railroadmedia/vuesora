@@ -155,10 +155,9 @@
                     let mesage = 'Payment Method has been deleted.';
                     Toasts.success(mesage);
 
-                    setTimeout(() => {
-                        this.$emit;('hideLoading', {});
-                        window.location.reload(true);
-                    }, 5000);
+                    this.$emit('hideLoading', {});
+                    this.$emit('refreshPaymentMethods', {});
+
                 } else {
                     Toasts.errorWarning();
                 }
