@@ -37,6 +37,10 @@ body {
   height:auto;
   min-height:100%;
   position:relative;
+
+  &.no-scroll {
+    overflow:hidden;
+  }
 }
 
 iframe {
@@ -69,6 +73,12 @@ ul {
   .header-avatar {
     flex:0 0 125px;
     max-width:125px;
+  }
+
+  .pack-header {
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
   }
 
   .account-header {

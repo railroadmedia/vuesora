@@ -13,6 +13,8 @@
                 :$_displayUserInteractions="$_displayUserInteractions"
                 :$_contentTypeOverride="$_contentTypeOverride"
                 :$_showNumbers="$_showNumbers"
+                :$_noLink="$_lockUnowned && item.is_owned === false"
+                :$_lockUnowned="$_lockUnowned"
                 @addToList="emitAddToList"></catalogue-list-item>
     </div>
 </template>
@@ -62,6 +64,10 @@
             $_showNumbers: {
                 type: Boolean,
                 default: false
+            },
+            $_lockUnowned: {
+                type: Boolean,
+                default: () => false
             }
         },
     }

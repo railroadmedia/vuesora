@@ -22,7 +22,11 @@
 
                 <span class="thumb-hover flex-center">
                     <i class="fas"
-                       :class="$_item.type === 'course' ? 'fa-arrow-right' : 'fa-play'"></i>
+                       :class="$_thumbnailIcon"></i>
+                    <p v-if="$_noAccess"
+                       class="x-tiny text-white font-bold">
+                        {{ $_releaseDate }}
+                    </p>
                 </span>
             </div>
         </div>
@@ -78,7 +82,11 @@
 
         <div class="flex flex-column icon-col align-v-center"
              :class="$_displayUserInteractions ? 'hide-sm-down' : ''">
-            <div class="body">
+            <div v-if="$_noAccess" class="body">
+                <i class="fas fa-lock flex-center rounded text-grey-2"></i>
+            </div>
+            <div v-else
+                 class="body">
                 <i v-if="$_item.started || $_item.completed"
                    class="fas flex-center rounded"
                    :class="$_item.completed ? 'fa-check-circle text-' + $_themeColor : 'fa-adjust text-' + $_themeColor"></i>
@@ -94,6 +102,7 @@
 <script>
     import DataMapper from '../../assets/js/classes/data-mapper.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
+    import moment from 'moment';
 
     export default {
         mixins: [UserCatalogueEvents],
@@ -140,6 +149,10 @@
             $_noLink: {
                 type: Boolean,
                 default: () => false
+            },
+            $_lockUnowned: {
+                type: Boolean,
+                default: () => false
             }
         },
         data(){
@@ -153,7 +166,9 @@
                 return {
                     'active': this.$_active,
                     'content-overview': this.$_overview,
-                    'content-table-row': !this.$_overview
+                    'content-table-row': !this.$_overview,
+                    'no-access': this.$_noAccess,
+                    'no-events': this.$_noAccess
                 }
             },
 
@@ -172,6 +187,22 @@
 
                 return this.$_item['thumbnail_url'] ||
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
+            },
+
+            $_noAccess(){
+                return this.$_lockUnowned && this.$_item.is_owned === false;
+            },
+
+            $_releaseDate(){
+                return moment(this.$_item['published_on']).format('MMM D');
+            },
+
+            $_thumbnailIcon(){
+                if(this.$_noAccess){
+                    return 'fa-lock';
+                }
+
+                return this.$_item.type === 'course' ? 'fa-arrow-right' : 'fa-play';
             },
 
             $_route(){

@@ -104,11 +104,23 @@ button {
     }
   }
 
-  &.bg-recordeo:hover { background-color:lighten($recordeoYellow, 10%); }
-  &.bg-pianote:hover { background-color:lighten($pianoteRed, 10%); }
-  &.bg-drumeo:hover { background-color:lighten($drumeoBlue, 10%); }
-  &.bg-guitareo:hover { background-color:lighten($guitareoGreen, 10%); }
-  &.bg-x-dark:hover { background-color:lighten(#242424, 10%); }
+  &.text-white-important {
+    color:#fff!important;
+  }
+
+  &:hover {
+    @each $key, $value in $brand_colors {
+      &.bg-#{$key}, & > span.bg-#{$key} {
+        background-color: lighten($value, 10%);
+      }
+    }
+
+    @each $key, $value in $content_colors {
+      &.bg-#{$key}, &.bg-#{$key}s, & > span.bg-#{$key}, & > span.bg-#{$key}s {
+        background-color: lighten($value, 10%);
+      }
+    }
+  }
 
   &.inverted:hover,
   &.flat:hover,

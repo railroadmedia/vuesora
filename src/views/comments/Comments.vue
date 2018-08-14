@@ -29,7 +29,8 @@
                 </div>
 
                 <div class="loading-reply flex-center" v-show="loading">
-                    <i class="fas fa-spinner fa-spin text-recordeo"></i>
+                    <i class="fas fa-spinner fa-spin"
+                       :class="'text-' + themeColor"></i>
                     <p class="x-tiny text-grey-3">loading...</p>
                 </div>
             </div>
@@ -203,7 +204,7 @@
                                 this.$refs.textEditor.currentValue = '';
                                 Toasts.success('Comment successfully posted!');
 
-                                this.comments.splice(0, 0, resolved['results']);
+                                this.comments.splice(0, 0, resolved['data'][0]);
                             }
 
                             this.loading = false;
@@ -221,12 +222,14 @@
 
                 if(payload.isLiked){
                     likedPost.like_count -= 1;
+                    likedPost.is_liked = false;
 
                     Requests.unlikeComment(payload.id)
                         .then(response => {});
                 }
                 else {
                     likedPost.like_count += 1;
+                    likedPost.is_liked = true;
 
                     Requests.likeComment(payload.id)
                         .then(response => {});
@@ -242,12 +245,14 @@
 
                 if(payload.isLiked){
                     likedPostReply.like_count -= 1;
+                    likedPostReply.is_liked = false;
 
                     Requests.unlikeComment(payload.id)
                         .then(response => {});
                 }
                 else {
                     likedPostReply.like_count += 1;
+                    likedPostReply.is_liked = true;
 
                     Requests.likeComment(payload.id)
                         .then(response => {});

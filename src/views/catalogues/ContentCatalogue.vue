@@ -70,6 +70,7 @@
                         :$_displayItemsAsOverview="$_displayItemsAsOverview"
                         :$_displayUserInteractions="$_displayUserInteractions"
                         :$_contentTypeOverride="$_contentTypeOverride"
+                        :$_lockUnowned="$_lockUnowned"
                         :$_showNumbers="$_showNumbers"
                         @addToList="addToListEventHandler"></list-catalogue>
 
@@ -230,6 +231,10 @@
                 default: () => ''
             },
             $_showNumbers: {
+                type: Boolean,
+                default: () => false
+            },
+            $_lockUnowned: {
                 type: Boolean,
                 default: () => false
             }

@@ -7,7 +7,7 @@
             <div class="flex flex-row align-v-center mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
-                        {{ display_name }}
+                        {{ user.display_name }}
 
                         <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
@@ -161,10 +161,14 @@
                     suffixString = '';
                 }
 
-                if(this.isLiked){
+                if(this.is_liked){
                     userNames.splice((userNames.length - 1), 1);
 
-                    return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
+                    if(this.like_count > 1){
+                        return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                    }
+
+                    return '<span class="font-bold">You</span>' + suffixString;
                 }
                 else {
                     if(this.like_count > 0){
@@ -197,7 +201,7 @@
 
                 this.$emit('likeReply', {
                     id: this.id,
-                    isLiked: this.isLiked,
+                    isLiked: this.is_liked,
                     isPinned: this.pinned
                 });
             },

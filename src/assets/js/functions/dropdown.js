@@ -23,7 +23,7 @@ export default (function(){
         event.stopPropagation();
 
         element.classList.toggle('inverted');
-        element.classList.toggle('text-white');
+        element.classList.toggle('text-white-important');
         dropdownContent.classList.toggle('active');
     }
 
@@ -32,7 +32,7 @@ export default (function(){
             const dropdownContent = element.querySelector('.dropdown-content');
 
             element.classList.add('inverted');
-            element.classList.remove('text-white');
+            element.classList.remove('text-white-important');
             dropdownContent.classList.remove('active');
         });
     }

@@ -9,7 +9,7 @@
             <div class="flex flex-row mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
-                        {{ display_name }}
+                        {{ user.display_name }}
 
                         <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
@@ -247,7 +247,7 @@
 
                 for(let i = 0; i < this.like_users.length; i++){
                     let nameExistsOrIsntCurrentUser = this.like_users[i]['display_name'] != null
-                        && this.like_users[i]['display_name'] !== this.currentUser.name;
+                        && this.like_users[i]['display_name'] !== this.currentUser.display_name;
 
                     if(nameExistsOrIsntCurrentUser){
                         userNames.push(this.like_users[i]['display_name']);
@@ -268,7 +268,11 @@
                 if(this.is_liked){
                     userNames.splice((userNames.length - 1), 1);
 
-                    return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                    if(this.like_count > 1){
+                        return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                    }
+
+                    return '<span class="font-bold">You</span>' + suffixString;
                 }
                 else {
                     if(this.like_count > 0){
@@ -315,7 +319,7 @@
                                 this.$refs.textEditor.currentValue = '';
                                 Toasts.success('Reply successfully posted!');
 
-                                this.replies.splice(0, 0, resolved['results']);
+                                this.replies.splice(0, 0, resolved['data'][0]);
                             }
 
                             this.loading = false;
