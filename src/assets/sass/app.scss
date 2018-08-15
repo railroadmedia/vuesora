@@ -79,6 +79,12 @@ ul {
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
+
+    img {
+      width:100%;
+      max-width:640px;
+      filter:drop-shadow(0 2px 10px rgba(0,0,0,.8));
+    }
   }
 
   .account-header {
@@ -262,6 +268,29 @@ ul {
   position:relative;
   z-index:11;
 
+  &.active {
+
+    .unopen {
+      display:none;
+    }
+    .open {
+      display:block;
+    }
+
+    .dropdown-content {
+      opacity:1;
+      visibility:visible;
+      transform:translateY(0);
+    }
+  }
+
+  .unopen {
+    display:block;
+  }
+  .open {
+    display:none;
+  }
+
   .dropdown-content {
     position:absolute;
     top:calc(100% + 10px);
@@ -300,12 +329,6 @@ ul {
           background-color:#f2f2f2;
         }
       }
-    }
-
-    &.active {
-      opacity:1;
-      visibility:visible;
-      transform:translateY(0);
     }
   }
 }

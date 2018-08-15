@@ -50,7 +50,7 @@
                 <i class="fas fa-calendar-plus flex-center text-grey-2 rounded"></i>
 
                 <span class="start">{{ time_to_display }}</span>
-                <span class="timezone">UTC</span>
+                <span class="timezone">{{ $_timezone }}</span>
                 <span class="title">{{ $_item['title'] }}</span>
             </div>
         </div>

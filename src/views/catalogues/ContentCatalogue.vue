@@ -23,19 +23,27 @@
                                :$_filters="$_filterTabs"
                                @filterChange="handleFilterChange"></catalogue-tab-filters>
 
-        <!--<div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">-->
-            <!--<span class="heading pointer mr-3"-->
-                  <!--:class="selected_tab === 'new' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"-->
-                  <!--@click="loadNewPosts">-->
-                <!--New-->
-            <!--</span>-->
+        <catalogue-search v-if="$_searchBar"
+                          :$_themeColor="$_themeColor"
+                          :$_included_types="$_includedTypes"
+                          :$_selected_types="selected_types"
+                          :$_search_term="search_term"
+                          @typeChange="handleTypeChange"
+                          @searchChange="handleSearch"></catalogue-search>
 
-            <!--<span class="heading pointer"-->
-                  <!--:class="selected_tab === 'continue' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"-->
-                  <!--@click="loadStartedPosts">-->
-                <!--Continue-->
-            <!--</span>-->
-        <!--</div>-->
+        <div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">
+            <span class="heading pointer mr-3"
+                  :class="selected_tab === 'new' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
+                  @click="loadNewPosts">
+                New
+            </span>
+
+            <span class="heading pointer"
+                  :class="selected_tab === 'continue' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
+                  @click="loadStartedPosts">
+                Continue
+            </span>
+        </div>
 
         <catalogue-filters v-if="$_filterableValues.length && !$_showContentTabs"
                            :$_filters="filters"
@@ -87,7 +95,7 @@
 
         <div v-if="$_paginate && total_pages > 1 && !$_infiniteScroll"
              class="flex flex-row bg-light pagination-row align-h-right">
-            <pagination :currentPage="page"
+            <pagination :currentPage="Number(page)"
                         :totalPages="total_pages"
                         @pageChange="handlePageChange"></pagination>
         </div>
@@ -108,6 +116,7 @@
     import GridCatalogue from './GridCatalogue.vue';
     import ListCatalogue from './ListCatalogue.vue';
     import CatalogueFilters from './_CatalogueFilters.vue';
+    import CatalogueSearch from './_CatalogueSearch.vue';
     import CatalogueTabFilters from './_CatalogueTabFilters.vue';
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
@@ -124,7 +133,8 @@
             'list-catalogue': ListCatalogue,
             'pagination': Pagination,
             'catalogue-filters': CatalogueFilters,
-            'catalogue-tab-filters': CatalogueTabFilters
+            'catalogue-tab-filters': CatalogueTabFilters,
+            'catalogue-search': CatalogueSearch
         },
         props: {
             $_catalogueType: {
@@ -237,13 +247,21 @@
             $_lockUnowned: {
                 type: Boolean,
                 default: () => false
+            },
+            $_searchBar: {
+                type: Boolean,
+                default: () => false
+            },
+            $_showContentTabs: {
+                type: Boolean,
+                default: () => false
             }
         },
-        data(){
+        data() {
             return {
                 page: 1,
                 content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.data) : [],
-                filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.meta.filterOptions) : {},
+                filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.meta.filterOptions || []) : {},
                 total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.meta.totalResults / this.$_limit) : 0,
                 catalogue_type: this.$_catalogueType,
                 loading: false,
@@ -255,18 +273,20 @@
                     style: null,
                     topic: null
                 },
+                selected_types: null,
+                search_term: undefined,
                 required_user_states: this.$_requiredUserStates || [],
-                selected_tab: 'all'
+                selected_tab: 'new'
             }
         },
         computed: {
 
-            $_required_fields(){
+            $_required_fields() {
                 let filter_keys = Object.keys(this.filter_params);
                 let included_fields = [];
 
                 filter_keys.forEach(filter => {
-                    if(this.filter_params[filter] != null){
+                    if (this.filter_params[filter] != null) {
                         included_fields.push(
                             filter + ',' + this.filter_params[filter]
                         )
@@ -276,28 +296,39 @@
                 return included_fields;
             },
 
-            $_request_params(){
+            selectedTypes() {
+                if (this.$_searchBar) {
+                    return this.selected_types ? [this.selected_types] : [];
+                }
+
+                return this.$_includedTypes;
+            },
+
+            $_request_params() {
                 return {
                     'required_fields': this.$_required_fields,
-                    'required_user_states': this.required_user_states
+                    'required_user_states': this.required_user_states,
+                    'term': this.search_term,
+                    'included_types': this.selectedTypes,
+                    'page': this.page
                 }
-            }
+            },
         },
         methods: {
-            toggleCatalogueType(type){
+            toggleCatalogueType(type) {
                 this.catalogue_type = type;
             },
 
-            getUrlParams(){
+            getUrlParams() {
                 const params = window.location.search;
                 const query_object = QueryString.parse(params, {arrayFormat: 'bracket'});
                 const keys = Object.keys(query_object);
 
                 keys.forEach(key => {
 
-                   if(key === 'required_user_states'){
+                    if (key === 'required_user_states') {
                         // query-string is weird and parses arrays with 1 value as a string
-                        if(!Array.isArray(query_object[key])){
+                        if (!Array.isArray(query_object[key])) {
                             this.required_user_states = [query_object[key]];
                         }
                         else {
@@ -306,9 +337,9 @@
                             });
                         }
                     }
-                    else if(key === 'required_fields'){
+                    else if (key === 'required_fields') {
 
-                        if(!Array.isArray(query_object[key])){
+                        if (!Array.isArray(query_object[key])) {
                             let this_val = query_object[key].split(',');
                             this.filter_params[this_val[0]] = this_val[1];
                         }
@@ -319,11 +350,46 @@
                             });
                         }
                     }
+                    else if (key === 'included_types' && this.$_searchBar) {
+                        if (!Array.isArray(query_object[key])) {
+                            let this_val = query_object[key].split(',');
+                            this.selected_types[this_val[0]] = this_val[1];
+                        }
+                        else {
+                            query_object[key].forEach(param => {
+                                this.selected_types = param;
+                            });
+                        }
+                    }
+                    else if (key === 'term' && this.$_searchBar) {
+                        this.search_term = query_object[key];
+                    }
+                    else if (key === 'page' && this.$_paginate) {
+                        this.page = query_object[key];
+                    }
                 });
             },
 
-            setUrlParams(){
-                const params = this.$_request_params;
+            setUrlParams() {
+                const params = JSON.parse(JSON.stringify(this.$_request_params));
+
+                console.log(params);
+
+                if(!this.$_searchBar){
+                    if(params['included_types']){
+                        delete params['included_types'];
+                    }
+                    if(params['term']){
+                        delete params['term'];
+                    }
+                }
+
+                if(!this.$_paginate){
+                    if(params['page']){
+                        delete params['page'];
+                    }
+                }
+
                 const string = QueryString.stringify(params, {arrayFormat: 'bracket'});
 
                 let new_url = window.location.origin + window.location.pathname + '?' + string;
@@ -331,25 +397,25 @@
                 window.history.pushState(history.state, null, new_url);
             },
 
-            getContent(replace = true){
-                if(!this.loading){
+            getContent(replace = true) {
+                if (!this.loading) {
                     this.loading = true;
+
+                    console.log(this.$_request_params);
 
                     axios.get(this.$_contentEndpoint, {
                         params: {
-                            page: this.page,
                             brand: this.$_brand,
                             limit: this.$_limit,
                             statuses: this.$_statuses,
-                            'included_types[]': this.$_includedTypes,
                             ...this.$_request_params
                         }
                     })
                         .then(response => {
-                            if(response){
+                            if (response) {
                                 // If infinite scroll is enabled:
                                 // Just add it to the array, don't replace it
-                                if(!replace){
+                                if (!replace) {
                                     this.content = [
                                         ...this.content,
                                         ...Utils.flattenContent(response.data.data)
@@ -360,6 +426,7 @@
                                 }
                                 this.page = Number(response.data.meta.page);
                                 this.total_pages = Math.ceil(response.data.meta.totalResults / this.$_limit);
+
                                 this.filters = Utils.flattenFilters(response.data.meta.filterOptions);
                             }
 
@@ -375,78 +442,105 @@
                 }
             },
 
-            infiniteScrollEventHandler(){
+            infiniteScrollEventHandler() {
                 let scroll_position = window.pageYOffset + window.innerHeight;
                 let scroll_buffer = document.body.scrollHeight - 50;
 
-                if((scroll_position >= scroll_buffer) && (this.page < this.total_pages)){
+                if ((scroll_position >= scroll_buffer) && (this.page < this.total_pages)) {
                     this.loadMore();
                 }
             },
 
-            loadNewPosts(){
+            loadNewPosts() {
                 this.selected_tab = 'new';
                 this.required_user_states = [];
 
                 this.getContent();
             },
 
-            loadStartedPosts(){
+            loadStartedPosts() {
                 this.selected_tab = 'continue';
                 this.required_user_states = ['started'];
 
                 this.getContent();
             },
 
-            loadMore(){
-                if(!this.loading){
+            loadMore() {
+                if (!this.loading) {
                     this.page += 1;
 
                     this.getContent(false);
                 }
             },
 
-            handlePageChange(payload){
+            handlePageChange(payload) {
                 this.page = payload.page;
+
+                if (this.$_paginate) {
+                    this.setUrlParams();
+                }
 
                 this.getContent();
             },
 
-            handleFilterChange(payload){
+            handleFilterChange(payload) {
                 this.filter_params[payload.key] = payload.value;
                 this.page = 1;
 
-                if(this.$_useUrlParams){
+                if (this.$_useUrlParams) {
                     this.setUrlParams();
                 }
                 this.getContent();
             },
 
-            handleProgressChange(payload){
+            handleProgressChange(payload) {
                 this.required_user_states = [];
+                this.page = 1;
 
-                if(payload.type){
+                if (payload.type) {
                     this.required_user_states.push(payload.type);
                 }
 
+                if(this.$_useUrlParams){
+                    this.setUrlParams();
+                }
+
+                this.getContent();
+            },
+
+            handleTypeChange(payload) {
+                this.selected_types = payload.value;
+                this.page = 1;
+
+                this.setUrlParams();
+
+                this.getContent();
+            },
+
+            handleSearch(payload) {
+                this.search_term = payload.term || undefined;
+                this.page = 1;
+
+                this.setUrlParams();
+
                 this.getContent();
             }
         },
-        mounted(){
-            if(!this.$_preLoadedContent && !this.$_preLoadedContent.results.length){
+        mounted() {
+            if (!this.$_preLoadedContent && !this.$_preLoadedContent.results.length) {
                 this.getContent();
             }
 
-            if(this.$_infiniteScroll && !this.$_loadMoreButton){
+            if (this.$_infiniteScroll && !this.$_loadMoreButton) {
                 window.addEventListener('scroll', this.infiniteScrollEventHandler);
             }
 
-            if(this.$_useUrlParams){
+            if (this.$_useUrlParams) {
                 this.getUrlParams();
             }
         },
-        beforeDestroy(){
-            if(this.$_infiniteScroll && !this.$_loadMoreButton){
+        beforeDestroy() {
+            if (this.$_infiniteScroll && !this.$_loadMoreButton) {
                 window.removeEventListener('scroll', this.infiniteScrollEventHandler);
             }
         }

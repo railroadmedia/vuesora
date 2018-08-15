@@ -18,22 +18,16 @@ export default (function(){
 
     function triggerDropdown(event){
         const element = event.target;
-        const dropdownContent = element.querySelector('.dropdown-content');
 
         event.stopPropagation();
 
         element.classList.toggle('inverted');
-        element.classList.toggle('text-white-important');
-        dropdownContent.classList.toggle('active');
+        element.classList.toggle('active');
     }
 
     function closeAllDropdowns(){
         Array.from(dropdownActivators).forEach(element => {
-            const dropdownContent = element.querySelector('.dropdown-content');
-
-            element.classList.add('inverted');
-            element.classList.remove('text-white-important');
-            dropdownContent.classList.remove('active');
+            element.classList.replace('active', 'inverted');
         });
     }
 })();

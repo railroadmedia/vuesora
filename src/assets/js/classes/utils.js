@@ -127,15 +127,19 @@ export default {
                     // Some of the legacy data can give us duplicate keys,
                     // Since we can't avoid this we gotta check whether or not
                     // We've added the key already
-                    let value_exists = filter_map[key].filter(map =>
-                        map.value === filter_options[key][i]
-                    ).length > 0;
+                    let map_exists = filter_map[key] != null;
+                    let value_exists;
+                    if(map_exists){
+                        value_exists = filter_map[key].filter(map =>
+                            map.value === filter_options[key][i]
+                        ).length > 0;
 
-                    if(!value_exists){
-                        filter_map[key].push({
-                            key: filter_options[key][i],
-                            value: filter_options[key][i]
-                        });
+                        if(!value_exists){
+                            filter_map[key].push({
+                                key: filter_options[key][i],
+                                value: filter_options[key][i]
+                            });
+                        }
                     }
                 }
             }

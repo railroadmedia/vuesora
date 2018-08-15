@@ -12,7 +12,7 @@
                 <option v-for="filter in $_sortedOptions"
                         :key="filter.key"
                         :value="filter.value">
-                    {{ toTitleCase(filter.key) }}
+                    {{ toTitleCase(filter.key.replace(/-/g, ' ')) }}
                 </option>
             </select>
 
@@ -91,7 +91,8 @@
                     progress: 'Your Progress',
                     artist: 'Choose an Artist',
                     style: 'Choose a Style',
-                    bpm: 'Choose a Tempo'
+                    bpm: 'Choose a Tempo',
+                    type: 'Choose a Type'
                 };
 
                 return label_map[this.$_filter_name];

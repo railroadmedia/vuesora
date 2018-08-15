@@ -232,13 +232,13 @@ export default class DataMapper {
 
             'podcasts': {
                 card: {
-                    color_title: this.getPostInstructor(),
+                    color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
-                    color_title: this.getPostInstructor(),
+                    color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
@@ -284,13 +284,13 @@ export default class DataMapper {
 
             'behind-the-scenes': {
                 card: {
-                    color_title: this.getPostInstructor(),
+                    color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
-                    color_title: this.getPostInstructor(),
+                    color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
@@ -310,13 +310,13 @@ export default class DataMapper {
 
             'study-the-greats': {
                 card: {
-                    color_title: this.getPostInstructor(),
+                    color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
                     grey_title: this.mapDifficulty()
                 },
                 list: {
-                    color_title: this.getPostInstructor(),
+                    color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
@@ -648,6 +648,10 @@ export default class DataMapper {
 
     getType(){
         return this.post['type'].replace(/-/g, ' ');
+    }
+
+    getEpisodeNumber(){
+        return 'Episode #' + this.post['sort'];
     }
 
     mapDifficulty(){
