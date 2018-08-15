@@ -252,6 +252,10 @@
                 type: Boolean,
                 default: () => false
             },
+            $_searchEndpoint: {
+                type: String,
+                default: () => '/laravel/public/railcontent/search'
+            },
             $_showContentTabs: {
                 type: Boolean,
                 default: () => false
@@ -307,11 +311,20 @@
             $_request_params() {
                 return {
                     'required_fields': this.$_required_fields,
+                    'statuses': this.$_statuses,
                     'required_user_states': this.required_user_states,
                     'term': this.search_term,
                     'included_types': this.selectedTypes,
                     'page': this.page
                 }
+            },
+
+            contentEndpoint(){
+                if(this.search_term){
+                    return this.$_searchEndpoint;
+                }
+
+                return this.$_contentEndpoint;
             },
         },
         methods: {
@@ -390,6 +403,11 @@
                     }
                 }
 
+                // If published is our only status just remove it fromm the url params
+                if(this.$_statuses[0] === 'published' && this.$_statuses.length === 1){
+                    delete params['statuses'];
+                }
+
                 const string = QueryString.stringify(params, {arrayFormat: 'bracket'});
 
                 let new_url = window.location.origin + window.location.pathname + '?' + string;
@@ -403,7 +421,7 @@
 
                     console.log(this.$_request_params);
 
-                    axios.get(this.$_contentEndpoint, {
+                    axios.get(this.contentEndpoint, {
                         params: {
                             brand: this.$_brand,
                             limit: this.$_limit,
@@ -427,7 +445,9 @@
                                 this.page = Number(response.data.meta.page);
                                 this.total_pages = Math.ceil(response.data.meta.totalResults / this.$_limit);
 
-                                this.filters = Utils.flattenFilters(response.data.meta.filterOptions);
+                                if(response.data.meta.filterOptions){
+                                    this.filters = Utils.flattenFilters(response.data.meta.filterOptions);
+                                }
                             }
 
                             this.loading = false;

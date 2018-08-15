@@ -409,3 +409,11 @@ ul {
     }
   }
 }
+
+.letter-anchor {
+  flex:0 0 4%;
+
+  @include xSmallOnly {
+    flex:0 0 8%;
+  }
+}
