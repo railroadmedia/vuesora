@@ -540,7 +540,7 @@ export default class DataMapper {
                 card: {
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: this.post['lesson_count'] + ' Lessons'
+                    grey_title: this.getPostDuration()
                 },
                 list: {
                     black_title: this.post['title'],

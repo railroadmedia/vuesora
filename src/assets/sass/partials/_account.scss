@@ -35,6 +35,19 @@
   }
 }
 
+.account-nav-link {
+  border-bottom:3px solid transparent;
+
+  &:hover, &.active {
+    color:#000;
+    border-bottom:3px solid $drumeoBlue;
+
+    i {
+      color:$drumeoBlue;
+    }
+  }
+}
+
 #settingsSidebar {
   flex:0 0 275px;
   overflow:hidden;
@@ -149,4 +162,15 @@
       font-size:36px;
     }
   }
+}
+
+.completed-badge {
+  position:absolute;
+  top:0;
+  left:0;
+  height:30px;
+  width:30px;
+  border-radius:3px 0 3px 0;
+  font-size:16px;
+  @include flexCenter();
 }
