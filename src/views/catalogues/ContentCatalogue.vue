@@ -31,6 +31,10 @@
                           @typeChange="handleTypeChange"
                           @searchChange="handleSearch"></catalogue-search>
 
+        <catalogue-playlist-tabs v-if="$_isPlaylists"
+                          :$_themeColor="$_themeColor"
+                          :$_included_types="$_includedTypes"></catalogue-playlist-tabs>
+
         <div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">
             <span class="heading pointer mr-3"
                   :class="selected_tab === 'new' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
@@ -80,6 +84,7 @@
                         :$_contentTypeOverride="$_contentTypeOverride"
                         :$_lockUnowned="$_lockUnowned"
                         :$_showNumbers="$_showNumbers"
+                        :$_is_search="$_searchBar"
                         @addToList="addToListEventHandler"></list-catalogue>
 
         <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
@@ -117,6 +122,7 @@
     import ListCatalogue from './ListCatalogue.vue';
     import CatalogueFilters from './_CatalogueFilters.vue';
     import CatalogueSearch from './_CatalogueSearch.vue';
+    import CataloguePlaylistTabs from './_CataloguePlaylistTabs';
     import CatalogueTabFilters from './_CatalogueTabFilters.vue';
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
@@ -134,7 +140,8 @@
             'pagination': Pagination,
             'catalogue-filters': CatalogueFilters,
             'catalogue-tab-filters': CatalogueTabFilters,
-            'catalogue-search': CatalogueSearch
+            'catalogue-search': CatalogueSearch,
+            'catalogue-playlist-tabs': CataloguePlaylistTabs,
         },
         props: {
             $_catalogueType: {
@@ -257,6 +264,10 @@
                 default: () => '/laravel/public/railcontent/search'
             },
             $_showContentTabs: {
+                type: Boolean,
+                default: () => false
+            },
+            $_isPlaylists: {
                 type: Boolean,
                 default: () => false
             }

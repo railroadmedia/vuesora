@@ -62,9 +62,20 @@
             <img :src="mappedData.sheet_music">
         </div>
 
-        <div v-for="(item, i) in mappedData.column_data"
+        <div v-if="!$_is_search"
+             v-for="(item, i) in mappedData.column_data"
              class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
             {{ item }}
+        </div>
+
+        <div v-if="$_is_search"
+             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+            {{ $_item.type.replace(/-/g, ' ') }}
+        </div>
+
+        <div v-if="$_is_search"
+             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+            {{ $_parsed_difficulty }}
         </div>
 
         <div v-if="$_displayUserInteractions && this.$_item.type !== 'learning-path'"
@@ -89,7 +100,7 @@
                  class="body">
                 <i v-if="$_item.started || $_item.completed"
                    class="fas flex-center rounded"
-                   :class="$_item.completed ? 'fa-check-circle text-' + $_themeColor : 'fa-adjust text-' + $_themeColor"></i>
+                   :class="$_item.completed ? 'fa-check-circle text-' + $_item.type : 'fa-adjust text-' + $_item.type"></i>
 
                 <i v-else
                    class="fas flex-center text-grey-2 rounded"
@@ -153,6 +164,10 @@
             $_lockUnowned: {
                 type: Boolean,
                 default: () => false
+            },
+            $_is_search: {
+                type: Boolean,
+                default: false
             }
         },
         data(){
@@ -207,6 +222,10 @@
 
             $_route(){
                 return '/members/lessons/' + this.$_item.type + '/' + this.$_item.id
+            },
+
+            $_parsed_difficulty(){
+                return DataMapper.mapDifficulty(this.$_item);
             },
 
             mappedData(){

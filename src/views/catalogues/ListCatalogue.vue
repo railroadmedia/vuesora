@@ -15,6 +15,7 @@
                 :$_showNumbers="$_showNumbers"
                 :$_noLink="$_lockUnowned && item.is_owned === false"
                 :$_lockUnowned="$_lockUnowned"
+                :$_is_search="$_is_search"
                 @addToList="emitAddToList"></catalogue-list-item>
     </div>
 </template>
@@ -66,6 +67,10 @@
                 default: false
             },
             $_lockUnowned: {
+                type: Boolean,
+                default: () => false
+            },
+            $_is_search: {
                 type: Boolean,
                 default: () => false
             }
