@@ -323,6 +323,21 @@ export default class Requests {
     }
 
     /**
+     * Report a forum post
+     *
+     * @static
+     * @param {number} id - the post ID to report
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static reportForumPost(id) {
+        return axios.put('/forums/post/report/' + id)
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Like a forum thread
      *
      * @static
