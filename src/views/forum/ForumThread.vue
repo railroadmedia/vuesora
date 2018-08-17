@@ -14,6 +14,13 @@
 
                 <div class="flex flex-column mb-1 xs-12 sm-6">
                     <div class="flex flex-row align-h-right">
+                        <button class="btn collapse-150 mr-1" @click="update"
+                                v-if="currentUser.isAdmin">
+                            <span class="bg-recordeo corners-3 inverted text-recordeo">
+                                Update
+                            </span>
+                        </button>
+
                         <button class="btn collapse-square mr-1" @click="pinPost"
                                 v-if="currentUser.isAdmin">
                             <span class="bg-recordeo corners-3"
@@ -155,6 +162,10 @@
             }
         },
         methods: {
+            update() {
+                window.location.href = this.thread.update;
+            },
+
             getPosts() {
 
                 return Requests.getForumThreadPosts()

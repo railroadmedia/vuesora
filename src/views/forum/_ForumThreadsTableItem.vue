@@ -72,6 +72,8 @@
 
                 return topics[this.thread.topic];
             }
+        },
+        methods: {
         }
     }
 </script>

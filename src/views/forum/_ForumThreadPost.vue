@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row ph pv-3 bb-grey-1-1">
+    <div class="flex flex-row ph pv-3 bb-grey-1-1" v-bind:id="'post' + id">
         <div class="flex flex-column avatar-column">
             <div class="square">
                 <img class="rounded" :src="authorAvatar">
@@ -221,7 +221,7 @@
             },
 
             postNumber(){
-                return ((this.currentPage - 1) * 10) + (this.index + 1)
+                return ((this.currentPage - 1) * 15) + (this.index + 1)
             }
         },
         methods: {
