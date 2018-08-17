@@ -34,6 +34,24 @@ export default class Forms {
     }
 
     /**
+     * Add event listeners to all file inputs to affect the label on change
+     *
+     * @static
+     */
+    static addFileInputEventListeners(){
+        const fileInputWraps = document.querySelectorAll('.file-input');
+
+        Array.from(fileInputWraps).forEach(wrap => {
+            const input = wrap.querySelectorAll('input')[0];
+            const label = wrap.querySelectorAll('.file-name')[0];
+
+            input.addEventListener('change', event => {
+                label.innerHTML = event.target.files.item(0).name;
+            });
+        });
+    }
+
+    /**
      * Remove all input event listeners if needed
      *
      * @static

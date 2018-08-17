@@ -40,6 +40,10 @@ body {
 
   &.no-scroll {
     overflow:hidden;
+
+    #intercom-container {
+      display:none;
+    }
   }
 }
 

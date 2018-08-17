@@ -27,6 +27,7 @@ export default (function(){
         if(modalToOpen){
             window.appendBackgroundOverlay();
 
+            document.body.classList.add('no-scroll');
             modalToOpen.classList.add('active');
         }
         else {
@@ -41,6 +42,7 @@ export default (function(){
         if(modalOverlay){
             modalOverlay.removeEventListener('click', closeModal);
             document.body.removeChild(modalOverlay);
+            document.body.classList.remove('no-scroll');
 
             window.dispatchEvent(closeEvent);
         }

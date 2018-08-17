@@ -9,6 +9,7 @@
                 :$_themeColor="$_themeColor"
                 :class="$_card_grid_classes"
                 :$_userId="$_userId"
+                :$_lockUnowned="$_lockUnowned"
                 :$_forceWideThumbs="$_forceWideThumbs"
                 :$_contentTypeOverride="$_contentTypeOverride"
                 @addToList="emitAddToList"></catalogue-card>
@@ -56,7 +57,11 @@
             $_contentTypeOverride: {
                 type: String,
                 default: () => ''
-            }
+            },
+            $_lockUnowned: {
+                type: Boolean,
+                default: () => false
+            },
         }
     }
 </script>

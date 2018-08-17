@@ -70,6 +70,7 @@
                         :$_themeColor="$_themeColor"
                         :$_noWrap="$_noWrapGrid"
                         :$_userId="$_userId"
+                        :$_lockUnowned="$_lockUnowned"
                         :$_forceWideThumbs="$_forceWideThumbs"
                         :$_contentTypeOverride="$_contentTypeOverride"
                         @addToList="addToListEventHandler"></grid-catalogue>
@@ -405,8 +406,6 @@
 
             setUrlParams() {
                 const params = JSON.parse(JSON.stringify(this.$_request_params));
-
-                console.log(params);
 
                 if(!this.$_searchBar){
                     if(params['included_types']){

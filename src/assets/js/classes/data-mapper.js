@@ -29,7 +29,7 @@ export default class DataMapper {
                     description: this.post['description'],
                     column_data: [
                         DataMapper.mapDifficulty(this.post),
-                        this.post['lesson_count'] + ' Parts',
+                        this.post['lesson_count'] + ' Videos',
                         this.getPostDate()
                     ]
                 },

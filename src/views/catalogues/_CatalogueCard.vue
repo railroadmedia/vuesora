@@ -3,8 +3,10 @@
         <a :href="$_item.url"
            class="no-decoration">
             <div class="card-media corners-5 mb-1"
-                 :class="thumbnailType"
-                 :style="'background-image:url(' + $_thumbnail + ');'">
+                 :class="thumbnailType">
+
+                <div class="thumb-img bg-center"
+                     :style="'background-image:url(' + $_thumbnail + ');'"></div>
 
                 <i class="add-to-list fas fa-plus"
                    :class="$_is_added ? 'is-added text-' + $_item.type : 'text-white'"
@@ -21,6 +23,15 @@
                           :class="'bg-' + $_item.type"
                           :style="'width:' + $_progress_percent + '%'"></span>
                 </div>
+
+                <span class="thumb-hover flex-center">
+                    <i class="fas"
+                       :class="$_thumbnailIcon"></i>
+                    <p v-if="$_noAccess"
+                       class="x-tiny text-white font-bold">
+                        {{ $_releaseDate }}
+                    </p>
+                </span>
             </div>
 
             <img v-if="mappedData.sheet_music" :src="mappedData.sheet_music">
@@ -61,6 +72,10 @@
                 type: String,
                 default: ''
             },
+            $_lockUnowned: {
+                type: Boolean,
+                default: () => false
+            },
         },
         data(){
             return {
@@ -83,6 +98,22 @@
 
             $_progress_percent(){
                 return this.$_item['progress_percent'];
+            },
+
+            $_thumbnailIcon(){
+                if(this.$_noAccess){
+                    return 'fa-lock';
+                }
+
+                return this.$_item.type === 'course' ? 'fa-arrow-right' : 'fa-play';
+            },
+
+            $_noAccess(){
+                return this.$_lockUnowned && this.$_item.is_owned === false;
+            },
+
+            $_releaseDate(){
+                return moment(this.$_item['published_on']).format('MMM D');
             },
 
             mappedData(){
