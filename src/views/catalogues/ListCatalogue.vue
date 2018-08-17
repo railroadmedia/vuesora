@@ -16,7 +16,9 @@
                 :$_noLink="$_lockUnowned && item.is_owned === false"
                 :$_lockUnowned="$_lockUnowned"
                 :$_is_search="$_is_search"
-                @addToList="emitAddToList"></catalogue-list-item>
+                :$_resetProgress="$_resetProgress"
+                @addToList="emitAddToList"
+                @resetProgress="emitResetProgress"></catalogue-list-item>
     </div>
 </template>
 <script>
@@ -71,6 +73,10 @@
                 default: () => false
             },
             $_is_search: {
+                type: Boolean,
+                default: () => false
+            },
+            $_resetProgress: {
                 type: Boolean,
                 default: () => false
             }

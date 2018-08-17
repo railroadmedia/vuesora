@@ -1,13 +1,16 @@
 <template>
-    <div class="flex flex-row align-v-center">
+    <div class="flex flex-row flex-wrap align-v-center">
         <div class="flex flex-column xs-12 sm-8 pv-3">
             <div class="flex flex-row align-v-center">
                 <h2 class="heading mh pointer"
-                    :class="selected_tab === 'added' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'">Added</h2>
+                    :class="selected_tab === 'added' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"
+                    @click="changeTab('added')">Added</h2>
                 <h2 class="heading mh pointer"
-                    :class="selected_tab === 'started' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'">Started</h2>
+                    :class="selected_tab === 'started' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"
+                    @click="changeTab('started')">Started</h2>
                 <h2 class="heading mh pointer"
-                    :class="selected_tab === 'completed' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'">Completed</h2>
+                    :class="selected_tab === 'completed' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"
+                    @click="changeTab('completed')">Completed</h2>
             </div>
         </div>
 
@@ -80,12 +83,39 @@
         },
         methods: {
             changeFilter(item){
-                console.log(item);
+                const params = window.location.search;
+                const query_object = QueryString.parse(params, {arrayFormat: 'bracket'});
 
-                this.$emit('typeChange', {
-                    key: item.key,
-                    value: item.value
-                })
+                console.log(item.value);
+
+                if(item.value){
+                    query_object['type'] = item.value;
+                }
+                else {
+                    if(query_object['type']){
+                        delete query_object['type'];
+                    }
+                }
+
+                window.location.href = location.protocol + '//' + location.host +
+                    location.pathname + '?' + QueryString.stringify(query_object);
+            },
+
+            changeTab(tab){
+                const params = window.location.search;
+                const query_object = QueryString.parse(params, {arrayFormat: 'bracket'});
+
+                if(tab !== 'added'){
+                    query_object['state'] = tab;
+                }
+                else {
+                    if(query_object['state']){
+                        delete query_object['state'];
+                    }
+                }
+
+                window.location.href = location.protocol + '//' + location.host +
+                    location.pathname + '?' + QueryString.stringify(query_object);
             }
         },
         mounted(){

@@ -84,8 +84,10 @@
                         :$_contentTypeOverride="$_contentTypeOverride"
                         :$_lockUnowned="$_lockUnowned"
                         :$_showNumbers="$_showNumbers"
-                        :$_is_search="$_searchBar"
-                        @addToList="addToListEventHandler"></list-catalogue>
+                        :$_is_search="$_searchBar || $_isPlaylists"
+                        :$_resetProgress="$_resetProgress"
+                        @addToList="addToListEventHandler"
+                        @resetProgress="resetProgressEventHandler"></list-catalogue>
 
         <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
              class="flex flex-row pa">
@@ -270,11 +272,18 @@
             $_isPlaylists: {
                 type: Boolean,
                 default: () => false
+            },
+            $_resetProgress: {
+                type: Boolean,
+                default: () => false
+            },
+            $_initialPage: {
+                default: null
             }
         },
         data() {
             return {
-                page: 1,
+                page: this.$_initialPage || 1,
                 content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.data) : [],
                 filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.meta.filterOptions || []) : {},
                 total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.meta.totalResults / this.$_limit) : 0,
@@ -505,13 +514,24 @@
             },
 
             handlePageChange(payload) {
-                this.page = payload.page;
+                if(!this.$_isPlaylists){
+                    this.page = payload.page;
 
-                if (this.$_paginate) {
-                    this.setUrlParams();
+                    if (this.$_paginate) {
+                        this.setUrlParams();
+                    }
+
+                    this.getContent();
                 }
+                else {
+                    const params = window.location.search;
+                    const query_object = QueryString.parse(params, {arrayFormat: 'bracket'});
 
-                this.getContent();
+                    query_object['page'] = payload.page;
+
+                    window.location.href = location.protocol + '//' + location.host +
+                        location.pathname + '?' + QueryString.stringify(query_object);
+                }
             },
 
             handleFilterChange(payload) {

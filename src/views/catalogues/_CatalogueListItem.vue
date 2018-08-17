@@ -64,29 +64,35 @@
 
         <div v-if="!$_is_search"
              v-for="(item, i) in mappedData.column_data"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
             {{ item }}
         </div>
 
         <div v-if="$_is_search"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
             {{ $_item.type.replace(/-/g, ' ') }}
         </div>
 
         <div v-if="$_is_search"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
             {{ $_parsed_difficulty }}
         </div>
 
         <div v-if="$_displayUserInteractions && this.$_item.type !== 'learning-path'"
              class="flex flex-column icon-col align-v-center"
              :class="$_overview ? 'hide-xs-only' : ''">
-            <div class="body">
+
+            <div v-if="$_resetProgress"
+                 class="body">
+                <i class="fas fa-undo flex-center text-grey-2"
+                   title="Reset Progress"
+                   @click.stop.prevent="resetProgress"></i>
+            </div>
+            <div v-else
+                 class="body">
                 <i class="add-to-list fas fa-plus flex-center"
                    :class="$_is_added ? 'is-added text-' + $_item.type : 'text-grey-2'"
                    :title="$_is_added ? 'Remove from list' : 'Add to list'"
-                   :data-content-id="$_item.id"
-                   :data-content-type="$_item.type"
                    @click.stop.prevent="addToList"></i>
             </div>
         </div>
@@ -168,6 +174,10 @@
             $_is_search: {
                 type: Boolean,
                 default: false
+            },
+            $_resetProgress: {
+                type: Boolean,
+                default: () => false
             }
         },
         data(){
