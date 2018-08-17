@@ -1,5 +1,5 @@
 <template>
-    <div id="{{ paymentMethod.id }}" class="flex flex-column xs-12 sm-12 md-6 cc-col ph-2 mb-3">
+    <div :id="paymentMethod.id" class="flex flex-column xs-12 sm-12 md-6 cc-col ph-2 mb-3">
         <div class="credit-card-box corners-5" :class="type">
             <div class="card">
                 <div class="flex flex-column pa-3">

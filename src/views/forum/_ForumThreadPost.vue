@@ -73,10 +73,10 @@
                 </div>
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center align-h-right">
-                        <!--<p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"-->
-                           <!--@click="reportPost">-->
-                            <!--Report-->
-                        <!--</p>-->
+                        <p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                            @click="reportPost">
+                            Report
+                        </p>
 
                         <!--<p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"-->
                            <!--@click="hidePost">-->
@@ -103,6 +103,7 @@
     import BrandClasses from '../../mixins/BrandClasses.js';
     import Toasts from '../../assets/js/classes/toasts';
     import Noty from 'noty';
+    import Requests from '../../assets/js/classes/requests';
 
     export default {
         mixins: [BrandClasses],
@@ -251,9 +252,9 @@
                     buttons: [
                         Noty.button('<span class="bg-error text-white short">Report</span>', 'btn mr-1', () => {
 
-                            this.$emit('reportPost', {
-                                id: this.id
-                            });
+                            Requests
+                                .reportForumPost(this.id)
+                                .then(resolved => resolved);
 
                             Toasts.success('A notification has been sent to the moderation team to review this post, thank you for your feedback!');
 
