@@ -17,6 +17,7 @@
                 :$_lockUnowned="$_lockUnowned"
                 :$_is_search="$_is_search"
                 :$_resetProgress="$_resetProgress"
+                :$_useThemeColor="$_useThemeColor"
                 @addToList="emitAddToList"
                 @resetProgress="emitResetProgress"></catalogue-list-item>
     </div>
@@ -79,6 +80,10 @@
             $_resetProgress: {
                 type: Boolean,
                 default: () => false
+            },
+            $_useThemeColor: {
+                type: Boolean,
+                default: () => true
             }
         },
     }

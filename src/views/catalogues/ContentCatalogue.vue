@@ -73,6 +73,7 @@
                         :$_lockUnowned="$_lockUnowned"
                         :$_forceWideThumbs="$_forceWideThumbs"
                         :$_contentTypeOverride="$_contentTypeOverride"
+                        :$_useThemeColor="$_useThemeColor"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
         <list-catalogue v-if="catalogue_type === 'list'"
@@ -87,6 +88,7 @@
                         :$_showNumbers="$_showNumbers"
                         :$_is_search="$_searchBar || $_isPlaylists"
                         :$_resetProgress="$_resetProgress"
+                        :$_useThemeColor="$_useThemeColor"
                         @addToList="addToListEventHandler"
                         @resetProgress="resetProgressEventHandler"></list-catalogue>
 
@@ -280,6 +282,10 @@
             },
             $_initialPage: {
                 default: null
+            },
+            $_useThemeColor: {
+                type: Boolean,
+                default: () => false
             }
         },
         data() {
@@ -431,7 +437,7 @@
 
                 let new_url = window.location.origin + window.location.pathname + '?' + string;
 
-                window.history.pushState(history.state, null, new_url);
+                window.history.replaceState(history.state, null, new_url);
             },
 
             getContent(replace = true) {

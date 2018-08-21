@@ -9,18 +9,18 @@
                      :style="'background-image:url(' + $_thumbnail + ');'"></div>
 
                 <i class="add-to-list fas fa-plus"
-                   :class="$_is_added ? 'is-added text-' + $_item.type : 'text-white'"
+                   :class="$_is_added ? 'is-added text-' + theme : 'text-white'"
                    :title="$_is_added ? 'Remove from list' : 'Add to list'"
                    :data-content-id="$_item.id"
                    :data-content-type="$_item.type"
                    @click.stop.prevent="addToList"></i>
 
                 <h3 class="thumbnail-title body capitalize"
-                    :class="'text-' + $_item.type">{{ mappedData.color_title }}</h3>
+                    :class="'text-' + theme">{{ mappedData.color_title }}</h3>
 
                 <div class="lesson-progress">
                     <span class="progress"
-                          :class="'bg-' + $_item.type"
+                          :class="'bg-' + theme"
                           :style="'width:' + $_progress_percent + '%'"></span>
                 </div>
 
@@ -76,6 +76,10 @@
                 type: Boolean,
                 default: () => false
             },
+            $_useThemeColor: {
+                type: Boolean,
+                default: () => false
+            }
         },
         data(){
             return {
@@ -114,6 +118,14 @@
 
             $_releaseDate(){
                 return moment(this.$_item['published_on']).format('MMM D');
+            },
+
+            theme(){
+                if(this.$_useThemeColor){
+                    return this.$_themeColor
+                }
+
+                return this.$_item.type;
             },
 
             mappedData(){

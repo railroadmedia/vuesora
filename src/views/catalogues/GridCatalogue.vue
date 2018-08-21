@@ -12,6 +12,7 @@
                 :$_lockUnowned="$_lockUnowned"
                 :$_forceWideThumbs="$_forceWideThumbs"
                 :$_contentTypeOverride="$_contentTypeOverride"
+                :$_useThemeColor="$_useThemeColor"
                 @addToList="emitAddToList"></catalogue-card>
     </div>
 </template>
@@ -62,6 +63,10 @@
                 type: Boolean,
                 default: () => false
             },
+            $_useThemeColor: {
+                type: Boolean,
+                default: () => true
+            }
         }
     }
 </script>

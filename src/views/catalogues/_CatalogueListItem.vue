@@ -4,12 +4,12 @@
        :href="$_noLink ? false : $_item.url">
 
         <div v-if="$_showNumbers"
-             class="flex flex-column align-center icon-col title text-black hide-xs-only">
+             class="flex flex-column align-center number-col title text-black hide-xs-only">
             {{ $_index }}
         </div>
 
         <div class="flex flex-column align-v-center"
-             :class="[$_overview ? 'large-thumbnail ' + $_themeColor
+             :class="[$_overview ? 'large-thumbnail ' + theme
              : 'thumbnail-col', { 'active': $_active }]">
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
@@ -91,7 +91,7 @@
             <div v-else
                  class="body">
                 <i class="add-to-list fas fa-plus flex-center"
-                   :class="$_is_added ? 'is-added text-' + $_item.type : 'text-grey-2'"
+                   :class="$_is_added ? 'is-added text-' + theme : 'text-grey-2'"
                    :title="$_is_added ? 'Remove from list' : 'Add to list'"
                    @click.stop.prevent="addToList"></i>
             </div>
@@ -106,7 +106,7 @@
                  class="body">
                 <i v-if="$_item.started || $_item.completed"
                    class="fas flex-center rounded"
-                   :class="$_item.completed ? 'fa-check-circle text-' + $_item.type : 'fa-adjust text-' + $_item.type"></i>
+                   :class="$_item.completed ? 'fa-check-circle text-' + theme : 'fa-adjust text-' + theme"></i>
 
                 <i v-else
                    class="fas flex-center text-grey-2 rounded"
@@ -178,6 +178,10 @@
             $_resetProgress: {
                 type: Boolean,
                 default: () => false
+            },
+            $_useThemeColor: {
+                type: Boolean,
+                default: () => false
             }
         },
         data(){
@@ -215,7 +219,11 @@
             },
 
             $_noAccess(){
-                return this.$_lockUnowned && this.$_item.is_owned === false;
+                return (this.$_lockUnowned && this.$_item.is_owned === false) || (this.$_lockUnowned && !this.$_isReleased);
+            },
+
+            $_isReleased(){
+                return moment(this.$_item['published_on']).isBefore(Date.now());
             },
 
             $_releaseDate(){
@@ -236,6 +244,14 @@
 
             $_parsed_difficulty(){
                 return DataMapper.mapDifficulty(this.$_item);
+            },
+
+            theme(){
+                if(this.$_useThemeColor){
+                    return this.$_themeColor
+                }
+
+                return this.$_item.type;
             },
 
             mappedData(){
