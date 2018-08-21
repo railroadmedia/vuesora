@@ -515,12 +515,12 @@ export default class DataMapper {
             'pack-bundle': {
                 card: {
                     show_description: true,
-                    black_title: 'DVD ' + this.post['position'] + ' - ' + this.post['title'],
+                    black_title: this.post['title'],
                     description: this.post['description'],
                     grey_title: this.post['lesson_count'] + ' Lessons'
                 },
                 list: {
-                    black_title: 'DVD ' + this.post['position'] + ' - ' + this.post['title'],
+                    black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
                         this.post['lesson_count'] + ' Lessons'
