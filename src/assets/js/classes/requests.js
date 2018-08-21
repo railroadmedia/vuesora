@@ -382,6 +382,21 @@ export default class Requests {
     }
 
     /**
+     * Mark a learning path as started (this changes the users current active learning path for
+     * progress tracking)
+     *
+     * @param content_id {string}
+     *
+     * @static
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static markLearningPathAsStarted(content_id){
+        return axios.post(endpoint_prefix + '/members/start-learning-path/' + content_id)
+            .then(response => response)
+            .catch(Requests.handleError)
+    }
+
+    /**
      * Display an error message and console the error if any request fails
      *
      * @static
