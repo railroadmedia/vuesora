@@ -56,6 +56,30 @@ $brands:drumeo pianote guitareo recordeo;
 $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
 @for $i from 1 through 3 {
 
+  .ba-white-#{$i} {
+    border:#{$i}px solid #fff;
+  }
+  .bh-white-#{$i} {
+    border-left:#{$i}px solid #fff;
+    border-right:#{$i}px solid #fff;
+  }
+  .bv-white-#{$i} {
+    border-top:#{$i}px solid #fff;
+    border-bottom:#{$i}px solid #fff;
+  }
+  .bt-white-#{$i} {
+    border-top:#{$i}px solid #fff;
+  }
+  .bb-white-#{$i} {
+    border-bottom:#{$i}px solid #fff;
+  }
+  .bl-white-#{$i} {
+    border-left:#{$i}px solid #fff;
+  }
+  .br-white-#{$i} {
+    border-right:#{$i}px solid #fff;
+  }
+
   .ba-black-#{$i} {
     border:#{$i}px solid #000;
   }

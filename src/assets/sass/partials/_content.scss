@@ -405,3 +405,17 @@
     opacity:0;
   }
 }
+
+.sbt-image, .sbt-video {
+  filter:contrast(125%);
+}
+
+.play-sbt {
+  .start { display:flex; }
+  .stop { display:none; }
+
+  &.playing {
+    .start { display:none; }
+    .stop { display:flex; }
+  }
+}

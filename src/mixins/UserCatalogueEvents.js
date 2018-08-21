@@ -13,7 +13,9 @@ export default {
             });
         },
 
-        resetProgress(){
+        resetProgress(event){
+            const icon = event.target;
+
             const notification = new Noty({
                 layout: 'center',
                 modal: true,
@@ -25,9 +27,12 @@ export default {
                     Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
 
                         notification.close();
+                        icon.classList.remove('fa-undo');
+                        icon.classList.add('fa-spin', 'fa-spinner');
 
                         this.emitResetProgress({
-                            content_id: this.$_item.id
+                            content_id: this.$_item.id,
+                            icon: icon
                         })
                     }),
                     // Cancel Button
@@ -75,6 +80,10 @@ export default {
                         Toasts.success('Progress has been reset.');
                         this.content.splice(post_index, 1);
                     }
+
+
+                    payload.icon.classList.remove('fa-spin', 'fa-spinner');
+                    payload.icon.classList.add('fa-undo');
                 });
         }
     }

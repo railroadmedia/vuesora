@@ -29,6 +29,7 @@ export default (function () {
     function resetProgress(event){
         const element = event.target;
         const contentId = element.dataset['contentId'];
+        const icon = element.querySelector('.fas');
 
         // Create a confirmation dialogue using Noty
         const notification = new Noty({
@@ -42,6 +43,8 @@ export default (function () {
                 Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
 
                     notification.close();
+                    icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
+                    icon.classList.add('fa-spin', 'fa-spinner');
 
                     Requests.resetContentProgress(contentId)
                         .then(resolved => {
@@ -52,6 +55,9 @@ export default (function () {
                                     location.reload();
                                 }, 100);
                             }
+
+                            icon.classList.remove('fa-spin', 'fa-spinner');
+                            icon.classList.add('fa-redo-alt', 'fa-flip-horizontal');
                         })
                 }),
                 // Cancel Button

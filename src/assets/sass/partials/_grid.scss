@@ -82,6 +82,12 @@
   flex-wrap:wrap;
 }
 
+.flex-wrap-xs-only {
+  @include xSmallOnly {
+    flex-wrap:wrap;
+  }
+}
+
 .flex-center {
   display:flex;
   flex-direction:column;
@@ -273,6 +279,12 @@
   padding:0!important;
 }
 
+.collapsed-xs {
+  @include xSmallOnly {
+    padding:0!important;
+  }
+}
+
 .collapsed-h {
   padding-left:0!important;
   padding-right:0!important;
@@ -281,6 +293,16 @@
 .collapsed-v {
   padding-top:0!important;
   padding-bottom:0!important;
+}
+
+.gutter {
+  @include xSmallOnly {
+    flex:0 0 $gutterWidth / 3;
+    max-width:$gutterWidth / 3;
+  }
+
+  flex:0 0 $gutterWidth / 2;
+  max-width:$gutterWidth / 2;
 }
 
 $numerators: 2 3 6 9 10;
