@@ -80,7 +80,7 @@
             },
 
             $_sortedOptions(){
-                return collection.sortBy(this.$_item, function(o) { return o.key; });
+                return this.$_item;
             },
 
             $_placeholderLabel(){

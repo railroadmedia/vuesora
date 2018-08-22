@@ -64,7 +64,7 @@
         data(){
             return {
                 progress_options: [
-                    { key: 'started', value: "started" },
+                    { key: 'in progress', value: "started" },
                     { key: 'completed', value: "completed" },
                 ]
             }
