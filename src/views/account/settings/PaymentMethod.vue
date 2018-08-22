@@ -6,7 +6,7 @@
                     <div class="flex flex-row text-white">
                         <div class="flex flex-column">
                             <h6 class="tiny uppercase font-bold">
-                                {{ paymentMethod.type }}
+                                {{ paymentMethod.type }}{{ isPrimary }}
                             </h6>
                         </div>
 
@@ -107,7 +107,8 @@
                     expiryYear: '',
                     country: '',
                     region: '',
-                    email: ''
+                    email: '',
+                    isPrimary: false
                 }
             },
             showDelete: {
@@ -119,6 +120,9 @@
             type() {
                 return this.paymentMethod.type == 'american express' ?
                     'amex' : this.paymentMethod.type;
+            },
+            isPrimary() {
+                return this.paymentMethod.isPrimary ? " - default" : "";
             }
         },
         methods: {

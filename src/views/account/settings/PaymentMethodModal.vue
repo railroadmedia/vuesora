@@ -180,7 +180,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row ph-3 mt-1 inline-inputs">
+                    <div class="flex flex-row ph-3" :class="{'inline-inputs': showRegion}">
                         <div class="flex flex-column">
                             <div class="form-group">
                                 <select id="cardCountry"
@@ -269,6 +269,13 @@
                         v-on:click.stop.prevent="closeModal">
                         Cancel
                     </a>
+
+                    <div class="flex flex-column align-v-center">
+                        <div class="flex flex-row flex-auto align-h-right align-v-center">
+                            <input type="checkbox" id="set-default" name="set-default" v-model="defaultPaymentMethod"/>
+                            <label for="set-default" class="default-payment-label">default payment method</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -318,7 +325,8 @@
                         expiryMonth: '',
                         expiryYear: '',
                         country: '',
-                        region: ''
+                        region: '',
+                        isPrimary: false
                     }
                 }
             },
@@ -389,6 +397,7 @@
                 editing: false,
                 validating: false,
                 validForm: false,
+                defaultPaymentMethod: false,
                 stripeErrorsMap: {
                     "invalid_expiry_year": {
                         field: "expiryYear"
@@ -480,7 +489,8 @@
                     card_token: token,
                     gateway: 'recordeo',
                     user_id: this.currentUser.id,
-                    user_email: this.currentUser.email
+                    user_email: this.currentUser.email,
+                    set_default: this.defaultPaymentMethod
                 };
             },
             save() {
@@ -526,7 +536,8 @@
                     year: this.expiryYear,
                     country: this.cardCountry,
                     state: this.cardCountry.toLowerCase() == 'canada' ?
-                            this.cardRegion : ''
+                            this.cardRegion : '',
+                    set_default: this.defaultPaymentMethod
                 };
 
                 Requests
@@ -746,6 +757,7 @@
                     this.cvvNumber = '';
                     this.cardCountry = newVal.country;
                     this.cardRegion = newVal.region;
+                    this.defaultPaymentMethod = newVal.isPrimary;
                 } else {
                     this.editing = false;
                     this.init();
@@ -755,4 +767,10 @@
     }
 </script>
 <style lang="scss">
+.default-payment-label {
+    padding: 0 0 0 5px;
+    cursor: pointer;
+    font: 700 16px Roboto Condensed,sans-serif;
+    text-transform: uppercase;
+}
 </style>
