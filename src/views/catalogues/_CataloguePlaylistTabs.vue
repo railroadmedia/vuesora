@@ -7,7 +7,7 @@
                     @click="changeTab('added')">Added</h2>
                 <h2 class="heading mh pointer"
                     :class="selected_tab === 'started' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"
-                    @click="changeTab('started')">Started</h2>
+                    @click="changeTab('started')">In Progress</h2>
                 <h2 class="heading mh pointer"
                     :class="selected_tab === 'completed' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"
                     @click="changeTab('completed')">Completed</h2>
