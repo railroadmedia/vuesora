@@ -56,7 +56,7 @@ export default {
 
         // If the value is an object that means we are looking at linked content as a field,
         // So we need to keep running this method to flatten that object aswell
-        if(typeof value === 'object'){
+        if(typeof value === 'object' && value !== null){
             value['fields'].forEach(field => {
                 this.createOrPushArray(field.key, field.value, this_value);
             });
