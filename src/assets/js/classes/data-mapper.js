@@ -128,7 +128,7 @@ export default class DataMapper {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: DataMapper.mapDifficulty(this.post)
+                    grey_title: this.getPostDate()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
@@ -235,7 +235,7 @@ export default class DataMapper {
                     color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: DataMapper.mapDifficulty(this.post)
+                    grey_title: this.getPostDate()
                 },
                 list: {
                     color_title: this.getEpisodeNumber(),
@@ -261,7 +261,7 @@ export default class DataMapper {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: DataMapper.mapDifficulty(this.post)
+                    grey_title: this.getPostDate()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
@@ -287,7 +287,7 @@ export default class DataMapper {
                     color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: DataMapper.mapDifficulty(this.post)
+                    grey_title: this.getPostDate()
                 },
                 list: {
                     color_title: this.getEpisodeNumber(),
@@ -313,7 +313,7 @@ export default class DataMapper {
                     color_title: this.getEpisodeNumber(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: DataMapper.mapDifficulty(this.post)
+                    grey_title: this.getPostDate()
                 },
                 list: {
                     color_title: this.getEpisodeNumber(),
@@ -339,7 +339,7 @@ export default class DataMapper {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: DataMapper.mapDifficulty(this.post)
+                    grey_title: this.getPostDate()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
@@ -365,7 +365,7 @@ export default class DataMapper {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: DataMapper.mapDifficulty(this.post)
+                    grey_title: this.getPostDate()
                 },
                 list: {
                     color_title: this.getPostInstructor(),
@@ -395,7 +395,7 @@ export default class DataMapper {
                     grey_title: DataMapper.mapDifficulty(this.post)
                 },
                 list: {
-                    color_title: this.getPostInstructor(),
+                    color_title: this.post['artist'],
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
@@ -468,7 +468,7 @@ export default class DataMapper {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: DataMapper.mapDifficulty(this.post)
+                    grey_title: this.getPostDate()
                 },
                 list: {
                     color_title: this.getPostInstructor(),

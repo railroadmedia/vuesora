@@ -3,8 +3,13 @@
        :class="$_class_object"
        :href="$_noLink ? false : $_item.url">
 
+        <div v-if="mappedData.sheet_music"
+             class="flex flex-column xs-12 pa hide-sm-up">
+            <img :src="mappedData.sheet_music" style="width:100%;">
+        </div>
+
         <div v-if="$_showNumbers"
-             class="flex flex-column align-center number-col title text-black hide-xs-only">
+             class="flex flex-column align-center number-col title text-black hide-sm-down">
             {{ $_index }}
         </div>
 
@@ -197,7 +202,8 @@
                     'content-overview': this.$_overview,
                     'content-table-row': !this.$_overview,
                     'no-access': this.$_noAccess,
-                    'no-events': this.$_noAccess
+                    'no-events': this.$_noAccess,
+                    'wrap-on-mobile': this.mappedData.sheet_music != null
                 }
             },
 

@@ -58,7 +58,8 @@
 
                 <div class="flex flex-column"></div>
 
-                <a class="btn normal bg-recordeo text-white short mh-1"
+                <a class="btn normal text-white short mh-1"
+                   :class="'bg-' + brand"
                    @click="cropImage">
                     Crop
                 </a>
@@ -150,6 +151,11 @@
                 }
             },
 
+            fieldKey: {
+                type: String,
+                default: 'profile_picture_image_url'
+            },
+
             dropzoneConfig: {
                 type: Object,
                 default: () => {
@@ -232,7 +238,7 @@
 
             setImageAsAvatar(imageUrl){
                 axios.patch(this.saveEndpoint, {
-                    key: 'profile_picture_image_url',
+                    key: this.fieldKey,
                     value: imageUrl
                 })
                     .then(response => {

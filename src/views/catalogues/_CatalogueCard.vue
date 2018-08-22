@@ -9,6 +9,7 @@
                      :style="'background-image:url(' + $_thumbnail + ');'"></div>
 
                 <i class="add-to-list fas fa-plus"
+                   v-if="$_item.type !== 'pack-bundle'"
                    :class="$_is_added ? 'is-added text-' + theme : 'text-white'"
                    :title="$_is_added ? 'Remove from list' : 'Add to list'"
                    :data-content-id="$_item.id"

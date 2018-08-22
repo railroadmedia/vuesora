@@ -389,3 +389,19 @@ textarea {
     box-shadow:none;
   }
 }
+
+.form-success-message {
+  transition:all .2s ease-in-out;
+  opacity:1;
+  visibility:visible;
+  overflow:hidden;
+  max-height:1000px;
+
+  &.removed {
+    opacity:0;
+    visibility:visible;
+    max-height:0;
+    padding:0;
+    margin-top:0;
+  }
+}

@@ -155,8 +155,11 @@
 }
 
 .content-overview {
-  flex-wrap:wrap;
   padding:#{$gutterWidth}  #{$gutterWidth / 3};
+
+  @include xSmallOnly {
+    flex-wrap:wrap;
+  }
 
   @include medium {
     flex-wrap:nowrap;
@@ -164,6 +167,10 @@
 
   .large-thumbnail {
     flex:1 0 100%;
+
+    @include small {
+      flex:0 0 240px;
+    }
 
     @include medium {
       flex:0 0 320px;

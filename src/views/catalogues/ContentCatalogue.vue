@@ -444,13 +444,12 @@
                 if (!this.loading) {
                     this.loading = true;
 
-                    console.log(this.$_request_params);
-
                     axios.get(this.contentEndpoint, {
                         params: {
                             brand: this.$_brand,
                             limit: this.$_limit,
                             statuses: this.$_statuses,
+                            sort: this.$_themeColor === 'rudiment' ? 'sort' : '-published_on',
                             ...this.$_request_params
                         }
                     })
