@@ -2,7 +2,7 @@
     <div id="commentsSection" class="flex flex-column grow">
         <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column xs-12 sm-9 mb-3">
-                <h1 class="heading">{{ totalComments }} Comments</h1>
+                <h1 class="heading">{{ totalCommentsAndReplies }} Comments</h1>
             </div>
         </div>
 
@@ -115,6 +115,7 @@
             return {
                 currentPage: 1,
                 totalComments: 0,
+                totalCommentsAndReplies: 0,
                 comments: [],
                 pinnedComment: null,
                 requestingData: false,
@@ -166,7 +167,8 @@
                         this.requestingData = false;
 
                         if(resolved){
-                            this.totalComments = resolved['meta']['totalResults'];
+                            this.totalComments = resolved['meta']['totalComments'];
+                            this.totalCommentsAndReplies = resolved['meta']['totalCommentsAndReplies'];
 
                             if(replace){
                                 this.comments = resolved['data'];
