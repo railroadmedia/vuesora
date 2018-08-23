@@ -172,24 +172,21 @@ ul {
     padding-top:$gutterWidth / 2;
   }
 
-  .flex-column:not(.button-col){
-    flex:1 1 100%;
-    text-align:center;
-
-    @include medium {
-      flex:1 1 auto;
-      padding-right:$gutterWidth / 3;
-      text-align:left;
-    }
-  }
+  //.flex-column:not(.button-col){
+  //  flex:1 1 100%;
+  //  text-align:center;
+  //
+  //  @include medium {
+  //    flex:1 1 auto;
+  //    padding-right:$gutterWidth / 3;
+  //    text-align:left;
+  //  }
+  //}
 
   .button-col {
-    flex:0 0 50%;
+    flex:0 0 55px;
     padding-right:$gutterWidth / 6;
-
-    @include medium {
-      flex:0 0 55px;
-    }
+    margin-top:0;
 
     &:last-of-type {
       padding-right:0;

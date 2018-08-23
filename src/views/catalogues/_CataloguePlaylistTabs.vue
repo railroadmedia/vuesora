@@ -1,16 +1,36 @@
 <template>
     <div class="flex flex-row flex-wrap align-v-center">
         <div class="flex flex-column xs-12 sm-8 pv-3">
-            <div class="flex flex-row align-v-center">
-                <h2 class="heading mh pointer"
-                    :class="selected_tab === 'added' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"
-                    @click="changeTab('added')">Added</h2>
-                <h2 class="heading mh pointer"
-                    :class="selected_tab === 'started' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"
-                    @click="changeTab('started')">In Progress</h2>
-                <h2 class="heading mh pointer"
-                    :class="selected_tab === 'completed' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"
-                    @click="changeTab('completed')">Completed</h2>
+            <div class="flex flex-row flex-wrap filter-tabs ph align-v-center">
+                <div class="heading pointer mr-3 flex"
+                     :class="selected_tab === 'added' ? 'text-black' : 'text-grey-2'"
+                     @click="changeTab('added')">
+                    Added
+                </div>
+
+                <div class="heading pointer mr-3 flex"
+                     :class="selected_tab === 'started' ? 'text-black' : 'text-grey-2'"
+                     @click="changeTab('started')">
+                    In Progress
+                </div>
+
+                <div class="heading pointer mr-3 flex"
+                     :class="selected_tab === 'completed' ? 'text-black' : 'text-grey-2'"
+                     @click="changeTab('completed')">
+                    Complete
+                </div>
+
+
+
+                <!--<h2 class="heading mh pointer"-->
+                    <!--:class="selected_tab === 'added' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"-->
+                    <!--@click="changeTab('added')">Added</h2>-->
+                <!--<h2 class="heading mh pointer"-->
+                    <!--:class="selected_tab === 'started' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"-->
+                    <!--@click="changeTab('started')">In Progress</h2>-->
+                <!--<h2 class="heading mh pointer"-->
+                    <!--:class="selected_tab === 'completed' ? 'text-black bb-' + $_themeColor + '-2' : 'text-grey-2'"-->
+                    <!--@click="changeTab('completed')">Completed</h2>-->
             </div>
         </div>
 

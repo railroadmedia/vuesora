@@ -6,6 +6,17 @@ export default (function(){
     const searchInput = document.getElementById('searchInput');
     const parentLinks = document.querySelectorAll('.parent-button');
     let backgroundOverlay = document.getElementById('backgroundOverlay');
+    let openItems = localStorage.getItem('open_items') ? JSON.parse(localStorage.getItem('open_items')) : [];
+
+    openItems.forEach(item => {
+        let button = document.querySelector('.page-link.parent[data-remain-open="' + item + '"] > .parent-button');
+        if(button != null){
+            const childLinks = button.parentElement.querySelector('.child-links');
+
+            button.classList.add('active');
+            childLinks.style['max-height'] = childLinks.scrollHeight + 'px';
+        }
+    });
 
     if(menuButton){
         menuButton.addEventListener('click', toggleSideBar);
@@ -58,7 +69,9 @@ export default (function(){
         event.stopPropagation();
 
         const buttonClicked = event.target.parentElement;
-        const childLinks = buttonClicked.children[1];
+        const childLinks = buttonClicked.querySelector('.child-links');
+
+        saveToLocalStorage(buttonClicked.dataset['remainOpen']);
 
         event.target.classList.toggle('active');
 
@@ -68,5 +81,18 @@ export default (function(){
         else {
             childLinks.removeAttribute('style');
         }
+    }
+
+    function saveToLocalStorage(value){
+        let valueExists = openItems.indexOf(value);
+
+        if(valueExists !== -1){
+            openItems.splice(valueExists, 1);
+        }
+        else {
+            openItems.push(value);
+        }
+
+        localStorage.setItem('open_items', JSON.stringify(openItems));
     }
 })();

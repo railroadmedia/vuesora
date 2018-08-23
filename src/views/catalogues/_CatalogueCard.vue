@@ -19,11 +19,16 @@
                 <h3 class="thumbnail-title body capitalize"
                     :class="'text-' + theme">{{ mappedData.color_title }}</h3>
 
-                <div class="lesson-progress">
+                <div class="lesson-progress overflow corners-bottom-5">
                     <span class="progress"
                           :class="'bg-' + theme"
                           :style="'width:' + $_progress_percent + '%'"></span>
                 </div>
+
+                <span v-if="$_item.is_new"
+                      class="new-badge x-tiny align-v-center uppercase font-bold" :class="'bg-' + theme">
+                    <i class="fa fa-star"></i> New
+                </span>
 
                 <span class="thumb-hover flex-center">
                     <i class="fas"
@@ -138,7 +143,7 @@
             },
 
             thumbnailType(){
-                return this.$_item['type'] === 'song' && this.$_forceWideThumbs === false ? 'square' : 'widescreen';
+                return this.$_item['type'] === 'song' && this.$_forceWideThumbs === false ? 'square' : 'widescreen' + ' ' + this.$_item['type'];
             }
         },
         mounted(){

@@ -49,6 +49,10 @@
   &.align-v-bottom {
     align-items: flex-end;
   }
+
+  &.reverse {
+    flex-direction:row-reverse;
+  }
 }
 
 .flex-column {
@@ -75,6 +79,10 @@
   }
   &.align-h-right {
     align-items: flex-end;
+  }
+
+  &.reverse {
+    flex-direction:column-reverse;
   }
 }
 

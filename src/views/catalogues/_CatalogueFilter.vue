@@ -7,7 +7,7 @@
                     v-model="valueInterface"
                     :disabled="valueInterface">
                 <option selected disabled :value="null">
-                    {{ $_placeholderLabel + '...' }}
+                    {{ $_placeholderLabel }}
                 </option>
                 <option v-for="filter in $_sortedOptions"
                         :key="filter.key"
@@ -85,14 +85,14 @@
 
             $_placeholderLabel(){
                 const label_map = {
-                    difficulty: 'Choose a Level',
-                    instructor: 'Choose an Instructor',
-                    topic: 'Choose a Topic',
-                    progress: 'Your Progress',
-                    artist: 'Choose an Artist',
-                    style: 'Choose a Style',
-                    bpm: 'Choose a Tempo',
-                    type: 'Choose a Type'
+                    difficulty: 'Choose a Level...',
+                    instructor: 'Choose an Instructor...',
+                    topic: 'Choose a Topic...',
+                    progress: 'Your Progress...',
+                    artist: 'Choose an Artist...',
+                    style: 'Choose a Style...',
+                    bpm: 'Choose a Tempo...',
+                    type: 'Choose a Type...'
                 };
 
                 return label_map[this.$_filter_name];

@@ -37,6 +37,7 @@
     border-radius:50%;
     border:2px solid #fff;
     cursor: pointer;
+    z-index:5;
 
     @extend .flex-center;
   }

@@ -18,6 +18,7 @@
                 :$_is_search="$_is_search"
                 :$_resetProgress="$_resetProgress"
                 :$_useThemeColor="$_useThemeColor"
+                :$_destroyOnListRemoval="$_destroyOnListRemoval"
                 @addToList="emitAddToList"
                 @resetProgress="emitResetProgress"></catalogue-list-item>
     </div>
@@ -84,7 +85,11 @@
             $_useThemeColor: {
                 type: Boolean,
                 default: () => true
-            }
+            },
+            $_destroyOnListRemoval: {
+                type: Boolean,
+                default: () => false
+            },
         },
     }
 </script>

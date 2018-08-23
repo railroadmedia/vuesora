@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row">
+    <div class="flex flex-row flex-wrap">
         <div class="flex flex-column xs-12 sm-8 pa-1">
             <div class="form-group">
                 <input type="text"

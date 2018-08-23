@@ -22,6 +22,7 @@
     top:-30px;
     right:30px;
     border-radius:3px 3px 0 0;
+    z-index:1;
   }
 
   .progress-container {
@@ -41,6 +42,7 @@
     top:-35px;
     width:30px;
     height:30px;
+    z-index:2;
     transform:translateX(-50%);
     @include flexCenter();
 

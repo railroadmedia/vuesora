@@ -1,7 +1,12 @@
 <template>
-    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1"
+    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative"
        :class="$_class_object"
        :href="$_noLink ? false : $_item.url">
+
+        <span v-if="$_item.is_new"
+              class="new-badge x-tiny align-v-center uppercase font-bold" :class="'bg-' + theme">
+            <i class="fa fa-star"></i> New
+        </span>
 
         <div v-if="mappedData.sheet_music"
              class="flex flex-column xs-12 pa hide-sm-up">
@@ -19,7 +24,14 @@
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
                      :class="thumbnailType"
-                     :style="'background-image:url( ' + $_thumbnail + ' );'"></div>
+                     :style="'background-image:url( ' + $_thumbnail + ' );'">
+
+                    <div class="lesson-progress overflow corners-bottom-3">
+                        <span class="progress"
+                              :class="'bg-' + theme"
+                              :style="'width:' + $_progress_percent + '%'"></span>
+                    </div>
+                </div>
 
                 <!--<span class="new-badge flex-center text-white bg-recordeo">-->
                     <!--<i class="fas fa-star"></i>-->
@@ -53,12 +65,22 @@
                 {{ mappedData.description }}
             </p>
 
-            <p class="x-tiny text-grey-3 text-truncate font-italic uppercase hide-md-up">
+            <p v-if="!$_is_search"
+               class="x-tiny text-grey-3 text-truncate font-italic uppercase hide-md-up">
                 <span v-for="(item, i) in mappedData.column_data">
                     <span v-if="i > 0" class="bullet">-</span>
 
                     {{ item }}
                 </span>
+            </p>
+
+            <p v-if="$_is_search"
+               class="x-tiny text-grey-3 text-truncate font-italic uppercase hide-md-up">
+                {{ $_item.type.replace(/-/g, ' ') }}
+
+                <span class="bullet">-</span>
+
+                {{ $_parsed_difficulty }}
             </p>
         </div>
 
@@ -89,7 +111,7 @@
 
             <div v-if="$_resetProgress"
                  class="body">
-                <i class="fas fa-undo flex-center text-grey-2"
+                <i class="fas fa-undo flex-center text-grey-2 reset"
                    title="Reset Progress"
                    @click.stop.prevent="resetProgress"></i>
             </div>
@@ -187,7 +209,11 @@
             $_useThemeColor: {
                 type: Boolean,
                 default: () => false
-            }
+            },
+            $_destroyOnListRemoval: {
+                type: Boolean,
+                default: () => false
+            },
         },
         data(){
             return {
@@ -222,6 +248,10 @@
 
                 return this.$_item['thumbnail_url'] ||
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
+            },
+
+            $_progress_percent(){
+                return this.$_item['progress_percent'];
             },
 
             $_noAccess(){

@@ -7,10 +7,39 @@ export default {
     methods: {
         // Used at the top level to emit the event with a payload
         addToList(){
-            this.emitAddToList({
-                content_id: this.$_item.id,
-                is_added: this.$_item.is_added_to_primary_playlist || false
-            });
+            console.log(this.$_destroyOnListRemoval);
+
+            if(this.$_destroyOnListRemoval){
+                const notification = new Noty({
+                    layout: 'center',
+                    modal: true,
+                    text: 'Do you really want to remove this item from your list? <br><br><span class="tiny text-grey-3 font-italic">You will have to find the lesson again to re-add it.</span>',
+                    theme: 'bootstrap-v4',
+                    closeWith: [],
+                    buttons: [
+                        // Confirm Button
+                        Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
+
+                            notification.close();
+
+                            this.emitAddToList({
+                                content_id: this.$_item.id,
+                                is_added: this.$_item.is_added_to_primary_playlist || false
+                            });
+                        }),
+                        // Cancel Button
+                        Noty.button('<span class="bg-dark inverted text-grey-3 short">NO</span>', 'btn', () => {
+                            notification.close();
+                        })
+                    ]
+                }).show();
+            }
+            else {
+                this.emitAddToList({
+                    content_id: this.$_item.id,
+                    is_added: this.$_item.is_added_to_primary_playlist || false
+                });
+            }
         },
 
         resetProgress(event){

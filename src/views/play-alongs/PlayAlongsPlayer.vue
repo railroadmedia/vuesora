@@ -191,6 +191,8 @@
                 this.loop = !this.loop;
                 this.anchor_offsets['a'] = 0;
                 this.anchor_offsets['b'] = 100;
+
+                this.audioPlayer.loop = this.loop;
             },
 
             setSource(retain_position = false){

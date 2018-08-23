@@ -124,13 +124,11 @@
 
   .lesson-sidebar {
     flex:0 0 100%;
-    margin-top:$gutterWidth / 2;
 
     @include medium {
       flex:0 0 320px;
       max-width:320px;
       margin-left:$gutterWidth / 2;
-      margin-top:0;
     }
 
     .content-table {
@@ -249,11 +247,15 @@
   .card-media {
     position:relative;
     overflow:hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
 
     .thumb-img {
       background-size:cover;
       background-position:top center;
       background-repeat:no-repeat;
+      background-color:#000;
       position:absolute;
       top:0;
       left:0;
@@ -276,6 +278,7 @@
       transition:color .1s ease-in-out, transform .1s ease-in-out;
       will-change: color, transform;
       text-shadow:0 0 2px rgba(0,0,0,.8);
+      z-index:3;
 
       &.is-added {
         transform:rotate(45deg);
@@ -289,22 +292,6 @@
       width:100%;
       padding:$gutterWidth #{$gutterWidth / 3} #{$gutterWidth / 3};
       @include topToBottomGradient(transparent, #000);
-    }
-
-    .lesson-progress {
-      position:absolute;
-      bottom:0;
-      left:0;
-      right:0;
-      height:5px;
-
-      .progress {
-        position:absolute;
-        height:100%;
-        top:0;
-        left:0;
-        bottom:0;
-      }
     }
 
     .thumb-hover {
@@ -324,6 +311,10 @@
         font-size:16px;
         color:#fff;
       }
+    }
+
+    &.song.widescreen .thumb-img {
+      background-size:contain;
     }
   }
 }

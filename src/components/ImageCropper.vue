@@ -237,7 +237,7 @@
             },
 
             setImageAsAvatar(imageUrl){
-                axios.patch(this.saveEndpoint, {
+                axios.put(this.saveEndpoint, {
                     key: this.fieldKey,
                     value: imageUrl
                 })

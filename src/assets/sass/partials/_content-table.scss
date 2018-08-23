@@ -154,6 +154,22 @@
   }
 }
 
+.lesson-progress {
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:5px;
+
+  .progress {
+    position:absolute;
+    height:100%;
+    top:0;
+    left:0;
+    bottom:0;
+  }
+}
+
 .content-overview {
   padding:#{$gutterWidth}  #{$gutterWidth / 3};
 
@@ -221,6 +237,10 @@
   .thumb-wrap {
     position:relative;
     overflow:hidden;
+    border-radius:3px;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
 
     .thumb-hover {
       opacity:0;
@@ -234,25 +254,29 @@
       z-index:2;
       transition:all .2s ease-in-out;
       will-change:opacity, visibility;
+      border-radius:3px;
 
       i {
         font-size:16px;
         color:#fff;
       }
     }
+  }
+}
 
-    .new-badge {
-      position:absolute;
-      top:0;
-      left:0;
-      height:20px;
-      width:20px;
-      border-radius:3px 0 3px 0;
+.new-badge {
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:3px 0 3px 0;
+  white-space:nowrap;
+  z-index:3;
+  color:#fff;
+  padding:5px;
 
-      i {
-        font-size:10px;
-      }
-    }
+  i {
+    font-size:10px;
+    margin-right:3px;
   }
 }
 
@@ -285,6 +309,10 @@
     font-size:28px;
     transition:color .1s ease-in-out, transform .1s ease-in-out;
     will-change: color, transform;
+
+    &.reset {
+      font-size:20px;
+    }
 
     &.is-added {
       transform:rotate(45deg);

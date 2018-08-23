@@ -89,6 +89,7 @@
                         :$_is_search="$_searchBar || $_isPlaylists"
                         :$_resetProgress="$_resetProgress"
                         :$_useThemeColor="$_useThemeColor"
+                        :$_destroyOnListRemoval="$_destroyOnListRemoval"
                         @addToList="addToListEventHandler"
                         @resetProgress="resetProgressEventHandler"></list-catalogue>
 
