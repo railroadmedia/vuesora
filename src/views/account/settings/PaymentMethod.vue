@@ -1,12 +1,12 @@
 <template>
     <div :id="paymentMethod.id" class="flex flex-column xs-12 sm-12 md-6 cc-col ph-2 mb-3">
-        <div class="credit-card-box corners-5" :class="type">
+        <div class="credit-card-box corners-5" :class="[type, {'default-payment': paymentMethod.isPrimary}]">
             <div class="card">
                 <div class="flex flex-column pa-3">
                     <div class="flex flex-row text-white">
                         <div class="flex flex-column">
                             <h6 class="tiny uppercase font-bold">
-                                {{ paymentMethod.type }}{{ isPrimary }}
+                                {{ paymentMethod.type }}
                             </h6>
                         </div>
 
@@ -49,6 +49,9 @@
                     </div>
                 </div>
             </div>
+            <div v-if="paymentMethod.isPrimary" class="default-payment-method bg-recordeo">
+                <span class="tiny font-bold">DEFAULT</span>
+            </div>
         </div>
         <div class="flex flex-row mt-2">
             <div class="flex flex-column">
@@ -79,7 +82,12 @@
                 </button>
             </div>
             <div class="flex flex-column" v-if="showDelete" :class="{'ml-1': paymentMethod.type != 'paypal'}">
-                <button class="btn delete-payment" v-on:click.stop.prevent="showConfirmation">
+                <button class="btn delete-payment" v-on:click.stop.prevent="showConfirmation" v-if="!paymentMethod.isPrimary">
+                    <span class="bg-error inverted text-error corners-3 short">
+                        Delete
+                    </span>
+                </button>
+                <button class="btn delete-payment" v-on:click.stop.prevent="showDefaultError" v-if="paymentMethod.isPrimary">
                     <span class="bg-error inverted text-error corners-3 short">
                         Delete
                     </span>
@@ -148,6 +156,20 @@
                         }),
                         // Cancel Button
                         Noty.button('<span class="bg-dark inverted text-dark short">NO</span>', 'btn', () => {
+                            notification.close();
+                        })
+                    ]
+                }).show();
+            },
+            showDefaultError() {
+                const notification = new Noty({
+                    layout: 'center',
+                    modal: true,
+                    text: '<span class="text-error">You can not delete the default payment method.</span><br><br><span class="tiny">Update an other payment method as default, then you may delete this payment method.</span>',
+                    theme: 'bootstrap-v4',
+                    closeWith: [],
+                    buttons: [
+                        Noty.button('<span class="bg-black inverted text-error corners-3 short">Close</span>', 'btn', () => {
                             notification.close();
                         })
                     ]
