@@ -165,11 +165,19 @@
 
     #practiceOverlay {
         position:fixed;
-        top:65px;
+        top:40px;
         left:0;
         right:0;
         bottom:0;
         z-index:97;
+
+        @include medium {
+            top:50px;
+        }
+
+        @include large {
+            top:65px;
+        }
 
         .loading-exercise {
             position:absolute;

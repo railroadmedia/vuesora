@@ -4,6 +4,7 @@
             <div class="flex flex-column xs-12 sm-9 mb-3">
                 <h1 class="heading">{{ totalCommentsAndReplies }} Comments</h1>
             </div>
+
             <div class="flex flex-column xs-12 sm-4 md-3 mb-3">
                 <div class="form-group xs-12" style="width:100%;">
                     <select id="commentSort" v-model="sortInterface">
@@ -12,7 +13,7 @@
                         <option value="-like_count">Popular</option>
                         <option value="-mine">My Comments</option>
                     </select>
-                    <label for="commentSort" :class="brand">Sort By</label>
+                    <label for="commentSort" :class="themeColor">Sort By</label>
                 </div>
             </div>
         </div>
@@ -164,7 +165,7 @@
                         this.requestingData = false;
 
                         if(resolved){
-                            this.totalComments = resolved['meta']['totalComments'];
+                            this.totalComments = resolved['meta']['totalResults'];
                             this.totalCommentsAndReplies = resolved['meta']['totalCommentsAndReplies'];
 
                             if(replace){
