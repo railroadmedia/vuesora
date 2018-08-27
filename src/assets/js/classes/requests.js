@@ -31,7 +31,7 @@ export default class Requests {
      */
     static getPaypalAgreementUrl() {
 
-        return axios.get('/members/account/settings/paypal-url')
+        return axios.get('/payment-method/paypal-url')
             .then(response => {
                 return response.data;
             })
