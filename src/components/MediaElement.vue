@@ -119,7 +119,7 @@
             },
 
             urlWithTimecode(){
-                return location.protocol + '//' + location.host + location.pathname + '?time=' + this.currentTimeInSeconds;
+                return location.protocol + '//' + location.host + location.pathname + '?time=' + Math.floor(this.currentTimeInSeconds);
             },
 
             defaultQuality: {
@@ -287,14 +287,16 @@
 
                     // Copy the current timecode if the user hits ctrl + shift + alt + c;
                     let keyMap = {};
-                    onkeydown = onkeyup = function(e){
-                        e = e || event;
-                        keyMap[e.keyCode] = e.type === 'keydown';
+                    ['keydown', 'keyup'].forEach(eventType => {
+                        document.addEventListener(eventType, function(e){
+                            e = e || event;
+                            keyMap[e.keyCode] = e.type === 'keydown';
 
-                        if(keyMap[17] && keyMap[16] && keyMap[18] && keyMap[67]){
-                            vm.copyTimecodeToClipboard();
-                        }
-                    }
+                            if(keyMap[17] && keyMap[16] && keyMap[18] && keyMap[67]){
+                                vm.copyTimecodeToClipboard();
+                            }
+                        });
+                    });
                 },
                 error: (error) => {
                     console.error(error);

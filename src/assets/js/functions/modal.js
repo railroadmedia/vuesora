@@ -3,7 +3,7 @@ export default (function(){
     const modalDialogs = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close-modal');
 
-    const closeEvent = new Event('modalClose');
+    const closeEvent = new CustomEvent('modalClose');
 
     // Add event listeners to every trigger button
     Array.from(modalTriggers).forEach(trigger => {

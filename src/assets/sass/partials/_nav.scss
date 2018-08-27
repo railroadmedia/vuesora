@@ -232,11 +232,12 @@ body {
   }
 
   #userInfo {
-    flex:0 0 300px;
+    //flex:0 0 300px;
 
-    .avatar {
-      max-width:125px;
+    .avatar-wrap {
       width:125px;
+      max-width:125px;
+      height:125px;
     }
   }
 
@@ -312,7 +313,8 @@ body {
   .subnav-link {
     transition:color .1s ease-in-out, background-color .1s ease-in-out;
     will-change:color, background-color;
-    flex:0 0 20%;
+    flex:0 1 20%;
+    box-sizing:border-box;
 
     &:last-of-type {
       border-right:none;
