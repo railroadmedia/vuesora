@@ -12,7 +12,7 @@
                     </a>
                     <a href="/members/forums?followed=true"
                        class="no-decoration text-black"
-                       :class="{ 'bb-recordeo-2': isFollowedSection }">
+                       :class="{ 'bb-recordeo-2': isFollowedSection, 'hide': searching }">
                         <h1 class="heading pointer">
                             Followed
                         </h1>
@@ -21,17 +21,17 @@
             </div>
 
             <div class="flex flex-column mb-3 search-box">
-                <!--<div class="form-group">-->
-                <!--<input id="threadSearch"-->
-                <!--type="text"-->
-                <!--v-model="searchInterface">-->
-                <!--<label for="threadSearch" class="recordeo">Search</label>-->
-                <!--</div>-->
+                <div class="form-group">
+                    <input id="threadSearch"
+                        type="text"
+                        v-model="searchInterface">
+                    <label for="threadSearch" class="recordeo">Search</label>
+                </div>
             </div>
             <div class="flex flex-column mb-3 form-group topic-col">
 
-                    <div class="form-group xs-12" style="width:100%;">
-                        <select id="commentSort" v-model="filterInterface">
+                    <div class="form-group xs-12" style="width:100%;" :class="{'hide': searching}">
+                        <select id="commentSort" v-model="filterInterface" class="has-input">
                             <option v-for="option in filterOptions"
                                     :key="option.label"
                                     :value="option.value">{{ option.label }}</option>
@@ -44,23 +44,39 @@
         <forum-threads-table-item v-for="thread in pinnedThreads"
                                   :key="'pinned' + thread.id"
                                   :thread="thread"
-                                  :brand="brand"></forum-threads-table-item>
+                                  :brand="brand"
+                                  v-if="!searching"></forum-threads-table-item>
 
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
                                   :thread="thread"
-                                  :brand="brand"></forum-threads-table-item>
+                                  :brand="brand"
+                                  v-if="!searching"></forum-threads-table-item>
+
+        <forum-search-result v-for="item in searchResults"
+                                :key="item.id"
+                                :item="item"
+                                :brand="brand"
+                                v-if="searching"></forum-search-result>
 
         <div class="flex flex-row bg-light pagination-row align-h-right"
-             v-if="totalPages > 1">
+             v-if="!searching && totalPages > 1">
             <pagination :currentPage="currentPage"
                         :totalPages="totalPages"
                         @pageChange="handlePageChange"></pagination>
+        </div>
+
+        <div class="flex flex-row bg-light pagination-row align-h-right"
+             v-if="searching && totalSearchPages > 1">
+            <pagination :currentPage="searchResultsPage"
+                        :totalPages="totalSearchPages"
+                        @pageChange="handleSearchPageChange"></pagination>
         </div>
     </div>
 </template>
 <script>
     import ForumThreadsTableItem from './_ForumThreadsTableItem';
+    import ForumSearchResult from './_ForumSearchResult.vue';
     import Pagination from '../../components/Pagination.vue';
     import ClearableFilter from '../../components/ClearableFilter.vue';
     import Requests from '../../assets/js/classes/requests';
@@ -70,6 +86,7 @@
         name: 'forum-threads-table',
         components: {
             'forum-threads-table-item': ForumThreadsTableItem,
+            'forum-search-result': ForumSearchResult,
             'pagination': Pagination,
             'clearable-filter': ClearableFilter
         },
@@ -119,12 +136,20 @@
                         label: 'Off Topic',
                         value: '4'
                     },
-                ]
+                ],
+                searching: false,
+                searchResults: [],
+                searchResultsCount: 0,
+                searchResultsPage: 1,
+                searchResultsPageLength: 10,
             }
         },
         computed: {
             totalPages() {
                 return Math.ceil(this.threadCount / 20);
+            },
+            totalSearchPages() {
+                return Math.ceil(this.searchResultsCount / this.searchResultsPageLength);
             },
             currentFilter(){
                 const urlParams = QueryString.parse(location.search);
@@ -140,13 +165,23 @@
                     return this.searchTerm;
                 },
                 set(val) {
+
                     clearTimeout(this.timeout);
 
-                    this.timeout = setTimeout(() => {
-                        this.searchTerm = val;
+                    this.searchTerm = val;
 
-                        this.getThreads();
-                    }, 800);
+                    if (val) {
+                        this.timeout = setTimeout(() => {
+
+                            this.searching = true;
+
+                            this.searchResultsPage = 1;
+
+                            this.getSearchResults();
+                        }, 800);
+                    } else {
+                        this.searching = false;
+                    }
                 }
             },
             filterInterface: {
@@ -192,6 +227,19 @@
 
         },
         methods: {
+            getSearchResults() {
+
+                Requests.getForumSearchResults(
+                        this.searchTerm,
+                        null,
+                        this.searchResultsPage,
+                        this.searchResultsPageLength
+                    ).then(data => {
+                        this.searchResults = data.results;
+                        this.searchResultsCount = data.count;
+                    });
+            },
+
             getThreads() {
                 return Requests.getForumThreads()
                     .then(data => {
@@ -207,6 +255,12 @@
 
                 window.location.href = location.protocol + '//' + location.host +
                     location.pathname + '?' + QueryString.stringify(urlParams);
+            },
+
+            handleSearchPageChange(payload) {
+
+                this.searchResultsPage = payload.page;
+                this.getSearchResults();
             },
 
             handleFilterChange(value) {

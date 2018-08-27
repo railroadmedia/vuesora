@@ -10,6 +10,124 @@ const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 export default class Requests {
 
     /**
+     * Get current user payment methods
+     *
+     * @static
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static getPaymentMethods() {
+
+        return axios.get('/members/account/settings/payment-methods')
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Get Paypal agreement url
+     *
+     * @static
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static getPaypalAgreementUrl() {
+
+        return axios.get('/payment-method/paypal-url')
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Update a credit card payment method
+     *
+     * @static
+     * @param {number} id - the id of payment method to delete
+     * @param {object} payload - the data object with the payment method details
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static updatePaymentMethod(id, payload) {
+
+        return axios.patch('/payment-method/' + id, payload)
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Delete a payment method
+     *
+     * @static
+     * @param {number} id - the id of payment method to delete
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static deletePaymentMethod(id) {
+
+        return axios.delete('/payment-method/' + id)
+            .then(response => {
+                return response;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Crates a new payment method
+     *
+     * @static
+     * @param {object} payload - the data object with the payment method details
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static createPaymentMethod(payload) {
+
+        return axios.put('/payment-method', payload)
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                if (error.response && error.response.status == 422) {
+                    return error.response.data;
+                } else {
+                    Requests.handleError(error);
+                }
+            });
+    }
+
+    /**
+     * Get the forum search results
+     *
+     * @static
+     * @param {string} term - the search terms
+     * @param {string} type - the search type, 'posts' or 'threads' - default null
+     * @param {number} page - the results page - default 1
+     * @param {number} limit - the results page amount - 10
+     * @param {string} sort - the column to sort - default 'score'
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    static getForumSearchResults(term, type, page, limit, sort) {
+
+        let params = {
+            term: term,
+            page: page || 1,
+            limit: limit || 10,
+            sort: sort || 'score'
+        };
+
+        if (type) {
+            params.type = type;
+        }
+
+        return axios.get('/members/forums/search', {
+                params: params
+            })
+            .then(response => {
+                return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Get the data for a list of forum threads
      *
      * @static
@@ -203,6 +321,21 @@ export default class Requests {
         return axios.delete(endpoint_prefix + '/railcontent/comment/' + id)
             .then(response => {
                 return response
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Report a forum post
+     *
+     * @static
+     * @param {number} id - the post ID to report
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static reportForumPost(id) {
+        return axios.put('/forums/post/report/' + id)
+            .then(response => {
+                return response.data
             })
             .catch(Requests.handleError);
     }

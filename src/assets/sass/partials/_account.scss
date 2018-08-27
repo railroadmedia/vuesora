@@ -137,6 +137,18 @@
     &.visa { background-color:#2d68a9; }
     &.mastercard { background-color:#33495d; }
     &.paypal { background-color:#a4bbc6; }
+    &.amex { background-color: #18325b; }
+    &.default-payment::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -5px;
+      bottom: -5px;
+      left: -5px;
+      right: -5px;
+      border-radius: 10px;
+      border: 2px solid $recordeoYellow;
+    }
 
     .card {
       position:absolute;
@@ -155,6 +167,19 @@
 
       .card-number {
         font-size:50%;
+      }
+    }
+
+    .default-payment-method {
+      display:inline-block;
+      padding: 3px 5px 3px 5px;
+      border-radius: 5px 0 5px 0;
+      position: absolute;
+      left: -3px;
+      top: -3px;
+
+      span {
+        color: white;
       }
     }
 
