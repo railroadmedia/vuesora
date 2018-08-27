@@ -32,6 +32,8 @@
                 </h6>
             </div>
         </div>
+
+        <input id="currentTimeInSeconds" type="text" v-model="urlWithTimecode">
     </div>
 </template>
 
@@ -51,6 +53,8 @@
     import 'mediaelement-plugins/src/airplay/airplay';
     import 'mediaelement-plugins/src/airplay/airplay.css';
     import Utils from '../assets/js/classes/utils';
+    import * as QueryString from 'query-string';
+    import Toasts from '../assets/js/classes/toasts';
 
     export default {
         name: "media-element",
@@ -71,7 +75,9 @@
                     'ended',
                     'volumechange',
                     'captionschange'
-                ]
+                ],
+                contextMenu: false,
+                currentTimeInSeconds: 0
             };
         },
         props: {
@@ -94,6 +100,10 @@
             themeColor: {
                 type: String,
                 default: () => 'drumeo'
+            },
+            checkForTimecode: {
+                type: Boolean,
+                default: () =>  false
             }
         },
         computed: {
@@ -106,6 +116,10 @@
                 }
 
                 return [];
+            },
+
+            urlWithTimecode(){
+                return location.protocol + '//' + location.host + location.pathname + '?time=' + this.currentTimeInSeconds;
             },
 
             defaultQuality: {
@@ -171,6 +185,10 @@
             },
 
             emitEvent(event){
+                if(event.type === 'timeupdate'){
+                    this.currentTimeInSeconds = this.mediaElement.getCurrentTime();
+                }
+
                 this.$emit(event.type, event);
             },
 
@@ -208,15 +226,23 @@
                 }
 
                 return String(height) + 'p';
+            },
+
+            copyTimecodeToClipboard(){
+                const timecode = document.getElementById('currentTimeInSeconds');
+
+                timecode.select();
+                document.execCommand('copy');
+                timecode.blur();
+                Toasts.success('Video url copied at current time!')
             }
         },
         created(){
-            this.$on('qualityChange', event => {
-                console.log(event.target.value);
-            })
+
         },
         mounted (){
             const vm = this;
+            const urlParams = QueryString.parse(window.location.search);
 
             window.player = new MediaElementPlayer(vm.elementId, {
                 defaultVideoWidth: 1280,
@@ -250,6 +276,25 @@
                             player.startControlsTimer(player.options.controlsTimeoutMouseLeave);
                         }
                     });
+
+                    if(this.checkForTimecode){
+
+                        if(urlParams['time'] != null){
+                            player.setCurrentTime(urlParams['time']);
+                            player.load();
+                        }
+                    }
+
+                    // Copy the current timecode if the user hits ctrl + shift + alt + c;
+                    let keyMap = {};
+                    onkeydown = onkeyup = function(e){
+                        e = e || event;
+                        keyMap[e.keyCode] = e.type === 'keydown';
+
+                        if(keyMap[17] && keyMap[16] && keyMap[18] && keyMap[67]){
+                            vm.copyTimecodeToClipboard();
+                        }
+                    }
                 },
                 error: (error) => {
                     console.error(error);
@@ -276,6 +321,10 @@
     }
     @each $key, $value in $content_colors {
         ##{$key}Theme {
+            .mejs__time-current { background:$value; }
+            .mejs__speed-selected, .mejs__qualities-selected { color:$value; }
+        }
+        ##{$key}sTheme {
             .mejs__time-current { background:$value; }
             .mejs__speed-selected, .mejs__qualities-selected { color:$value; }
         }
@@ -424,5 +473,12 @@
                 }
             }
         }
+    }
+
+    #currentTimeInSeconds {
+        opacity:0;
+        position:absolute;
+        top:-9999px;
+        left:-9999px;
     }
 </style>

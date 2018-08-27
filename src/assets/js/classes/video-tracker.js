@@ -1,5 +1,6 @@
 import axios from 'axios';
 const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
+import * as QueryString from 'query-string';
 
 export default class VideoTracker {
     constructor({
@@ -22,9 +23,10 @@ export default class VideoTracker {
         this.tracker_interval = null;
         this.media_session_endpoint = media_session_endpoint;
         this.current_tick = 1;
+        this.url_params = QueryString.parse(window.location.search);
 
         // Seek the player if the user has already watched the video
-        if(this.current_second > 0){
+        if(this.current_second > 0 && this.url_params['time'] == null){
             this.player_instance.mediaElement.setCurrentTime(
                 this.current_second
             );

@@ -227,19 +227,22 @@
                 formData.append('target', newFileName);
                 formData.append('_method', 'PUT');
 
+                this.loading = true;
+
                 Requests.remoteResourceUpload(this.uploadEndpoint, formData)
                     .then(resolved => {
                         if(resolved){
-                            let remoteStorageUrl = resolved.results;
+                            let remoteStorageUrl = resolved.data[0].url;
                             this.setImageAsAvatar(remoteStorageUrl);
                         }
                     })
             },
 
             setImageAsAvatar(imageUrl){
-                axios.put(this.saveEndpoint, {
+                axios.patch(this.saveEndpoint, {
                     key: this.fieldKey,
-                    value: imageUrl
+                    value: imageUrl,
+                    '_method': 'PATCH'
                 })
                     .then(response => {
                         if(response.data){
