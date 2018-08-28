@@ -8,6 +8,15 @@ import Toasts from './toasts'
 
 export default class Requests {
 
+    static setDefaultPaymentMethod(paypalPaymentMethodId) {
+
+        return axios.patch('/payment-method/set-default', {id: paypalPaymentMethodId})
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
     /**
      * Get current user payment methods
      *

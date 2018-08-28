@@ -43,6 +43,7 @@
     import PaymentMethodModal from './PaymentMethodModal.vue';
     import LoadingDialog from '../../../components/LoadingDialog.vue';
     import Toasts from '../../../assets/js/classes/toasts';
+    import Noty from 'noty';
 
     export default {
         name: 'payments',
@@ -82,7 +83,11 @@
             success: {
                 type: String,
                 default: ''
-            }
+            },
+            paypalPaymentMethod: {
+                type: Number,
+                default: 0
+            },
         },
         data() {
             return {
@@ -125,11 +130,37 @@
                             this.paymentMethods = response.paymentMethods;
                         }
                     });
+            },
+            setDefaultPaymentMethod(paypalPaymentMethodId) {
+                const notification = new Noty({
+                    layout: 'center',
+                    modal: true,
+                    text: 'Would you like to set the newly added paypal payment method as default payment method?',
+                    theme: 'bootstrap-v4',
+                    closeWith: [],
+                    buttons: [
+                        // Confirm Button
+                        Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
+
+                            Requests
+                                .setDefaultPaymentMethod(paypalPaymentMethodId)
+                                .then(this.refreshPaymentMethods);
+
+                            notification.close();
+                        }),
+                        // Cancel Button
+                        Noty.button('<span class="bg-dark inverted text-dark short">NO</span>', 'btn', () => {
+                            notification.close();
+                        })
+                    ]
+                }).show();
             }
         },
         mounted() {
             this.paymentMethods = this.activeMethods;
             this.success && Toasts.success(this.success);
+            this.paypalPaymentMethod > 0 &&
+                this.setDefaultPaymentMethod(this.paypalPaymentMethod);
         }
     }
 </script>
