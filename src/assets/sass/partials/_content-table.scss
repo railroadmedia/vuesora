@@ -95,7 +95,7 @@
 
   .thumb-img {
     background-size:cover;
-    background-position:top center;
+    background-position:center 16%;
     background-repeat:no-repeat;
     background-color:#000;
 
@@ -226,6 +226,17 @@
       }
     }
   }
+
+  .item-description {
+    @include xSmallOnly {
+      max-height:3em;
+      overflow:hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      text-overflow:ellipsis;
+    }
+  }
 }
 
 .thumbnail-col {
@@ -259,7 +270,7 @@
 
   .thumb-img {
     background-size:cover;
-    background-position:top center;
+    background-position:center 16%;
     background-repeat:no-repeat;
     background-color:#000;
     transform:scale(1);
@@ -342,6 +353,10 @@
     font-size:28px;
     transition:color .1s ease-in-out, transform .1s ease-in-out;
     will-change: color, transform;
+
+    &:hover:not(.is-added) {
+      color:#000;
+    }
 
     &.reset {
       font-size:20px;

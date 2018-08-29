@@ -84,7 +84,7 @@
             </p>
         </div>
 
-        <div v-if="mappedData.sheet_music"
+        <div v-if="mappedData.sheet_music && !$_is_search"
              class="flex flex-column sheet-music-col ph-1 hide-xs-only">
             <img :src="mappedData.sheet_music">
         </div>
