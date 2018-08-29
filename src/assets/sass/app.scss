@@ -81,8 +81,12 @@ ul {
 
   .pack-header {
     background-size:cover;
-    background-position:center;
+    background-position:center top;
     background-repeat:no-repeat;
+
+    @include medium {
+      background-size:contain;
+    }
 
     h1 {
       text-shadow:0 0 4px rgba(0,0,0,.2);

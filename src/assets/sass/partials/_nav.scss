@@ -2,12 +2,8 @@
 @import './_animations.scss';
 
 body {
-  padding-top:40px;
+  padding-top:50px;
   padding-bottom:60px;
-
-  @include medium {
-    padding-top:50px;
-  }
 
   @include large {
     padding-top:65px;
@@ -15,16 +11,12 @@ body {
 }
 
 #nav {
-  height:40px;
+  height:50px;
   z-index:99;
   position:fixed;
   top:0;
   left:0;
   width:100%;
-
-  @include medium {
-    height:50px;
-  }
 
   @include large {
     height:65px;
@@ -99,7 +91,7 @@ body {
   }
 
   .menu {
-    flex: 0 0 40px;
+    flex: 0 0 50px;
     cursor:pointer;
     will-change:background-color;
     transition:background-color .2s ease-in-out;
@@ -176,7 +168,6 @@ body {
         padding-left:$gutterWidth / 3;
         padding-right:$gutterWidth / 3;
         background:#000;
-        border-bottom: 1px solid #565d5f;
         transition:max-height .2s ease-in-out;
         will-change: max-height;
         max-height:0;
@@ -184,6 +175,7 @@ body {
 
         &.active {
           max-height:50px;
+          border-bottom: 1px solid nth(nth($greys, 5), 2);
         }
       }
     }
@@ -215,8 +207,8 @@ body {
 
 #navSideBar {
   position:fixed;
-  top:40px;
-  height:calc(100% - 40px);
+  top:50px;
+  height:calc(100% - 50px);
   right:0;
   width:320px;
   z-index:99;
@@ -229,10 +221,6 @@ body {
     transform:translateX(0);
   }
 
-  @include medium {
-    top:50px;
-    height:calc(100% - 50px);
-  }
   @include large {
     top:65px;
     height:calc(100% - 65px);
@@ -323,6 +311,12 @@ body {
     flex:0 1 25%;
     box-sizing:border-box;
     border-bottom:2px solid transparent;
+    white-space:nowrap;
+
+    i {
+      will-change:color;
+      transition:color .1s ease-in-out;
+    }
 
     @include small {
       flex:0 1 20%;

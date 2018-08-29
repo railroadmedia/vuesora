@@ -165,15 +165,11 @@
 
     #practiceOverlay {
         position:fixed;
-        top:40px;
+        top:50px;
         left:0;
         right:0;
         bottom:0;
         z-index:97;
-
-        @include medium {
-            top:50px;
-        }
 
         @include large {
             top:65px;
