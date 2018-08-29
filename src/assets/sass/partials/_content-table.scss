@@ -42,7 +42,7 @@
 
     .thumb-wrap {
       .thumb-img {
-        transform:scale(1.2);
+        transform:scale(1.1);
       }
 
       .thumb-hover {
@@ -97,6 +97,20 @@
     background-size:cover;
     background-position:top center;
     background-repeat:no-repeat;
+    background-color:#000;
+
+    .logo-image {
+      position:absolute;
+      bottom:0;
+      left:0;
+      right:0;
+      padding-top:$gutterWidth;
+      @include topToBottomGradient(transparent, #000);
+    }
+  }
+
+  &.song .thumb-img {
+    background-size:contain;
   }
 
   &.learning-path {
@@ -198,6 +212,20 @@
       max-width:100%;
     }
   }
+
+  .overview-links {
+    @include xSmallOnly {
+      flex-wrap:wrap;
+    }
+
+    a {
+      @include xSmallOnly {
+        flex:0 0 100%;
+        margin-bottom:$gutterWidth / 3;
+        max-width:100%;
+      }
+    }
+  }
 }
 
 .thumbnail-col {
@@ -205,6 +233,10 @@
 
   &.large-thumbnail {
     flex:0 0 320px;
+  }
+
+  &.song .thumb-img {
+    background-size:contain;
   }
 
   &.book-thumbnail {
@@ -229,6 +261,7 @@
     background-size:cover;
     background-position:top center;
     background-repeat:no-repeat;
+    background-color:#000;
     transform:scale(1);
     transition:transform .2s ease-in-out;
     will-change:transform;

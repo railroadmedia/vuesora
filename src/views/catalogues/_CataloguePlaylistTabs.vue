@@ -2,22 +2,28 @@
     <div class="flex flex-row flex-wrap align-v-center">
         <div class="flex flex-column xs-12 sm-8 pv-3">
             <div class="flex flex-row flex-wrap filter-tabs ph align-v-center">
-                <div class="heading pointer mr-3 flex"
-                     :class="selected_tab === 'added' ? 'text-black' : 'text-grey-2'"
+                <div class="heading pointer mr-3 flex flex-auto"
                      @click="changeTab('added')">
-                    Added
+                    <h3 class="flex-auto"
+                        :class="selected_tab === 'added' ? 'text-black bb-drumeo-2' : 'text-grey-2 font-regular'">
+                        Added
+                    </h3>
                 </div>
 
-                <div class="heading pointer mr-3 flex"
-                     :class="selected_tab === 'started' ? 'text-black' : 'text-grey-2'"
+                <div class="heading pointer mr-3 flex flex-auto"
                      @click="changeTab('started')">
-                    In Progress
+                    <h3 class="flex-auto"
+                        :class="selected_tab === 'started' ? 'text-black bb-drumeo-2' : 'text-grey-2 font-regular'">
+                        In Progress
+                    </h3>
                 </div>
 
-                <div class="heading pointer mr-3 flex"
-                     :class="selected_tab === 'completed' ? 'text-black' : 'text-grey-2'"
+                <div class="heading pointer mr-3 flex flex-auto"
                      @click="changeTab('completed')">
-                    Complete
+                    <h3 class="flex-auto"
+                        :class="selected_tab === 'completed' ? 'text-black bb-drumeo-2' : 'text-grey-2 font-regular'">
+                        Complete
+                    </h3>
                 </div>
 
 

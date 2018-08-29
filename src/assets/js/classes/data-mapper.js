@@ -449,9 +449,7 @@ export default class DataMapper {
                     black_title: this.post['title'],
                     sheet_music: this.post['sheet_music_thumbnail_url'],
                     description: this.post['description'],
-                    column_data: [
-                        this.getPostDuration()
-                    ]
+                    column_data: []
                 },
                 schedule: {
                     color_title: this.getType(),

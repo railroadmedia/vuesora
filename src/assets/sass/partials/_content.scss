@@ -234,7 +234,7 @@
   &:hover {
     .card-media {
       .thumb-img {
-        transform:scale(1.2);
+        transform:scale(1.1);
       }
 
       .thumb-hover {
@@ -253,7 +253,7 @@
 
     .thumb-img {
       background-size:cover;
-      background-position:top center;
+      background-position:center 20%;
       background-repeat:no-repeat;
       background-color:#000;
       position:absolute;

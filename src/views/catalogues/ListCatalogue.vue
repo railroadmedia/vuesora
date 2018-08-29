@@ -16,6 +16,7 @@
                 :$_noLink="$_lockUnowned && item.is_owned === false"
                 :$_lockUnowned="$_lockUnowned"
                 :$_is_search="$_is_search"
+                :$_forceWideThumbs="$_forceWideThumbs"
                 :$_resetProgress="$_resetProgress"
                 :$_useThemeColor="$_useThemeColor"
                 :$_destroyOnListRemoval="$_destroyOnListRemoval"
@@ -65,6 +66,10 @@
             $_contentTypeOverride: {
                 type: String,
                 default: () => ''
+            },
+            $_forceWideThumbs: {
+                type: Boolean,
+                default: () => false
             },
             $_showNumbers: {
                 type: Boolean,

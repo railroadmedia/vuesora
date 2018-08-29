@@ -58,9 +58,11 @@
                     return this.$_search_term;
                 },
                 set(value){
-                    this.$emit('searchChange', {
-                        term: value
-                    })
+                    if(value){
+                        this.$emit('searchChange', {
+                            term: value
+                        })
+                    }
                 }
             },
             parsedTypes(){

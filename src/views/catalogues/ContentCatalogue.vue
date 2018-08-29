@@ -45,7 +45,7 @@
             <span class="heading pointer"
                   :class="selected_tab === 'continue' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
                   @click="loadStartedPosts">
-                Continue
+                In Progress
             </span>
         </div>
 
@@ -89,6 +89,7 @@
                         :$_is_search="$_searchBar || $_isPlaylists"
                         :$_resetProgress="$_resetProgress"
                         :$_useThemeColor="$_useThemeColor"
+                        :$_forceWideThumbs="$_forceWideThumbs"
                         :$_destroyOnListRemoval="$_destroyOnListRemoval"
                         @addToList="addToListEventHandler"
                         @resetProgress="resetProgressEventHandler"></list-catalogue>
@@ -287,6 +288,10 @@
             $_useThemeColor: {
                 type: Boolean,
                 default: () => false
+            },
+            $_sortOverride: {
+                type: String,
+                default: () => ''
             }
         },
         data() {
@@ -450,7 +455,7 @@
                             brand: this.$_brand,
                             limit: this.$_limit,
                             statuses: this.$_statuses,
-                            sort: this.$_themeColor === 'rudiment' ? 'sort' : '-published_on',
+                            sort: this.$_sortOverride || '-published_on',
                             ...this.$_request_params
                         }
                     })

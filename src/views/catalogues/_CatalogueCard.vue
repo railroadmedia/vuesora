@@ -16,7 +16,7 @@
                    :data-content-type="$_item.type"
                    @click.stop.prevent="addToList"></i>
 
-                <h3 class="thumbnail-title body capitalize"
+                <h3 class="thumbnail-title tiny uppercase"
                     :class="'text-' + theme">{{ mappedData.color_title }}</h3>
 
                 <div class="lesson-progress overflow corners-bottom-5">

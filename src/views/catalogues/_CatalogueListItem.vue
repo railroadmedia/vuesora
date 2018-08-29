@@ -3,12 +3,12 @@
        :class="$_class_object"
        :href="$_noLink ? false : $_item.url">
 
-        <span v-if="$_item.is_new"
+        <span v-if="$_item.is_new && !$_noAccess"
               class="new-badge x-tiny align-v-center uppercase font-bold" :class="'bg-' + theme">
             <i class="fa fa-star"></i> New
         </span>
 
-        <div v-if="mappedData.sheet_music"
+        <div v-if="mappedData.sheet_music && !$_is_search"
              class="flex flex-column xs-12 pa hide-sm-up">
             <img :src="mappedData.sheet_music" style="width:100%;">
         </div>
@@ -20,7 +20,7 @@
 
         <div class="flex flex-column align-v-center"
              :class="[$_overview ? 'large-thumbnail ' + theme
-             : 'thumbnail-col', { 'active': $_active }]">
+             : 'thumbnail-col ' + theme, { 'active': $_active }]">
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
                      :class="thumbnailType"
@@ -85,7 +85,7 @@
         </div>
 
         <div v-if="mappedData.sheet_music"
-             class="flex flex-column sheet-music-col hide-xs-only">
+             class="flex flex-column sheet-music-col ph-1 hide-xs-only">
             <img :src="mappedData.sheet_music">
         </div>
 
@@ -107,7 +107,7 @@
 
         <div v-if="$_displayUserInteractions && this.$_item.type !== 'learning-path'"
              class="flex flex-column icon-col align-v-center"
-             :class="$_overview ? 'hide-xs-only' : ''">
+             :class="$_is_search ? '' : 'hide-xs-only'">
 
             <div v-if="$_resetProgress"
                  class="body">
@@ -125,7 +125,7 @@
         </div>
 
         <div class="flex flex-column icon-col align-v-center"
-             :class="$_displayUserInteractions ? 'hide-sm-down' : ''">
+             :class="$_is_search || $_overview ? 'hide-xs-only' : ''">
             <div v-if="$_noAccess" class="body">
                 <i class="fas fa-lock flex-center rounded text-grey-2"></i>
             </div>
@@ -175,6 +175,10 @@
                 type: Number
             },
             $_active: {
+                type: Boolean,
+                default: () => false
+            },
+            $_forceWideThumbs: {
                 type: Boolean,
                 default: () => false
             },
@@ -299,7 +303,7 @@
             },
 
             thumbnailType(){
-                return this.$_item['type'] === 'song' ? 'square' : 'widescreen';
+                return this.$_item['type'] !== 'song' || this.$_forceWideThumbs ? 'widescreen' : 'square';
             }
         },
         mounted(){
