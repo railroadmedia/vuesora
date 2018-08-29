@@ -91,6 +91,7 @@
                         :$_useThemeColor="$_useThemeColor"
                         :$_forceWideThumbs="$_forceWideThumbs"
                         :$_destroyOnListRemoval="$_destroyOnListRemoval"
+                        :$_compactLayout="$_compactLayout"
                         @addToList="addToListEventHandler"
                         @resetProgress="resetProgressEventHandler"></list-catalogue>
 
@@ -292,6 +293,10 @@
             $_sortOverride: {
                 type: String,
                 default: () => ''
+            },
+            $_compactLayout: {
+                type: Boolean,
+                default: () => false
             }
         },
         data() {

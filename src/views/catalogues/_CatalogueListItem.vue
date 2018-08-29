@@ -1,5 +1,5 @@
 <template>
-    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative"
+    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative compact"
        :class="$_class_object"
        :href="$_noLink ? false : $_item.url">
 
@@ -218,6 +218,10 @@
                 type: Boolean,
                 default: () => false
             },
+            $_compactLayout: {
+                type: Boolean,
+                default: () => false
+            }
         },
         data(){
             return {
@@ -233,7 +237,8 @@
                     'content-table-row': !this.$_overview,
                     'no-access': this.$_noAccess,
                     'no-events': this.$_noAccess,
-                    'wrap-on-mobile': this.mappedData.sheet_music != null
+                    'wrap-on-mobile': this.mappedData.sheet_music != null,
+                    'compact' : this.$_compactLayout
                 }
             },
 

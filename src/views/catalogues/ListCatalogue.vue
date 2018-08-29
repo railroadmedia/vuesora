@@ -20,6 +20,7 @@
                 :$_resetProgress="$_resetProgress"
                 :$_useThemeColor="$_useThemeColor"
                 :$_destroyOnListRemoval="$_destroyOnListRemoval"
+                :$_compactLayout="$_compactLayout"
                 @addToList="emitAddToList"
                 @resetProgress="emitResetProgress"></catalogue-list-item>
     </div>
@@ -95,6 +96,10 @@
                 type: Boolean,
                 default: () => false
             },
+            $_compactLayout: {
+                type: Boolean,
+                default: () => false
+            }
         },
     }
 </script>

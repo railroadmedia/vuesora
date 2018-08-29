@@ -58,15 +58,11 @@
 
   &.compact {
 
-    & > .flex-column {
-      justify-content:flex-start;
-    }
-
     .hide-md-up {
       display:block!important;
     }
 
-    .hide-sm-down {
+    .hide-sm-down, .hide-xs-only {
       display:none;
     }
   }
