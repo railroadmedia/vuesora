@@ -3,7 +3,11 @@
 
 body {
   padding-top:50px;
-  padding-bottom:60px;
+  padding-bottom:50px;
+
+  @include small {
+    padding-bottom:60px;
+  }
 
   @include large {
     padding-top:65px;
@@ -382,7 +386,7 @@ footer {
   z-index:96;
 
   .footer-col {
-    height:30px;
+    height:25px;
     font-size:13px;
     flex:1 1 100%;
 
@@ -392,7 +396,13 @@ footer {
     }
 
     a {
-      margin:0 3px;
+      //margin:0 3px;
+      &:first-of-type {
+        margin-right:3px;
+      }
+      &:last-of-type {
+        margin-left:3px;
+      }
 
       &.social-media-link {
 

@@ -1,5 +1,5 @@
 <template>
-    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative compact"
+    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative"
        :class="$_class_object"
        :href="$_noLink ? false : $_item.url">
 

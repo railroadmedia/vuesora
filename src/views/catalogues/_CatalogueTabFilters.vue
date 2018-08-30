@@ -1,10 +1,12 @@
 <template>
     <div class="flex flex-row flex-wrap ph pv-3 filter-tabs">
-        <div class="heading pointer mr-3 flex"
+        <div class="heading-tab pointer mr-3 flex flex-auto"
              v-for="(item, i) in $_filters"
-             :class="$_selected_tab === item.value ? 'text-black' : 'text-grey-2 font-regular'"
              @click="changeFilter(item)">
-            {{ item.title }}
+            <h3 class="heading flex-auto"
+                :class="$_selected_tab === item.value ? 'text-black bb-drumeo-2' : 'text-grey-2 font-regular'">
+                {{ item.title }}
+            </h3>
         </div>
     </div>
 </template>

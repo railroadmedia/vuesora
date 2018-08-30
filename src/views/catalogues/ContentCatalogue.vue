@@ -364,6 +364,14 @@
 
                 return this.$_contentEndpoint;
             },
+
+            sortBy(){
+                if(this.search_term){
+                    return 'score';
+                }
+
+                return this.$_sortOverride || '-published_on';
+            }
         },
         methods: {
             toggleCatalogueType(type) {
@@ -460,7 +468,7 @@
                             brand: this.$_brand,
                             limit: this.$_limit,
                             statuses: this.$_statuses,
-                            sort: this.$_sortOverride || '-published_on',
+                            sort: this.sortBy,
                             ...this.$_request_params
                         }
                     })

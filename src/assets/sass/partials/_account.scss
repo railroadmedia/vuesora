@@ -37,10 +37,15 @@
 
 .account-nav-link {
   border-bottom:3px solid transparent;
+  transition:border-color .2s ease-in-out, color .2s ease-in-out;
+
+  i {
+    transition:color .2s ease-in-out;
+  }
 
   &:hover, &.active {
     color:#000;
-    border-bottom:3px solid $drumeoBlue;
+    border-bottom-color:$drumeoBlue;
 
     i {
       color:$drumeoBlue;
