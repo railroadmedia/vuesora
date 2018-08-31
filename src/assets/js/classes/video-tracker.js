@@ -31,14 +31,6 @@ export default class VideoTracker {
                 this.current_second
             );
         }
-
-        // Initialize the session with the video tracker
-        this.createNewSession()
-            .then(response => {
-                if (response) {
-                    this.session_id = response.data.session_id;
-                }
-            });
     }
 
     /**
@@ -66,6 +58,17 @@ export default class VideoTracker {
      * @returns {Promise} - A resolved promise with the response object
      */
     handlePlayEvent(){
+        if(this.session_id == null){
+            // Initialize the session with the video tracker
+            this.createNewSession()
+                .then(response => {
+                    if (response) {
+                        this.session_id = response.data.session_id;
+                        this.handlePlayEvent();
+                    }
+                });
+        }
+
         if(!this.player_instance.mediaElement.paused && this.session_id){
             this.tracker_interval = setInterval(() => {
 

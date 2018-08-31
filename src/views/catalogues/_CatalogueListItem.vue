@@ -3,7 +3,7 @@
        :class="$_class_object"
        :href="$_noLink ? false : $_item.url">
 
-        <span v-if="$_item.is_new && !$_noAccess"
+        <span v-if="$_item.is_new && !$_noAccess && $_item.type !== 'rudiment'"
               class="new-badge x-tiny align-v-center uppercase font-bold" :class="'bg-' + theme">
             <i class="fa fa-star"></i> New
         </span>
