@@ -105,6 +105,24 @@
   }
 }
 
+
+[class*='hover-bg-'] {
+  transition:background-color .1s ease-in-out;
+  will-change:background-color;
+}
+
+[class*='hover-text-'] {
+  transition:color .1s ease-in-out;
+  will-change:color;
+}
+
+.hover-bg-black:hover {
+  background-color:#000;
+}
+.hover-text-black:hover {
+  color:#000;
+}
+
 @each $key, $value in $brand_colors {
   .text-#{$key} {
     color: $value;
@@ -116,6 +134,13 @@
       background-color:transparent;
       border:2px solid $value;
     }
+  }
+
+  .hover-text-#{$key}:hover {
+    color:$value;
+  }
+  .hover-bg-#{$key}:hover {
+    background-color:$value;
   }
 }
 
@@ -142,6 +167,20 @@
       border:2px solid $value;
     }
   }
+
+  .hover-text-#{$key}:hover {
+    color:$value;
+  }
+  .hover-bg-#{$key}:hover {
+    background-color:$value;
+  }
+
+  .hover-text-#{$key}s:hover {
+    color:$value;
+  }
+  .hover-bg-#{$key}s:hover {
+    background-color:$value;
+  }
 }
 
 @each $i, $grey in $greys {
@@ -156,6 +195,14 @@
 
   .text-grey-#{$i} {
     color:$grey;
+  }
+
+
+  .hover-text-grey-#{$i}:hover {
+    color:$grey;
+  }
+  .hover-bg-grey-#{$i}:hover {
+    background-color:$grey;
   }
 }
 

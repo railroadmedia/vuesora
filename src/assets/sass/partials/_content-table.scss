@@ -89,11 +89,18 @@
     margin-bottom:0;
   }
 
+  .thumb-wrap {
+    overflow:hidden;
+  }
+
   .thumb-img {
     background-size:cover;
     background-position:center 16%;
     background-repeat:no-repeat;
     background-color:#000;
+    transform:scale(1);
+    transition:transform .2s ease-in-out;
+    will-change:transform;
 
     .logo-image {
       position:absolute;
@@ -102,6 +109,35 @@
       right:0;
       padding-top:$gutterWidth;
       @include topToBottomGradient(transparent, #000);
+    }
+
+    &:hover {
+      transform:scale(1.1);
+
+      .thumb-hover {
+        opacity:1;
+        visibility:visible;
+      }
+    }
+
+    .thumb-hover {
+      opacity:0;
+      visibility:hidden;
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background-color:rgba(0,0,0,.4);
+      z-index:2;
+      transition:all .2s ease-in-out;
+      will-change:opacity, visibility;
+      border-radius:3px;
+
+      i {
+        font-size:32px;
+        color:#fff;
+      }
     }
   }
 

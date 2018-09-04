@@ -3,13 +3,19 @@
          class="flex flex-row comment-post pa mb-1"
          :class="{'pinned': pinned}">
         <div class="flex flex-column avatar-column pr">
-            <img :src="user['fields.profile_picture_image_url']" class="rounded">
+            <a :href="profileRoute" target="_blank"
+               class="no-decoration">
+                <img :src="user['fields.profile_picture_image_url']" class="rounded">
+            </a>
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
+                        <a :href="profileRoute" target="_blank"
+                           class="text-black no-decoration">
                         {{ user.display_name }}
+                        </a>
 
                         <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
@@ -197,6 +203,10 @@
                 type: Boolean,
                 default: () => false
             },
+            user_id: {
+                type: Number,
+                default: () => 0
+            },
             user: {
                 type: Object,
                 default: () => {
@@ -232,6 +242,10 @@
                 }
 
                 return 'comment' + this.id
+            },
+
+            profileRoute(){
+                return '/laravel/public/members/profile/' + this.user_id
             },
 
             isLiked(){
@@ -292,7 +306,7 @@
             },
 
             isUsersPost(){
-                return String(this.currentUser.id) === String(this.user.id);
+                return String(this.currentUser.id) === String(this.user_id);
             },
 
             isCurrentUserAdmin(){

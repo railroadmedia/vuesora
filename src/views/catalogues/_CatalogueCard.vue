@@ -16,7 +16,7 @@
                    :data-content-type="$_item.type"
                    @click.stop.prevent="addToList"></i>
 
-                <h3 class="thumbnail-title tiny uppercase"
+                <h3 class="thumbnail-title tiny font-compressed uppercase"
                     :class="'text-' + theme">{{ mappedData.color_title }}</h3>
 
                 <div class="lesson-progress overflow corners-bottom-5">
@@ -41,9 +41,9 @@
             </div>
 
             <img v-if="mappedData.sheet_music" :src="mappedData.sheet_music">
-            <h1 class="tiny text-black font-bold capitalize">{{ mappedData.black_title }}</h1>
-            <p v-if="mappedData.show_description" class="x-tiny text-grey-4">{{ mappedData.description }}</p>
-            <h4 class="x-tiny text-grey-3 font-italic uppercase">{{ mappedData.grey_title }}</h4>
+            <h1 class="tiny text-black font-compressed font-bold capitalize">{{ mappedData.black_title }}</h1>
+            <p v-if="mappedData.show_description" class="x-tiny font-compressed text-grey-4">{{ mappedData.description }}</p>
+            <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase">{{ mappedData.grey_title }}</h4>
         </a>
     </div>
 </template>

@@ -1,6 +1,7 @@
 import axios from 'axios';
+import * as QueryString from 'query-string'
+
 const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
-import * as QueryString from 'query-string';
 
 export default class VideoTracker {
     constructor({
@@ -30,6 +31,7 @@ export default class VideoTracker {
             this.player_instance.mediaElement.setCurrentTime(
                 this.current_second
             );
+            this.player_instance.mediaElement.load();
         }
     }
 
@@ -54,8 +56,6 @@ export default class VideoTracker {
 
     /**
      * Handle the time update event and send the relevant requests
-     *
-     * @returns {Promise} - A resolved promise with the response object
      */
     handlePlayEvent(){
         if(this.session_id == null){
@@ -75,9 +75,9 @@ export default class VideoTracker {
                 let currentTime = this.player_instance.mediaElement.currentTime;
 
                 this.total_time_watched += 1;
-                this.current_tick = this.current_tick < 4 ? this.current_tick + 1 : 1;
+                this.current_tick = this.current_tick < 15 ? this.current_tick + 1 : 1;
 
-                if(this.current_tick === 4){
+                if(this.current_tick === 15){
                     this.setLastWatchPosition(currentTime, this.total_time_watched)
                         .then(response => response);
                 }

@@ -96,6 +96,10 @@ h1, h2, h3, h4, h5, h6, p {
   font:400 10px/1.5em $defaultSansSerif;
 }
 
+.font-compressed {
+  line-height:1em;
+}
+
 .font-light {
   font-weight:300;
 }

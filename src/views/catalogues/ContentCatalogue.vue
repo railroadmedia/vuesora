@@ -367,7 +367,7 @@
 
             sortBy(){
                 if(this.search_term){
-                    return 'score';
+                    return '-score';
                 }
 
                 return this.$_sortOverride || '-published_on';

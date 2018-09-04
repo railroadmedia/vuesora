@@ -50,12 +50,12 @@
 
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
-            <p class="tiny text-recordeo uppercase text-truncate"
+            <p class="tiny font-compressed text-recordeo uppercase text-truncate"
                :class="'text-' + $_item.type">
                 {{ mappedData.color_title }}
             </p>
 
-            <p class="tiny text-black font-bold item-title">
+            <p class="tiny font-compressed text-black font-bold item-title">
                 {{ mappedData.black_title }}
             </p>
 
@@ -66,7 +66,7 @@
             </p>
 
             <p v-if="!$_is_search"
-               class="x-tiny text-grey-3 text-truncate font-italic uppercase hide-md-up">
+               class="x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up">
                 <span v-for="(item, i) in mappedData.column_data">
                     <span v-if="i > 0" class="bullet">-</span>
 
@@ -75,7 +75,7 @@
             </p>
 
             <p v-if="$_is_search"
-               class="x-tiny text-grey-3 text-truncate font-italic uppercase hide-md-up">
+               class="x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up">
                 {{ $_item.type.replace(/-/g, ' ') }}
 
                 <span class="bullet">-</span>
@@ -91,7 +91,7 @@
 
         <div v-if="!$_is_search"
              v-for="(item, i) in mappedData.column_data"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny font-compressed hide-sm-down">
             {{ item }}
         </div>
 
