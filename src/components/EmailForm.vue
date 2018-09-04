@@ -60,6 +60,10 @@
                 type: String,
                 default: () => 'Email from ' + this.brand
             },
+            recipient:{
+                type: String,
+                default: () => null
+            },
             emailType: {
                 type: String,
                 default: () => 'general'
@@ -103,7 +107,8 @@
                     Requests.sendEmail(
                         this.value,
                         this.emailType,
-                        this.subject
+                        this.subject,
+                        this.recipient
                     )
                         .then(resolved => {
                             if(resolved){

@@ -435,13 +435,15 @@ export default class Requests {
      * @param {string} message - the content of the text area element within the email form
      * @param {string} type - the type of email to send ['general', 'ask-question', 'support', 'suggest-learning-path']
      * @param {string} subject - the subject for the email
+     * @param {string} recipient - who to send to (default set on backend)
      * @returns {Promise} resolved promise with the response.data object
      */
-    static sendEmail(message, type, subject) {
+    static sendEmail(message, type, subject, recipient) {
         return axios.post(endpoint_prefix + '/members/mail', {
             message: message,
             type: type,
-            subject: subject
+            subject: subject,
+            recipient: recipient
         })
             .then(response => {
                 return response.data
