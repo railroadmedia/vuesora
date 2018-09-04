@@ -27,7 +27,7 @@
         </div>
 
         <div v-if="thread.isNew" class="flex flex-column icon-col align-center hide-xs-only new-post-badge">
-            <span class="text-white corners-3 uppercase flex flex-row align-center font-bold"
+            <span class="text-white corners-3 uppercase flex flex-row x-tiny align-center font-bold"
                   :class="brandBgClass">
                 <i class="fas fa-star flex-center"></i> New
             </span>
