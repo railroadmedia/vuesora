@@ -31,20 +31,16 @@
                               :class="'bg-' + theme"
                               :style="'width:' + $_progress_percent + '%'"></span>
                     </div>
+
+                    <span class="thumb-hover flex-center">
+                        <i class="fas"
+                           :class="$_thumbnailIcon"></i>
+                        <p v-if="$_noAccess"
+                           class="x-tiny text-white font-bold">
+                            {{ $_releaseDate }}
+                        </p>
+                    </span>
                 </div>
-
-                <!--<span class="new-badge flex-center text-white bg-recordeo">-->
-                    <!--<i class="fas fa-star"></i>-->
-                <!--</span>-->
-
-                <span class="thumb-hover flex-center">
-                    <i class="fas"
-                       :class="$_thumbnailIcon"></i>
-                    <p v-if="$_noAccess"
-                       class="x-tiny text-white font-bold">
-                        {{ $_releaseDate }}
-                    </p>
-                </span>
             </div>
         </div>
 
@@ -238,7 +234,8 @@
                     'no-access': this.$_noAccess,
                     'no-events': this.$_noAccess,
                     'wrap-on-mobile': this.mappedData.sheet_music != null,
-                    'compact' : this.$_compactLayout
+                    'compact' : this.$_compactLayout,
+                    'start-learning-path': this.$_contentTypeOverride === 'learning-path-part'
                 }
             },
 
