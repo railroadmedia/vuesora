@@ -41,7 +41,7 @@
             </div>
 
             <img v-if="mappedData.sheet_music" :src="mappedData.sheet_music">
-            <h1 class="tiny text-black font-compressed font-bold capitalize">{{ mappedData.black_title }}</h1>
+            <h1 class="tiny text-black mb-1 font-compressed font-bold capitalize">{{ mappedData.black_title }}</h1>
             <p v-if="mappedData.show_description" class="x-tiny font-compressed text-grey-4">{{ mappedData.description }}</p>
             <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase">{{ mappedData.grey_title }}</h4>
         </a>

@@ -12,7 +12,7 @@
                 </div>
 
                 <iframe id="ssEmbed"
-                        :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed?scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
+                        :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
                         @load="loading = false"></iframe>
 
                 <div class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"

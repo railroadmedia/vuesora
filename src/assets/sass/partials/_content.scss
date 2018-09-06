@@ -422,6 +422,10 @@
   }
 }
 
+*[data-toggle-catalogue], .heading-tab h3 {
+  padding-bottom:3px;
+}
+
 .sbt-image, .sbt-video {
   filter:contrast(125%);
   max-width:100%;
