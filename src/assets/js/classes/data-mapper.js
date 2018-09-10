@@ -647,7 +647,9 @@ export default class DataMapper {
     }
 
     getType(){
-        return this.post['type'].replace(/-/g, ' ');
+        console.log(this.post['type'].replace('bundle-', '').replace(/-/g, ' '));
+
+        return this.post['type'].replace('bundle-', '').replace(/-/g, ' ');
     }
 
     getEpisodeNumber(){

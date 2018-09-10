@@ -72,7 +72,7 @@
 
             <p v-if="$_is_search"
                class="x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up">
-                {{ $_item.type.replace(/-/g, ' ') }}
+                {{ $_item.type.replace('bundle-', '').replace(/-/g, ' ') }}
 
                 <span class="bullet">-</span>
 
@@ -93,7 +93,7 @@
 
         <div v-if="$_is_search"
              class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
-            {{ $_item.type.replace(/-/g, ' ') }}
+            {{ $_item.type.replace('bundle-', '').replace(/-/g, ' ') }}
         </div>
 
         <div v-if="$_is_search"
