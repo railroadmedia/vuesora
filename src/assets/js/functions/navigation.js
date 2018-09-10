@@ -40,14 +40,15 @@ export default (function(){
     function toggleSideBar(event){
         event.stopPropagation();
 
-        searchBox.classList.remove('active');
-        searchIcon.children[0].classList.remove('fa-times');
-        searchIcon.children[0].classList.add('fa-search');
+        if(searchBox){
+            searchBox.classList.remove('active');
+            searchIcon.children[0].classList.remove('fa-times');
+            searchIcon.children[0].classList.add('fa-search');
+        }
 
         if(navSideBar.classList.contains('active')){
             menuButton.classList.remove('active');
             navSideBar.classList.remove('active');
-            searchBox.classList.remove('active');
             backgroundOverlay.classList.remove('active');
         }
         else {
