@@ -75,9 +75,9 @@ export default class VideoTracker {
                 let currentTime = this.player_instance.mediaElement.currentTime;
 
                 this.total_time_watched += 1;
-                this.current_tick = this.current_tick < 15 ? this.current_tick + 1 : 1;
+                this.current_tick = this.current_tick < 4 ? this.current_tick + 1 : 1;
 
-                if(this.current_tick === 15){
+                if(this.current_tick === 4){
                     this.setLastWatchPosition(currentTime, this.total_time_watched)
                         .then(response => response);
                 }

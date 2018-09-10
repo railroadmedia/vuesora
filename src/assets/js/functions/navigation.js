@@ -20,7 +20,7 @@ export default (function(){
 
     if(menuButton){
         menuButton.addEventListener('click', toggleSideBar);
-        backgroundOverlay.addEventListener('click', toggleSideBar);
+        backgroundOverlay.addEventListener('click', closeEverything);
 
         navSideBar.addEventListener('click', event => {
             event.stopPropagation();
@@ -40,9 +40,14 @@ export default (function(){
     function toggleSideBar(event){
         event.stopPropagation();
 
-        if(menuButton.classList.contains('active')){
+        searchBox.classList.remove('active');
+        searchIcon.children[0].classList.remove('fa-times');
+        searchIcon.children[0].classList.add('fa-search');
+
+        if(navSideBar.classList.contains('active')){
             menuButton.classList.remove('active');
             navSideBar.classList.remove('active');
+            searchBox.classList.remove('active');
             backgroundOverlay.classList.remove('active');
         }
         else {
@@ -56,13 +61,32 @@ export default (function(){
         event.stopPropagation();
 
         searchBox.classList.toggle('active');
+        navSideBar.classList.remove('active');
+        menuButton.classList.remove('active');
 
         if(searchBox.classList.contains('active')){
             searchInput.focus();
+            backgroundOverlay.classList.add('active');
+            searchIcon.children[0].classList.add('fa-times');
+            searchIcon.children[0].classList.remove('fa-search');
         }
         else {
             searchInput.blur();
+            backgroundOverlay.classList.remove('active');
+            searchIcon.children[0].classList.remove('fa-times');
+            searchIcon.children[0].classList.add('fa-search');
         }
+    }
+
+    function closeEverything(event){
+        event.stopPropagation();
+
+        menuButton.classList.remove('active');
+        navSideBar.classList.remove('active');
+        searchBox.classList.remove('active');
+        backgroundOverlay.classList.remove('active');
+        searchIcon.children[0].classList.remove('fa-times');
+        searchIcon.children[0].classList.add('fa-search');
     }
 
     function toggleChildLinks(event){
