@@ -647,8 +647,6 @@ export default class DataMapper {
     }
 
     getType(){
-        console.log(this.post['type'].replace('bundle-', '').replace(/-/g, ' '));
-
         return this.post['type'].replace('bundle-', '').replace(/-/g, ' ');
     }
 

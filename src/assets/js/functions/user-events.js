@@ -93,7 +93,7 @@ export default (function () {
         if(element.classList.contains('is-complete')){
             element.classList.remove('is-complete');
 
-            Requests.markContentAsStarted(contentId)
+            Requests.resetContentProgress(contentId)
                 .then(resolved => {
 
                 });

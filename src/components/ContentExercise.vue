@@ -12,7 +12,7 @@
                 </div>
 
                 <iframe id="ssEmbed"
-                        :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
+                        :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
                         @load="loading = false"></iframe>
 
                 <div class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
@@ -116,7 +116,8 @@
                 totalPages: this.pages.length || 0,
                 scrollAmount: 0,
                 open: false,
-                loading: true
+                loading: true,
+                isPlaying: false
             }
         },
         methods: {
@@ -132,15 +133,34 @@
                 return page !== this.currentPage ? 'inverted' : '';
             },
 
+            spacebarToPlayPause(event){
+                const embeddedPlayer = document.getElementById('ssEmbed').contentWindow;
+
+                if(event.keyCode === 32){
+                    event.preventDefault();
+
+                    if(this.isPlaying){
+                        embeddedPlayer.postMessage('{"method": "pause"}', 'https://www.soundslice.com');
+                    }
+                    else {
+                        embeddedPlayer.postMessage('{"method": "play"}', 'https://www.soundslice.com');
+                    }
+                }
+            },
+
             openExercise(){
                 this.open = true;
                 document.body.classList.add('no-scroll');
+
+                document.addEventListener('keyup', this.spacebarToPlayPause);
             },
 
             closeExercise(){
                 this.loading = true;
                 this.open = false;
                 document.body.classList.remove('no-scroll');
+
+                document.removeEventListener('keyup', this.spacebarToPlayPause);
             }
         },
         computed: {
@@ -154,6 +174,20 @@
             }
 
             window.addEventListener('resize', this.scrollAmountChange);
+            window.addEventListener('message', event => {
+                if(event.origin === "https://www.soundslice.com"){
+                    var cmd = JSON.parse(event.data);
+
+                    switch (cmd.method) {
+                        case 'ssPlay':
+                            this.isPlaying = true;
+                            break;
+                        case 'ssPause':
+                            this.isPlaying = false;
+                            break;
+                    }
+                }
+            });
         },
         beforeDestroy(){
             window.removeEventListener('resize', this.scrollAmountChange);
