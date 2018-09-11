@@ -2,12 +2,6 @@
     <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative"
        :class="$_class_object"
        :href="$_noLink ? false : $_item.url">
-
-        <span v-if="$_item.is_new && !$_noAccess && $_item.type !== 'rudiment'"
-              class="new-badge x-tiny align-v-center uppercase font-bold" :class="'bg-' + theme">
-            <i class="fa fa-star"></i> New
-        </span>
-
         <div v-if="mappedData.sheet_music && !$_is_search"
              class="flex flex-column xs-12 pa hide-sm-up">
             <img :src="mappedData.sheet_music" style="width:100%;">
@@ -32,7 +26,14 @@
                               :style="'width:' + $_progress_percent + '%'"></span>
                     </div>
 
-                    <span class="thumb-hover flex-center">
+
+
+                    <span v-if="$_showTrophy"
+                          class="bundle-complete flex-center">
+                        <i class="fas fa-trophy"></i>
+                    </span>
+                    <span v-else
+                          class="thumb-hover flex-center">
                         <i class="fas"
                            :class="$_thumbnailIcon"></i>
                         <p v-if="$_noAccess"
@@ -254,6 +255,10 @@
 
                 return this.$_item['thumbnail_url'] ||
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
+            },
+
+            $_showTrophy(){
+                return this.$_item['type'] === 'pack-bundle-lesson' && this.$_item['completed'];
             },
 
             $_progress_percent(){

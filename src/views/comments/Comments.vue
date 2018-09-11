@@ -189,7 +189,6 @@
             },
 
             postComment(){
-                console.log(this.comment.currentValue);
 
                 if(!!this.comment.currentValue){
                     this.loading = true;

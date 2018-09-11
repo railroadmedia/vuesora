@@ -294,9 +294,7 @@
       @include topToBottomGradient(transparent, #000);
     }
 
-    .thumb-hover {
-      opacity:0;
-      visibility:hidden;
+    .bundle-complete, .thumb-hover {
       position:absolute;
       top:0;
       left:0;
@@ -304,13 +302,17 @@
       height:100%;
       background-color:rgba(0,0,0,.4);
       z-index:2;
-      transition:all .2s ease-in-out;
-      will-change:opacity, visibility;
 
       i {
         font-size:16px;
         color:#fff;
       }
+    }
+    .thumb-hover {
+      opacity:0;
+      visibility:hidden;
+      transition:all .2s ease-in-out;
+      will-change:opacity, visibility;
     }
 
     &.song.widescreen .thumb-img {

@@ -25,12 +25,10 @@
                           :style="'width:' + $_progress_percent + '%'"></span>
                 </div>
 
-                <span v-if="$_item.is_new"
-                      class="new-badge x-tiny align-v-center uppercase font-bold" :class="'bg-' + theme">
-                    <i class="fa fa-star"></i> New
+                <span v-if="$_showTrophy" class="bundle-complete flex-center">
+                    <i class="fas fa-trophy"></i>
                 </span>
-
-                <span class="thumb-hover flex-center">
+                <span v-else class="thumb-hover flex-center">
                     <i class="fas"
                        :class="$_thumbnailIcon"></i>
                     <p v-if="$_noAccess"
@@ -99,6 +97,10 @@
                 get(){
                     return this.$_item.is_added_to_primary_playlist;
                 }
+            },
+
+            $_showTrophy(){
+                return this.$_item['type'] === 'pack-bundle' && this.$_item['completed'] === true;
             },
 
             $_thumbnail(){
