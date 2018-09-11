@@ -18,11 +18,6 @@
             </button>
         </div>
 
-        <catalogue-tab-filters v-if="$_filterTabs.length && !$_filterableValues.length"
-                               :$_selected_tab="filter_params.topic"
-                               :$_filters="$_filterTabs"
-                               @filterChange="handleFilterChange"></catalogue-tab-filters>
-
         <catalogue-search v-if="$_searchBar"
                           :$_themeColor="$_themeColor"
                           :$_included_types="$_includedTypes"
@@ -226,10 +221,6 @@
             $_displayUserInteractions: {
                 type: Boolean,
                 default: () => true
-            },
-            $_filterTabs: {
-                type: Array,
-                default: () => []
             },
             $_noWrapGrid: {
                 type: Boolean,
