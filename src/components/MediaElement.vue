@@ -3,8 +3,9 @@
         <video v-if="sortedSourcesArray.length"
                :poster="poster"
                :id="elementId"
-               data-cast-title="Recordeo Lesson"
-               data-cast-description="This is a recordeo lesson"
+               :data-cast-title="castTitle"
+               :data-cast-description="castDescription"
+               :data-cast-poster="poster"
                class="mejs__player" playsinline>
 
             <source v-for="(source, i) in sortedSourcesArray"
@@ -104,6 +105,14 @@
             checkForTimecode: {
                 type: Boolean,
                 default: () =>  false
+            },
+            castTitle: {
+                type: String,
+                default: () => null
+            },
+            castDescription: {
+                type: String,
+                default: () => null
             }
         },
         computed: {
@@ -173,7 +182,33 @@
                 set(val){
                     window.localStorage.setItem("defaultQuality", val);
                 }
-            }
+            },
+
+            playerPlugins(){
+                const pluginsMap = {
+                    'playpause': true,
+                    'skipback': true,
+                    'jumpforward': true,
+                    'current': true,
+                    'duration': true,
+                    'progress': true,
+                    'quality': true,
+                    'speed': true,
+                    'volume': true,
+                    'chromecast': this.castTitle != null,
+                    'airplay': true,
+                    'fullscreen': true,
+                };
+                let mapArray = [];
+
+                Object.keys(pluginsMap).forEach(map => {
+                    if(pluginsMap[map] === true){
+                        mapArray.push(map);
+                    }
+                });
+
+                return mapArray;
+            },
         },
         methods: {
             playVideo(){
@@ -250,7 +285,7 @@
                 autosizeProgress: false,
                 startVolume: 0.5,
                 stretching: 'responsive',
-                features: ['playpause', 'skipback', 'jumpforward', 'current', 'duration', 'progress', 'quality', 'speed', 'volume', 'chromecast', 'airplay', 'fullscreen'],
+                features: vm.playerPlugins,
                 jumpForwardInterval: 10,
                 skipBackInterval: 10,
                 speeds: ['0.5', '0.75', '1.00', '1.25', '1.5'],

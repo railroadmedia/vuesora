@@ -379,6 +379,22 @@
   }
 }
 
+#playQAVideo {
+
+  .lesson {
+    display:none;
+  }
+
+  &.active {
+    .lesson {
+      display:flex;
+    }
+    .qa {
+      display:none;
+    }
+  }
+}
+
 .addToList {
   span {
     transition: opacity .2s ease-in-out, visibility .2s ease-in-out;
