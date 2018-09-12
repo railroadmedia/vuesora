@@ -258,7 +258,7 @@
             },
 
             $_showTrophy(){
-                return this.$_item['type'] === 'pack-bundle-lesson' && this.$_item['completed'];
+                return this.$_item['type'] === 'pack-bundle-lesson' && this.$_item['completed'] && !this.$_is_search;
             },
 
             $_progress_percent(){

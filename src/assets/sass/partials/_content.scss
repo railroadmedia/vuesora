@@ -444,6 +444,25 @@
   padding-bottom:3px;
 }
 
+.catalogue-heading-tab {
+  flex:0 0 auto;
+  align-items:flex-start;
+  justify-content:flex-start;
+
+  @include xSmallOnly {
+    flex:0 0 100%;
+  }
+
+  .heading {
+    flex:0 0 auto;
+
+    @include xSmallOnly {
+      margin-left:0!important;
+      margin-bottom:$gutterWidth / 3;
+    }
+  }
+}
+
 .sbt-image, .sbt-video {
   filter:contrast(125%);
   max-width:100%;
