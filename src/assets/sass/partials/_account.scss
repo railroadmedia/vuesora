@@ -194,6 +194,22 @@
   }
 }
 
+.clear-button {
+  position:absolute;
+  top:0;
+  right:0;
+  height:25px;
+  width:25px;
+  background:$errorRed;
+  @include flexCenter();
+  cursor:pointer;
+
+  i {
+    font-size:18px;
+    color:#fff;
+  }
+}
+
 .completed-badge {
   position:absolute;
   top:0;

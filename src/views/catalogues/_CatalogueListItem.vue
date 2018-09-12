@@ -28,12 +28,11 @@
 
 
 
-                    <span v-if="$_showTrophy"
-                          class="bundle-complete flex-center">
-                        <i class="fas fa-trophy"></i>
-                    </span>
-                    <span v-else
-                          class="thumb-hover flex-center">
+                    <!--<span v-if="$_showTrophy"-->
+                          <!--class="bundle-complete flex-center">-->
+                        <!--<i class="fas fa-trophy"></i>-->
+                    <!--</span>-->
+                    <span class="thumb-hover flex-center">
                         <i class="fas"
                            :class="$_thumbnailIcon"></i>
                         <p v-if="$_noAccess"
