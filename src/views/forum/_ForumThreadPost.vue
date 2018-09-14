@@ -83,7 +83,7 @@
                             <!--Hide-->
                         <!--</p>-->
 
-                        <p v-if="canEdit" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        <p v-if="index !== 0 && canEdit" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
                            @click="deletePost">
                             Delete
                         </p>

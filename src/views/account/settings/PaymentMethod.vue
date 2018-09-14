@@ -79,11 +79,11 @@
                 </button>
             </div>
             <div class="flex flex-column" v-if="showDelete" :class="{'ml-1': paymentMethod.type != 'paypal'}">
-                <button class="btn delete-payment" v-on:click.stop.prevent="showConfirmation">
-                    <span class="bg-error inverted text-error corners-3 short">
-                        Delete
-                    </span>
-                </button>
+                <!--<button class="btn delete-payment" v-on:click.stop.prevent="showConfirmation">-->
+                    <!--<span class="bg-error inverted text-error corners-3 short">-->
+                        <!--Delete-->
+                    <!--</span>-->
+                <!--</button>-->
             </div>
         </div>
     </div>
