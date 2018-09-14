@@ -25,6 +25,7 @@ export default class VideoTracker {
         this.media_session_endpoint = media_session_endpoint;
         this.current_tick = 1;
         this.url_params = QueryString.parse(window.location.search);
+        this.currently_requesting = false;
 
         // Seek the player if the user has already watched the video
         if(this.current_second > 0 && this.url_params['time'] == null){
@@ -94,12 +95,18 @@ export default class VideoTracker {
      * @returns {Promise} - A resolved promise with the response object
      */
     setLastWatchPosition(current_time, seconds_played){
-        if(this.session_id){
+        if(this.session_id && !this.currently_requesting){
+            this.currently_requesting = true;
+
             return axios.post(endpoint_prefix + this.media_session_endpoint + '/' + this.session_id, {
                 current_second: current_time,
                 seconds_played: seconds_played
             })
-                .then(response => response)
+                .then(response => {
+                    this.currently_requesting = false;
+
+                    return response;
+                })
                 .catch(error => {
                     console.error(error);
                 })
