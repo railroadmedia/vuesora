@@ -3,7 +3,7 @@
         <catalogue-list-item
                 v-for="(item, i) in $_content"
                 :key="'list' + item.id"
-                :$_index="i + 1"
+                :$_index="item.week || i + 1"
                 :$_item="item"
                 :$_brand="$_brand"
                 :$_themeColor="$_themeColor"
