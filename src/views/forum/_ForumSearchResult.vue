@@ -6,12 +6,12 @@
                  :style="'background-image:url(' + item.authorAvatar + ');'"></div>
         </div>
 
-        <div class="flex flex-column align-v-center pl-3 title-column overflow">
+        <div class="flex flex-column align-v-center pl-1 title-column overflow">
 
             <p class="body text-black font-bold item-title" v-html="item.thread.title">
             </p>
 
-            <div class="pl-3 search-result-post">
+            <div class="pl search-result-post">
                 <p class="tiny text-black item-title" v-html="item.postBody"></p>
 
                 <p class="x-tiny text-dark uppercase font-italic">
@@ -58,8 +58,6 @@
 
                 return topics[this.item.thread.topic];
             }
-        },
+        }
     }
 </script>
-<style lang="scss">
-</style>

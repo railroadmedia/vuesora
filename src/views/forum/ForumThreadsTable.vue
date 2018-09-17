@@ -19,25 +19,29 @@
                     </a>
                 </div>
             </div>
-
+        </div>
+        <div class="flex flex-row flex-wrap ph-3 align-v-center">
             <div class="flex flex-column mb-3 search-box">
                 <div class="form-group">
                     <input id="threadSearch"
-                        type="text"
-                        v-model="searchInterface">
+                           type="text"
+                           v-model="searchInterface">
                     <label for="threadSearch" class="recordeo">Search</label>
                 </div>
+                <p v-if="searching"
+                   class="tiny font-italic">Showing results for "{{ searchInterface }}" in All Forums.</p>
             </div>
-            <div class="flex flex-column mb-3 form-group topic-col">
+            <div v-if="!searching"
+                 class="flex flex-column mb-3 form-group topic-col">
 
-                    <div class="form-group xs-12" style="width:100%;" :class="{'hide': searching}">
-                        <select id="commentSort" v-model="filterInterface" class="has-input">
-                            <option v-for="option in filterOptions"
-                                    :key="option.label"
-                                    :value="option.value">{{ option.label }}</option>
-                        </select>
-                        <label for="commentSort" :class="brand">Select a Topic</label>
-                    </div>
+                <div class="form-group xs-12" style="width:100%;">
+                    <select id="commentSort" v-model="filterInterface" class="has-input">
+                        <option v-for="option in filterOptions"
+                                :key="option.label"
+                                :value="option.value">{{ option.label }}</option>
+                    </select>
+                    <label for="commentSort" :class="brand">Select a Topic</label>
+                </div>
             </div>
         </div>
 
@@ -281,6 +285,11 @@
             }
         },
         mounted() {
+             const urlParams = QueryString.parse(document.location.search);
+
+             if(urlParams['search']){
+                 console.log(urlParams['search']);
+             }
         }
     }
 </script>
