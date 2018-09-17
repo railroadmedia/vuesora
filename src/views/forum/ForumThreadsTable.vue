@@ -20,14 +20,14 @@
                 </div>
             </div>
 
-            <!--<div class="flex flex-column mb-3 search-box">-->
-                <!--<div class="form-group">-->
-                    <!--<input id="threadSearch"-->
-                        <!--type="text"-->
-                        <!--v-model="searchInterface">-->
-                    <!--<label for="threadSearch" class="recordeo">Search</label>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="flex flex-column mb-3 search-box">
+                <div class="form-group">
+                    <input id="threadSearch"
+                        type="text"
+                        v-model="searchInterface">
+                    <label for="threadSearch" class="recordeo">Search</label>
+                </div>
+            </div>
             <div class="flex flex-column mb-3 form-group topic-col">
 
                     <div class="form-group xs-12" style="width:100%;" :class="{'hide': searching}">
