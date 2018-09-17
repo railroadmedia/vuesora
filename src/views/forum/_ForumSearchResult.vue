@@ -12,7 +12,7 @@
             </p>
 
             <div class="pl search-result-post">
-                <p class="tiny text-black item-title" v-html="item.postBody"></p>
+                <p class="tiny text-black" v-html="postBodyHighlighted"></p>
 
                 <p class="x-tiny text-dark uppercase font-italic">
                     replied <strong>{{ item.createdOn }}</strong> by <strong>{{ item.authorUsername }}</strong>
@@ -45,9 +45,34 @@
             item: {
                 type: Object,
                 default: () => {}
+            },
+
+            term: {
+                type: String,
+                default: () => ''
             }
         },
         computed: {
+            postBodyHighlighted(){
+                const regex = new RegExp(this.term, 'gi');
+                let matches = this.item.postBody.match(regex);
+                let bodyString = this.item.postBody;
+
+                if(matches){
+
+                    matches.forEach(match => {
+                        let start = this.item.postBody.indexOf(match);
+                        let end = start + this.term.length;
+
+                        bodyString = this.item.postBody.substr(0, end) + '</span>' + this.item.postBody.substr(end);
+                        bodyString = bodyString.substr(0, start) + '<span class="font-bold">' + bodyString.substr(start);
+                    });
+                }
+
+
+                return bodyString;
+            },
+
             topicIdMap() {
                 const topics = {
                     1: 'general',
@@ -58,6 +83,9 @@
 
                 return topics[this.item.thread.topic];
             }
+        },
+        mounted(){
+
         }
     }
 </script>

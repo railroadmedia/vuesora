@@ -25,7 +25,7 @@
                 <div class="form-group">
                     <input id="threadSearch"
                            type="text"
-                           v-model="searchInterface">
+                           v-model.lazy="searchInterface">
                     <label for="threadSearch" class="recordeo">Search</label>
                 </div>
                 <p v-if="searching"
@@ -61,7 +61,16 @@
                                 :key="item.id"
                                 :item="item"
                                 :brand="brand"
+                                :term="searchInterface"
                                 v-if="searching"></forum-search-result>
+
+        <div v-if="searching && searchResults.length === 0" class="flex flex-row content-table-row">
+            <div class="flex flex-column pv-3 align-center">
+                <p class="body font-italic">
+                    No Results we're found matching that query, please try again.
+                </p>
+            </div>
+        </div>
 
         <div class="flex flex-row bg-light pagination-row align-h-right"
              v-if="!searching && totalPages > 1">
@@ -181,6 +190,9 @@
 
                             this.searchResultsPage = 1;
 
+                            let new_url = window.location.origin + window.location.pathname + '?search=' + val;
+                            window.history.replaceState(history.state, null, new_url);
+
                             this.getSearchResults();
                         }, 800);
                     } else {
@@ -284,11 +296,11 @@
                 this.getThreads();
             }
         },
-        mounted() {
+        created() {
              const urlParams = QueryString.parse(document.location.search);
 
              if(urlParams['search']){
-                 console.log(urlParams['search']);
+                 this.searchInterface = urlParams['search'];
              }
         }
     }
