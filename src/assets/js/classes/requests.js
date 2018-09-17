@@ -251,6 +251,23 @@ export default class Requests {
     }
 
     /**
+     * Get a comment by ID
+     * WARNING: Doesn't actually work like you think, pulls the PAGE of the list where that
+     * specific comment is, kinda dumb but ask the BE why - Curtis, Sept 2018
+     *
+     * @static
+     * @param {object} id - the comment id to get
+     * @returns {Promise} resolved promise with the response.data object, containing the comments array
+     */
+    static getCommentById(id) {
+        return axios.get(endpoint_prefix + '/railcontent/comment/' + id)
+            .then(response => {
+                return response.data;
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Post a comment
      *
      * @static

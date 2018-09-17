@@ -289,23 +289,36 @@
             },
 
             goToComment(id){
-                this.getCommentById(id)
+                Requests.getCommentById(id)
                     .then(resolved => {
                         if(resolved){
-                            this.pinnedComment = resolved['results'].filter(result =>
+                            this.pinnedComment = resolved['data'].filter(result =>
                                 result.id === Number(id)
                             )[0];
 
-                            setTimeout(() => {
-                                let pinned = document.getElementById('pinnedComment' + id);
-                                let oldComment = document.getElementById('comment' + id);
+                            /*
+                            * Check intermittently for the DOM Element, it could possibly take a couple
+                            * of seconds for Vue to render the pinned comment so we want to wait until it exists
+                            * before we scroll to it and remove the old one.
+                            *
+                            * Curtis - Sept 2018
+                             */
+                            let pinned;
+                            let checkInterval = setInterval(() => {
+                                pinned = document.getElementById('pinnedComment' + id);
 
-                                window.scrollTo(0, (pinned.offsetTop - 100));
+                                if(pinned != null){
+                                    let oldComment = document.getElementById('comment' + id);
 
-                                if(oldComment){
-                                    oldComment.remove();
+                                    window.scrollTo(0, (pinned.offsetTop - 100));
+
+                                    if(oldComment){
+                                        oldComment.remove();
+                                    }
+
+                                    clearInterval(checkInterval);
                                 }
-                            }, 1000);
+                            }, 100);
                         }
                     })
             }
