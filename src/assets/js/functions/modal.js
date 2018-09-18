@@ -3,6 +3,8 @@ export default (function(){
     const modalDialogs = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close-modal');
 
+    const closeEvent = new CustomEvent('modalClose');
+
     // Add event listeners to every trigger button
     Array.from(modalTriggers).forEach(trigger => {
         trigger.addEventListener('click', openModal)
@@ -18,11 +20,14 @@ export default (function(){
         const modalId = buttonClicked.dataset['openModal'];
         const modalToOpen = document.getElementById(modalId);
 
+        closeModal();
+
         event.stopPropagation();
 
         if(modalToOpen){
             window.appendBackgroundOverlay();
 
+            document.body.classList.add('no-scroll');
             modalToOpen.classList.add('active');
         }
         else {
@@ -34,8 +39,13 @@ export default (function(){
         const modalOverlay = document.getElementById('modalOverlay');
 
         // Remove the event listeners from the overlay and remove it from the DOM
-        modalOverlay.removeEventListener('click', closeModal);
-        document.body.removeChild(modalOverlay);
+        if(modalOverlay){
+            modalOverlay.removeEventListener('click', closeModal);
+            document.body.removeChild(modalOverlay);
+            document.body.classList.remove('no-scroll');
+
+            window.dispatchEvent(closeEvent);
+        }
 
         // Remove the active class from all Modals (easier than finding the specific one open)
         Array.from(modalDialogs).forEach(dialog => {

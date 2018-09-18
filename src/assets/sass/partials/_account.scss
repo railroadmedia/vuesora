@@ -35,6 +35,24 @@
   }
 }
 
+.account-nav-link {
+  border-bottom:3px solid transparent;
+  transition:border-color .2s ease-in-out, color .2s ease-in-out;
+
+  i {
+    transition:color .2s ease-in-out;
+  }
+
+  &:hover, &.active {
+    color:#000;
+    border-bottom-color:$drumeoBlue;
+
+    i {
+      color:$drumeoBlue;
+    }
+  }
+}
+
 #settingsSidebar {
   flex:0 0 275px;
   overflow:hidden;
@@ -174,4 +192,31 @@
       font-size:36px;
     }
   }
+}
+
+.clear-button {
+  position:absolute;
+  top:0;
+  right:0;
+  height:25px;
+  width:25px;
+  background:$errorRed;
+  @include flexCenter();
+  cursor:pointer;
+
+  i {
+    font-size:18px;
+    color:#fff;
+  }
+}
+
+.completed-badge {
+  position:absolute;
+  top:0;
+  left:0;
+  height:30px;
+  width:30px;
+  border-radius:3px 0 3px 0;
+  font-size:16px;
+  @include flexCenter();
 }

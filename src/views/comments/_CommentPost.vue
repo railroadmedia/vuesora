@@ -3,15 +3,21 @@
          class="flex flex-row comment-post pa mb-1"
          :class="{'pinned': pinned}">
         <div class="flex flex-column avatar-column pr">
-            <img :src="user['fields.profile_picture_image_url']" class="rounded">
+            <a :href="profileRoute" target="_blank"
+               class="no-decoration">
+                <img :src="user['fields.profile_picture_image_url']" class="rounded">
+            </a>
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
-                        {{ display_name }}
+                        <a :href="profileRoute" target="_blank"
+                           class="text-black no-decoration">
+                        {{ user.display_name }}
+                        </a>
 
-                        <span class="x-tiny text-dark font-bold font-italic uppercase ml-1">
+                        <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
                         </span>
                     </h2>
@@ -19,19 +25,14 @@
 
                 <div class="flex flex-column align-h-right align-v-center flex-auto">
                     <div class="flex flex-row">
-                        <!--<span class="tiny no-decoration text-dark pointer mr-1" -->
-                              <!--v-if="isUsersPost">-->
-                            <!--<i class="fas fa-edit"-->
-                               <!--@click="editComment"></i>-->
-                        <!--</span>-->
 
-                        <span class="tiny no-decoration text-dark pointer mr-1"
+                        <span class="tiny no-decoration text-grey-3 pointer mr-1"
                               v-if="(isUsersPost || isCurrentUserAdmin)">
                             <i class="fas fa-trash"
                                @click="deleteComment"></i>
                         </span>
 
-                        <!--<span class="tiny no-decoration text-dark pointer">-->
+                        <!--<span class="tiny no-decoration text-grey-3 pointer">-->
                             <!--<i class="fas fa-link"-->
                                <!--@click="getCommentLink"></i>-->
                             <!--<textarea class="comment-id-copy"-->
@@ -46,30 +47,13 @@
                      v-html="comment">
                     {{ comment }}
                 </div>
-
-                <!--<div v-if="editing" class="flex flex-column mb-1">-->
-                <!--<text-editor :initialValue="postBody"></text-editor>-->
-
-                <!--<div class="flex flex-row align-h-right mt-2">-->
-                <!--<a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"-->
-                <!--@click="editing = false">-->
-                <!--Cancel-->
-                <!--</a>-->
-
-                <!--<button class="btn collapse-250" type="submit">-->
-                <!--<span class="bg-recordeo text-white corners-3">-->
-                <!--Save Post-->
-                <!--</span>-->
-                <!--</button>-->
-                <!--</div>-->
-                <!--</div>-->
             </div>
 
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="replying ? 'text-recordeo' : 'text-dark'"
+                           :class="replying ? 'text-' + themeColor : 'text-grey-3'"
                            @click="replyToComment">
                             <i class="fas fa-reply"></i>
                             <span class="hide-xs-only">
@@ -79,7 +63,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="is_liked ? 'text-recordeo' : 'text-dark'"
+                           :class="is_liked ? 'text-' + themeColor : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
@@ -87,7 +71,7 @@
                             </span>
                         </p>
 
-                        <p class="x-tiny text-dark uppercase font-italic"
+                        <p class="x-tiny text-grey-3 uppercase font-italic"
                            v-html="userLikeString">
                             {{ userLikeString }}
                         </p>
@@ -114,15 +98,16 @@
                             </a>
                             <button class="btn collapse-150" :disabled="loading"
                                @click="postReply">
-                                <span class="text-white bg-recordeo short">
+                                <span class="text-white short"
+                                      :class="'bg-' + themeColor">
                                     Reply
                                 </span>
                             </button>
                         </div>
 
                         <div class="loading-reply flex-center" v-show="loading">
-                            <i class="fas fa-spinner fa-spin text-recordeo"></i>
-                            <p class="x-tiny text-dark">loading...</p>
+                            <i class="fas fa-spinner fa-spin" :class="'text-' + themeColor"></i>
+                            <p class="x-tiny text-grey-3">loading...</p>
                         </div>
                     </div>
                 </div>
@@ -134,12 +119,13 @@
                                :key="i"
                                v-bind="reply"
                                :currentUser="currentUser"
+                               :themeColor="themeColor"
                                @likeReply="likeReply"
                                @deleteReply="deleteReply"></comment-reply>
             </transition-group>
 
             <div class="flex flex-row align-center" v-if="replies.length > 2">
-                <a class="btn btn-tiny flat text-dark collapse-150"
+                <a class="btn btn-tiny flat text-grey-3 collapse-150"
                    @click="showAllReplies = !showAllReplies">
                     {{ showAllReplies ? 'Hide Replies' : 'Show All Replies' }}
                 </a>
@@ -162,6 +148,10 @@
             'comment-reply': CommentReply
         },
         props: {
+            themeColor: {
+                type: String,
+                default: () => 'recordeo'
+            },
             currentUser: {
                 type: Object,
                 default: () => {
@@ -213,6 +203,10 @@
                 type: Boolean,
                 default: () => false
             },
+            user_id: {
+                type: Number,
+                default: () => 0
+            },
             user: {
                 type: Object,
                 default: () => {
@@ -250,6 +244,10 @@
                 return 'comment' + this.id
             },
 
+            profileRoute(){
+                return '/laravel/public/members/profile/' + this.user_id
+            },
+
             isLiked(){
                 return this.like_users.filter(user =>
                     user.display_name === this.currentUser.display_name
@@ -263,7 +261,7 @@
 
                 for(let i = 0; i < this.like_users.length; i++){
                     let nameExistsOrIsntCurrentUser = this.like_users[i]['display_name'] != null
-                        && this.like_users[i]['display_name'] !== this.currentUser.name;
+                        && this.like_users[i]['display_name'] !== this.currentUser.display_name;
 
                     if(nameExistsOrIsntCurrentUser){
                         userNames.push(this.like_users[i]['display_name']);
@@ -284,7 +282,11 @@
                 if(this.is_liked){
                     userNames.splice((userNames.length - 1), 1);
 
-                    return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                    if(this.like_count > 1){
+                        return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                    }
+
+                    return '<span class="font-bold">You</span>' + suffixString;
                 }
                 else {
                     if(this.like_count > 0){
@@ -304,7 +306,7 @@
             },
 
             isUsersPost(){
-                return String(this.currentUser.id) === String(this.user.id);
+                return String(this.currentUser.id) === String(this.user_id);
             },
 
             isCurrentUserAdmin(){
@@ -331,7 +333,7 @@
                                 this.$refs.textEditor.currentValue = '';
                                 Toasts.success('Reply successfully posted!');
 
-                                this.replies.splice(0, 0, resolved['results']);
+                                this.replies.splice(0, 0, resolved['data'][0]);
                             }
 
                             this.loading = false;
@@ -367,7 +369,7 @@
 
                             notification.close();
                         }),
-                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
                             notification.close();
                         })
                     ]

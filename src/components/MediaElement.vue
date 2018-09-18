@@ -1,9 +1,11 @@
 <template>
-    <div class="media-element" :id="brand + 'Theme'">
-        <video :poster="poster"
+    <div class="media-element" :id="themeColor + 'Theme'">
+        <video v-if="sortedSourcesArray.length"
+               :poster="poster"
                :id="elementId"
-               data-cast-title="Recordeo Lesson"
-               data-cast-description="This is a recordeo lesson"
+               :data-cast-title="castTitle"
+               :data-cast-description="castDescription"
+               :data-cast-poster="poster"
                class="mejs__player" playsinline>
 
             <source v-for="(source, i) in sortedSourcesArray"
@@ -12,6 +14,27 @@
                     :data-quality="sourceQualityLabel(source.height)"
                     type="video/mp4">
         </video>
+
+        <div v-else class="flex flex-row pv-5">
+            <div class="flex flex-column align-center text-center">
+                <h1 class="title text-white">
+                    We're sorry, there was an issue finding this video.
+                </h1>
+                <h3 class="title text-white mb-2">
+                    Please refresh the page to try again.
+                </h3>
+                <h6 class="tiny text-white">
+
+                </h6>
+                <h6 class="tiny text-white">
+                    If the problem persists please contact support, either by clicking the chat widget
+                    on the bottom of your screen, or by emailing
+                    <a href="mailto:support@drumeo.com">support@drumeo.com</a>.
+                </h6>
+            </div>
+        </div>
+
+        <input id="currentTimeInSeconds" type="text" v-model="urlWithTimecode">
     </div>
 </template>
 
@@ -31,6 +54,8 @@
     import 'mediaelement-plugins/src/airplay/airplay';
     import 'mediaelement-plugins/src/airplay/airplay.css';
     import Utils from '../assets/js/classes/utils';
+    import * as QueryString from 'query-string';
+    import Toasts from '../assets/js/classes/toasts';
 
     export default {
         name: "media-element",
@@ -51,7 +76,9 @@
                     'ended',
                     'volumechange',
                     'captionschange'
-                ]
+                ],
+                contextMenu: false,
+                currentTimeInSeconds: 0
             };
         },
         props: {
@@ -70,24 +97,50 @@
             brand: {
                 type: String,
                 default: () => 'recordeo'
+            },
+            themeColor: {
+                type: String,
+                default: () => 'drumeo'
+            },
+            checkForTimecode: {
+                type: Boolean,
+                default: () =>  false
+            },
+            castTitle: {
+                type: String,
+                default: () => null
+            },
+            castDescription: {
+                type: String,
+                default: () => null
             }
         },
         computed: {
             sortedSourcesArray(){
-                return this.sources.sort(
-                    Utils.dynamicSort('-height')
-                );
+                if(this.sources.length){
+
+                    return this.sources.sort(
+                        Utils.dynamicSort('-height')
+                    );
+                }
+
+                return [];
+            },
+
+            urlWithTimecode(){
+                return location.protocol + '//' + location.host + location.pathname + '?time=' + Math.floor(this.currentTimeInSeconds);
             },
 
             defaultQuality: {
                 get(){
                     let defaultQuality = window.localStorage.getItem("defaultQuality");
+                    let guessedQuality = this.sortedSourcesArray.filter(source =>
+                        source.width <= window.innerWidth
+                    );
 
                     // Pick a default quality based on the closest size to the client width
-                    if(defaultQuality === undefined || defaultQuality === null){
-                        let guessedQuality = this.sortedSourcesArray.filter(source =>
-                            source.width <= window.innerWidth
-                        );
+                    if((defaultQuality === undefined || defaultQuality === null)
+                        && (this.sortedSourcesArray.length > 0)){
 
                         if(guessedQuality.length){
                             // If we have some guessed qualities take the first one
@@ -102,16 +155,75 @@
                             );
                         }
                     }
+                    else {
+                        let thisHeight = Number(defaultQuality.replace('p', ''));
+                        let defaultExists = this.sortedSourcesArray.filter(source =>
+                            source.height === thisHeight
+                        ).length > 0;
+
+                        if(!defaultExists){
+                            if(guessedQuality.length){
+                                // If we have some guessed qualities take the first one
+                                defaultQuality = this.sourceQualityLabel(
+                                    guessedQuality[0].height
+                                );
+                            }
+                            else {
+                                // Otherwise take the last item in the qualities array (the smallest quality)
+                                defaultQuality = this.sourceQualityLabel(
+                                    this.sortedSourcesArray[this.sortedSourcesArray.length - 1].height
+                                );
+                            }
+                        }
+                    }
 
                     return defaultQuality;
                 },
                 set(val){
                     window.localStorage.setItem("defaultQuality", val);
                 }
-            }
+            },
+
+            playerPlugins(){
+                const pluginsMap = {
+                    'playpause': true,
+                    'skipback': true,
+                    'jumpforward': true,
+                    'current': true,
+                    'duration': true,
+                    'progress': true,
+                    'quality': true,
+                    'speed': true,
+                    'volume': true,
+                    'chromecast': this.castTitle != null,
+                    'airplay': true,
+                    'fullscreen': true,
+                };
+                let mapArray = [];
+
+                Object.keys(pluginsMap).forEach(map => {
+                    if(pluginsMap[map] === true){
+                        mapArray.push(map);
+                    }
+                });
+
+                return mapArray;
+            },
         },
         methods: {
+            playVideo(){
+                this.mediaElement.play();
+            },
+
+            pauseVideo(){
+                this.mediaElement.pause();
+            },
+
             emitEvent(event){
+                if(event.type === 'timeupdate'){
+                    this.currentTimeInSeconds = this.mediaElement.getCurrentTime();
+                }
+
                 this.$emit(event.type, event);
             },
 
@@ -149,15 +261,23 @@
                 }
 
                 return String(height) + 'p';
+            },
+
+            copyTimecodeToClipboard(){
+                const timecode = document.getElementById('currentTimeInSeconds');
+
+                timecode.select();
+                document.execCommand('copy');
+                timecode.blur();
+                Toasts.success('Video url copied at current time!')
             }
         },
         created(){
-            this.$on('qualityChange', event => {
-                console.log(event.target.value);
-            })
+
         },
         mounted (){
             const vm = this;
+            const urlParams = QueryString.parse(window.location.search);
 
             window.player = new MediaElementPlayer(vm.elementId, {
                 defaultVideoWidth: 1280,
@@ -165,7 +285,7 @@
                 autosizeProgress: false,
                 startVolume: 0.5,
                 stretching: 'responsive',
-                features: ['playpause', 'skipback', 'jumpforward', 'current', 'duration', 'progress', 'quality', 'speed', 'volume', 'chromecast', 'airplay', 'fullscreen'],
+                features: vm.playerPlugins,
                 jumpForwardInterval: 10,
                 skipBackInterval: 10,
                 speeds: ['0.5', '0.75', '1.00', '1.25', '1.5'],
@@ -191,6 +311,27 @@
                             player.startControlsTimer(player.options.controlsTimeoutMouseLeave);
                         }
                     });
+
+                    if(this.checkForTimecode){
+
+                        if(urlParams['time'] != null){
+                            player.setCurrentTime(urlParams['time']);
+                            player.load();
+                        }
+                    }
+
+                    // Copy the current timecode if the user hits ctrl + shift + alt + c;
+                    let keyMap = {};
+                    ['keydown', 'keyup'].forEach(eventType => {
+                        document.addEventListener(eventType, function(e){
+                            e = e || event;
+                            keyMap[e.keyCode] = e.type === 'keydown';
+
+                            if(keyMap[17] && keyMap[16] && keyMap[18] && keyMap[67]){
+                                vm.copyTimecodeToClipboard();
+                            }
+                        });
+                    });
                 },
                 error: (error) => {
                     console.error(error);
@@ -209,21 +350,21 @@
 <style lang="scss">
     @import '../assets/sass/partials/_variables.scss';
 
-    #drumeoTheme {
-        .mejs__time-current { background:$drumeoBlue; }
-        .mejs__speed-selected, .mejs__qualities-selected { color:$drumeoBlue; }
+    @each $key, $value in $brand_colors {
+        ##{$key}Theme {
+            .mejs__time-current { background:$value; }
+            .mejs__speed-selected, .mejs__qualities-selected { color:$value; }
+        }
     }
-    #pianoteTheme {
-        .mejs__time-current { background:$pianoteRed; }
-        .mejs__speed-selected, .mejs__qualities-selected { color:$pianoteRed; }
-    }
-    #guitareoTheme {
-        .mejs__time-current { background:$guitareoGreen; }
-        .mejs__speed-selected, .mejs__qualities-selected { color:$guitareoGreen; }
-    }
-    #recordeoTheme {
-        .mejs__time-current { background:$recordeoYellow; }
-        .mejs__speed-selected, .mejs__qualities-selected { color:$recordeoYellow; }
+    @each $key, $value in $content_colors {
+        ##{$key}Theme {
+            .mejs__time-current { background:$value; }
+            .mejs__speed-selected, .mejs__qualities-selected { color:$value; }
+        }
+        ##{$key}sTheme {
+            .mejs__time-current { background:$value; }
+            .mejs__speed-selected, .mejs__qualities-selected { color:$value; }
+        }
     }
 
     .media-element {
@@ -369,5 +510,12 @@
                 }
             }
         }
+    }
+
+    #currentTimeInSeconds {
+        opacity:0;
+        position:absolute;
+        top:-9999px;
+        left:-9999px;
     }
 </style>

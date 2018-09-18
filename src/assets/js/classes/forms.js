@@ -34,6 +34,24 @@ export default class Forms {
     }
 
     /**
+     * Add event listeners to all file inputs to affect the label on change
+     *
+     * @static
+     */
+    static addFileInputEventListeners(){
+        const fileInputWraps = document.querySelectorAll('.file-input');
+
+        Array.from(fileInputWraps).forEach(wrap => {
+            const input = wrap.querySelectorAll('input')[0];
+            const label = wrap.querySelectorAll('.file-name')[0];
+
+            input.addEventListener('change', event => {
+                label.innerHTML = event.target.files.item(0).name;
+            });
+        });
+    }
+
+    /**
      * Remove all input event listeners if needed
      *
      * @static
@@ -92,7 +110,7 @@ export default class Forms {
     }
 
     static checkErrorsInModalForms(){
-        const erroredInputs = document.querySelectorAll('input.has-error');
+        const erroredInputs = document.querySelectorAll('input.has-error, select.has-error');
 
         if(erroredInputs.length > 0){
             let parentModal = erroredInputs[0].parentElement;
@@ -103,6 +121,7 @@ export default class Forms {
 
             if(parentModal){
                 parentModal.classList.add('active');
+                document.body.classList.add('no-scroll');
                 window.appendBackgroundOverlay();
             }
         }

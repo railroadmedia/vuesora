@@ -42,7 +42,7 @@ button {
     width:100%;
     cursor:pointer;
 
-    span {
+    & > span {
       pointer-events:none;
       @extend a.btn;
 
@@ -51,7 +51,7 @@ button {
       }
     }
 
-    &:focus span {
+    &:focus > span {
       animation-name: buttonActive;
       animation-duration: .4s;
     }
@@ -68,6 +68,10 @@ button {
     max-width:150px;
   }
 
+  &.collapse-200 {
+    max-width:200px;
+  }
+
   &.collapse-250 {
     max-width:250px;
   }
@@ -76,29 +80,54 @@ button {
     max-width:320px;
   }
 
-  &.flat, span.flat {
+  &.flat, & > span.flat {
     background-color:transparent;
     border:none;
     box-shadow:none;
   }
 
+  &.big-text {
+    font-size:20px;
+
+    & > span {
+      font-size:20px;
+    }
+  }
+
   &.btn-tiny {
     font-size:13px;
     height:35px;
+
+    & > span {
+      font-size:13px;
+      height:35px;
+    }
   }
 
-  &.bg-recordeo:hover { background-color:lighten($recordeoYellow, 10%); }
-  &.bg-pianote:hover { background-color:lighten($pianoteRed, 10%); }
-  &.bg-drumeo:hover { background-color:lighten($drumeoBlue, 10%); }
-  &.bg-guitareo:hover { background-color:lighten($guitareoGreen, 10%); }
-  &.bg-x-dark:hover { background-color:lighten(#242424, 10%); }
+  &.text-white-important {
+    color:#fff!important;
+  }
+
+  &:hover {
+    @each $key, $value in $brand_colors {
+      &.bg-#{$key}, & > span.bg-#{$key} {
+        background-color: lighten($value, 10%);
+      }
+    }
+
+    @each $key, $value in $content_colors {
+      &.bg-#{$key}, &.bg-#{$key}s, & > span.bg-#{$key}, & > span.bg-#{$key}s {
+        background-color: lighten($value, 10%);
+      }
+    }
+  }
 
   &.inverted:hover,
   &.flat:hover,
-  &:hover span.inverted,
-  &:hover span.flat,
-  span.inverted:hover,
-  span.flat:hover { background-color:rgba(126, 126, 126, .1); }
+  &:hover > span.inverted,
+  &:hover > span.flat,
+  & > span.inverted:hover,
+  & > span.flat:hover { background-color:rgba(126, 126, 126, .1); }
 }
 
 a {

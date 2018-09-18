@@ -109,7 +109,9 @@ $greys: (
   2: #ccd3d3,
   3: #8c9698,
   4: #565d5f,
-  5: #191b1c
+  5: #191b1c,
+  6: #1a222b,
+  7: #f3f9ff
 );
 
 // Vuesora Colors
@@ -123,24 +125,60 @@ $pianoteRed:#F61A30;
 $pianoteGreen:#232e31;
 $recordeoYellow:#FFAE00;
 
+$brand_colors: (
+  drumeo: #0B76DB,
+  guitareo: #00C9AC,
+  pianote: #F61A30,
+  recordeo: #FFAE00
+);
+
 // General Colors
 $successGreen:#4bb543;
 $warningYellow:#FFCC00;
 $errorRed:#F71B26;
 
 // Content Colors
-$coursesBlue:#07A0FF;
-$libraryGreen:#00C278;
-$songsPink:#F8004F;
-$playalongsYellow:#FFB500;
-$studentfocusPurple:#A82FFF;
-$dftGreen:#0DD3BF;
+$content_colors: (
+  course: #07A0FF,
+  course-part: #07A0FF,
+  pack: #07A0FF,
+  pack-part: #07A0FF,
+  pack-bundle: #07A0FF,
+  pack-bundle-lesson: #07A0FF,
+  show: #00C278,
+  gear-guide: #00C278,
+  challenge: #00C278,
+  boot-camp: #00C278,
+  quick-tips: #00C278,
+  podcasts: #00C278,
+  on-the-road: #00C278,
+  behind-the-scenes: #00C278,
+  study-the-greats: #00C278,
+  live: #00C278,
+  solos: #00C278,
+  performances: #00C278,
+  song: #F8004F,
+  play-along: #FFB500,
+  student-focus: #A82FFF,
+  rudiment: #d06835,
+  dft: #0DD3BF,
+  learning-path: #0B76DB,
+  made-easy: #00BC75,
+  my-list: $drumeoBlue
+);
+
 
 // Left to right gradient. Accepts two colors as paramaters.
 @mixin leftToRightGradient($primaryColor, $secondaryColor){
   background: -moz-linear-gradient(left, $primaryColor 0%, $secondaryColor 100%);
   background: -webkit-linear-gradient(left, $primaryColor 0%,$secondaryColor 100%);
   background: linear-gradient(to right, $primaryColor 0%,$secondaryColor 100%);
+}
+// Top to Bottom gradient. Accepts two colors as paramaters.
+@mixin topToBottomGradient($primaryColor, $secondaryColor){
+  background: -moz-linear-gradient(top, $primaryColor 0%, $secondaryColor 100%);
+  background: -webkit-linear-gradient(top, $primaryColor 0%,$secondaryColor 100%);
+  background: linear-gradient(to bottom, $primaryColor 0%,$secondaryColor 100%);
 }
 
 ///////////////////////////////////////

@@ -13,12 +13,12 @@
                            class="borderless text-white"
                            v-model="valueInterface"
                            :class="{ 'has-input': this.value.length }">
-                    <label for="questionInput" class="recordeo">{{ inputLabel }}</label>
+                    <label for="questionInput" :class="themeColor">{{ inputLabel }}</label>
                 </div>
             </div>
             <div class="flex flex-column send-button-col">
                 <a class="btn text-white"
-                   :class="'bg-' + brand"
+                   :class="'bg-' + themeColor"
                    @click="submitForm">
                     <i class="fas fa-envelope"></i>
                     <span class="hide-xs-only ml-1">Send Question</span>
@@ -33,7 +33,7 @@
             <div class="form-group">
                 <button class="btn"
                         @click="submitForm">
-                    <span class="text-white" :class="'bg-' + brand">
+                    <span class="text-white" :class="'bg-' + themeColor">
                         Submit
                     </span>
                 </button>
@@ -52,9 +52,17 @@
                 type: String,
                 default: () => 'recordeo'
             },
+            themeColor: {
+                type: String,
+                default: () => 'drumeo'
+            },
             subject: {
                 type: String,
                 default: () => 'Email from ' + this.brand
+            },
+            recipient:{
+                type: String,
+                default: () => null
             },
             emailType: {
                 type: String,
@@ -99,7 +107,8 @@
                     Requests.sendEmail(
                         this.value,
                         this.emailType,
-                        this.subject
+                        this.subject,
+                        this.recipient
                     )
                         .then(resolved => {
                             if(resolved){

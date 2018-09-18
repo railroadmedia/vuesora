@@ -5,6 +5,10 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, .2);
 }
 
+.rotate-45 {
+  transform:rotate(45deg);
+}
+
 // Border Radius
 .corners-3 {
   border-radius:3px;
@@ -51,6 +55,30 @@
 $brands:drumeo pianote guitareo recordeo;
 $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
 @for $i from 1 through 3 {
+
+  .ba-white-#{$i} {
+    border:#{$i}px solid #fff;
+  }
+  .bh-white-#{$i} {
+    border-left:#{$i}px solid #fff;
+    border-right:#{$i}px solid #fff;
+  }
+  .bv-white-#{$i} {
+    border-top:#{$i}px solid #fff;
+    border-bottom:#{$i}px solid #fff;
+  }
+  .bt-white-#{$i} {
+    border-top:#{$i}px solid #fff;
+  }
+  .bb-white-#{$i} {
+    border-bottom:#{$i}px solid #fff;
+  }
+  .bl-white-#{$i} {
+    border-left:#{$i}px solid #fff;
+  }
+  .br-white-#{$i} {
+    border-right:#{$i}px solid #fff;
+  }
 
   .ba-black-#{$i} {
     border:#{$i}px solid #000;
@@ -124,32 +152,55 @@ $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
     border-right:#{$i}px solid $darkGray;
   }
 
-  @each $brand in $brands {
-    $index: index($brands, $brand);
-    $color: nth($brandColors, $index);
+  @each $key, $value in $brand_colors {
+    .ba-#{$key}-#{$i} {
+      border:#{$i}px solid $value;
+    }
+    .bh-#{$key}-#{$i} {
+      border-left:#{$i}px solid $value;
+      border-right:#{$i}px solid $value;
+    }
+    .bv-#{$key}-#{$i} {
+      border-top:#{$i}px solid $value;
+      border-bottom:#{$i}px solid $value;
+    }
+    .bt-#{$key}-#{$i} {
+      border-top:#{$i}px solid $value;
+    }
+    .bb-#{$key}-#{$i} {
+      border-bottom:#{$i}px solid $value;
+    }
+    .bl-#{$key}-#{$i} {
+      border-left:#{$i}px solid $value;
+    }
+    .br-#{$key}-#{$i} {
+      border-right:#{$i}px solid $value;
+    }
+  }
 
-    .ba-#{$brand}-#{$i} {
-      border:#{$i}px solid $color;
+  @each $key, $value in $content_colors {
+    .ba-#{$key}-#{$i} {
+      border:#{$i}px solid $value;
     }
-    .bh-#{$brand}-#{$i} {
-      border-left:#{$i}px solid $color;
-      border-right:#{$i}px solid $color;
+    .bh-#{$key}-#{$i} {
+      border-left:#{$i}px solid $value;
+      border-right:#{$i}px solid $value;
     }
-    .bv-#{$brand}-#{$i} {
-      border-top:#{$i}px solid $color;
-      border-bottom:#{$i}px solid $color;
+    .bv-#{$key}-#{$i} {
+      border-top:#{$i}px solid $value;
+      border-bottom:#{$i}px solid $value;
     }
-    .bt-#{$brand}-#{$i} {
-      border-top:#{$i}px solid $color;
+    .bt-#{$key}-#{$i} {
+      border-top:#{$i}px solid $value;
     }
-    .bb-#{$brand}-#{$i} {
-      border-bottom:#{$i}px solid $color;
+    .bb-#{$key}-#{$i} {
+      border-bottom:#{$i}px solid $value;
     }
-    .bl-#{$brand}-#{$i} {
-      border-left:#{$i}px solid $color;
+    .bl-#{$key}-#{$i} {
+      border-left:#{$i}px solid $value;
     }
-    .br-#{$brand}-#{$i} {
-      border-right:#{$i}px solid $color;
+    .br-#{$key}-#{$i} {
+      border-right:#{$i}px solid $value;
     }
   }
 }
@@ -248,12 +299,24 @@ $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
   position:relative;
   height:0;
   padding-bottom:56.25%;
+
+  & > iframe {
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+  }
 }
 
 .box-4-by-3 {
   position:relative;
   height:0;
   padding-bottom:75%;
+}
+
+.relative {
+  position:relative;
 }
 
 .bg-center {

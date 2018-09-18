@@ -20,7 +20,7 @@
                     Drop to Upload
                 </a>
 
-                <p class="tiny font-italic text-dark mt-2">
+                <p class="tiny font-italic text-grey-3 mt-2">
                     Max file size: 5MB
                 </p>
             </div>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="cropper-controls pv-1 bg-grey-2 flex flex-row align-center">
-                <a class="btn normal bg-dark inverted text-dark short mh-1"
+                <a class="btn normal bg-dark inverted text-grey-3 short mh-1"
                    @click="resetCrop">
                     Cancel
                 </a>
@@ -58,7 +58,8 @@
 
                 <div class="flex flex-column"></div>
 
-                <a class="btn normal bg-recordeo text-white short mh-1"
+                <a class="btn normal text-white short mh-1"
+                   :class="'bg-' + brand"
                    @click="cropImage">
                     Crop
                 </a>
@@ -92,10 +93,17 @@
 </template>
 <script>
     import Cropper from 'cropperjs';
-    import Dropzone from 'dropzone';
     import axios from 'axios';
     import Toasts from '../assets/js/classes/toasts';
     import Requests from '../assets/js/classes/requests';
+
+    /*
+    * Not exactly sure why I have to use a relative url, doesnt work if you just put 'dropzone'
+    * Unlike every other package, ever
+    *
+    * - Curtis, August 2018
+    * */
+    import Dropzone from '../../node_modules/dropzone';
 
     export default {
         name: 'image-cropper',
@@ -141,6 +149,11 @@
                         autoCrop: true
                     }
                 }
+            },
+
+            fieldKey: {
+                type: String,
+                default: 'profile_picture_image_url'
             },
 
             dropzoneConfig: {
@@ -214,10 +227,12 @@
                 formData.append('target', newFileName);
                 formData.append('_method', 'PUT');
 
+                this.loading = true;
+
                 Requests.remoteResourceUpload(this.uploadEndpoint, formData)
                     .then(resolved => {
                         if(resolved){
-                            let remoteStorageUrl = resolved.results;
+                            let remoteStorageUrl = resolved.data[0].url;
                             this.setImageAsAvatar(remoteStorageUrl);
                         }
                     })
@@ -225,8 +240,9 @@
 
             setImageAsAvatar(imageUrl){
                 axios.patch(this.saveEndpoint, {
-                    key: 'profile_picture_image_url',
-                    value: imageUrl
+                    key: this.fieldKey,
+                    value: imageUrl,
+                    '_method': 'PATCH'
                 })
                     .then(response => {
                         if(response.data){

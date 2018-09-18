@@ -13,10 +13,10 @@
 
                 <div class="flex flex-column align-h-right">
                     <div class="flex flex-row">
-                        <p class="x-tiny text-dark font-bold font-italic uppercase mr-2">
+                        <p class="x-tiny text-grey-3 font-bold font-italic uppercase mr-2">
                             {{ createdOn }}
                         </p>
-                        <p class="x-tiny text-dark font-bold font-italic uppercase">
+                        <p class="x-tiny text-grey-3 font-bold font-italic uppercase">
                             #{{ postNumber }}
                         </p>
                     </div>
@@ -52,20 +52,20 @@
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
-                        <p class="tiny text-dark mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        <p class="tiny text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
                            @click="replyToPost"
                            v-if="!isLocked">
                             <i class="fas fa-reply"></i> Reply
                         </p>
 
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? 'text-recordeo' : 'text-dark'"
+                           :class="isLiked ? 'text-recordeo' : 'text-grey-3'"
                            @click="likePost">
                             <i class="fas fa-thumbs-up"></i>
                             {{ isLiked ? 'Liked' : 'Like' }}
                         </p>
 
-                        <p class="x-tiny text-dark uppercase font-italic"
+                        <p class="x-tiny text-grey-3 uppercase font-italic"
                            v-html="userLikeString">
                             {{ userLikeString }}
                         </p>
@@ -78,7 +78,7 @@
                             Report
                         </p>
 
-                        <!--<p v-if="currentUser.isAdmin" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"-->
+                        <!--<p v-if="currentUser.isAdmin" class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"-->
                            <!--@click="hidePost">-->
                             <!--Hide-->
                         <!--</p>-->
@@ -88,7 +88,7 @@
                             Delete
                         </p>
 
-                        <p v-if="canEdit" class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        <p v-if="canEdit" class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"
                            @click="editing = !editing">
                             Edit
                         </p>
@@ -260,7 +260,7 @@
 
                             notification.close();
                         }),
-                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
                             notification.close();
                         })
                     ]
@@ -285,7 +285,7 @@
 
                             notification.close();
                         }),
-                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
                             notification.close();
                         })
                     ]
@@ -308,7 +308,7 @@
 
                             notification.close();
                         }),
-                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
                             notification.close();
                         })
                     ]

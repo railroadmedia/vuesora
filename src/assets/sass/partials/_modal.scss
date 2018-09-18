@@ -37,6 +37,7 @@
     border-radius:50%;
     border:2px solid #fff;
     cursor: pointer;
+    z-index:5;
 
     @extend .flex-center;
   }
@@ -48,12 +49,12 @@
   left:0;
   right:0;
   bottom:0;
-  background-color:rgba(0,0,0,.6);
+  background-color:rgba(0,0,0,.8);
   z-index:100;
   opacity:0;
   visibility:hidden;
   will-change:opacity, visibility;
-  transition:opacity .2s ease-in-out;
+  transition:all .2s ease-in-out;
 
   &.active {
     opacity:1;

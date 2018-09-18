@@ -4,20 +4,19 @@ import Toasts from '../classes/toasts';
 import Requests from '../classes/requests';
 
 export default (function () {
-    const addToListButtons = document.querySelectorAll('.addToList');
-    const removeFromListButtons = document.querySelectorAll('.removeFromList');
     const markAsCompleteButtons = document.querySelectorAll('.completeButton');
+    const addToListButtons = document.querySelectorAll('.addToList');
     const resetProgressButtons = document.querySelectorAll('.resetProgress');
-
-    if(addToListButtons.length){
-        Array.from(addToListButtons).forEach(button => {
-            button.addEventListener('click', addToList);
-        });
-    }
 
     if(markAsCompleteButtons.length){
         Array.from(markAsCompleteButtons).forEach(button => {
             button.addEventListener('click', markAsComplete);
+        });
+    }
+
+    if(addToListButtons.length){
+        Array.from(addToListButtons).forEach(button => {
+            button.addEventListener('click', addToList);
         });
     }
 
@@ -27,19 +26,16 @@ export default (function () {
         });
     }
 
-    function addToList(event){
-        let eventInfo = getEventInfo(event);
-    }
-
     function resetProgress(event){
         const element = event.target;
         const contentId = element.dataset['contentId'];
+        const icon = element.querySelector('.fas');
 
         // Create a confirmation dialogue using Noty
         const notification = new Noty({
             layout: 'center',
             modal: true,
-            text: 'Do you really want to reset your progress? <br><br><span class="tiny text-dark font-italic">This cannot be undone.</span>',
+            text: 'Do you really want to reset your progress? <br><br><span class="tiny text-grey-3 font-italic">This cannot be undone.</span>',
             theme: 'bootstrap-v4',
             closeWith: [],
             buttons: [
@@ -47,6 +43,8 @@ export default (function () {
                 Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
 
                     notification.close();
+                    icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
+                    icon.classList.add('fa-spin', 'fa-spinner');
 
                     Requests.resetContentProgress(contentId)
                         .then(resolved => {
@@ -57,14 +55,35 @@ export default (function () {
                                     location.reload();
                                 }, 100);
                             }
+
+                            icon.classList.remove('fa-spin', 'fa-spinner');
+                            icon.classList.add('fa-redo-alt', 'fa-flip-horizontal');
                         })
                 }),
                 // Cancel Button
-                Noty.button('<span class="bg-dark inverted text-dark short">NO</span>', 'btn', () => {
+                Noty.button('<span class="bg-dark inverted text-grey-3 short">NO</span>', 'btn', () => {
                     notification.close();
                 })
             ]
         }).show();
+    }
+
+    function addToList(event){
+        const element = event.target;
+        const contentId = element.dataset['contentId'];
+        const is_added = element.classList.contains('added');
+
+        Requests.addOrRemoveContentFromList(contentId, is_added)
+            .then(response => response);
+
+        if(is_added){
+            element.classList.remove('added', 'text-white');
+            element.classList.add('inverted');
+        }
+        else {
+            element.classList.add('added', 'text-white');
+            element.classList.remove('inverted');
+        }
     }
 
     function markAsComplete(event){
@@ -74,7 +93,7 @@ export default (function () {
         if(element.classList.contains('is-complete')){
             element.classList.remove('is-complete');
 
-            Requests.markContentAsStarted(contentId)
+            Requests.resetContentProgress(contentId)
                 .then(resolved => {
 
                 });

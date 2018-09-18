@@ -5,6 +5,7 @@
 
 import axios from 'axios';
 import Toasts from './toasts'
+const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 
 export default class Requests {
 
@@ -142,7 +143,7 @@ export default class Requests {
      * @returns {Promise} - resolved promise with the response.data object
      */
     static getForumThreads() {
-        return axios.get('/members/forums/threads-json')
+        return axios.get(endpoint_prefix + '/members/forums/threads-json')
             .then(response => {
                 return response.data
             })
@@ -156,7 +157,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static getForumThreadPosts() {
-        return axios.get('/members/forums/post-json')
+        return axios.get(endpoint_prefix + '/members/forums/post-json')
             .then(response => {
                 return response.data
             })
@@ -181,7 +182,7 @@ export default class Requests {
             }
         };
 
-        return axios.post(endpoint, formData, config)
+        return axios.post(endpoint_prefix + endpoint, formData, config)
             .then(response => {
                 return response.data;
             })
@@ -196,7 +197,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static markContentAsComplete(contentId) {
-        return axios.put('/railcontent/complete', {
+        return axios.put(endpoint_prefix + '/railcontent/complete', {
             content_id: contentId
         })
             .then(response => {
@@ -213,13 +214,15 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static markContentAsStarted(contentId) {
-        return axios.put('/railcontent/start', {
+        return axios.put(endpoint_prefix + '/railcontent/start', {
             content_id: contentId
         })
             .then(response => {
                 return response.data;
             })
-            .catch(Requests.handleError);
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     /**
@@ -230,7 +233,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static resetContentProgress(contentId) {
-        return axios.put('/railcontent/reset', {
+        return axios.put(endpoint_prefix + '/railcontent/reset', {
             content_id: contentId
         })
             .then(response => {
@@ -247,11 +250,28 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
     static getComments(params) {
-        return axios.get('/railcontent/comment', {
+        return axios.get(endpoint_prefix + '/railcontent/comment', {
             params: params
         })
             .then(response => {
                 return response.data
+            })
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Get a comment by ID
+     * WARNING: Doesn't actually work like you think, pulls the PAGE of the list where that
+     * specific comment is, kinda dumb but ask the BE why - Curtis, Sept 2018
+     *
+     * @static
+     * @param {object} id - the comment id to get
+     * @returns {Promise} resolved promise with the response.data object, containing the comments array
+     */
+    static getCommentById(id) {
+        return axios.get(endpoint_prefix + '/railcontent/comment/' + id)
+            .then(response => {
+                return response.data;
             })
             .catch(Requests.handleError);
     }
@@ -264,7 +284,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object, containing the submit comment
      */
     static postComment(data) {
-        return axios.put('/railcontent/comment', data)
+        return axios.put(endpoint_prefix + '/railcontent/comment', data)
             .then(response => {
                 return response.data
             })
@@ -279,7 +299,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object, containing the submit reply
      */
     static postReply(data) {
-        return axios.put('/railcontent/comment/reply', data)
+        return axios.put(endpoint_prefix + '/railcontent/comment/reply', data)
             .then(response => {
                 return response.data
             })
@@ -294,7 +314,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response object
      */
     static likeComment(id) {
-        return axios.put('/railcontent/comment-like/' + id)
+        return axios.put(endpoint_prefix + '/railcontent/comment-like/' + id)
             .then(response => {
                 return response
             })
@@ -309,7 +329,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response object
      */
     static unlikeComment(id) {
-        return axios.delete('/railcontent/comment-like/' + id)
+        return axios.delete(endpoint_prefix + '/railcontent/comment-like/' + id)
             .then(response => {
                 return response
             })
@@ -324,7 +344,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static deleteComment(id) {
-        return axios.delete('/railcontent/comment/' + id)
+        return axios.delete(endpoint_prefix + '/railcontent/comment/' + id)
             .then(response => {
                 return response
             })
@@ -354,7 +374,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static likeForumPost(id) {
-        return axios.put('/forums/post/like/' + id)
+        return axios.put(endpoint_prefix + '/forums/post/like/' + id)
             .then(response => {
                 return response.data
             })
@@ -369,7 +389,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static unlikeForumPost(id) {
-        return axios.delete('/forums/post/unlike/' + id)
+        return axios.delete(endpoint_prefix + '/forums/post/unlike/' + id)
             .then(response => {
                 return response.data
             })
@@ -382,7 +402,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static followForumsThread(id) {
-        return axios.put('/forums/thread/follow/' + id)
+        return axios.put(endpoint_prefix + '/forums/thread/follow/' + id)
             .then(response => {
                 return response.data
             })
@@ -396,7 +416,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static pinForumsThread(id, pinned) {
-        return axios.patch('/forums/thread/update/' + id, {
+        return axios.patch(endpoint_prefix + '/forums/thread/update/' + id, {
             pinned: pinned
         })
             .then(response => {
@@ -412,7 +432,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static lockForumsThread(id, locked) {
-        return axios.patch('/forums/thread/update/' + id, {
+        return axios.patch(endpoint_prefix + '/forums/thread/update/' + id, {
             locked: locked
         })
             .then(response => {
@@ -427,7 +447,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response object
      */
     static deleteForumsPost(id) {
-        return axios.delete('/forums/post/delete/' + id)
+        return axios.delete(endpoint_prefix + '/forums/post/delete/' + id)
             .then(response => {
                 return response
             })
@@ -441,13 +461,15 @@ export default class Requests {
      * @param {string} message - the content of the text area element within the email form
      * @param {string} type - the type of email to send ['general', 'ask-question', 'support', 'suggest-learning-path']
      * @param {string} subject - the subject for the email
+     * @param {string} recipient - who to send to (default set on backend)
      * @returns {Promise} resolved promise with the response.data object
      */
-    static sendEmail(message, type, subject) {
-        return axios.post('/members/mail', {
+    static sendEmail(message, type, subject, recipient) {
+        return axios.post(endpoint_prefix + '/members/mail', {
             message: message,
             type: type,
-            subject: subject
+            subject: subject,
+            recipient: recipient
         })
             .then(response => {
                 return response.data
@@ -463,7 +485,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static markNotificationAsRead(id) {
-        return axios.post('/members/notifications/mark-read/' + id)
+        return axios.post(endpoint_prefix + '/members/notifications/mark-read/' + id)
             .then(response => {
                 return response.data
             })
@@ -478,7 +500,7 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static markNotificationAsUnRead(id) {
-        return axios.post('/members/notifications/mark-unread/' + id)
+        return axios.post(endpoint_prefix + '/members/notifications/mark-unread/' + id)
             .then(response => {
                 return response.data
             })
@@ -492,11 +514,47 @@ export default class Requests {
      * @returns {Promise} resolved promise with the response.data object
      */
     static markAllNotificationsAsRead() {
-        return axios.post('/members/notifications/mark-all-read')
+        return axios.post(endpoint_prefix + '/members/notifications/mark-all-read')
             .then(response => {
                 return response.data
             })
             .catch(Requests.handleError);
+    }
+
+    /**
+     * Add or Remove content from your list
+     *
+     * @param content_id {string}
+     * @param is_added {boolean}
+     *
+     * @static
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static addOrRemoveContentFromList(content_id, is_added){
+        const delete_endpoint = endpoint_prefix + '/members-area/event-json-api/remove-from-primary-playlist-list';
+        const put_endpoint = endpoint_prefix + '/members-area/event-json-api/add-to-primary-playlist-list';
+
+        return axios.post(is_added ? delete_endpoint : put_endpoint, {
+            content_id: content_id,
+            type: is_added ? 'remove-from-list' : 'my-list-addition'
+        })
+            .then(response => response)
+            .catch(Requests.handleError);
+    }
+
+    /**
+     * Mark a learning path as started (this changes the users current active learning path for
+     * progress tracking)
+     *
+     * @param content_id {string}
+     *
+     * @static
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static markLearningPathAsStarted(content_id){
+        return axios.post(endpoint_prefix + '/members/start-learning-path/' + content_id)
+            .then(response => response)
+            .catch(Requests.handleError)
     }
 
     /**

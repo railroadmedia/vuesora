@@ -2,8 +2,9 @@
     <div id="commentsSection" class="flex flex-column grow">
         <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column xs-12 sm-9 mb-3">
-                <h1 class="heading">{{ totalComments }} Comments</h1>
+                <h1 class="heading">{{ totalCommentsAndReplies }} Comments</h1>
             </div>
+
             <div class="flex flex-column xs-12 sm-4 md-3 mb-3">
                 <div class="form-group xs-12" style="width:100%;">
                     <select id="commentSort" v-model="sortInterface">
@@ -12,7 +13,7 @@
                         <option value="-like_count">Popular</option>
                         <option value="-mine">My Comments</option>
                     </select>
-                    <label for="commentSort" :class="brand">Sort By</label>
+                    <label for="commentSort" :class="themeColor">Sort By</label>
                 </div>
             </div>
         </div>
@@ -32,15 +33,17 @@
                 <div class="flex flex-row align-h-right mv-1">
                     <button class="btn collapse-150" :disabled="loading"
                             @click="postComment">
-                        <span class="text-white bg-recordeo short">
+                        <span class="text-white short"
+                              :class="'bg-' + themeColor">
                             Comment
                         </span>
                     </button>
                 </div>
 
                 <div class="loading-reply flex-center" v-show="loading">
-                    <i class="fas fa-spinner fa-spin text-recordeo"></i>
-                    <p class="x-tiny text-dark">loading...</p>
+                    <i class="fas fa-spinner fa-spin"
+                       :class="'text-' + themeColor"></i>
+                    <p class="x-tiny text-grey-3">loading...</p>
                 </div>
             </div>
         </div>
@@ -49,6 +52,7 @@
                       v-bind="pinnedComment"
                       :currentUser="currentUser"
                       :pinned="true"
+                      :themeColor="themeColor"
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
                       @deleteComment="handleCommentDelete"
@@ -58,6 +62,7 @@
                       :key="i"
                       v-bind="comment"
                       :currentUser="currentUser"
+                      :themeColor="themeColor"
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
                       @deleteComment="handleCommentDelete"
@@ -89,7 +94,7 @@
                 type: Number,
                 default: () => 0
             },
-            brand: {
+            themeColor: {
                 type: String,
                 default: () => 'recordeo'
             },
@@ -108,6 +113,7 @@
             return {
                 currentPage: 1,
                 totalComments: 0,
+                totalCommentsAndReplies: 0,
                 comments: [],
                 pinnedComment: null,
                 requestingData: false,
@@ -159,14 +165,15 @@
                         this.requestingData = false;
 
                         if(resolved){
-                            this.totalComments = resolved['total_results'];
+                            this.totalComments = resolved['meta']['totalResults'];
+                            this.totalCommentsAndReplies = resolved['meta']['totalCommentsAndReplies'];
 
                             if(replace){
-                                this.comments = resolved['results'];
+                                this.comments = resolved['data'];
                             }
                             else {
                                 this.comments = this.comments.concat(
-                                    resolved['results']
+                                    resolved['data']
                                 );
                             }
                         }
@@ -182,7 +189,6 @@
             },
 
             postComment(){
-                console.log(this.comment.currentValue);
 
                 if(!!this.comment.currentValue){
                     this.loading = true;
@@ -197,7 +203,7 @@
                                 this.$refs.textEditor.currentValue = '';
                                 Toasts.success('Comment successfully posted!');
 
-                                this.comments.splice(0, 0, resolved['results']);
+                                this.comments.splice(0, 0, resolved['data'][0]);
                             }
 
                             this.loading = false;
@@ -215,12 +221,14 @@
 
                 if(payload.isLiked){
                     likedPost.like_count -= 1;
+                    likedPost.is_liked = false;
 
                     Requests.unlikeComment(payload.id)
                         .then(response => {});
                 }
                 else {
                     likedPost.like_count += 1;
+                    likedPost.is_liked = true;
 
                     Requests.likeComment(payload.id)
                         .then(response => {});
@@ -236,12 +244,14 @@
 
                 if(payload.isLiked){
                     likedPostReply.like_count -= 1;
+                    likedPostReply.is_liked = false;
 
                     Requests.unlikeComment(payload.id)
                         .then(response => {});
                 }
                 else {
                     likedPostReply.like_count += 1;
+                    likedPostReply.is_liked = true;
 
                     Requests.likeComment(payload.id)
                         .then(response => {});
@@ -279,23 +289,36 @@
             },
 
             goToComment(id){
-                this.getCommentById(id)
+                Requests.getCommentById(id)
                     .then(resolved => {
                         if(resolved){
-                            this.pinnedComment = resolved['results'].filter(result =>
+                            this.pinnedComment = resolved['data'].filter(result =>
                                 result.id === Number(id)
                             )[0];
 
-                            setTimeout(() => {
-                                let pinned = document.getElementById('pinnedComment' + id);
-                                let oldComment = document.getElementById('comment' + id);
+                            /*
+                            * Check intermittently for the DOM Element, it could possibly take a couple
+                            * of seconds for Vue to render the pinned comment so we want to wait until it exists
+                            * before we scroll to it and remove the old one.
+                            *
+                            * Curtis - Sept 2018
+                             */
+                            let pinned;
+                            let checkInterval = setInterval(() => {
+                                pinned = document.getElementById('pinnedComment' + id);
 
-                                window.scrollTo(0, (pinned.offsetTop - 100));
+                                if(pinned != null){
+                                    let oldComment = document.getElementById('comment' + id);
 
-                                if(oldComment){
-                                    oldComment.remove();
+                                    window.scrollTo(0, (pinned.offsetTop - 100));
+
+                                    if(oldComment){
+                                        oldComment.remove();
+                                    }
+
+                                    clearInterval(checkInterval);
                                 }
-                            }, 1000);
+                            }, 100);
                         }
                     })
             }

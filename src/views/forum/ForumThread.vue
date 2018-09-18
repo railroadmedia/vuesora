@@ -5,7 +5,7 @@
                 <div class="flex flex-column mb-1 xs-12 sm-6">
                     <h1 class="heading thread-title">
                         <a href="/members/forums" class="no-decoration mr-1 back-arrow">
-                            <i class="fas fa-arrow-circle-left text-light"></i>
+                            <i class="fas fa-arrow-circle-left text-grey-2"></i>
                         </a>
 
                         {{ thread.title }}

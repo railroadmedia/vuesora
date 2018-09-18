@@ -24,6 +24,18 @@ h1, h2, h3, h4, h5, h6, p {
   text-align:center;
 }
 
+.display {
+  font: 700 32px/1.25em $defaultSansSerif;
+
+  @include medium {
+    font-size:36px;
+  }
+
+  @include large {
+    font-size:40px;
+  }
+}
+
 .heading {
   font: 700 24px/1.25em $defaultSansSerif;
 
@@ -84,8 +96,16 @@ h1, h2, h3, h4, h5, h6, p {
   font:400 10px/1.5em $defaultSansSerif;
 }
 
+.font-compressed {
+  line-height:1em;
+}
+
 .font-light {
   font-weight:300;
+}
+
+.font-regular {
+  font-weight:400;
 }
 
 .font-bold {

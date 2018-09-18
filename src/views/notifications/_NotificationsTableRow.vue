@@ -18,7 +18,7 @@
                 <span class="font-bold">{{ linkedContent.title }}</span>
             </p>
 
-            <p class="tiny text-dark uppercase font-italic">
+            <p class="tiny text-grey-3 uppercase font-italic">
                 {{ createdOn }}
             </p>
         </div>
@@ -26,13 +26,13 @@
         <div class="flex flex-column icon-col align-v-center">
             <div class="square body" title="Mark as Read"
                  @click.stop.prevent="markAsRead">
-                <i class="far fa-eye flex-center text-light rounded read-icon"></i>
+                <i class="far fa-eye flex-center text-grey-2 rounded read-icon"></i>
             </div>
         </div>
 
         <div class="flex flex-column icon-col align-v-center">
             <div class="square body">
-                <i class="fas fa-arrow-circle-right flex-center text-light rounded"></i>
+                <i class="fas fa-arrow-circle-right flex-center text-grey-2 rounded"></i>
             </div>
         </div>
     </a>

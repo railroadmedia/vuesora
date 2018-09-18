@@ -1,15 +1,21 @@
 <template>
     <div class="flex flex-row comment-post pl pv mv-1">
         <div class="flex flex-column avatar-column pr">
-            <img :src="user['fields.profile_picture_image_url']" class="rounded">
+            <a :href="profileRoute" target="_blank"
+               class="no-decoration">
+                <img :src="user['fields.profile_picture_image_url']" class="rounded">
+            </a>
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row align-v-center mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
-                        {{ display_name }}
+                        <a :href="profileRoute" target="_blank"
+                           class="text-black no-decoration">
+                            {{ user.display_name }}
+                        </a>
 
-                        <span class="x-tiny text-dark font-bold font-italic uppercase ml-1">
+                        <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
                         </span>
                     </h2>
@@ -17,7 +23,7 @@
 
                 <div class="flex flex-column align-h-right align-v-center flex-auto">
                     <div class="flex flex-row">
-                        <span class="tiny no-decoration text-dark pointer mr-1"
+                        <span class="tiny no-decoration text-grey-3 pointer mr-1"
                               v-if="(isUsersPost || isCurrentUserAdmin)">
                             <i class="fas fa-trash"
                                @click="deleteComment"></i>
@@ -31,24 +37,6 @@
                      v-html="comment">
                     {{ comment }}
                 </div>
-
-                <!--<div v-if="editing" class="flex flex-column mb-1">-->
-                <!--<text-editor :initialValue="postBody"></text-editor>-->
-
-                <!--<div class="flex flex-row align-h-right mt-2">-->
-                <!--<a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"-->
-                <!--@click="editing = false">-->
-                <!--Cancel-->
-                <!--</a>-->
-
-                <!--<button class="btn collapse-250" type="submit">-->
-                <!--<span class="bg-recordeo text-white corners-3">-->
-                <!--Save Post-->
-                <!--</span>-->
-                <!--</button>-->
-                <!--</div>-->
-                <!--</div>-->
-
             </div>
 
 
@@ -58,7 +46,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? 'text-recordeo' : 'text-dark'"
+                           :class="isLiked ? 'text-' + themeColor : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
@@ -66,7 +54,7 @@
                             </span>
                         </p>
 
-                        <p class="x-tiny text-dark uppercase font-italic"
+                        <p class="x-tiny text-grey-3 uppercase font-italic"
                            v-html="userLikeString">
                             {{ userLikeString }}
                         </p>
@@ -83,6 +71,10 @@
     export default {
         name: 'comment-reply',
         props: {
+            themeColor: {
+                type: String,
+                default: () => 'recordeo'
+            },
             currentUser: {
                 type: Object,
                 default: () => {
@@ -133,6 +125,10 @@
                 type: Boolean,
                 default: () => false
             },
+            user_id: {
+                type: Number,
+                default: () => 0
+            },
             user: {
                 type: Object,
                 default: () => {
@@ -150,6 +146,10 @@
             }
         },
         computed: {
+            profileRoute(){
+                return '/laravel/public/members/profile/' + this.user_id
+            },
+
             userLikeString(){
                 let userNames = [];
                 let userNameString;
@@ -175,10 +175,14 @@
                     suffixString = '';
                 }
 
-                if(this.isLiked){
+                if(this.is_liked){
                     userNames.splice((userNames.length - 1), 1);
 
-                    return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
+                    if(this.like_count > 1){
+                        return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
+                    }
+
+                    return '<span class="font-bold">You</span>' + suffixString;
                 }
                 else {
                     if(this.like_count > 0){
@@ -198,7 +202,7 @@
             },
 
             isUsersPost(){
-                return String(this.currentUser.id) === String(this.user.id);
+                return String(this.currentUser.id) === String(this.user_id);
             },
 
             isCurrentUserAdmin(){
@@ -211,7 +215,7 @@
 
                 this.$emit('likeReply', {
                     id: this.id,
-                    isLiked: this.isLiked,
+                    isLiked: this.is_liked,
                     isPinned: this.pinned
                 });
             },
@@ -231,7 +235,7 @@
 
                             notification.close();
                         }),
-                        Noty.button('<span class="bg-dark inverted text-dark short">Cancel</span>', 'btn', () => {
+                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
                             notification.close();
                         })
                     ]

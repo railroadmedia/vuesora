@@ -1,11 +1,12 @@
 @import './_variables.scss';
+@import './_animations.scss';
 
 body {
-  padding-top:40px;
-  padding-bottom:60px;
+  padding-top:50px;
+  padding-bottom:50px;
 
-  @include medium {
-    padding-top:50px;
+  @include small {
+    padding-bottom:60px;
   }
 
   @include large {
@@ -14,17 +15,12 @@ body {
 }
 
 #nav {
-  height:40px;
-  background:#000;
+  height:50px;
   z-index:99;
   position:fixed;
   top:0;
   left:0;
   width:100%;
-
-  @include medium {
-    height:50px;
-  }
 
   @include large {
     height:65px;
@@ -62,6 +58,10 @@ body {
       max-width:65px;
     }
 
+    &.live-button {
+      flex:0 0 auto;
+      max-width:none;
+    }
   }
 
   #notificationButton {
@@ -101,9 +101,8 @@ body {
   }
 
   .menu {
-    flex: 0 0 40px;
+    flex: 0 0 50px;
     cursor:pointer;
-    background-color:#000;
     will-change:background-color;
     transition:background-color .2s ease-in-out;
 
@@ -162,12 +161,64 @@ body {
       }
     }
   }
+
+  .search-column {
+
+    #searchIcon {
+      cursor:pointer;
+    }
+
+    #searchBox {
+
+      @include xSmallOnly {
+        position:fixed;
+        top:40px;
+        left:0;
+        right:0;
+        padding-left:$gutterWidth / 3;
+        padding-right:$gutterWidth / 3;
+        background:#000;
+        transition:max-height .2s ease-in-out;
+        will-change: max-height;
+        max-height:0;
+        overflow:hidden;
+
+        &.active {
+          max-height:50px;
+          border-bottom: 1px solid nth(nth($greys, 5), 2);
+        }
+      }
+    }
+  }
+
+  #liveIndicator {
+    position:relative;
+    z-index:2;
+    padding:0 3px;
+
+    &:before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      transform-origin:50% 50%;
+      transform:scale(1.25);
+      background:$errorRed;
+      filter:blur(8px);
+      z-index:-1;
+      animation-name: growShrink;
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite
+    }
+  }
 }
 
 #navSideBar {
   position:fixed;
-  top:40px;
-  height:calc(100% - 40px);
+  top:50px;
+  height:calc(100% - 50px);
   right:0;
   width:320px;
   z-index:99;
@@ -180,21 +231,18 @@ body {
     transform:translateX(0);
   }
 
-  @include medium {
-    top:50px;
-    height:calc(100% - 50px);
-  }
   @include large {
     top:65px;
     height:calc(100% - 65px);
   }
 
   #userInfo {
-    flex:0 0 300px;
+    //flex:0 0 300px;
 
-    .avatar {
-      max-width:125px;
+    .avatar-wrap {
       width:125px;
+      max-width:125px;
+      height:125px;
     }
   }
 
@@ -206,8 +254,44 @@ body {
       will-change: color, background-color;
       transition:color .1s ease-in-out, background-color .1s ease-in-out;
       flex:0 0 auto;
+      cursor:pointer;
 
-      &:hover {
+      .parent-button {
+        width:100%;
+        position:relative;
+
+        &.active {
+          background-color:#f2f2f2;
+
+          .arrow {
+            transform:rotate(180deg);
+          }
+        }
+
+        .arrow {
+          position:absolute;
+          top:0;
+          right:$gutterWidth / 3;
+          bottom:0;
+          will-change: transform;
+          transition:transform .1s ease-in-out;
+          pointer-events:none;
+          @include flexCenter();
+        }
+      }
+
+      .child-links {
+        max-height:0;
+        overflow:hidden;
+        transition:max-height .2s ease-in-out;
+        will-change:max-height;
+
+        .page-link {
+          padding-left:$gutterWidth;
+        }
+      }
+
+      &:not(.parent):hover {
         color:#000;
         background-color:#f2f2f2;
       }
@@ -229,15 +313,86 @@ body {
   }
 }
 
+#subNav {
+
+  .subnav-link {
+    transition:color .1s ease-in-out, background-color .1s ease-in-out;
+    will-change:color, background-color;
+    flex:0 1 25%;
+    box-sizing:border-box;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+
+    i {
+      will-change:color;
+      transition:color .1s ease-in-out;
+    }
+
+    @include small {
+      flex:0 1 20%;
+    }
+
+    &:last-of-type {
+      border-right:none;
+    }
+
+    &:hover {
+      background-color:nth(nth($greys, 5), 2)
+    }
+
+    &.my-lists {
+      @include xSmallOnly {
+        display:none;
+      }
+    }
+
+    @each $key, $value in $content_colors {
+      &.#{$key}:hover,
+      &.#{$key}s:hover,
+      &.#{$key}.active,
+      &.#{$key}s.active {
+        color:#fff;
+        border-bottom-color:$value;
+
+        i {
+          color: $value;
+        }
+      }
+    }
+  }
+}
+
+
+#publicFooter {
+
+  .dark-logo {
+    max-width:150px;
+  }
+
+  a:hover:not(.social-media-link) {
+    text-decoration:underline;
+  }
+  a:hover {
+    color:#fff;
+  }
+}
+body.has-public-footer {
+  padding-bottom:650px;
+
+  @include small {
+    padding-bottom:270px;
+  }
+}
+
 footer {
   position:absolute;
   bottom:0;
   left:0;
   width:100%;
-  z-index:97;
+  z-index:96;
 
   .footer-col {
-    height:30px;
+    height:25px;
     font-size:13px;
     flex:1 1 100%;
 
@@ -247,7 +402,23 @@ footer {
     }
 
     a {
-      margin:0 3px;
+      //margin:0 3px;
+      &:first-of-type {
+        margin-right:3px;
+      }
+      &:last-of-type {
+        margin-left:3px;
+      }
+
+      &.social-media-link {
+
+        i {
+          font-size:20px;
+          width:35px;
+          height:35px;
+          @include flexCenter();
+        }
+      }
     }
   }
 }
