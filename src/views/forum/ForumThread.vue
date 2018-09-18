@@ -14,10 +14,10 @@
 
                 <div class="flex flex-column mb-1 xs-12 sm-6">
                     <div class="flex flex-row align-h-right">
-                        <button class="btn collapse-150 mr-1" @click="update"
+                        <button class="btn collapse-square mr-1" @click="update"
                                 v-if="currentUser.isAdmin">
                             <span class="bg-recordeo corners-3 inverted text-recordeo">
-                                Update
+                                <i class="fas fa-edit"></i>
                             </span>
                         </button>
 

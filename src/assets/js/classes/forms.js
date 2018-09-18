@@ -72,6 +72,8 @@ export default class Forms {
     static handleInputChange(event){
         const element = event.target;
 
+        console.log(element.value);
+
         if(element.value.length){
             element.classList.add('has-input');
         }

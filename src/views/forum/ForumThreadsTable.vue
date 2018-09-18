@@ -27,6 +27,12 @@
                            type="text"
                            v-model.lazy="searchInterface">
                     <label for="threadSearch" class="recordeo">Search</label>
+
+                    <span id="clearSearch" v-if="searching"
+                          class="body pointer"
+                          @click="clearSearch">
+                        <i class="fas fa-times"></i>
+                    </span>
                 </div>
                 <p v-if="searching"
                    class="tiny font-italic text-grey-4">
@@ -68,8 +74,11 @@
 
         <div v-if="searching && searchResults.length === 0" class="flex flex-row content-table-row">
             <div class="flex flex-column pv-3 align-center">
-                <p class="body font-italic">
-                    No Results we're found matching that query, please try again.
+                <i v-if="loading"
+                   class="fas fa-spin fa-circle-notch text-recordeo"
+                   style="font-size:32px;"></i>
+                <p v-else class="body font-italic">
+                    No results were found matching that query, please try again.
                 </p>
             </div>
         </div>
@@ -152,6 +161,7 @@
                         value: '4'
                     },
                 ],
+                loading: false,
                 searching: false,
                 searchResults: [],
                 searchResultsCount: 0,
@@ -188,7 +198,6 @@
                     if (val) {
                         this.timeout = setTimeout(() => {
 
-                            this.searching = true;
 
                             this.searchResultsPage = 1;
 
@@ -246,6 +255,7 @@
         },
         methods: {
             getSearchResults() {
+                this.loading = true;
 
                 Requests.getForumSearchResults(
                         this.searchTerm,
@@ -253,6 +263,8 @@
                         this.searchResultsPage,
                         this.searchResultsPageLength
                     ).then(data => {
+                        this.loading = false;
+                        this.searching = true;
                         this.searchResults = data.results;
                         this.searchResultsCount = data.count;
                     });
@@ -291,6 +303,16 @@
                         location.pathname
                 }
 
+            },
+
+            clearSearch(){
+                const searchInput = document.getElementById('threadSearch');
+                const changeEvent = new Event('change');
+                let new_url = window.location.origin + window.location.pathname;
+
+                window.history.replaceState(history.state, null, new_url);
+                searchInput.value = '';
+                searchInput.dispatchEvent(changeEvent);
             }
         },
         watch: {
@@ -303,6 +325,8 @@
 
              if(urlParams['search']){
                  this.searchInterface = urlParams['search'];
+                 this.searching = true;
+                 this.loading = true;
              }
         }
     }
@@ -314,6 +338,16 @@
         @include xSmallOnly {
             margin-bottom: $gutterWidth / 2;
         }
+    }
+
+    #clearSearch {
+        position:absolute;
+        top:50%;
+        right:0;
+        transform:translateY(-50%);
+        height:50px;
+        width:50px;
+        @include flexCenter();
     }
 
     .search-icon {

@@ -2,11 +2,6 @@
 
 .forum-post, .comment-post {
 
-  .avatar-column {
-    flex: 0 0 50px;
-    max-width:50px;
-  }
-
   .post-body {
     word-break:break-word;
     word-wrap:break-word;
@@ -42,6 +37,21 @@
   &.pinned {
     background:transparentize($recordeoYellow, 0.9);
   }
+}
+
+.forum-post .avatar-column {
+  flex: 0 0 25px;
+  max-width:25px;
+
+  @include small {
+    flex: 0 0 50px;
+    max-width:50px;
+  }
+}
+
+.comment-post .avatar-column {
+  flex: 0 0 50px;
+  max-width:50px;
 }
 
 .search-result-post blockquote {
