@@ -232,7 +232,7 @@
                 Requests.remoteResourceUpload(this.uploadEndpoint, formData)
                     .then(resolved => {
                         if(resolved){
-                            let remoteStorageUrl = resolved.data[0].url;
+                            let remoteStorageUrl = resolved['results'] || resolved.data[0].url;
                             this.setImageAsAvatar(remoteStorageUrl);
                         }
                     })

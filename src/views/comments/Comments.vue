@@ -2,7 +2,7 @@
     <div id="commentsSection" class="flex flex-column grow">
         <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column xs-12 sm-9 mb-3">
-                <h1 class="heading">{{ totalCommentsAndReplies }} Comments</h1>
+                <h1 class="heading">{{ totalComments }} Comments</h1>
             </div>
 
             <div class="flex flex-column xs-12 sm-4 md-3 mb-3">
@@ -165,15 +165,15 @@
                         this.requestingData = false;
 
                         if(resolved){
-                            this.totalComments = resolved['meta']['totalResults'];
-                            this.totalCommentsAndReplies = resolved['meta']['totalCommentsAndReplies'];
+                            this.totalComments = resolved['meta'] ? resolved['meta']['totalResults'] : resolved['total_results'];
+                            // this.totalCommentsAndReplies = resolved['meta']['totalCommentsAndReplies'];
 
                             if(replace){
-                                this.comments = resolved['data'];
+                                this.comments = resolved['data'] || resolved['results'];
                             }
                             else {
                                 this.comments = this.comments.concat(
-                                    resolved['data']
+                                    (resolved['data'] || resolved['results'])
                                 );
                             }
                         }
@@ -199,11 +199,13 @@
                     })
                         .then(resolved => {
                             if(resolved){
+                                let thisComment = resolved['results'] || resolved['data'][0];
+
                                 this.commentInterface = '';
                                 this.$refs.textEditor.currentValue = '';
                                 Toasts.success('Comment successfully posted!');
 
-                                this.comments.splice(0, 0, resolved['data'][0]);
+                                this.comments.splice(0, 0, thisComment);
                             }
 
                             this.loading = false;

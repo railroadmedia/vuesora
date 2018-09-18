@@ -328,12 +328,14 @@
                     })
                         .then(resolved => {
                             if(resolved){
+                                let thisComment = resolved['results'] || resolved['data'][0];
+
                                 this.replyInterface = '';
                                 this.replying = false;
                                 this.$refs.textEditor.currentValue = '';
                                 Toasts.success('Reply successfully posted!');
 
-                                this.replies.splice(0, 0, resolved['data'][0]);
+                                this.replies.splice(0, 0, thisComment);
                             }
 
                             this.loading = false;
