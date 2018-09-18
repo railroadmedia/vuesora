@@ -55,20 +55,25 @@
         computed: {
             postBodyHighlighted(){
                 const regex = new RegExp(this.term, 'gi');
-                let matches = this.item.postBody.match(regex);
+                const matches = this.item.postBody.match(regex);
                 let bodyString = this.item.postBody;
 
-                if(matches){
+                // We find all matches and insert an opening and closing span tag around that match
+                // The reason we start with the closing tag is so that it doesn't change the index of the "end"
+                // variable after we add the opening span tag
+                // - Curtis Sept 2018
 
+                if(matches){
                     matches.forEach(match => {
                         let start = this.item.postBody.indexOf(match);
                         let end = start + this.term.length;
 
+                        // insert closing span tag
                         bodyString = this.item.postBody.substr(0, end) + '</span>' + this.item.postBody.substr(end);
+                        // insert opening span tag
                         bodyString = bodyString.substr(0, start) + '<span class="font-bold">' + bodyString.substr(start);
                     });
                 }
-
 
                 return bodyString;
             },
