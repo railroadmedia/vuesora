@@ -1,7 +1,7 @@
 <template>
     <a :href="item.url"
-       class="content-table-row flex flex-row bt-grey-1-1 no-decoration">
-        <div class="flex flex-column avatar-col align-v-center pl-1">
+       class="content-table-row flex flex-row bt-grey-1-1 no-decoration pa-1">
+        <div class="flex flex-column avatar-col align-v-center">
             <div class="thumb-img square rounded bg-center"
                  :style="'background-image:url(' + item.authorAvatar + ');'"></div>
         </div>
@@ -12,7 +12,7 @@
             </p>
 
             <div class="pl search-result-post">
-                <p class="tiny text-black" v-html="postBodyHighlighted"></p>
+                <p class="tiny text-grey-4 font-italic" v-html="postBodyHighlighted"></p>
 
                 <p class="x-tiny text-dark uppercase font-italic">
                     replied <strong>{{ item.createdOn }}</strong> by <strong>{{ item.authorUsername }}</strong>
@@ -71,7 +71,7 @@
                         // insert closing span tag
                         bodyString = this.item.postBody.substr(0, end) + '</span>' + this.item.postBody.substr(end);
                         // insert opening span tag
-                        bodyString = bodyString.substr(0, start) + '<span class="font-bold">' + bodyString.substr(start);
+                        bodyString = bodyString.substr(0, start) + '<span class="font-bold text-black">' + bodyString.substr(start);
                     });
                 }
 

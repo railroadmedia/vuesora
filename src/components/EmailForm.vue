@@ -58,7 +58,7 @@
             },
             subject: {
                 type: String,
-                default: () => 'Email from ' + this.brand
+                default: () => ''
             },
             recipient:{
                 type: String,

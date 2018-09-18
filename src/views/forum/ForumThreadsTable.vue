@@ -29,7 +29,9 @@
                     <label for="threadSearch" class="recordeo">Search</label>
                 </div>
                 <p v-if="searching"
-                   class="tiny font-italic">Showing results for "{{ searchInterface }}" in All Forums.</p>
+                   class="tiny font-italic text-grey-4">
+                    Showing results for <span class="font-bold text-black">"{{ searchInterface }}"</span> in All Forums.
+                </p>
             </div>
             <div v-if="!searching"
                  class="flex flex-column mb-3 form-group topic-col">

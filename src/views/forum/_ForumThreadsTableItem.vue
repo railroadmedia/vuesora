@@ -1,7 +1,7 @@
 <template>
     <a :href="thread.url"
-       class="content-table-row flex flex-row bt-grey-1-1 no-decoration">
-        <div class="flex flex-column avatar-col align-v-center pl-1">
+       class="content-table-row flex flex-row bt-grey-1-1 no-decoration pa-1">
+        <div class="flex flex-column avatar-col align-v-center">
             <div class="thumb-img square rounded bg-center"
                  :style="'background-image:url(' + thread.authorAvatar + ');'"></div>
         </div>
@@ -42,7 +42,7 @@
         </div>
 
         <div class="flex flex-column icon-col align-v-center">
-            <div class="square body">
+            <div class="body">
                 <i class="fas fa-arrow-circle-right flex-center rounded"
                    :class="thread.isRead ? 'text-grey-2' : brandTextClass"></i>
             </div>

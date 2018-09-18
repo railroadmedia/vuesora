@@ -82,12 +82,15 @@ export default (function(){
     function closeEverything(event){
         event.stopPropagation();
 
+        if(searchBox){
+            searchBox.classList.remove('active');
+            searchIcon.children[0].classList.remove('fa-times');
+            searchIcon.children[0].classList.add('fa-search');
+        }
+
         menuButton.classList.remove('active');
         navSideBar.classList.remove('active');
-        searchBox.classList.remove('active');
         backgroundOverlay.classList.remove('active');
-        searchIcon.children[0].classList.remove('fa-times');
-        searchIcon.children[0].classList.add('fa-search');
     }
 
     function toggleChildLinks(event){
