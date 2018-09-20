@@ -26,8 +26,6 @@
                               :style="'width:' + $_progress_percent + '%'"></span>
                     </div>
 
-
-
                     <!--<span v-if="$_showTrophy"-->
                           <!--class="bundle-complete flex-center">-->
                         <!--<i class="fas fa-trophy"></i>-->

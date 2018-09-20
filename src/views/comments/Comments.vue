@@ -53,6 +53,8 @@
                       :currentUser="currentUser"
                       :pinned="true"
                       :themeColor="themeColor"
+                      :profileBaseRoute="profileBaseRoute"
+                      :hasPublicProfiles="hasPublicProfiles"
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
                       @deleteComment="handleCommentDelete"
@@ -63,6 +65,8 @@
                       v-bind="comment"
                       :currentUser="currentUser"
                       :themeColor="themeColor"
+                      :profileBaseRoute="profileBaseRoute"
+                      :hasPublicProfiles="hasPublicProfiles"
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
                       @deleteComment="handleCommentDelete"
@@ -97,6 +101,14 @@
             themeColor: {
                 type: String,
                 default: () => 'recordeo'
+            },
+            profileBaseRoute: {
+                type: String,
+                default: () => '/laravel/public/members/profile/'
+            },
+            hasPublicProfiles: {
+                type: Boolean,
+                default: () => true
             },
             currentUser: {
                 type: Object,

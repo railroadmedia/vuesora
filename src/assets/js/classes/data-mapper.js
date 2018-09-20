@@ -565,10 +565,9 @@ export default class DataMapper {
                 },
                 list: {
                     black_title: this.post['title'],
-                    description: this.post['learning_path_description'],
+                    description: this.post['learning_path_description'] || this.post['description'],
                     column_data: [
-                        this.getPostDuration(),
-                        this.getPostDate()
+                        this.getChildLessonCount(),
                     ]
                 },
                 schedule: {
@@ -652,6 +651,10 @@ export default class DataMapper {
 
     getEpisodeNumber(){
         return 'Episode #' + this.post['sort'];
+    }
+
+    getChildLessonCount(){
+        return this.post['children'] + ' Lessons';
     }
 
     static mapDifficulty(post){

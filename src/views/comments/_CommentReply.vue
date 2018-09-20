@@ -1,19 +1,26 @@
 <template>
     <div class="flex flex-row comment-post pl pv mv-1">
         <div class="flex flex-column avatar-column pr">
-            <a :href="profileRoute" target="_blank"
+            <a v-if="hasPublicProfiles"
+               :href="profileRoute" target="_blank"
                class="no-decoration">
                 <img :src="user['fields.profile_picture_image_url']" class="rounded">
             </a>
+            <img v-else
+                 :src="user['fields.profile_picture_image_url']" class="rounded">
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row align-v-center mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
-                        <a :href="profileRoute" target="_blank"
+                        <a v-if="hasPublicProfiles"
+                           :href="profileRoute" target="_blank"
                            class="text-black no-decoration">
                             {{ user.display_name }}
                         </a>
+                        <span v-else class="text-black no-decoration">
+                            {{ user.display_name }}
+                        </span>
 
                         <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
@@ -89,6 +96,10 @@
                 type: Number,
                 default: () => 0
             },
+            profileBaseRoute: {
+                type: String,
+                default: '/laravel/public/members/profile/'
+            },
             comment: {
                 type: String,
                 default: () => ''
@@ -138,7 +149,11 @@
                         display_name: ''
                     }
                 }
-            }
+            },
+            hasPublicProfiles: {
+                type: Boolean,
+                default: () => true
+            },
         },
         data(){
             return {
@@ -147,7 +162,7 @@
         },
         computed: {
             profileRoute(){
-                return '/laravel/public/members/profile/' + this.user_id
+                return this.profileBaseRoute + this.user_id
             },
 
             userLikeString(){

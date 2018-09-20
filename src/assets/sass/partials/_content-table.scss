@@ -91,6 +91,11 @@
 
   .thumb-wrap {
     overflow:hidden;
+    border-radius:3px;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
 
   .thumb-img {
@@ -147,7 +152,7 @@
     background-size:contain;
   }
 
-  &.learning-path {
+  &.background-cards {
     &:before, &:after {
       content:'';
       position:absolute;
