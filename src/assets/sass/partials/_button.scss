@@ -14,6 +14,7 @@ a, div {
     cursor:pointer;
     border-radius:5px;
     border:none;
+    outline:none;
     width:100%;
     text-decoration:none;
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
@@ -41,6 +42,7 @@ button {
     box-shadow:none;
     width:100%;
     cursor:pointer;
+    outline:none;
 
     & > span {
       pointer-events:none;
