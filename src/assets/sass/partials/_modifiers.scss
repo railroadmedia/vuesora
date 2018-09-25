@@ -60,21 +60,21 @@ $borderDirections: ba bh bv bt bb br bl;
       border:#{$i}px solid #fff;
     }
 
-    // Loop through each brand color and add the modifier
+    // Loop through each brand color and add the color modifier
     @each $key, $value in $brand_colors {
       .#{$direction}-#{$key}-#{$i} {
         border:#{$i}px solid $value;
       }
     }
 
-    // Loop through each content color and add the modifier
+    // Loop through each content color and add the color modifier
     @each $key, $value in $content_colors {
       .#{$direction}-#{$key}-#{$i} {
         border:#{$i}px solid $value;
       }
     }
 
-    // Loop through each grey and add the modifier
+    // Loop through each grey and add the color modifier
     @each $index, $grey in $greys {
       .#{$direction}-grey-#{$index}-#{$i} {
         border: #{$i}px solid #{$grey};
