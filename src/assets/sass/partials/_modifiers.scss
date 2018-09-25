@@ -288,6 +288,18 @@ $brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
   text-overflow:ellipsis;
 }
 
+.text-truncate-2-lines {
+  max-height:3em;
+  overflow:hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  &.font-compressed {
+    max-height:2em;
+  }
+}
+
 // Box Ratios
 .square {
   position:relative;
