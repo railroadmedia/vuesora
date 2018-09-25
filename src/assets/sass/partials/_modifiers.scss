@@ -49,15 +49,15 @@ $borderDirections: ba bh bv bt bb br bl;
     }
 
     .#{$direction}-black-#{$i} {
-      border:#{$i}px solid #fff;
+      border:#{$i}px solid #000;
     }
 
     .#{$direction}-light-#{$i} {
-      border:#{$i}px solid #fff;
+      border:#{$i}px solid $lightGray;
     }
 
     .#{$direction}-dark-#{$i} {
-      border:#{$i}px solid #fff;
+      border:#{$i}px solid $darkGray;
     }
 
     // Loop through each brand color and add the color modifier
