@@ -262,6 +262,9 @@
   }
 
   .item-description {
+    transition:max-height .1s ease-in-out;
+    will-change:max-height;
+
     @include xSmallOnly {
       max-height:3em;
       overflow:hidden;
@@ -269,6 +272,11 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       text-overflow:ellipsis;
+
+      &.active {
+        overflow:visible;
+        -webkit-line-clamp:initial;
+      }
     }
   }
 }
