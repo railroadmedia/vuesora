@@ -10,35 +10,21 @@
 }
 
 // Border Radius
+$directions:top bottom left right;
 .corners-3 {
   border-radius:3px;
-}
-.corners-top-3 {
-  border-radius:3px 3px 0 0;
-}
-.corners-bottom-3 {
-  border-radius:0 0 3px 3px;
-}
-.corners-right-3 {
-  border-radius:0 3px 3px 0;
-}
-.corners-left-3 {
-  border-radius:3px 0 0 3px;
 }
 .corners-5 {
   border-radius:5px;
 }
-.corners-top-5 {
-  border-radius:5px 5px 0 0;
-}
-.corners-bottom-5 {
-  border-radius:0 0 5px 5px;
-}
-.corners-right-5 {
-  border-radius:0 5px 5px 0;
-}
-.corners-left-5 {
-  border-radius:5px 0 0 5px;
+@each $direction in $directions {
+  .corners-#{$direction}-3 {
+    border-radius:5px 5px 0 0;
+  }
+
+  .corners-#{$direction}-5 {
+    border-radius:5px 5px 0 0;
+  }
 }
 
 .rounded {
@@ -52,183 +38,47 @@
 
 
 // Borders
-$brands:drumeo pianote guitareo recordeo;
-$brandColors: $drumeoBlue $pianoteRed $guitareoGreen $recordeoYellow;
+$borderDirections: ba bh bv bt bb br bl;
+// Loop from 1 to 3 for each different border width value
 @for $i from 1 through 3 {
 
-  .ba-white-#{$i} {
-    border:#{$i}px solid #fff;
-  }
-  .bh-white-#{$i} {
-    border-left:#{$i}px solid #fff;
-    border-right:#{$i}px solid #fff;
-  }
-  .bv-white-#{$i} {
-    border-top:#{$i}px solid #fff;
-    border-bottom:#{$i}px solid #fff;
-  }
-  .bt-white-#{$i} {
-    border-top:#{$i}px solid #fff;
-  }
-  .bb-white-#{$i} {
-    border-bottom:#{$i}px solid #fff;
-  }
-  .bl-white-#{$i} {
-    border-left:#{$i}px solid #fff;
-  }
-  .br-white-#{$i} {
-    border-right:#{$i}px solid #fff;
-  }
+  // Loop through the directions and add additional modifiers
+  @each $direction in $borderDirections {
+    .#{$direction}-white-#{$i} {
+      border:#{$i}px solid #fff;
+    }
 
-  .ba-black-#{$i} {
-    border:#{$i}px solid #000;
-  }
-  .bh-black-#{$i} {
-    border-left:#{$i}px solid #000;
-    border-right:#{$i}px solid #000;
-  }
-  .bv-black-#{$i} {
-    border-top:#{$i}px solid #000;
-    border-bottom:#{$i}px solid #000;
-  }
-  .bt-black-#{$i} {
-    border-top:#{$i}px solid #000;
-  }
-  .bb-black-#{$i} {
-    border-bottom:#{$i}px solid #000;
-  }
-  .bl-black-#{$i} {
-    border-left:#{$i}px solid #000;
-  }
-  .br-black-#{$i} {
-    border-right:#{$i}px solid #000;
-  }
+    .#{$direction}-black-#{$i} {
+      border:#{$i}px solid #fff;
+    }
 
-  .ba-light-#{$i} {
-    border:#{$i}px solid $lightGray;
-  }
-  .bh-light-#{$i} {
-    border-left:#{$i}px solid $lightGray;
-    border-right:#{$i}px solid $lightGray;
-  }
-  .bv-light-#{$i} {
-    border-top:#{$i}px solid $lightGray;
-    border-bottom:#{$i}px solid $lightGray;
-  }
-  .bt-light-#{$i} {
-    border-top:#{$i}px solid $lightGray;
-  }
-  .bb-light-#{$i} {
-    border-bottom:#{$i}px solid $lightGray;
-  }
-  .bl-light-#{$i} {
-    border-left:#{$i}px solid $lightGray;
-  }
-  .br-light-#{$i} {
-    border-right:#{$i}px solid $lightGray;
-  }
+    .#{$direction}-light-#{$i} {
+      border:#{$i}px solid #fff;
+    }
 
-  .ba-dark-#{$i} {
-    border:#{$i}px solid $darkGray;
-  }
-  .bh-dark-#{$i} {
-    border-left:#{$i}px solid $darkGray;
-    border-right:#{$i}px solid $darkGray;
-  }
-  .bv-dark-#{$i} {
-    border-top:#{$i}px solid $darkGray;
-    border-bottom:#{$i}px solid $darkGray;
-  }
-  .bt-dark-#{$i} {
-    border-top:#{$i}px solid $darkGray;
-  }
-  .bb-dark-#{$i} {
-    border-bottom:#{$i}px solid $darkGray;
-  }
-  .bl-dark-#{$i} {
-    border-left:#{$i}px solid $darkGray;
-  }
-  .br-dark-#{$i} {
-    border-right:#{$i}px solid $darkGray;
-  }
+    .#{$direction}-dark-#{$i} {
+      border:#{$i}px solid #fff;
+    }
 
-  @each $key, $value in $brand_colors {
-    .ba-#{$key}-#{$i} {
-      border:#{$i}px solid $value;
+    // Loop through each brand color and add the color modifier
+    @each $key, $value in $brand_colors {
+      .#{$direction}-#{$key}-#{$i} {
+        border:#{$i}px solid $value;
+      }
     }
-    .bh-#{$key}-#{$i} {
-      border-left:#{$i}px solid $value;
-      border-right:#{$i}px solid $value;
-    }
-    .bv-#{$key}-#{$i} {
-      border-top:#{$i}px solid $value;
-      border-bottom:#{$i}px solid $value;
-    }
-    .bt-#{$key}-#{$i} {
-      border-top:#{$i}px solid $value;
-    }
-    .bb-#{$key}-#{$i} {
-      border-bottom:#{$i}px solid $value;
-    }
-    .bl-#{$key}-#{$i} {
-      border-left:#{$i}px solid $value;
-    }
-    .br-#{$key}-#{$i} {
-      border-right:#{$i}px solid $value;
-    }
-  }
 
-  @each $key, $value in $content_colors {
-    .ba-#{$key}-#{$i} {
-      border:#{$i}px solid $value;
+    // Loop through each content color and add the color modifier
+    @each $key, $value in $content_colors {
+      .#{$direction}-#{$key}-#{$i} {
+        border:#{$i}px solid $value;
+      }
     }
-    .bh-#{$key}-#{$i} {
-      border-left:#{$i}px solid $value;
-      border-right:#{$i}px solid $value;
-    }
-    .bv-#{$key}-#{$i} {
-      border-top:#{$i}px solid $value;
-      border-bottom:#{$i}px solid $value;
-    }
-    .bt-#{$key}-#{$i} {
-      border-top:#{$i}px solid $value;
-    }
-    .bb-#{$key}-#{$i} {
-      border-bottom:#{$i}px solid $value;
-    }
-    .bl-#{$key}-#{$i} {
-      border-left:#{$i}px solid $value;
-    }
-    .br-#{$key}-#{$i} {
-      border-right:#{$i}px solid $value;
-    }
-  }
-}
 
-@each $index, $grey in $greys {
-  @for $i from 1 through 3 {
-    .ba-grey-#{$index}-#{$i} {
-      border: #{$i}px solid #{$grey};
-    }
-    .bh-grey-#{$index}-#{$i} {
-      border-left: #{$i}px solid #{$grey};
-      border-right: #{$i}px solid #{$grey};
-    }
-    .bv-grey-#{$index}-#{$i} {
-      border-top: #{$i}px solid #{$grey};
-      border-bottom: #{$i}px solid #{$grey};
-    }
-    .bt-grey-#{$index}-#{$i} {
-      border-top: #{$i}px solid #{$grey};
-    }
-    .bb-grey-#{$index}-#{$i} {
-      border-bottom: #{$i}px solid #{$grey};
-    }
-    .bl-grey-#{$index}-#{$i} {
-      border-left: #{$i}px solid #{$grey};
-    }
-    .br-grey-#{$index}-#{$i} {
-      border-right: #{$i}px solid #{$grey};
+    // Loop through each grey and add the color modifier
+    @each $index, $grey in $greys {
+      .#{$direction}-grey-#{$index}-#{$i} {
+        border: #{$i}px solid #{$grey};
+      }
     }
   }
 }
