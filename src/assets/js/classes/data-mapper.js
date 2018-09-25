@@ -654,7 +654,7 @@ export default class DataMapper {
     }
 
     getChildLessonCount(){
-        return this.post['children'] + ' Lessons';
+        return this.post['lesson_count'] + ' Lessons';
     }
 
     static mapDifficulty(post){
