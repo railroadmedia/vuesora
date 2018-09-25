@@ -71,25 +71,25 @@ $borderDirections: (
   @each $parentKey, $parentValue in $borderDirections {
     .#{$parentKey}-white-#{$i} {
       @each $property in $parentValue {
-        $property:#{$i}px solid #fff;
+        #{$property}:#{$i}px solid #fff;
       }
     }
 
     .#{$parentKey}-black-#{$i} {
       @each $property in $parentValue {
-        $property:#{$i}px solid #000;
+        #{$property}:#{$i}px solid #000;
       }
     }
 
     .#{$parentKey}-light-#{$i} {
       @each $property in $parentValue {
-        $property:#{$i}px solid $lightGray;
+        #{$property}:#{$i}px solid $lightGray;
       }
     }
 
     .#{$parentKey}-dark-#{$i} {
       @each $property in $parentValue {
-        $property:#{$i}px solid $darkGray;
+        #{$property}:#{$i}px solid $darkGray;
       }
     }
 
@@ -97,7 +97,7 @@ $borderDirections: (
     @each $key, $value in $brand_colors {
       .#{$parentKey}-#{$key}-#{$i} {
         @each $property in $parentValue {
-          $property: #{$i}px solid $value;
+          #{$property}: #{$i}px solid $value;
         }
       }
     }
@@ -106,7 +106,7 @@ $borderDirections: (
     @each $key, $value in $content_colors {
       .#{$parentKey}-#{$key}-#{$i} {
         @each $property in $parentValue {
-          $property: #{$i}px solid $value;
+          #{$property}: #{$i}px solid $value;
         }
       }
     }
@@ -115,7 +115,7 @@ $borderDirections: (
     @each $index, $grey in $greys {
       .#{$parentKey}-grey-#{$index}-#{$i} {
         @each $property in $parentValue {
-          $property: #{$i}px solid #{$grey};
+          #{$property}: #{$i}px solid #{$grey};
         }
       }
     }
