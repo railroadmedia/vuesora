@@ -38,46 +38,85 @@ $directions:top bottom left right;
 
 
 // Borders
-$borderDirections: ba bh bv bt bb br bl;
+$borderDirections: (
+  ba: (
+    border
+  ),
+  bv: (
+    border-top,
+    border-bottom
+  ),
+  bt: (
+    border-top
+  ),
+  bb: (
+    border-bottom
+  ),
+  bh: (
+    border-left,
+    border-right
+  ),
+  br: (
+    border-right
+  ),
+  bl: (
+    border-left
+  )
+);
 // Loop from 1 to 3 for each different border width value
 @for $i from 1 through 3 {
 
   // Loop through the directions and add additional modifiers
-  @each $direction in $borderDirections {
-    .#{$direction}-white-#{$i} {
-      border:#{$i}px solid #fff;
+
+  @each $parentKey, $parentValue in $borderDirections {
+    .#{$parentKey}-white-#{$i} {
+      @each $property in $parentValue {
+        #{$property}:#{$i}px solid #fff;
+      }
     }
 
-    .#{$direction}-black-#{$i} {
-      border:#{$i}px solid #000;
+    .#{$parentKey}-black-#{$i} {
+      @each $property in $parentValue {
+        #{$property}:#{$i}px solid #000;
+      }
     }
 
-    .#{$direction}-light-#{$i} {
-      border:#{$i}px solid $lightGray;
+    .#{$parentKey}-light-#{$i} {
+      @each $property in $parentValue {
+        #{$property}:#{$i}px solid $lightGray;
+      }
     }
 
-    .#{$direction}-dark-#{$i} {
-      border:#{$i}px solid $darkGray;
+    .#{$parentKey}-dark-#{$i} {
+      @each $property in $parentValue {
+        #{$property}:#{$i}px solid $darkGray;
+      }
     }
 
     // Loop through each brand color and add the color modifier
     @each $key, $value in $brand_colors {
-      .#{$direction}-#{$key}-#{$i} {
-        border:#{$i}px solid $value;
+      .#{$parentKey}-#{$key}-#{$i} {
+        @each $property in $parentValue {
+          #{$property}: #{$i}px solid $value;
+        }
       }
     }
 
     // Loop through each content color and add the color modifier
     @each $key, $value in $content_colors {
-      .#{$direction}-#{$key}-#{$i} {
-        border:#{$i}px solid $value;
+      .#{$parentKey}-#{$key}-#{$i} {
+        @each $property in $parentValue {
+          #{$property}: #{$i}px solid $value;
+        }
       }
     }
 
     // Loop through each grey and add the color modifier
     @each $index, $grey in $greys {
-      .#{$direction}-grey-#{$index}-#{$i} {
-        border: #{$i}px solid #{$grey};
+      .#{$parentKey}-grey-#{$index}-#{$i} {
+        @each $property in $parentValue {
+          #{$property}: #{$i}px solid #{$grey};
+        }
       }
     }
   }
