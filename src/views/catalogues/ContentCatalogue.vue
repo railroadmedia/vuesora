@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column grow">
+    <div class="flex flex-column align-v-center">
         <div v-if="$_gridOrListButtons"
              class="flex flex-row pv">
             <button class="btn mh-1"
@@ -26,9 +26,11 @@
                           @typeChange="handleTypeChange"
                           @searchChange="handleSearch"></catalogue-search>
 
+
         <catalogue-playlist-tabs v-if="$_isPlaylists"
-                          :$_themeColor="$_themeColor"
-                          :$_included_types="$_includedTypes"></catalogue-playlist-tabs>
+                                 :$_themeColor="$_themeColor"
+                                 :$_included_types="$_includedTypes"></catalogue-playlist-tabs>
+
 
         <div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">
             <span class="heading pointer mr-3"
@@ -71,24 +73,24 @@
                         :$_useThemeColor="$_useThemeColor"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
-        <list-catalogue v-if="catalogue_type === 'list'"
-                        :$_content="content"
-                        :$_brand="$_brand"
-                        :$_themeColor="$_themeColor"
-                        :$_userId="$_userId"
-                        :$_displayItemsAsOverview="$_displayItemsAsOverview"
-                        :$_displayUserInteractions="$_displayUserInteractions"
-                        :$_contentTypeOverride="$_contentTypeOverride"
-                        :$_lockUnowned="$_lockUnowned"
-                        :$_showNumbers="$_showNumbers"
-                        :$_is_search="$_searchBar || $_isPlaylists"
-                        :$_resetProgress="$_resetProgress"
-                        :$_useThemeColor="$_useThemeColor"
-                        :$_forceWideThumbs="$_forceWideThumbs"
-                        :$_destroyOnListRemoval="$_destroyOnListRemoval"
-                        :$_compactLayout="$_compactLayout"
-                        @addToList="addToListEventHandler"
-                        @resetProgress="resetProgressEventHandler"></list-catalogue>
+            <list-catalogue v-if="catalogue_type === 'list'"
+                            :$_content="content"
+                            :$_brand="$_brand"
+                            :$_themeColor="$_themeColor"
+                            :$_userId="$_userId"
+                            :$_displayItemsAsOverview="$_displayItemsAsOverview"
+                            :$_displayUserInteractions="$_displayUserInteractions"
+                            :$_contentTypeOverride="$_contentTypeOverride"
+                            :$_lockUnowned="$_lockUnowned"
+                            :$_showNumbers="$_showNumbers"
+                            :$_is_search="$_searchBar || $_isPlaylists"
+                            :$_resetProgress="$_resetProgress"
+                            :$_useThemeColor="$_useThemeColor"
+                            :$_forceWideThumbs="$_forceWideThumbs"
+                            :$_destroyOnListRemoval="$_destroyOnListRemoval"
+                            :$_compactLayout="$_compactLayout"
+                            @addToList="addToListEventHandler"
+                            @resetProgress="resetProgressEventHandler"></list-catalogue>
 
         <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
              class="flex flex-row pa">
