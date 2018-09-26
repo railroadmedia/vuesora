@@ -20,7 +20,7 @@
                      :class="thumbnailType"
                      :style="'background-image:url( ' + $_thumbnail + ' );'">
 
-                    <div class="lesson-progress overflow corners-bottom-3">
+                    <div class="lesson-progress overflow">
                         <span class="progress"
                               :class="'bg-' + theme"
                               :style="'width:' + $_progress_percent + '%'"></span>
