@@ -26,10 +26,11 @@
                               :style="'width:' + $_progress_percent + '%'"></span>
                     </div>
 
-                    <!--<span v-if="$_showTrophy"-->
-                          <!--class="bundle-complete flex-center">-->
-                        <!--<i class="fas fa-trophy"></i>-->
-                    <!--</span>-->
+                    <span v-if="$_showTrophy"
+                          class="bundle-complete flex-center">
+                        <i class="fas fa-trophy"></i>
+                    </span>
+
                     <span class="thumb-hover flex-center">
                         <i class="fas"
                            :class="$_thumbnailIcon"></i>
@@ -127,7 +128,7 @@
                  class="body">
                 <i v-if="$_item.started || $_item.completed"
                    class="fas flex-center rounded"
-                   :class="$_item.completed ? 'fa-check-circle text-' + theme : 'fa-adjust text-' + theme"></i>
+                   :class="$_item.completed ? $_completedIcon + ' text-' + theme : 'fa-adjust text-' + theme"></i>
 
                 <i v-else
                    class="fas flex-center text-grey-2 rounded"
@@ -254,10 +255,6 @@
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
             },
 
-            $_showTrophy(){
-                return this.$_item['type'] === 'pack-bundle-lesson' && this.$_item['completed'] && !this.$_is_search;
-            },
-
             $_progress_percent(){
                 return this.$_item['progress_percent'];
             },
@@ -272,6 +269,10 @@
 
             $_releaseDate(){
                 return moment(this.$_item['published_on']).format('MMM D');
+            },
+
+            $_completedIcon(){
+                return this.$_item['type'] === 'course' ? 'fa-trophy' : 'fa-check-circle';
             },
 
             $_thumbnailIcon(){

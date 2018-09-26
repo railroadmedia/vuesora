@@ -39,29 +39,13 @@ $directions:top bottom left right;
 
 // Borders
 $borderDirections: (
-  ba: (
-    border
-  ),
-  bv: (
-    border-top,
-    border-bottom
-  ),
-  bt: (
-    border-top
-  ),
-  bb: (
-    border-bottom
-  ),
-  bh: (
-    border-left,
-    border-right
-  ),
-  br: (
-    border-right
-  ),
-  bl: (
-    border-left
-  )
+  ba: ( border ),
+  bv: ( border-top, border-bottom ),
+  bt: ( border-top ),
+  bb: ( border-bottom ),
+  bh: ( border-left, border-right ),
+  br: ( border-right ),
+  bl: ( border-left )
 );
 // Loop from 1 to 3 for each different border width value
 @for $i from 1 through 3 {
