@@ -69,6 +69,19 @@ ul {
   margin:0;
 }
 
+.load-before-render {
+  text-align:center;
+  animation: rotation 2s infinite linear;
+
+  &:before {
+    content: '\f110';
+    font-size:36px;
+    font-family: Font Awesome\ 5 Pro;
+    font-weight: 900;
+    display:inline-block;
+  }
+}
+
 #pageHeader {
   background-size:cover;
   background-position:center;
