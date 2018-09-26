@@ -1,5 +1,5 @@
 <template>
-    <div class="media-element" :id="themeColor + 'Theme'">
+    <div class="media-element widescreen" :id="themeColor + 'Theme'">
         <video v-if="sortedSourcesArray.length"
                :poster="poster"
                :id="elementId"
@@ -284,7 +284,9 @@
                 defaultVideoHeight: 720,
                 autosizeProgress: false,
                 startVolume: 0.5,
-                stretching: 'responsive',
+                stretching: 'fill',
+                setDimensions: false,
+                enableAutosize:false,
                 features: vm.playerPlugins,
                 jumpForwardInterval: 10,
                 skipBackInterval: 10,
@@ -403,6 +405,23 @@
             }
         }
 
+        .mejs__fill-container {
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+
+            .mejs__overlay {
+                width:100%;
+                height:100%;
+            }
+
+            .mejs__player {
+                width:100%;
+                height:100%;
+            }
+        }
         .mejs__skip-back-button {
             position:absolute;
             bottom:5em;
