@@ -469,7 +469,6 @@
 $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
 
 .scheduled {
-  padding-left:calc(24px + #{$gutterWidth / 3});
   position:relative;
 
   .month-col {
