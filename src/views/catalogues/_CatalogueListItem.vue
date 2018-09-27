@@ -12,7 +12,8 @@
             {{ $_index }}
         </div>
 
-        <div class="flex flex-column align-v-center"
+        <div v-if="$_item.type !== 'student-review'"
+             class="flex flex-column align-v-center"
              :class="[$_overview ? 'large-thumbnail ' + theme
              : 'thumbnail-col ' + theme, { 'active': $_active }]">
             <div class="thumb-wrap corners-3">
@@ -26,12 +27,31 @@
                               :style="'width:' + $_progress_percent + '%'"></span>
                     </div>
 
-                    <span v-if="$_showTrophy"
-                          class="bundle-complete flex-center">
-                        <i class="fas fa-trophy"></i>
-                    </span>
-
                     <span class="thumb-hover flex-center">
+                        <i class="fas"
+                           :class="$_thumbnailIcon"></i>
+                        <p v-if="$_noAccess"
+                           class="x-tiny text-white font-bold">
+                            {{ $_releaseDate }}
+                        </p>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div v-if="$_item.type === 'student-review'"
+             class="flex flex-column align-v-center avatar-col">
+            <div class="thumb-wrap rounded" style="border-radius:50%;">
+                <div class="thumb-img corners-3 square rounded"
+                     :style="'background-image:url( ' + $_thumbnail + ' );'">
+
+                    <!--<div class="lesson-progress overflow">-->
+                        <!--<span class="progress"-->
+                              <!--:class="'bg-' + theme"-->
+                              <!--:style="'width:' + $_progress_percent + '%'"></span>-->
+                    <!--</div>-->
+
+                    <span class="thumb-hover rounded flex-center"
+                          style="border-radius:50%;">
                         <i class="fas"
                            :class="$_thumbnailIcon"></i>
                         <p v-if="$_noAccess"

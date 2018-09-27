@@ -580,6 +580,52 @@ export default class DataMapper {
                 }
             },
 
+            'student-review': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getPostDuration()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDate(),
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
+            'question-and-answer': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getPostDuration()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration(),
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
             default: {
                 card: {
                     color_title: this.getType(),

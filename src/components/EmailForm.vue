@@ -56,7 +56,7 @@
                 type: String,
                 default: () => 'drumeo'
             },
-            subject: {
+            emailSubject: {
                 type: String,
                 default: () => ''
             },
@@ -107,7 +107,7 @@
                     Requests.sendEmail(
                         this.value,
                         this.emailType,
-                        this.subject,
+                        this.emailSubject,
                         this.recipient
                     )
                         .then(resolved => {
