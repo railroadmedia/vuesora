@@ -1,7 +1,7 @@
 <template>
     <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative"
        :class="$_class_object"
-       :href="$_noLink ? false : $_item.url">
+       :href="$_renderLink ? false : $_item.url">
         <div v-if="mappedData.sheet_music && !$_is_search"
              class="flex flex-column xs-12 pa hide-sm-up">
             <img :src="mappedData.sheet_music" style="width:100%;">
@@ -14,7 +14,7 @@
 
         <div v-if="$_item.type !== 'student-review'"
              class="flex flex-column align-v-center"
-             :class="[$_overview ? 'large-thumbnail ' + theme
+             :class="[this.$_overview ? 'large-thumbnail ' + theme
              : 'thumbnail-col ' + theme, { 'active': $_active }]">
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
@@ -311,6 +311,14 @@
                 return DataMapper.mapDifficulty(this.$_item);
             },
 
+            $_renderLink(){
+                if(this.$_noLink){
+                    return false;
+                }
+
+                return this.$_noAccess;
+            },
+
             theme(){
                 if(this.$_useThemeColor){
                     return this.$_themeColor
@@ -325,6 +333,10 @@
                     card_type: 'list',
                     post: this.$_item
                 });
+            },
+
+            showOverview(){
+                return this.$_overview && !this.$_noAccess;
             },
 
             thumbnailType(){
