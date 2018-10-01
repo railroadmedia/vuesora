@@ -270,6 +270,15 @@
                 document.execCommand('copy');
                 timecode.blur();
                 Toasts.success('Video url copied at current time!')
+            },
+
+            jumpToTime(timeInSeconds){
+                console.log(timeInSeconds);
+
+                this.mediaElement.setCurrentTime(timeInSeconds);
+                setTimeout(() => {
+                    this.mediaElement.play();
+                }, 100);
             }
         },
         created(){
