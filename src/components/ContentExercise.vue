@@ -270,6 +270,7 @@
             bottom:0;
             left:50%;
             transform:translateX(-50%);
+            white-space:nowrap;
 
             .page-button {
                 height:12px;
