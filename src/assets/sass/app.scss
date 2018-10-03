@@ -24,6 +24,13 @@ html {
   box-sizing: border-box;
   height:100%;
 
+  &.no-scroll {
+    overflow:hidden;
+
+    #intercom-container {
+      display:none;
+    }
+  }
 }
 
 *, *:before, *:after {
