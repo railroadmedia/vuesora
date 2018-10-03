@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column align-v-center">
+    <div class="flex flex-column grow align-v-center">
         <div v-if="$_gridOrListButtons"
              class="flex flex-row pv">
             <button class="btn mh-1"
