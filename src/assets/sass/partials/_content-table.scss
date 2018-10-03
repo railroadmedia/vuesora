@@ -399,6 +399,16 @@
   max-width:50px;
 }
 
+.buy-col {
+  flex:0 0 100%;
+  max-width:100%;
+
+  @include small {
+    flex:0 0 225px;
+    max-width:225px;
+  }
+}
+
 .basic-col {
   flex:0 0 100px;
   transition:color .2s ease-in-out;

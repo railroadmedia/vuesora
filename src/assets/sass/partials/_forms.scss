@@ -20,7 +20,7 @@
     will-change:transform, color;
     transition:transform .2s ease-in-out, color .1s ease-in-out;
     transform-origin:0 0;
-    color:nth(nth($greys, 2), 2);
+    color:nth(nth($greys, 3), 2);
     pointer-events:none;
 
     // Pull in font sizes from the .body class
