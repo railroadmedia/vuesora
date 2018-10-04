@@ -260,23 +260,42 @@
       }
     }
   }
+}
 
-  .item-description {
-    transition:max-height .1s ease-in-out;
-    will-change:max-height;
 
-    @include xSmallOnly {
-      max-height:3em;
-      overflow:hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      text-overflow:ellipsis;
+.item-description {
+  transition:max-height .1s ease-in-out;
+  will-change:max-height;
 
-      &.active {
-        overflow:visible;
-        -webkit-line-clamp:initial;
-      }
+  &.always-truncate {
+    max-height:3em;
+    overflow:hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow:ellipsis;
+
+    &.active {
+      overflow:visible;
+      -webkit-line-clamp:initial;
+    }
+  }
+
+  &.font-compressed {
+    max-height:2em;
+  }
+
+  @include xSmallOnly {
+    max-height:3em;
+    overflow:hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow:ellipsis;
+
+    &.active {
+      overflow:visible;
+      -webkit-line-clamp:initial;
     }
   }
 }
