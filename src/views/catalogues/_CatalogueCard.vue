@@ -45,7 +45,7 @@
             </h1>
 
             <p v-if="mappedData.show_description"
-               class="x-tiny font-compressed text-grey-4 mb-1 text-truncate-2-lines">
+               class="x-tiny font-compressed text-grey-4 mb-1 item-description always-truncate">
                 {{ mappedData.description }}
             </p>
 
