@@ -2,6 +2,7 @@
 @import "~noty/src/noty.scss";
 @import "~noty/src/themes/bootstrap-v4.scss";
 @import "~flatpickr/dist/themes/airbnb.css";
+@import './partials/_tooltip.scss';
 @import './partials/_flags.scss';
 @import './partials/_grid.scss';
 @import './partials/_typography.scss';
@@ -18,7 +19,6 @@
 @import './partials/_account.scss';
 @import './partials/_modal.scss';
 @import './partials/_play-alongs.scss';
-
 
 html {
   box-sizing: border-box;

@@ -1,0 +1,57 @@
+@import './_variables.scss';
+
+[data-tooltip]{
+  position:relative;
+
+  @include large {
+
+    &:hover {
+      &:before {
+        transform:translate(-50%, 0);
+        opacity:1;
+      }
+      &:after {
+        transform:translate(-50%, 0);
+        opacity:1;
+      }
+    }
+  }
+
+  &:before {
+    position:absolute;
+    bottom:calc(100% + 14px);
+    left:50%;
+    transform:translate(-50%, 15px);
+    content: attr(data-tooltip);
+    background:rgba(0,0,0,.5);
+    color:#fff;
+    font:400 12px/1em $secondarySansSerif;
+    white-space:nowrap;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+    z-index:90;
+    padding:#{$gutterWidth / 4} #{$gutterWidth / 3};
+    text-transform:uppercase;
+    border-radius:3px;
+    opacity:0;
+    will-change:opacity, transform;
+    transition:opacity .1s ease-in-out, transform .1s ease-in-out;
+  }
+
+  &:after {
+    bottom: 100%;
+    left: 50%;
+    transform:translate(-50%, 15px);
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: #000;
+    border-width: 7px;
+    opacity:0;
+    will-change:opacity, transform;
+    transition:opacity .1s ease-in-out, transform .1s ease-in-out;
+  }
+}
