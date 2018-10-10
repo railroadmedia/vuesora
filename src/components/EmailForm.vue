@@ -28,7 +28,7 @@
         <div class="flex flex-column" v-if="!lessonPage">
             <div class="form-group mb textarea">
                 <textarea id="questionBox" v-model="valueInterface" :class="{ 'has-input': this.value.length }"></textarea>
-                <label for="questionBox" class="recordeo">{{ inputLabel }}</label>
+                <label for="questionBox" :class="themeColor">{{ inputLabel }}</label>
             </div>
             <div class="form-group">
                 <button class="btn"
