@@ -30,6 +30,8 @@
                              :height="150"
                              ref="textEditor"></text-editor>
 
+                <!--<wysiwyg-editor></wysiwyg-editor>-->
+
                 <div class="flex flex-row align-h-right mv-1">
                     <button class="btn collapse-150" :disabled="loading"
                             @click="postComment">
@@ -76,6 +78,7 @@
 <script>
     import BrandClasses from '../../mixins/BrandClasses.js';
     import TextEditor from '../../components/TextEditor.vue';
+    // import WYSIWYGEditor from '../../components/WYSIWYGEditor.vue';
     import Requests from '../../assets/js/classes/requests';
     import CommentPost from './_CommentPost.vue';
     import Toasts from '../../assets/js/classes/toasts';
@@ -87,7 +90,8 @@
         name: 'comments',
         components: {
             'text-editor': TextEditor,
-            'comment-post': CommentPost
+            'comment-post': CommentPost,
+            // 'wysiwyg-editor': WYSIWYGEditor,
         },
         props: {
             content_id: {
