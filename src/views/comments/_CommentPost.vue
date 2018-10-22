@@ -65,7 +65,7 @@
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
-                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="replying ? 'text-' + themeColor : 'text-grey-3'"
                            @click="replyToComment">
                             <i class="fas fa-reply"></i>
@@ -75,7 +75,7 @@
                         </p>
 
                         <p v-if="!isUsersPost"
-                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                           class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="is_liked ? 'text-' + themeColor : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
@@ -84,9 +84,13 @@
                             </span>
                         </p>
 
-                        <p class="x-tiny text-grey-3 uppercase font-italic"
-                           v-html="userLikeString">
-                            {{ userLikeString }}
+                        <span class="grow"></span>
+
+                        <p class="x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect"
+                           data-open-modal="likeUsersModal"
+                           @click="openLikes">
+                            <i class="fas fa-thumbs-up text-white likes-icon"
+                               :class="'bg-' + themeColor"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -136,7 +140,8 @@
                                :profileBaseRoute="profileBaseRoute"
                                :hasPublicProfiles="hasPublicProfiles"
                                @likeReply="likeReply"
-                               @deleteReply="deleteReply"></comment-reply>
+                               @deleteReply="deleteReply"
+                               @openLikes="openLikes"></comment-reply>
             </transition-group>
 
             <div class="flex flex-row align-center" v-if="replies.length > 2">
@@ -432,6 +437,12 @@
                     parent_id: this.id,
                     id: payload.id
                 })
+            },
+
+            openLikes(payload){
+                this.$emit('openLikes', {
+                    likeUsers: payload.busToRoot ? payload.likeUsers : this.like_users
+                });
             },
 
             getCommentLink(event) {

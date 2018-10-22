@@ -58,7 +58,7 @@
                     <div class="flex flex-row align-v-center">
 
                         <p v-if="!isUsersPost"
-                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                           class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="isLiked ? 'text-' + themeColor : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
@@ -67,9 +67,13 @@
                             </span>
                         </p>
 
-                        <p class="x-tiny text-grey-3 uppercase font-italic"
-                           v-html="userLikeString">
-                            {{ userLikeString }}
+                        <span class="grow"></span>
+
+                        <p class="x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect"
+                           data-open-modal="likeUsersModal"
+                           @click="openLikes">
+                            <i class="fas fa-thumbs-up text-white likes-icon"
+                               :class="'bg-' + themeColor"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -257,6 +261,13 @@
                     id: this.id,
                     isLiked: this.is_liked,
                     isPinned: this.pinned
+                });
+            },
+
+            openLikes(){
+                this.$emit('openLikes', {
+                    likeUsers: this.like_users,
+                    busToRoot: true
                 });
             },
 

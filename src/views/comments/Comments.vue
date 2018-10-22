@@ -30,8 +30,6 @@
                              :height="150"
                              ref="textEditor"></text-editor>
 
-                <!--<wysiwyg-editor></wysiwyg-editor>-->
-
                 <div class="flex flex-row align-h-right mv-1">
                     <button class="btn collapse-150" :disabled="loading"
                             @click="postComment">
@@ -60,7 +58,8 @@
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
                       @deleteComment="handleCommentDelete"
-                      @deleteReply="handleReplyDelete"></comment-post>
+                      @deleteReply="handleReplyDelete"
+                      @openLikes="addLikeUsersToModal"></comment-post>
 
         <comment-post v-for="(comment, i) in comments"
                       :key="i"
@@ -72,13 +71,36 @@
                       @likeComment="handleCommentLike"
                       @likeReply="handleReplyLike"
                       @deleteComment="handleCommentDelete"
-                      @deleteReply="handleReplyDelete"></comment-post>
+                      @deleteReply="handleReplyDelete"
+                      @openLikes="addLikeUsersToModal"></comment-post>
+
+        <!-- LIKE USERS MODAL -->
+        <div id="likeUsersModal" class="modal">
+            <div class="flex flex-column bg-white corners-3 shadow pa-3">
+                <h1 class="heading align-v-center">
+                    <i class="fas fa-thumbs-up rounded text-white mr-1 big likes-icon"
+                       :class="'bg-' + themeColor"></i>
+                    {{ likeUsers.length }} Like{{ likeUsers.length === 1 ? '' : 's' }}
+                </h1>
+
+                <a v-for="user in likeUsers"
+                   :key="user.id"
+                   :href="'/laravel/public/members/profile/' + user.id"
+                   class="flex flex-row comment-post bt-grey-1-1 align-v-center no-decoration text-black pv-2 mt-2">
+                    <div class="flex flex-column avatar-column">
+                        <img class="rounded" src="https://placehold.it/500x500">
+                    </div>
+                    <div class="flex flex-column title pl-2">
+                        {{ user.display_name }}
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 </template>
 <script>
     import BrandClasses from '../../mixins/BrandClasses.js';
     import TextEditor from '../../components/TextEditor.vue';
-    // import WYSIWYGEditor from '../../components/WYSIWYGEditor.vue';
     import Requests from '../../assets/js/classes/requests';
     import CommentPost from './_CommentPost.vue';
     import Toasts from '../../assets/js/classes/toasts';
@@ -135,7 +157,8 @@
                 requestingData: false,
                 sortOption: '-created_on',
                 comment: '',
-                loading: false
+                loading: false,
+                likeUsers: []
             }
         },
         computed: {
@@ -339,6 +362,10 @@
                             }, 100);
                         }
                     })
+            },
+
+            addLikeUsersToModal(payload){
+                this.likeUsers = payload.likeUsers;
             }
         },
         created(){

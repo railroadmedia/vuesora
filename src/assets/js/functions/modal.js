@@ -1,18 +1,28 @@
 export default (function(){
     const modalTriggers = document.querySelectorAll('[data-open-modal]');
-    const modalDialogs = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close-modal');
 
     const closeEvent = new CustomEvent('modalClose');
 
     // Add event listeners to every trigger button
-    Array.from(modalTriggers).forEach(trigger => {
-        trigger.addEventListener('click', openModal)
-    });
+    // Array.from(modalTriggers).forEach(trigger => {
+    //     trigger.addEventListener('click', openModal);
+    // });
 
     // Add Event Listeners to every close button
-    Array.from(closeButtons).forEach(button => {
-        button.addEventListener('click', closeModal);
+    // Array.from(closeButtons).forEach(button => {
+    //     button.addEventListener('click', closeModal);
+    // });
+
+    document.body.addEventListener('click', event => {
+
+        if(event.target.dataset['openModal'] != null){
+            openModal(event);
+        }
+
+        if(event.target.classList.contains('close-modal')){
+            closeModal();
+        }
     });
 
     function openModal(event){
@@ -38,6 +48,7 @@ export default (function(){
 
     function closeModal(){
         const modalOverlay = document.getElementById('modalOverlay');
+        const modalDialogs = document.querySelectorAll('.modal');
 
         // Remove the event listeners from the overlay and remove it from the DOM
         if(modalOverlay){
