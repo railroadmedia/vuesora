@@ -21,6 +21,7 @@
     "e2e:open": "vue-cli-service e2e:open"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^11.0.1",
     "@tinymce/tinymce-vue": "^1.0.6",
     "axios": "^0.18.0",
     "babel-core": "^6.26.0",

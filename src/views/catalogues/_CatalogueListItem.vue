@@ -1,37 +1,34 @@
 <template>
     <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative"
        :class="$_class_object"
-       :href="$_noLink ? false : $_item.url">
+       :href="$_renderLink ? false : $_item.url">
         <div v-if="mappedData.sheet_music && !$_is_search"
              class="flex flex-column xs-12 pa hide-sm-up">
             <img :src="mappedData.sheet_music" style="width:100%;">
         </div>
 
+        <!-- LESSON NUMBERS -->
         <div v-if="$_showNumbers"
              class="flex flex-column align-center number-col title text-black hide-sm-down">
             {{ $_index }}
         </div>
 
-        <div class="flex flex-column align-v-center"
-             :class="[$_overview ? 'large-thumbnail ' + theme
+        <!-- THUMBNAIL COLUMN -->
+        <div v-if="$_item.type !== 'student-review'"
+             class="flex flex-column align-v-center"
+             :class="[this.$_overview ? 'large-thumbnail ' + theme
              : 'thumbnail-col ' + theme, { 'active': $_active }]">
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
                      :class="thumbnailType"
                      :style="'background-image:url( ' + $_thumbnail + ' );'">
 
-                    <div class="lesson-progress overflow corners-bottom-3">
+                    <div class="lesson-progress overflow">
                         <span class="progress"
                               :class="'bg-' + theme"
                               :style="'width:' + $_progress_percent + '%'"></span>
                     </div>
 
-
-
-                    <!--<span v-if="$_showTrophy"-->
-                          <!--class="bundle-complete flex-center">-->
-                        <!--<i class="fas fa-trophy"></i>-->
-                    <!--</span>-->
                     <span class="thumb-hover flex-center">
                         <i class="fas"
                            :class="$_thumbnailIcon"></i>
@@ -44,6 +41,33 @@
             </div>
         </div>
 
+        <!-- AVATAR INSTEAD OF THUMBNAIL -->
+        <div v-if="$_item.type === 'student-review'"
+             class="flex flex-column align-v-center avatar-col">
+            <div class="thumb-wrap rounded" style="border-radius:50%;">
+                <div class="thumb-img corners-3 square rounded"
+                     :style="'background-image:url( ' + $_thumbnail + ' );'">
+
+                    <!--<div class="lesson-progress overflow">-->
+                        <!--<span class="progress"-->
+                              <!--:class="'bg-' + theme"-->
+                              <!--:style="'width:' + $_progress_percent + '%'"></span>-->
+                    <!--</div>-->
+
+                    <span class="thumb-hover rounded flex-center"
+                          style="border-radius:50%;">
+                        <i class="fas"
+                           :class="$_thumbnailIcon"></i>
+                        <p v-if="$_noAccess"
+                           class="x-tiny text-white font-bold">
+                            {{ $_releaseDate }}
+                        </p>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TITLES AND COLUMN DATA (on mobile) -->
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
             <p class="tiny font-compressed text-recordeo uppercase text-truncate"
@@ -80,27 +104,32 @@
             </p>
         </div>
 
+        <!-- SHEET MUSIC IMAGE IF IT EXISTS -->
         <div v-if="mappedData.sheet_music && !$_is_search"
              class="flex flex-column sheet-music-col ph-1 hide-xs-only">
             <img :src="mappedData.sheet_music">
         </div>
 
+        <!-- SHOW ALL OF THE DATA COLUMNS FROM THE DATA MAPPER -->
         <div v-if="!$_is_search"
              v-for="(item, i) in mappedData.column_data"
              class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny font-compressed hide-sm-down">
             {{ item }}
         </div>
 
+        <!-- ONLY SHOW TYPE ON SEARCHES -->
         <div v-if="$_is_search"
              class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
             {{ $_item.type.replace('bundle-', '').replace(/-/g, ' ') }}
         </div>
 
+        <!-- ONLY SHOW DIFFICULTY ON SEARCHES -->
         <div v-if="$_is_search"
              class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
             {{ $_parsed_difficulty }}
         </div>
 
+        <!-- ADD TO LIST OR RESET PROGRESS BUTTONS -->
         <div v-if="$_displayUserInteractions && this.$_item.type !== 'learning-path'"
              class="flex flex-column icon-col align-v-center"
              :class="$_is_search ? '' : 'hide-xs-only'">
@@ -120,16 +149,32 @@
             </div>
         </div>
 
+        <!-- PROGRESS INDICATOR OR LOCK ICON -->
         <div class="flex flex-column icon-col align-v-center"
              :class="$_is_search || $_overview ? 'hide-xs-only' : ''">
-            <div v-if="$_noAccess" class="body">
-                <i class="fas fa-lock flex-center rounded text-grey-2"></i>
+
+            <!-- LOCK ICON OR ADD TO CALENDAR -->
+            <div v-if="$_noAccess" class="body"
+                 :class="!$_isReleased ? 'addeventatc' : ''"
+                 data-dropdown-y="up"
+                 data-dropdown-x="right"
+                 data-intel-apple="true">
+                <i v-if="$_isReleased"
+                   class="fas fa-lock flex-center rounded text-grey-2"></i>
+                <i v-else
+                   class="fas fa-calendar-plus flex-center text-grey-2"></i>
+
+                <span v-if="!$_isReleased" class="start">{{ $_item.published_on }}</span>
+                <span v-if="!$_isReleased" class="timezone">UTC</span>
+                <span v-if="!$_isReleased" class="title">{{ $_item.title }}</span>
             </div>
+
+            <!-- STARTED OR COMPLETED -->
             <div v-else
                  class="body">
                 <i v-if="$_item.started || $_item.completed"
                    class="fas flex-center rounded"
-                   :class="$_item.completed ? 'fa-check-circle text-' + theme : 'fa-adjust text-' + theme"></i>
+                   :class="$_item.completed ? $_completedIcon + ' text-' + theme : 'fa-adjust text-' + theme"></i>
 
                 <i v-else
                    class="fas flex-center text-grey-2 rounded"
@@ -232,7 +277,7 @@
                     'content-overview': this.$_overview,
                     'content-table-row': !this.$_overview,
                     'no-access': this.$_noAccess,
-                    'no-events': this.$_noAccess,
+                    // 'no-events': this.$_noAccess,
                     'wrap-on-mobile': this.mappedData.sheet_music != null,
                     'compact' : this.$_compactLayout,
                     'start-learning-path': this.$_contentTypeOverride === 'learning-path-part'
@@ -256,10 +301,6 @@
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
             },
 
-            $_showTrophy(){
-                return this.$_item['type'] === 'pack-bundle-lesson' && this.$_item['completed'] && !this.$_is_search;
-            },
-
             $_progress_percent(){
                 return this.$_item['progress_percent'];
             },
@@ -274,6 +315,10 @@
 
             $_releaseDate(){
                 return moment(this.$_item['published_on']).format('MMM D');
+            },
+
+            $_completedIcon(){
+                return this.$_item['type'] === 'course' ? 'fa-trophy' : 'fa-check-circle';
             },
 
             $_thumbnailIcon(){
@@ -292,6 +337,14 @@
                 return DataMapper.mapDifficulty(this.$_item);
             },
 
+            $_renderLink(){
+                if(this.$_noLink){
+                    return false;
+                }
+
+                return this.$_noAccess;
+            },
+
             theme(){
                 if(this.$_useThemeColor){
                     return this.$_themeColor
@@ -306,6 +359,10 @@
                     card_type: 'list',
                     post: this.$_item
                 });
+            },
+
+            showOverview(){
+                return this.$_overview && !this.$_noAccess;
             },
 
             thumbnailType(){

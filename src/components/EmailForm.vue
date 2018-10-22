@@ -25,7 +25,13 @@
                 </a>
             </div>
         </div>
-        <div class="flex flex-column" v-if="!lessonPage">
+        <div class="flex flex-column relative" v-if="!lessonPage">
+            <div v-if="loading"
+                 class="loading-element"
+                 :class="'text-' + themeColor">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p class="x-tiny font-italic">Loading Please Wait...</p>
+            </div>
             <div class="form-group mb textarea">
                 <textarea id="questionBox" v-model="valueInterface" :class="{ 'has-input': this.value.length }"></textarea>
                 <label for="questionBox" :class="themeColor">{{ inputLabel }}</label>
@@ -56,7 +62,7 @@
                 type: String,
                 default: () => 'drumeo'
             },
-            subject: {
+            emailSubject: {
                 type: String,
                 default: () => ''
             },
@@ -104,32 +110,25 @@
         methods: {
             submitForm (){
                 if(this.value){
+                    this.loading = true;
+
                     Requests.sendEmail(
                         this.value,
                         this.emailType,
-                        this.subject,
+                        this.emailSubject,
                         this.recipient
                     )
                         .then(resolved => {
                             if(resolved){
                                 Toasts.success(this.successMessage);
 
+                                this.$emit('formSuccess');
+
+                                this.loading = false;
                                 this.valueInterface = '';
                             }
                         })
                 }
-            },
-
-            sendRequest (){
-                return axios.post(this.endpoint)
-                    .then(response => {
-                        this.value = '';
-                        return response;
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        Toasts.errorWarning('We\'re sorry! An unexpected error occurred. Please refresh the page and try again.');
-                    })
             }
         }
     }
@@ -149,5 +148,16 @@
     }
     .avatar-col {
         flex:0 0 50px;
+    }
+    .loading-element {
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background-color:rgba(255,255,255,.8);
+        @include flexCenter();
+        font-size:32px;
+        z-index:10;
     }
 </style>

@@ -2,6 +2,7 @@
 @import "~noty/src/noty.scss";
 @import "~noty/src/themes/bootstrap-v4.scss";
 @import "~flatpickr/dist/themes/airbnb.css";
+@import './partials/_tooltip.scss';
 @import './partials/_flags.scss';
 @import './partials/_grid.scss';
 @import './partials/_typography.scss';
@@ -19,11 +20,17 @@
 @import './partials/_modal.scss';
 @import './partials/_play-alongs.scss';
 
-
 html {
   box-sizing: border-box;
   height:100%;
 
+  &.no-scroll {
+    overflow:hidden;
+
+    #intercom-container {
+      display:none;
+    }
+  }
 }
 
 *, *:before, *:after {
@@ -67,6 +74,26 @@ img {
 
 ul {
   margin:0;
+}
+
+.load-before-render {
+  width:100%;
+  height:100%;
+  @include flexCenter();
+  padding:15px;
+  animation: rotation 2s infinite linear;
+
+  &.expand {
+    position:absolute;
+  }
+
+  &:before {
+    content: '\f110';
+    font-size:36px;
+    font-family: Font Awesome\ 5 Pro;
+    font-weight: 900;
+    display:inline-block;
+  }
 }
 
 #pageHeader {

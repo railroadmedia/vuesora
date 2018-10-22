@@ -27,7 +27,6 @@
                 default: () => null
             },
             initialValue: {
-                type: String,
                 default: () => null
             },
             fieldKey: {

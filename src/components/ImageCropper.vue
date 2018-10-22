@@ -69,21 +69,34 @@
                  v-show="croppedImage">
                 <div class="widescreen bg-white">
                     <img :src="croppedImage" class="rounded shadow">
+
+                    <span v-if="loading"
+                          class="loading-element tiny font-italic"
+                          :class="'text-' + brand">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Loading please wait...
+                    </span>
                 </div>
 
                 <div class="pa-1 flex flex-row bg-white">
-                    <a class="btn text-black flat collapse-150 short mr-1"
-                       @click="cancelCrop">
-                        <i class="fas fa-chevron-left mr-1"></i> Back
-                    </a>
+                    <button class="btn collapse-150 mr-1"
+                            @click="cancelCrop"
+                            :disabled="loading">
+                        <span class="text-black flat short">
+                            <i class="fas fa-chevron-left mr-1"></i> Back
+                        </span>
+                    </button>
 
                     <div class="flex flex-column"></div>
 
-                    <a class="btn text-white collapse-150 short mr-1"
-                       :class="'bg-' + brand"
-                       @click="uploadImage">
-                        Save
-                    </a>
+                    <button class="btn collapse-150"
+                            @click="uploadImage"
+                            :disabled="loading">
+                        <span class="text-white short"
+                              :class="'bg-' + brand">
+                            Save
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -333,6 +346,7 @@
 <style lang="scss">
     @import '~cropperjs/dist/cropper.min.css';
     @import '~dropzone/dist/min/dropzone.min.css';
+    @import '../assets/sass/partials/_variables.scss';
 
     .image-processor {
         text-align:center;
@@ -373,6 +387,20 @@
             transform:translate(-50%, -50%);
             width:100%;
             max-width:400px;
+        }
+    }
+
+    .loading-element {
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background-color:rgba(255,255,255,.8);
+        @include flexCenter();
+
+        i {
+            font-size:32px;
         }
     }
 

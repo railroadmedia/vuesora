@@ -3,19 +3,26 @@
          class="flex flex-row comment-post pa mb-1"
          :class="{'pinned': pinned}">
         <div class="flex flex-column avatar-column pr">
-            <a :href="profileRoute" target="_blank"
+            <a v-if="hasPublicProfiles"
+               :href="profileRoute" target="_blank"
                class="no-decoration">
                 <img :src="user['fields.profile_picture_image_url']" class="rounded">
             </a>
+            <img v-else
+                 :src="user['fields.profile_picture_image_url']" class="rounded">
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
-                        <a :href="profileRoute" target="_blank"
+                        <a v-if="hasPublicProfiles"
+                           :href="profileRoute" target="_blank"
                            class="text-black no-decoration">
                         {{ user.display_name }}
                         </a>
+                        <span v-else class="text-black no-decoration">
+                            {{ user.display_name }}
+                        </span>
 
                         <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
                             {{ dateString }}
@@ -120,6 +127,8 @@
                                v-bind="reply"
                                :currentUser="currentUser"
                                :themeColor="themeColor"
+                               :profileBaseRoute="profileBaseRoute"
+                               :hasPublicProfiles="hasPublicProfiles"
                                @likeReply="likeReply"
                                @deleteReply="deleteReply"></comment-reply>
             </transition-group>
@@ -166,6 +175,10 @@
             id: {
                 type: Number,
                 default: () => 0
+            },
+            profileBaseRoute: {
+                type: String,
+                default: '/laravel/public/members/profile/'
             },
             comment: {
                 type: String,
@@ -216,7 +229,11 @@
                         display_name: ''
                     }
                 }
-            }
+            },
+            hasPublicProfiles: {
+                type: Boolean,
+                default: () => true
+            },
         },
         data(){
             return {
@@ -245,7 +262,7 @@
             },
 
             profileRoute(){
-                return '/laravel/public/members/profile/' + this.user_id
+                return this.profileBaseRoute + this.user_id
             },
 
             isLiked(){

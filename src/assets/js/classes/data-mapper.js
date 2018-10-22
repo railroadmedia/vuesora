@@ -591,10 +591,55 @@ export default class DataMapper {
                 },
                 list: {
                     black_title: this.post['title'],
-                    description: this.post['learning_path_description'],
+                    description: this.post['learning_path_description'] || this.post['description'],
+                    column_data: [
+                        this.getChildLessonCount(),
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
+            'student-review': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getPostDuration()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDate(),
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
+            'question-and-answer': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getPostDuration()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
                     column_data: [
                         this.getPostDuration(),
-                        this.getPostDate()
                     ]
                 },
                 schedule: {
@@ -678,6 +723,10 @@ export default class DataMapper {
 
     getEpisodeNumber(){
         return 'Episode #' + this.post['sort'];
+    }
+
+    getChildLessonCount(){
+        return this.post['lesson_count'] + ' Lessons';
     }
 
     static mapDifficulty(post){

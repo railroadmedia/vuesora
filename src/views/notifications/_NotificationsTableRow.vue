@@ -1,14 +1,14 @@
 <template>
     <a :href="linkedContent.url"
-       class="content-table-row flex flex-row bt-light-1 no-decoration"
+       class="content-table-row flex flex-row bt-grey-1-1 pa-1 relative no-decoration"
        :class="{'is-read': isRead}"
        @click="markAsRead">
-        <div class="flex flex-column avatar-col align-v-center pl-1">
+        <div class="flex flex-column avatar-col align-v-center">
             <div class="thumb-img square rounded bg-center"
                  :style="'background-image:url(' + userAvatar + ');'"></div>
         </div>
 
-        <div class="flex flex-column align-v-center pl-1 title-column overflow">
+        <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
             <p class="tiny text-black item-title">
                 <span class="font-bold">{{ userName }}</span>
@@ -24,14 +24,14 @@
         </div>
 
         <div class="flex flex-column icon-col align-v-center">
-            <div class="square body" title="Mark as Read"
+            <div class="body" title="Mark as Read"
                  @click.stop.prevent="markAsRead">
                 <i class="far fa-eye flex-center text-grey-2 rounded read-icon"></i>
             </div>
         </div>
 
         <div class="flex flex-column icon-col align-v-center">
-            <div class="square body">
+            <div class="body">
                 <i class="fas fa-arrow-circle-right flex-center text-grey-2 rounded"></i>
             </div>
         </div>
@@ -108,6 +108,3 @@
         }
     }
 </script>
-<style>
-
-</style>

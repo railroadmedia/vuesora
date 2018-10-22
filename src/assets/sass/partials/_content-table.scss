@@ -91,6 +91,11 @@
 
   .thumb-wrap {
     overflow:hidden;
+    border-radius:3px;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
 
   .thumb-img {
@@ -147,7 +152,7 @@
     background-size:contain;
   }
 
-  &.learning-path {
+  &.background-cards {
     &:before, &:after {
       content:'';
       position:absolute;
@@ -247,6 +252,15 @@
     }
   }
 
+  &.no-access {
+    background-color:#f2f2f2;
+
+    .thumb-wrap .thumb-hover {
+      opacity:1;
+      visibility:visible;
+    }
+  }
+
   .overview-links {
     @include xSmallOnly {
       flex-wrap:wrap;
@@ -282,7 +296,7 @@
   }
 
   &.font-compressed {
-    max-height:2em;
+    max-height:2.5em;
   }
 
   @include xSmallOnly {
@@ -328,46 +342,46 @@
       }
     }
   }
+}
 
-  .thumb-img {
-    background-size:cover;
-    background-position:center 16%;
-    background-repeat:no-repeat;
-    background-color:#000;
-    transform:scale(1);
-    transition:transform .2s ease-in-out;
-    will-change:transform;
+.thumb-img {
+  background-size:cover;
+  background-position:center 16%;
+  background-repeat:no-repeat;
+  background-color:#000;
+  transform:scale(1);
+  transition:transform .2s ease-in-out;
+  will-change:transform;
+}
+
+.thumb-wrap {
+  position:relative;
+  overflow:hidden;
+  border-radius:3px;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+
+  .bundle-complete, .thumb-hover {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,.4);
+    z-index:2;
+
+    i {
+      font-size:16px;
+      color:#fff;
+    }
   }
-
-  .thumb-wrap {
-    position:relative;
-    overflow:hidden;
+  .thumb-hover {
+    visibility:hidden;
+    opacity:0;
+    transition:all .2s ease-in-out;
+    will-change:opacity, visibility;
     border-radius:3px;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    transform: translate3d(0, 0, 0);
-
-    .bundle-complete, .thumb-hover {
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      background-color:rgba(0,0,0,.4);
-      z-index:2;
-
-      i {
-        font-size:16px;
-        color:#fff;
-      }
-    }
-    .thumb-hover {
-      visibility:hidden;
-      opacity:0;
-      transition:all .2s ease-in-out;
-      will-change:opacity, visibility;
-      border-radius:3px;
-    }
   }
 }
 
@@ -400,8 +414,18 @@
 }
 
 .avatar-col {
-  flex:0 0 60px;
-  max-width:60px;
+  flex:0 0 50px;
+  max-width:50px;
+}
+
+.buy-col {
+  flex:0 0 100%;
+  max-width:100%;
+
+  @include small {
+    flex:0 0 225px;
+    max-width:225px;
+  }
 }
 
 .basic-col {
@@ -483,7 +507,6 @@
 $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
 
 .scheduled {
-  padding-left:calc(24px + #{$gutterWidth / 3});
   position:relative;
 
   .month-col {
