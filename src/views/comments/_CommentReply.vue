@@ -1,13 +1,19 @@
 <template>
     <div class="flex flex-row comment-post pl pv mv-1">
         <div class="flex flex-column avatar-column pr">
-            <a v-if="hasPublicProfiles"
-               :href="profileRoute" target="_blank"
-               class="no-decoration">
-                <img :src="user['fields.profile_picture_image_url']" class="rounded">
-            </a>
-            <img v-else
+            <div v-if="hasPublicProfiles"
+                 class="user-avatar smaller"
+                 :class="[avatarClassObject, brand]">
+                <a :href="profileRoute" target="_blank"
+                   class="no-decoration">
+                    <img :src="user['fields.profile_picture_image_url']" class="rounded">
+                </a>
+            </div>
+            <img v-if="!hasPublicProfiles"
                  :src="user['fields.profile_picture_image_url']" class="rounded">
+
+            <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
+            <p class="x-tiny dense text-center font-compressed">1234 XP</p>
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row align-v-center mb-1 comment-meta">
@@ -74,10 +80,15 @@
 <script>
     import Noty from 'noty';
     import moment from 'moment';
+    import xpMapper from '../../assets/js/classes/xp-mapper';
 
     export default {
         name: 'comment-reply',
         props: {
+            brand: {
+                type: String,
+                default: () => 'drumeo'
+            },
             themeColor: {
                 type: String,
                 default: () => 'recordeo'
@@ -88,7 +99,8 @@
                     return {
                         display_name: '',
                         id: 0,
-                        isAdmin: false
+                        isAdmin: false,
+                        avatar: '',
                     }
                 }
             },
@@ -146,7 +158,9 @@
                     return {
                         'fields.profile_picture_image_url': '',
                         id: 0,
-                        display_name: ''
+                        display_name: '',
+                        xp: 1234,
+                        access_level: 'edge'
                     }
                 }
             },
@@ -161,6 +175,17 @@
             }
         },
         computed: {
+            avatarClassObject(){
+                return {
+                    'edge': this.user.access_level === 'edge',
+                    'subscriber': ['edge', 'lifetime'].indexOf(this.user.access_level) !== -1,
+                    'pack': this.user.access_level === 'pack',
+                    'lifetime': this.user.access_level === 'lifetime'
+                }
+            },
+
+            userExpRank: () => xpMapper.map(100234),
+
             profileRoute(){
                 return this.profileBaseRoute + this.user_id
             },

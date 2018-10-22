@@ -50,8 +50,13 @@
 }
 
 .comment-post .avatar-column {
-  flex: 0 0 50px;
-  max-width:50px;
+  flex: 0 0 75px;
+  max-width:75px;
+
+  @include medium {
+    flex: 0 0 100px;
+    max-width:100px;
+  }
 }
 
 .search-result-post blockquote {
