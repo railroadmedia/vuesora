@@ -37,6 +37,7 @@ export default {
             }
         }
 
-        return '';
+        // Just show "Drumeo Member" if it messes up somehow.
+        return 'Drumeo Member';
     }
 }
