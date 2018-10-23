@@ -264,9 +264,10 @@
         computed: {
             avatarClassObject(){
                 return {
+                    'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.user.access_level) !== -1,
                     'edge': this.user.access_level === 'edge',
-                    'subscriber': ['edge', 'lifetime'].indexOf(this.user.access_level) !== -1,
                     'pack': this.user.access_level === 'pack',
+                    'team': this.user.access_level === 'team',
                     'lifetime': this.user.access_level === 'lifetime'
                 }
             },
