@@ -190,5 +190,14 @@ export default {
      */
     isMobileDevice() {
         return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+    },
+
+    /**
+     * Format a number with commas separating the thousands.
+     *
+     * @returns {string} - A numeric string with commas
+     */
+    formatNumbersWithCommas(value){
+        return Number(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 }
