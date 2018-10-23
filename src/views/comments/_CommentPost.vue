@@ -271,7 +271,7 @@
                 }
             },
 
-            userExpRank: () => xpMapper.map(100234),
+            userExpRank: () => xpMapper.getNearestValue(100234),
 
             replyInterface: {
                 get(){

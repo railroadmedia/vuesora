@@ -273,3 +273,25 @@
     }
   }
 }
+
+.exp-wrap {
+  width:100%;
+  height:50px;
+  border-radius:25px;
+  overflow:hidden;
+  position:relative;
+  box-shadow: inset 0 0 0 2px nth(nth($greys, 2), 2);
+
+  .exp {
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:50%;
+    border-radius:25px;
+
+    .move-text-over {
+      transform:translateX(100%);
+    }
+  }
+}

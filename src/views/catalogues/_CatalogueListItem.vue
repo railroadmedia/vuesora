@@ -323,7 +323,7 @@
 
             $_thumbnailIcon(){
                 if(this.$_noAccess){
-                    return 'fa-lock';
+                    return 'fa-clock';
                 }
 
                 return this.$_item.type === 'course' ? 'fa-arrow-right' : 'fa-play';

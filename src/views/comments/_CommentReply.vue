@@ -188,7 +188,7 @@
                 }
             },
 
-            userExpRank: () => xpMapper.map(100234),
+            userExpRank: () => xpMapper.getNearestValue(100234),
 
             profileRoute(){
                 return this.profileBaseRoute + this.user_id
