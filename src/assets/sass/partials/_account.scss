@@ -220,3 +220,56 @@
   font-size:16px;
   @include flexCenter();
 }
+
+.user-stats-col {
+  @include medium {
+    flex:0 0 20%;
+  }
+}
+.stats-dial {
+
+  .stats-content {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:92.5%;
+    height:92.5%;
+
+    & * {
+      transform:translateY(-7px);
+      text-align:center;
+    }
+
+    .display {
+      font-size:48px;
+      line-height:48px;
+
+      @include medium {
+        font-size:54px;
+        line-height:54px;
+      }
+
+      @include large {
+        font-size:60px;
+        line-height:60px;
+      }
+    }
+  }
+
+  .stats-type {
+    position:absolute;
+    bottom:-5px;
+    left:50%;
+    transform:translateX(-50%);
+    height:50px;
+    border-radius:25px;
+    width:85%;
+    padding:10px;
+    font-weight:400;
+
+    @include medium {
+      width:80%;
+    }
+  }
+}
