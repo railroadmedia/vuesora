@@ -74,7 +74,16 @@ export default (function () {
         const is_added = element.classList.contains('added');
 
         Requests.addOrRemoveContentFromList(contentId, is_added)
-            .then(response => response);
+            .then(response => {
+                if(response){
+                    if(is_added){
+                        element.classList.add('add-request-complete');
+                    }
+                    else {
+                        element.classList.add('remove-request-complete');
+                    }
+                }
+            });
 
         if(is_added){
             element.classList.remove('added', 'text-white');
@@ -95,7 +104,9 @@ export default (function () {
 
             Requests.resetContentProgress(contentId)
                 .then(resolved => {
-
+                    if(resolved){
+                        element.classList.add('remove-request-complete');
+                    }
                 });
         }
         else {
@@ -103,7 +114,9 @@ export default (function () {
 
             Requests.markContentAsComplete(contentId)
                 .then(resolved => {
-
+                    if(resolved){
+                        element.classList.add('add-request-complete');
+                    }
                 });
         }
 
