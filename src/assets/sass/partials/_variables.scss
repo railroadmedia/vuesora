@@ -152,6 +152,7 @@ $content_colors: (
   quick-tips: #00C278,
   podcasts: #00C278,
   on-the-road: #00C278,
+  exploring-beats: #00C278,
   behind-the-scenes: #00C278,
   study-the-greats: #00C278,
   live: #00C278,
@@ -164,18 +165,29 @@ $content_colors: (
   dft: #0DD3BF,
   learning-path: #0B76DB,
   made-easy: #00BC75,
+  semester-pack: #00BC75,
   my-list: $drumeoBlue,
-  exploring-beats: #00C278
 );
 
 
-// Left to right gradient. Accepts two colors as paramaters.
+/**
+* Make a horizontal gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
 @mixin leftToRightGradient($primaryColor, $secondaryColor){
   background: -moz-linear-gradient(left, $primaryColor 0%, $secondaryColor 100%);
   background: -webkit-linear-gradient(left, $primaryColor 0%,$secondaryColor 100%);
   background: linear-gradient(to right, $primaryColor 0%,$secondaryColor 100%);
 }
-// Top to Bottom gradient. Accepts two colors as paramaters.
+
+/**
+* Make a vertical gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
 @mixin topToBottomGradient($primaryColor, $secondaryColor){
   background: -moz-linear-gradient(top, $primaryColor 0%, $secondaryColor 100%);
   background: -webkit-linear-gradient(top, $primaryColor 0%,$secondaryColor 100%);

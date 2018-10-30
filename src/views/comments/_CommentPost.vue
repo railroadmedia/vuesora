@@ -15,7 +15,7 @@
                  :src="user['fields.profile_picture_image_url']" class="rounded">
 
             <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-            <p class="x-tiny dense text-center font-compressed">1234 XP</p>
+            <p class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row mb-1 comment-meta">
@@ -160,6 +160,7 @@
     import TextEditor from '../../components/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
     import xpMapper from '../../assets/js/classes/xp-mapper';
+    import Utils from '../../assets/js/classes/utils';
     import moment from 'moment';
 
     export default {
@@ -243,8 +244,8 @@
                         'fields.profile_picture_image_url': '',
                         id: 0,
                         display_name: '',
-                        xp: 1234,
-                        access_level: 'edge'
+                        xp: 0,
+                        access_level: ''
                     }
                 }
             },
@@ -272,7 +273,13 @@
                 }
             },
 
-            userExpRank: () => xpMapper.getNearestValue(100234),
+            userExpValue(){
+                return Utils.parseXpValue(this.user.xp);
+            },
+
+            userExpRank (){
+                return xpMapper.getNearestValue(this.user.xp);
+            },
 
             replyInterface: {
                 get(){
@@ -299,49 +306,6 @@
                 return this.like_users.filter(user =>
                     user.display_name === this.currentUser.display_name
                 ).length > 0;
-            },
-
-            userLikeString(){
-                let userNames = [];
-                let userNameString;
-                let suffixString = ' like this';
-
-                for(let i = 0; i < this.like_users.length; i++){
-                    let nameExistsOrIsntCurrentUser = this.like_users[i]['display_name'] != null
-                        && this.like_users[i]['display_name'] !== this.currentUser.display_name;
-
-                    if(nameExistsOrIsntCurrentUser){
-                        userNames.push(this.like_users[i]['display_name']);
-                    }
-                }
-
-                if(userNames.length){
-                    userNameString = userNames.join(', ');
-                }
-
-                if(this.like_count > 3){
-                    suffixString = ' & ' + String(this.like_count - 3) + ' others like this';
-                }
-                else if(this.like_count === 0) {
-                    suffixString = '';
-                }
-
-                if(this.is_liked){
-                    userNames.splice((userNames.length - 1), 1);
-
-                    if(this.like_count > 1){
-                        return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
-                    }
-
-                    return '<span class="font-bold">You</span>' + suffixString;
-                }
-                else {
-                    if(this.like_count > 0){
-                        return '<span class="font-bold">' + userNameString + '</span>' + suffixString;
-                    }
-                }
-
-                return 'Be the first to like this!';
             },
 
             commentUrl(){

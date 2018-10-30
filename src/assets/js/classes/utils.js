@@ -193,6 +193,22 @@ export default {
     },
 
     /**
+     * Parse xp values as abbreviations rather than their total amount
+     *
+     * @returns {String} - the parsed value
+     */
+    parseXpValue(xp){
+        if(xp >= 100000 && xp < 1000000){
+            return Math.round(xp / 1000) + 'K';
+        }
+        else if(xp >= 1000000){
+            return Math.round(xp / 1000000).toFixed(1) + 'M';
+        }
+
+        return xp;
+    },
+
+    /**
      * Format a number with commas separating the thousands.
      *
      * @returns {string} - A numeric string with commas

@@ -41,11 +41,6 @@
                 default: () => 0
             }
         },
-        data(){
-            return {
-                xpTotal: 0
-            }
-        },
         computed: {
             xpPercentage(){
                 const thisKey = xpMap.getNearestKey(this.xp);

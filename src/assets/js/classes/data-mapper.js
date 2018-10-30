@@ -740,8 +740,8 @@ export default class DataMapper {
             return 'advanced ' + post['difficulty']
         }
 
-        // Some content has difficulty already parsed as a word, if its undefined,
-        // Just default it to 'all'
+        // Some content has difficulty already parsed as a word so we return that,
+        // if its falsey, just default it to 'TBD'
         return post['difficulty'] || 'TBD';
     }
 }

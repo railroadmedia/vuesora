@@ -20,6 +20,10 @@
     visibility:visible;
   }
 
+  &.small > div {
+    max-width:480px;
+  }
+
   & > div {
     overflow-y:auto;
     position:fixed;

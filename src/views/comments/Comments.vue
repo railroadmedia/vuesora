@@ -88,7 +88,7 @@
                    :href="'/laravel/public/members/profile/' + user.id"
                    class="flex flex-row comment-post bt-grey-1-1 align-v-center no-decoration text-black pv-2 mt-2">
                     <div class="flex flex-column avatar-column">
-                        <img class="rounded" src="https://placehold.it/500x500">
+                        <img class="rounded" :src="user.avatar_url">
                     </div>
                     <div class="flex flex-column title pl-2">
                         {{ user.display_name }}

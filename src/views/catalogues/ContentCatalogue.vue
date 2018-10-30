@@ -120,6 +120,28 @@
                 </div>
             </div>
         </transition>
+
+        <div id="addToCalendarModal" class="modal small">
+            <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center">
+                <h1 class="subheading text-center mb-2">Add to Calendar</h1>
+
+                <button class="btn collapse-250 mb-2">
+                    <span class="text-white"
+                          :class="'bg-' + $_themeColor">
+                        <i class="fas fa-calendar-plus mr-1"></i>
+                        Sync All to Calendar
+                    </span>
+                </button>
+
+                <div class="tiny pointer"
+                   :class="['text-' + $_themeColor, 'bb-' + $_themeColor + '-1']">
+                    Add only this lesson
+                </div>
+
+                <add-event-dropdown eventTitle="This is a title"
+                                    startTime="2018-11-03 13:26:26"></add-event-dropdown>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -129,6 +151,7 @@
     import CatalogueSearch from './_CatalogueSearch.vue';
     import CataloguePlaylistTabs from './_CataloguePlaylistTabs';
     import CatalogueTabFilters from './_CatalogueTabFilters.vue';
+    import AddEventDropdown from '../../components/AddEventDropdown.vue';
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
     import Toasts from '../../assets/js/classes/toasts'
@@ -147,6 +170,7 @@
             'catalogue-tab-filters': CatalogueTabFilters,
             'catalogue-search': CatalogueSearch,
             'catalogue-playlist-tabs': CataloguePlaylistTabs,
+            'add-event-dropdown': AddEventDropdown
         },
         props: {
             $_catalogueType: {
@@ -485,6 +509,13 @@
                                     this.filters = Utils.flattenFilters(response.data.meta.filterOptions);
                                 }
                             }
+
+                            // Sometimes vue caches the add event button.
+                            // If it doesn't we need to force a refresh, done with a timeout to
+                            // Prevent race conditions.
+                            setTimeout(() => {
+                                window.addeventatc.refresh();
+                            }, 500);
 
                             this.loading = false;
                         })

@@ -2,7 +2,7 @@
 @import "~noty/src/noty.scss";
 @import "~noty/src/themes/bootstrap-v4.scss";
 @import "~flatpickr/dist/themes/airbnb.css";
-@import './partials/_tooltip.scss';
+//@import './partials/_tooltip.scss';
 @import './partials/_flags.scss';
 @import './partials/_grid.scss';
 @import './partials/_typography.scss';
@@ -101,6 +101,7 @@ ul {
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
+  background-color:#000;
 
   .header-avatar {
     flex:0 0 125px;

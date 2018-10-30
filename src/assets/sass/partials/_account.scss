@@ -221,11 +221,6 @@
   @include flexCenter();
 }
 
-.user-stats-col {
-  @include medium {
-    flex:0 0 20%;
-  }
-}
 .stats-dial {
 
   .stats-content {

@@ -155,18 +155,19 @@
 
             <!-- LOCK ICON OR ADD TO CALENDAR -->
             <div v-if="$_noAccess" class="body"
-                 :class="!$_isReleased ? 'addeventatc' : ''"
-                 data-dropdown-y="up"
-                 data-dropdown-x="right"
-                 data-intel-apple="true">
+                 data-open-modal="addToCalendarModal">
+                 <!--:class="!$_isReleased ? 'addeventatc' : ''"-->
+                 <!--data-dropdown-y="up"-->
+                 <!--data-dropdown-x="right"-->
+                 <!--data-intel-apple="true>"-->
                 <i v-if="$_isReleased"
                    class="fas fa-lock flex-center rounded text-grey-2"></i>
                 <i v-else
                    class="fas fa-calendar-plus flex-center text-grey-2"></i>
 
-                <span v-if="!$_isReleased" class="start">{{ $_item.published_on }}</span>
-                <span v-if="!$_isReleased" class="timezone">UTC</span>
-                <span v-if="!$_isReleased" class="title">{{ $_item.title }}</span>
+                <!--<span v-if="!$_isReleased" class="start">{{ $_item.published_on }}</span>-->
+                <!--<span v-if="!$_isReleased" class="timezone">UTC</span>-->
+                <!--<span v-if="!$_isReleased" class="title">{{ $_item.title }}</span>-->
             </div>
 
             <!-- STARTED OR COMPLETED -->
