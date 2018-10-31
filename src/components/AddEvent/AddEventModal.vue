@@ -3,7 +3,7 @@
         <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible">
             <h1 class="subheading text-center mb-2">Add to Calendar</h1>
 
-            <div class="relative" style="width:250px;">
+            <div class="relative" style="width:250px;" v-if="$_subscriptionCalendarId">
                 <button class="btn collapse-250 mb-2"
                         @click.stop="subscriptionCalendarDropdown = !subscriptionCalendarDropdown">
                         <span class="text-white"

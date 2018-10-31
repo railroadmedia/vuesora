@@ -536,6 +536,53 @@ export default class DataMapper {
                 }
             },
 
+            'semester-pack': {
+                card: {
+                    show_description: true,
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getChildLessonCount()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getChildLessonCount()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
+            'semester-pack-lesson': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getPostDuration()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
             'pack-bundle': {
                 card: {
                     show_description: true,

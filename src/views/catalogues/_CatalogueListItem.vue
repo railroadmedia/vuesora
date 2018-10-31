@@ -216,7 +216,7 @@
                 default: () => false
             },
             $_index: {
-                type: Number
+                default: () => ''
             },
             $_active: {
                 type: Boolean,
