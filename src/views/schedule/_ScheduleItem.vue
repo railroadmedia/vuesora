@@ -42,25 +42,21 @@
         </div>
 
         <div class="flex flex-column icon-col align-v-center" style="position:relative;">
-            <div class="body addeventatc"
-                 data-dropdown-y="up"
-                 data-dropdown-x="right"
-                 data-intel-apple="true">
-
+            <div class="body pointer"
+                 data-open-modal="addToCalendarModal"
+                 @click="addEvent">
                 <i class="fas fa-calendar-plus flex-center text-grey-2 rounded"></i>
-
-                <span class="start">{{ time_to_display }}</span>
-                <span class="timezone">{{ $_timezone }}</span>
-                <span class="title">{{ $_item['title'] }}</span>
             </div>
         </div>
     </div>
 </template>
 <script>
     import DataMapper from '../../assets/js/classes/data-mapper.js';
+    import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
     import moment from 'moment';
 
     export default {
+        mixins: [UserCatalogueEvents],
         name: 'schedule-item',
         props: {
             $_item: Object,

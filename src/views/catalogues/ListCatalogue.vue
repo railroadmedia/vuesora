@@ -22,18 +22,25 @@
                 :$_destroyOnListRemoval="$_destroyOnListRemoval"
                 :$_compactLayout="$_compactLayout"
                 @addToList="emitAddToList"
-                @resetProgress="emitResetProgress"></catalogue-list-item>
+                @resetProgress="emitResetProgress"
+                @addEvent="addEventToDropdown"></catalogue-list-item>
+
+        <add-event-modal :singleEvent="singleEvent"
+                         :$_subscriptionCalendarId="$_subscriptionCalendarId"
+                         :$_themeColor="$_themeColor"></add-event-modal>
     </div>
 </template>
 <script>
     import CatalogueListItem from './_CatalogueListItem.vue';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
+    import AddEventModal from '../../components/AddEvent/AddEventModal';
 
     export default {
         mixins: [UserCatalogueEvents],
         name: 'list-catalogue',
         components: {
-            'catalogue-list-item': CatalogueListItem
+            'catalogue-list-item': CatalogueListItem,
+            'add-event-modal': AddEventModal
         },
         props: {
             $_content: {
@@ -99,6 +106,24 @@
             $_compactLayout: {
                 type: Boolean,
                 default: () => false
+            },
+            $_subscriptionCalendarId: {
+                type: String,
+                default: ''
+            }
+        },
+        data(){
+            return {
+                singleEvent: {
+                    title: '',
+                    date: ''
+                }
+            }
+        },
+        methods: {
+
+            addEventToDropdown(payload){
+                this.singleEvent = payload;
             }
         },
     }

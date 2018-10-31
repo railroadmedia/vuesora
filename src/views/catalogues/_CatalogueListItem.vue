@@ -155,6 +155,7 @@
 
             <!-- LOCK ICON OR ADD TO CALENDAR -->
             <div v-if="$_noAccess" class="body"
+                 @click="addEvent"
                  data-open-modal="addToCalendarModal">
                  <!--:class="!$_isReleased ? 'addeventatc' : ''"-->
                  <!--data-dropdown-y="up"-->

@@ -20,7 +20,7 @@ window.addeventatc = function () {
         }, generate: function () {
             for (var c = document.getElementsByTagName("*"), i = 0; i < c.length; i += 1) addeventatc.hasclass(c[i], "addeventatc") && function () {
                 var a = "addeventatc" + s;
-                c[i].id = a, c[i].title = "", c[i].setAttribute("aria-haspopup", "true"), c[i].setAttribute("aria-expanded", "false"), c[i].setAttribute("tabindex", "0"), r ? (c[i].onclick = function () {
+                c[i].id = a, c[i].title = "", c[i].style.visibility = "visible", c[i].setAttribute("aria-haspopup", "true"), c[i].setAttribute("aria-expanded", "false"), c[i].setAttribute("tabindex", "0"), r ? (c[i].onclick = function () {
                     return !1
                 }, c[i].onmouseover = function () {
                     clearTimeout(l), addeventatc.toogle(this, {type: "mouseover", id: a})
@@ -197,7 +197,7 @@ window.addeventatc = function () {
             if (!$d("ate_tmp_css")) {
                 try {
                     var e = "";
-                    e += ".addeventatc .data {display:none!important;}", e += ".addeventatc .start, .addeventatc .end, .addeventatc .timezone, .addeventatc .title, .addeventatc .description, .addeventatc .location, .addeventatc .organizer, .addeventatc .organizer_email, .addeventatc .facebook_event, .addeventatc .all_day_event, .addeventatc .date_format, .addeventatc .alarm_reminder, .addeventatc .recurring, .addeventatc .attendees, .addeventatc .client, .addeventatc .calname, .addeventatc .uid, .addeventatc .status, .addeventatc .method, .addeventatc .transp {display:none!important;}", p && (e += ".addeventatc {background-image:url(https://www.addevent.com/gfx/icon-calendar-t5.png), url(https://www.addevent.com/gfx/icon-calendar-t1.svg), url(https://www.addevent.com/gfx/icon-apple-t5.svg), url(https://www.addevent.com/gfx/icon-facebook-t5.svg), url(https://www.addevent.com/gfx/icon-google-t5.svg), url(https://www.addevent.com/gfx/icon-outlook-t5.svg),  url(https://www.addevent.com/gfx/icon-outlookcom-t5.svg), url(https://www.addevent.com/gfx/icon-yahoo-t5.svg);background-position:-9999px -9999px;background-repeat:no-repeat;}");
+                    e = ".addeventatc {visibility:hidden;}", e += ".addeventatc .data {display:none!important;}", e += ".addeventatc .start, .addeventatc .end, .addeventatc .timezone, .addeventatc .title, .addeventatc .description, .addeventatc .location, .addeventatc .organizer, .addeventatc .organizer_email, .addeventatc .facebook_event, .addeventatc .all_day_event, .addeventatc .date_format, .addeventatc .alarm_reminder, .addeventatc .recurring, .addeventatc .attendees, .addeventatc .client, .addeventatc .calname, .addeventatc .uid, .addeventatc .status, .addeventatc .method, .addeventatc .transp {display:none!important;}", p && (e += ".addeventatc {background-image:url(https://www.addevent.com/gfx/icon-calendar-t5.png), url(https://www.addevent.com/gfx/icon-calendar-t1.svg), url(https://www.addevent.com/gfx/icon-apple-t5.svg), url(https://www.addevent.com/gfx/icon-facebook-t5.svg), url(https://www.addevent.com/gfx/icon-google-t5.svg), url(https://www.addevent.com/gfx/icon-outlook-t5.svg),  url(https://www.addevent.com/gfx/icon-outlookcom-t5.svg), url(https://www.addevent.com/gfx/icon-yahoo-t5.svg);background-position:-9999px -9999px;background-repeat:no-repeat;}");
                     var t = document.createElement("style");
                     t.type = "text/css", t.id = "ate_tmp_css", t.styleSheet ? t.styleSheet.cssText = e : t.appendChild(document.createTextNode(e)), document.getElementsByTagName("head")[0].appendChild(t)
                 } catch (e) {
@@ -385,8 +385,7 @@ window.addEventListener ? (document.addEventListener("click", addeventatc.docume
 });
 
 window.addeventasync = function () {
-    addeventatc.settings({
-        mouse:true,
+    window.addeventatc.settings({
         css: false
     });
 };

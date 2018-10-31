@@ -32,21 +32,7 @@
                                  :$_included_types="$_includedTypes"></catalogue-playlist-tabs>
 
 
-        <div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">
-            <span class="heading pointer mr-3"
-                  :class="selected_tab === 'new' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
-                  @click="loadNewPosts">
-                New
-            </span>
-
-            <span class="heading pointer"
-                  :class="selected_tab === 'continue' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
-                  @click="loadStartedPosts">
-                In Progress
-            </span>
-        </div>
-
-        <catalogue-filters v-if="$_filterableValues.length && !$_showContentTabs"
+        <catalogue-filters v-if="$_filterableValues.length"
                            :$_filters="filters"
                            :$_filterableValues="$_filterableValues"
                            :required_user_states="required_user_states"
@@ -73,24 +59,25 @@
                         :$_useThemeColor="$_useThemeColor"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
-            <list-catalogue v-if="catalogue_type === 'list'"
-                            :$_content="content"
-                            :$_brand="$_brand"
-                            :$_themeColor="$_themeColor"
-                            :$_userId="$_userId"
-                            :$_displayItemsAsOverview="$_displayItemsAsOverview"
-                            :$_displayUserInteractions="$_displayUserInteractions"
-                            :$_contentTypeOverride="$_contentTypeOverride"
-                            :$_lockUnowned="$_lockUnowned"
-                            :$_showNumbers="$_showNumbers"
-                            :$_is_search="$_searchBar || $_isPlaylists"
-                            :$_resetProgress="$_resetProgress"
-                            :$_useThemeColor="$_useThemeColor"
-                            :$_forceWideThumbs="$_forceWideThumbs"
-                            :$_destroyOnListRemoval="$_destroyOnListRemoval"
-                            :$_compactLayout="$_compactLayout"
-                            @addToList="addToListEventHandler"
-                            @resetProgress="resetProgressEventHandler"></list-catalogue>
+        <list-catalogue v-if="catalogue_type === 'list'"
+                        :$_content="content"
+                        :$_brand="$_brand"
+                        :$_themeColor="$_themeColor"
+                        :$_userId="$_userId"
+                        :$_displayItemsAsOverview="$_displayItemsAsOverview"
+                        :$_displayUserInteractions="$_displayUserInteractions"
+                        :$_contentTypeOverride="$_contentTypeOverride"
+                        :$_lockUnowned="$_lockUnowned"
+                        :$_showNumbers="$_showNumbers"
+                        :$_is_search="$_searchBar || $_isPlaylists"
+                        :$_resetProgress="$_resetProgress"
+                        :$_useThemeColor="$_useThemeColor"
+                        :$_forceWideThumbs="$_forceWideThumbs"
+                        :$_destroyOnListRemoval="$_destroyOnListRemoval"
+                        :$_compactLayout="$_compactLayout"
+                        :$_subscriptionCalendarId="$_subscriptionCalendarId"
+                        @addToList="addToListEventHandler"
+                        @resetProgress="resetProgressEventHandler"></list-catalogue>
 
         <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
              class="flex flex-row pa">
@@ -120,28 +107,6 @@
                 </div>
             </div>
         </transition>
-
-        <div id="addToCalendarModal" class="modal small">
-            <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center">
-                <h1 class="subheading text-center mb-2">Add to Calendar</h1>
-
-                <button class="btn collapse-250 mb-2">
-                    <span class="text-white"
-                          :class="'bg-' + $_themeColor">
-                        <i class="fas fa-calendar-plus mr-1"></i>
-                        Sync All to Calendar
-                    </span>
-                </button>
-
-                <div class="tiny pointer"
-                   :class="['text-' + $_themeColor, 'bb-' + $_themeColor + '-1']">
-                    Add only this lesson
-                </div>
-
-                <add-event-dropdown eventTitle="This is a title"
-                                    startTime="2018-11-03 13:26:26"></add-event-dropdown>
-            </div>
-        </div>
     </div>
 </template>
 <script>
@@ -151,7 +116,7 @@
     import CatalogueSearch from './_CatalogueSearch.vue';
     import CataloguePlaylistTabs from './_CataloguePlaylistTabs';
     import CatalogueTabFilters from './_CatalogueTabFilters.vue';
-    import AddEventDropdown from '../../components/AddEventDropdown.vue';
+    import AddEventDropdown from '../../components/AddEvent/AddEventDropdown.vue';
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
     import Toasts from '../../assets/js/classes/toasts'
@@ -288,10 +253,6 @@
                 type: String,
                 default: () => '/laravel/public/railcontent/search'
             },
-            $_showContentTabs: {
-                type: Boolean,
-                default: () => false
-            },
             $_isPlaylists: {
                 type: Boolean,
                 default: () => false
@@ -314,6 +275,10 @@
             $_compactLayout: {
                 type: Boolean,
                 default: () => false
+            },
+            $_subscriptionCalendarId: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -335,7 +300,13 @@
                 selected_types: null,
                 search_term: undefined,
                 required_user_states: this.$_requiredUserStates || [],
-                selected_tab: 'new'
+                selected_tab: 'new',
+                singleEventDropdown: false,
+                subscriptionCalendarDropdown: false,
+                singleEvent: {
+                    title: '',
+                    date: ''
+                },
             }
         },
         computed: {
@@ -388,6 +359,13 @@
                 }
 
                 return this.$_sortOverride || '-published_on';
+            },
+
+            eventData(){
+                return {
+                    title: this.singleEventTitle,
+                    date: this.singleEventDate
+                }
             }
         },
         methods: {
@@ -622,7 +600,7 @@
                 this.setUrlParams();
 
                 this.getContent();
-            }
+            },
         },
         mounted() {
             if (!this.$_preLoadedContent && !this.$_preLoadedContent.results.length) {
