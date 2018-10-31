@@ -440,6 +440,13 @@
   transition:color .2s ease-in-out;
 }
 
+.add-to:hover {
+
+  i {
+    color:#000;
+  }
+}
+
 .icon-col {
   flex:0 0 50px;
 
@@ -513,34 +520,31 @@
 
 $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
 
+
 .scheduled {
   position:relative;
+
+  &.show-month {
+    .month-col {
+      visibility:visible;
+    }
+  }
 
   .month-col {
     position:absolute;
     top:0;
     left:0;
     bottom:0;
-    visibility:hidden;
     flex:0 0 20px;
     max-width:20px;
     font-size:12px;
     font-weight:700;
     text-transform:uppercase;
     word-wrap:break-word;
-    opacity:0;
     width: inherit;
     padding: 4px;
     text-align: center;
-  }
-
-  @each $month in $months {
-    &.#{$month}{
-      &:first-child .month-col {
-        visibility:visible;
-        opacity:1;
-      }
-    }
+    visibility:hidden;
   }
 
   .release-day {

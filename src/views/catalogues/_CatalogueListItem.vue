@@ -154,8 +154,9 @@
              :class="$_is_search || $_overview ? 'hide-xs-only' : ''">
 
             <!-- LOCK ICON OR ADD TO CALENDAR -->
-            <div v-if="$_noAccess" class="body"
+            <div v-if="$_noAccess" class="body add-to"
                  @click="addEvent"
+                 title="Add to Calendar"
                  data-open-modal="addToCalendarModal">
                  <!--:class="!$_isReleased ? 'addeventatc' : ''"-->
                  <!--data-dropdown-y="up"-->

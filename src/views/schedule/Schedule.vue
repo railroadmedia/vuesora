@@ -54,6 +54,16 @@
             addEventToDropdown(payload){
                 this.singleEvent = payload;
             }
+        },
+        mounted(){
+            const monthsSelector = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+            monthsSelector.forEach(month => {
+                const firstElement = document.querySelectorAll('.' + month)[0];
+                if(firstElement){
+                    firstElement.classList.add('show-month');
+                }
+            });
         }
     }
 </script>

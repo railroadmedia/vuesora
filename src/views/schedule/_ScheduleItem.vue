@@ -42,7 +42,8 @@
         </div>
 
         <div class="flex flex-column icon-col align-v-center" style="position:relative;">
-            <div class="body pointer"
+            <div class="body pointer add-to"
+                 title="Add to Calendar"
                  data-open-modal="addToCalendarModal"
                  @click="addEvent">
                 <i class="fas fa-calendar-plus flex-center text-grey-2 rounded"></i>
