@@ -24,7 +24,7 @@
                         <a v-if="hasPublicProfiles"
                            :href="profileRoute" target="_blank"
                            class="text-black no-decoration">
-                        {{ user.display_name }}
+                            {{ user.display_name }}
                         </a>
                         <span v-else class="text-black no-decoration">
                             {{ user.display_name }}
@@ -46,10 +46,10 @@
                         </span>
 
                         <!--<span class="tiny no-decoration text-grey-3 pointer">-->
-                            <!--<i class="fas fa-link"-->
-                               <!--@click="getCommentLink"></i>-->
-                            <!--<textarea class="comment-id-copy"-->
-                                      <!--contenteditable="true">{{ commentUrl }}</textarea>-->
+                        <!--<i class="fas fa-link"-->
+                        <!--@click="getCommentLink"></i>-->
+                        <!--<textarea class="comment-id-copy"-->
+                        <!--contenteditable="true">{{ commentUrl }}</textarea>-->
                         <!--</span>-->
                     </div>
                 </div>
@@ -67,7 +67,8 @@
                     <div class="flex flex-row align-v-center">
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="replying ? 'text-' + themeColor : 'text-grey-3'"
-                           @click="replyToComment">
+                           @click="replyToComment"
+                           dusk="reply-button">
                             <i class="fas fa-reply"></i>
                             <span class="hide-xs-only">
                                 {{ replying ? 'Replying' : 'Reply' }}
@@ -77,7 +78,8 @@
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="is_liked ? 'text-' + themeColor : 'text-grey-3'"
-                           @click="likeComment">
+                           @click="likeComment"
+                           dusk="like-button">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
                                 {{ is_liked ? 'Liked' : 'Like' }}
@@ -114,7 +116,8 @@
                                 Cancel
                             </a>
                             <button class="btn collapse-150" :disabled="loading"
-                               @click="postReply">
+                                    @click="postReply"
+                                    dusk="submit-reply">
                                 <span class="text-white short"
                                       :class="'bg-' + themeColor">
                                     Reply
@@ -254,7 +257,7 @@
                 default: () => true
             },
         },
-        data(){
+        data() {
             return {
                 replying: false,
                 showAllReplies: false,
@@ -263,7 +266,7 @@
             }
         },
         computed: {
-            avatarClassObject(){
+            avatarClassObject() {
                 return {
                     'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.user.access_level) !== -1,
                     'edge': this.user.access_level === 'edge',
@@ -273,16 +276,16 @@
                 }
             },
 
-            userExpValue(){
+            userExpValue() {
                 return Utils.parseXpValue(this.user.xp);
             },
 
-            userExpRank (){
+            userExpRank() {
                 return xpMapper.getNearestValue(this.user.xp);
             },
 
             replyInterface: {
-                get(){
+                get() {
                     return this.reply;
                 },
                 set(val) {
@@ -290,47 +293,47 @@
                 }
             },
 
-            domID(){
-                if(this.pinned){
+            domID() {
+                if (this.pinned) {
                     return 'pinnedComment' + this.id
                 }
 
                 return 'comment' + this.id
             },
 
-            profileRoute(){
+            profileRoute() {
                 return this.profileBaseRoute + this.user_id
             },
 
-            isLiked(){
+            isLiked() {
                 return this.like_users.filter(user =>
                     user.display_name === this.currentUser.display_name
                 ).length > 0;
             },
 
-            commentUrl(){
+            commentUrl() {
                 return window.location + '?goToComment=' + this.id;
             },
 
-            dateString(){
+            dateString() {
                 return moment.utc(this.created_on).local().fromNow();
             },
 
-            isUsersPost(){
+            isUsersPost() {
                 return String(this.currentUser.id) === String(this.user_id);
             },
 
-            isCurrentUserAdmin(){
+            isCurrentUserAdmin() {
                 return this.currentUser.isAdmin === true;
             },
         },
         methods: {
-            replyToComment(){
+            replyToComment() {
                 this.replying = !this.replying;
             },
 
-            postReply(){
-                if(this.reply.currentValue){
+            postReply() {
+                if (this.reply.currentValue) {
                     this.loading = true;
 
                     return Requests.postReply({
@@ -338,7 +341,7 @@
                         comment: this.reply.currentValue
                     })
                         .then(resolved => {
-                            if(resolved){
+                            if (resolved) {
                                 let thisComment = resolved['results'] || resolved['data'][0];
 
                                 this.replyInterface = '';
@@ -354,12 +357,12 @@
                 }
             },
 
-            cancelReply(){
+            cancelReply() {
                 this.replying = false;
                 this.reply = '';
             },
 
-            likeComment(){
+            likeComment() {
                 this.$emit('likeComment', {
                     id: this.id,
                     isLiked: this.is_liked,
@@ -367,7 +370,7 @@
                 });
             },
 
-            deleteComment(){
+            deleteComment() {
                 const notification = new Noty({
                     layout: 'center',
                     modal: true,
@@ -389,7 +392,7 @@
                 }).show();
             },
 
-            likeReply(payload){
+            likeReply(payload) {
                 this.$emit('likeReply', {
                     parent_id: this.id,
                     id: payload.id,
@@ -397,14 +400,14 @@
                 });
             },
 
-            deleteReply(payload){
+            deleteReply(payload) {
                 this.$emit('deleteReply', {
                     parent_id: this.id,
                     id: payload.id
                 })
             },
 
-            openLikes(payload){
+            openLikes(payload) {
                 this.$emit('openLikes', {
                     likeUsers: payload.busToRoot ? payload.likeUsers : this.like_users
                 });
