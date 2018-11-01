@@ -32,7 +32,8 @@
 
                 <div class="flex flex-row align-h-right mv-1">
                     <button class="btn collapse-150" :disabled="loading"
-                            @click="postComment">
+                            @click="postComment"
+                            dusk="submit-comment">
                         <span class="text-white short"
                               :class="'bg-' + themeColor">
                             Comment
@@ -372,6 +373,7 @@
             this.getComments(this.requestParams);
         },
         mounted(){
+            console.log('test');
             // Check the URI Params if 'goToComment' exists
             const uriParams = QueryString.parse(location.search);
             // Run the goToComment method if it does

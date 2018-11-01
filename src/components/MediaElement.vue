@@ -49,8 +49,8 @@
     import 'mediaelement-plugins/src/jump-forward/jump-forward.css';
     import 'mediaelement-plugins/src/skip-back/skip-back';
     import 'mediaelement-plugins/src/skip-back/skip-back.css';
-    import 'mediaelement-plugins/src/chromecast/chromecast';
-    import 'mediaelement-plugins/src/chromecast/chromecast.css';
+    // import 'mediaelement-plugins/src/chromecast/chromecast';
+    // import 'mediaelement-plugins/src/chromecast/chromecast.css';
     import 'mediaelement-plugins/src/airplay/airplay';
     import 'mediaelement-plugins/src/airplay/airplay.css';
     import Utils from '../assets/js/classes/utils';
@@ -195,7 +195,7 @@
                     'quality': true,
                     'speed': true,
                     'volume': true,
-                    'chromecast': this.castTitle != null,
+                    // 'chromecast': this.castTitle != null,
                     'airplay': true,
                     'fullscreen': true,
                 };
