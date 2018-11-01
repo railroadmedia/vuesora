@@ -89,10 +89,10 @@
                         <span class="grow"></span>
 
                         <p class="x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect"
-                           data-open-modal="likeUsersModal"
+                           :data-open-modal="like_count > 0 ? 'likeUsersModal' : ''"
                            @click="openLikes">
                             <i class="fas fa-thumbs-up text-white likes-icon"
-                               :class="'bg-' + themeColor"></i> {{ like_count }}
+                               :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -407,10 +407,13 @@
                 })
             },
 
-            openLikes(payload) {
-                this.$emit('openLikes', {
-                    likeUsers: payload.busToRoot ? payload.likeUsers : this.like_users
-                });
+            openLikes(payload){
+                if(this.like_count > 0){
+                    this.$emit('openLikes', {
+                        id: payload.busToRoot ? payload.id : this.id,
+                        totalLikeUsers: payload.busToRoot ? payload.totalLikeUsers : this.like_count
+                    });
+                }
             },
 
             getCommentLink(event) {

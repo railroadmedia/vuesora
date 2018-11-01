@@ -8,9 +8,9 @@
             <div class="flex flex-column xs-12 sm-4 md-3 mb-3">
                 <div class="form-group xs-12" style="width:100%;">
                     <select id="commentSort" v-model="sortInterface">
+                        <option value="-like_count">Popular</option>
                         <option value="-created_on">Latest First</option>
                         <option value="created_on">Oldest First</option>
-                        <option value="-like_count">Popular</option>
                         <option value="-mine">My Comments</option>
                     </select>
                     <label for="commentSort" :class="themeColor">Sort By</label>
@@ -20,7 +20,12 @@
 
         <div class="flex flex-row comment-post ph mv-3">
             <div class="flex flex-column avatar-column pr hide-xs-only">
-                <img :src="currentUser.avatar" class="rounded">
+                <div class="user-avatar smaller" :class="avatarClassObject">
+                    <img :src="currentUser.avatar" class="rounded">
+                </div>
+
+                <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
+                <p class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
             </div>
 
             <div class="flex flex-column">
@@ -75,28 +80,13 @@
                       @deleteReply="handleReplyDelete"
                       @openLikes="addLikeUsersToModal"></comment-post>
 
-        <!-- LIKE USERS MODAL -->
-        <div id="likeUsersModal" class="modal">
-            <div class="flex flex-column bg-white corners-3 shadow pa-3">
-                <h1 class="heading align-v-center">
-                    <i class="fas fa-thumbs-up rounded text-white mr-1 big likes-icon"
-                       :class="'bg-' + themeColor"></i>
-                    {{ likeUsers.length }} Like{{ likeUsers.length === 1 ? '' : 's' }}
-                </h1>
-
-                <a v-for="user in likeUsers"
-                   :key="user.id"
-                   :href="'/laravel/public/members/profile/' + user.id"
-                   class="flex flex-row comment-post bt-grey-1-1 align-v-center no-decoration text-black pv-2 mt-2">
-                    <div class="flex flex-column avatar-column">
-                        <img class="rounded" :src="user.avatar_url">
-                    </div>
-                    <div class="flex flex-column title pl-2">
-                        {{ user.display_name }}
-                    </div>
-                </a>
-            </div>
-        </div>
+        <comment-likes-modal :themeColor="themeColor"
+                             :commentId="currentLikeUsersId"
+                             :likeUsers="likeUsers"
+                             :totalLikeUsers="totalLikeUsers"
+                             :loadingLikeUsers="loadingLikeUsers"
+                             :requestingLikeUsers="requestingLikeUsers"
+                             @loadMoreLikeUsers="addLikeUsersToModal"></comment-likes-modal>
     </div>
 </template>
 <script>
@@ -104,7 +94,10 @@
     import TextEditor from '../../components/TextEditor.vue';
     import Requests from '../../assets/js/classes/requests';
     import CommentPost from './_CommentPost.vue';
+    import CommentLikesModal from './_CommentLikesModal.vue';
     import Toasts from '../../assets/js/classes/toasts';
+    import Utils from '../../assets/js/classes/utils';
+    import xpMapper from '../../assets/js/classes/xp-mapper';
     import axios from 'axios';
     import * as QueryString from 'query-string';
 
@@ -114,6 +107,7 @@
         components: {
             'text-editor': TextEditor,
             'comment-post': CommentPost,
+            'comment-likes-modal': CommentLikesModal,
             // 'wysiwyg-editor': WYSIWYGEditor,
         },
         props: {
@@ -156,13 +150,36 @@
                 comments: [],
                 pinnedComment: null,
                 requestingData: false,
-                sortOption: '-created_on',
+                sortOption: '-like_count',
                 comment: '',
                 loading: false,
-                likeUsers: []
+                currentLikeUsersId: 0,
+                likeUsers: [],
+                loadingLikeUsers: false,
+                requestingLikeUsers: true,
+                totalLikeUsers: 0,
+                likeUsersPage: 1
             }
         },
         computed: {
+            avatarClassObject(){
+                return {
+                    'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.currentUser.access_level) !== -1,
+                    'edge': this.currentUser.access_level === 'edge',
+                    'pack': this.currentUser.access_level === 'pack',
+                    'team': this.currentUser.access_level === 'team',
+                    'lifetime': this.currentUser.access_level === 'lifetime'
+                }
+            },
+
+            userExpValue(){
+                return Utils.parseXpValue(this.currentUser.xp);
+            },
+
+            userExpRank (){
+                return xpMapper.getNearestValue(this.currentUser.xp);
+            },
+
             sortInterface: {
                 get(){
                     return this.sortOption;
@@ -366,7 +383,36 @@
             },
 
             addLikeUsersToModal(payload){
-                this.likeUsers = payload.likeUsers;
+                const isSameComment = payload.id === this.currentLikeUsersId;
+
+                this.likeUsersPage += 1;
+                this.requestingLikeUsers = true;
+                this.totalLikeUsers = payload.totalLikeUsers;
+
+                if(!isSameComment){
+                    this.loadingLikeUsers = true;
+                    this.likeUsersPage = 1;
+                }
+
+                Requests.getCommentLikeUsers({
+                    id: payload.id,
+                    page: this.likeUsersPage
+                })
+                    .then(response => {
+                        if(response){
+                            if(isSameComment){
+                                this.likeUsers = [...this.likeUsers, ...response.data.data];
+                            }
+                            else {
+                                this.likeUsers = response.data.data;
+                            }
+
+                            this.requestingLikeUsers = false;
+                            this.currentLikeUsersId = payload.id;
+                        }
+
+                        this.loadingLikeUsers = false;
+                    });
             }
         },
         created(){

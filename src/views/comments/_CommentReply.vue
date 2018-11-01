@@ -70,10 +70,10 @@
                         <span class="grow"></span>
 
                         <p class="x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect"
-                           data-open-modal="likeUsersModal"
+                           :data-open-modal="like_count > 0 ? 'likeUsersModal' : ''"
                            @click="openLikes">
                             <i class="fas fa-thumbs-up text-white likes-icon"
-                               :class="'bg-' + themeColor"></i> {{ like_count }}
+                               :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -230,10 +230,13 @@
             },
 
             openLikes(){
-                this.$emit('openLikes', {
-                    likeUsers: this.like_users,
-                    busToRoot: true
-                });
+                if(this.like_count > 0){
+                    this.$emit('openLikes', {
+                        id: this.id,
+                        totalLikeUsers: this.like_count,
+                        busToRoot: true
+                    });
+                }
             },
 
             deleteComment(){

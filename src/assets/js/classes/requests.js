@@ -352,6 +352,26 @@ export default class Requests {
     }
 
     /**
+     * Get a list of users that have liked a comment
+     *
+     * @static
+     * @param {number} id
+     * @param {number} page
+     * @param {number} limit
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    static getCommentLikeUsers({id, page = 1, limit = 10}) {
+        return axios.get(endpoint_prefix + '/railcontent/comment-likes/' + id, {
+            params: {
+                page: page,
+                limit: limit
+            }
+        })
+            .then(response => response)
+            .catch(Requests.handleError);
+    }
+
+    /**
      * Report a forum post
      *
      * @static

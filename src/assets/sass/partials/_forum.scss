@@ -49,6 +49,19 @@
   }
 }
 
+.comment-like-user {
+  min-height:72px;
+  transition:background-color .2s ease-in-out;
+
+  &:hover {
+    background-color:nth(nth($greys, 1), 2);
+  }
+
+  .avatar-column {
+    flex: 0 0 50px;
+    max-width:50px;
+  }
+}
 .comment-post .avatar-column {
   flex: 0 0 75px;
   max-width:75px;
