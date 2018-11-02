@@ -8,9 +8,9 @@
             <div class="flex flex-column xs-12 sm-4 md-3 mb-3">
                 <div class="form-group xs-12" style="width:100%;">
                     <select id="commentSort" v-model="sortInterface">
-                        <option value="-like_count">Popular</option>
                         <option value="-created_on">Latest First</option>
                         <option value="created_on">Oldest First</option>
+                        <option value="-like_count">Popular</option>
                         <option value="-mine">My Comments</option>
                     </select>
                     <label for="commentSort" :class="themeColor">Sort By</label>
@@ -150,7 +150,7 @@
                 comments: [],
                 pinnedComment: null,
                 requestingData: false,
-                sortOption: '-like_count',
+                sortOption: '-created_on',
                 comment: '',
                 loading: false,
                 currentLikeUsersId: 0,
