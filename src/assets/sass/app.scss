@@ -18,6 +18,7 @@
 @import './partials/_forum.scss';
 @import './partials/_account.scss';
 @import './partials/_modal.scss';
+@import './partials/_accordion.scss';
 @import './partials/_play-alongs.scss';
 
 html {
@@ -543,5 +544,36 @@ ul {
         }
       }
     }
+  }
+}
+
+.description-col {
+  padding-right:0;
+
+  @include small {
+    padding-right:$gutterWidth;
+  }
+
+  .btn {
+    margin-bottom:$gutterWidth / 2;
+
+    @include xSmallOnly {
+      max-width:100%;
+      margin-right:0;
+    }
+
+    @include small {
+      margin-bottom:0;
+    }
+  }
+}
+
+[data-open-course] {
+  .open {display:flex;}
+  .close {display:none;}
+
+  &.active {
+    .open {display:none;}
+    .close {display:flex;}
   }
 }
