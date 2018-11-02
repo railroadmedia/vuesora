@@ -32,17 +32,11 @@ export default (function () {
         const icon = element.querySelector('.fas');
 
         // Create a confirmation dialogue using Noty
-        const notification = new Noty({
-            layout: 'center',
-            modal: true,
+        Toasts.confirm({
             text: 'Do you really want to reset your progress? <br><br><span class="tiny text-grey-3 font-italic">This cannot be undone.</span>',
-            theme: 'bootstrap-v4',
-            closeWith: [],
-            buttons: [
-                // Confirm Button
-                Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
-
-                    notification.close();
+            submitButton: {
+                text: '<span class="bg-success text-white short">YES</span>',
+                callback: () => {
                     icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
                     icon.classList.add('fa-spin', 'fa-spinner');
 
@@ -58,14 +52,13 @@ export default (function () {
 
                             icon.classList.remove('fa-spin', 'fa-spinner');
                             icon.classList.add('fa-redo-alt', 'fa-flip-horizontal');
-                        })
-                }),
-                // Cancel Button
-                Noty.button('<span class="bg-dark inverted text-grey-3 short">NO</span>', 'btn', () => {
-                    notification.close();
-                })
-            ]
-        }).show();
+                        });
+                }
+            },
+            cancelButton: {
+                text: '<span class="bg-dark inverted text-grey-3 short">NO</span>',
+            }
+        });
     }
 
     function addToList(event){

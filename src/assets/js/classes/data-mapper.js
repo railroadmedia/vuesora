@@ -640,7 +640,7 @@ export default class DataMapper {
                     black_title: this.post['title'],
                     description: this.post['learning_path_description'] || this.post['description'],
                     column_data: [
-                        this.getChildLessonCount(),
+                        this.post['lesson_count'] || this.getPostDuration()
                     ]
                 },
                 schedule: {
