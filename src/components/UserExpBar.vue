@@ -5,7 +5,7 @@
                 <div class="exp flex flex-column align-v-center align-h-right"
                      :class="'bg-' + themeColor"
                      :style="'width:' + xpPercentage + '%;'">
-                    <p class="tiny dense font-bold ph-2 nowrap"
+                    <p class="body dense font-bold ph-2 nowrap"
                        :class="expBarClassObject">
                         {{ formattedXp }} XP
                     </p>
@@ -14,14 +14,14 @@
         </div>
 
         <div class="flex flex-row ph mt-1">
-            <p class="tiny dense text-center nowrap font-compressed">
-                <strong>{{ userExpRank }}</strong><br>{{ userExpRankAmount }}
+            <p class="body dense text-center nowrap font-compressed">
+                <strong>{{ userExpRank }}</strong><br>{{ userExpRankAmount }} XP
             </p>
 
             <span class="flex flex-column grow"></span>
 
-            <p class="tiny dense text-center nowrap font-compressed">
-                <strong>{{ nextUserExpRank }}</strong><br>{{ nextUserExpRankAmount }}
+            <p class="body dense text-center nowrap font-compressed">
+                <strong>{{ nextUserExpRank }}</strong><br>{{ nextUserExpRankAmount }} XP
             </p>
         </div>
     </div>

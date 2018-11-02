@@ -419,7 +419,6 @@
             this.getComments(this.requestParams);
         },
         mounted(){
-            console.log('test');
             // Check the URI Params if 'goToComment' exists
             const uriParams = QueryString.parse(location.search);
             // Run the goToComment method if it does

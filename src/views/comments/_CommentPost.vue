@@ -371,25 +371,22 @@
             },
 
             deleteComment() {
-                const notification = new Noty({
-                    layout: 'center',
-                    modal: true,
-                    text: 'Are you sure you want to delete this comment?',
-                    theme: 'bootstrap-v4',
-                    closeWith: [],
-                    buttons: [
-                        Noty.button('<span class="bg-error text-white short">Delete</span>', 'btn mr-1', () => {
-                            this.$emit('deleteComment', {
-                                id: this.id
-                            });
+                const vm = this;
 
-                            notification.close();
-                        }),
-                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
-                            notification.close();
-                        })
-                    ]
-                }).show();
+                Toasts.confirm({
+                    text: 'Are you sure you want to delete this comment?',
+                    submitButton: {
+                        text: '<span class="bg-error text-white short">Delete</span>',
+                        callback: () => {
+                            vm.$emit('deleteComment', {
+                                id: vm.id
+                            });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-dark inverted text-grey-3 short">Cancel</span>'
+                    }
+                });
             },
 
             likeReply(payload) {

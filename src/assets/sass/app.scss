@@ -139,6 +139,11 @@ ul {
       flex-wrap:nowrap;
     }
 
+    .header-avatar {
+      flex:0 0 175px;
+      max-width:175px;
+    }
+
     .flex-column:not(.header-avatar) {
       @include xSmallOnly {
         flex:0 0 100%;
@@ -148,6 +153,22 @@ ul {
     .flag {
       transform:scale(0.75);
       transform-origin:0 50%;
+    }
+
+    .xp-stats {
+      align-items:center;
+
+      @include small {
+        align-items:flex-end;
+      }
+
+      p {
+        text-align:center;
+
+        @include small {
+          text-align:right;
+        }
+      }
     }
   }
 
