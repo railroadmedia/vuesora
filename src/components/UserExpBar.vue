@@ -14,13 +14,13 @@
         </div>
 
         <div class="flex flex-row ph mt-1">
-            <p class="body dense text-center nowrap font-compressed">
+            <p class="body dense text-center nowrap font-compressed uppercase">
                 <strong>{{ userExpRank }}</strong><br>{{ userExpRankAmount }} XP
             </p>
 
             <span class="flex flex-column grow"></span>
 
-            <p class="body dense text-center nowrap font-compressed">
+            <p class="body dense text-center nowrap font-compressed uppercase">
                 <strong>{{ nextUserExpRank }}</strong><br>{{ nextUserExpRankAmount }} XP
             </p>
         </div>
