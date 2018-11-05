@@ -1,0 +1,42 @@
+@import './_variables.scss';
+
+.accordion {
+
+  &.active {
+    padding-bottom:$gutterWidth;
+
+    .arrow-col {
+      transform: rotate(180deg);
+    }
+  }
+
+  .accordion-trigger {
+    * {
+      pointer-events:none;
+    }
+
+    .meta-data-col {
+       @include xSmallOnly {
+         display:none;
+       }
+
+      flex:0 0 100px;
+    }
+
+    .arrow-col {
+      transition:transform .2s ease-in-out;
+      will-change:transform;
+      z-index:5;
+      font-size:24px;
+      flex:0 0 60px;
+    }
+  }
+
+  .accordion-content {
+    max-height:0;
+    overflow:hidden;
+    will-change:max-height;
+    transition:max-height .2s ease-in-out;
+    padding-bottom:0;
+  }
+}
