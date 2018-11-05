@@ -25,7 +25,8 @@
                 </div>
 
                 <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-                <p class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
+                <p v-if="this.currentUser.access_level !== 'team'"
+                   class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
             </div>
 
             <div class="flex flex-column">
@@ -177,6 +178,10 @@
             },
 
             userExpRank (){
+                if(this.currentUser.access_level === 'team'){
+                    return 'Drumeo Team';
+                }
+
                 return xpMapper.getNearestValue(this.currentUser.xp);
             },
 

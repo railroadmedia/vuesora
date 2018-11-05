@@ -15,7 +15,8 @@
                  :src="user['fields.profile_picture_image_url']" class="rounded">
 
             <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-            <p class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
+            <p v-if="this.user.access_level !== 'team'"
+               class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row mb-1 comment-meta">
@@ -281,6 +282,10 @@
             },
 
             userExpRank() {
+                if(this.user.access_level === 'team'){
+                    return 'Drumeo Team';
+                }
+
                 return xpMapper.getNearestValue(this.user.xp);
             },
 
