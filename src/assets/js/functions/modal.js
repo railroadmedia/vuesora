@@ -66,6 +66,10 @@ export default (function(){
         });
     }
 
+    window.closeAllModals = function(){
+        closeModal();
+    };
+
     window.appendBackgroundOverlay = function(){
         const modalOverlay = document.createElement('div');
 
