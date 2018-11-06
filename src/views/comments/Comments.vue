@@ -31,7 +31,7 @@
 
             <div class="flex flex-column">
 
-                <text-editor toolbar="bold italic underline | bullist numlist"
+                <text-editor toolbar="bold italic underline | bullist numlist | link"
                              v-model="commentInterface"
                              :height="150"
                              ref="textEditor"></text-editor>
