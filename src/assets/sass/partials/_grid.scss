@@ -491,4 +491,16 @@ $numerators: 2 3 6 9 10;
   }
 }
 
+.p-xs-only {
+  @include small {
+    padding:0!important;
+  }
+}
+
+.m-xs-only {
+  @include small {
+    margin:0!important;
+  }
+}
+
 

@@ -27,7 +27,8 @@
 
         <add-event-modal :singleEvent="singleEvent"
                          :$_subscriptionCalendarId="$_subscriptionCalendarId"
-                         :$_themeColor="$_themeColor"></add-event-modal>
+                         :$_themeColor="$_themeColor"
+                         @modalClose="handleModalClose"></add-event-modal>
     </div>
 </template>
 <script>
@@ -124,6 +125,13 @@
 
             addEventToDropdown(payload){
                 this.singleEvent = payload;
+            },
+
+            handleModalClose(){
+                this.addEventToDropdown({
+                    title: '',
+                    date: ''
+                })
             }
         },
     }

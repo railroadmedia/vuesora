@@ -18,7 +18,7 @@
 
                 <a v-for="user in likeUsers"
                    :key="user.id"
-                   :href="'/laravel/public/members/profile/' + user.id"
+                   :href="'/laravel/public/members/profile/' + user.user_id"
                    class="flex flex-row comment-like-user bt-grey-1-1 no-decoration text-black ph-3 pv-1 align-v-center">
                     <div class="flex flex-row">
                         <div class="flex flex-column avatar-column">

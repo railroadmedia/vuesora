@@ -5,7 +5,8 @@
 
             <p class="tiny text-center mb-2">Here you can add an upcoming lesson release to the Calendar provider you already use - Apple Calendar, Google Calendar, Outlook, or Yahoo Calendar are all supported.</p>
 
-            <p class="tiny text-center mb-2">There are to subscription options:</p>
+            <p v-if="$_subscriptionCalendarId"
+               class="tiny text-center mb-2">There are two subscription options:</p>
 
             <div class="relative" style="width:100%;" v-if="$_subscriptionCalendarId">
                 <button class="btn mb-1"
@@ -13,7 +14,7 @@
                         <span class="text-white"
                               :class="'bg-' + $_themeColor">
                             <i class="fas fa-calendar-plus mr-1"></i>
-                            Subscribe to course calendar
+                            Subscribe to calendar
                         </span>
                 </button>
 
@@ -25,9 +26,11 @@
                 </transition>
             </div>
 
-            <p class="x-tiny font-italic text-center mb-2">This subscribes you to the Drumeo Course Calendar. Any upcoming releases will automatically show up in this Calendar as they are scheduled by the Drumeo Team.</p>
+            <p v-if="$_subscriptionCalendarId"
+               class="x-tiny font-italic text-center mb-2">This subscribes you to the Drumeo Course Calendar. Any upcoming releases will automatically show up in this Calendar as they are scheduled by the Drumeo Team.</p>
 
-            <div class="tiny pointer relative" style="width:100%;">
+            <div v-if="singleEvent.title"
+                 class="tiny pointer relative" style="width:100%;">
                 <button class="btn mb-1"
                         @click.stop="singleEventDropdown = !singleEventDropdown">
                         <span class="inverted"
@@ -44,7 +47,8 @@
                 </transition>
             </div>
 
-            <p class="x-tiny font-italic text-center mb-2">Only this event will be added to your calendar.</p>
+            <p v-if="singleEvent.title"
+               class="x-tiny font-italic text-center mb-2">Only this event will be added to your calendar.</p>
         </div>
     </div>
 </template>
@@ -93,6 +97,10 @@
                 this.singleEventDropdown = false;
                 this.subscriptionCalendarDropdown = false;
             });
+
+            window.addEventListener('modalClose', () => {
+                this.$emit('modalClose');
+            })
         }
     }
 </script>
