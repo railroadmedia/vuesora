@@ -5,7 +5,7 @@
 
             <p class="tiny text-center mb-2">Here you can add an upcoming lesson release to the Calendar provider you already use - Apple Calendar, Google Calendar, Outlook, or Yahoo Calendar are all supported.</p>
 
-            <p v-if="$_subscriptionCalendarId"
+            <p v-show="$_subscriptionCalendarId"
                class="tiny text-center mb-2">There are two subscription options:</p>
 
             <div class="relative" style="width:100%;" v-if="$_subscriptionCalendarId">
@@ -26,10 +26,10 @@
                 </transition>
             </div>
 
-            <p v-if="$_subscriptionCalendarId"
+            <p v-show="$_subscriptionCalendarId"
                class="x-tiny font-italic text-center mb-2">This subscribes you to the Drumeo Course Calendar. Any upcoming releases will automatically show up in this Calendar as they are scheduled by the Drumeo Team.</p>
 
-            <div v-if="singleEvent.title"
+            <div v-show="singleEvent.title"
                  class="tiny pointer relative" style="width:100%;">
                 <button class="btn mb-1"
                         @click.stop="singleEventDropdown = !singleEventDropdown">
@@ -47,7 +47,7 @@
                 </transition>
             </div>
 
-            <p v-if="singleEvent.title"
+            <p v-show="singleEvent.title"
                class="x-tiny font-italic text-center mb-2">Only this event will be added to your calendar.</p>
         </div>
     </div>
