@@ -238,6 +238,20 @@ ul {
   //  }
   //}
 
+  .meta-info-col {
+    vertical-align:middle;
+
+    p {
+      vertical-align:middle;
+
+      span {
+        line-height:40px;
+        font-size:16px;
+        font-weight:400;
+      }
+    }
+  }
+
   .button-col {
     flex:0 0 55px;
     padding-right:$gutterWidth / 6;

@@ -25,6 +25,14 @@
     transform:scale(1);
   }
 
+  &#addToCalendarModal {
+    & > div {
+      @include xSmallOnly {
+        top:40%;
+      }
+    }
+  }
+
   &.small > div {
     max-width:480px;
   }
