@@ -3,12 +3,9 @@
         <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible">
             <h1 class="subheading text-center mb-2">Subscribe to Calendar</h1>
 
-            <p class="tiny text-center mb-2">Here you can add an upcoming lesson release to the Calendar provider you already use - Apple Calendar, Google Calendar, Outlook, or Yahoo Calendar are all supported.</p>
+            <p class="tiny text-center mb-2">{{ subscriptionDescription }}</p>
 
-            <p v-show="$_subscriptionCalendarId"
-               class="tiny text-center mb-2">There are two subscription options:</p>
-
-            <div class="relative" style="width:100%;" v-if="$_subscriptionCalendarId">
+            <div class="relative" style="width:100%;" v-show="$_subscriptionCalendarId">
                 <button class="btn mb-1"
                         @click.stop="subscriptionCalendarDropdown = !subscriptionCalendarDropdown">
                         <span class="text-white"
@@ -27,7 +24,7 @@
             </div>
 
             <p v-show="$_subscriptionCalendarId"
-               class="x-tiny font-italic text-center mb-2">This subscribes you to the Drumeo Course Calendar. Any upcoming releases will automatically show up in this Calendar as they are scheduled by the Drumeo Team.</p>
+               class="x-tiny font-italic text-center mb-2">{{ singleEventDescription }}</p>
 
             <div v-show="singleEvent.title"
                  class="tiny pointer relative" style="width:100%;">
@@ -72,6 +69,14 @@
             $_subscriptionCalendarId: {
                 type: String,
                 default: ''
+            },
+            subscriptionDescription: {
+                type: String,
+                default: () => 'Here you can subscribe to this lesson format\'s full release calendar using the calendar provider you already use - Apple Calendar, Google Calendar, Outlook and Yahoo Calendar are all supported.'
+            },
+            singleEventDescription: {
+                type: String,
+                default: () => 'Any upcoming releases will automatically show up in this calendar as they are scheduled by the Drumeo Team.'
             }
         },
         data(){
