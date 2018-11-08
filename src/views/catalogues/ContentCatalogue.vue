@@ -32,21 +32,7 @@
                                  :$_included_types="$_includedTypes"></catalogue-playlist-tabs>
 
 
-        <div class="flex flex-row ph pv-3" v-if="$_showContentTabs && !$_filterableValues.length">
-            <span class="heading pointer mr-3"
-                  :class="selected_tab === 'new' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
-                  @click="loadNewPosts">
-                New
-            </span>
-
-            <span class="heading pointer"
-                  :class="selected_tab === 'continue' ? 'bb-' + $_themeColor + '-2 text-black' : 'text-grey-2'"
-                  @click="loadStartedPosts">
-                In Progress
-            </span>
-        </div>
-
-        <catalogue-filters v-if="$_filterableValues.length && !$_showContentTabs"
+        <catalogue-filters v-if="$_filterableValues.length"
                            :$_filters="filters"
                            :$_filterableValues="$_filterableValues"
                            :required_user_states="required_user_states"
@@ -73,24 +59,25 @@
                         :$_useThemeColor="$_useThemeColor"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
-            <list-catalogue v-if="catalogue_type === 'list'"
-                            :$_content="content"
-                            :$_brand="$_brand"
-                            :$_themeColor="$_themeColor"
-                            :$_userId="$_userId"
-                            :$_displayItemsAsOverview="$_displayItemsAsOverview"
-                            :$_displayUserInteractions="$_displayUserInteractions"
-                            :$_contentTypeOverride="$_contentTypeOverride"
-                            :$_lockUnowned="$_lockUnowned"
-                            :$_showNumbers="$_showNumbers"
-                            :$_is_search="$_searchBar || $_isPlaylists"
-                            :$_resetProgress="$_resetProgress"
-                            :$_useThemeColor="$_useThemeColor"
-                            :$_forceWideThumbs="$_forceWideThumbs"
-                            :$_destroyOnListRemoval="$_destroyOnListRemoval"
-                            :$_compactLayout="$_compactLayout"
-                            @addToList="addToListEventHandler"
-                            @resetProgress="resetProgressEventHandler"></list-catalogue>
+        <list-catalogue v-if="catalogue_type === 'list'"
+                        :$_content="content"
+                        :$_brand="$_brand"
+                        :$_themeColor="$_themeColor"
+                        :$_userId="$_userId"
+                        :$_displayItemsAsOverview="$_displayItemsAsOverview"
+                        :$_displayUserInteractions="$_displayUserInteractions"
+                        :$_contentTypeOverride="$_contentTypeOverride"
+                        :$_lockUnowned="$_lockUnowned"
+                        :$_showNumbers="$_showNumbers"
+                        :$_is_search="$_searchBar || $_isPlaylists"
+                        :$_resetProgress="$_resetProgress"
+                        :$_useThemeColor="$_useThemeColor"
+                        :$_forceWideThumbs="$_forceWideThumbs"
+                        :$_destroyOnListRemoval="$_destroyOnListRemoval"
+                        :$_compactLayout="$_compactLayout"
+                        :$_subscriptionCalendarId="$_subscriptionCalendarId"
+                        @addToList="addToListEventHandler"
+                        @resetProgress="resetProgressEventHandler"></list-catalogue>
 
         <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
              class="flex flex-row pa">
@@ -129,6 +116,7 @@
     import CatalogueSearch from './_CatalogueSearch.vue';
     import CataloguePlaylistTabs from './_CataloguePlaylistTabs';
     import CatalogueTabFilters from './_CatalogueTabFilters.vue';
+    import AddEventDropdown from '../../components/AddEvent/AddEventDropdown.vue';
     import axios from 'axios';
     import Utils from '../../assets/js/classes/utils';
     import Toasts from '../../assets/js/classes/toasts'
@@ -147,6 +135,7 @@
             'catalogue-tab-filters': CatalogueTabFilters,
             'catalogue-search': CatalogueSearch,
             'catalogue-playlist-tabs': CataloguePlaylistTabs,
+            'add-event-dropdown': AddEventDropdown
         },
         props: {
             $_catalogueType: {
@@ -264,10 +253,6 @@
                 type: String,
                 default: () => '/laravel/public/railcontent/search'
             },
-            $_showContentTabs: {
-                type: Boolean,
-                default: () => false
-            },
             $_isPlaylists: {
                 type: Boolean,
                 default: () => false
@@ -290,6 +275,10 @@
             $_compactLayout: {
                 type: Boolean,
                 default: () => false
+            },
+            $_subscriptionCalendarId: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -311,7 +300,13 @@
                 selected_types: null,
                 search_term: undefined,
                 required_user_states: this.$_requiredUserStates || [],
-                selected_tab: 'new'
+                selected_tab: 'new',
+                singleEventDropdown: false,
+                subscriptionCalendarDropdown: false,
+                singleEvent: {
+                    title: '',
+                    date: ''
+                },
             }
         },
         computed: {
@@ -364,6 +359,13 @@
                 }
 
                 return this.$_sortOverride || '-published_on';
+            },
+
+            eventData(){
+                return {
+                    title: this.singleEventTitle,
+                    date: this.singleEventDate
+                }
             }
         },
         methods: {
@@ -486,6 +488,13 @@
                                 }
                             }
 
+                            // Sometimes vue caches the add event button.
+                            // If it doesn't we need to force a refresh, done with a timeout to
+                            // Prevent race conditions.
+                            setTimeout(() => {
+                                window.addeventatc.refresh();
+                            }, 500);
+
                             this.loading = false;
                         })
                         .catch(error => {
@@ -591,7 +600,7 @@
                 this.setUrlParams();
 
                 this.getContent();
-            }
+            },
         },
         mounted() {
             if (!this.$_preLoadedContent && !this.$_preLoadedContent.results.length) {

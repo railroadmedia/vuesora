@@ -1,6 +1,6 @@
 {
   "name": "vuesora",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
@@ -31,7 +31,7 @@
     "dropzone": "^5.4.0",
     "es6-promise": "^4.2.4",
     "flatpickr": "^4.4.6",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "mediaelement": "^4.2.8",
     "mediaelement-plugins": "^2.5.0",
     "moment": "^2.22.1",
@@ -41,8 +41,10 @@
     "query-string": "^6.1.0",
     "register-service-worker": "^1.0.0",
     "surge": "^0.20.1",
-    "vue": "^2.5.13",
+    "vue": "^2.5.17",
     "vue-router": "^3.0.1",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.5.17",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -56,16 +58,9 @@
     "@vue/test-utils": "^1.0.0-beta.10",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "chai": "^4.1.2",
-    "chai-dom": "^1.7.0",
-    "jsdom": "^11.7.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^6.0.6",
-    "sinon": "^4.5.0",
-    "validator": "^9.4.1",
-    "vue-embed": "^1.0.0",
-    "vue-style-loader": "^4.1.0",
-    "vue-template-compiler": "^2.5.13"
+    "vue-embed": "^1.0.0"
   },
   "babel": {
     "presets": [

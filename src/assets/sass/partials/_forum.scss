@@ -49,9 +49,27 @@
   }
 }
 
+.comment-like-user {
+  min-height:72px;
+  transition:background-color .2s ease-in-out;
+
+  &:hover {
+    background-color:nth(nth($greys, 1), 2);
+  }
+
+  .avatar-column {
+    flex: 0 0 50px;
+    max-width:50px;
+  }
+}
 .comment-post .avatar-column {
-  flex: 0 0 50px;
-  max-width:50px;
+  flex: 0 0 75px;
+  max-width:75px;
+
+  @include medium {
+    flex: 0 0 100px;
+    max-width:100px;
+  }
 }
 
 .search-result-post blockquote {
@@ -88,6 +106,22 @@
       font-size:10px;
       margin-right:5px;
     }
+  }
+}
+
+.likes-icon {
+  border-radius:50%;
+  width:18px;
+  height:18px;
+  text-align:center;
+  line-height:18px;
+  margin-right:5px;
+
+  &.big {
+    height:40px;
+    width:40px;
+    line-height:40px;
+    font-size:20px;
   }
 }
 

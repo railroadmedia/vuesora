@@ -114,6 +114,15 @@ export default {
                     payload.icon.classList.remove('fa-spin', 'fa-spinner');
                     payload.icon.classList.add('fa-undo');
                 });
+        },
+
+        addEvent(payload){
+            const payloadObject = payload.title ? payload : {
+                title: this.$_item.title,
+                date: this.$_item.published_on
+            };
+
+            this.$emit('addEvent', payloadObject);
         }
     }
 }

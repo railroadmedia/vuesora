@@ -6,16 +6,15 @@
 
 import Noty from 'noty';
 
-export default class Toasts {
+export default {
 
     /**
      * Display a basic success message
      *
-     * @static
      * @param {string} text - the text to display in the success box
      * @returns {Object} - Noty object to render the notification
      */
-    static success(text){
+    success(text){
         return new Noty({
             type: 'success',
             theme: 'bootstrap-v4',
@@ -23,16 +22,15 @@ export default class Toasts {
             timeout: 5000,
             layout: 'topRight'
         }).show();
-    }
+    },
 
     /**
      * Display a basic error warning
      *
-     * @static
      * @param {string} text - the text to display in the warning box
      * @returns {Object} - Noty object to render the notification
      */
-    static errorWarning(text = 'We\'re sorry! An unexpected error occurred. Please refresh the page and try again.'){
+    errorWarning(text = 'We\'re sorry! An unexpected error occurred. Please refresh the page and try again.'){
         return new Noty({
             type: 'warning',
             theme: 'bootstrap-v4',
@@ -40,5 +38,55 @@ export default class Toasts {
             timeout: 5000,
             layout: 'topRight'
         }).show();
+    },
+
+    /**
+     * Display a confirmation dialog
+     *
+     * @param {string} text - the text to display in the confirmation box
+     * @param {object} submitButton - object with a text and callback property
+     * @param {object} cancelButton - object with a text and callback property
+     * @returns {Object} - Noty object to render the dialog
+     */
+    confirm({
+        text,
+        submitButton = {
+            text: '<span class="bg-success text-white short">YES</span>',
+            callback: null
+        },
+        cancelButton = {
+            text: '<span class="bg-dark inverted text-grey-3 short">NO</span>',
+            callback: null
+        }
+    }){
+        const notification = new Noty({
+            layout: 'center',
+            modal: true,
+            text: text,
+            theme: 'bootstrap-v4',
+            closeWith: [],
+            buttons: [
+                Noty.button(
+                    submitButton.text, 'btn mr-1', () => {
+                        if(submitButton.callback != null) {
+                            submitButton.callback();
+                        }
+
+                        notification.close();
+                    }
+                ),
+                Noty.button(
+                    cancelButton.text, 'btn', () => {
+                        if(cancelButton.callback != null){
+                            cancelButton.callback();
+                        }
+
+                        notification.close();
+                    }
+                )
+            ]
+        }).show();
+
+        return notification;
     }
 }

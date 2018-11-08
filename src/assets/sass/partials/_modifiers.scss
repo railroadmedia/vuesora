@@ -154,6 +154,14 @@ $borderDirections: (
   overflow-x:auto;
 }
 
+.overflow-visible {
+  overflow:visible!important;
+}
+
+.nowrap {
+  white-space:nowrap;
+}
+
 .text-truncate {
   width:100%;
   overflow:hidden;

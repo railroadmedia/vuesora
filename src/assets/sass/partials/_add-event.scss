@@ -1,25 +1,31 @@
 @import './_variables.scss';
 
-.content-table-row, .content-overview {
+.add-event-dropdown {
+  width:200px;
+  max-width:200px;
+  min-width:200px;
+  position:absolute;
+  top:100%;
+  left:50%;
+  margin-left:-100px;
+  color:#000;
+  z-index:10;
 
-  .addeventatc {
-    cursor:pointer;
-    visibility:hidden;
-    z-index:50;
-    box-shadow:none!important;
-    border:none!important;
-    text-shadow:none;
-    background:none!important;
+  .addeventatc, a {
+    background:#fff;
+    transition:background .1s ease-in-out;
+    will-change:background;
     outline:none;
-    padding:0;
 
+    &:hover {
+      background:#f2f2f2;
+    }
 
-    .addeventatc_icon {
-      display:none!important;
+    p {
+      em {
+        font-size:10px;
+        color:nth(nth($greys, 2), 2);
+      }
     }
   }
-}
-
-.copyx {
-  display:none!important;
 }

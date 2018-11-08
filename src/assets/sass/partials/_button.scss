@@ -23,13 +23,26 @@ a, div {
     will-change:background-color;
     transition:background-color .2s ease-in-out;
 
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, .5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1) translate(-50%, -50%);
+      transform-origin: 0 0;
+    }
+
     &.short {
       height:35px;
     }
 
-    &:focus {
-      animation-name: buttonActive;
-      animation-duration: .4s;
+    &:focus:not(:active)::after {
+      animation: ripple .5s ease-out;
     }
   }
 }
@@ -48,19 +61,35 @@ button {
       pointer-events:none;
       @extend a.btn;
 
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 0;
+        padding-bottom:100%;
+        background: rgba(255, 255, 255, .5);
+        opacity: 0;
+        border-radius: 50%;
+        transform: scale(1) translate(-50%, -50%);
+        transform-origin: 0 0;
+      }
+
       &.short {
         height:35px;
       }
     }
 
-    &:focus > span {
-      animation-name: buttonActive;
-      animation-duration: .4s;
+    &:focus:not(:active) > span::after {
+      animation: ripple .5s ease-out;
     }
   }
 }
 
 .btn {
+  position:relative;
+  overflow:hidden;
 
   &.collapse-square {
     max-width:50px;
@@ -113,6 +142,20 @@ button {
   &:hover {
     @each $key, $value in $brand_colors {
       &.bg-#{$key}, & > span.bg-#{$key} {
+        background-color: lighten($value, 5%);
+      }
+    }
+
+    @each $key, $value in $content_colors {
+      &.bg-#{$key}, &.bg-#{$key}s, & > span.bg-#{$key}, & > span.bg-#{$key}s {
+        background-color: lighten($value, 5%);
+      }
+    }
+  }
+
+  &:focus {
+    @each $key, $value in $brand_colors {
+      &.bg-#{$key}, & > span.bg-#{$key} {
         background-color: lighten($value, 10%);
       }
     }
@@ -129,7 +172,14 @@ button {
   &:hover > span.inverted,
   &:hover > span.flat,
   & > span.inverted:hover,
-  & > span.flat:hover { background-color:rgba(126, 126, 126, .1); }
+  & > span.flat:hover { background-color:rgba(126, 126, 126, .05); }
+
+  &.inverted:focus,
+  &.flat:focus,
+  &:focus > span.inverted,
+  &:focus > span.flat,
+  & > span.inverted:focus,
+  & > span.flat:focus { background-color:rgba(126, 126, 126, .1); }
 }
 
 a {
@@ -148,5 +198,20 @@ a {
   100% {
     transform:scale(1);
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(.2) translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25) translate(-50%, -50%);
   }
 }

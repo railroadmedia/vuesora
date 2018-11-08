@@ -1,13 +1,20 @@
 <template>
     <div class="flex flex-row comment-post pl pv mv-1">
         <div class="flex flex-column avatar-column pr">
-            <a v-if="hasPublicProfiles"
-               :href="profileRoute" target="_blank"
-               class="no-decoration">
-                <img :src="user['fields.profile_picture_image_url']" class="rounded">
-            </a>
-            <img v-else
+            <div v-if="hasPublicProfiles"
+                 class="user-avatar smaller"
+                 :class="[avatarClassObject, brand]">
+                <a :href="profileRoute" target="_blank"
+                   class="no-decoration">
+                    <img :src="user['fields.profile_picture_image_url']" class="rounded">
+                </a>
+            </div>
+            <img v-if="!hasPublicProfiles"
                  :src="user['fields.profile_picture_image_url']" class="rounded">
+
+            <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
+            <p v-if="this.user.access_level !== 'team'"
+               class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row align-v-center mb-1 comment-meta">
@@ -52,7 +59,7 @@
                     <div class="flex flex-row align-v-center">
 
                         <p v-if="!isUsersPost"
-                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                           class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="isLiked ? 'text-' + themeColor : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
@@ -61,9 +68,13 @@
                             </span>
                         </p>
 
-                        <p class="x-tiny text-grey-3 uppercase font-italic"
-                           v-html="userLikeString">
-                            {{ userLikeString }}
+                        <span class="grow"></span>
+
+                        <p class="x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect"
+                           :data-open-modal="like_count > 0 ? 'likeUsersModal' : ''"
+                           @click="openLikes">
+                            <i class="fas fa-thumbs-up text-white likes-icon"
+                               :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -74,10 +85,16 @@
 <script>
     import Noty from 'noty';
     import moment from 'moment';
+    import xpMapper from '../../assets/js/classes/xp-mapper';
+    import Utils from '../../assets/js/classes/utils';
 
     export default {
         name: 'comment-reply',
         props: {
+            brand: {
+                type: String,
+                default: () => 'drumeo'
+            },
             themeColor: {
                 type: String,
                 default: () => 'recordeo'
@@ -88,7 +105,8 @@
                     return {
                         display_name: '',
                         id: 0,
-                        isAdmin: false
+                        isAdmin: false,
+                        avatar: '',
                     }
                 }
             },
@@ -146,7 +164,9 @@
                     return {
                         'fields.profile_picture_image_url': '',
                         id: 0,
-                        display_name: ''
+                        display_name: '',
+                        xp: 1234,
+                        access_level: 'edge'
                     }
                 }
             },
@@ -161,51 +181,30 @@
             }
         },
         computed: {
-            profileRoute(){
-                return this.profileBaseRoute + this.user_id
+            avatarClassObject(){
+                return {
+                    'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.user.access_level) !== -1,
+                    'edge': this.user.access_level === 'edge',
+                    'pack': this.user.access_level === 'pack',
+                    'team': this.user.access_level === 'team',
+                    'lifetime': this.user.access_level === 'lifetime'
+                }
             },
 
-            userLikeString(){
-                let userNames = [];
-                let userNameString;
-                let suffixString = ' like this';
+            userExpValue(){
+                return Utils.parseXpValue(this.user.xp);
+            },
 
-                for(let i = 0; i < this.like_users.length; i++){
-                    let nameExistsOrIsntCurrentUser = this.like_users[i]['display_name'] != null
-                        && this.like_users[i]['display_name'] !== this.currentUser.display_name;
-
-                    if(nameExistsOrIsntCurrentUser){
-                        userNames.push(this.like_users[i]['display_name']);
-                    }
+            userExpRank (){
+                if(this.user.access_level === 'team'){
+                    return 'Drumeo Team';
                 }
 
-                if(userNames.length){
-                    userNameString = userNames.join(', ');
-                }
+                return xpMapper.getNearestValue(this.user.xp);
+            },
 
-                if(this.like_count > 3){
-                    suffixString = ' & ' + String(this.like_count - 3) + ' others like this';
-                }
-                else if(this.like_count === 0) {
-                    suffixString = '';
-                }
-
-                if(this.is_liked){
-                    userNames.splice((userNames.length - 1), 1);
-
-                    if(this.like_count > 1){
-                        return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
-                    }
-
-                    return '<span class="font-bold">You</span>' + suffixString;
-                }
-                else {
-                    if(this.like_count > 0){
-                        return '<span class="font-bold">' + userNameString + '</span>' + suffixString;
-                    }
-                }
-
-                return 'Be the first to like this!';
+            profileRoute(){
+                return this.profileBaseRoute + this.user_id
             },
 
             commentUrl(){
@@ -233,6 +232,16 @@
                     isLiked: this.is_liked,
                     isPinned: this.pinned
                 });
+            },
+
+            openLikes(){
+                if(this.like_count > 0){
+                    this.$emit('openLikes', {
+                        id: this.id,
+                        totalLikeUsers: this.like_count,
+                        busToRoot: true
+                    });
+                }
             },
 
             deleteComment(){

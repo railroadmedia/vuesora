@@ -29,7 +29,7 @@ export default class DataMapper {
                     description: this.post['description'],
                     column_data: [
                         DataMapper.mapDifficulty(this.post),
-                        this.post['lesson_count'] + ' Videos',
+                        this.getChildLessonCount(),
                         this.getPostDate()
                     ]
                 },
@@ -421,7 +421,7 @@ export default class DataMapper {
                     grey_title: DataMapper.mapDifficulty(this.post)
                 },
                 list: {
-                    color_title: this.post['artist'],
+                    color_title: this.post['artist'] || 'TBD',
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
@@ -442,7 +442,7 @@ export default class DataMapper {
 
             'play-along': {
                 card: {
-                    color_title: this.post['style'],
+                    color_title: this.post['style'] || 'TBD',
                     black_title: this.post['title'],
                     description: this.post['description'],
                     grey_title: DataMapper.mapDifficulty(this.post)
@@ -451,7 +451,7 @@ export default class DataMapper {
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
-                        this.post['style'],
+                        this.post['style'] || 'TBD',
                         this.post['bpm'] + ' BPM'
                     ]
                 },
@@ -536,18 +536,65 @@ export default class DataMapper {
                 }
             },
 
-            'pack-bundle': {
+            'semester-pack': {
                 card: {
                     show_description: true,
                     black_title: this.post['title'],
                     description: this.post['description'],
-                    grey_title: this.post['lesson_count'] + ' Lessons'
+                    grey_title: this.getChildLessonCount()
                 },
                 list: {
                     black_title: this.post['title'],
                     description: this.post['description'],
                     column_data: [
-                        this.post['lesson_count'] + ' Lessons'
+                        this.getChildLessonCount()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
+            'semester-pack-lesson': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getPostDuration()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
+            'pack-bundle': {
+                card: {
+                    show_description: true,
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getChildLessonCount()
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getChildLessonCount()
                     ]
                 },
                 schedule: {
@@ -593,7 +640,7 @@ export default class DataMapper {
                     black_title: this.post['title'],
                     description: this.post['learning_path_description'] || this.post['description'],
                     column_data: [
-                        this.getChildLessonCount(),
+                        this.post['lesson_count'] || this.getPostDuration()
                     ]
                 },
                 schedule: {
@@ -702,7 +749,7 @@ export default class DataMapper {
             }
         }
 
-        return 'N/A';
+        return 'TBD';
     }
 
     getPostDuration(){
@@ -710,7 +757,7 @@ export default class DataMapper {
             Math.round(
                 moment.duration((this.post['video']['length_in_seconds'] * 1000), 'ms').asMinutes()
             ) + ' mins' :
-            'N/A'
+            'TBD'
     }
 
     getPostDate(){
@@ -722,11 +769,11 @@ export default class DataMapper {
     }
 
     getEpisodeNumber(){
-        return 'Episode #' + this.post['sort'];
+        return this.post['sort'] ? 'Episode #' + this.post['sort'] : 'TBD';
     }
 
     getChildLessonCount(){
-        return this.post['lesson_count'] + ' Lessons';
+        return this.post['lesson_count'] ? this.post['lesson_count'] + ' Lessons' : 'TBD';
     }
 
     static mapDifficulty(post){
@@ -740,8 +787,8 @@ export default class DataMapper {
             return 'advanced ' + post['difficulty']
         }
 
-        // Some content has difficulty already parsed as a word, if its undefined,
-        // Just default it to 'all'
-        return post['difficulty'] || 'all';
+        // Some content has difficulty already parsed as a word so we return that,
+        // if its falsey, just default it to 'TBD'
+        return post['difficulty'] || 'TBD';
     }
 }

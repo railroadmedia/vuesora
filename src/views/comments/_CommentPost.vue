@@ -3,13 +3,20 @@
          class="flex flex-row comment-post pa mb-1"
          :class="{'pinned': pinned}">
         <div class="flex flex-column avatar-column pr">
-            <a v-if="hasPublicProfiles"
-               :href="profileRoute" target="_blank"
-               class="no-decoration">
-                <img :src="user['fields.profile_picture_image_url']" class="rounded">
-            </a>
-            <img v-else
+            <div v-if="hasPublicProfiles"
+                 class="user-avatar smaller"
+                 :class="[avatarClassObject, brand]">
+                <a :href="profileRoute" target="_blank"
+                   class="no-decoration">
+                    <img :src="user['fields.profile_picture_image_url']" class="rounded">
+                </a>
+            </div>
+            <img v-if="!hasPublicProfiles"
                  :src="user['fields.profile_picture_image_url']" class="rounded">
+
+            <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
+            <p v-if="this.user.access_level !== 'team'"
+               class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row mb-1 comment-meta">
@@ -18,7 +25,7 @@
                         <a v-if="hasPublicProfiles"
                            :href="profileRoute" target="_blank"
                            class="text-black no-decoration">
-                        {{ user.display_name }}
+                            {{ user.display_name }}
                         </a>
                         <span v-else class="text-black no-decoration">
                             {{ user.display_name }}
@@ -40,10 +47,10 @@
                         </span>
 
                         <!--<span class="tiny no-decoration text-grey-3 pointer">-->
-                            <!--<i class="fas fa-link"-->
-                               <!--@click="getCommentLink"></i>-->
-                            <!--<textarea class="comment-id-copy"-->
-                                      <!--contenteditable="true">{{ commentUrl }}</textarea>-->
+                        <!--<i class="fas fa-link"-->
+                        <!--@click="getCommentLink"></i>-->
+                        <!--<textarea class="comment-id-copy"-->
+                        <!--contenteditable="true">{{ commentUrl }}</textarea>-->
                         <!--</span>-->
                     </div>
                 </div>
@@ -59,9 +66,10 @@
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
-                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="replying ? 'text-' + themeColor : 'text-grey-3'"
-                           @click="replyToComment">
+                           @click="replyToComment"
+                           dusk="reply-button">
                             <i class="fas fa-reply"></i>
                             <span class="hide-xs-only">
                                 {{ replying ? 'Replying' : 'Reply' }}
@@ -69,18 +77,23 @@
                         </p>
 
                         <p v-if="!isUsersPost"
-                           class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                           class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="is_liked ? 'text-' + themeColor : 'text-grey-3'"
-                           @click="likeComment">
+                           @click="likeComment"
+                           dusk="like-button">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
                                 {{ is_liked ? 'Liked' : 'Like' }}
                             </span>
                         </p>
 
-                        <p class="x-tiny text-grey-3 uppercase font-italic"
-                           v-html="userLikeString">
-                            {{ userLikeString }}
+                        <span class="grow"></span>
+
+                        <p class="x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect"
+                           :data-open-modal="like_count > 0 ? 'likeUsersModal' : ''"
+                           @click="openLikes">
+                            <i class="fas fa-thumbs-up text-white likes-icon"
+                               :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -104,7 +117,8 @@
                                 Cancel
                             </a>
                             <button class="btn collapse-150" :disabled="loading"
-                               @click="postReply">
+                                    @click="postReply"
+                                    dusk="submit-reply">
                                 <span class="text-white short"
                                       :class="'bg-' + themeColor">
                                     Reply
@@ -130,7 +144,8 @@
                                :profileBaseRoute="profileBaseRoute"
                                :hasPublicProfiles="hasPublicProfiles"
                                @likeReply="likeReply"
-                               @deleteReply="deleteReply"></comment-reply>
+                               @deleteReply="deleteReply"
+                               @openLikes="openLikes"></comment-reply>
             </transition-group>
 
             <div class="flex flex-row align-center" v-if="replies.length > 2">
@@ -148,6 +163,8 @@
     import Requests from '../../assets/js/classes/requests';
     import TextEditor from '../../components/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
+    import xpMapper from '../../assets/js/classes/xp-mapper';
+    import Utils from '../../assets/js/classes/utils';
     import moment from 'moment';
 
     export default {
@@ -157,6 +174,10 @@
             'comment-reply': CommentReply
         },
         props: {
+            brand: {
+                type: String,
+                default: () => 'drumeo'
+            },
             themeColor: {
                 type: String,
                 default: () => 'recordeo'
@@ -168,7 +189,7 @@
                         display_name: '',
                         id: 0,
                         isAdmin: false,
-                        avatar: ''
+                        avatar: '',
                     }
                 }
             },
@@ -226,7 +247,9 @@
                     return {
                         'fields.profile_picture_image_url': '',
                         id: 0,
-                        display_name: ''
+                        display_name: '',
+                        xp: 0,
+                        access_level: ''
                     }
                 }
             },
@@ -235,7 +258,7 @@
                 default: () => true
             },
         },
-        data(){
+        data() {
             return {
                 replying: false,
                 showAllReplies: false,
@@ -244,8 +267,30 @@
             }
         },
         computed: {
+            avatarClassObject() {
+                return {
+                    'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.user.access_level) !== -1,
+                    'edge': this.user.access_level === 'edge',
+                    'pack': this.user.access_level === 'pack',
+                    'team': this.user.access_level === 'team',
+                    'lifetime': this.user.access_level === 'lifetime'
+                }
+            },
+
+            userExpValue() {
+                return Utils.parseXpValue(this.user.xp);
+            },
+
+            userExpRank() {
+                if(this.user.access_level === 'team'){
+                    return 'Drumeo Team';
+                }
+
+                return xpMapper.getNearestValue(this.user.xp);
+            },
+
             replyInterface: {
-                get(){
+                get() {
                     return this.reply;
                 },
                 set(val) {
@@ -253,90 +298,47 @@
                 }
             },
 
-            domID(){
-                if(this.pinned){
+            domID() {
+                if (this.pinned) {
                     return 'pinnedComment' + this.id
                 }
 
                 return 'comment' + this.id
             },
 
-            profileRoute(){
+            profileRoute() {
                 return this.profileBaseRoute + this.user_id
             },
 
-            isLiked(){
+            isLiked() {
                 return this.like_users.filter(user =>
                     user.display_name === this.currentUser.display_name
                 ).length > 0;
             },
 
-            userLikeString(){
-                let userNames = [];
-                let userNameString;
-                let suffixString = ' like this';
-
-                for(let i = 0; i < this.like_users.length; i++){
-                    let nameExistsOrIsntCurrentUser = this.like_users[i]['display_name'] != null
-                        && this.like_users[i]['display_name'] !== this.currentUser.display_name;
-
-                    if(nameExistsOrIsntCurrentUser){
-                        userNames.push(this.like_users[i]['display_name']);
-                    }
-                }
-
-                if(userNames.length){
-                    userNameString = userNames.join(', ');
-                }
-
-                if(this.like_count > 3){
-                    suffixString = ' & ' + String(this.like_count - 3) + ' others like this';
-                }
-                else if(this.like_count === 0) {
-                    suffixString = '';
-                }
-
-                if(this.is_liked){
-                    userNames.splice((userNames.length - 1), 1);
-
-                    if(this.like_count > 1){
-                        return '<span class="font-bold">You, ' + userNameString + '</span>' + suffixString;
-                    }
-
-                    return '<span class="font-bold">You</span>' + suffixString;
-                }
-                else {
-                    if(this.like_count > 0){
-                        return '<span class="font-bold">' + userNameString + '</span>' + suffixString;
-                    }
-                }
-
-                return 'Be the first to like this!';
-            },
-
-            commentUrl(){
+            commentUrl() {
                 return window.location + '?goToComment=' + this.id;
             },
 
-            dateString(){
+            dateString() {
                 return moment.utc(this.created_on).local().fromNow();
             },
 
-            isUsersPost(){
+            isUsersPost() {
                 return String(this.currentUser.id) === String(this.user_id);
             },
 
-            isCurrentUserAdmin(){
+            isCurrentUserAdmin() {
                 return this.currentUser.isAdmin === true;
             },
         },
         methods: {
-            replyToComment(){
+            replyToComment() {
                 this.replying = !this.replying;
             },
 
-            postReply(){
-                if(this.reply.currentValue){
+            postReply() {
+                if (this.reply.currentValue) {
                     this.loading = true;
 
                     return Requests.postReply({
@@ -344,7 +346,7 @@
                         comment: this.reply.currentValue
                     })
                         .then(resolved => {
-                            if(resolved){
+                            if (resolved) {
                                 let thisComment = resolved['results'] || resolved['data'][0];
 
                                 this.replyInterface = '';
@@ -360,12 +362,12 @@
                 }
             },
 
-            cancelReply(){
+            cancelReply() {
                 this.replying = false;
                 this.reply = '';
             },
 
-            likeComment(){
+            likeComment() {
                 this.$emit('likeComment', {
                     id: this.id,
                     isLiked: this.is_liked,
@@ -373,29 +375,26 @@
                 });
             },
 
-            deleteComment(){
-                const notification = new Noty({
-                    layout: 'center',
-                    modal: true,
-                    text: 'Are you sure you want to delete this comment?',
-                    theme: 'bootstrap-v4',
-                    closeWith: [],
-                    buttons: [
-                        Noty.button('<span class="bg-error text-white short">Delete</span>', 'btn mr-1', () => {
-                            this.$emit('deleteComment', {
-                                id: this.id
-                            });
+            deleteComment() {
+                const vm = this;
 
-                            notification.close();
-                        }),
-                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
-                            notification.close();
-                        })
-                    ]
-                }).show();
+                Toasts.confirm({
+                    text: 'Are you sure you want to delete this comment?',
+                    submitButton: {
+                        text: '<span class="bg-error text-white short">Delete</span>',
+                        callback: () => {
+                            vm.$emit('deleteComment', {
+                                id: vm.id
+                            });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-dark inverted text-grey-3 short">Cancel</span>'
+                    }
+                });
             },
 
-            likeReply(payload){
+            likeReply(payload) {
                 this.$emit('likeReply', {
                     parent_id: this.id,
                     id: payload.id,
@@ -403,11 +402,20 @@
                 });
             },
 
-            deleteReply(payload){
+            deleteReply(payload) {
                 this.$emit('deleteReply', {
                     parent_id: this.id,
                     id: payload.id
                 })
+            },
+
+            openLikes(payload){
+                if(this.like_count > 0){
+                    this.$emit('openLikes', {
+                        id: payload.busToRoot ? payload.id : this.id,
+                        totalLikeUsers: payload.busToRoot ? payload.totalLikeUsers : this.like_count
+                    });
+                }
             },
 
             getCommentLink(event) {

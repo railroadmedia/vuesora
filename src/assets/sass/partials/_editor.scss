@@ -90,7 +90,15 @@
 
       .mce-title {
         text-transform:capitalize;
-        @extend .title;
+        font: 600 18px/1.5em $defaultSansSerif;
+
+        @include medium {
+          font-size:18px;
+        }
+
+        @include large {
+          font-size:20px;
+        }
       }
     }
 
@@ -113,7 +121,7 @@
         top:0!important;
         display:block!important;
         text-transform:capitalize;
-        @extend .body;
+        font:400 16px/1.5em $defaultSansSerif;
       }
 
       label {
@@ -122,6 +130,7 @@
       input {
         height:35px!important;
         border-radius:3px;
+        text-transform:none!important;
       }
 
       .mce-abs-layout-item {

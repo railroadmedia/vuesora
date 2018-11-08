@@ -49,8 +49,8 @@
     import 'mediaelement-plugins/src/jump-forward/jump-forward.css';
     import 'mediaelement-plugins/src/skip-back/skip-back';
     import 'mediaelement-plugins/src/skip-back/skip-back.css';
-    import 'mediaelement-plugins/src/chromecast/chromecast';
-    import 'mediaelement-plugins/src/chromecast/chromecast.css';
+    // import 'mediaelement-plugins/src/chromecast/chromecast';
+    // import 'mediaelement-plugins/src/chromecast/chromecast.css';
     import 'mediaelement-plugins/src/airplay/airplay';
     import 'mediaelement-plugins/src/airplay/airplay.css';
     import Utils from '../assets/js/classes/utils';
@@ -195,7 +195,7 @@
                     'quality': true,
                     'speed': true,
                     'volume': true,
-                    'chromecast': this.castTitle != null,
+                    // 'chromecast': this.castTitle != null,
                     'airplay': true,
                     'fullscreen': true,
                 };
@@ -273,12 +273,25 @@
             },
 
             jumpToTime(timeInSeconds){
-                console.log(timeInSeconds);
-
                 this.mediaElement.setCurrentTime(timeInSeconds);
                 setTimeout(() => {
                     this.mediaElement.play();
                 }, 100);
+            },
+
+            initializeCopyTimecodeCommand(vm){
+                // Copy the current timecode if the user hits ctrl + shift + alt + c;
+                let keyMap = {};
+                ['keydown', 'keyup'].forEach(eventType => {
+                    document.addEventListener(eventType, function(e){
+                        e = e || event;
+                        keyMap[e.keyCode] = e.type === 'keydown';
+
+                        if(keyMap[17] && keyMap[16] && keyMap[18] && keyMap[67]){
+                            vm.copyTimecodeToClipboard();
+                        }
+                    });
+                });
             }
         },
         created(){
@@ -293,10 +306,10 @@
                 defaultVideoHeight: 720,
                 autosizeProgress: false,
                 startVolume: 0.5,
-                stretching: 'responsive',
-                // stretching: 'fill',
-                // setDimensions: false,
-                // enableAutosize:false,
+                // stretching: 'responsive',
+                stretching: 'fill',
+                setDimensions: false,
+                enableAutosize:false,
                 features: vm.playerPlugins,
                 jumpForwardInterval: 10,
                 skipBackInterval: 10,
@@ -332,18 +345,7 @@
                         }
                     }
 
-                    // Copy the current timecode if the user hits ctrl + shift + alt + c;
-                    let keyMap = {};
-                    ['keydown', 'keyup'].forEach(eventType => {
-                        document.addEventListener(eventType, function(e){
-                            e = e || event;
-                            keyMap[e.keyCode] = e.type === 'keydown';
-
-                            if(keyMap[17] && keyMap[16] && keyMap[18] && keyMap[67]){
-                                vm.copyTimecodeToClipboard();
-                            }
-                        });
-                    });
+                    vm.initializeCopyTimecodeCommand(vm);
                 },
                 error: (error) => {
                     console.error(error);
@@ -415,23 +417,24 @@
             }
         }
 
-        /*.mejs__fill-container {*/
-            /*position:absolute;*/
-            /*top:0;*/
-            /*left:0;*/
-            /*width:100%;*/
-            /*height:100%;*/
+        .mejs__fill-container {
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
 
-            /*.mejs__overlay {*/
-                /*width:100%;*/
-                /*height:100%;*/
-            /*}*/
+            .mejs__overlay {
+                width:100%;
+                height:100%;
+            }
 
-            /*.mejs__player {*/
-                /*width:100%;*/
-                /*height:100%;*/
-            /*}*/
-        /*}*/
+            .mejs__player {
+                width:100%;
+                height:100%;
+                object-fit:contain;
+            }
+        }
         
         .mejs__skip-back-button {
             position:absolute;

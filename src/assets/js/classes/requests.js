@@ -1,22 +1,20 @@
 /**
  * Requests
- * Static methods for handling all async requests.
+ * Methods for handling all async requests.
  */
 
 import axios from 'axios';
 import Toasts from './toasts'
 const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 
-export default class Requests {
+export default {
 
-    static setDefaultPaymentMethod(paypalPaymentMethodId) {
+    setDefaultPaymentMethod(paypalPaymentMethodId) {
 
         return axios.patch('/payment-method/set-default', {id: paypalPaymentMethodId})
-            .then(response => {
-                return response.data;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Get current user payment methods
@@ -24,14 +22,12 @@ export default class Requests {
      * @static
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static getPaymentMethods() {
+    getPaymentMethods() {
 
         return axios.get('/members/account/settings/payment-methods')
-            .then(response => {
-                return response.data;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Get Paypal agreement url
@@ -39,14 +35,12 @@ export default class Requests {
      * @static
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static getPaypalAgreementUrl() {
+    getPaypalAgreementUrl() {
 
         return axios.get('/payment-method/paypal-url')
-            .then(response => {
-                return response.data;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Update a credit card payment method
@@ -56,14 +50,12 @@ export default class Requests {
      * @param {object} payload - the data object with the payment method details
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static updatePaymentMethod(id, payload) {
+    updatePaymentMethod(id, payload) {
 
         return axios.patch('/payment-method/' + id, payload)
-            .then(response => {
-                return response.data;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Delete a payment method
@@ -72,14 +64,12 @@ export default class Requests {
      * @param {number} id - the id of payment method to delete
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static deletePaymentMethod(id) {
+    deletePaymentMethod(id) {
 
         return axios.delete('/payment-method/' + id)
-            .then(response => {
-                return response;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response)
+            .catch(this.handleError);
+    },
 
     /**
      * Crates a new payment method
@@ -88,20 +78,18 @@ export default class Requests {
      * @param {object} payload - the data object with the payment method details
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static createPaymentMethod(payload) {
+    createPaymentMethod(payload) {
 
         return axios.put('/payment-method', payload)
-            .then(response => {
-                return response.data;
-            })
+            .then(response => response.data)
             .catch(error => {
                 if (error.response && error.response.status == 422) {
                     return error.response.data;
                 } else {
-                    Requests.handleError(error);
+                    this.handleError(error);
                 }
             });
-    }
+    },
 
     /**
      * Get the forum search results
@@ -114,7 +102,7 @@ export default class Requests {
      * @param {string} sort - the column to sort - default 'score'
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static getForumSearchResults(term, type, page, limit, sort) {
+    getForumSearchResults(term, type, page, limit, sort) {
 
         let params = {
             term: term,
@@ -130,11 +118,9 @@ export default class Requests {
         return axios.get('/members/forums/search', {
                 params: params
             })
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Get the data for a list of forum threads
@@ -142,13 +128,11 @@ export default class Requests {
      * @static
      * @returns {Promise} - resolved promise with the response.data object
      */
-    static getForumThreads() {
+    getForumThreads() {
         return axios.get(endpoint_prefix + '/members/forums/threads-json')
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Get the posts data for a specific forum thread
@@ -156,13 +140,11 @@ export default class Requests {
      * @static
      * @returns {Promise} resolved promise with the response.data object
      */
-    static getForumThreadPosts() {
+    getForumThreadPosts() {
         return axios.get(endpoint_prefix + '/members/forums/post-json')
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
 
     /**
@@ -173,7 +155,7 @@ export default class Requests {
      * @param {Object} formData - the formData object to send with the request
      * @returns {Promise} resolved promise with the response.data object, containing the cdn url
      */
-    static remoteResourceUpload(endpoint, formData) {
+    remoteResourceUpload(endpoint, formData) {
         const config = {
             headers: {
                 'content-type': 'multipart/form-data',
@@ -183,11 +165,9 @@ export default class Requests {
         };
 
         return axios.post(endpoint_prefix + endpoint, formData, config)
-            .then(response => {
-                return response.data;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Flag a piece of content as "complete"
@@ -196,15 +176,13 @@ export default class Requests {
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markContentAsComplete(contentId) {
+    markContentAsComplete(contentId) {
         return axios.put(endpoint_prefix + '/railcontent/complete', {
             content_id: contentId
         })
-            .then(response => {
-                return response.data;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Flag a piece of content as "started"
@@ -213,17 +191,15 @@ export default class Requests {
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markContentAsStarted(contentId) {
+    markContentAsStarted(contentId) {
         return axios.put(endpoint_prefix + '/railcontent/start', {
             content_id: contentId
         })
-            .then(response => {
-                return response.data;
-            })
+            .then(response => response.data)
             .catch(error => {
                 console.error(error);
             });
-    }
+    },
 
     /**
      * Reset your progress for a piece of content
@@ -232,15 +208,13 @@ export default class Requests {
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
-    static resetContentProgress(contentId) {
+    resetContentProgress(contentId) {
         return axios.put(endpoint_prefix + '/railcontent/reset', {
             content_id: contentId
         })
-            .then(response => {
-                return response.data;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Get a list of comments
@@ -249,15 +223,13 @@ export default class Requests {
      * @param {object} params - the params object to filter comments
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
-    static getComments(params) {
+    getComments(params) {
         return axios.get(endpoint_prefix + '/railcontent/comment', {
             params: params
         })
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Get a comment by ID
@@ -268,13 +240,11 @@ export default class Requests {
      * @param {object} id - the comment id to get
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
-    static getCommentById(id) {
+    getCommentById(id) {
         return axios.get(endpoint_prefix + '/railcontent/comment/' + id)
-            .then(response => {
-                return response.data;
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Post a comment
@@ -283,13 +253,11 @@ export default class Requests {
      * @param {object} data - the data object with the content_id and comment properties
      * @returns {Promise} resolved promise with the response.data object, containing the submit comment
      */
-    static postComment(data) {
+    postComment(data) {
         return axios.put(endpoint_prefix + '/railcontent/comment', data)
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Post a reply
@@ -298,13 +266,11 @@ export default class Requests {
      * @param {object} data - the data object with the parent_id and comment properties
      * @returns {Promise} resolved promise with the response.data object, containing the submit reply
      */
-    static postReply(data) {
+    postReply(data) {
         return axios.put(endpoint_prefix + '/railcontent/comment/reply', data)
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Like a Comment or Reply
@@ -313,13 +279,11 @@ export default class Requests {
      * @param {number} id - the comment ID to like
      * @returns {Promise} resolved promise with the response object
      */
-    static likeComment(id) {
+    likeComment(id) {
         return axios.put(endpoint_prefix + '/railcontent/comment-like/' + id)
-            .then(response => {
-                return response
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response)
+            .catch(this.handleError);
+    },
 
     /**
      * Un-Like a Comment or Reply
@@ -328,13 +292,11 @@ export default class Requests {
      * @param {number} id - the comment ID to unlike
      * @returns {Promise} resolved promise with the response object
      */
-    static unlikeComment(id) {
+    unlikeComment(id) {
         return axios.delete(endpoint_prefix + '/railcontent/comment-like/' + id)
-            .then(response => {
-                return response
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response)
+            .catch(this.handleError);
+    },
 
     /**
      * Delete a Comment or Reply
@@ -343,13 +305,31 @@ export default class Requests {
      * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
-    static deleteComment(id) {
+    deleteComment(id) {
         return axios.delete(endpoint_prefix + '/railcontent/comment/' + id)
-            .then(response => {
-                return response
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response)
+            .catch(this.handleError);
+    },
+
+    /**
+     * Get a list of users that have liked a comment
+     *
+     * @static
+     * @param {number} id
+     * @param {number} page
+     * @param {number} limit
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    getCommentLikeUsers({id, page = 1, limit = 10}) {
+        return axios.get(endpoint_prefix + '/railcontent/comment-likes/' + id, {
+            params: {
+                page: page,
+                limit: limit
+            }
+        })
+            .then(response => response)
+            .catch(this.handleError);
+    },
 
     /**
      * Report a forum post
@@ -358,13 +338,11 @@ export default class Requests {
      * @param {number} id - the post ID to report
      * @returns {Promise} resolved promise with the response.data object
      */
-    static reportForumPost(id) {
+    reportForumPost(id) {
         return axios.put('/forums/post/report/' + id)
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Like a forum thread
@@ -373,13 +351,11 @@ export default class Requests {
      * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
-    static likeForumPost(id) {
+    likeForumPost(id) {
         return axios.put(endpoint_prefix + '/forums/post/like/' + id)
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Unlike a forum thread
@@ -388,26 +364,22 @@ export default class Requests {
      * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
-    static unlikeForumPost(id) {
+    unlikeForumPost(id) {
         return axios.delete(endpoint_prefix + '/forums/post/unlike/' + id)
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * @static
      * @param {number} id - thread id
      * @returns {Promise} resolved promise with the response.data object
      */
-    static followForumsThread(id) {
+    followForumsThread(id) {
         return axios.put(endpoint_prefix + '/forums/thread/follow/' + id)
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * @static
@@ -415,15 +387,13 @@ export default class Requests {
      * @param {boolean} pinned
      * @returns {Promise} resolved promise with the response.data object
      */
-    static pinForumsThread(id, pinned) {
+    pinForumsThread(id, pinned) {
         return axios.patch(endpoint_prefix + '/forums/thread/update/' + id, {
             pinned: pinned
         })
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * @static
@@ -431,28 +401,24 @@ export default class Requests {
      * @param {boolean} locked
      * @returns {Promise} resolved promise with the response.data object
      */
-    static lockForumsThread(id, locked) {
+    lockForumsThread(id, locked) {
         return axios.patch(endpoint_prefix + '/forums/thread/update/' + id, {
             locked: locked
         })
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * @static
      * @param {number} id - thread id
      * @returns {Promise} resolved promise with the response object
      */
-    static deleteForumsPost(id) {
+    deleteForumsPost(id) {
         return axios.delete(endpoint_prefix + '/forums/post/delete/' + id)
-            .then(response => {
-                return response
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response)
+            .catch(this.handleError);
+    },
 
     /**
      * Unlike a forum thread
@@ -464,18 +430,16 @@ export default class Requests {
      * @param {string} recipient - who to send to (default set on backend)
      * @returns {Promise} resolved promise with the response.data object
      */
-    static sendEmail(message, type, subject, recipient) {
+    sendEmail(message, type, subject, recipient) {
         return axios.post(endpoint_prefix + '/members/mail', {
             message: message,
             type: type,
             subject: subject,
             recipient: recipient
         })
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Mark a specific notification as read
@@ -484,13 +448,11 @@ export default class Requests {
      * @param {number} id - notification id
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markNotificationAsRead(id) {
+    markNotificationAsRead(id) {
         return axios.post(endpoint_prefix + '/members/notifications/mark-read/' + id)
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Mark a specific notification as unread
@@ -499,13 +461,11 @@ export default class Requests {
      * @param {number} id - notification id
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markNotificationAsUnRead(id) {
+    markNotificationAsUnRead(id) {
         return axios.post(endpoint_prefix + '/members/notifications/mark-unread/' + id)
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Mark all of the current users notifications as read
@@ -513,13 +473,11 @@ export default class Requests {
      * @static
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markAllNotificationsAsRead() {
+    markAllNotificationsAsRead() {
         return axios.post(endpoint_prefix + '/members/notifications/mark-all-read')
-            .then(response => {
-                return response.data
-            })
-            .catch(Requests.handleError);
-    }
+            .then(response => response.data)
+            .catch(this.handleError);
+    },
 
     /**
      * Add or Remove content from your list
@@ -530,7 +488,7 @@ export default class Requests {
      * @static
      * @returns {Promise} resolved promise with the response.data object
      */
-    static addOrRemoveContentFromList(content_id, is_added){
+    addOrRemoveContentFromList(content_id, is_added){
         const delete_endpoint = endpoint_prefix + '/members-area/event-json-api/remove-from-primary-playlist-list';
         const put_endpoint = endpoint_prefix + '/members-area/event-json-api/add-to-primary-playlist-list';
 
@@ -539,8 +497,8 @@ export default class Requests {
             type: is_added ? 'remove-from-list' : 'my-list-addition'
         })
             .then(response => response)
-            .catch(Requests.handleError);
-    }
+            .catch(this.handleError);
+    },
 
     /**
      * Mark a learning path as started (this changes the users current active learning path for
@@ -551,11 +509,11 @@ export default class Requests {
      * @static
      * @returns {Promise} resolved promise with the response.data object
      */
-    static markLearningPathAsStarted(content_id){
+    markLearningPathAsStarted(content_id){
         return axios.post(endpoint_prefix + '/members/start-learning-path/' + content_id)
             .then(response => response)
-            .catch(Requests.handleError)
-    }
+            .catch(this.handleError)
+    },
 
     /**
      * Display an error message and console the error if any request fails
@@ -563,7 +521,7 @@ export default class Requests {
      * @static
      * @param {object} error - the error object returned by the request
      */
-    static handleError(error) {
+    handleError(error) {
         console.error(error);
         Toasts.errorWarning();
     }
