@@ -20,3 +20,27 @@
     -webkit-transform: rotate(359deg);
   }
 }
+
+.noty_effects_open {
+  opacity: 0;
+  transform: translate(-50%);
+  animation: noty_anim_in 0.2s ease-in-out;
+}
+
+.noty_effects_close {
+  animation: noty_anim_out 0.2s ease-in-out;
+}
+
+@keyframes noty_anim_in {
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes noty_anim_out {
+  100% {
+    transform: translate(-50%);
+    opacity: 0;
+  }
+}

@@ -3,7 +3,6 @@
  * Static methods for handling all success/error/dialog notifications.
  */
 
-
 import Noty from 'noty';
 
 export default {
@@ -16,11 +15,48 @@ export default {
      */
     success(text){
         return new Noty({
-            type: 'success',
+            type: 'alert',
             theme: 'bootstrap-v4',
+            id: 'musoraNoty',
             text: text,
             timeout: 5000,
-            layout: 'topRight'
+            layout: 'topLeft',
+        }).show();
+    },
+
+    /**
+     * Display a notification
+     *
+     * @param {string} icon - the icon to use ('happy', 'doh', 'astonished', 'mad', 'sad', 'xp')
+     * @param {string} title - the colored title to display
+     * @param {string} message - the bolded black message
+     * @param {string} themeColor - the vuesora theme color for the title
+     * @param {number|boolean} timeout - duration in milliseconds before it disappears (false to remove)
+     * @returns {Object} - Noty object to render the notification
+     */
+    push({
+        icon,
+        title,
+        message,
+        themeColor = 'drumeo',
+        timeout = 5000
+    }){
+        return new Noty({
+            type: 'alert',
+            id: 'musoraNoty',
+            text:
+                '<div class="flex flex-column icon-column">' +
+                '<div class="icon-wrap square ' + icon + '"></div>' +
+                '</div>' +
+                '<div class="flex flex-column ph-1">' +
+                '<h6 class="tiny uppercase text-' + themeColor + '">' + title + '</h6>' +
+                '<h5 class="body font-bold font-compressed">' + message + '</h5>' +
+                '</div>' +
+                '<div class="flex flex-column icon-column flex-center subheading">' +
+                '<i class="fas fa-times"></i>' +
+                '</div>',
+            timeout: timeout,
+            layout: 'topLeft',
         }).show();
     },
 
@@ -36,7 +72,7 @@ export default {
             theme: 'bootstrap-v4',
             text: text + '<br><br><span class="tiny font-italic">If the problem persists, please <a href="mailto:support@recordeo.com" target="_blank">contact support.</a></span>',
             timeout: 5000,
-            layout: 'topRight'
+            layout: 'topLeft'
         }).show();
     },
 
