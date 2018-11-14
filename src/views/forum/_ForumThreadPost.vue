@@ -243,76 +243,76 @@
             },
 
             reportPost(){
-                const notification = new Noty({
-                    layout: 'center',
-                    modal: true,
-                    text: 'Click report to send a notification to a moderator',
-                    theme: 'bootstrap-v4',
-                    closeWith: [],
-                    buttons: [
-                        Noty.button('<span class="bg-error text-white short">Report</span>', 'btn mr-1', () => {
+                const vm = this;
 
-                            Requests
-                                .reportForumPost(this.id)
-                                .then(resolved => resolved);
+                Toasts.confirm({
+                    title: 'Click report to send a notification to a moderator.',
+                    submitButton: {
+                        text: '<span class="bg-error text-white">Report</span>',
+                        callback: () => {
 
-                            Toasts.success('A notification has been sent to the moderation team to review this post, thank you for your feedback!');
-
-                            notification.close();
-                        }),
-                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
-                            notification.close();
-                        })
-                    ]
-                }).show();
+                            Requests.reportForumPost(vm.id)
+                                .then(resolved => {
+                                    Toasts.push({
+                                        icon: 'happy',
+                                        title: 'GOOD EYE!',
+                                        message: 'We will look into this post.'
+                                    });
+                                });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                    }
+                });
             },
 
             hidePost(){
-                const notification = new Noty({
-                    layout: 'center',
-                    modal: true,
-                    text: 'Are you sure you want to hide this post?',
-                    theme: 'bootstrap-v4',
-                    closeWith: [],
-                    buttons: [
-                        Noty.button('<span class="bg-warning text-white short">Hide</span>', 'btn mr-1', () => {
+                const vm = this;
+
+                Toasts.confirm({
+                    title: 'Click report to send a notification to a moderator.',
+                    submitButton: {
+                        text: '<span class="bg-warning text-white">Report</span>',
+                        callback: () => {
 
                             this.$emit('hidePost', {
-                                id: this.id
+                                id: vm.id
                             });
 
-                            Toasts.success('Post ' + this.id + ' has been hidden.');
-
-                            notification.close();
-                        }),
-                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
-                            notification.close();
-                        })
-                    ]
-                }).show();
+                            Toasts.push({
+                                icon: 'happy',
+                                title: 'GOOD EYE!',
+                                message: 'We have hidden this post.'
+                            });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                    }
+                });
             },
 
             deletePost(){
-                const notification = new Noty({
-                    layout: 'center',
-                    modal: true,
-                    text: 'Are you sure you want to delete this post?',
-                    theme: 'bootstrap-v4',
-                    closeWith: [],
-                    buttons: [
-                        Noty.button('<span class="bg-error text-white short">Delete</span>', 'btn mr-1', () => {
+                const vm = this;
+
+                Toasts.confirm({
+                    title: 'Are you sure you want to delete this post?',
+                    submitButton: {
+                        text: '<span class="bg-error text-white">Delete</span>',
+                        callback: () => {
 
                             this.$emit('deletePost', {
                                 id: this.id
                             });
 
-                            notification.close();
-                        }),
-                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
-                            notification.close();
-                        })
-                    ]
-                }).show();
+
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                    }
+                });
             },
 
             editPost(){

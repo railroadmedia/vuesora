@@ -189,7 +189,11 @@
             handlePostDelete(payload) {
                 Requests.deleteForumsPost(payload.id)
                     .then(response => {
-                        Toasts.success('Post ' + payload.id + ' has been deleted.');
+                        Toasts.push({
+                            icon: 'happy',
+                            title: 'YOU\'RE OUTTA HERE!',
+                            message: 'We have deleted this post.'
+                        });
 
                         this.posts = this.posts.filter(post =>
                             post.id !== payload.id

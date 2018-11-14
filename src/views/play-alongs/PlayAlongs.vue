@@ -106,8 +106,6 @@
                         })
                         .catch(error => {
                             console.error(error);
-                            Toasts.errorWarning('Oops! Something went wrong trying to pull content for you. ' +
-                                'Refresh the page and try again.');
 
                             this.loading = false;
                         })

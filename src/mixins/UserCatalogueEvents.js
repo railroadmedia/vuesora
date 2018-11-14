@@ -10,29 +10,29 @@ export default {
             console.log(this.$_destroyOnListRemoval);
 
             if(this.$_destroyOnListRemoval){
-                const notification = new Noty({
-                    layout: 'center',
-                    modal: true,
-                    text: 'Do you really want to remove this item from your list? <br><br><span class="tiny text-grey-3 font-italic">You will have to find the lesson again to re-add it.</span>',
-                    theme: 'bootstrap-v4',
-                    closeWith: [],
-                    buttons: [
-                        // Confirm Button
-                        Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
 
-                            notification.close();
+                Toasts.confirm({
+                    title: 'Hold your horses… This will remove this lesson from your list, are you sure about this?',
+                    submitButton: {
+                        text: '<span class="bg-drumeo text-white">I want to remove it</span>',
+                        callback: () => {
 
                             this.emitAddToList({
                                 content_id: this.$_item.id,
                                 is_added: this.$_item.is_added_to_primary_playlist || false
                             });
-                        }),
-                        // Cancel Button
-                        Noty.button('<span class="bg-dark inverted text-grey-3 short">NO</span>', 'btn', () => {
-                            notification.close();
-                        })
-                    ]
-                }).show();
+
+                            Toasts.push({
+                                icon: 'happy',
+                                title: 'Ready to start again?',
+                                message: 'Item removed from list.'
+                            });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Get me out of here</span>'
+                    }
+                });
             }
             else {
                 this.emitAddToList({
@@ -45,32 +45,25 @@ export default {
         resetProgress(event){
             const icon = event.target;
 
-            const notification = new Noty({
-                layout: 'center',
-                modal: true,
-                text: 'Do you really want to reset your progress? <br><br><span class="tiny text-grey-3 font-italic">This cannot be undone.</span>',
-                theme: 'bootstrap-v4',
-                closeWith: [],
-                buttons: [
-                    // Confirm Button
-                    Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
+            Toasts.confirm({
+                title: 'Hold your horses… This will reset your progress, are you sure about this?',
+                submitButton: {
+                    text: '<span class="bg-drumeo text-white">I want to start over</span>',
+                    callback: () => {
 
-                        notification.close();
                         icon.classList.remove('fa-undo');
                         icon.classList.add('fa-spin', 'fa-spinner');
 
                         this.emitResetProgress({
                             content_id: this.$_item.id,
                             icon: icon
-                        })
-                    }),
-                    // Cancel Button
-                    Noty.button('<span class="bg-dark inverted text-grey-3 short">NO</span>', 'btn', () => {
-                        notification.close();
-                    })
-                ]
-            }).show();
-
+                        });
+                    }
+                },
+                cancelButton: {
+                    text: '<span class="bg-grey-3 inverted text-grey-3">Get me out of here</span>'
+                }
+            });
         },
 
         // Used to bus the event up one more level to the components parent
@@ -106,7 +99,12 @@ export default {
             Requests.resetContentProgress(payload.content_id)
                 .then(response => {
                     if(response){
-                        Toasts.success('Progress has been reset.');
+                        Toasts.push({
+                            icon: 'happy',
+                            title: 'READY TO START AGAIN?',
+                            message: 'Your progress has been reset.'
+                        });
+
                         this.content.splice(post_index, 1);
                     }
 

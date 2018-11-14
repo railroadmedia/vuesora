@@ -523,6 +523,10 @@ export default {
      */
     handleError(error) {
         console.error(error);
-        Toasts.errorWarning();
+        Toasts.push({
+            icon: 'doh',
+            title: 'This is Embarrassing! That didn\'t work',
+            message: 'Refresh the page to try once more, if it happens again please let us know using the chat below.'
+        });
     }
 }

@@ -499,8 +499,11 @@
                         })
                         .catch(error => {
                             console.error(error);
-                            Toasts.errorWarning('Oops! Something went wrong trying to pull content for you. ' +
-                                'Refresh the page and try again.');
+                            Toasts.push({
+                                icon: 'doh',
+                                title: 'This is Embarassing That didn\'t work',
+                                message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. '
+                            });
 
                             this.loading = false;
                         })

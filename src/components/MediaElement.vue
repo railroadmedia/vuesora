@@ -269,7 +269,12 @@
                 timecode.select();
                 document.execCommand('copy');
                 timecode.blur();
-                Toasts.success('Video url copied at current time!')
+
+                Toasts.push({
+                    icon: 'happy',
+                    title: 'SHARE THE LOVE!',
+                    message: 'This URL has been copied, and is ready to share!'
+                });
             },
 
             jumpToTime(timeInSeconds){

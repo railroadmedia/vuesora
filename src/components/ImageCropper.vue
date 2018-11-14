@@ -266,7 +266,12 @@
                         console.error(error);
 
                         this.loading = false;
-                        Toasts.errorWarning();
+
+                        Toasts.push({
+                            icon: 'sad',
+                            title: 'This is Embarassing That didn\'t work',
+                            message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. '
+                        });
                     })
             },
 
@@ -282,7 +287,12 @@
                 this.fileToCrop = null;
                 this.loading = false;
 
-                Toasts.success('Avatar successfully updated!');
+                Toasts.push({
+                    icon: 'happy',
+                    title: 'AHH, MUCH BETTER!',
+                    message: 'The new "you" is being refreshed...'
+                });
+
                 this.$root.$emit('imageSaved');
             }
         },

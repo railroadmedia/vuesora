@@ -235,6 +235,7 @@
             },
 
             openLikes(){
+
                 if(this.like_count > 0){
                     this.$emit('openLikes', {
                         id: this.id,
