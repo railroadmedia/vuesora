@@ -410,7 +410,9 @@
             },
 
             openLikes(payload){
-                if(this.like_count > 0){
+                const hasLikesOrIsBeingBussedFromRoot = this.like_count > 0 || payload.busToRoot;
+
+                if(hasLikesOrIsBeingBussedFromRoot){
                     this.$emit('openLikes', {
                         id: payload.busToRoot ? payload.id : this.id,
                         totalLikeUsers: payload.busToRoot ? payload.totalLikeUsers : this.like_count
