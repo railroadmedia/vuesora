@@ -265,7 +265,12 @@
 
                                 this.commentInterface = '';
                                 this.$refs.textEditor.currentValue = '';
-                                Toasts.success('Comment successfully posted!');
+
+                                Toasts.push({
+                                    icon: 'happy',
+                                    title: 'Woohoo!',
+                                    message: 'Your input is what makes Drumeo so great, thanks for commenting.'
+                                });
 
                                 this.comments.splice(0, 0, thisComment);
                             }
@@ -330,7 +335,11 @@
                             comment.id !== payload.id
                         );
 
-                        Toasts.success('Comment successfully deleted');
+                        Toasts.push({
+                            icon: 'happy',
+                            title: 'TRASHED!',
+                            message: 'We have removed your comment. Please add a better one!'
+                        });
                     })
             },
 
@@ -347,7 +356,11 @@
                                 reply.id !== payload.id
                             );
 
-                            Toasts.success('Comment successfully deleted');
+                            Toasts.push({
+                                icon: 'happy',
+                                title: 'TRASHED!',
+                                message: 'We have removed your reply. Please add a better one!'
+                            });
                         }
                     })
             },

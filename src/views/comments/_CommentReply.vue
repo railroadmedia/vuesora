@@ -83,7 +83,7 @@
     </div>
 </template>
 <script>
-    import Noty from 'noty';
+    import Toasts from '../../assets/js/classes/toasts';
     import moment from 'moment';
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
@@ -245,25 +245,22 @@
             },
 
             deleteComment(){
-                const notification = new Noty({
-                    layout: 'center',
-                    modal: true,
-                    text: 'Are you sure you want to delete this comment?',
-                    theme: 'bootstrap-v4',
-                    closeWith: [],
-                    buttons: [
-                        Noty.button('<span class="bg-error text-white short">Delete</span>', 'btn mr-1', () => {
-                            this.$emit('deleteReply', {
-                                id: this.id
-                            });
+                const vm = this;
 
-                            notification.close();
-                        }),
-                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
-                            notification.close();
-                        })
-                    ]
-                }).show();
+                Toasts.confirm({
+                    title: 'Are you sure you want to delete this reply?',
+                    submitButton: {
+                        text: '<span class="bg-error text-white">Delete</span>',
+                        callback: () => {
+                            vm.$emit('deleteReply', {
+                                id: vm.id
+                            });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                    }
+                });
             },
         }
     }

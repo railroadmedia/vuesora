@@ -1,7 +1,6 @@
-import axios from 'axios';
-import Noty from 'noty';
 import Toasts from '../classes/toasts';
 import Requests from '../classes/requests';
+import Utils from '../classes/utils';
 
 export default (function () {
     const markAsCompleteButtons = document.querySelectorAll('.completeButton');
@@ -28,14 +27,15 @@ export default (function () {
 
     function resetProgress(event){
         const element = event.target;
+        const contentType = Utils.toTitleCase(element.dataset['contentType'] || 'content');
         const contentId = element.dataset['contentId'];
         const icon = element.querySelector('.fas');
 
         // Create a confirmation dialogue using Noty
         Toasts.confirm({
-            text: 'Do you really want to reset your progress? <br><br><span class="tiny text-grey-3 font-italic">This cannot be undone.</span>',
+            title: 'Hold your Horses… This will reset all of your progress on this ' + contentType + ', are you sure about this?',
             submitButton: {
-                text: '<span class="bg-success text-white short">YES</span>',
+                text: '<span class="bg-drumeo text-white">YES</span>',
                 callback: () => {
                     icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
                     icon.classList.add('fa-spin', 'fa-spinner');
@@ -43,7 +43,11 @@ export default (function () {
                     Requests.resetContentProgress(contentId)
                         .then(resolved => {
                             if(resolved){
-                                Toasts.success('Progress has been reset.');
+                                Toasts.push({
+                                    icon: 'happy',
+                                    title: 'READY TO START AGAIN?',
+                                    message: 'Your progress has been reset.'
+                                });
 
                                 setTimeout(() => {
                                     location.reload();
@@ -56,7 +60,7 @@ export default (function () {
                 }
             },
             cancelButton: {
-                text: '<span class="bg-dark inverted text-grey-3 short">NO</span>',
+                text: '<span class="bg-grey-3 inverted text-grey-3">NO</span>',
             }
         });
     }

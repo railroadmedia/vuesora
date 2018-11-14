@@ -8,19 +8,42 @@ import Noty from 'noty';
 export default {
 
     /**
+     * DEPRECATED
+     *
      * Display a basic success message
      *
      * @param {string} text - the text to display in the success box
      * @returns {Object} - Noty object to render the notification
      */
     success(text){
+        console.warn('The Toasts.success method has been deprecated as of December 2018, please use the Toasts.push method instead.');
+
         return new Noty({
-            type: 'alert',
+            type: 'success',
             theme: 'bootstrap-v4',
-            id: 'musoraNoty',
             text: text,
             timeout: 5000,
             layout: 'topLeft',
+        }).show();
+    },
+
+    /**
+     * DEPRECATED
+     *
+     * Display a basic error warning
+     *
+     * @param {string} text - the text to display in the warning box
+     * @returns {Object} - Noty object to render the notification
+     */
+    errorWarning(text = 'We\'re sorry! An unexpected error occurred. Please refresh the page and try again.'){
+        console.warn('The Toasts.errorWarning method has been deprecated as of December 2018, please use the Toasts.push method instead.');
+
+        return new Noty({
+            type: 'warning',
+            theme: 'bootstrap-v4',
+            text: text + '<br><br><span class="tiny font-italic">If the problem persists, please <a href="mailto:support@recordeo.com" target="_blank">contact support.</a></span>',
+            timeout: 5000,
+            layout: 'topLeft'
         }).show();
     },
 
@@ -43,7 +66,7 @@ export default {
     }){
         return new Noty({
             type: 'alert',
-            id: 'musoraNoty',
+            theme: 'musoraNoty',
             text:
                 '<div class="flex flex-column icon-column">' +
                 '<div class="icon-wrap square ' + icon + '"></div>' +
@@ -61,45 +84,37 @@ export default {
     },
 
     /**
-     * Display a basic error warning
-     *
-     * @param {string} text - the text to display in the warning box
-     * @returns {Object} - Noty object to render the notification
-     */
-    errorWarning(text = 'We\'re sorry! An unexpected error occurred. Please refresh the page and try again.'){
-        return new Noty({
-            type: 'warning',
-            theme: 'bootstrap-v4',
-            text: text + '<br><br><span class="tiny font-italic">If the problem persists, please <a href="mailto:support@recordeo.com" target="_blank">contact support.</a></span>',
-            timeout: 5000,
-            layout: 'topLeft'
-        }).show();
-    },
-
-    /**
      * Display a confirmation dialog
      *
-     * @param {string} text - the text to display in the confirmation box
+     * @param {string} title - the text to display in the confirmation box
+     * @param {string} subtitle - the smaller text to display below the title
      * @param {object} submitButton - object with a text and callback property
      * @param {object} cancelButton - object with a text and callback property
      * @returns {Object} - Noty object to render the dialog
      */
     confirm({
-        text,
+        title,
+        subtitle = 'This cannot be undone',
         submitButton = {
-            text: '<span class="bg-success text-white short">YES</span>',
+            text: '<span class="bg-success text-white">YES</span>',
             callback: null
         },
         cancelButton = {
-            text: '<span class="bg-dark inverted text-grey-3 short">NO</span>',
+            text: '<span class="bg-dark inverted text-grey-3">NO</span>',
             callback: null
         }
     }){
-        const notification = new Noty({
+        window.confirmationBox = new Noty({
             layout: 'center',
             modal: true,
-            text: text,
-            theme: 'bootstrap-v4',
+            theme: 'musoraNoty dialog',
+            text: '<span class="title text-center font-bold text-black">' +
+                title +
+                '</span>' +
+                '<br>' +
+                '<span class="tiny text-black uppercase">' +
+                subtitle +
+                '</span>',
             closeWith: [],
             buttons: [
                 Noty.button(
@@ -108,7 +123,7 @@ export default {
                             submitButton.callback();
                         }
 
-                        notification.close();
+                        window.confirmationBox.close();
                     }
                 ),
                 Noty.button(
@@ -117,12 +132,22 @@ export default {
                             cancelButton.callback();
                         }
 
-                        notification.close();
+                        window.confirmationBox.close();
                     }
                 )
             ]
         }).show();
 
-        return notification;
-    }
+        // Instantiate a click handler to close the modal when the user clicks the overlay
+        if(window.closeConfirmation == null){
+            window.closeConfirmation = true;
+            document.body.addEventListener('click', event => {
+                if(event.target.classList.contains('noty_modal')){
+                    window.confirmationBox.close();
+                }
+            });
+        }
+
+        return window.confirmationBox;
+    },
 }

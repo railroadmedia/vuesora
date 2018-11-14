@@ -120,7 +120,11 @@
                     )
                         .then(resolved => {
                             if(resolved){
-                                Toasts.success(this.successMessage);
+                                Toasts.push({
+                                    icon: 'happy',
+                                    title: 'Woohoo!',
+                                    message: this.successMessage
+                                });
 
                                 this.$emit('formSuccess');
 

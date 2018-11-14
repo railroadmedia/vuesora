@@ -352,7 +352,11 @@
                                 this.replyInterface = '';
                                 this.replying = false;
                                 this.$refs.textEditor.currentValue = '';
-                                Toasts.success('Reply successfully posted!');
+                                Toasts.push({
+                                    icon: 'happy',
+                                    title: 'Woohoo!',
+                                    message: 'Thanks for your reply!'
+                                });
 
                                 this.replies.splice(0, 0, thisComment);
                             }
@@ -379,9 +383,9 @@
                 const vm = this;
 
                 Toasts.confirm({
-                    text: 'Are you sure you want to delete this comment?',
+                    title: 'Are you sure you want to delete this comment?',
                     submitButton: {
-                        text: '<span class="bg-error text-white short">Delete</span>',
+                        text: '<span class="bg-error text-white">Delete</span>',
                         callback: () => {
                             vm.$emit('deleteComment', {
                                 id: vm.id
@@ -389,7 +393,7 @@
                         }
                     },
                     cancelButton: {
-                        text: '<span class="bg-dark inverted text-grey-3 short">Cancel</span>'
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
                     }
                 });
             },
@@ -432,8 +436,6 @@
                 setTimeout(() => {
                     commentId.blur();
                 }, 50);
-
-                Toasts.success('Comment Url Copied to Clipboard!')
             }
         }
     }
