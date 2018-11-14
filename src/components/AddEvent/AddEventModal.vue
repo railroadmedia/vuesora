@@ -3,7 +3,7 @@
         <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible">
             <h1 class="subheading text-center mb-2">Subscribe to Calendar</h1>
 
-            <p class="tiny text-center mb-2">{{ subscriptionDescription }}</p>
+            <p class="tiny text-center mb-2">Here you can subscribe to this lesson format's full release calendar using the calendar provider you already use - Apple Calendar, Google Calendar, Outlook and Yahoo Calendar are all supported.</p>
 
             <div class="relative" style="width:100%;" v-show="$_subscriptionCalendarId">
                 <button class="btn mb-1"
@@ -24,7 +24,7 @@
             </div>
 
             <p v-show="$_subscriptionCalendarId"
-               class="x-tiny font-italic text-center mb-2">{{ singleEventDescription }}</p>
+               class="x-tiny font-italic text-center mb-2">{{ subscriptionDescription }}</p>
 
             <div v-show="singleEvent.title"
                  class="tiny pointer relative" style="width:100%;">
@@ -45,7 +45,7 @@
             </div>
 
             <p v-show="singleEvent.title"
-               class="x-tiny font-italic text-center mb-2">Only this event will be added to your calendar.</p>
+               class="x-tiny font-italic text-center mb-2">{{ singleEventDescription }}</p>
         </div>
     </div>
 </template>
@@ -72,11 +72,11 @@
             },
             subscriptionDescription: {
                 type: String,
-                default: () => 'Here you can subscribe to this lesson format\'s full release calendar using the calendar provider you already use - Apple Calendar, Google Calendar, Outlook and Yahoo Calendar are all supported.'
+                default: () => 'Any upcoming releases will automatically show up in this calendar as they are scheduled by the Drumeo Team.'
             },
             singleEventDescription: {
                 type: String,
-                default: () => 'Any upcoming releases will automatically show up in this calendar as they are scheduled by the Drumeo Team.'
+                default: () => 'Only this event will be added to your calendar.'
             }
         },
         data(){

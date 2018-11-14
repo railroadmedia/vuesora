@@ -7,9 +7,7 @@
                        @addEvent="addEventToDropdown"></schedule-item>
 
         <add-event-modal :singleEvent="singleEvent"
-                         :$_subscriptionCalendarId="$_subscriptionCalendarId"
-                         subscriptionDescription="Here you can subscribe to the full Drumeo Release Calendar using the calendar provider you already use - Apple Calendar, Google Calendar, Outlook or Yahoo Calendar are all supported."
-                         singleEventDescription="Here you can subscribe to the full Drumeo Release Calendar using the calendar provider you already use - Apple Calendar, Google Calendar, Outlook or Yahoo Calendar are all supported."></add-event-modal>
+                         :$_subscriptionCalendarId="$_subscriptionCalendarId"></add-event-modal>
     </div>
 </template>
 <script>
