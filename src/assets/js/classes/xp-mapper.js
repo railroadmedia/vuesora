@@ -2,16 +2,16 @@ export default {
 
     mapObject:{
         0: 'Casual',
-        250: 'Enthusiast I',
-        1000: 'Enthusiast II',
-        2500: 'Pro I',
-        5000: 'Pro II',
-        10000: 'Pro III',
-        20000: 'Master I',
+        100: 'Enthusiast I',
+        250: 'Enthusiast II',
+        500: 'Pro I',
+        1000: 'Pro II',
+        2500: 'Pro III',
+        10000: 'Master I',
         50000: 'Master II',
         100000: 'Master III',
-        250000: 'Drumeo Legend',
-        500000: 'Legends: Star',
+        250000: 'Legend',
+        500000: 'Legends: Starr',
         1000000: 'Legends: Erskine',
         1500000: 'Legends: Cobham',
         2000000: 'Legends: Garibaldi',
@@ -28,7 +28,7 @@ export default {
      *
      * @param {string} xp - the xp amount
      * @param {number} offset - how many indexes after the matched index to return
-     * @returns {number} - the number for the specific key
+     * @returns {number|string} - the number for the specific key
      */
     getNearestKey(xp, offset = 0){
         const mapKeys = Object.keys(this.mapObject);

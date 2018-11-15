@@ -356,6 +356,7 @@ ul {
 
 .is-dropdown {
   position:relative;
+  overflow:visible;
   z-index:11;
 
   &.active {
