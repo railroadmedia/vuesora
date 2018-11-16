@@ -1,40 +1,52 @@
 <template>
-    <div class="media-element" :id="themeColor + 'Theme'">
-        <video v-if="sortedSourcesArray.length"
-               :poster="poster"
-               :id="elementId"
-               :data-cast-title="castTitle"
-               :data-cast-description="castDescription"
-               :data-cast-poster="poster"
-               class="mejs__player" playsinline>
+    <div class="flex flex-column">
+        <div class="widescreen">
+            <div class="media-element" :id="themeColor + 'Theme'">
+                <video v-if="sortedSourcesArray.length"
+                       :poster="poster"
+                       :id="elementId"
+                       :data-cast-title="castTitle"
+                       :data-cast-description="castDescription"
+                       :data-cast-poster="poster"
+                       class="mejs__player" playsinline>
 
-            <source v-for="(source, i) in sortedSourcesArray"
-                    :key="i"
-                    :src="source.file"
-                    :data-quality="sourceQualityLabel(source.height)"
-                    type="video/mp4">
-        </video>
+                    <source v-for="(source, i) in sortedSourcesArray"
+                            :key="i"
+                            :src="source.file"
+                            :data-quality="sourceQualityLabel(source.height)"
+                            type="video/mp4">
+                </video>
 
-        <div v-else class="flex flex-row pv-5">
-            <div class="flex flex-column align-center text-center">
-                <h1 class="title text-white">
-                    We're sorry, there was an issue finding this video.
-                </h1>
-                <h3 class="title text-white mb-2">
-                    Please refresh the page to try again.
-                </h3>
-                <h6 class="tiny text-white">
+                <div v-else id="errorContainer" class="flex flex-row pv-5">
+                    <div class="flex flex-column align-center text-center">
+                        <img src="https://dmmior4id2ysr.cloudfront.net/icons/emoji-mad.svg"
+                             class="error-icon mb-2">
+                        <h1 class="title text-white">
+                            We're sorry, there was an issue finding this video.
+                        </h1>
+                        <h3 class="title text-white mb-2">
+                            Please refresh the page to try again.
+                        </h3>
+                        <h6 class="tiny text-white">
 
-                </h6>
-                <h6 class="tiny text-white">
-                    If the problem persists please contact support, either by clicking the chat widget
-                    on the bottom of your screen, or by emailing
-                    <a href="mailto:support@drumeo.com">support@drumeo.com</a>.
-                </h6>
+                        </h6>
+                        <h6 class="tiny text-white">
+                            If the problem persists please contact support, either by clicking the chat widget
+                            on the bottom of your screen, or by emailing
+                            <a href="mailto:support@drumeo.com">support@drumeo.com</a>.
+                        </h6>
+                    </div>
+                </div>
+
+                <input id="currentTimeInSeconds" type="text" v-model="urlWithTimecode">
             </div>
         </div>
 
-        <input id="currentTimeInSeconds" type="text" v-model="urlWithTimecode">
+        <video-social-buttons v-if="elementId === 'lessonPlayer'"
+                              :themeColor="themeColor"
+                              :isLiked="isLiked"
+                              :likeCount="likeCount"
+                              :currentTimeInSeconds="currentTimeInSeconds"></video-social-buttons>
     </div>
 </template>
 
@@ -56,30 +68,12 @@
     import Utils from '../assets/js/classes/utils';
     import * as QueryString from 'query-string';
     import Toasts from '../assets/js/classes/toasts';
+    import VideoSocialButtons from './_VideoSocialButtons';
 
     export default {
         name: "media-element",
-        data () {
-            return {
-                mediaElement: Object,
-                player: Object,
-                events: [
-                    'loadedmetadata',
-                    'progress',
-                    'timeupdate',
-                    'seeking',
-                    'seeked',
-                    'canplay',
-                    'play',
-                    'playing',
-                    'pause',
-                    'ended',
-                    'volumechange',
-                    'captionschange'
-                ],
-                contextMenu: false,
-                currentTimeInSeconds: 0
-            };
+        components: {
+            'video-social-buttons': VideoSocialButtons
         },
         props: {
             elementId: {
@@ -113,7 +107,37 @@
             castDescription: {
                 type: String,
                 default: () => null
+            },
+            isLiked: {
+                type: Boolean,
+                default: () => false
+            },
+            likeCount: {
+                type: Number,
+                default: () => 0
             }
+        },
+        data () {
+            return {
+                mediaElement: Object,
+                player: Object,
+                events: [
+                    'loadedmetadata',
+                    'progress',
+                    'timeupdate',
+                    'seeking',
+                    'seeked',
+                    'canplay',
+                    'play',
+                    'playing',
+                    'pause',
+                    'ended',
+                    'volumechange',
+                    'captionschange'
+                ],
+                contextMenu: false,
+                currentTimeInSeconds: 0
+            };
         },
         computed: {
             sortedSourcesArray(){
@@ -266,6 +290,8 @@
             copyTimecodeToClipboard(){
                 const timecode = document.getElementById('currentTimeInSeconds');
 
+                console.log("did this set up 2 listeners?");
+
                 timecode.select();
                 document.execCommand('copy');
                 timecode.blur();
@@ -284,7 +310,67 @@
                 }, 100);
             },
 
+            initializeVideoPlayer(){
+                const vm = this;
+                const urlParams = QueryString.parse(window.location.search);
+
+                return new MediaElementPlayer(vm.elementId, {
+                    defaultVideoWidth: 1280,
+                    defaultVideoHeight: 720,
+                    autosizeProgress: false,
+                    startVolume: 0.5,
+                    // stretching: 'responsive',
+                    stretching: 'fill',
+                    setDimensions: false,
+                    enableAutosize:false,
+                    features: vm.playerPlugins,
+                    jumpForwardInterval: 10,
+                    skipBackInterval: 10,
+                    speeds: ['0.5', '0.75', '1.00', '1.25', '1.5'],
+                    timeAndDurationSeparator: ' / ',
+                    defaultQuality: vm.defaultQuality,
+                    qualityText: 'Video Quality',
+                    success: (mediaElement, node, player) => {
+                        vm.mediaElement = mediaElement;
+                        vm.addMediaElementEventListeners(vm.mediaElement);
+
+                        // Below code helps to fix the bug where the speed and
+                        // quality selectors remain visible and bug out after clicking
+                        // Still a work in progress
+                        let interactionInputs = document.querySelectorAll('.mejs__qualities-selector-input, .mejs__speed-selector-input');
+                        for(let i=0; i<interactionInputs.length; i++){
+                            interactionInputs[i].addEventListener('change', this.emitCustomEvent);
+                        }
+
+                        player.container.addEventListener('touchstart', function () {
+                            player.showControls();
+
+                            if (!player.paused) {
+                                player.startControlsTimer(player.options.controlsTimeoutMouseLeave);
+                            }
+                        });
+
+                        if(this.checkForTimecode){
+
+                            if(urlParams['time'] != null){
+                                player.setCurrentTime(urlParams['time']);
+                                player.load();
+                            }
+                        }
+
+                        if(vm.elementId === 'lessonPlayer'){
+                            vm.initializeCopyTimecodeCommand(vm);
+                        }
+                    },
+                    error: (error) => {
+                        console.error(error);
+                    }
+                });
+            },
+
             initializeCopyTimecodeCommand(vm){
+                console.log('is this setting up twice?');
+
                 // Copy the current timecode if the user hits ctrl + shift + alt + c;
                 let keyMap = {};
                 ['keydown', 'keyup'].forEach(eventType => {
@@ -299,63 +385,8 @@
                 });
             }
         },
-        created(){
-
-        },
         mounted (){
-            const vm = this;
-            const urlParams = QueryString.parse(window.location.search);
-
-            window.player = new MediaElementPlayer(vm.elementId, {
-                defaultVideoWidth: 1280,
-                defaultVideoHeight: 720,
-                autosizeProgress: false,
-                startVolume: 0.5,
-                // stretching: 'responsive',
-                stretching: 'fill',
-                setDimensions: false,
-                enableAutosize:false,
-                features: vm.playerPlugins,
-                jumpForwardInterval: 10,
-                skipBackInterval: 10,
-                speeds: ['0.5', '0.75', '1.00', '1.25', '1.5'],
-                timeAndDurationSeparator: ' / ',
-                defaultQuality: vm.defaultQuality,
-                qualityText: 'Video Quality',
-                success: (mediaElement, node, player) => {
-                    vm.mediaElement = mediaElement;
-                    vm.addMediaElementEventListeners(vm.mediaElement);
-
-                    // Below code helps to fix the bug where the speed and
-                    // quality selectors remain visible and bug out after clicking
-                    // Still a work in progress
-                    let interactionInputs = document.querySelectorAll('.mejs__qualities-selector-input, .mejs__speed-selector-input');
-                    for(let i=0; i<interactionInputs.length; i++){
-                        interactionInputs[i].addEventListener('change', this.emitCustomEvent);
-                    }
-
-                    player.container.addEventListener('touchstart', function () {
-                        player.showControls();
-
-                        if (!player.paused) {
-                            player.startControlsTimer(player.options.controlsTimeoutMouseLeave);
-                        }
-                    });
-
-                    if(this.checkForTimecode){
-
-                        if(urlParams['time'] != null){
-                            player.setCurrentTime(urlParams['time']);
-                            player.load();
-                        }
-                    }
-
-                    vm.initializeCopyTimecodeCommand(vm);
-                },
-                error: (error) => {
-                    console.error(error);
-                }
-            });
+            window[this.elementId] = this.initializeVideoPlayer();
         },
         beforeDestroy () {
             const vm = this;
@@ -383,6 +414,32 @@
         ##{$key}sTheme {
             .mejs__time-current { background:$value; }
             .mejs__speed-selected, .mejs__qualities-selected { color:$value; }
+        }
+    }
+
+    #errorContainer {
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+
+        @include xSmallOnly {
+            .title {
+                font-size:14px;
+            }
+        }
+
+        .error-icon {
+            height:50px;
+            min-height:50px;
+            width:auto;
+
+            @include small {
+                height:150px;
+                min-height:150px;
+                margin-top:-50px;
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <div id="likeUsersModal" class="modal small">
+    <div :id="customId || 'likeUsersModal'" class="modal small">
         <div id="likeUsersContainer" class="flex flex-column bg-white corners-3 shadow" style="max-height:500px;">
             <div v-if="loadingLikeUsers"
                  class="flex flex-column pa-3">
@@ -42,6 +42,10 @@
     export default {
         name: 'comment-likes-modal',
         props: {
+            customId: {
+                type: String,
+                default: () => null
+            },
             themeColor: {
                 type: String,
                 default: () => 'drumeo'

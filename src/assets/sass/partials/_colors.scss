@@ -122,6 +122,12 @@
 .hover-text-black:hover {
   color:#000;
 }
+.hover-bg-white:hover {
+  background-color:#fff;
+}
+.hover-text-white:hover {
+  color:#fff;
+}
 
 @each $key, $value in $brand_colors {
   .text-#{$key} {
