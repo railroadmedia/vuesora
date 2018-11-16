@@ -95,16 +95,39 @@ export default (function () {
     function markAsComplete(event){
         const element = event.target;
         const contentId = element.dataset['contentId'];
+        const isRemoving = element.classList.contains('is-complete');
 
-        if(element.classList.contains('is-complete')){
-            element.classList.remove('is-complete');
+        if(isRemoving){
 
-            Requests.resetContentProgress(contentId)
-                .then(resolved => {
-                    if(resolved){
-                        element.classList.add('remove-request-complete');
+            Toasts.confirm({
+                title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
+                submitButton: {
+                    text: '<span class="bg-drumeo text-white">Reset</span>',
+                    callback: () => {
+
+                        Requests.resetContentProgress(contentId)
+                            .then(resolved => {
+                                if(resolved){
+                                    element.classList.remove('is-complete');
+                                    element.classList.add('remove-request-complete');
+
+                                    handleCompleteEvent(isRemoving);
+
+                                    Toasts.push({
+                                        icon: 'happy',
+                                        title: 'READY TO START AGAIN?',
+                                        message: 'Your progress has been reset.'
+                                    });
+                                }
+                            });
                     }
-                });
+                },
+                cancelButton: {
+                    text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                }
+            });
+
+
         }
         else {
             element.classList.add('is-complete');
@@ -113,9 +136,24 @@ export default (function () {
                 .then(resolved => {
                     if(resolved){
                         element.classList.add('add-request-complete');
+
+                        handleCompleteEvent(isRemoving);
                     }
                 });
         }
 
+    }
+
+    function handleCompleteEvent(removing = false){
+        const progressContainer = document.querySelector('.trophy-progress-bar');
+        const progressBar = document.querySelector('.trophy-progress');
+
+        if(progressBar){
+            progressBar.style.width = removing ? '0%' : '100%';
+        }
+
+        if(progressContainer){
+            progressContainer.classList.toggle('complete');
+        }
     }
 })();
