@@ -57,6 +57,7 @@
     import 'mediaelement-plugins/src/quality/quality.css';
     import 'mediaelement-plugins/src/speed/speed';
     import 'mediaelement-plugins/src/speed/speed.css';
+    import 'mediaelement-plugins/src/markers/markers';
     import 'mediaelement-plugins/src/jump-forward/jump-forward';
     import 'mediaelement-plugins/src/jump-forward/jump-forward.css';
     import 'mediaelement-plugins/src/skip-back/skip-back';
@@ -115,6 +116,10 @@
             likeCount: {
                 type: Number,
                 default: () => 0
+            },
+            chapters: {
+                type: Array,
+                default: () => []
             }
         },
         data () {
@@ -222,6 +227,7 @@
                     // 'chromecast': this.castTitle != null,
                     'airplay': true,
                     'fullscreen': true,
+                    'markers': this.chapters.length > 0
                 };
                 let mapArray = [];
 
@@ -290,8 +296,6 @@
             copyTimecodeToClipboard(){
                 const timecode = document.getElementById('currentTimeInSeconds');
 
-                console.log("did this set up 2 listeners?");
-
                 timecode.select();
                 document.execCommand('copy');
                 timecode.blur();
@@ -330,6 +334,9 @@
                     timeAndDurationSeparator: ' / ',
                     defaultQuality: vm.defaultQuality,
                     qualityText: 'Video Quality',
+                    markers: vm.chapters,
+                    markerWidth: 3,
+                    markerColor: '#ffffff',
                     success: (mediaElement, node, player) => {
                         vm.mediaElement = mediaElement;
                         vm.addMediaElementEventListeners(vm.mediaElement);
@@ -369,9 +376,8 @@
             },
 
             initializeCopyTimecodeCommand(vm){
-                console.log('is this setting up twice?');
 
-                // Copy the current timecode if the user hits ctrl + shift + alt + c;
+                // Copy the current timecode if the user hits ctrl + shift + alt +  c;
                 let keyMap = {};
                 ['keydown', 'keyup'].forEach(eventType => {
                     document.addEventListener(eventType, function(e){
@@ -383,10 +389,22 @@
                         }
                     });
                 });
+            },
+
+            initializeChapterMarkerLinks(){
+                document.body.addEventListener('click', event => {
+                    if(event.target.dataset['jumpToTime']){
+                        this.jumpToTime(event.target.dataset['jumpToTime']);
+                    }
+                });
             }
         },
         mounted (){
             window[this.elementId] = this.initializeVideoPlayer();
+
+            if(this.elementId === 'lessonPlayer'){
+                this.initializeChapterMarkerLinks();
+            }
         },
         beforeDestroy () {
             const vm = this;
@@ -464,6 +482,11 @@
                 width:calc(100% - 2em);
                 height:6px;
                 margin-top:0;
+            }
+
+            .mejs__time-marker {
+                height:6px;
+                pointer-events:none;
             }
 
             .mejs__time-current {
