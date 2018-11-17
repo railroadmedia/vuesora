@@ -395,6 +395,11 @@
                 document.body.addEventListener('click', event => {
                     if(event.target.dataset['jumpToTime']){
                         this.jumpToTime(event.target.dataset['jumpToTime']);
+
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
                     }
                 });
             }
