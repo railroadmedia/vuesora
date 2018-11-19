@@ -86,7 +86,11 @@
             },
 
             currentResults(){
-                return (1 + ((this.$_current_page * this.$_limit) - this.$_limit)) + '-' + (this.$_current_page * this.$_limit);
+                return (1 + ((this.$_current_page * this.$_limit) - this.$_limit)) + '-' + this.displayedLimit;
+            },
+
+            displayedLimit(){
+                return this.$_limit > this.$_total_results ? this.$_total_results : this.$_limit;
             },
 
             parsedTypes(){
