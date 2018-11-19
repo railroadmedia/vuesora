@@ -23,6 +23,8 @@
                           :$_included_types="$_includedTypes"
                           :$_selected_types="selected_types"
                           :$_search_term="search_term"
+                          :$_current_page="page"
+                          :$_total_results="total_results"
                           @typeChange="handleTypeChange"
                           @searchChange="handleSearch"></catalogue-search>
 
@@ -279,6 +281,10 @@
             $_subscriptionCalendarId: {
                 type: String,
                 default: ''
+            },
+            $_totalResults: {
+                type: String|Number,
+                default: () => 0
             }
         },
         data() {
@@ -286,6 +292,7 @@
                 page: this.$_initialPage || 1,
                 content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.data) : [],
                 filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.meta.filterOptions || []) : {},
+                total_results: this.$_totalResults || 0,
                 total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.meta.totalResults / this.$_limit) : 0,
                 catalogue_type: this.$_catalogueType,
                 loading: false,
@@ -481,6 +488,7 @@
                                     this.content = Utils.flattenContent(response.data.data);
                                 }
                                 this.page = Number(response.data.meta.page);
+                                this.total_results = response.data.meta.totalResults;
                                 this.total_pages = Math.ceil(response.data.meta.totalResults / this.$_limit);
 
                                 if(response.data.meta.filterOptions){

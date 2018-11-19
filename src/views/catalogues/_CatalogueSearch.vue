@@ -1,24 +1,31 @@
 <template>
-    <div class="flex flex-row flex-wrap">
-        <div class="flex flex-column xs-12 sm-8 pa-1">
-            <div class="form-group">
-                <input type="text"
-                       id="catalogueSearch"
-                       name="search"
-                       autocomplete="off"
-                       placeholder="Search..."
-                       class="no-label"
-                       v-model.lazy="searchTermInterface">
+    <div class="flex flex-column">
+        <div class="flex flex-row flex-wrap">
+            <div class="flex flex-column xs-12 sm-8 pa-1">
+                <div class="form-group">
+                    <input type="text"
+                           id="catalogueSearch"
+                           name="search"
+                           autocomplete="off"
+                           placeholder="Search..."
+                           class="no-label"
+                           v-model.lazy="searchTermInterface">
+                </div>
+            </div>
+
+            <div class="flex flex-column xs-12 sm-4 pv-1">
+                <catalogue-filter $_filter_name="type"
+                                  :$_item="parsedTypes"
+                                  :$_themeColor="$_themeColor"
+                                  :loading="loading"
+                                  :$_initial_value="$_selected_types"
+                                  @filterChange="changeFilter"></catalogue-filter>
             </div>
         </div>
-
-        <div class="flex flex-column xs-12 sm-4 pv-1">
-            <catalogue-filter $_filter_name="type"
-                              :$_item="parsedTypes"
-                              :$_themeColor="$_themeColor"
-                              :loading="loading"
-                              :$_initial_value="$_selected_types"
-                              @filterChange="changeFilter"></catalogue-filter>
+        <div class="flex flex-row ph-1 pb-1">
+            <p class="tiny text-grey-3 font-italic">
+                Displaying {{ currentResults }} of {{ $_total_results }} results.
+            </p>
         </div>
     </div>
 </template>
@@ -50,6 +57,18 @@
             $_search_term: {
                 type: String,
                 default: () => undefined
+            },
+            $_current_page: {
+                type: String|Number,
+                default: () => 1
+            },
+            $_limit: {
+                type: String|Number,
+                default: () => 20
+            },
+            $_total_results: {
+                type: String|Number,
+                default: () => 0
             }
         },
         computed: {
@@ -65,6 +84,11 @@
                     }
                 }
             },
+
+            currentResults(){
+                return (1 + ((this.$_current_page * this.$_limit) - this.$_limit)) + '-' + (this.$_current_page * this.$_limit);
+            },
+
             parsedTypes(){
                 let parsedArray = [];
 

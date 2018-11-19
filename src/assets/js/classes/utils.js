@@ -5,6 +5,15 @@
 
 export default {
 
+    /**
+     * Trigger an event on a specific DOM element
+     *
+     * @param el - The element to dispatch the event on
+     * @param eventType - The name of the event
+     * @param detail - Optional paylod to pass with the event
+     * @returns {Event} - the a custom event with the name specified at invocation
+     */
+    triggerEvent: (el, eventType, detail) => el.dispatchEvent(new CustomEvent(eventType, { detail })),
 
     /**
      * Loop through every post in a content response and flatten each one

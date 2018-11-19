@@ -148,6 +148,8 @@ export default (function () {
         const progressContainer = document.querySelector('.trophy-progress-bar');
         const progressBar = document.querySelector('.trophy-progress');
 
+        Utils.triggerEvent(window, 'lesson-complete', { complete: !removing });
+
         if(progressBar){
             progressBar.style.width = removing ? '0%' : '100%';
         }

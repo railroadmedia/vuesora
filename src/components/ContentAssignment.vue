@@ -1,113 +1,127 @@
 <template>
     <div class="flex flex-column bb-light-1">
-        <div class="flex flex-row pointer align-v-center pa-2"
-             @click="accordionActive = !accordionActive">
-            <div class="flex flex-column arrow-column">
-                <button class="btn collapse-square">
-                    <span class="bg-grey-2"
-                          :class="accordionActive ? 'inverted text-grey-2' : 'text-white'">
+        <div class="flex flex-row align-v-center flex-wrap-xs-only pa-2">
+            <div class="flex flex-column xs12 sm-9">
+                <div class="flex flex-row">
+                    <div class="flex flex-column arrow-column">
+                        <button class="btn collapse-square"
+                                @click="openAssignment">
+                    <span class="bg-grey-3"
+                          :class="accordionActive ? 'inverted text-grey-3' : 'text-white'">
                         <i class="fas"
                            :class="accordionActive ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                     </span>
-                </button>
+                        </button>
+                    </div>
+                    <div class="flex flex-column">
+                        <div class="flex flex-row align-v-center">
+                            <div class="flex flex-column assignment-title">
+                                <h3 class="title wrap">{{ title }}</h3>
+                            </div>
+                            <div v-if="timecode != 0"
+                                 class="flex flex-column flex-auto">
+                                <a class="flex flex-column flex-auto tiny font-bold font-underline ml-1 hide-xs-only"
+                                   :class="'text-' + themeColor"
+                                   :data-jump-to-time="timecode">
+                                    {{ formattedTimecode }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex flex-column grow">
-                <h3 class="title">{{ title }}</h3>
-            </div>
-            <div class="flex flex-column flex-auto complete-column">
+            <div class="flex flex-column xs-12 sm-3 complete-column">
                 <button class="btn"
                         @click.stop="markAsComplete">
-                    <span class="bg-drumeo"
-                          :class="isComplete ? 'text-white' : 'inverted text-drumeo'">
+                    <span :class="completeButtonClasses">
                         <i class="fas fa-check mr-1"></i>
-                        <span class="hide-xs-only">
-                            {{ isComplete ? 'Completed' : 'Complete' }}&nbsp;
-                        </span> - 10 XP
+                        {{ isComplete ? 'Completed' : 'Complete' }} - {{ xp }} XP
                     </span>
                 </button>
             </div>
         </div>
         <transition name="slide-down-fade">
-            <div v-show="accordionActive"
-                 class="flex flex-row">
-                <div class="flex flex-column ph pa-3">
-                    <transition name="show-from-bottom">
-                        <div id="practiceOverlay" class="bg-white" v-if="open">
-                            <div class="flex flex-row align-v-center bb-grey-4-1 bg-grey-5 ph">
-                                <h2 class="title text-white grow pv-1">{{ title }}</h2>
+            <div v-if="accordionActive && thisAssignment != null"
+                 class="flex flex-row pa-2">
+                <div class="flex flex-column grow">
+                    <div class="flex flex-column ph pa-3">
+                        <transition name="show-from-bottom">
+                            <div id="practiceOverlay" class="bg-white" v-if="open">
+                                <div class="flex flex-row align-v-center bb-grey-4-1 bg-grey-5 ph">
+                                    <h2 class="title text-white grow pv-1">{{ title }}</h2>
 
-                                <div class="close-exercise tiny uppercase text-white flex-auto align-v-center pv-1 pointer"
-                                     @click="closeExercise">
-                                    Close <i class="fas fa-times"></i>
+                                    <div class="close-exercise tiny uppercase text-white flex-auto align-v-center pv-1 pointer"
+                                         @click="closeExercise">
+                                        Close <i class="fas fa-times"></i>
+                                    </div>
+                                </div>
+
+                                <iframe id="ssEmbed"
+                                        :src="'https://www.soundslice.com/scores/' + $_soundslice_slug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
+                                        @load="loading = false"></iframe>
+
+                                <div class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
+                                     v-if="loading">
+                                    <i class="fas fa-spinner fa-spin"
+                                       :class="'text-' + themeColor"></i>
                                 </div>
                             </div>
+                        </transition>
 
-                            <iframe id="ssEmbed"
-                                    :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
-                                    @load="loading = false"></iframe>
+                        <div class="flex flex-row">
+                            <p class="body">{{ $_description }}</p>
+                        </div>
+                        <div class="flex flex-row carousel overflow mv pb-3"
+                             ref="carouselContainer"
+                             v-if="$_totalPages > 0">
 
-                            <div class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
-                                 v-if="loading">
-                                <i class="fas fa-spinner fa-spin"
-                                   :class="'text-' + themeColor"></i>
+                            <div class="flex flex-column xs-12 grow page"
+                                 v-for="(page, i) in $_sheet_music_pages"
+                                 :key="'page' + (i + 1)"
+                                 :style="pageScrollPosition">
+                                <img :src="page" class="ph-3">
+                            </div>
+
+                            <div class="side-button prev flex-center"
+                                 v-if="currentPage > 1"
+                                 @click="scrollToPage(currentPage - 1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="side-button next flex-center"
+                                 v-if="currentPage < $_totalPages"
+                                 @click="scrollToPage(currentPage + 1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+
+                            <div class="page-buttons" v-if="$_totalPages > 1">
+                                <div v-for="(page, i) in pages"
+                                     class="page-button mh-1 rounded bg-black"
+                                     :class="currentPageClass(i + 1)"
+                                     @click="scrollToPage(i + 1)"
+                                     :key="'pageButton' + (i + 1)"></div>
                             </div>
                         </div>
-                    </transition>
-
-                    <div class="flex flex-row mb align-v-top flex-wrap">
-                        <div class="flex flex-column mb-1 xs-12"
-                             :class="titleStyle === 'center' ? 'text-center' : 'sm-9'">
-                            <!--<h3 class="title mb-1">{{ title }}</h3>-->
-                            <p class="body">{{ description }}</p>
-                        </div>
-                        <div class="flex flex-column practice-column xs-12 mb-1"
-                             :class="titleStyle === 'center' ? 'align-h-center' : 'sm-3'"
-                             v-if="soundsliceSlug">
-                            <button class="btn"
-                                    :class="titleStyle === 'center' ? 'collapse-200' : ''"
+                        <div class="flex flex-row"
+                             v-if="$_soundslice_slug">
+                            <button class="btn collapse-250"
                                     @click="openExercise">
-                        <span class="text-white short" :class="'bg-' + themeColor">
-                            <i class="fas fa-play-circle mr-1"></i> Practice
-                        </span>
+                                <span class="text-white" :class="'bg-' + themeColor">
+                                    <i class="fas fa-play-circle mr-1"></i> Practice
+                                </span>
                             </button>
                         </div>
                     </div>
-                    <div class="flex flex-row carousel overflow mv pb-3"
-                         ref="carouselContainer"
-                         v-if="totalPages > 0">
-
-                        <div class="flex flex-column xs-12 grow page"
-                             v-for="(page, i) in pages"
-                             :key="'page' + (i + 1)"
-                             :style="pageScrollPosition">
-                            <img :src="page" class="ph-3">
-                        </div>
-
-                        <div class="side-button prev flex-center"
-                             v-if="currentPage > 1"
-                             @click="scrollToPage(currentPage - 1)">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="side-button next flex-center"
-                             v-if="currentPage < totalPages"
-                             @click="scrollToPage(currentPage + 1)">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-
-                        <div class="page-buttons" v-if="totalPages > 1">
-                            <div v-for="(page, i) in pages"
-                                 class="page-button mh-1 rounded bg-black"
-                                 :class="currentPageClass(i + 1)"
-                                 @click="scrollToPage(i + 1)"
-                                 :key="'pageButton' + (i + 1)"></div>
-                        </div>
-                    </div>
                 </div>
+                <div class="flex flex-column pa-2 sm-3 hide-xs-only"></div> <!--Spacer-->
             </div>
         </transition>
     </div>
 </template>
 <script>
+    import moment from 'moment';
+    import Requests from '../assets/js/classes/requests';
+    import Utils from '../assets/js/classes/utils';
+
     export default {
         name: 'content-assignment',
         props: {
@@ -124,8 +138,8 @@
                 default: () => ''
             },
             id: {
-                type: Number,
-                default: () => 123
+                type: Number|String,
+                default: () => 0
             },
             description: {
                 type: String,
@@ -139,9 +153,13 @@
                 type: String,
                 default: () => ''
             },
-            titleStyle: {
-                type: String,
-                default: () => 'left'
+            timecode: {
+                type: Number|String,
+                default: () => 0
+            },
+            xp: {
+                type: Number|String,
+                default: () => 0
             },
             completed: {
                 type: Boolean,
@@ -152,21 +170,22 @@
             return {
                 currentPage: 1,
                 totalPages: this.pages.length || 0,
-                scrollAmount: 0,
                 open: false,
                 loading: true,
                 isPlaying: false,
                 accordionActive: false,
-                isComplete: this.completed
+                thisAssignment: {
+                    id: 0,
+                    sheet_music_image_url: [],
+                    soundslice_slug: '',
+                    description: '',
+                },
+                isComplete: this.completed,
             }
         },
         methods: {
             scrollToPage(page){
                 this.currentPage = page;
-            },
-
-            scrollAmountChange(){
-                this.scrollAmount = this.$refs.carouselContainer.clientWidth;
             },
 
             currentPageClass(page){
@@ -188,6 +207,23 @@
                 }
             },
 
+            openAssignment(){
+
+                if(this.thisAssignment.id === 0){
+                    Requests.getContentById(this.id)
+                        .then(response => {
+                            if(response){
+                                this.thisAssignment = Utils.flattenContent(response.data.data)[0];
+
+                                this.accordionActive = !this.accordionActive;
+                            }
+                        });
+                }
+                else {
+                    this.accordionActive = !this.accordionActive;
+                }
+            },
+
             openExercise(){
                 this.open = true;
                 document.body.classList.add('no-scroll');
@@ -205,19 +241,57 @@
 
             markAsComplete(){
                 this.isComplete = !this.isComplete;
+            },
+
+            syncCompleteState(complete){
+                this.isComplete = complete.detail.complete;
             }
         },
         computed: {
             pageScrollPosition(){
-                return "transform:translateX(-" + (this.scrollAmount * (this.currentPage - 1)) + "px)";
+                return "transform:translateX(-" + (100 * (this.currentPage - 1)) + "%)";
+            },
+
+            completeButtonClasses(){
+                const textColor = 'text-' + this.themeColor;
+                const bgColor = 'bg-' + this.themeColor;
+
+                return this.isComplete ?
+                    'text-white ' + bgColor :
+                    'inverted ' + bgColor + ' ' + textColor;
+            },
+
+            $_totalPages(){
+                return this.$_sheet_music_pages ? this.$_sheet_music_pages.length : 0;
+            },
+
+            $_sheet_music_pages(){
+                if(Array.isArray(this.thisAssignment.sheet_music_image_url)){
+                    return this.thisAssignment.sheet_music_image_url;
+                }
+
+                return this.thisAssignment.sheet_music_image_url ? [this.thisAssignment.sheet_music_image_url] : [];
+            },
+
+            $_soundslice_slug(){
+                return this.thisAssignment.soundslice_slug || '';
+            },
+
+            $_description(){
+                return this.thisAssignment.description || '';
+            },
+
+            formattedTimecode(){
+                const duration = moment.duration((this.timecode * 1000)).as('milliseconds');
+
+                if(this.timecode < 3600){
+                    return moment.utc(duration).format('m:ss');
+                }
+
+                return moment.utc(duration).format('h:mm:ss');
             }
         },
         mounted(){
-            if(this.pages.length){
-                this.scrollAmount = this.$refs.carouselContainer.clientWidth;
-            }
-
-            window.addEventListener('resize', this.scrollAmountChange);
             window.addEventListener('message', event => {
                 if(event.origin === "https://www.soundslice.com"){
                     var cmd = JSON.parse(event.data);
@@ -232,9 +306,12 @@
                     }
                 }
             });
+
+
+            window.addEventListener('lesson-complete', this.syncCompleteState);
         },
         beforeDestroy(){
-            window.removeEventListener('resize', this.scrollAmountChange);
+            window.removeEventListener('lesson-complete', this.syncCompleteState);
         }
     }
 </script>
@@ -242,21 +319,22 @@
     @import '../assets/sass/partials/_variables.scss';
 
     .arrow-column {
-        display:none;
-
-        @include small {
-            display:flex;
-            flex:0 0 60px;
-            padding-right:10px;
-        }
-
+        display:flex;
+        flex:0 0 60px;
+        padding-right:10px;
     }
 
     .complete-column {
-        flex:0 0 100px;
+        margin-top:$gutterWidth / 2;
 
         @include small {
-            flex:0 0 200px;
+            margin-top:0;
+        }
+    }
+
+    .assignment-title {
+        @include small {
+            flex:0 0 auto;
         }
     }
 

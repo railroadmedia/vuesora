@@ -9,6 +9,23 @@ const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 
 export default {
 
+
+    /**
+     * Get railcontent content by ID
+     *
+     * @returns {Promise} - resolved promise with the response.data object
+     */
+    getContentById(id){
+        return axios.get(endpoint_prefix + '/railcontent/content/' + id)
+            .then(response => response)
+            .catch(this.handleError);
+    },
+
+    /**
+     * Set users default payment method
+     *
+     * @returns {Promise} - resolved promise with the response.data object
+     */
     setDefaultPaymentMethod(paypalPaymentMethodId) {
 
         return axios.patch('/payment-method/set-default', {id: paypalPaymentMethodId})
@@ -19,7 +36,6 @@ export default {
     /**
      * Get current user payment methods
      *
-     * @static
      * @returns {Promise} - resolved promise with the response.data object
      */
     getPaymentMethods() {
@@ -32,7 +48,6 @@ export default {
     /**
      * Get Paypal agreement url
      *
-     * @static
      * @returns {Promise} - resolved promise with the response.data object
      */
     getPaypalAgreementUrl() {
@@ -45,7 +60,6 @@ export default {
     /**
      * Update a credit card payment method
      *
-     * @static
      * @param {number} id - the id of payment method to delete
      * @param {object} payload - the data object with the payment method details
      * @returns {Promise} - resolved promise with the response.data object
@@ -60,7 +74,6 @@ export default {
     /**
      * Delete a payment method
      *
-     * @static
      * @param {number} id - the id of payment method to delete
      * @returns {Promise} - resolved promise with the response.data object
      */
@@ -74,7 +87,6 @@ export default {
     /**
      * Crates a new payment method
      *
-     * @static
      * @param {object} payload - the data object with the payment method details
      * @returns {Promise} - resolved promise with the response.data object
      */
@@ -94,7 +106,6 @@ export default {
     /**
      * Get the forum search results
      *
-     * @static
      * @param {string} term - the search terms
      * @param {string} type - the search type, 'posts' or 'threads' - default null
      * @param {number} page - the results page - default 1
@@ -137,7 +148,6 @@ export default {
     /**
      * Get the posts data for a specific forum thread
      *
-     * @static
      * @returns {Promise} resolved promise with the response.data object
      */
     getForumThreadPosts() {
@@ -150,7 +160,6 @@ export default {
     /**
      * Upload a resource to S3 and get a CDN url back
      *
-     * @static
      * @param {string} endpoint - the url endpoint to send the request to
      * @param {Object} formData - the formData object to send with the request
      * @returns {Promise} resolved promise with the response.data object, containing the cdn url
@@ -172,7 +181,6 @@ export default {
     /**
      * Flag a piece of content as "complete"
      *
-     * @static
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -187,7 +195,6 @@ export default {
     /**
      * Flag a piece of content as "started"
      *
-     * @static
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -204,7 +211,6 @@ export default {
     /**
      * Reset your progress for a piece of content
      *
-     * @static
      * @param {number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -219,7 +225,6 @@ export default {
     /**
      * Get a list of comments
      *
-     * @static
      * @param {object} params - the params object to filter comments
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
@@ -236,7 +241,6 @@ export default {
      * WARNING: Doesn't actually work like you think, pulls the PAGE of the list where that
      * specific comment is, kinda dumb but ask the BE why - Curtis, Sept 2018
      *
-     * @static
      * @param {object} id - the comment id to get
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
@@ -249,7 +253,6 @@ export default {
     /**
      * Post a comment
      *
-     * @static
      * @param {object} data - the data object with the content_id and comment properties
      * @returns {Promise} resolved promise with the response.data object, containing the submit comment
      */
@@ -262,7 +265,6 @@ export default {
     /**
      * Post a reply
      *
-     * @static
      * @param {object} data - the data object with the parent_id and comment properties
      * @returns {Promise} resolved promise with the response.data object, containing the submit reply
      */
@@ -275,7 +277,6 @@ export default {
     /**
      * Like a Comment or Reply
      *
-     * @static
      * @param {number} id - the comment ID to like
      * @returns {Promise} resolved promise with the response object
      */
@@ -288,7 +289,6 @@ export default {
     /**
      * Un-Like a Comment or Reply
      *
-     * @static
      * @param {number} id - the comment ID to unlike
      * @returns {Promise} resolved promise with the response object
      */
@@ -301,7 +301,6 @@ export default {
     /**
      * Delete a Comment or Reply
      *
-     * @static
      * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -314,7 +313,6 @@ export default {
     /**
      * Get a list of users that have liked a comment
      *
-     * @static
      * @param {number} id
      * @param {number} page
      * @param {number} limit
@@ -334,7 +332,6 @@ export default {
     /**
      * Report a forum post
      *
-     * @static
      * @param {number} id - the post ID to report
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -347,7 +344,6 @@ export default {
     /**
      * Like a forum thread
      *
-     * @static
      * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -360,7 +356,6 @@ export default {
     /**
      * Unlike a forum thread
      *
-     * @static
      * @param {number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -371,7 +366,8 @@ export default {
     },
 
     /**
-     * @static
+     * Follow a forum thread
+     *
      * @param {number} id - thread id
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -382,7 +378,8 @@ export default {
     },
 
     /**
-     * @static
+     * Pin a forum thread
+     *
      * @param {number} id - thread id
      * @param {boolean} pinned
      * @returns {Promise} resolved promise with the response.data object
@@ -396,7 +393,8 @@ export default {
     },
 
     /**
-     * @static
+     * Lock a forum thread
+     *
      * @param {number} id - thread id
      * @param {boolean} locked
      * @returns {Promise} resolved promise with the response.data object
@@ -410,7 +408,8 @@ export default {
     },
 
     /**
-     * @static
+     * Delete a Forum thread
+     *
      * @param {number} id - thread id
      * @returns {Promise} resolved promise with the response object
      */
@@ -423,7 +422,6 @@ export default {
     /**
      * Unlike a forum thread
      *
-     * @static
      * @param {string} message - the content of the text area element within the email form
      * @param {string} type - the type of email to send ['general', 'ask-question', 'support', 'suggest-learning-path']
      * @param {string} subject - the subject for the email
@@ -444,7 +442,6 @@ export default {
     /**
      * Mark a specific notification as read
      *
-     * @static
      * @param {number} id - notification id
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -457,7 +454,6 @@ export default {
     /**
      * Mark a specific notification as unread
      *
-     * @static
      * @param {number} id - notification id
      * @returns {Promise} resolved promise with the response.data object
      */
@@ -470,7 +466,6 @@ export default {
     /**
      * Mark all of the current users notifications as read
      *
-     * @static
      * @returns {Promise} resolved promise with the response.data object
      */
     markAllNotificationsAsRead() {
@@ -485,7 +480,6 @@ export default {
      * @param content_id {string}
      * @param is_added {boolean}
      *
-     * @static
      * @returns {Promise} resolved promise with the response.data object
      */
     addOrRemoveContentFromList(content_id, is_added){
@@ -506,7 +500,6 @@ export default {
      *
      * @param content_id {string}
      *
-     * @static
      * @returns {Promise} resolved promise with the response.data object
      */
     markLearningPathAsStarted(content_id){
@@ -518,7 +511,6 @@ export default {
     /**
      * Display an error message and console the error if any request fails
      *
-     * @static
      * @param {object} error - the error object returned by the request
      */
     handleError(error) {
