@@ -1,6 +1,6 @@
 export default {
 
-    mapObject:{
+    mapObject: {
         0: 'Casual',
         100: 'Enthusiast I',
         250: 'Enthusiast II',
@@ -8,7 +8,7 @@ export default {
         1000: 'Pro II',
         2500: 'Pro III',
         10000: 'Master I',
-        50000: 'Master II',
+        25000: 'Master II',
         100000: 'Master III',
         250000: 'Legend',
         500000: 'Legends: Starr',
