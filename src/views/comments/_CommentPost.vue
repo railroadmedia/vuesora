@@ -106,7 +106,7 @@
                     </div>
                     <div class="flex flex-column">
                         <div class="flex flex-row">
-                            <text-editor toolbar="bold italic underline | bullist numlist"
+                            <text-editor toolbar="bold italic underline | bullist numlist | link"
                                          :height="150"
                                          ref="textEditor"
                                          v-model="replyInterface"></text-editor>
