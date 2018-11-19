@@ -24,7 +24,7 @@
         </div>
         <div class="flex flex-row ph-1 pb-1">
             <p class="tiny text-grey-3 font-italic">
-                Displaying {{ currentResults }} of {{ $_total_results }} results.
+                Displaying <span v-if="$_total_results > 0">{{ currentResults }} of</span> {{ $_total_results }} results.
             </p>
         </div>
     </div>
