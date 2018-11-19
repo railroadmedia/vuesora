@@ -1,5 +1,6 @@
 @import './_variables.scss';
 
+// STANDARD ANIMATIONS
 @keyframes growShrink {
   0% {
     transform:scale(1);
@@ -21,16 +22,6 @@
   }
 }
 
-.noty_effects_open {
-  opacity: 0;
-  transform: translate(-50%);
-  animation: noty_anim_in 0.2s ease-in-out;
-}
-
-.noty_effects_close {
-  animation: noty_anim_out 0.2s ease-in-out;
-}
-
 @keyframes noty_anim_in {
   100% {
     transform: translate(0);
@@ -43,4 +34,62 @@
     transform: translate(-50%);
     opacity: 0;
   }
+}
+
+
+// VueJS ANIMATIONS
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateX(30px);
+  opacity: 0;
+}
+
+.slide-down-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-down-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-down-fade-enter, .slide-down-fade-leave-to {
+  transform: translateY(-30px);
+  opacity: 0;
+}
+
+.show-from-bottom-enter-active {
+  transition: all .3s ease;
+}
+.show-from-bottom-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.show-from-bottom-enter, .show-from-bottom-leave-to {
+  transform: translateY(100px);
+  opacity: 0;
+}
+
+.grow-fade-enter-active {
+  transition: all .2s ease;
+}
+.grow-fade-leave-active {
+  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.grow-fade-enter, .grow-fade-leave-to {
+  transform: scale(.5);
+  opacity: 0;
+}
+
+
+// NOTY
+.noty_effects_open {
+  opacity: 0;
+  transform: translate(-50%);
+  animation: noty_anim_in 0.2s ease-in-out;
+}
+
+.noty_effects_close {
+  animation: noty_anim_out 0.2s ease-in-out;
 }
