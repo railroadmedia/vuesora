@@ -128,10 +128,12 @@
             },
 
             handleModalClose(){
-                this.addEventToDropdown({
-                    title: '',
-                    date: ''
-                })
+                setTimeout(() => {
+                    this.addEventToDropdown({
+                        title: '',
+                        date: ''
+                    });
+                }, 300);
             }
         },
     }
