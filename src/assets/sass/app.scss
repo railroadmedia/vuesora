@@ -1,5 +1,6 @@
 @import '~normalize.css/normalize.css';
 @import "~noty/src/noty.scss";
+@import "~simplebar/dist/simplebar.css";
 //@import "~noty/src/themes/bootstrap-v4.scss";
 @import "~flatpickr/dist/themes/airbnb.css";
 //@import './partials/_tooltip.scss';
@@ -593,4 +594,8 @@ ul {
     .open {display:none;}
     .close {display:flex;}
   }
+}
+
+.simplebar-scrollbar:before {
+  background: nth(nth($greys, 4), 2);
 }

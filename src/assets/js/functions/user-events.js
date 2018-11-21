@@ -144,6 +144,33 @@ export default (function () {
 
     }
 
+    window.recalculateProgress = function(complete, numberOfAssignments){
+        const progressContainer = document.querySelector('.trophy-progress-bar');
+        const completeButton = document.querySelector('.completeButton');
+        const progressBar = document.querySelector('.trophy-progress');
+        const currentProgress = progressBar.style.width.replace(/%/g, '');
+        const progressDifference = 100 / numberOfAssignments;
+        let newProgress = null;
+
+        if(complete){
+            newProgress = Number(currentProgress) + Number(progressDifference);
+        }
+        else {
+            newProgress = Number(currentProgress) - Number(progressDifference);
+        }
+
+        progressBar.style.width = newProgress + '%';
+
+        if(newProgress >= 100){
+            progressContainer.classList.add('complete');
+            completeButton.classList.add('is-complete');
+        }
+        else {
+            progressContainer.classList.remove('complete');
+            completeButton.classList.remove('is-complete');
+        }
+    };
+
     function handleCompleteEvent(removing = false){
         const progressContainer = document.querySelector('.trophy-progress-bar');
         const progressBar = document.querySelector('.trophy-progress');

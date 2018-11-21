@@ -40,6 +40,7 @@
     "noty": "^3.2.0-beta",
     "query-string": "^6.1.0",
     "register-service-worker": "^1.0.0",
+    "simplebar": "^3.1.0",
     "surge": "^0.20.1",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",

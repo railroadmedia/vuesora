@@ -121,6 +121,7 @@
     import moment from 'moment';
     import Requests from '../assets/js/classes/requests';
     import Utils from '../assets/js/classes/utils';
+    import Toasts from '../assets/js/classes/toasts';
 
     export default {
         name: 'content-assignment',
@@ -239,8 +240,56 @@
                 document.removeEventListener('keyup', this.spacebarToPlayPause);
             },
 
-            markAsComplete(){
-                this.isComplete = !this.isComplete;
+            markAsComplete(event){
+                const element = event.target;
+                const vm = this;
+
+                if(this.isComplete){
+                    Toasts.confirm({
+                        title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
+                        submitButton: {
+                            text: '<span class="bg-drumeo text-white">Reset</span>',
+                            callback: () => {
+
+                                this.isComplete = !this.isComplete;
+
+                                Requests.resetContentProgress(vm.id)
+                                    .then(resolved => {
+                                        if(resolved){
+                                            element.classList.add('remove-request-complete');
+
+                                            Toasts.push({
+                                                icon: 'happy',
+                                                title: 'READY TO START AGAIN?',
+                                                message: 'Your progress has been reset.'
+                                            });
+
+                                            this.$emit('assignmentComplete', {
+                                                complete: false
+                                            });
+                                        }
+                                    });
+                            }
+                        },
+                        cancelButton: {
+                            text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                        }
+                    });
+                }
+                else {
+                    this.isComplete = !this.isComplete;
+
+                    Requests.markContentAsComplete(vm.id)
+                        .then(resolved => {
+                            if(resolved){
+                                element.classList.add('add-request-complete');
+
+                                this.$emit('assignmentComplete', {
+                                    complete: true
+                                });
+                            }
+                        });
+                }
             },
 
             syncCompleteState(complete){

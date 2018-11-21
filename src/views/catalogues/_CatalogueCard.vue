@@ -119,7 +119,20 @@
             },
 
             $_progress_percent(){
-                return this.$_item['progress_percent'];
+                if(this.$_item.type === 'course' ||
+                    this.$_item.type === 'pack' ||
+                    this.$_item.type === 'pack-bundle' ||
+                    this.$_item.type === 'semester-pack' ||
+                    this.$_item.type === 'learning-path'){
+
+                    return this.$_item['progress_percent'];
+                }
+
+                if(this.$_item.video != null){
+                    return (Number(this.$_item['last_watch_position_in_seconds']) / Number(this.$_item.video.length_in_seconds)) * 100;
+                }
+
+                return 0;
             },
 
             $_thumbnailIcon(){
