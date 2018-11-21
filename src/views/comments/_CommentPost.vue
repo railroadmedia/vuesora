@@ -100,7 +100,7 @@
             </div>
 
             <transition name="slide-fade">
-                <div class="flex flex-row comment-post mv-2" v-if="replying">
+                <div class="flex flex-row comment-post mv-2" v-show="replying">
                     <div class="flex flex-column avatar-column pr hide-xs-only">
                         <img :src="currentUser.avatar" class="rounded">
                     </div>
