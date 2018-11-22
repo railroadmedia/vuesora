@@ -103,6 +103,7 @@ body {
     cursor:pointer;
     will-change:background-color;
     transition:background-color .2s ease-in-out;
+    outline:none;
 
     @include medium {
       flex:0 0 50px;
@@ -112,8 +113,18 @@ body {
       flex:0 0 65px;
     }
 
+    &:focus {
+      outline:0;
+    }
+
+    & > * {
+      pointer-events:none;
+    }
+
+    @include rippleDirective();
+
     &.active {
-      background-color:nth($greys, 4);
+      background-color:nth(nth($greys, 5), 2);
 
       i {
         background-color:transparent;
@@ -320,6 +331,8 @@ body {
     box-sizing:border-box;
     border-bottom:2px solid transparent;
     white-space:nowrap;
+
+    @include rippleDirective();
 
     i {
       will-change:color;
