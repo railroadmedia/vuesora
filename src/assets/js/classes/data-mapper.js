@@ -752,8 +752,6 @@ export default class DataMapper {
             }
         };
 
-        console.log(this.content_type);
-
         if(this.data_mappers[this.content_type] != null){
             return this.data_mappers[this.content_type][this.card_type];
         }
