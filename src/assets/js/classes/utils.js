@@ -226,5 +226,35 @@ export default {
      */
     formatNumbersWithCommas(value){
         return Number(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+
+    /**
+     * Get the current width of the scrollbar on the page
+     *
+     * @returns {String|Number}
+     */
+    getScrollBarWidth(){
+        if (typeof document === 'undefined') {
+            return 0
+        }
+
+        const body = document.body;
+        const box = document.createElement('div');
+
+        let boxStyle = box.style;
+        let width;
+
+        boxStyle.position = 'absolute';
+        boxStyle.top = boxStyle.left = '-9999px';
+        boxStyle.width = boxStyle.height = '100px';
+        boxStyle.overflow = 'scroll';
+
+        body.appendChild(box);
+
+        width = box.offsetWidth - box.clientWidth;
+
+        body.removeChild(box);
+
+        return width;
     }
 }

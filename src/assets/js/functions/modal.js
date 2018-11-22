@@ -1,6 +1,9 @@
+import Utils from '../classes/utils';
+
 export default (function(){
     const modalTriggers = document.querySelectorAll('[data-open-modal]');
     const closeButtons = document.querySelectorAll('.close-modal');
+    const topBar = document.getElementById('nav');
 
     const closeEvent = new CustomEvent('modalClose');
 
@@ -57,6 +60,9 @@ export default (function(){
             document.body.classList.remove('no-scroll');
             document.documentElement.classList.remove('no-scroll');
 
+            document.body.style.paddingRight = '0';
+            topBar.style.paddingRight = '0';
+
             window.dispatchEvent(closeEvent);
         }
 
@@ -84,5 +90,8 @@ export default (function(){
 
         // Add an event listener
         modalOverlay.addEventListener('click', closeModal);
+
+        document.body.style.paddingRight = Utils.getScrollBarWidth() + 'px';
+        topBar.style.paddingRight = Utils.getScrollBarWidth() + 'px';
     }
 })();
