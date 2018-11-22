@@ -92,7 +92,9 @@
                     artist: 'Choose an Artist...',
                     style: 'Choose a Style...',
                     bpm: 'Choose a Tempo...',
-                    type: 'Choose a Type...'
+                    type: 'Choose a Type...',
+                    key: 'Choose a Key...',
+                    key_pitch_type: 'Choose a Type...'
                 };
 
                 return label_map[this.$_filter_name];

@@ -70,8 +70,9 @@
         <!-- TITLES AND COLUMN DATA (on mobile) -->
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
-            <p class="tiny font-compressed text-recordeo uppercase text-truncate"
-               :class="'text-' + $_item.type">
+            <p v-if="$_brand !== 'guitareo'"
+               class="tiny font-compressed uppercase text-truncate"
+               :class="'text-' + theme">
                 {{ mappedData.color_title }}
             </p>
 

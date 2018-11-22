@@ -113,7 +113,9 @@ export default {
             difficulty: [],
             instructor: [],
             style: [],
-            topic: []
+            topic: [],
+            key: [],
+            key_pitch_type: []
         };
 
         keys.forEach(key => {

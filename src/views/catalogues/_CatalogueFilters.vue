@@ -56,7 +56,9 @@
                         difficulty: null,
                         instructor: null,
                         style: null,
-                        topic: null
+                        topic: null,
+                        key: null,
+                        key_pitch_type: null
                     }
                 }
             }
