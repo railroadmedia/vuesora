@@ -84,6 +84,8 @@
 <script>
     import Toasts from '../assets/js/classes/toasts';
     import LikesModal from '../views/comments/_CommentLikesModal';
+    import Requests from '../assets/js/classes/requests';
+    import axios from 'axios';
 
     export default {
         name: 'video-social-buttons',
@@ -100,12 +102,20 @@
                 default: () => false
             },
             likeCount: {
-                type: Number,
+                type: Number|String,
                 default: () => 0
             },
             currentTimeInSeconds: {
                 type: Number,
                 default: () => 0
+            },
+            contentId: {
+                type: Number|String,
+                default: () => null
+            },
+            userId: {
+                type: String|Number,
+                default: () => null
             }
         },
         data() {
@@ -115,9 +125,9 @@
                 lessonLikeCount: this.likeCount,
                 likeUsers: [],
                 likeUsersPage: 0,
-                totalLikeUsers: 0,
+                totalLikeUsers: this.likeCount || 0,
                 loadingLikeUsers: false,
-                requestingLikeUsers: false
+                requestingLikeUsers: false,
             }
         },
         computed: {
@@ -133,6 +143,7 @@
 
             likeLesson(){
                 this.lessonIsLiked = !this.lessonIsLiked;
+                const method = this.lessonIsLiked ? 'put' : 'delete';
 
                 if(this.lessonIsLiked){
                     this.lessonLikeCount += 1;
@@ -140,11 +151,44 @@
                 else {
                     this.lessonLikeCount -= 1;
                 }
+
+                Requests.likeContentById({
+                    is_liked: this.lessonIsLiked,
+                    content_id: this.contentId,
+                    user_id: this.userId,
+                })
+                    .then(response => response);
             },
 
             addLikeUsersToModal(payload){
+                if(!payload.load_more){
+                    this.loadingLikeUsers = true;
+                    this.likeUsersPage = 0;
+                }
+
                 this.requestingLikeUsers = true;
-                this.loadingLikeUsers = true;
+                this.likeUsersPage += 1;
+
+                Requests.getContentLikeUsers({
+                    id: this.contentId,
+                    page: this.likeUsersPage
+                })
+                    .then(response => {
+                        if(response){
+                            this.requestingLikeUsers = false;
+                            this.loadingLikeUsers = false;
+
+                            if(payload.load_more){
+                                this.likeUsers = [
+                                    ...this.likeUsers,
+                                    ...response.data.data
+                                ];
+                            }
+                            else {
+                                this.likeUsers = response.data.data;
+                            }
+                        }
+                    });
             },
 
             copyTimecodeToClipboard(){

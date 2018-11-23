@@ -13,12 +13,47 @@ export default {
     /**
      * Get railcontent content by ID
      *
-     * @returns {Promise} - resolved promise with the response.data object
+     * @returns {Promise} - resolved promise with the response object
      */
     getContentById(id){
         return axios.get(endpoint_prefix + '/railcontent/content/' + id)
             .then(response => response)
             .catch(this.handleError);
+    },
+
+    /**
+     * Get an array of like users for a content id
+     *
+     * @returns {Promise} - resolved promise with the response object
+     */
+    getContentLikeUsers({id, page = 1}){
+        return axios.get(endpoint_prefix + '/railcontent/content-like/' + id, {
+            params: {
+                page: page,
+                limit: 10
+            }
+        })
+            .then(response => response)
+            .catch(this.handleError);
+    },
+
+    /**
+     * Like content by ID
+     *
+     * @param {Boolean} is_liked
+     * @param {String|Number} content_id
+     * @param {String|Number} user_id
+     * @returns {Promise} - resolved promise with the response object
+     */
+    likeContentById({is_liked, content_id, user_id}){
+        return axios({
+            url: endpoint_prefix + '/railcontent/content-like',
+            method: is_liked ? 'put' : 'delete',
+            data: {
+                content_id: content_id,
+                user_id: user_id
+            }
+        })
     },
 
     /**

@@ -46,6 +46,8 @@
                               :themeColor="themeColor"
                               :isLiked="isLiked"
                               :likeCount="likeCount"
+                              :contentId="contentId"
+                              :userId="userId"
                               :currentTimeInSeconds="currentTimeInSeconds"></video-social-buttons>
     </div>
 </template>
@@ -114,12 +116,20 @@
                 default: () => false
             },
             likeCount: {
-                type: Number,
+                type: Number|String,
                 default: () => 0
             },
             chapters: {
                 type: Array,
                 default: () => []
+            },
+            contentId: {
+                type: String|Number,
+                default: () => null
+            },
+            userId: {
+                type: String|Number,
+                default: () => null
             }
         },
         data () {

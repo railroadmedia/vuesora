@@ -93,7 +93,8 @@
                     if(isNearBottom && !this.requestingLikeUsers){
                         this.$emit('loadMoreLikeUsers', {
                             id: this.commentId,
-                            totalLikeUsers: this.totalLikeUsers
+                            totalLikeUsers: this.totalLikeUsers,
+                            load_more: true
                         });
                     }
                 }
