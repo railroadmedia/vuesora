@@ -313,7 +313,7 @@
             },
 
             $_isReleased(){
-                return moment(this.$_item['published_on']).isBefore(Date.now());
+                return moment.utc(this.$_item['published_on']).format('x') < Date.now();
             },
 
             $_releaseDate(){
@@ -373,7 +373,9 @@
             }
         },
         mounted(){
-
+            console.log(this.$_isReleased);
+            console.log(moment.utc(this.$_item['published_on']).format('x'));
+            console.log(Date.now());
         }
     }
 </script>
