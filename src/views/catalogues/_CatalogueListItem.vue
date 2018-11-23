@@ -371,11 +371,6 @@
             thumbnailType(){
                 return this.$_item['type'] !== 'song' || this.$_forceWideThumbs ? 'widescreen' : 'square';
             }
-        },
-        mounted(){
-            console.log(this.$_isReleased);
-            console.log(moment.utc(this.$_item['published_on']).format('x'));
-            console.log(Date.now());
         }
     }
 </script>
