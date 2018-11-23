@@ -440,6 +440,30 @@ export default class DataMapper {
                 }
             },
 
+            'song-part': {
+                card: {
+                    color_title: this.post['artist'],
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: DataMapper.mapDifficulty(this.post)
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration(),
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
             'play-along': {
                 card: {
                     color_title: this.post['style'] || 'TBD',
@@ -453,6 +477,29 @@ export default class DataMapper {
                     column_data: [
                         this.post['style'] || 'TBD',
                         this.post['bpm'] + ' BPM'
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
+            'play-along-part': {
+                card: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: DataMapper.mapDifficulty(this.post)
+                },
+                list: {
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration(),
                     ]
                 },
                 schedule: {

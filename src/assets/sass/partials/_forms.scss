@@ -3,6 +3,7 @@
 
 .form-group {
   position:relative;
+  margin-bottom:0;
 
   &.textarea {
     label {
@@ -22,9 +23,7 @@
     transform-origin:0 0;
     color:nth(nth($greys, 3), 2);
     pointer-events:none;
-
-    // Pull in font sizes from the .body class
-    @extend .body;
+    font:400 16px/1.5em $defaultSansSerif;
 
     @include medium {
       left:$gutterWidth / 2;
@@ -33,7 +32,6 @@
 
   .toggle-label {
     flex-grow:1;
-
     @extend .noselect;
   }
 
@@ -80,9 +78,7 @@ textarea {
   outline:none;
   width:100%;
   padding-top:12px;
-
-  // Pull in font sizes from the .body class
-  @extend .body;
+  font:400 16px/1.5em $defaultSansSerif;
 
   // Pull in padding styles from the .ph class
   @extend .ph;
