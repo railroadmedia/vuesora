@@ -327,7 +327,7 @@
             },
 
             $_isReleased(){
-                return moment(this.$_item['published_on']).isBefore(Date.now());
+                return moment.utc(this.$_item['published_on']).format('x') < Date.now();
             },
 
             $_releaseDate(){
@@ -385,9 +385,6 @@
             thumbnailType(){
                 return this.$_item['type'] !== 'song' || this.$_forceWideThumbs ? 'widescreen' : 'square';
             }
-        },
-        mounted(){
-
         }
     }
 </script>
