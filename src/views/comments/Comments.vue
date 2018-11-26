@@ -24,8 +24,9 @@
                     <img :src="currentUser.avatar" class="rounded">
                 </div>
 
-                <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-                <p v-if="this.currentUser.access_level !== 'team'"
+                <p v-if="userExpValue"
+                   class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
+                <p v-if="userExpValue && this.currentUser.access_level !== 'team'"
                    class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
             </div>
 
@@ -57,6 +58,7 @@
 
         <comment-post v-if="pinnedComment != null"
                       v-bind="pinnedComment"
+                      :brand="brand"
                       :currentUser="currentUser"
                       :pinned="true"
                       :themeColor="themeColor"
@@ -71,6 +73,7 @@
         <comment-post v-for="(comment, i) in comments"
                       :key="i"
                       v-bind="comment"
+                      :brand="brand"
                       :currentUser="currentUser"
                       :themeColor="themeColor"
                       :profileBaseRoute="profileBaseRoute"
@@ -113,6 +116,10 @@
         },
         props: {
             content_id: {
+                type: String,
+                default: () => ''
+            },
+            brand: {
                 type: String,
                 default: () => ''
             },

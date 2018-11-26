@@ -2,9 +2,10 @@ export default (function(){
     document.body.addEventListener('click', event => {
         const thisTrigger = event.target;
         const thisAccordion = thisTrigger.parentElement;
-        const thisContent = thisAccordion.querySelector('.accordion-content');
 
         if(thisTrigger.classList.contains('accordion-trigger')){
+            const thisContent = thisAccordion.querySelector('.accordion-content');
+
             if(thisAccordion.classList.contains('active')){
                 thisAccordion.classList.remove('active');
                 thisContent.removeAttribute('style');
