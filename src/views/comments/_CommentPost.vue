@@ -14,8 +14,9 @@
             <img v-if="!hasPublicProfiles"
                  :src="user['fields.profile_picture_image_url']" class="rounded">
 
-            <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-            <p v-if="this.user.access_level !== 'team'"
+            <p v-if="userExpValue"
+               class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
+            <p v-if="userExpValue && this.user.access_level !== 'team'"
                class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
         </div>
         <div class="flex flex-column grow">
@@ -90,7 +91,7 @@
                         <span class="grow"></span>
 
                         <p class="x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect"
-                           :data-open-modal="like_count > 0 ? 'likeUsersModal' : ''"
+                           :data-open-modal="openModalString"
                            @click="openLikes">
                             <i class="fas fa-thumbs-up text-white likes-icon"
                                :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
@@ -139,6 +140,7 @@
                                v-if="i < 2 || showAllReplies"
                                :key="i"
                                v-bind="reply"
+                               :brand="brand"
                                :currentUser="currentUser"
                                :themeColor="themeColor"
                                :profileBaseRoute="profileBaseRoute"
@@ -176,7 +178,7 @@
         props: {
             brand: {
                 type: String,
-                default: () => 'drumeo'
+                default: () => ''
             },
             themeColor: {
                 type: String,
@@ -331,6 +333,14 @@
             isCurrentUserAdmin() {
                 return this.currentUser.isAdmin === true;
             },
+
+            openModalString(){
+                if(this.brand !== 'drumeo'){
+                    return '';
+                }
+
+                return this.like_count > 0 ? 'likeUsersModal' : '';
+            }
         },
         methods: {
             replyToComment() {
