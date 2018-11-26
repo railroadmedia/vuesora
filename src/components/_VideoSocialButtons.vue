@@ -146,10 +146,10 @@
                 const method = this.lessonIsLiked ? 'put' : 'delete';
 
                 if(this.lessonIsLiked){
-                    this.lessonLikeCount += 1;
+                    this.lessonLikeCount++;
                 }
                 else {
-                    this.lessonLikeCount -= 1;
+                    this.lessonLikeCount--;
                 }
 
                 Requests.likeContentById({
