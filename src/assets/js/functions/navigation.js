@@ -7,7 +7,7 @@ export default (function(){
     const searchBox = document.getElementById('searchBox');
     const searchInput = document.getElementById('searchInput');
     const parentLinks = document.querySelectorAll('.parent-button');
-    const navSimpleBar = new SimpleBar(navSideBar);
+    const navSimpleBar = navSideBar ? new SimpleBar(navSideBar) : null;
     let backgroundOverlay = document.getElementById('backgroundOverlay');
     let openItems = localStorage.getItem('open_items') ? JSON.parse(localStorage.getItem('open_items')) : [];
 
@@ -42,7 +42,10 @@ export default (function(){
 
     function toggleSideBar(event){
         event.stopPropagation();
-        navSimpleBar.recalculate();
+
+        if(navSimpleBar){
+            navSimpleBar.recalculate();
+        }
 
         if(searchBox){
             searchBox.classList.remove('active');
@@ -113,9 +116,12 @@ export default (function(){
             childLinks.removeAttribute('style');
         }
 
-        setTimeout(() => {
-            navSimpleBar.recalculate();
-        }, 300);
+
+        if(navSimpleBar){
+            setTimeout(() => {
+                navSimpleBar.recalculate();
+            }, 300);
+        }
     }
 
     function saveToLocalStorage(value){
