@@ -75,7 +75,7 @@
                      :themeColor="themeColor"
                      :commentId="0"
                      :likeUsers="likeUsers"
-                     :totalLikeUsers="likeCount"
+                     :totalLikeUsers="lessonLikeCount"
                      :loadingLikeUsers="loadingLikeUsers"
                      :requestingLikeUsers="requestingLikeUsers"
                      @loadMoreLikeUsers="addLikeUsersToModal"></likes-modal>
