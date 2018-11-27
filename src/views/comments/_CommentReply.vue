@@ -59,6 +59,16 @@
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
 
+                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
+                           :class="replying ? 'text-' + themeColor : 'text-grey-3'"
+                           @click="openReply"
+                           dusk="reply-button">
+                            <i class="fas fa-reply"></i>
+                            <span class="hide-xs-only">
+                                {{ replying ? 'Replying' : 'Reply' }}
+                            </span>
+                        </p>
+
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
                            :class="isLiked ? 'text-' + themeColor : 'text-grey-3'"
@@ -80,6 +90,42 @@
                     </div>
                 </div>
             </div>
+
+            <transition name="slide-fade">
+                <div class="flex flex-row comment-post mv-2" v-if="replying">
+                    <div class="flex flex-column avatar-column pr hide-xs-only">
+                        <img :src="currentUser.avatar" class="rounded">
+                    </div>
+                    <div class="flex flex-column">
+                        <div class="flex flex-row">
+                            <text-editor toolbar="bold italic underline | bullist numlist | link"
+                                         :height="150"
+                                         ref="textEditor"
+                                         v-model="replyInterface"></text-editor>
+                        </div>
+                        <div class="flex flex-row align-h-right mv-1">
+                            <a class="btn flat text-black collapse-150 short mr-1"
+                               @click="replying = false">
+                                Cancel
+                            </a>
+                            <button class="btn collapse-150" :disabled="loading"
+                                    @click="postReply"
+                                    dusk="submit-reply">
+                                <span class="text-white short"
+                                      :class="'bg-' + themeColor">
+                                    Reply
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="loading-reply flex-center" v-show="loading">
+                            <i class="fas fa-spinner fa-spin" :class="'text-' + themeColor"></i>
+                            <p class="x-tiny text-grey-3">loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+
         </div>
     </div>
 </template>
@@ -88,9 +134,15 @@
     import moment from 'moment';
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
+    import TextEditor from '../../components/TextEditor.vue';
+    import Toasts from '../../assets/js/classes/toasts';
+    import Requests from '../../assets/js/classes/requests';
 
     export default {
         name: 'comment-reply',
+        components: {
+            'text-editor': TextEditor
+        },
         props: {
             brand: {
                 type: String,
@@ -114,6 +166,10 @@
             id: {
                 type: Number,
                 default: () => 0
+            },
+            parentId: {
+                type: String|Number,
+                default: () => null
             },
             profileBaseRoute: {
                 type: String,
@@ -178,7 +234,10 @@
         },
         data(){
             return {
-                isLiked: this.is_liked
+                isLiked: this.is_liked,
+                reply: '',
+                replying: false,
+                loading: false
             }
         },
         computed: {
@@ -189,6 +248,15 @@
                     'pack': this.user.access_level === 'pack',
                     'team': this.user.access_level === 'team',
                     'lifetime': this.user.access_level === 'lifetime'
+                }
+            },
+
+            replyInterface: {
+                get() {
+                    return this.reply;
+                },
+                set(val) {
+                    this.reply = val;
                 }
             },
 
@@ -254,6 +322,39 @@
                 }
             },
 
+            openReply(){
+                this.replying = !this.replying;
+                this.$root.$emit('replyOpened', {
+                    id: this.id
+                });
+            },
+
+            postReply() {
+                if (this.reply.currentValue) {
+                    this.loading = true;
+
+                    return Requests.postReply({
+                        parent_id: this.parentId,
+                        comment: this.reply.currentValue
+                    })
+                        .then(resolved => {
+                            if (resolved) {
+
+                                this.replyInterface = '';
+                                this.replying = false;
+                                this.$refs.textEditor.currentValue = '';
+                                Toasts.success('Reply successfully posted!');
+
+                                this.$emit('replyPosted', {
+                                    data: resolved['results'] || resolved['data'][0]
+                                });
+                            }
+
+                            this.loading = false;
+                        });
+                }
+            },
+
             deleteComment(){
                 const vm = this;
 
@@ -272,6 +373,13 @@
                     }
                 });
             },
+        },
+        mounted(){
+            this.$root.$on('replyOpened', payload => {
+                if(this.id !== payload.id){
+                    this.replying = false;
+                }
+            })
         }
     }
 </script>
