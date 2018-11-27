@@ -140,14 +140,17 @@
                                v-if="i < 2 || showAllReplies"
                                :key="i"
                                v-bind="reply"
+                               :id="reply.id"
                                :brand="brand"
+                               :parentId="id"
                                :currentUser="currentUser"
                                :themeColor="themeColor"
                                :profileBaseRoute="profileBaseRoute"
                                :hasPublicProfiles="hasPublicProfiles"
                                @likeReply="likeReply"
                                @deleteReply="deleteReply"
-                               @openLikes="openLikes"></comment-reply>
+                               @openLikes="openLikes"
+                               @replyPosted="replyPosted"></comment-reply>
             </transition-group>
 
             <div class="flex flex-row align-center" v-if="replies.length > 2">
@@ -161,7 +164,6 @@
 </template>
 <script>
     import Toasts from '../../assets/js/classes/toasts';
-    import Noty from 'noty';
     import Requests from '../../assets/js/classes/requests';
     import TextEditor from '../../components/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
@@ -345,6 +347,9 @@
         methods: {
             replyToComment() {
                 this.replying = !this.replying;
+                this.$root.$emit('replyOpened', {
+                    id: this.id
+                });
             },
 
             postReply() {
@@ -364,12 +369,17 @@
                                 this.$refs.textEditor.currentValue = '';
                                 Toasts.success('Reply successfully posted!');
 
-                                this.replies.splice(0, 0, thisComment);
+                                this.replyPosted({data: thisComment});
                             }
 
                             this.loading = false;
                         });
                 }
+            },
+
+            replyPosted(payload){
+                this.replies.splice(this.replies.length, 0, payload.data);
+                this.showAllReplies = true;
             },
 
             cancelReply() {
@@ -437,8 +447,6 @@
                 commentId.focus();
                 commentId.select();
 
-                console.log(commentId.contentEditable);
-
                 document.execCommand('copy');
 
                 setTimeout(() => {
@@ -447,6 +455,13 @@
 
                 Toasts.success('Comment Url Copied to Clipboard!')
             }
+        },
+        mounted(){
+            this.$root.$on('replyOpened', payload => {
+                if(this.id !== payload.id){
+                    this.replying = false;
+                }
+            })
         }
     }
 </script>
