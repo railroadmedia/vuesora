@@ -32,15 +32,29 @@
                     <td class="pa-1 font-bold">uploadEndpoint</td>
                     <td class="pa-1">Yes</td>
                     <td class="pa-1">String</td>
-                    <td class="pa-1">''</td>
+                    <td class="pa-1 font-italic">null</td>
                     <td class="pa-1">The endpoint to upload the image to</td>
                 </tr>
                 <tr class="bg-light">
                     <td class="pa-1 font-bold">saveEndpoint</td>
                     <td class="pa-1">Yes</td>
                     <td class="pa-1">String</td>
-                    <td class="pa-1">''</td>
+                    <td class="pa-1 font-italic">null</td>
                     <td class="pa-1">The endpoint used to save the image somewhere</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="pa-1 font-bold">userId</td>
+                    <td class="pa-1">No</td>
+                    <td class="pa-1">String|Number</td>
+                    <td class="pa-1 font-italic">null</td>
+                    <td class="pa-1">Only controls the server side file name</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="pa-1 font-bold">fieldKey</td>
+                    <td class="pa-1">No</td>
+                    <td class="pa-1">String</td>
+                    <td class="pa-1">'profile_picture_image_url'</td>
+                    <td class="pa-1">The db column name (key) to save the image as</td>
                 </tr>
             </table>
         </div>

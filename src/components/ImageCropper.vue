@@ -139,17 +139,17 @@
 
             uploadEndpoint: {
                 type: String,
-                default: () => ''
+                default: () => null
             },
 
             saveEndpoint: {
                 type: String,
-                default: () => ''
+                default: () => null
             },
 
             userId: {
                 type: String,
-                default: () => ''
+                default: () => null
             },
 
             cropperConfig: {

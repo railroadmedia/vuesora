@@ -388,6 +388,32 @@ export default class DataMapper {
 
             'exploring-beats': {
                 card: {
+                    color_title: this.getEpisodeNumber(),
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    grey_title: this.getPostDate()
+                },
+                list: {
+                    color_title: this.getEpisodeNumber(),
+                    black_title: this.post['title'],
+                    description: this.post['description'],
+                    column_data: [
+                        this.getPostDuration(),
+                        this.getPostDate()
+                    ]
+                },
+                schedule: {
+                    color_title: this.getType(),
+                    black_title: this.post['title'],
+                    column_data: [
+                        this.getPostInstructor(),
+                        DataMapper.mapDifficulty(this.post)
+                    ]
+                }
+            },
+
+            '25-days-of-christmas': {
+                card: {
                     color_title: this.getPostInstructor(),
                     black_title: this.post['title'],
                     description: this.post['description'],
@@ -411,7 +437,6 @@ export default class DataMapper {
                     ]
                 }
             },
-
 
             'song': {
                 card: {
