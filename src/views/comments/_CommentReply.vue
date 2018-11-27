@@ -130,7 +130,6 @@
     </div>
 </template>
 <script>
-    import Toasts from '../../assets/js/classes/toasts';
     import moment from 'moment';
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
@@ -343,7 +342,11 @@
                                 this.replyInterface = '';
                                 this.replying = false;
                                 this.$refs.textEditor.currentValue = '';
-                                Toasts.success('Reply successfully posted!');
+                                Toasts.push({
+                                    icon: 'happy',
+                                    title: 'Woohoo!',
+                                    message: 'Thanks for your reply!'
+                                });
 
                                 this.$emit('replyPosted', {
                                     data: resolved['results'] || resolved['data'][0]

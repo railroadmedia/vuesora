@@ -7,9 +7,9 @@
                         <button class="btn collapse-square"
                                 @click="openAssignment">
                     <span class="bg-grey-3"
-                          :class="accordionActive ? 'inverted text-grey-3' : 'text-white'">
+                          :class="accordionButtonClasses">
                         <i class="fas"
-                           :class="accordionActive ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                           :class="accordionButtonIconClasses"></i>
                     </span>
                         </button>
                     </div>
@@ -42,6 +42,7 @@
         </div>
         <transition name="slide-down-fade">
             <div v-if="accordionActive && thisAssignment != null"
+                 v-show="!this.accordionLoading"
                  class="flex flex-row pa-2">
                 <div class="flex flex-column grow">
                     <div class="flex flex-column ph pa-3">
@@ -175,6 +176,7 @@
                 loading: true,
                 isPlaying: false,
                 accordionActive: false,
+                accordionLoading: false,
                 thisAssignment: {
                     id: 0,
                     sheet_music_image_url: [],
@@ -211,11 +213,16 @@
             openAssignment(){
 
                 if(this.thisAssignment.id === 0){
+                    this.accordionLoading = true;
+
                     Requests.getContentById(this.id)
                         .then(response => {
                             if(response){
                                 this.thisAssignment = Utils.flattenContent(response.data.data)[0];
 
+                                setTimeout(() => {
+                                    this.accordionLoading = false;
+                                }, 750);
                                 this.accordionActive = !this.accordionActive;
                             }
                         });
@@ -308,6 +315,23 @@
                 return this.isComplete ?
                     'text-white ' + bgColor :
                     'inverted ' + bgColor + ' ' + textColor;
+            },
+
+            accordionButtonClasses(){
+                return {
+                    'inverted': this.accordionActive,
+                    'text-grey-3': this.accordionActive,
+                    'text-white': !this.accordionActive
+                }
+            },
+
+            accordionButtonIconClasses(){
+                return {
+                    'fa-chevron-up': !this.accordionActive && !this.accordionLoading,
+                    'fa-chevron-down': this.accordionActive && !this.accordionLoading,
+                    'fa-spinner': this.accordionActive && this.accordionLoading,
+                    'fa-spin': this.accordionActive && this.accordionLoading,
+                }
             },
 
             $_totalPages(){
