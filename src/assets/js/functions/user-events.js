@@ -153,13 +153,15 @@ export default (function () {
         let newProgress = null;
 
         if(complete){
-            newProgress = Number(currentProgress) + Number(progressDifference);
+            newProgress = Math.ceil(Number(currentProgress) + Number(progressDifference));
         }
         else {
-            newProgress = Number(currentProgress) - Number(progressDifference);
+            newProgress = Math.ceil(Number(currentProgress) - Number(progressDifference));
         }
 
         progressBar.style.width = newProgress + '%';
+
+        console.log(newProgress);
 
         if(newProgress >= 100){
             progressContainer.classList.add('complete');

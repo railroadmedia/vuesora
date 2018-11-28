@@ -22,7 +22,7 @@ export default {
             type: 'success',
             theme: 'bootstrap-v4',
             text: text,
-            timeout: 5000,
+            timeout: 4000,
             layout: 'topLeft',
         }).show();
     },

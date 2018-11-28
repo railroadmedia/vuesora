@@ -2,7 +2,7 @@
     <div class="flex flex-row pv-2">
         <div class="flex flex-column align-h-left text-grey-3 hover-text-white flex-auto pr-2 pointer noselect"
              data-open-modal="shareVideoModal">
-            <p class="body font-bold uppercase">
+            <p class="body font-bold uppercase dense">
                 <i class="fas fa-share mr-1"></i>
                 Share
             </p>
@@ -11,7 +11,7 @@
         <div class="flex flex-column grow"></div>
 
         <div class="flex flex-column align-h-right flex-auto ph-2 pointer noselect">
-            <p class="body text-grey-3 text-right font-bold uppercase hover-text-white"
+            <p class="body text-grey-3 text-right font-bold uppercase dense hover-text-white"
                :class="lessonIsLiked ? 'text-white' : 'text-grey-3'"
                @click="likeLesson">
                 <i class="fa-thumbs-up mr-1"
@@ -60,7 +60,7 @@
                         </span>
 
                         <label for="includeTimecode" class="toggle-label pointer dense uppercase font-bold tiny">
-                            Include the current time
+                            Start at Current Time
                         </label>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
         },
         data() {
             return {
-                useTimecode: false,
+                useTimecode: true,
                 lessonIsLiked: this.isLiked,
                 lessonLikeCount: this.likeCount,
                 likeUsers: [],
@@ -197,6 +197,7 @@
                 timecode.select();
                 document.execCommand('copy');
                 timecode.blur();
+                window.closeAllModals();
 
                 Toasts.push({
                     icon: 'happy',

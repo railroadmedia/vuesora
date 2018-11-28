@@ -2,7 +2,7 @@
     <div class="flex flex-column bb-light-1">
         <div class="flex flex-row align-v-center flex-wrap-xs-only pa-2">
             <div class="flex flex-column xs12 sm-9">
-                <div class="flex flex-row">
+                <div class="flex flex-row align-v-center">
                     <div class="flex flex-column arrow-column">
                         <button class="btn collapse-square"
                                 @click="openAssignment">
@@ -15,12 +15,12 @@
                     </div>
                     <div class="flex flex-column">
                         <div class="flex flex-row align-v-center">
-                            <div class="flex flex-column assignment-title">
-                                <h3 class="title wrap">{{ title }}</h3>
+                            <div class="flex flex-column">
+                                <h3 class="title">{{ title }}</h3>
                             </div>
                             <div v-if="timecode != 0"
                                  class="flex flex-column flex-auto">
-                                <a class="flex flex-column flex-auto tiny font-bold font-underline ml-1 hide-xs-only"
+                                <a class="flex flex-column flex-auto tiny font-bold font-underline hide-xs-only ph-1"
                                    :class="'text-' + themeColor"
                                    :data-jump-to-time="timecode">
                                     {{ formattedTimecode }}
@@ -80,7 +80,7 @@
                                  v-for="(page, i) in $_sheet_music_pages"
                                  :key="'page' + (i + 1)"
                                  :style="pageScrollPosition">
-                                <img :src="page" class="ph-3">
+                                <img :src="page">
                             </div>
 
                             <div class="side-button prev flex-center"
@@ -134,6 +134,10 @@
             themeColor: {
                 type: String,
                 default: () => 'drumeo'
+            },
+            position: {
+                type: String|Number,
+                default: () => null
             },
             title: {
                 type: String,
@@ -365,6 +369,10 @@
             }
         },
         mounted(){
+            if(this.position < 3){
+                this.openAssignment();
+            }
+
             window.addEventListener('message', event => {
                 if(event.origin === "https://www.soundslice.com"){
                     var cmd = JSON.parse(event.data);
