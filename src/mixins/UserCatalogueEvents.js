@@ -7,8 +7,6 @@ export default {
     methods: {
         // Used at the top level to emit the event with a payload
         addToList(){
-            console.log(this.$_destroyOnListRemoval);
-
             if(this.$_destroyOnListRemoval){
                 const notification = new Noty({
                     layout: 'center',

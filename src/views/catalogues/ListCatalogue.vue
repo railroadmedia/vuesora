@@ -21,6 +21,7 @@
                 :$_useThemeColor="$_useThemeColor"
                 :$_destroyOnListRemoval="$_destroyOnListRemoval"
                 :$_compactLayout="$_compactLayout"
+                :$_card_type="$_card_type"
                 @addToList="emitAddToList"
                 @resetProgress="emitResetProgress"
                 @addEvent="addEventToDropdown"></catalogue-list-item>
@@ -59,6 +60,10 @@
             $_brand: {
                 type: String,
                 default: () => 'drumeo'
+            },
+            $_card_type: {
+                type: String,
+                default: () => 'list'
             },
             $_displayItemsAsOverview: {
                 type: Boolean,

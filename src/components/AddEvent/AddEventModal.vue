@@ -1,5 +1,5 @@
 <template>
-    <div id="addToCalendarModal" class="modal small">
+    <div :id="$_modalId" class="modal small">
         <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible">
             <h1 class="subheading text-center mb-2">Subscribe to Calendar</h1>
 
@@ -26,7 +26,7 @@
             <p v-show="$_subscriptionCalendarId"
                class="x-tiny font-italic text-center mb-2">{{ subscriptionDescription }}</p>
 
-            <div v-show="singleEvent.title"
+            <div v-show="hasSingleEvent"
                  class="tiny pointer relative" style="width:100%;">
                 <button class="btn mb-1"
                         @click.stop="singleEventDropdown = !singleEventDropdown">
@@ -44,7 +44,7 @@
                 </transition>
             </div>
 
-            <p v-show="singleEvent.title"
+            <p v-show="hasSingleEvent"
                class="x-tiny font-italic text-center mb-2">{{ singleEventDescription }}</p>
         </div>
     </div>
@@ -58,13 +58,17 @@
             'add-event-dropdown': AddEventDropdown
         },
         props: {
+            $_modalId: {
+                type: String,
+                default: 'addToCalendarModal'
+            },
             $_themeColor: {
                 type: String,
                 default: () => 'drumeo'
             },
             singleEvent: {
-                title: '',
-                date: ''
+                title: null,
+                date: null
             },
             $_subscriptionCalendarId: {
                 type: String,
@@ -83,6 +87,11 @@
             return {
                 singleEventDropdown: false,
                 subscriptionCalendarDropdown: false,
+            }
+        },
+        computed: {
+            hasSingleEvent(){
+                return this.singleEvent.title != null;
             }
         },
         watch: {
