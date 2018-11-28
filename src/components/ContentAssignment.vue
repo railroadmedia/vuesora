@@ -1,9 +1,9 @@
 <template>
     <div class="flex flex-column bb-light-1">
-        <div class="flex flex-row align-v-center flex-wrap-xs-only pa-2">
-            <div class="flex flex-column xs12 sm-9">
+        <div class="flex flex-row align-v-center flex-wrap pa-2">
+            <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
-                    <div class="flex flex-column arrow-column">
+                    <div class="flex flex-column arrow-column hide-xs-only">
                         <button class="btn collapse-square"
                                 @click="openAssignment">
                     <span class="bg-grey-3"
@@ -15,12 +15,13 @@
                     </div>
                     <div class="flex flex-column">
                         <div class="flex flex-row align-v-center">
-                            <div class="flex flex-column">
+                            <div class="flex flex-column pointer"
+                                 @click="openAssignment">
                                 <h3 class="title">{{ title }}</h3>
                             </div>
                             <div v-if="timecode != 0"
                                  class="flex flex-column flex-auto">
-                                <a class="flex flex-column flex-auto tiny font-bold font-underline hide-xs-only ph-1"
+                                <a class="flex flex-column flex-auto tiny font-bold font-underline hide-xs-only ph-2"
                                    :class="'text-' + themeColor"
                                    :data-jump-to-time="timecode">
                                     {{ formattedTimecode }}
@@ -30,14 +31,24 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-column xs-12 sm-3 complete-column">
-                <button class="btn"
-                        @click.stop="markAsComplete">
-                    <span :class="completeButtonClasses">
-                        <i class="fas fa-check mr-1"></i>
-                        {{ isComplete ? 'Completed' : 'Complete' }} - {{ xp }} XP
-                    </span>
-                </button>
+            <div class="flex flex-column xs-12 md-4 complete-column">
+                <div class="flex flex-row">
+                    <button class="btn collapse-100 mr-1"
+                            v-if="soundsliceSlug"
+                            @click="openExercise">
+                        <span class="text-white" :class="'bg-' + themeColor">
+                            <i class="fas fa-play-circle mr-1"></i> Practice
+                        </span>
+                    </button>
+
+                    <button class="btn collapse-100"
+                            @click.stop="markAsComplete">
+                        <span :class="completeButtonClasses">
+                            <i class="fas fa-check mr-1"></i>
+                            {{ isComplete ? 'Completed' : 'Complete' }}
+                        </span>
+                    </button>
+                </div>
             </div>
         </div>
         <transition name="slide-down-fade">
@@ -46,28 +57,6 @@
                  class="flex flex-row pa-2">
                 <div class="flex flex-column grow">
                     <div class="flex flex-column ph pa-3">
-                        <transition name="show-from-bottom">
-                            <div id="practiceOverlay" class="bg-white" v-if="open">
-                                <div class="flex flex-row align-v-center bb-grey-4-1 bg-grey-5 ph">
-                                    <h2 class="title text-white grow pv-1">{{ title }}</h2>
-
-                                    <div class="close-exercise tiny uppercase text-white flex-auto align-v-center pv-1 pointer"
-                                         @click="closeExercise">
-                                        Close <i class="fas fa-times"></i>
-                                    </div>
-                                </div>
-
-                                <iframe id="ssEmbed"
-                                        :src="'https://www.soundslice.com/scores/' + $_soundslice_slug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
-                                        @load="loading = false"></iframe>
-
-                                <div class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
-                                     v-if="loading">
-                                    <i class="fas fa-spinner fa-spin"
-                                       :class="'text-' + themeColor"></i>
-                                </div>
-                            </div>
-                        </transition>
 
                         <div class="flex flex-row">
                             <p class="body">{{ $_description }}</p>
@@ -102,18 +91,32 @@
                                      :key="'pageButton' + (i + 1)"></div>
                             </div>
                         </div>
-                        <div class="flex flex-row"
-                             v-if="$_soundslice_slug">
-                            <button class="btn collapse-250"
-                                    @click="openExercise">
-                                <span class="text-white" :class="'bg-' + themeColor">
-                                    <i class="fas fa-play-circle mr-1"></i> Practice
-                                </span>
-                            </button>
-                        </div>
                     </div>
                 </div>
                 <div class="flex flex-column pa-2 sm-3 hide-xs-only"></div> <!--Spacer-->
+            </div>
+        </transition>
+
+        <transition name="show-from-bottom">
+            <div id="practiceOverlay" class="bg-white" v-if="open">
+                <div class="flex flex-row align-v-center bb-grey-4-1 bg-grey-5 ph">
+                    <h2 class="title text-white grow pv-1">{{ title }}</h2>
+
+                    <div class="close-exercise tiny uppercase text-white flex-auto align-v-center pv-1 pointer"
+                         @click="closeExercise">
+                        Close <i class="fas fa-times"></i>
+                    </div>
+                </div>
+
+                <iframe id="ssEmbed"
+                        :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
+                        @load="loading = false"></iframe>
+
+                <div class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
+                     v-if="loading">
+                    <i class="fas fa-spinner fa-spin"
+                       :class="'text-' + themeColor"></i>
+                </div>
             </div>
         </transition>
     </div>
@@ -224,10 +227,11 @@
                             if(response){
                                 this.thisAssignment = Utils.flattenContent(response.data.data)[0];
 
+                                this.accordionActive = !this.accordionActive;
+
                                 setTimeout(() => {
                                     this.accordionLoading = false;
                                 }, 750);
-                                this.accordionActive = !this.accordionActive;
                             }
                         });
                 }
@@ -370,7 +374,7 @@
         },
         mounted(){
             if(this.position < 3){
-                this.openAssignment();
+                // this.openAssignment();
             }
 
             window.addEventListener('message', event => {
@@ -408,7 +412,7 @@
     .complete-column {
         margin-top:$gutterWidth / 2;
 
-        @include small {
+        @include medium {
             margin-top:0;
         }
     }
