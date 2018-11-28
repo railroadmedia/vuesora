@@ -41,10 +41,21 @@
             {{ item }}
         </div>
 
+        <!-- ADD TO LIST OR RESET PROGRESS BUTTONS -->
+        <div class="flex flex-column icon-col align-v-center hide-xs-only">
+
+            <div class="body">
+                <i class="add-to-list fas fa-plus flex-center"
+                   :class="$_is_added ? 'is-added text-' + $_item.type : 'text-grey-2'"
+                   :title="$_is_added ? 'Remove from list' : 'Add to list'"
+                   @click.stop.prevent="addToList"></i>
+            </div>
+        </div>
+
         <div class="flex flex-column icon-col align-v-center" style="position:relative;">
             <div class="body pointer add-to"
                  title="Add to Calendar"
-                 data-open-modal="addToCalendarModal"
+                 data-open-modal="scheduleAddToCalendarModal"
                  @click="addEvent">
                 <i class="fas fa-calendar-plus flex-center text-grey-2 rounded"></i>
             </div>
@@ -92,7 +103,14 @@
                     card_type: 'schedule',
                     post: this.$_item
                 });
-            }
+            },
+
+            $_is_added:{
+                cache: false,
+                get(){
+                    return this.$_item.is_added_to_primary_playlist;
+                }
+            },
         }
     }
 </script>

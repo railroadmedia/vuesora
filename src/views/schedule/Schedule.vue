@@ -6,8 +6,10 @@
                        :$_timezone="$_timezone"
                        @addEvent="addEventToDropdown"></schedule-item>
 
-        <add-event-modal :singleEvent="singleEvent"
-                         :$_subscriptionCalendarId="$_subscriptionCalendarId"></add-event-modal>
+        <add-event-modal $_modalId="scheduleAddToCalendarModal"
+                         :singleEvent="singleEvent"
+                         $_themeColor="drumeo"
+                         @modalClose="handleModalClose"></add-event-modal>
     </div>
 </template>
 <script>
@@ -40,8 +42,8 @@
         data(){
             return {
                 singleEvent: {
-                    title: '',
-                    date: ''
+                    title: null,
+                    date: null
                 }
             }
         },
@@ -52,7 +54,17 @@
         },
         methods: {
             addEventToDropdown(payload){
+
                 this.singleEvent = payload;
+            },
+
+            handleModalClose(){
+                setTimeout(() => {
+                    this.addEventToDropdown({
+                        title: '',
+                        date: ''
+                    });
+                }, 300);
             }
         },
         mounted(){

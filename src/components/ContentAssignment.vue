@@ -99,18 +99,25 @@
 
         <transition name="show-from-bottom">
             <div id="practiceOverlay" class="bg-white" v-if="open">
-                <div class="flex flex-row align-v-center bb-grey-4-1 bg-grey-5 ph">
-                    <h2 class="title text-white grow pv-1">{{ title }}</h2>
+                <div class="flex flex-column embed-column">
+                    <div class="flex flex-row align-v-center flex-auto bb-grey-4-1 bg-grey-5 ph">
+                        <div class="flex flex-column">
+                            <h2 class="title text-white text-truncate-2-lines">{{ title }}</h2>
+                        </div>
 
-                    <div class="close-exercise tiny uppercase text-white flex-auto align-v-center pv-1 pointer"
-                         @click="closeExercise">
-                        Close <i class="fas fa-times"></i>
+                        <div class="flex flex-column close-exercise uppercase text-white align-v-center pv-1 pointer flex-auto"
+                             @click="closeExercise">
+                            <div class="flex flex-row tiny align-v-center">
+                                Close <i class="fas fa-times ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row grow">
+                        <iframe id="ssEmbed"
+                                :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
+                                @load="loading = false"></iframe>
                     </div>
                 </div>
-
-                <iframe id="ssEmbed"
-                        :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
-                        @load="loading = false"></iframe>
 
                 <div class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
                      v-if="loading">
@@ -443,12 +450,17 @@
         }
     }
 
+
+    .embed-column {
+        height:100%;
+    }
+
     #ssEmbed {
-        position:absolute;
-        left:0;
-        bottom:0;
+        /*position:absolute;*/
+        /*left:0;*/
+        /*bottom:0;*/
         width:100%;
-        height:calc(100% - 50px);
+        /*height:calc(100% - 50px);*/
     }
 
     .carousel {

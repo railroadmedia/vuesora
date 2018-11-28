@@ -61,10 +61,11 @@
                         :$_useThemeColor="$_useThemeColor"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
-        <list-catalogue v-if="catalogue_type === 'list'"
+        <list-catalogue v-if="catalogue_type === 'list' || catalogue_type === 'schedule'"
                         :$_content="content"
                         :$_brand="$_brand"
                         :$_themeColor="$_themeColor"
+                        :$_card_type="$_catalogueType"
                         :$_userId="$_userId"
                         :$_displayItemsAsOverview="$_displayItemsAsOverview"
                         :$_displayUserInteractions="$_displayUserInteractions"

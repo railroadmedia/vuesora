@@ -212,6 +212,10 @@
                 type: String,
                 default:() => 'drumeo'
             },
+            $_card_type: {
+                type: String,
+                default:() => 'list'
+            },
             $_overview: {
                 type: Boolean,
                 default: () => false
@@ -373,7 +377,7 @@
             mappedData(){
                 return new DataMapper({
                     content_type: this.$_contentTypeOverride || this.$_item.type,
-                    card_type: 'list',
+                    card_type: this.$_card_type,
                     post: this.$_item
                 });
             },
