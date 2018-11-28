@@ -562,15 +562,15 @@ $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
 
 .dashboard-new-lessons {
 
-  @include large {
-    .catalogue-card:last-of-type {
-      display:none;
-    }
-  }
-
-  @include smallOnly {
-    .catalogue-card:last-of-type {
-      display:none;
-    }
-  }
+  //@include large {
+  //  .catalogue-card:last-of-type {
+  //    display:none;
+  //  }
+  //}
+  //
+  //@include smallOnly {
+  //  .catalogue-card:last-of-type {
+  //    display:none;
+  //  }
+  //}
 }
