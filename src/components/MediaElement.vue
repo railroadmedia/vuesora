@@ -370,8 +370,7 @@
                         if(this.checkForTimecode){
 
                             if(urlParams['time'] != null){
-                                player.setCurrentTime(urlParams['time']);
-                                player.load();
+                                vm.jumpToTime(urlParams['time']);
                             }
                         }
 

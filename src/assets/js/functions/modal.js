@@ -45,7 +45,7 @@ export default (function(){
             document.documentElement.classList.add('no-scroll');
             modalToOpen.classList.add('active');
 
-            window.modalSimpleBar = new Simplebar(modalInsideContainer);
+            // window.modalSimpleBar = new Simplebar(modalInsideContainer);
         }
         else {
             console.error('Modal Error - Could not find modal with the ID: "' + modalId +  '"');
@@ -74,7 +74,7 @@ export default (function(){
             dialog.classList.remove('active');
         });
 
-        window.modalSimpleBar = null;
+        // window.modalSimpleBar = null;
     }
 
     window.closeAllModals = function(){
