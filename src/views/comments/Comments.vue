@@ -436,6 +436,8 @@
 
                             this.requestingLikeUsers = false;
                             this.currentLikeUsersId = payload.id;
+
+                            window.modalSimpleBar.recalculate();
                         }
 
                         this.loadingLikeUsers = false;

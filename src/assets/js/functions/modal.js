@@ -1,10 +1,10 @@
 import Utils from '../classes/utils';
+import Simplebar from 'simplebar';
 
 export default (function(){
     const modalTriggers = document.querySelectorAll('[data-open-modal]');
     const closeButtons = document.querySelectorAll('.close-modal');
     const topBar = document.getElementById('nav');
-
     const closeEvent = new CustomEvent('modalClose');
 
     // Add event listeners to every trigger button
@@ -38,11 +38,14 @@ export default (function(){
         event.stopPropagation();
 
         if(modalToOpen){
+            const modalInsideContainer = modalToOpen.children[0];
             window.appendBackgroundOverlay();
 
             document.body.classList.add('no-scroll');
             document.documentElement.classList.add('no-scroll');
             modalToOpen.classList.add('active');
+
+            window.modalSimpleBar = new Simplebar(modalInsideContainer);
         }
         else {
             console.error('Modal Error - Could not find modal with the ID: "' + modalId +  '"');
@@ -70,6 +73,8 @@ export default (function(){
         Array.from(modalDialogs).forEach(dialog => {
             dialog.classList.remove('active');
         });
+
+        window.modalSimpleBar = null;
     }
 
     window.closeAllModals = function(){
