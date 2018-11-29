@@ -14,11 +14,6 @@
                         </button>
 
                     </div>
-                    <div class="flex flex-column body ph-2 hide-sm-up"
-                         @click="openAssignment">
-                        <i class="fas"
-                           :class="accordionButtonIconClasses"></i>
-                    </div>
                     <div class="flex flex-column">
                         <div class="flex flex-row align-v-center">
                             <div class="flex flex-column pointer"
@@ -34,6 +29,11 @@
                                 </a>
                             </div>
                         </div>
+                    </div>
+                    <div class="flex flex-column flex-auto body ph-2 hide-sm-up pointer"
+                         @click="openAssignment">
+                        <i class="fas"
+                           :class="accordionButtonIconClasses"></i>
                     </div>
                 </div>
             </div>
