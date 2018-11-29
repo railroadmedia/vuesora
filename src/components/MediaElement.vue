@@ -319,6 +319,7 @@
 
             jumpToTime(timeInSeconds){
                 this.mediaElement.setCurrentTime(timeInSeconds);
+                this.mediaElement.load();
                 setTimeout(() => {
                     this.mediaElement.play();
                 }, 100);

@@ -6,18 +6,24 @@
                     <div class="flex flex-column arrow-column hide-xs-only">
                         <button class="btn collapse-square"
                                 @click="openAssignment">
-                    <span class="bg-grey-3"
-                          :class="accordionButtonClasses">
+                            <span class="bg-grey-3"
+                                  :class="accordionButtonClasses">
+                                <i class="fas"
+                                   :class="accordionButtonIconClasses"></i>
+                            </span>
+                        </button>
+
+                    </div>
+                    <div class="flex flex-column body ph-2 hide-sm-up"
+                         @click="openAssignment">
                         <i class="fas"
                            :class="accordionButtonIconClasses"></i>
-                    </span>
-                        </button>
                     </div>
                     <div class="flex flex-column">
                         <div class="flex flex-row align-v-center">
                             <div class="flex flex-column pointer"
                                  @click="openAssignment">
-                                <h3 class="title">{{ title }}</h3>
+                                <h3 class="title noselect">{{ title }}</h3>
                             </div>
                             <div v-if="timecode != 0"
                                  class="flex flex-column flex-auto">
@@ -90,6 +96,13 @@
                                      @click="scrollToPage(i + 1)"
                                      :key="'pageButton' + (i + 1)"></div>
                             </div>
+                        </div>
+                        <div class="flex flex-row hide-sm-up" v-if="timecode != 0">
+                            <a class="tiny font-bold font-underline"
+                               :class="'text-' + themeColor"
+                               :data-jump-to-time="timecode">
+                                {{ formattedTimecode }}
+                            </a>
                         </div>
                     </div>
                 </div>
