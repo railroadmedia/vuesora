@@ -36,8 +36,8 @@
                     <button class="btn collapse-100 mr-1"
                             v-if="soundsliceSlug"
                             @click="openExercise">
-                        <span class="text-white" :class="'bg-' + themeColor">
-                            <i class="fas fa-play-circle mr-1"></i> Practice
+                        <span class="text-white bg-grey-3 inverted text-grey-3">
+                            <i class="fas fa-play mr-1"></i> Practice
                         </span>
                     </button>
 
@@ -381,7 +381,7 @@
         },
         mounted(){
             if(this.position < 3){
-                // this.openAssignment();
+                this.openAssignment();
             }
 
             window.addEventListener('message', event => {
