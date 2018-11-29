@@ -319,7 +319,6 @@
 
             jumpToTime(timeInSeconds){
                 this.mediaElement.setCurrentTime(timeInSeconds);
-                this.mediaElement.load();
                 setTimeout(() => {
                     this.mediaElement.play();
                 }, 100);
@@ -404,7 +403,9 @@
             initializeChapterMarkerLinks(){
                 document.body.addEventListener('click', event => {
                     if(event.target.dataset['jumpToTime']){
-                        this.jumpToTime(event.target.dataset['jumpToTime']);
+                        this.jumpToTime(
+                            event.target.dataset['jumpToTime']
+                        );
 
                         window.scrollTo({
                             top: 0,
