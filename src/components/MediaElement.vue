@@ -151,7 +151,7 @@
                     'captionschange'
                 ],
                 contextMenu: false,
-                currentTimeInSeconds: 0
+                currentTimeInSeconds: 0,
             };
         },
         computed: {
@@ -249,6 +249,13 @@
 
                 return mapArray;
             },
+
+            readyState: {
+                cache: false,
+                get(){
+                    return this.mediaElement ? 0 : this.mediaElement.readyState;
+                }
+            }
         },
         methods: {
             playVideo(){
@@ -318,7 +325,10 @@
             },
 
             jumpToTime(timeInSeconds){
-                this.mediaElement.setCurrentTime(timeInSeconds);
+                if(this.mediaElement.readyState === 4){
+                    this.mediaElement.setCurrentTime(timeInSeconds);
+                }
+
                 setTimeout(() => {
                     this.mediaElement.play();
                 }, 100);
@@ -334,6 +344,7 @@
                     autosizeProgress: false,
                     startVolume: 0.5,
                     // stretching: 'responsive',
+                    preload: 'none',
                     stretching: 'fill',
                     setDimensions: false,
                     enableAutosize:false,
@@ -426,7 +437,6 @@
             const vm = this;
 
             vm.removeMediaElementEventListeners(vm.mediaElement);
-            window.player.remove();
         }
     };
 </script>
