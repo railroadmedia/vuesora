@@ -7,6 +7,7 @@
                        @addEvent="addEventToDropdown"></schedule-item>
 
         <add-event-modal $_modalId="scheduleAddToCalendarModal"
+                         :$_subscriptionCalendarId="$_subscriptionCalendarId"
                          :singleEvent="singleEvent"
                          $_themeColor="drumeo"
                          @modalClose="handleModalClose"></add-event-modal>
@@ -54,15 +55,14 @@
         },
         methods: {
             addEventToDropdown(payload){
-
                 this.singleEvent = payload;
             },
 
             handleModalClose(){
                 setTimeout(() => {
                     this.addEventToDropdown({
-                        title: '',
-                        date: ''
+                        title: null,
+                        date: null
                     });
                 }, 300);
             }
