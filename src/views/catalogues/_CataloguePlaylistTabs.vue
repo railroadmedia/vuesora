@@ -40,13 +40,15 @@
             </div>
         </div>
 
-        <div class="flex flex-column xs-12 sm-4 pv-1">
-            <catalogue-filter $_filter_name="type"
-                              :$_item="parsedTypes"
-                              :$_themeColor="$_themeColor"
-                              :loading="loading"
-                              :$_initial_value="selected_types"
-                              @filterChange="changeFilter"></catalogue-filter>
+        <div class="flex flex-column xs-12 sm-4 pv-1 align-v-center">
+            <div class="flex flex-row">
+                <catalogue-filter $_filter_name="type"
+                                  :$_item="parsedTypes"
+                                  :$_themeColor="$_themeColor"
+                                  :loading="loading"
+                                  :$_initial_value="selected_types"
+                                  @filterChange="changeFilter"></catalogue-filter>
+            </div>
         </div>
     </div>
 </template>
