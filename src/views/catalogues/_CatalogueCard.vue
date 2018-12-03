@@ -46,7 +46,7 @@
 
             <p v-if="mappedData.show_description"
                class="x-tiny font-compressed text-grey-4 mb-1 item-description always-truncate">
-                {{ mappedData.description }}
+                {{ mappedData.description.replace(/<[^>]+>/g, '') }}
             </p>
 
             <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase">

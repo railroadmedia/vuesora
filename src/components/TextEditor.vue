@@ -85,10 +85,6 @@
                     //     console.log('hello?');
                     // },
                     setup: (editor) => {
-                        editor.on('paste', () => {
-                            console.log('hello?');
-                            editor.save();
-                        });
                         editor.on('input', () => {
                             editor.save();
                         })
