@@ -324,14 +324,16 @@
                 });
             },
 
-            jumpToTime(timeInSeconds){
-                if(this.mediaElement.readyState === 4){
+            jumpToTime(timeInSeconds, play = false){
+                // if(this.mediaElement.readyState === 4){
                     this.mediaElement.setCurrentTime(timeInSeconds);
-                }
+                // }
 
-                setTimeout(() => {
-                    this.mediaElement.play();
-                }, 100);
+                if(play){
+                    setTimeout(() => {
+                        this.mediaElement.play();
+                    }, 100);
+                }
             },
 
             initializeVideoPlayer(){
@@ -344,7 +346,6 @@
                     autosizeProgress: false,
                     startVolume: 0.5,
                     // stretching: 'responsive',
-                    preload: 'none',
                     stretching: 'fill',
                     setDimensions: false,
                     enableAutosize:false,
@@ -378,11 +379,9 @@
                             }
                         });
 
-                        if(this.checkForTimecode){
-
-                            if(urlParams['time'] != null){
-                                vm.jumpToTime(urlParams['time']);
-                            }
+                        if(this.checkForTimecode && urlParams['time'] != null){
+                            mediaElement.load();
+                            vm.jumpToTime(urlParams['time'], true);
                         }
 
                         if(vm.elementId === 'lessonPlayer'){
@@ -415,7 +414,8 @@
                 document.body.addEventListener('click', event => {
                     if(event.target.dataset['jumpToTime']){
                         this.jumpToTime(
-                            event.target.dataset['jumpToTime']
+                            event.target.dataset['jumpToTime'],
+                            true
                         );
 
                         window.scrollTo({

@@ -16,7 +16,8 @@
                    :data-content-type="$_item.type"
                    @click.stop.prevent="addToList"></i>
 
-                <h3 class="thumbnail-title tiny font-compressed uppercase"
+                <h3 v-if="$_item['type'] !== 'chord-and-scale'"
+                    class="thumbnail-title tiny font-compressed uppercase"
                     :class="'text-' + theme">{{ mappedData.color_title }}</h3>
 
                 <div class="lesson-progress overflow corners-bottom-5">
@@ -40,7 +41,8 @@
 
             <img v-if="mappedData.sheet_music" :src="mappedData.sheet_music">
 
-            <h1 class="tiny text-black mb-1 font-compressed font-bold capitalize">
+            <h1 class="tiny text-black mb-1 font-compressed font-bold capitalize"
+                :class="{'text-center': this.$_item['type'] === 'chord-and-scale'}">
                 {{ mappedData.black_title }}
             </h1>
 
@@ -49,7 +51,8 @@
                 {{ mappedData.description.replace(/<[^>]+>/g, '') }}
             </p>
 
-            <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase">
+            <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase"
+                :class="{'text-center': this.$_item['type'] === 'chord-and-scale'}">
                 {{ mappedData.grey_title }}
             </h4>
         </a>
@@ -114,6 +117,10 @@
             },
 
             $_thumbnail(){
+                if(this.$_item['type'] === 'chord-and-scale'){
+                    return this.$_item['guitar_chord_image_url'];
+                }
+
                 return this.$_item['thumbnail_url'] ||
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
             },
@@ -168,7 +175,7 @@
             },
 
             thumbnailType(){
-                return this.$_item['type'] === 'song' && this.$_forceWideThumbs === false ? 'square' : 'widescreen' + ' ' + this.$_item['type'];
+                return ['song', 'chord-and-scale'].indexOf(this.$_item['type']) !== -1 && this.$_forceWideThumbs === false ? 'square' : 'widescreen' + ' ' + this.$_item['type'];
             }
         },
         mounted(){

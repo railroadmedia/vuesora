@@ -69,5 +69,13 @@
         background-color:$recordeoYellow;
       }
     }
+
+    &.guitar {
+
+      img {
+        border-color:$guitareoGreen;
+        background-color:$guitareoGreen;
+      }
+    }
   }
 }
