@@ -194,7 +194,23 @@
             copyTimecodeToClipboard(){
                 const timecode = document.getElementById('shareableUrlInput');
 
-                timecode.select();
+                if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+                    const editable = timecode.contentEditable;
+                    const readOnly = timecode.readOnly;
+                    const range = document.createRange();
+                    const selection = window.getSelection();
+
+                    timecode.contentEditable = true;
+                    timecode.readOnly = false;
+                    range.selectNodeContents(timecode);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    timecode.setSelectionRange(0, 999999);
+                    timecode.contentEditable = editable;
+                    timecode.readOnly = readOnly;
+                } else {
+                    timecode.select();
+                }
                 document.execCommand('copy');
                 timecode.blur();
                 window.closeAllModals();

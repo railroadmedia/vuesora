@@ -315,7 +315,10 @@
 
                 timecode.select();
                 document.execCommand('copy');
-                timecode.blur();
+
+                setTimeout(() => {
+                    timecode.blur();
+                }, 100);
 
                 Toasts.push({
                     icon: 'happy',
@@ -324,14 +327,16 @@
                 });
             },
 
-            jumpToTime(timeInSeconds){
-                if(this.mediaElement.readyState === 4){
-                    this.mediaElement.setCurrentTime(timeInSeconds);
-                }
+            jumpToTime(timeInSeconds, play = false){
+                // if(this.mediaElement.readyState === 4){
+                this.mediaElement.setCurrentTime(timeInSeconds);
+                // }
 
-                setTimeout(() => {
-                    this.mediaElement.play();
-                }, 100);
+                if(play){
+                    setTimeout(() => {
+                        this.mediaElement.play();
+                    }, 100);
+                }
             },
 
             initializeVideoPlayer(){
@@ -344,7 +349,6 @@
                     autosizeProgress: false,
                     startVolume: 0.5,
                     // stretching: 'responsive',
-                    preload: 'none',
                     stretching: 'fill',
                     setDimensions: false,
                     enableAutosize:false,
@@ -361,6 +365,7 @@
                     success: (mediaElement, node, player) => {
                         vm.mediaElement = mediaElement;
                         vm.addMediaElementEventListeners(vm.mediaElement);
+                        mediaElement.load();
 
                         // Below code helps to fix the bug where the speed and
                         // quality selectors remain visible and bug out after clicking
@@ -378,11 +383,8 @@
                             }
                         });
 
-                        if(this.checkForTimecode){
-
-                            if(urlParams['time'] != null){
-                                vm.jumpToTime(urlParams['time']);
-                            }
+                        if(this.checkForTimecode && urlParams['time'] != null){
+                            vm.jumpToTime(urlParams['time'], true);
                         }
 
                         if(vm.elementId === 'lessonPlayer'){
@@ -415,7 +417,8 @@
                 document.body.addEventListener('click', event => {
                     if(event.target.dataset['jumpToTime']){
                         this.jumpToTime(
-                            event.target.dataset['jumpToTime']
+                            event.target.dataset['jumpToTime'],
+                            true
                         );
 
                         window.scrollTo({
@@ -546,7 +549,7 @@
                 object-fit:contain;
             }
         }
-        
+
         .mejs__skip-back-button {
             position:absolute;
             bottom:5em;
