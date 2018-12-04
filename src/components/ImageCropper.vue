@@ -116,7 +116,7 @@
     *
     * - Curtis, August 2018
     * */
-    import Dropzone from '../../node_modules/dropzone';
+    import Dropzone from 'dropzone';
 
     export default {
         name: 'image-cropper',
