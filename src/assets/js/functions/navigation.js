@@ -1,5 +1,3 @@
-import SimpleBar from 'simplebar';
-
 export default (function(){
     const menuButton = document.getElementById('menuButton');
     const navSideBar = document.getElementById('navSideBar');
@@ -7,7 +5,6 @@ export default (function(){
     const searchBox = document.getElementById('searchBox');
     const searchInput = document.getElementById('searchInput');
     const parentLinks = document.querySelectorAll('.parent-button');
-    const navSimpleBar = navSideBar ? new SimpleBar(navSideBar) : null;
     let backgroundOverlay = document.getElementById('backgroundOverlay');
     let openItems = localStorage.getItem('open_items') ? JSON.parse(localStorage.getItem('open_items')) : [];
 
@@ -42,10 +39,6 @@ export default (function(){
 
     function toggleSideBar(event){
         event.stopPropagation();
-
-        if(navSimpleBar){
-            navSimpleBar.recalculate();
-        }
 
         if(searchBox){
             searchBox.classList.remove('active');
@@ -114,13 +107,6 @@ export default (function(){
         }
         else {
             childLinks.removeAttribute('style');
-        }
-
-
-        if(navSimpleBar){
-            setTimeout(() => {
-                navSimpleBar.recalculate();
-            }, 300);
         }
     }
 

@@ -1,5 +1,4 @@
 import Utils from '../classes/utils';
-import Simplebar from 'simplebar';
 
 export default (function(){
     const modalTriggers = document.querySelectorAll('[data-open-modal]');
@@ -44,8 +43,6 @@ export default (function(){
             document.body.classList.add('no-scroll');
             document.documentElement.classList.add('no-scroll');
             modalToOpen.classList.add('active');
-
-            // window.modalSimpleBar = new Simplebar(modalInsideContainer);
         }
         else {
             console.error('Modal Error - Could not find modal with the ID: "' + modalId +  '"');

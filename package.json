@@ -39,7 +39,6 @@
     "noty": "^3.2.0-beta",
     "query-string": "^6.1.0",
     "register-service-worker": "^1.0.0",
-    "simplebar": "^3.1.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vue-style-loader": "^4.1.2",
