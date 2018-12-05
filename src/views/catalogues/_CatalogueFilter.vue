@@ -33,7 +33,6 @@
 </template>
 <script>
     import Utils from '../../assets/js/classes/utils';
-    import collection from 'lodash/collection';
 
     export default {
         name: 'catalogue-filter',

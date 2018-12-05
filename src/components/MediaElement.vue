@@ -546,7 +546,7 @@
                 object-fit:contain;
             }
         }
-        
+
         .mejs__skip-back-button {
             position:absolute;
             bottom:5em;
