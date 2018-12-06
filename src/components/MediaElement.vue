@@ -315,7 +315,10 @@
 
                 timecode.select();
                 document.execCommand('copy');
-                timecode.blur();
+
+                setTimeout(() => {
+                    timecode.blur();
+                }, 100);
 
                 Toasts.push({
                     icon: 'happy',
@@ -326,7 +329,7 @@
 
             jumpToTime(timeInSeconds, play = false){
                 // if(this.mediaElement.readyState === 4){
-                    this.mediaElement.setCurrentTime(timeInSeconds);
+                this.mediaElement.setCurrentTime(timeInSeconds);
                 // }
 
                 if(play){
@@ -362,6 +365,7 @@
                     success: (mediaElement, node, player) => {
                         vm.mediaElement = mediaElement;
                         vm.addMediaElementEventListeners(vm.mediaElement);
+                        mediaElement.load();
 
                         // Below code helps to fix the bug where the speed and
                         // quality selectors remain visible and bug out after clicking
@@ -380,7 +384,6 @@
                         });
 
                         if(this.checkForTimecode && urlParams['time'] != null){
-                            mediaElement.load();
                             vm.jumpToTime(urlParams['time'], true);
                         }
 

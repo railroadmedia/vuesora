@@ -109,13 +109,6 @@
     import axios from 'axios';
     import Toasts from '../assets/js/classes/toasts';
     import Requests from '../assets/js/classes/requests';
-
-    /*
-    * Not exactly sure why I have to use a relative url, doesnt work if you just put 'dropzone'
-    * Unlike every other package, ever
-    *
-    * - Curtis, August 2018
-    * */
     import Dropzone from 'dropzone';
 
     export default {
