@@ -115,7 +115,7 @@
             // 'wysiwyg-editor': WYSIWYGEditor,
         },
         props: {
-            content_id: {
+            contentId: {
                 type: String,
                 default: () => ''
             },
@@ -123,9 +123,29 @@
                 type: String,
                 default: () => ''
             },
-            user_id: {
+            userId: {
                 type: Number,
                 default: () => 0
+            },
+            userName: {
+                type: String,
+                default: () => ''
+            },
+            userAvatar: {
+                type: String,
+                default: () => ''
+            },
+            userXp: {
+                type: String|Number,
+                default: () => 0
+            },
+            userAccessLevel: {
+                type: String,
+                default: () => ''
+            },
+            userIsAdmin: {
+                type: Boolean,
+                default: () => false
             },
             themeColor: {
                 type: String,
@@ -139,16 +159,6 @@
                 type: Boolean,
                 default: () => true
             },
-            currentUser: {
-                type: Object,
-                default: () => {
-                    return {
-                        display_name: '',
-                        id: 0,
-                        isAdmin: false
-                    }
-                }
-            }
         },
         data(){
             return {
@@ -170,6 +180,17 @@
             }
         },
         computed: {
+            currentUser(){
+                return {
+                    display_name: this.userName,
+                    id: this.userId,
+                    avatar: this.userAvatar,
+                    isAdmin: this.userIsAdmin,
+                    access_level: this.userAccessLevel,
+                    xp: this.userXp,
+                }
+            },
+
             avatarClassObject(){
                 return {
                     'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.currentUser.access_level) !== -1,
@@ -220,7 +241,7 @@
                 return {
                     page: this.currentPage,
                     limit: 25,
-                    content_id: this.content_id,
+                    content_id: this.contentId,
                     sort: this.sortOption
                 }
             }
@@ -263,7 +284,7 @@
                     this.loading = true;
 
                     return Requests.postComment({
-                        content_id: this.content_id,
+                        content_id: this.contentId,
                         comment: this.comment.currentValue
                     })
                         .then(resolved => {
