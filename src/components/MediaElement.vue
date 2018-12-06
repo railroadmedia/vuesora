@@ -348,6 +348,7 @@
                     defaultVideoHeight: 720,
                     autosizeProgress: false,
                     startVolume: 0.5,
+                    preload: 'metadata',
                     // stretching: 'responsive',
                     stretching: 'fill',
                     setDimensions: false,
@@ -365,31 +366,36 @@
                     success: (mediaElement, node, player) => {
                         vm.mediaElement = mediaElement;
                         vm.addMediaElementEventListeners(vm.mediaElement);
-                        mediaElement.load();
 
-                        // Below code helps to fix the bug where the speed and
-                        // quality selectors remain visible and bug out after clicking
-                        // Still a work in progress
-                        let interactionInputs = document.querySelectorAll('.mejs__qualities-selector-input, .mejs__speed-selector-input');
-                        for(let i=0; i<interactionInputs.length; i++){
-                            interactionInputs[i].addEventListener('change', this.emitCustomEvent);
-                        }
+                        vm.mediaElement.load();
+                        vm.mediaElement.addEventListener('loadedmetadata', event => {
 
-                        player.container.addEventListener('touchstart', function () {
-                            player.showControls();
+                            // Below code helps to fix the bug where the speed and
+                            // quality selectors remain visible and bug out after clicking
+                            // Still a work in progress
+                            let interactionInputs = document.querySelectorAll('.mejs__qualities-selector-input, .mejs__speed-selector-input');
+                            for(let i=0; i<interactionInputs.length; i++){
+                                interactionInputs[i].addEventListener('change', this.emitCustomEvent);
+                            }
 
-                            if (!player.paused) {
-                                player.startControlsTimer(player.options.controlsTimeoutMouseLeave);
+                            player.container.addEventListener('touchstart', function () {
+                                player.showControls();
+
+                                if (!player.paused) {
+                                    player.startControlsTimer(player.options.controlsTimeoutMouseLeave);
+                                }
+                            });
+
+                            if(this.checkForTimecode && urlParams['time'] != null){
+                                setTimeout(() => {
+                                    vm.jumpToTime(urlParams['time'], true);
+                                }, 200);
+                            }
+
+                            if(vm.elementId === 'lessonPlayer'){
+                                vm.initializeCopyTimecodeCommand(vm);
                             }
                         });
-
-                        if(this.checkForTimecode && urlParams['time'] != null){
-                            vm.jumpToTime(urlParams['time'], true);
-                        }
-
-                        if(vm.elementId === 'lessonPlayer'){
-                            vm.initializeCopyTimecodeCommand(vm);
-                        }
                     },
                     error: (error) => {
                         console.error(error);
