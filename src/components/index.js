@@ -4,6 +4,5 @@ export { default as ImageCropper } from './ImageCropper';
 export { default as TextEditor } from './TextEditor';
 export { default as UserExpBar } from './UserExpBar';
 export { default as ContentCatalogue } from '../views/catalogues/ContentCatalogue';
-export { default as SettingsPayments } from '../views/account/settings/guitareo/Payments';
 export { default as Schedule } from '../views/schedule/Schedule';
 export { default as Comments } from '../views/comments/Comments';
