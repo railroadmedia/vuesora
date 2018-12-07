@@ -29,7 +29,7 @@
         props: {
             $_content: {
                 type: Array,
-                default: []
+                default: () => []
             },
             $_timezone: {
                 type: String,
