@@ -521,7 +521,10 @@
 
             infiniteScrollEventHandler() {
                 let scroll_position = window.pageYOffset + window.innerHeight;
-                let scroll_buffer = document.body.scrollHeight - 50;
+                let scroll_buffer = (document.body.scrollHeight * 0.75);
+
+                console.log(scroll_position);
+                console.log(scroll_buffer);
 
                 if ((scroll_position >= scroll_buffer) && (this.page < this.total_pages)) {
                     this.loadMore();
