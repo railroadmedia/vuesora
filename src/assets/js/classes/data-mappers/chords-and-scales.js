@@ -8,10 +8,10 @@ export default class ChordsAndScalesDataMapper extends DataMapper {
         });
 
         this.card = {
-            color_title: this.getPostInstructor(),
+            color_title: this.getType(),
             black_title: this.post['title'],
             description: this.post['description'],
-            grey_title: DataMapper.mapDifficulty(this.post)
+            grey_title: this.post['chord_or_scale']
         };
 
         this.list = {

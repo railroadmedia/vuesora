@@ -31,5 +31,18 @@ export default class PlayAlongDataMapper extends DataMapper {
                 DataMapper.mapDifficulty(this.post)
             ]
         };
+
+        if(this.brand === 'guitareo'){
+            this.card.color_title = this.post.type;
+            this.card.grey_title = this.getPostInstructor() + ', ' + DataMapper.mapDifficulty(this.post);
+
+            this.list.color_title = null;
+            this.list.column_data = [
+                this.getPostInstructor(),
+                DataMapper.mapDifficulty(this.post),
+                this.getChildLessonCount(),
+                this.getPostDate()
+            ]
+        }
     }
 }
