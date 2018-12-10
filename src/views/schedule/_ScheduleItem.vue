@@ -63,7 +63,7 @@
     </div>
 </template>
 <script>
-    import DataMapper from '../../assets/js/classes/data-mapper.js';
+    import * as DataMapper from '../../assets/js/classes/data-mapper.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
     import moment from 'moment';
 
@@ -98,11 +98,14 @@
             },
 
             mappedData(){
-                return new DataMapper({
-                    content_type: this.$_item.type,
-                    card_type: 'schedule',
+                const type = this.$_contentTypeOverride || this.$_item.type;
+
+                const dataMapper = new DataMapper[type]({
+                    brand: this.$_brand,
                     post: this.$_item
                 });
+
+                return dataMapper[this.$_card_type];
             },
 
             $_is_added:{

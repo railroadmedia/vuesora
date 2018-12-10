@@ -1,28 +1,25 @@
 import DataMapper from './_default';
 
-export default class CourseDataMapper extends DataMapper {
+export default class PlayAlongDataMapper extends DataMapper {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
             post
         });
 
-
         this.card = {
-            color_title: this.getPostInstructor(),
+            color_title: this.post['style'] || 'TBD',
             black_title: this.post['title'],
             description: this.post['description'],
             grey_title: DataMapper.mapDifficulty(this.post)
         };
 
         this.list = {
-            color_title: this.getPostInstructor(),
             black_title: this.post['title'],
             description: this.post['description'],
             column_data: [
-                DataMapper.mapDifficulty(this.post),
-                this.getChildLessonCount(),
-                this.getPostDate()
+                this.post['style'] || 'TBD',
+                this.post['bpm'] + ' BPM'
             ]
         };
 
@@ -34,17 +31,5 @@ export default class CourseDataMapper extends DataMapper {
                 DataMapper.mapDifficulty(this.post)
             ]
         };
-
-        if(this.brand === 'guitareo'){
-            this.card.color_title = this.post.type;
-
-            this.list.color_title = null;
-            this.list.column_data = [
-                this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post),
-                this.getChildLessonCount(),
-                this.getPostDate()
-            ]
-        }
     }
 }

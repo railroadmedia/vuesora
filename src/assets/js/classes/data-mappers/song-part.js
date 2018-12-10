@@ -1,28 +1,24 @@
 import DataMapper from './_default';
 
-export default class CourseDataMapper extends DataMapper {
+export default class SongPartDataMapper extends DataMapper {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
             post
         });
 
-
         this.card = {
-            color_title: this.getPostInstructor(),
+            color_title: this.post['artist'],
             black_title: this.post['title'],
             description: this.post['description'],
             grey_title: DataMapper.mapDifficulty(this.post)
         };
 
         this.list = {
-            color_title: this.getPostInstructor(),
             black_title: this.post['title'],
             description: this.post['description'],
             column_data: [
-                DataMapper.mapDifficulty(this.post),
-                this.getChildLessonCount(),
-                this.getPostDate()
+                this.getPostDuration(),
             ]
         };
 

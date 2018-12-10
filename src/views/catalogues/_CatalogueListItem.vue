@@ -189,7 +189,7 @@
     </a>
 </template>
 <script>
-    import DataMapper from '../../assets/js/classes/data-mapper.js';
+    import * as DataMapper from '../../assets/js/classes/data-mapper.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
     import moment from 'moment';
 
@@ -355,7 +355,7 @@
             },
 
             $_parsed_difficulty(){
-                return DataMapper.mapDifficulty(this.$_item);
+                // return DataMapper.mapDifficulty(this.$_item);
             },
 
             $_renderLink(){
@@ -375,11 +375,14 @@
             },
 
             mappedData(){
-                return new DataMapper({
-                    content_type: this.$_contentTypeOverride || this.$_item.type,
-                    card_type: this.$_card_type,
+                const type = this.$_contentTypeOverride || this.$_item.type.replace(/-/g, '_');
+
+                const dataMapper = new DataMapper[type]({
+                    brand: this.$_brand,
                     post: this.$_item
                 });
+
+                return dataMapper['list'];
             },
 
             showOverview(){
