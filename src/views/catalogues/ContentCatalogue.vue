@@ -500,9 +500,11 @@
                             // Sometimes vue caches the add event button.
                             // If it doesn't we need to force a refresh, done with a timeout to
                             // Prevent race conditions.
-                            setTimeout(() => {
-                                window.addeventatc.refresh();
-                            }, 500);
+                            if(window.addeventatc){
+                                setTimeout(() => {
+                                    window.addeventatc.refresh();
+                                }, 500);
+                            }
 
                             this.loading = false;
                         })

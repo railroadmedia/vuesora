@@ -375,9 +375,9 @@
             },
 
             mappedData(){
-                const type = this.$_contentTypeOverride || this.$_item.type.replace(/-/g, '_');
+                const type = this.$_contentTypeOverride || this.$_item.type;
 
-                const dataMapper = new DataMapper[type]({
+                const dataMapper = new DataMapper[type.replace(/-/g, '_')]({
                     brand: this.$_brand,
                     post: this.$_item
                 });

@@ -30,7 +30,6 @@
     "dropzone": "^5.4.0",
     "es6-promise": "^4.2.4",
     "flatpickr": "^4.4.6",
-    "lodash": "^4.17.11",
     "mediaelement": "^4.2.8",
     "mediaelement-plugins": "^2.5.0",
     "moment": "^2.22.1",
@@ -54,8 +53,6 @@
     "@vue/cli-service": "^3.0.0-alpha.5",
     "@vue/eslint-config-prettier": "^3.0.0-alpha.5",
     "@vue/test-utils": "^1.0.0-beta.10",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^6.0.6",
     "vue-embed": "^1.0.0"
