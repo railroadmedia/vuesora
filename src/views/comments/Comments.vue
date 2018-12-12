@@ -124,7 +124,7 @@
                 default: () => ''
             },
             userId: {
-                type: Number|String,
+                type: String|Number,
                 default: () => 0
             },
             userName: {

@@ -287,7 +287,7 @@
 
             userExpRank() {
                 if(this.user.access_level === 'team'){
-                    return 'Drumeo Team';
+                    return  this.brand + ' Team';
                 }
 
                 return xpMapper.getNearestValue(this.user.xp);

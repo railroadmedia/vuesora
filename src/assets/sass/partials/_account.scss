@@ -45,10 +45,18 @@
 
   &:hover, &.active {
     color:#000;
-    border-bottom-color:$drumeoBlue;
+  }
 
-    i {
-      color:$drumeoBlue;
+  @each $key, $value in $brand_colors {
+    &.#{$key} {
+      &:hover, &.active {
+        color:#000;
+        border-bottom-color:$value;
+
+        i {
+          color:$value;
+        }
+      }
     }
   }
 }
