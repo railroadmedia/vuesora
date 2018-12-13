@@ -16,8 +16,7 @@
         <!-- THUMBNAIL COLUMN -->
         <div v-if="$_item.type !== 'student-review'"
              class="flex flex-column align-v-center"
-             :class="[this.$_overview ? 'large-thumbnail ' + theme
-             : 'thumbnail-col ' + theme, { 'active': $_active }]">
+             :class="[thumbnailColumnClass, theme]">
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
                      :class="thumbnailType"
@@ -300,7 +299,7 @@
             },
 
             $_thumbnail(){
-                if(this.$_item.type === 'learning-path'){
+                if(this.$_item.type === 'learning-path' && this.brand === 'drumeo'){
                     return this.$_item['background_image_url'] ||
                         'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
                 }
@@ -343,11 +342,16 @@
             },
 
             $_thumbnailIcon(){
+                const contentWithHierarchy = {
+                    'drumeo': ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
+                    'guitareo': ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack']
+                };
+
                 if(this.$_noAccess){
                     return 'fa-clock';
                 }
 
-                return this.$_item.type === 'course' ? 'fa-arrow-right' : 'fa-play';
+                return contentWithHierarchy[this.$_brand].indexOf(this.$_item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
             },
 
             $_route(){
@@ -387,6 +391,15 @@
 
             showOverview(){
                 return this.$_overview && !this.$_noAccess;
+            },
+
+            thumbnailColumnClass(){
+                return {
+                    'large-thumbnail': this.$_overview,
+                    'thumbnail-col': !this.$_overview,
+                    'active': this.$_active,
+                    'background-cards': this.$_item.type === 'learning-path'
+                }
             },
 
             thumbnailType(){

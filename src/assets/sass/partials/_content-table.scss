@@ -201,7 +201,7 @@
     &:before {
       background:lighten($recordeoYellow, 20%);
       transform:scale(0.9) translateY(-50%);
-      margin-top:-15px;
+      margin-top:-10px;
       z-index:-1;
     }
   }
@@ -209,7 +209,7 @@
   &:after {
     background:lighten($recordeoYellow, 30%);
     transform:scale(0.8) translateY(-50%);
-    margin-top:-30px;
+    margin-top:-25px;
     z-index:-2;
   }
 }

@@ -297,6 +297,7 @@
                 total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.meta.totalResults / this.$_limit) : 0,
                 catalogue_type: this.$_catalogueType,
                 loading: false,
+                requestingMore: false,
                 filter_params: {
                     artist: null,
                     bpm: null,
@@ -462,9 +463,10 @@
                 window.history.replaceState(history.state, null, new_url);
             },
 
-            getContent(replace = true) {
+            getContent(replace = true, displayLoading = true) {
                 if (!this.loading) {
-                    this.loading = true;
+                    this.loading = displayLoading;
+                    this.requestingMore = true;
 
                     axios.get(this.contentEndpoint, {
                         params: {
@@ -507,6 +509,7 @@
                             }
 
                             this.loading = false;
+                            this.requestingMore = false;
                         })
                         .catch(error => {
                             console.error(error);
@@ -545,10 +548,10 @@
             },
 
             loadMore() {
-                if (!this.loading) {
+                if (!this.requestingMore) {
                     this.page += 1;
 
-                    this.getContent(false);
+                    this.getContent(false, false);
                 }
             },
 
