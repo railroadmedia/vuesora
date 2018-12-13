@@ -65,7 +65,7 @@
                     <div class="flex flex-column ph pa-3">
 
                         <div class="flex flex-row">
-                            <p class="body">{{ $_description }}</p>
+                            <div class="body mb-3" v-html="$_description">{{ $_description }}</div>
                         </div>
                         <div class="flex flex-row carousel overflow mv pb-3"
                              ref="carouselContainer"
