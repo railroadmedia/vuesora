@@ -216,6 +216,14 @@ $borderDirections: (
   background-size:cover;
   background-repeat:no-repeat;
   background-position:center;
+
+  &.contain {
+    background-size:contain;
+  }
+
+  &.contain-80 {
+    background-size:80%;
+  }
 }
 
 .desaturate {

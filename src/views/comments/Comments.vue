@@ -193,7 +193,7 @@
 
             avatarClassObject(){
                 return {
-                    'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.currentUser.access_level) !== -1,
+                    'subscriber': ['edge', 'lifetime', 'team', 'guitar'].indexOf(this.currentUser.access_level) !== -1,
                     'edge': this.currentUser.access_level === 'edge',
                     'pack': this.currentUser.access_level === 'pack',
                     'team': this.currentUser.access_level === 'team',
@@ -207,7 +207,7 @@
 
             userExpRank (){
                 if(this.currentUser.access_level === 'team'){
-                    return 'Drumeo Team';
+                    return this.brand + ' Team';
                 }
 
                 return xpMapper.getNearestValue(this.currentUser.xp);

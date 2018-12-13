@@ -286,7 +286,7 @@
                     message: 'The new "you" is being refreshed...'
                 });
 
-                this.$root.$emit('imageSaved');
+                window.closeAllModals();
             }
         },
         created(){
