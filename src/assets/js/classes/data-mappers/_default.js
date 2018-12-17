@@ -67,6 +67,15 @@ export default class DataMapper {
         return this.post['type'].replace('bundle-', '').replace(/-/g, ' ');
     }
 
+    getStyle(){
+        if(Array.isArray(this.post['style'])){
+            // We only return the first style field
+            return this.post['style'][0];
+        }
+
+        return this.post['style'];
+    }
+
     getEpisodeNumber(){
         return this.post['sort'] ? 'Episode #' + this.post['sort'] : 'TBD';
     }

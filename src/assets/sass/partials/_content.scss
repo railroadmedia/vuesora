@@ -268,19 +268,11 @@
     transform: translate3d(0, 0, 0);
 
     .thumb-img {
-      background-size:cover;
-      background-position:center 16%;
-      background-repeat:no-repeat;
-      background-color:#000;
       position:absolute;
       top:0;
       left:0;
       bottom:0;
       right:0;
-      transform-origin:50% 50%;
-      transform:scale(1);
-      will-change:transform;
-      transition:transform .2s ease-in-out;
     }
 
     .add-to-list {

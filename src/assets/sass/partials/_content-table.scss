@@ -106,13 +106,6 @@
   }
 
   .thumb-img {
-    background-size:cover;
-    background-position:center 16%;
-    background-repeat:no-repeat;
-    background-color:#000;
-    transform:scale(1);
-    transition:transform .2s ease-in-out;
-    will-change:transform;
 
     .logo-image {
       position:absolute;
@@ -358,6 +351,11 @@
   transform:scale(1);
   transition:transform .2s ease-in-out;
   will-change:transform;
+
+
+  &.no-bg {
+    background-color:transparent;
+  }
 }
 
 .thumb-wrap {

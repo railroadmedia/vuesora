@@ -6,7 +6,8 @@
                  :class="thumbnailType">
 
                 <div class="thumb-img bg-center"
-                     :style="'background-image:url(' + $_thumbnail + ');'"></div>
+                     :style="'background-image:url(' + $_thumbnail + ');'"
+                     :class="$_item.type === 'chord-and-scale' ? 'no-bg' : ''"></div>
 
                 <i class="add-to-list fas fa-plus"
                    v-if="$_item.type !== 'pack-bundle'"
