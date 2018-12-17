@@ -1,13 +1,6 @@
 import moment from 'moment';
 
 export default class DataMapper {
-    /**
-     * Take a content post and map specific post data to specific keys based on content type
-     *
-     * @param {string} card_type
-     * @param {object} post
-     * @returns {object} - A mutated object representing the post
-     */
     constructor({brand = 'drumeo', post}){
         this.brand = brand;
         this.post = post;
@@ -83,14 +76,19 @@ export default class DataMapper {
     }
 
     static mapDifficulty(post){
-        if(post['difficulty'] <= 3){
-            return 'beginner ' + post['difficulty']
+        if(Array.isArray(post['difficulty'])){
+            return post['difficulty'][0] + ' - ' + post['difficulty'][post['difficulty'].length - 1];
         }
-        else if(post['difficulty'] > 3 && post['difficulty'] <= 6){
-            return 'intermediate ' + post['difficulty']
-        }
-        else if(post['difficulty'] > 6){
-            return 'advanced ' + post['difficulty']
+        else {
+            if(post['difficulty'] <= 3){
+                return 'beginner ' + post['difficulty']
+            }
+            else if(post['difficulty'] > 3 && post['difficulty'] <= 6){
+                return 'intermediate ' + post['difficulty']
+            }
+            else if(post['difficulty'] > 6){
+                return 'advanced ' + post['difficulty']
+            }
         }
 
         // Some content has difficulty already parsed as a word so we return that,

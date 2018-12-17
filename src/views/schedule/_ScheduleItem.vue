@@ -18,8 +18,8 @@
 
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
-            <p class="tiny text-recordeo uppercase text-truncate"
-               :class="'text-' + $_item.type">
+            <p class="tiny uppercase text-truncate"
+               :class="'text-' + $_themeColor">
                 {{ mappedData.color_title }}
             </p>
 
@@ -72,7 +72,11 @@
         name: 'schedule-item',
         props: {
             $_item: Object,
-            $_timezone: String
+            $_timezone: String,
+            $_themeColor: {
+                type: String,
+                default: () => 'drumeo'
+            }
         },
         computed: {
 
@@ -100,12 +104,12 @@
             mappedData(){
                 const type = this.$_contentTypeOverride || this.$_item.type;
 
-                const dataMapper = new DataMapper[type]({
+                const dataMapper = new DataMapper[type.replace(/-/g, '_')]({
                     brand: this.$_brand,
                     post: this.$_item
                 });
 
-                return dataMapper[this.$_card_type];
+                return dataMapper['schedule'];
             },
 
             $_is_added:{

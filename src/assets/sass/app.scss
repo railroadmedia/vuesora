@@ -79,7 +79,7 @@ ul {
   margin:0;
 }
 
-.load-before-render {
+.load-before-render, [v-cloak] {
   position:relative;
   min-height:100px;
   width:100%;

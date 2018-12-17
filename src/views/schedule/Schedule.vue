@@ -4,12 +4,13 @@
                        :key="'schedule-item-' + item.id"
                        :$_item="item"
                        :$_timezone="$_timezone"
+                       :$_themeColor="$_themeColor"
                        @addEvent="addEventToDropdown"></schedule-item>
 
         <add-event-modal $_modalId="scheduleAddToCalendarModal"
                          :$_subscriptionCalendarId="$_subscriptionCalendarId"
                          :singleEvent="singleEvent"
-                         $_themeColor="drumeo"
+                         :$_themeColor="$_themeColor"
                          @modalClose="handleModalClose"></add-event-modal>
     </div>
 </template>
@@ -27,6 +28,10 @@
             'add-event-modal': AddEventModal
         },
         props: {
+            $_themeColor: {
+                type: String,
+                default: () => 'drumeo'
+            },
             $_content: {
                 type: Array,
                 default: () => []
