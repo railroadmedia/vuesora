@@ -85,8 +85,8 @@ export default class DataMapper {
     }
 
     static mapDifficulty(post){
-        if(Array.isArray(post['difficulty'])){
-            return post['difficulty'][0] + ' - ' + post['difficulty'][post['difficulty'].length - 1];
+        if(post['difficulty_range']){
+            return 'Levels ' + post['difficulty_range'][0] + '-' + post['difficulty_range'][post['difficulty_range'].length - 1];
         }
         else {
             if(post['difficulty'] <= 3){

@@ -22,7 +22,7 @@
 
         <div class="flex flex-column align-h-right flex-auto pl-2 pointer noselect">
             <div class="flex flex-row body font-bold text-grey-3 hover-text-white align-v-center"
-                 data-open-modal="lessonLikeUsers"
+                 :data-open-modal="totalLikeUsers > 0 ? 'lessonLikeUsers' : ''"
                  @click="addLikeUsersToModal">
                 <i class="fas fa-thumbs-up mr-1 likes-icon text-white"
                    :class="'bg-' + themeColor"></i> {{ lessonLikeCount }}
@@ -161,34 +161,36 @@
             },
 
             addLikeUsersToModal(payload){
-                if(!payload.load_more){
-                    this.loadingLikeUsers = true;
-                    this.likeUsersPage = 0;
+                if(this.totalLikeUsers > 0){
+                    if(!payload.load_more){
+                        this.loadingLikeUsers = true;
+                        this.likeUsersPage = 0;
+                    }
+
+                    this.requestingLikeUsers = true;
+                    this.likeUsersPage += 1;
+
+                    Requests.getContentLikeUsers({
+                        id: this.contentId,
+                        page: this.likeUsersPage
+                    })
+                        .then(response => {
+                            if(response){
+                                this.requestingLikeUsers = false;
+                                this.loadingLikeUsers = false;
+
+                                if(payload.load_more){
+                                    this.likeUsers = [
+                                        ...this.likeUsers,
+                                        ...response.data.data
+                                    ];
+                                }
+                                else {
+                                    this.likeUsers = response.data.data;
+                                }
+                            }
+                        });
                 }
-
-                this.requestingLikeUsers = true;
-                this.likeUsersPage += 1;
-
-                Requests.getContentLikeUsers({
-                    id: this.contentId,
-                    page: this.likeUsersPage
-                })
-                    .then(response => {
-                        if(response){
-                            this.requestingLikeUsers = false;
-                            this.loadingLikeUsers = false;
-
-                            if(payload.load_more){
-                                this.likeUsers = [
-                                    ...this.likeUsers,
-                                    ...response.data.data
-                                ];
-                            }
-                            else {
-                                this.likeUsers = response.data.data;
-                            }
-                        }
-                    });
             },
 
             copyTimecodeToClipboard(){
