@@ -197,6 +197,7 @@
                     'edge': this.currentUser.access_level === 'edge',
                     'pack': this.currentUser.access_level === 'pack',
                     'team': this.currentUser.access_level === 'team',
+                    'guitar': this.currentUser.access_level === 'guitar',
                     'lifetime': this.currentUser.access_level === 'lifetime'
                 }
             },
