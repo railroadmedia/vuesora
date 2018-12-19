@@ -6,6 +6,11 @@ export default (function(){
         const searchBox = document.getElementById('searchBox');
         const searchInput = document.getElementById('searchInput');
         const parentLinks = document.querySelectorAll('.parent-button');
+        const subNavWrap = document.getElementById('subNavWrap');
+        const scrollSubNavRight = document.getElementById('scrollSubNavRight');
+        const scrollSubNavLeft = document.getElementById('scrollSubNavLeft');
+
+        let currentSubNavScrollPosition = 0;
         let backgroundOverlay = document.getElementById('backgroundOverlay');
         let openItems = localStorage.getItem('open_items') ? JSON.parse(localStorage.getItem('open_items')) : [];
 
@@ -130,5 +135,56 @@ export default (function(){
 
             localStorage.setItem('open_items', JSON.stringify(openItems));
         }
+
+        function scrollSubNav(backwards = false){
+            const amountToScroll = subNavWrap.clientWidth;
+            const maximumScrollAmount = getMaximumScrollAmount(amountToScroll);
+
+            currentSubNavScrollPosition = backwards ? currentSubNavScrollPosition - amountToScroll : currentSubNavScrollPosition + amountToScroll;
+
+            scrollSubNavLeft.classList.remove('hide');
+            scrollSubNavRight.classList.remove('hide');
+
+            // console.log(maximumScrollAmount);
+
+            if(currentSubNavScrollPosition <= 0){
+                currentSubNavScrollPosition = 0;
+                scrollSubNavLeft.classList.add('hide');
+            }
+
+            if(currentSubNavScrollPosition >= maximumScrollAmount){
+                currentSubNavScrollPosition = maximumScrollAmount;
+                scrollSubNavRight.classList.add('hide');
+            }
+
+            subNavWrap.scrollTo({
+                top: 0,
+                left: currentSubNavScrollPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        function getMaximumScrollAmount(amountToScroll){
+            const subNavLinks = document.querySelectorAll('.subnav-link');
+            let maximumScrollAmount = 0;
+
+            for(let i = 0; i < subNavLinks.length; i++){
+                maximumScrollAmount += subNavLinks[i].clientWidth;
+            }
+
+            return maximumScrollAmount - amountToScroll;
+        }
+
+        document.body.addEventListener('click', event => {
+            const element = event.target;
+
+            if(element.getAttribute('id') === 'scrollSubNavLeft'){
+                scrollSubNav(true);
+            }
+
+            if(element.getAttribute('id') === 'scrollSubNavRight'){
+                scrollSubNav();
+            }
+        });
     });
 })();

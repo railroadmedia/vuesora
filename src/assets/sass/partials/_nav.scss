@@ -328,7 +328,8 @@ body {
   .subnav-link {
     transition:color .1s ease-in-out, background-color .1s ease-in-out;
     will-change:color, background-color;
-    flex:0 1 25%;
+    flex:0 0 auto;
+    min-width:25%;
     box-sizing:border-box;
     border-bottom:2px solid transparent;
     white-space:nowrap;
@@ -338,10 +339,6 @@ body {
     i {
       will-change:color;
       transition:color .1s ease-in-out;
-    }
-
-    @include small {
-      flex:0 1 20%;
     }
 
     &:last-of-type {
@@ -372,8 +369,15 @@ body {
       }
     }
   }
+
+  .pad-sides {
+    padding:0 35px;
+  }
 }
 
+#subNavWrap {
+  z-index:10;
+}
 
 #publicFooter {
 
@@ -433,6 +437,38 @@ footer {
       }
     }
   }
+}
+
+.main-section-link {
+  transition: font-weight .2s ease-in-out, color .2s ease-in-out;
+  will-change: font-weight, color;
+  @include rippleDirective();
+
+  &:hover, &.active {
+    font-weight:700;
+    color:#fff;
+  }
+}
+
+.scroll-sub-nav {
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:35px;
+  cursor:pointer;
+  z-index:11;
+  @include flexCenter();
+
+  * {
+    pointer-events:none;
+  }
+}
+
+#scrollSubNavLeft {
+  left:0;
+}
+#scrollSubNavRight {
+  right:0;
 }
 
 #backgroundOverlay {

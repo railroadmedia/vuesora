@@ -298,7 +298,8 @@
                                 Toasts.push({
                                     icon: 'happy',
                                     title: 'Woohoo!',
-                                    message: 'Your input is what makes Drumeo so great, thanks for commenting.'
+                                    themeColor: this.themeColor,
+                                    message: 'Your input is what makes ' + Utils.toTitleCase(this.brand) + ' so great, thanks for commenting.'
                                 });
 
                                 this.comments.splice(0, 0, thisComment);
