@@ -461,10 +461,11 @@ export default {
      * @param {string} type - the type of email to send ['general', 'ask-question', 'support', 'suggest-learning-path']
      * @param {string} subject - the subject for the email
      * @param {string} recipient - who to send to (default set on backend)
+     * @param {string} endpoint - the mail package endpoint to hit
      * @returns {Promise} resolved promise with the response.data object
      */
-    sendEmail(message, type, subject, recipient) {
-        return axios.post(endpoint_prefix + '/members/mail', {
+    sendEmail({message, type, subject, recipient, endpoint}) {
+        return axios.post(endpoint_prefix + endpoint, {
             message: message,
             type: type,
             subject: subject,

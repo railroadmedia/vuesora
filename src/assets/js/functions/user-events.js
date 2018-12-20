@@ -30,13 +30,14 @@ export default (function () {
             const element = event.target;
             const contentType = Utils.toTitleCase(element.dataset['contentType'] || 'content');
             const contentId = element.dataset['contentId'];
+            const brand = element.dataset['brand'] || 'drumeo';
             const icon = element.querySelector('.fas');
 
             // Create a confirmation dialogue using Noty
             Toasts.confirm({
                 title: 'Hold your Horses… This will reset all of your progress on this ' + contentType + ', are you sure about this?',
                 submitButton: {
-                    text: '<span class="bg-drumeo text-white">YES</span>',
+                    text: '<span class="bg-' + brand + ' text-white">YES</span>',
                     callback: () => {
                         icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
                         icon.classList.add('fa-spin', 'fa-spinner');

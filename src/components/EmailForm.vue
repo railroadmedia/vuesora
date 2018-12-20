@@ -89,6 +89,10 @@
             successMessage: {
                 type: String,
                 default: () => 'Your email has been sent! Thank you for your input.'
+            },
+            emailEndpoint: {
+                type: String,
+                default: () => '/members/mail'
             }
         },
         data (){
@@ -112,12 +116,13 @@
                 if(this.value){
                     this.loading = true;
 
-                    Requests.sendEmail(
-                        this.value,
-                        this.emailType,
-                        this.emailSubject,
-                        this.recipient
-                    )
+                    Requests.sendEmail({
+                        message: this.value,
+                        type: this.emailType,
+                        subject: this.emailSubject,
+                        recipient: this.recipient,
+                        endpoint: this.emailEndpoint
+                    })
                         .then(resolved => {
                             if(resolved){
                                 Toasts.push({
