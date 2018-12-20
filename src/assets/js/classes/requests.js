@@ -455,7 +455,7 @@ export default {
     },
 
     /**
-     * Unlike a forum thread
+     * Send an Email
      *
      * @param {string} message - the content of the text area element within the email form
      * @param {string} type - the type of email to send ['general', 'ask-question', 'support', 'suggest-learning-path']
