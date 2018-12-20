@@ -128,6 +128,7 @@
                                 Toasts.push({
                                     icon: 'happy',
                                     title: 'Woohoo!',
+                                    themeColor: this.themeColor,
                                     message: this.successMessage
                                 });
 
