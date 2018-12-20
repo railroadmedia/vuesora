@@ -26,7 +26,7 @@ export default class LearningPathDataMapper extends DataMapper {
             black_title: this.post['title'],
             column_data: [
                 this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post)
+                this.post['difficulty_range'] || 'TBD'
             ]
         };
     }

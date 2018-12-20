@@ -130,7 +130,7 @@
         </div>
 
         <!-- ADD TO LIST OR RESET PROGRESS BUTTONS -->
-        <div v-if="$_displayUserInteractions && this.$_item.type !== 'learning-path'"
+        <div v-if="$_displayUserInteractions && $_item.type !== 'learning-path'"
              class="flex flex-column icon-col align-v-center"
              :class="$_is_search ? '' : 'hide-xs-only'">
 
@@ -148,6 +148,9 @@
                    @click.stop.prevent="addToList"></i>
             </div>
         </div>
+
+        <div v-if="$_is_search && $_item.type === 'learning-path'"
+             class="flex flex-column icon-col align-v-center"></div>
 
         <!-- PROGRESS INDICATOR OR LOCK ICON -->
         <div class="flex flex-column icon-col align-v-center"

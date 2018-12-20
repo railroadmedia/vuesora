@@ -35,12 +35,6 @@ export default class SongPartDataMapper extends DataMapper {
             this.card.color_title = this.post.type;
 
             this.list.color_title = null;
-            this.list.column_data = [
-                this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post),
-                this.getChildLessonCount(),
-                this.getPostDate()
-            ]
         }
     }
 }
