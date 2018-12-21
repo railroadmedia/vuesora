@@ -45,8 +45,8 @@
         <div class="flex flex-column icon-col align-v-center hide-xs-only">
 
             <div class="body">
-                <i class="add-to-list fas fa-plus flex-center"
-                   :class="$_is_added ? 'is-added text-' + $_item.type : 'text-grey-2'"
+                <i class="add-to-list fas fa-plus flex-center pointer"
+                   :class="$_is_added ? 'is-added text-' + $_themeColor : 'text-grey-2'"
                    :title="$_is_added ? 'Remove from list' : 'Add to list'"
                    @click.stop.prevent="addToList"></i>
             </div>
@@ -71,8 +71,12 @@
         mixins: [UserCatalogueEvents],
         name: 'schedule-item',
         props: {
-            $_item: Object,
-            $_timezone: String,
+            $_item: {
+                type: Object
+            },
+            $_timezone: {
+                type: String,
+            },
             $_themeColor: {
                 type: String,
                 default: () => 'drumeo'
@@ -112,11 +116,8 @@
                 return dataMapper['schedule'];
             },
 
-            $_is_added:{
-                cache: false,
-                get(){
-                    return this.$_item.is_added_to_primary_playlist;
-                }
+            $_is_added(){
+                return this.$_item.is_added_to_primary_playlist;
             },
         }
     }

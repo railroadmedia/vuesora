@@ -85,6 +85,7 @@ export default {
 
             Requests.addOrRemoveContentFromList(payload.content_id, payload.is_added)
                 .then(response => {
+
                     if(!response){
                         this.content[post_index].is_added_to_primary_playlist = !this.content[post_index].is_added_to_primary_playlist;
                     }

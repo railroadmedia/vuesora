@@ -5,6 +5,7 @@
                        :$_item="item"
                        :$_timezone="$_timezone"
                        :$_themeColor="$_themeColor"
+                       @addToList="addToListEventHandler"
                        @addEvent="addEventToDropdown"></schedule-item>
 
         <add-event-modal $_modalId="scheduleAddToCalendarModal"
@@ -50,13 +51,12 @@
                 singleEvent: {
                     title: null,
                     date: null
-                }
+                },
+                content: Utils.flattenContent(this.$_content)
             }
         },
         computed: {
-            content() {
-                return Utils.flattenContent(this.$_content);
-            }
+
         },
         methods: {
             addEventToDropdown(payload){
