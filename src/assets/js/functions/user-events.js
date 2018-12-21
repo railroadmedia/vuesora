@@ -102,7 +102,7 @@ export default (function () {
                 Toasts.confirm({
                     title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
                     submitButton: {
-                        text: '<span class="bg-drumeo text-white">Reset</span>',
+                        text: '<span class="bg-' + (this.themeColor || this.$_themeColor) + ' text-white">Reset</span>',
                         callback: () => {
 
                             Requests.resetContentProgress(contentId)
@@ -143,7 +143,8 @@ export default (function () {
 
         }
 
-        window.recalculateProgress = function (complete, numberOfAssignments) {
+        window.recalculateProgress = function (complete) {
+            const numberOfAssignments = document.querySelectorAll('.assignment-component').length;
             const progressContainer = document.querySelector('.trophy-progress-bar');
             const completeButton = document.querySelector('.completeButton');
             const progressBar = document.querySelector('.trophy-progress');
@@ -158,8 +159,6 @@ export default (function () {
             }
 
             progressBar.style.width = newProgress + '%';
-
-            console.log(newProgress);
 
             if (newProgress >= 100) {
                 progressContainer.classList.add('complete');

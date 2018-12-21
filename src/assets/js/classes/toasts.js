@@ -88,6 +88,7 @@ export default {
      *
      * @param {string} title - the text to display in the confirmation box
      * @param {string} subtitle - the smaller text to display below the title
+     * @param themeColor
      * @param {object} submitButton - object with a text and callback property
      * @param {object} cancelButton - object with a text and callback property
      * @returns {Object} - Noty object to render the dialog

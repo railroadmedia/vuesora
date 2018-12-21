@@ -106,7 +106,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-column pa-2 sm-3 hide-xs-only"></div> <!--Spacer-->
+                <div class="flex flex-column pa-2 sm-3 hide-xs-only"
+                     :class="imageTypeSpacerClass"></div> <!--Spacer-->
             </div>
         </transition>
 
@@ -283,7 +284,7 @@
                     Toasts.confirm({
                         title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
                         submitButton: {
-                            text: '<span class="bg-drumeo text-white">Reset</span>',
+                            text: '<span class="bg-' + this.themeColor + ' text-white">Reset</span>',
                             callback: () => {
 
                                 this.isComplete = !this.isComplete;
@@ -302,6 +303,8 @@
                                             this.$emit('assignmentComplete', {
                                                 complete: false
                                             });
+
+                                            window.recalculateProgress(false);
                                         }
                                     });
                             }
@@ -322,6 +325,8 @@
                                 this.$emit('assignmentComplete', {
                                     complete: true
                                 });
+
+                                window.recalculateProgress(true);
                             }
                         });
                 }
@@ -390,6 +395,14 @@
                 }
 
                 return moment.utc(duration).format('h:mm:ss');
+            },
+
+            imageTypeSpacerClass(){
+                return {
+                    'sm-9': this.thisAssignment.sheet_music_image_type === 'quarter-width',
+                    'sm-6': this.thisAssignment.sheet_music_image_type === 'half-width',
+                    'sm-3': this.thisAssignment.sheet_music_image_type === 'full-width' || this.thisAssignment.sheet_music_image_type == null,
+                };
             }
         },
         mounted(){
