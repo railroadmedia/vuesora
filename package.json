@@ -38,6 +38,7 @@
     "noty": "^3.2.0-beta",
     "query-string": "^6.1.0",
     "register-service-worker": "^1.0.0",
+    "smoothscroll-polyfill": "^0.4.3",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vue-style-loader": "^4.1.2",
@@ -55,7 +56,6 @@
     "@vue/test-utils": "^1.0.0-beta.10",
     "node-sass": "^4.9.0",
     "sass-loader": "^6.0.6",
-    "smoothscroll-polyfill": "^0.4.3",
     "vue-embed": "^1.0.0"
   },
   "babel": {
