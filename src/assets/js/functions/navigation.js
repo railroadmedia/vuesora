@@ -189,6 +189,39 @@ export default (function(){
             return maximumScrollAmount - amountToScroll;
         }
 
+        function centerSubNavItems(){
+            subNavWrap.classList.add('align-h-center');
+            scrollSubNavRight.classList.add('hide');
+            scrollSubNavLeft.classList.add('hide');
+        }
+
+        function init(){
+            const subNavLinks = document.querySelectorAll('.subnav-link');
+            const activeSubNavLink = Array.from(subNavLinks).filter(link => {
+                if(link.classList.contains('active')){
+                    return link;
+                }
+            });
+
+            if(getMaximumScrollAmount() > 0){
+                subNavWrap.classList.remove('align-h-center');
+
+                if(activeSubNavLink.length){
+                    currentSubNavScrollPosition = activeSubNavLink[0].offsetLeft;
+
+                    subNavWrap.scrollTo({
+                        top: 0,
+                        left: currentSubNavScrollPosition - 35
+                    });
+                }
+
+                showOrHideButtons();
+            }
+            else {
+                centerSubNavItems();
+            }
+        }
+
         document.body.addEventListener('click', event => {
             const element = event.target;
 
@@ -201,25 +234,12 @@ export default (function(){
             }
         });
 
-        // Automatically scroll to the active nav link
         (function(){
-            const subNavLinks = document.querySelectorAll('.subnav-link');
-            const activeSubNavLink = Array.from(subNavLinks).filter(link => {
-                if(link.classList.contains('active')){
-                    return link;
-                }
-            });
-
-            if(activeSubNavLink.length){
-                currentSubNavScrollPosition = activeSubNavLink[0].offsetLeft;
-
-                subNavWrap.scrollTo({
-                    top: 0,
-                    left: currentSubNavScrollPosition - 35
-                });
-
-                showOrHideButtons();
-            }
+            init();
         })();
+
+        window.addEventListener('resize', function(){
+            init();
+        })
     });
 })();
