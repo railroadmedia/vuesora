@@ -324,6 +324,7 @@ body {
 }
 
 #subNav {
+  z-index:99;
 
   .subnav-link {
     transition:color .1s ease-in-out, background-color .1s ease-in-out;

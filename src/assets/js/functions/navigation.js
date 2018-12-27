@@ -1,4 +1,8 @@
+import smoothscroll from 'smoothscroll-polyfill';
+
 export default (function(){
+    smoothscroll.polyfill();
+
     document.addEventListener('DOMContentLoaded', () => {
         const menuButton = document.getElementById('menuButton');
         const navSideBar = document.getElementById('navSideBar');
@@ -136,26 +140,13 @@ export default (function(){
             localStorage.setItem('open_items', JSON.stringify(openItems));
         }
 
+        // Scroll the subnav
         function scrollSubNav(backwards = false){
             const amountToScroll = subNavWrap.clientWidth;
-            const maximumScrollAmount = getMaximumScrollAmount(amountToScroll);
 
             currentSubNavScrollPosition = backwards ? currentSubNavScrollPosition - amountToScroll : currentSubNavScrollPosition + amountToScroll;
 
-            scrollSubNavLeft.classList.remove('hide');
-            scrollSubNavRight.classList.remove('hide');
-
-            // console.log(maximumScrollAmount);
-
-            if(currentSubNavScrollPosition <= 0){
-                currentSubNavScrollPosition = 0;
-                scrollSubNavLeft.classList.add('hide');
-            }
-
-            if(currentSubNavScrollPosition >= maximumScrollAmount){
-                currentSubNavScrollPosition = maximumScrollAmount;
-                scrollSubNavRight.classList.add('hide');
-            }
+            showOrHideButtons();
 
             subNavWrap.scrollTo({
                 top: 0,
@@ -164,7 +155,30 @@ export default (function(){
             });
         }
 
-        function getMaximumScrollAmount(amountToScroll){
+        // Show or hide the left or right buttons depending on the scroll position
+        function showOrHideButtons(){
+            const maximumScrollAmount = getMaximumScrollAmount();
+
+            if(currentSubNavScrollPosition <= 35){
+                currentSubNavScrollPosition = 0;
+                scrollSubNavLeft.classList.add('hide');
+            }
+            else {
+                scrollSubNavLeft.classList.remove('hide');
+            }
+
+            if(currentSubNavScrollPosition >= maximumScrollAmount){
+                currentSubNavScrollPosition = maximumScrollAmount;
+                scrollSubNavRight.classList.add('hide');
+            }
+            else {
+                scrollSubNavRight.classList.remove('hide');
+            }
+        }
+
+        // Get the maximum amount the subnav can scroll
+        function getMaximumScrollAmount(){
+            const amountToScroll = subNavWrap.clientWidth;
             const subNavLinks = document.querySelectorAll('.subnav-link');
             let maximumScrollAmount = 0;
 
@@ -186,5 +200,26 @@ export default (function(){
                 scrollSubNav();
             }
         });
+
+        // Automatically scroll to the active nav link
+        (function(){
+            const subNavLinks = document.querySelectorAll('.subnav-link');
+            const activeSubNavLink = Array.from(subNavLinks).filter(link => {
+                if(link.classList.contains('active')){
+                    return link;
+                }
+            });
+
+            if(activeSubNavLink.length){
+                currentSubNavScrollPosition = activeSubNavLink[0].offsetLeft;
+
+                subNavWrap.scrollTo({
+                    top: 0,
+                    left: currentSubNavScrollPosition - 35
+                });
+
+                showOrHideButtons();
+            }
+        })();
     });
 })();
