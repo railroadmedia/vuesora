@@ -60,6 +60,37 @@ body {
     }
   }
 
+  .search-column {
+    flex:0 1 100%;
+    max-width:50px;
+    overflow:hidden;
+    transition:all .1s;
+
+    @include large {
+      max-width:65px;
+    }
+
+    &.active {
+      max-width:100%;
+    }
+
+    .search-button {
+      flex:0 0 35px;
+      max-width:35px;
+    }
+  }
+
+  .nav-page-links {
+    transition:all .1s;
+    max-width:100%;
+
+    &.inactive {
+      //flex:0 0 0;
+      max-width:0;
+      overflow:hidden;
+    }
+  }
+
   #notificationButton {
 
     .wrap {
@@ -168,35 +199,6 @@ body {
 
       &:after {
         bottom:-5px;
-      }
-    }
-  }
-
-  .search-column {
-
-    #searchIcon {
-      cursor:pointer;
-    }
-
-    #searchBox {
-
-      @include xSmallOnly {
-        position:fixed;
-        top:40px;
-        left:0;
-        right:0;
-        padding-left:$gutterWidth / 3;
-        padding-right:$gutterWidth / 3;
-        background:#000;
-        transition:max-height .2s ease-in-out;
-        will-change: max-height;
-        max-height:0;
-        overflow:hidden;
-
-        &.active {
-          max-height:50px;
-          border-bottom: 1px solid nth(nth($greys, 5), 2);
-        }
       }
     }
   }

@@ -6,8 +6,9 @@ export default (function(){
     document.addEventListener('DOMContentLoaded', () => {
         const menuButton = document.getElementById('menuButton');
         const navSideBar = document.getElementById('navSideBar');
-        const searchIcon = document.getElementById('searchIcon');
-        const searchBox = document.getElementById('searchBox');
+        const pageLinksContainer = document.getElementById('pageLinks');
+        const searchButtons = document.querySelectorAll('.search-button');
+        const searchBox = document.getElementById('searchColumn');
         const searchInput = document.getElementById('searchInput');
         const parentLinks = document.querySelectorAll('.parent-button');
         const subNavWrap = document.getElementById('subNavWrap');
@@ -44,8 +45,10 @@ export default (function(){
             });
         }
 
-        if(searchIcon){
-            searchIcon.addEventListener('click', toggleSearchBar);
+        if(searchButtons.length){
+            Array.from(searchButtons).forEach(button => {
+                button.addEventListener('click', toggleSearchBar);
+            })
         }
 
         if(parentLinks.length){
@@ -56,12 +59,6 @@ export default (function(){
 
         function toggleSideBar(event){
             event.stopPropagation();
-
-            if(searchBox){
-                searchBox.classList.remove('active');
-                searchIcon.children[0].classList.remove('fa-times');
-                searchIcon.children[0].classList.add('fa-search');
-            }
 
             if(navSideBar.classList.contains('active')){
                 menuButton.classList.remove('active');
@@ -78,21 +75,16 @@ export default (function(){
         function toggleSearchBar(event){
             event.stopPropagation();
 
-            searchBox.classList.toggle('active');
-            navSideBar.classList.remove('active');
-            menuButton.classList.remove('active');
+            if(searchBox){
+                searchBox.classList.toggle('active');
+                pageLinksContainer.classList.toggle('inactive');
 
-            if(searchBox.classList.contains('active')){
-                searchInput.focus();
-                backgroundOverlay.classList.add('active');
-                searchIcon.children[0].classList.add('fa-times');
-                searchIcon.children[0].classList.remove('fa-search');
-            }
-            else {
-                searchInput.blur();
-                backgroundOverlay.classList.remove('active');
-                searchIcon.children[0].classList.remove('fa-times');
-                searchIcon.children[0].classList.add('fa-search');
+                if(searchBox.classList.contains('active')){
+                    searchInput.focus();
+                }
+                else {
+                    searchInput.blur();
+                }
             }
         }
 
@@ -101,8 +93,7 @@ export default (function(){
 
             if(searchBox){
                 searchBox.classList.remove('active');
-                searchIcon.children[0].classList.remove('fa-times');
-                searchIcon.children[0].classList.add('fa-search');
+                pageLinksContainer.classList.remove('inactive');
             }
 
             menuButton.classList.remove('active');
@@ -234,12 +225,14 @@ export default (function(){
             }
         });
 
-        (function(){
-            init();
-        })();
+        if(subNavWrap){
+            (function(){
+                init();
+            })();
 
-        window.addEventListener('resize', function(){
-            init();
-        })
+            window.addEventListener('resize', function(){
+                init();
+            })
+        }
     });
 })();
