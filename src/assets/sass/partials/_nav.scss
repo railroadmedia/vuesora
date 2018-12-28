@@ -27,11 +27,17 @@ body {
     height:65px;
   }
 
+  & > .container {
+    overflow:hidden;
+  }
+
   .flex-row {
     height:100%;
   }
 
   .logo {
+    position:relative;
+    z-index:8;
     flex:0 0 125px;
 
     @include medium {
@@ -46,6 +52,9 @@ body {
   }
 
   .header-button {
+    position:relative;
+    z-index:10;
+    background:#000;
     flex:0 0 50px;
     max-width:50px;
 
@@ -63,15 +72,54 @@ body {
   .search-column {
     flex:0 1 100%;
     max-width:50px;
-    overflow:hidden;
     transition:all .1s;
+    z-index:9;
 
     @include large {
       max-width:65px;
     }
 
     &.active {
-      max-width:100%;
+
+      .search-row {
+        transform:translateX(calc(-#{100%} + 50px));
+
+        @include small {
+          transform:translateX(calc(-#{100%} + 50px));
+        }
+
+        @include medium {
+          transform:translateX(calc(-#{$medium} + 115px));
+        }
+
+        @include large {
+          transform:translateX(calc(-#{$large} + 145px));
+        }
+      }
+    }
+
+    .search-row {
+      position:absolute;
+      top:0;
+      left:0;
+      bottom:0;
+      background:#000;
+      transform:translateX(0);
+      transition:transform .2s ease-in-out;
+      will-change:transform;
+      width:calc(100vw - 100px);
+
+      @include small {
+        width:calc(100vw - 50px);
+      }
+
+      @include medium {
+        width:calc(#{$medium} - 65px);
+      }
+
+      @include large {
+        width:calc(#{$large} - 85px);
+      }
     }
 
     .search-button {
@@ -136,6 +184,9 @@ body {
     will-change:background-color;
     transition:background-color .2s ease-in-out;
     outline:none;
+    position:relative;
+    z-index:10;
+    background-color:#000;
 
     @include medium {
       flex:0 0 50px;

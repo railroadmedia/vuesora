@@ -77,7 +77,7 @@ export default (function(){
 
             if(searchBox){
                 searchBox.classList.toggle('active');
-                pageLinksContainer.classList.toggle('inactive');
+                // pageLinksContainer.classList.toggle('inactive');
 
                 if(searchBox.classList.contains('active')){
                     searchInput.focus();
@@ -93,7 +93,7 @@ export default (function(){
 
             if(searchBox){
                 searchBox.classList.remove('active');
-                pageLinksContainer.classList.remove('inactive');
+                // pageLinksContainer.classList.remove('inactive');
             }
 
             menuButton.classList.remove('active');

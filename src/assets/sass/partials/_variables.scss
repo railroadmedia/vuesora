@@ -20,9 +20,9 @@ $fixedRowWidth: 62.5rem;  // 1000px
 $gutterWidth: 1.875rem;   // 30px - usually divided by 2 or 3
 
 // Breakpoints
-$small: 40em;             // 640px
-$medium: 64em;            // 1024px
-$large: 72.5em;           // 1240px
+$small: 40rem;             // 640px
+$medium: 64rem;            // 1024px
+$large: 72.5rem;           // 1240px
 //$xLarge: 72.5em;        // 1940px
 
 // Breakpoint Mixins
@@ -61,19 +61,19 @@ $large: 72.5em;           // 1240px
 }
 
 @mixin xSmallOnly {
-  @media screen and (max-width: #{$small - .0625em}) {
+  @media screen and (max-width: #{$small - .0625rem}) {
     @content;
   }
 }
 
 @mixin smallOnly {
-  @media screen and (min-width: #{$small}) and (max-width: #{$medium - .0625em}) {
+  @media screen and (min-width: #{$small}) and (max-width: #{$medium - .0625rem}) {
     @content;
   }
 }
 
 @mixin mediumOnly {
-  @media screen and (min-width: #{$medium}) and (max-width: #{$large - .0625em}) {
+  @media screen and (min-width: #{$medium}) and (max-width: #{$large - .0625rem}) {
     @content;
   }
 }
