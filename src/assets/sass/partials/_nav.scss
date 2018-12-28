@@ -57,10 +57,12 @@ body {
     background:#000;
     flex:0 0 50px;
     max-width:50px;
+    max-height:49px;
 
     @include large {
       flex:0 0 65px;
       max-width:65px;
+      max-height:64px;
     }
 
     &.live-button {
@@ -74,9 +76,11 @@ body {
     max-width:50px;
     transition:all .1s;
     z-index:9;
+    max-height:49px;
 
     @include large {
       max-width:65px;
+      max-height:64px;
     }
 
     &.active {
