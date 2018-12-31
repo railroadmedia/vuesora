@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { DateTime, Duration } from "luxon";
 
 export default class DataMapper {
     constructor({brand = 'drumeo', post}){
@@ -54,13 +54,13 @@ export default class DataMapper {
     getPostDuration(){
         return this.post['video'] ?
             Math.round(
-                moment.duration((this.post['video']['length_in_seconds'] * 1000), 'ms').asMinutes()
+                Duration.fromMillis((this.post['video']['length_in_seconds'] * 1000)).as('minutes')
             ) + ' mins' :
             'TBD'
     }
 
     getPostDate(){
-        return moment(this.post['published_on']).format('MMM D/YY');
+        return DateTime.fromSQL(this.post['published_on']).toFormat('LLL d/yy');
     }
 
     getType(){

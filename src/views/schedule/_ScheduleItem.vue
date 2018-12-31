@@ -65,7 +65,7 @@
 <script>
     import * as DataMapper from '../../assets/js/classes/data-mapper.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
-    import moment from 'moment';
+    import { DateTime } from 'luxon';
 
     export default {
         mixins: [UserCatalogueEvents],
@@ -94,15 +94,15 @@
             },
 
             month(){
-                return moment(this.time_to_display).format('MMM').toLowerCase();
+                return DateTime.fromSQL(this.time_to_display).toFormat('LLL').toLowerCase();
             },
 
             day(){
-                return moment(this.time_to_display).format('ddd D');
+                return DateTime.fromSQL(this.time_to_display).toFormat('ccc d');
             },
 
             time(){
-                return moment(this.time_to_display).format('h:mm A');
+                return DateTime.fromSQL(this.time_to_display).toFormat('h:mm a');
             },
 
             mappedData(){

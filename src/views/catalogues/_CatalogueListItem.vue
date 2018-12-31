@@ -193,7 +193,7 @@
 <script>
     import * as DataMapper from '../../assets/js/classes/data-mapper.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
-    import moment from 'moment';
+    import { DateTime } from 'luxon';
 
     export default {
         mixins: [UserCatalogueEvents],
@@ -333,11 +333,11 @@
             },
 
             $_isReleased(){
-                return moment.utc(this.$_item['published_on']).format('x') < Date.now();
+                return DateTime.fromSQL(this.$_item['published_on']).toFormat('x') < Date.now();
             },
 
             $_releaseDate(){
-                return moment(this.$_item['published_on']).format('MMM D');
+                return DateTime.fromSQL(this.$_item['published_on']).toFormat('LLL d/yy');
             },
 
             $_completedIcon(){
