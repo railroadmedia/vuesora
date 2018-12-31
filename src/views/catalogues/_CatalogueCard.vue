@@ -144,11 +144,16 @@
             },
 
             $_thumbnailIcon(){
+                const contentWithHierarchy = {
+                    'drumeo': ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
+                    'guitareo': ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack']
+                };
+
                 if(this.$_noAccess){
-                    return 'fa-lock';
+                    return 'fa-clock';
                 }
 
-                return this.$_item.type === 'course' ? 'fa-arrow-right' : 'fa-play';
+                return contentWithHierarchy[this.$_brand].indexOf(this.$_item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
             },
 
             $_noAccess(){
