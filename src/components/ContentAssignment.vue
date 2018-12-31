@@ -143,7 +143,7 @@
     </div>
 </template>
 <script>
-    import moment from 'moment';
+    import { Duration } from 'luxon';
     import Requests from '../assets/js/classes/requests';
     import Utils from '../assets/js/classes/utils';
     import Toasts from '../assets/js/classes/toasts';
@@ -388,13 +388,13 @@
             },
 
             formattedTimecode(){
-                const duration = moment.duration((this.timecode * 1000)).as('milliseconds');
+                const duration = Duration.fromMillis((this.timecode * 1000));
 
                 if(this.timecode < 3600){
-                    return moment.utc(duration).format('m:ss');
+                    return duration.toFormat('m:ss');
                 }
 
-                return moment.utc(duration).format('h:mm:ss');
+                return duration.toFormat('h:mm:ss');
             },
 
             imageTypeSpacerClass(){

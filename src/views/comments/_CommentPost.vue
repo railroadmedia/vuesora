@@ -169,7 +169,7 @@
     import CommentReply from './_CommentReply.vue';
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
-    import moment from 'moment';
+    import { DateTime } from 'luxon';
 
     export default {
         name: 'comment-post',
@@ -326,7 +326,7 @@
             },
 
             dateString() {
-                return moment.utc(this.created_on).local().fromNow();
+                return DateTime.fromSQL(this.created_on, { zone: 'UTC'}).toRelative();
             },
 
             isUsersPost() {
