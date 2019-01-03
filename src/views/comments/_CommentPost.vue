@@ -338,10 +338,6 @@
             },
 
             openModalString(){
-                if(this.brand !== 'drumeo'){
-                    return '';
-                }
-
                 return this.like_count > 0 ? 'likeUsersModal' : '';
             }
         },

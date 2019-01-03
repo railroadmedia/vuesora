@@ -96,13 +96,14 @@ export default (function () {
             const element = event.target;
             const contentId = element.dataset['contentId'];
             const isRemoving = element.classList.contains('is-complete');
+            const brand = element.dataset['brand'] || 'drumeo';
 
             if (isRemoving) {
 
                 Toasts.confirm({
                     title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
                     submitButton: {
-                        text: '<span class="bg-' + (this.themeColor || this.$_themeColor) + ' text-white">Reset</span>',
+                        text: '<span class="bg-' + brand + ' text-white">Reset</span>',
                         callback: () => {
 
                             Requests.resetContentProgress(contentId)
