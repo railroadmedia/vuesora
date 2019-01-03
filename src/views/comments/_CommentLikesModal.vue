@@ -1,6 +1,6 @@
 <template>
     <div :id="customId || 'likeUsersModal'" class="modal small">
-        <div id="likeUsersContainer" class="flex flex-column bg-white corners-3 shadow" style="max-height:500px;">
+        <div id="likeUsersContainer" ref="likeUsersContainer" class="flex flex-column bg-white corners-3 shadow" style="max-height:500px;">
             <div v-if="loadingLikeUsers"
                  class="flex flex-column pa-3">
                 <h1 class="heading text-center">
@@ -81,7 +81,7 @@
             }
         },
         mounted(){
-            const likeUsersContainer = document.getElementById('likeUsersContainer');
+            const likeUsersContainer = this.$refs.likeUsersContainer;
 
             likeUsersContainer.addEventListener('scroll', event => {
                 const containerHeight = event.target.clientHeight;

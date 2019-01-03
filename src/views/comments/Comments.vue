@@ -419,8 +419,6 @@
                     this.likeUsersPage = 1;
                 }
 
-                console.log(payload);
-
                 Requests.getCommentLikeUsers({
                     id: payload.id,
                     page: this.likeUsersPage
