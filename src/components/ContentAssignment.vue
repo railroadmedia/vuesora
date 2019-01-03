@@ -297,6 +297,7 @@
                                             Toasts.push({
                                                 icon: 'happy',
                                                 title: 'READY TO START AGAIN?',
+                                                themeColor: this.themeColor,
                                                 message: 'Your progress has been reset.'
                                             });
 
