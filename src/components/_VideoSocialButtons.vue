@@ -22,7 +22,7 @@
 
         <div class="flex flex-column align-h-right flex-auto pl-2 pointer noselect">
             <div class="flex flex-row body font-bold text-grey-3 hover-text-white align-v-center"
-                 :data-open-modal="totalLikeUsers > 0 ? 'lessonLikeUsers' : ''"
+                 :data-open-modal="lessonLikeCount > 0 ? 'lessonLikeUsers' : ''"
                  @click="addLikeUsersToModal">
                 <i class="fas fa-thumbs-up mr-1 likes-icon text-white"
                    :class="'bg-' + themeColor"></i> {{ lessonLikeCount }}
@@ -161,7 +161,7 @@
             },
 
             addLikeUsersToModal(payload){
-                if(this.totalLikeUsers > 0){
+                if(this.lessonLikeCount > 0){
                     if(!payload.load_more){
                         this.loadingLikeUsers = true;
                         this.likeUsersPage = 0;
