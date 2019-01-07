@@ -60,54 +60,55 @@
         <transition name="slide-down-fade">
             <div v-if="accordionActive && thisAssignment != null"
                  v-show="!this.accordionLoading"
-                 class="flex flex-row pa-2">
-                <div class="flex flex-column grow">
-                    <div class="flex flex-column ph pa-3">
+                 class="flex flex-column pa-2">
+                <div class="flex flex-row mb-3">
+                    <div class="body" v-html="$_description">{{ $_description }}</div>
+                </div>
+                <div class="flex flex-row">
+                    <div class="flex flex-column grow">
+                        <div class="flex flex-column">
+                            <div class="flex flex-row carousel overflow mv pb-3"
+                                 ref="carouselContainer"
+                                 v-if="$_totalPages > 0">
 
-                        <div class="flex flex-row">
-                            <div class="body mb-3" v-html="$_description">{{ $_description }}</div>
-                        </div>
-                        <div class="flex flex-row carousel overflow mv pb-3"
-                             ref="carouselContainer"
-                             v-if="$_totalPages > 0">
+                                <div class="flex flex-column xs-12 grow page"
+                                     v-for="(page, i) in $_sheet_music_pages"
+                                     :key="'page' + (i + 1)"
+                                     :style="pageScrollPosition">
+                                    <img :src="page">
+                                </div>
 
-                            <div class="flex flex-column xs-12 grow page"
-                                 v-for="(page, i) in $_sheet_music_pages"
-                                 :key="'page' + (i + 1)"
-                                 :style="pageScrollPosition">
-                                <img :src="page">
-                            </div>
+                                <div class="side-button prev flex-center"
+                                     v-if="currentPage > 1"
+                                     @click="scrollToPage(currentPage - 1)">
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
+                                <div class="side-button next flex-center"
+                                     v-if="currentPage < $_totalPages"
+                                     @click="scrollToPage(currentPage + 1)">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
 
-                            <div class="side-button prev flex-center"
-                                 v-if="currentPage > 1"
-                                 @click="scrollToPage(currentPage - 1)">
-                                <i class="fas fa-chevron-left"></i>
+                                <div class="page-buttons" v-if="$_totalPages > 1">
+                                    <div v-for="(page, i) in pages"
+                                         class="page-button mh-1 rounded bg-black"
+                                         :class="currentPageClass(i + 1)"
+                                         @click="scrollToPage(i + 1)"
+                                         :key="'pageButton' + (i + 1)"></div>
+                                </div>
                             </div>
-                            <div class="side-button next flex-center"
-                                 v-if="currentPage < $_totalPages"
-                                 @click="scrollToPage(currentPage + 1)">
-                                <i class="fas fa-chevron-right"></i>
+                            <div class="flex flex-row hide-sm-up" v-if="timecode != 0">
+                                <a class="tiny font-bold font-underline"
+                                   :class="'text-' + themeColor"
+                                   :data-jump-to-time="timecode">
+                                    {{ formattedTimecode }}
+                                </a>
                             </div>
-
-                            <div class="page-buttons" v-if="$_totalPages > 1">
-                                <div v-for="(page, i) in pages"
-                                     class="page-button mh-1 rounded bg-black"
-                                     :class="currentPageClass(i + 1)"
-                                     @click="scrollToPage(i + 1)"
-                                     :key="'pageButton' + (i + 1)"></div>
-                            </div>
-                        </div>
-                        <div class="flex flex-row hide-sm-up" v-if="timecode != 0">
-                            <a class="tiny font-bold font-underline"
-                               :class="'text-' + themeColor"
-                               :data-jump-to-time="timecode">
-                                {{ formattedTimecode }}
-                            </a>
                         </div>
                     </div>
+                    <div class="flex flex-column pa-2 sm-3 hide-xs-only"
+                         :class="imageTypeSpacerClass"></div> <!--Spacer-->
                 </div>
-                <div class="flex flex-column pa-2 sm-3 hide-xs-only"
-                     :class="imageTypeSpacerClass"></div> <!--Spacer-->
             </div>
         </transition>
 
