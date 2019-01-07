@@ -138,7 +138,7 @@
             <transition-group name="slide-fade" tag="div">
                 <comment-reply v-for="(reply, i) in replies"
                                v-if="i < 2 || showAllReplies"
-                               :key="i"
+                               :key="reply.id"
                                v-bind="reply"
                                :id="reply.id"
                                :brand="brand"
