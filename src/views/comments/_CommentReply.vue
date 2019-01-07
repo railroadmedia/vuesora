@@ -261,6 +261,10 @@
             },
 
             userExpValue(){
+                if(this.brand !== 'drumeo'){
+                    return null;
+                }
+
                 return Utils.parseXpValue(this.user.xp);
             },
 
