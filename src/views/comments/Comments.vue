@@ -90,6 +90,7 @@
                              :totalLikeUsers="totalLikeUsers"
                              :loadingLikeUsers="loadingLikeUsers"
                              :requestingLikeUsers="requestingLikeUsers"
+                             :brand="brand"
                              @loadMoreLikeUsers="addLikeUsersToModal"></comment-likes-modal>
     </div>
 </template>

@@ -18,7 +18,7 @@
 
                 <a v-for="user in likeUsers"
                    :key="user.id"
-                   :href="'/laravel/public/members/profile/' + user.user_id"
+                   :href="baseProfileRoute + user.user_id"
                    class="flex flex-row comment-like-user bt-grey-1-1 no-decoration text-black ph-3 pv-1 align-v-center">
                     <div class="flex flex-row">
                         <div class="flex flex-column avatar-column">
@@ -42,6 +42,10 @@
     export default {
         name: 'comment-likes-modal',
         props: {
+            brand: {
+                type: String,
+                default: () => 'drumeo'
+            },
             customId: {
                 type: String,
                 default: () => null
@@ -67,6 +71,15 @@
             requestingLikeUsers: {
                 type: Boolean,
                 default: () => false
+            },
+        },
+        computed: {
+            baseProfileRoute(){
+                if(this.brand === 'guitareo'){
+                    return '/members/account/';
+                }
+
+                return '/laravel/public/members/profile/';
             }
         },
         methods: {
@@ -78,7 +91,7 @@
                     'team': user.access_level === 'team',
                     'lifetime': user.access_level === 'lifetime'
                 }
-            }
+            },
         },
         mounted(){
             const likeUsersContainer = this.$refs.likeUsersContainer;

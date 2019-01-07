@@ -48,6 +48,7 @@
                               :likeCount="likeCount"
                               :contentId="contentId"
                               :userId="userId"
+                              :brand="brand"
                               :currentTimeInSeconds="currentTimeInSeconds"></video-social-buttons>
     </div>
 </template>

@@ -78,6 +78,7 @@
                      :totalLikeUsers="lessonLikeCount"
                      :loadingLikeUsers="loadingLikeUsers"
                      :requestingLikeUsers="requestingLikeUsers"
+                     :brand="brand"
                      @loadMoreLikeUsers="addLikeUsersToModal"></likes-modal>
     </div>
 </template>
@@ -93,6 +94,10 @@
             'likes-modal': LikesModal
         },
         props: {
+            brand: {
+                type: String,
+                default: () => 'drumeo'
+            },
             themeColor: {
                 type: String,
                 default: () => 'drumeo'
@@ -137,7 +142,7 @@
                 }
 
                 return location.protocol + '//' + location.host + location.pathname;
-            },
+            }
         },
         methods: {
 
