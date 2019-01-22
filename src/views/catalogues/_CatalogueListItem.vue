@@ -31,7 +31,7 @@
                     <span class="thumb-hover flex-center">
                         <i class="fas"
                            :class="$_thumbnailIcon"></i>
-                        <p v-if="$_noAccess"
+                        <p v-if="this.$_item.is_owned && !$_isReleased"
                            class="x-tiny text-white font-bold">
                             {{ $_releaseDate }}
                         </p>
@@ -57,7 +57,7 @@
                           style="border-radius:50%;">
                         <i class="fas"
                            :class="$_thumbnailIcon"></i>
-                        <p v-if="$_noAccess"
+                        <p v-if="this.$_item.is_owned && !$_isReleased"
                            class="x-tiny text-white font-bold">
                             {{ $_releaseDate }}
                         </p>
@@ -351,7 +351,13 @@
                 };
 
                 if(this.$_noAccess){
-                    return 'fa-clock';
+                    if(this.$_lockUnowned && this.$_item.is_owned === false){
+                        return 'fa-lock';
+                    }
+
+                    if(!this.$_isReleased){
+                        return 'fa-clock';
+                    }
                 }
 
                 return contentWithHierarchy[this.$_brand].indexOf(this.$_item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
