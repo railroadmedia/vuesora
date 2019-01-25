@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="flex flex-row comment-post ph mv-3">
+        <div id="postComment" class="flex flex-row comment-post ph mv-3">
             <div class="flex flex-column avatar-column pr hide-xs-only">
                 <div class="user-avatar smaller" :class="avatarClassObject">
                     <img :src="currentUser.avatar" class="rounded">
@@ -104,9 +104,10 @@
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import axios from 'axios';
     import * as QueryString from 'query-string';
+    import CommentMixin from './_mixin';
 
     export default {
-        mixins: [BrandClasses],
+        mixins: [BrandClasses, CommentMixin],
         name: 'comments',
         components: {
             'text-editor': TextEditor,
@@ -119,54 +120,18 @@
                 type: String,
                 default: () => ''
             },
-            brand: {
-                type: String,
-                default: () => ''
-            },
             user_id: {
                 type: Number,
                 default: () => 0
-            },
-            themeColor: {
-                type: String,
-                default: () => 'recordeo'
-            },
-            profileBaseRoute: {
-                type: String,
-                default: () => '/laravel/public/members/profile/'
-            },
-            hasPublicProfiles: {
-                type: Boolean,
-                default: () => true
-            },
-            currentUser: {
-                type: Object,
-                default: () => {
-                    return {
-                        display_name: '',
-                        id: 0,
-                        isAdmin: false
-                    }
-                }
             }
         },
         data(){
             return {
-                currentPage: 1,
-                totalComments: 0,
-                totalCommentsAndReplies: 0,
                 comments: [],
                 pinnedComment: null,
-                requestingData: false,
                 sortOption: '-like_count',
                 comment: '',
                 loading: false,
-                currentLikeUsersId: 0,
-                likeUsers: [],
-                loadingLikeUsers: false,
-                requestingLikeUsers: true,
-                totalLikeUsers: 0,
-                likeUsersPage: 1
             }
         },
         computed: {
@@ -245,6 +210,14 @@
                                     (resolved['data'] || resolved['results'])
                                 );
                             }
+
+                            if(this.pinnedComment != null){
+                                console.log(this.pinnedComment.id);
+
+                                this.comments = this.comments.filter(comment =>
+                                    comment.id !== this.pinnedComment.id
+                                );
+                            }
                         }
                     });
             },
@@ -291,91 +264,11 @@
                 this.commentInterface = payload.currentValue;
             },
 
-            handleCommentLike(payload){
-                let index = this.comments.map(comment => comment.id).indexOf(payload.id);
-                let likedPost = payload.isPinned ? this.pinnedComment : this.comments[index];
-
-                if(payload.isLiked){
-                    likedPost.like_count -= 1;
-                    likedPost.is_liked = false;
-
-                    Requests.unlikeComment(payload.id)
-                        .then(response => {});
-                }
-                else {
-                    likedPost.like_count += 1;
-                    likedPost.is_liked = true;
-
-                    Requests.likeComment(payload.id)
-                        .then(response => {});
-                }
-            },
-
-            handleReplyLike(payload){
-                let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
-                let likedPostReplies = payload.isPinned ? this.pinnedComment.replies : this.comments[index].replies;
-                let likedPostReplyIndex = likedPostReplies.map(reply => reply.id).indexOf(payload.id);
-                let likedPostReply = likedPostReplies[likedPostReplyIndex];
-
-
-                if(payload.isLiked){
-                    likedPostReply.like_count -= 1;
-                    likedPostReply.is_liked = false;
-
-                    Requests.unlikeComment(payload.id)
-                        .then(response => {});
-                }
-                else {
-                    likedPostReply.like_count += 1;
-                    likedPostReply.is_liked = true;
-
-                    Requests.likeComment(payload.id)
-                        .then(response => {});
-                }
-            },
-
-            handleCommentDelete(payload){
-
-                Requests.deleteComment(payload.id)
-                    .then(resolved => {
-                        this.comments = this.comments.filter(comment =>
-                            comment.id !== payload.id
-                        );
-
-                        Toasts.push({
-                            icon: 'happy',
-                            title: 'TRASHED!',
-                            message: 'We have removed your comment. Please add a better one!'
-                        });
-                    })
-            },
-
-            handleReplyDelete(payload){
-                let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
-                let deletedPostReplies = this.comments[index].replies;
-                let deletedPostReplyIndex = deletedPostReplies.map(reply => reply.id).indexOf(payload.id);
-                let deletedPostReply = deletedPostReplies[deletedPostReplyIndex];
-
-                Requests.deleteComment(payload.id)
-                    .then(resolved => {
-                        if(resolved){
-                            this.comments[index].replies = this.comments[index].replies.filter(reply =>
-                                reply.id !== payload.id
-                            );
-
-                            Toasts.push({
-                                icon: 'happy',
-                                title: 'TRASHED!',
-                                message: 'We have removed your reply. Please add a better one!'
-                            });
-                        }
-                    })
-            },
-
             goToComment(id){
                 Requests.getCommentById(id)
                     .then(resolved => {
                         if(resolved){
+                            const commentsSection = document.getElementById('postComment');
                             this.pinnedComment = resolved['data'].filter(result =>
                                 result.id === Number(id)
                             )[0];
@@ -387,18 +280,18 @@
                             *
                             * Curtis - Sept 2018
                              */
-                            let pinned;
                             let checkInterval = setInterval(() => {
-                                pinned = document.getElementById('pinnedComment' + id);
 
-                                if(pinned != null){
-                                    let oldComment = document.getElementById('comment' + id);
+                                console.log(this.pinnedComment);
 
-                                    window.scrollTo(0, (pinned.offsetTop - 100));
+                                if(this.pinnedComment != null){
+                                    this.comments = this.comments.filter(comment =>
+                                        comment.id !== this.pinnedComment.id
+                                    );
 
-                                    if(oldComment){
-                                        oldComment.remove();
-                                    }
+                                    setTimeout(() => {
+                                        window.scrollTo(0, ((commentsSection.offsetTop + commentsSection.clientHeight) - 150));
+                                    }, 200);
 
                                     clearInterval(checkInterval);
                                 }
@@ -406,41 +299,6 @@
                         }
                     })
             },
-
-            addLikeUsersToModal(payload){
-                const isSameComment = payload.id === this.currentLikeUsersId;
-
-                this.likeUsersPage += 1;
-                this.requestingLikeUsers = true;
-                this.totalLikeUsers = payload.totalLikeUsers;
-
-                if(!isSameComment){
-                    this.loadingLikeUsers = true;
-                    this.likeUsersPage = 1;
-                }
-
-                Requests.getCommentLikeUsers({
-                    id: payload.id,
-                    page: this.likeUsersPage
-                })
-                    .then(response => {
-                        if(response){
-                            if(isSameComment){
-                                this.likeUsers = [...this.likeUsers, ...response.data.data];
-                            }
-                            else {
-                                this.likeUsers = response.data.data;
-                            }
-
-                            this.requestingLikeUsers = false;
-                            this.currentLikeUsersId = payload.id;
-
-                            // window.modalSimpleBar.recalculate();
-                        }
-
-                        this.loadingLikeUsers = false;
-                    });
-            }
         },
         created(){
             this.getComments(this.requestParams);

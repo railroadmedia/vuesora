@@ -22,6 +22,21 @@ export default {
     },
 
     /**
+     * Get railcontent content by an Array of IDs
+     *
+     * @returns {Promise} - resolved promise with the response object
+     */
+    getContentByIds(ids){
+        return axios.get(endpoint_prefix + '/railcontent/content/get-by-ids', {
+            params: {
+                ids: ids
+            }
+        })
+            .then(response => response)
+            .catch(this.handleError);
+    },
+
+    /**
      * Get an array of like users for a content id
      *
      * @returns {Promise} - resolved promise with the response object
