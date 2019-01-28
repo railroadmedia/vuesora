@@ -1,0 +1,168 @@
+import Requests from '../../assets/js/classes/requests';
+import Toasts from '../../assets/js/classes/toasts';
+
+export default {
+    props: {
+        themeColor: {
+            type: String,
+            default: () => 'drumeo'
+        },
+
+        profileBaseRoute: {
+            type: String,
+            default: () => '/laravel/public/members/profile/'
+        },
+
+        hasPublicProfiles: {
+            type: Boolean,
+            default: () => true
+        },
+
+        currentUser: {
+            type: Object,
+            default: () => {
+                return {
+                    display_name: '',
+                    id: 0,
+                    isAdmin: false
+                }
+            }
+        },
+
+        brand: {
+            type: String,
+            default: () => 'drumeo'
+        },
+    },
+    data(){
+        return {
+            currentPage: 1,
+            totalComments: 0,
+            totalCommentsAndReplies: 0,
+            requestingData: false,
+            currentLikeUsersId: 0,
+            likeUsers: [],
+            loadingLikeUsers: false,
+            requestingLikeUsers: true,
+            totalLikeUsers: 0,
+            likeUsersPage: 1,
+        }
+    },
+    methods: {
+        handleCommentLike(payload){
+            let index = this.comments.map(comment => comment.id).indexOf(payload.id);
+            let likedPost = payload.isPinned ? this.pinnedComment : this.comments[index];
+
+            if(payload.isLiked){
+                likedPost.like_count -= 1;
+                likedPost.is_liked = false;
+
+                Requests.unlikeComment(payload.id)
+                    .then(response => {});
+            }
+            else {
+                likedPost.like_count += 1;
+                likedPost.is_liked = true;
+
+                Requests.likeComment(payload.id)
+                    .then(response => {});
+            }
+        },
+
+        handleReplyLike(payload){
+            let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
+            let likedPostReplies = payload.isPinned ? this.pinnedComment.replies : this.comments[index].replies;
+            let likedPostReplyIndex = likedPostReplies.map(reply => reply.id).indexOf(payload.id);
+            let likedPostReply = likedPostReplies[likedPostReplyIndex];
+
+
+            if(payload.isLiked){
+                likedPostReply.like_count -= 1;
+                likedPostReply.is_liked = false;
+
+                Requests.unlikeComment(payload.id)
+                    .then(response => {});
+            }
+            else {
+                likedPostReply.like_count += 1;
+                likedPostReply.is_liked = true;
+
+                Requests.likeComment(payload.id)
+                    .then(response => {});
+            }
+        },
+
+        handleCommentDelete(payload){
+
+            Requests.deleteComment(payload.id)
+                .then(resolved => {
+                    this.comments = this.comments.filter(comment =>
+                        comment.id !== payload.id
+                    );
+
+                    Toasts.push({
+                        icon: 'happy',
+                        title: 'TRASHED!',
+                        message: 'We have removed your comment. Please add a better one!'
+                    });
+                })
+        },
+
+        handleReplyDelete(payload){
+            let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
+            let deletedPostReplies = this.comments[index].replies;
+            let deletedPostReplyIndex = deletedPostReplies.map(reply => reply.id).indexOf(payload.id);
+            let deletedPostReply = deletedPostReplies[deletedPostReplyIndex];
+
+            Requests.deleteComment(payload.id)
+                .then(resolved => {
+                    if(resolved){
+                        this.comments[index].replies = this.comments[index].replies.filter(reply =>
+                            reply.id !== payload.id
+                        );
+
+                        Toasts.push({
+                            icon: 'happy',
+                            title: 'TRASHED!',
+                            message: 'We have removed your reply. Please add a better one!'
+                        });
+                    }
+                })
+        },
+
+        addLikeUsersToModal(payload){
+            const isSameComment = payload.id === this.currentLikeUsersId;
+
+            this.likeUsersPage += 1;
+            this.requestingLikeUsers = true;
+            this.totalLikeUsers = payload.totalLikeUsers;
+
+            if(!isSameComment){
+                this.loadingLikeUsers = true;
+                this.likeUsersPage = 1;
+            }
+
+            Requests.getCommentLikeUsers({
+                id: payload.id,
+                page: this.likeUsersPage
+            })
+                .then(response => {
+                    if(response){
+                        if(isSameComment){
+                            this.likeUsers = [...this.likeUsers, ...response.data.data];
+                        }
+                        else {
+                            this.likeUsers = response.data.data;
+                        }
+
+                        this.requestingLikeUsers = false;
+                        this.currentLikeUsersId = payload.id;
+
+                        // window.modalSimpleBar.recalculate();
+                    }
+
+                    this.loadingLikeUsers = false;
+                });
+        }
+    }
+}

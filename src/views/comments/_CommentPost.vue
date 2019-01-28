@@ -100,7 +100,9 @@
                 </div>
             </div>
 
-            <transition name="slide-fade">
+            <transition name="slide-fade"
+                        enter-active-class="slide-fade-enter-active"
+                        leave-active-class="">
                 <div class="flex flex-row comment-post mv-2" v-show="replying">
                     <div class="flex flex-column avatar-column pr hide-xs-only">
                         <img :src="currentUser.avatar" class="rounded">
@@ -135,7 +137,10 @@
                 </div>
             </transition>
 
-            <transition-group name="slide-fade" tag="div">
+            <transition-group name="slide-fade"
+                              enter-active-class="slide-fade-enter-active"
+                              leave-active-class=""
+                              tag="div">
                 <comment-reply v-for="(reply, i) in replies"
                                v-if="i < 2 || showAllReplies"
                                :key="reply.id"
