@@ -269,11 +269,11 @@
             },
 
             userExpRank (){
-                if(this.user.access_level === 'team'){
-                    return 'Drumeo Team';
+                if(this.currentUser.access_level === 'team'){
+                    return this.brand + ' Team';
                 }
 
-                return xpMapper.getNearestValue(this.user.xp);
+                return xpMapper.getNearestValue(this.currentUser.xp);
             },
 
             profileRoute(){
@@ -297,10 +297,6 @@
             },
 
             openModalString(){
-                if(this.brand !== 'drumeo'){
-                    return '';
-                }
-
                 return this.like_count > 0 ? 'likeUsersModal' : '';
             },
         },
@@ -350,6 +346,7 @@
                                 Toasts.push({
                                     icon: 'happy',
                                     title: 'Woohoo!',
+                                    themeColor: this.themeColor,
                                     message: 'Thanks for your reply!'
                                 });
 

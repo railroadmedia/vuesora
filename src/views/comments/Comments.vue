@@ -116,41 +116,10 @@
             // 'wysiwyg-editor': WYSIWYGEditor,
         },
         props: {
-            themeColor: {
-                type: String,
-                default: () => 'recordeo'
-            },
             contentId: {
                 type: String,
                 default: () => ''
-            },
-            brand: {
-                type: String,
-                default: () => ''
-            },
-            userId: {
-                type: Number|String
-            },
-            userName: {
-                type: String
-            },
-            userAvatar: {
-                type: String
-            },
-            userXp: {
-                type: String|Number
-            },
-            isAdmin: {
-                type: Boolean
-            },
-            profileBaseRoute: {
-                type: String,
-                default: () => ''
-            },
-            hasPublicProfiles: {
-                type: Boolean,
-                default: () => true
-            },
+            }
         },
         data(){
             return {
@@ -178,7 +147,7 @@
 
             userExpRank (){
                 if(this.currentUser.access_level === 'team'){
-                    return 'Drumeo Team';
+                    return this.brand + ' Team';
                 }
 
                 return xpMapper.getNearestValue(this.currentUser.xp);
@@ -239,8 +208,6 @@
                             }
 
                             if(this.pinnedComment != null){
-                                console.log(this.pinnedComment.id);
-
                                 this.comments = this.comments.filter(comment =>
                                     comment.id !== this.pinnedComment.id
                                 );
@@ -276,7 +243,8 @@
                                 Toasts.push({
                                     icon: 'happy',
                                     title: 'Woohoo!',
-                                    message: 'Your input is what makes Drumeo so great, thanks for commenting.'
+                                    themeColor: this.themeColor,
+                                    message: `Your input is what makes ${ Utils.toTitleCase(this.brand) } so great, thanks for commenting.`
                                 });
 
                                 this.comments.splice(0, 0, thisComment);
@@ -308,8 +276,6 @@
                             * Curtis - Sept 2018
                              */
                             let checkInterval = setInterval(() => {
-
-                                console.log(this.pinnedComment);
 
                                 if(this.pinnedComment != null){
                                     this.comments = this.comments.filter(comment =>

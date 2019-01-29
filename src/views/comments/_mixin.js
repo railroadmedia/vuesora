@@ -8,6 +8,11 @@ export default {
             default: () => 'drumeo'
         },
 
+        brand: {
+            type: String,
+            default: () => 'drumeo'
+        },
+
         profileBaseRoute: {
             type: String,
             default: () => '/laravel/public/members/profile/'
@@ -16,17 +21,6 @@ export default {
         hasPublicProfiles: {
             type: Boolean,
             default: () => true
-        },
-
-        currentUser: {
-            type: Object,
-            default: () => {
-                return {
-                    display_name: '',
-                    id: 0,
-                    isAdmin: false
-                }
-            }
         },
 
         userId: {
@@ -45,13 +39,12 @@ export default {
             type: String|Number
         },
 
-        isAdmin: {
-            type: Boolean
+        userAccessLevel: {
+            type: String
         },
 
-        brand: {
-            type: String,
-            default: () => 'drumeo'
+        isAdmin: {
+            type: Boolean
         },
     },
     data(){
@@ -66,6 +59,18 @@ export default {
             requestingLikeUsers: true,
             totalLikeUsers: 0,
             likeUsersPage: 1,
+        }
+    },
+    computed: {
+        currentUser(){
+            return {
+                display_name: this.userName,
+                id: this.userId,
+                avatar: this.userAvatar,
+                xp: this.userXp,
+                access_level: this.userAccessLevel,
+                isAdmin: this.isAdmin
+            }
         }
     },
     methods: {
