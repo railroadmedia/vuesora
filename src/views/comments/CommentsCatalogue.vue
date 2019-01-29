@@ -4,8 +4,7 @@
         <div class="flex flex-row pa-2 align-v-center bb-grey-1-1">
             <h1 class="heading grow">Comments</h1>
             <button class="btn collapse-square" @click="filters = !filters">
-                <span class="bg-drumeo"
-                      :class="filters ? 'text-white' : 'inverted text-' + themeColor">
+                <span :class="['bg-' + themeColor, filters ? 'text-white' : 'inverted text-' + themeColor]">
                     <i class="fas fa-filter"></i>
                 </span>
             </button>

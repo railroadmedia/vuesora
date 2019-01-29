@@ -7,3 +7,4 @@ export { default as UserExpBar } from './UserExpBar';
 export { default as ContentCatalogue } from '../views/catalogues/ContentCatalogue';
 export { default as Schedule } from '../views/schedule/Schedule';
 export { default as Comments } from '../views/comments/Comments';
+export { default as CommentsCatalogue } from '../views/comments/CommentsCatalogue';

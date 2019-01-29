@@ -116,14 +116,41 @@
             // 'wysiwyg-editor': WYSIWYGEditor,
         },
         props: {
-            content_id: {
+            themeColor: {
+                type: String,
+                default: () => 'recordeo'
+            },
+            contentId: {
                 type: String,
                 default: () => ''
             },
-            user_id: {
-                type: Number,
-                default: () => 0
-            }
+            brand: {
+                type: String,
+                default: () => ''
+            },
+            userId: {
+                type: Number|String
+            },
+            userName: {
+                type: String
+            },
+            userAvatar: {
+                type: String
+            },
+            userXp: {
+                type: String|Number
+            },
+            isAdmin: {
+                type: Boolean
+            },
+            profileBaseRoute: {
+                type: String,
+                default: () => ''
+            },
+            hasPublicProfiles: {
+                type: Boolean,
+                default: () => true
+            },
         },
         data(){
             return {
@@ -185,7 +212,7 @@
                 return {
                     page: this.currentPage,
                     limit: 25,
-                    content_id: this.content_id,
+                    content_id: this.contentId,
                     sort: this.sortOption
                 }
             }
@@ -236,7 +263,7 @@
                     this.loading = true;
 
                     return Requests.postComment({
-                        content_id: this.content_id,
+                        content_id: this.contentId,
                         comment: this.comment.currentValue
                     })
                         .then(resolved => {

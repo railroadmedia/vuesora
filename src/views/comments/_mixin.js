@@ -29,6 +29,26 @@ export default {
             }
         },
 
+        userId: {
+            type: Number|String
+        },
+
+        userName: {
+            type: String
+        },
+
+        userAvatar: {
+            type: String
+        },
+
+        userXp: {
+            type: String|Number
+        },
+
+        isAdmin: {
+            type: Boolean
+        },
+
         brand: {
             type: String,
             default: () => 'drumeo'
