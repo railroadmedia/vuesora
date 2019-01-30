@@ -109,7 +109,7 @@
 <script>
     import ForumThreadPost from './_ForumThreadPost.vue';
     import Pagination from '../../components/Pagination.vue';
-    import Requests from '../../assets/js/classes/requests';
+    import ForumService from '../../assets/js/services/forums';
     import TextEditor from '../../components/TextEditor.vue';
     import Toasts from '../../assets/js/classes/toasts';
     import * as QueryString from 'query-string';
@@ -168,7 +168,7 @@
 
             getPosts() {
 
-                return Requests.getForumThreadPosts()
+                return ForumService.getForumThreadPosts()
                     .then(data => {
                         this.posts = data;
                     });
@@ -187,7 +187,7 @@
             },
 
             handlePostDelete(payload) {
-                Requests.deleteForumsPost(payload.id)
+                ForumService.deleteForumsPost(payload.id)
                     .then(response => {
                         Toasts.push({
                             icon: 'happy',
@@ -208,13 +208,13 @@
                 if (likedPost.isLiked) {
                     likedPost.totalLikes -= 1;
 
-                    Requests.unlikeForumPost(payload.id)
+                    ForumService.unlikeForumPost(payload.id)
                         .then(resolved => resolved);
                 }
                 else {
                     likedPost.totalLikes += 1;
 
-                    Requests.likeForumPost(payload.id)
+                    ForumService.likeForumPost(payload.id)
                         .then(resolved => resolved);
                 }
 
@@ -239,21 +239,21 @@
             },
 
             pinPost() {
-                Requests.pinForumsThread(this.thread.id, !this.isPinned)
+                ForumService.pinForumsThread(this.thread.id, !this.isPinned)
                     .then(resolved => resolved);
 
                 this.isPinned = !this.isPinned;
             },
 
             lockPost() {
-                Requests.lockForumsThread(this.thread.id, !this.isLocked)
+                ForumService.lockForumsThread(this.thread.id, !this.isLocked)
                     .then(resolved => resolved);
 
                 this.isLocked = !this.isLocked;
             },
 
             followPost() {
-                Requests.followForumsThread(this.thread.id)
+                ForumService.followForumsThread(this.thread.id)
                     .then(resolved => resolved);
 
                 this.isFollowed = !this.isFollowed;

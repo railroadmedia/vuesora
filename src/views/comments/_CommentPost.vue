@@ -169,7 +169,7 @@
 </template>
 <script>
     import Toasts from '../../assets/js/classes/toasts';
-    import Requests from '../../assets/js/classes/requests';
+    import CommentService from '../../assets/js/services/comments';
     import TextEditor from '../../components/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
     import xpMapper from '../../assets/js/classes/xp-mapper';
@@ -362,7 +362,7 @@
                 if (this.reply.currentValue) {
                     this.loading = true;
 
-                    return Requests.postReply({
+                    return CommentService.postReply({
                         parent_id: this.id,
                         comment: this.reply.currentValue
                     })

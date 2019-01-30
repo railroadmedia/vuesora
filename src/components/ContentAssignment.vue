@@ -145,7 +145,7 @@
 </template>
 <script>
     import { Duration } from 'luxon';
-    import Requests from '../assets/js/classes/requests';
+    import ContentService from '../assets/js/services/content';
     import Utils from '../assets/js/classes/utils';
     import Toasts from '../assets/js/classes/toasts';
 
@@ -244,7 +244,7 @@
                 if(this.thisAssignment.id === 0){
                     this.accordionLoading = true;
 
-                    Requests.getContentById(this.id)
+                    ContentService.getContentById(this.id)
                         .then(response => {
                             if(response){
                                 this.thisAssignment = Utils.flattenContent(response.data.data)[0];
@@ -290,7 +290,7 @@
 
                                 this.isComplete = !this.isComplete;
 
-                                Requests.resetContentProgress(vm.id)
+                                ContentService.resetContentProgress(vm.id)
                                     .then(resolved => {
                                         if(resolved){
                                             element.classList.add('remove-request-complete');
@@ -319,7 +319,7 @@
                 else {
                     this.isComplete = !this.isComplete;
 
-                    Requests.markContentAsComplete(vm.id)
+                    ContentService.markContentAsComplete(vm.id)
                         .then(resolved => {
                             if(resolved){
                                 element.classList.add('add-request-complete');

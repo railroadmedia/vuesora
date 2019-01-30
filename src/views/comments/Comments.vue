@@ -96,7 +96,7 @@
 <script>
     import BrandClasses from '../../mixins/BrandClasses.js';
     import TextEditor from '../../components/TextEditor.vue';
-    import Requests from '../../assets/js/classes/requests';
+    import CommentService from '../../assets/js/services/comments';
     import CommentPost from './_CommentPost.vue';
     import CommentLikesModal from './_CommentLikesModal.vue';
     import Toasts from '../../assets/js/classes/toasts';
@@ -190,7 +190,7 @@
             getComments(params, replace = false){
                 this.requestingData = true;
 
-                Requests.getComments(params)
+                CommentService.getComments(params)
                     .then(resolved => {
                         this.requestingData = false;
 
@@ -221,7 +221,7 @@
                     .then(response => {
                         return response.data;
                     })
-                    .catch(Requests.handleError);
+                    .catch(CommentService.handleError);
             },
 
             postComment(){
@@ -229,7 +229,7 @@
                 if(!!this.comment.currentValue){
                     this.loading = true;
 
-                    return Requests.postComment({
+                    return CommentService.postComment({
                         content_id: this.contentId,
                         comment: this.comment.currentValue
                     })
@@ -260,7 +260,7 @@
             },
 
             goToComment(id){
-                Requests.getCommentById(id)
+                CommentService.getCommentById(id)
                     .then(resolved => {
                         if(resolved){
                             const commentsSection = document.getElementById('postComment');

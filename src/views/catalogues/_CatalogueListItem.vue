@@ -191,7 +191,7 @@
     </a>
 </template>
 <script>
-    import * as DataMapper from '../../assets/js/classes/data-mapper.js';
+    import * as Model from '../../assets/js/models/_model.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
     import { DateTime } from 'luxon';
 
@@ -390,12 +390,12 @@
             mappedData(){
                 const type = this.$_contentTypeOverride || this.$_item.type;
 
-                const dataMapper = new DataMapper[type.replace(/-/g, '_')]({
+                const model = new Model[type.replace(/-/g, '_')]({
                     brand: this.$_brand,
                     post: this.$_item
                 });
 
-                return dataMapper['list'];
+                return model['list'];
             },
 
             showOverview(){

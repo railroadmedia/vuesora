@@ -44,7 +44,7 @@
 <script>
     import NotificationsTableRow from './_NotificationsTableRow.vue';
     import Pagination from '../../components/Pagination.vue';
-    import Requests from '../../assets/js/classes/requests';
+    import UserService from '../../assets/js/services/user';
     import * as QueryString from 'query-string';
 
     export default {
@@ -105,7 +105,7 @@
                 });
 
                 // Send request to server
-                Requests.markAllNotificationsAsRead()
+                UserService.markAllNotificationsAsRead()
                     .then(resolved => {
                     });
             },
@@ -114,12 +114,12 @@
                 let index = this.notifications.map(notification => notification.id).indexOf(payload.id);
 
                 if(payload.isRead){
-                    Requests.markNotificationAsUnRead(payload.id)
+                    UserService.markNotificationAsUnRead(payload.id)
                         .then(resolved => {
                         });
                 }
                 else {
-                    Requests.markNotificationAsRead(payload.id)
+                    UserService.markNotificationAsRead(payload.id)
                         .then(resolved => {
                         });
                 }

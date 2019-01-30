@@ -103,7 +103,7 @@
     import ForumSearchResult from './_ForumSearchResult.vue';
     import Pagination from '../../components/Pagination.vue';
     import ClearableFilter from '../../components/ClearableFilter.vue';
-    import Requests from '../../assets/js/classes/requests';
+    import ForumService from '../../assets/js/services/forums';
     import * as QueryString from 'query-string';
 
     export default {
@@ -257,7 +257,7 @@
             getSearchResults() {
                 this.loading = true;
 
-                Requests.getForumSearchResults(
+                ForumService.getForumSearchResults(
                         this.searchTerm,
                         null,
                         this.searchResultsPage,
@@ -271,7 +271,7 @@
             },
 
             getThreads() {
-                return Requests.getForumThreads()
+                return ForumService.getForumThreads()
                     .then(data => {
                         this.threadsArray = data;
                     });

@@ -102,8 +102,7 @@
     import TextEditor from '../../components/TextEditor.vue';
     import BrandClasses from '../../mixins/BrandClasses.js';
     import Toasts from '../../assets/js/classes/toasts';
-    import Noty from 'noty';
-    import Requests from '../../assets/js/classes/requests';
+    import ForumService from '../../assets/js/services/forums';
 
     export default {
         mixins: [BrandClasses],
@@ -251,7 +250,7 @@
                         text: '<span class="bg-error text-white">Report</span>',
                         callback: () => {
 
-                            Requests.reportForumPost(vm.id)
+                            ForumService.reportForumPost(vm.id)
                                 .then(resolved => {
                                     Toasts.push({
                                         icon: 'happy',

@@ -1,5 +1,5 @@
 import Toasts from '../classes/toasts';
-import Requests from '../classes/requests';
+import ContentService from '../services/content';
 import Utils from '../classes/utils';
 
 export default (function () {
@@ -42,7 +42,7 @@ export default (function () {
                         icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
                         icon.classList.add('fa-spin', 'fa-spinner');
 
-                        Requests.resetContentProgress(contentId)
+                        ContentService.resetContentProgress(contentId)
                             .then(resolved => {
                                 if (resolved) {
                                     Toasts.push({
@@ -72,7 +72,7 @@ export default (function () {
             const contentId = element.dataset['contentId'];
             const is_added = element.classList.contains('added');
 
-            Requests.addOrRemoveContentFromList(contentId, is_added)
+            ContentService.addOrRemoveContentFromList(contentId, is_added)
                 .then(response => {
                     if (response) {
                         if (is_added) {
@@ -106,7 +106,7 @@ export default (function () {
                         text: '<span class="bg-' + brand + ' text-white">Reset</span>',
                         callback: () => {
 
-                            Requests.resetContentProgress(contentId)
+                            ContentService.resetContentProgress(contentId)
                                 .then(resolved => {
                                     if (resolved) {
                                         element.classList.remove('is-complete');
@@ -132,7 +132,7 @@ export default (function () {
             } else {
                 element.classList.add('is-complete');
 
-                Requests.markContentAsComplete(contentId)
+                ContentService.markContentAsComplete(contentId)
                     .then(resolved => {
                         if (resolved) {
                             element.classList.add('add-request-complete');

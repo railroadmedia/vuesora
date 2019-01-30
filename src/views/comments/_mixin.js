@@ -1,4 +1,4 @@
-import Requests from '../../assets/js/classes/requests';
+import CommentService from '../../assets/js/services/comments';
 import Toasts from '../../assets/js/classes/toasts';
 
 export default {
@@ -82,14 +82,14 @@ export default {
                 likedPost.like_count -= 1;
                 likedPost.is_liked = false;
 
-                Requests.unlikeComment(payload.id)
+                CommentService.unlikeComment(payload.id)
                     .then(response => {});
             }
             else {
                 likedPost.like_count += 1;
                 likedPost.is_liked = true;
 
-                Requests.likeComment(payload.id)
+                CommentService.likeComment(payload.id)
                     .then(response => {});
             }
         },
@@ -105,21 +105,21 @@ export default {
                 likedPostReply.like_count -= 1;
                 likedPostReply.is_liked = false;
 
-                Requests.unlikeComment(payload.id)
+                CommentService.unlikeComment(payload.id)
                     .then(response => {});
             }
             else {
                 likedPostReply.like_count += 1;
                 likedPostReply.is_liked = true;
 
-                Requests.likeComment(payload.id)
+                CommentService.likeComment(payload.id)
                     .then(response => {});
             }
         },
 
         handleCommentDelete(payload){
 
-            Requests.deleteComment(payload.id)
+            CommentService.deleteComment(payload.id)
                 .then(resolved => {
                     this.comments = this.comments.filter(comment =>
                         comment.id !== payload.id
@@ -139,7 +139,7 @@ export default {
             let deletedPostReplyIndex = deletedPostReplies.map(reply => reply.id).indexOf(payload.id);
             let deletedPostReply = deletedPostReplies[deletedPostReplyIndex];
 
-            Requests.deleteComment(payload.id)
+            CommentService.deleteComment(payload.id)
                 .then(resolved => {
                     if(resolved){
                         this.comments[index].replies = this.comments[index].replies.filter(reply =>
@@ -167,7 +167,7 @@ export default {
                 this.likeUsersPage = 1;
             }
 
-            Requests.getCommentLikeUsers({
+            CommentService.getCommentLikeUsers({
                 id: payload.id,
                 page: this.likeUsersPage
             })

@@ -108,7 +108,7 @@
     import Cropper from 'cropperjs';
     import axios from 'axios';
     import Toasts from '../assets/js/classes/toasts';
-    import Requests from '../assets/js/classes/requests';
+    import UserService from '../assets/js/services/user';
     import Dropzone from 'dropzone';
 
     export default {
@@ -235,7 +235,7 @@
 
                 this.loading = true;
 
-                Requests.remoteResourceUpload(this.uploadEndpoint, formData)
+                UserService.remoteResourceUpload(this.uploadEndpoint, formData)
                     .then(resolved => {
                         if(resolved){
                             let remoteStorageUrl = resolved['results'] || resolved.data[0].url;

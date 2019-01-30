@@ -85,7 +85,7 @@
 <script>
     import Toasts from '../assets/js/classes/toasts';
     import LikesModal from '../views/comments/_CommentLikesModal';
-    import Requests from '../assets/js/classes/requests';
+    import ContentService from '../assets/js/services/content';
     import axios from 'axios';
 
     export default {
@@ -157,7 +157,7 @@
                     this.lessonLikeCount--;
                 }
 
-                Requests.likeContentById({
+                ContentService.likeContentById({
                     is_liked: this.lessonIsLiked,
                     content_id: this.contentId,
                     user_id: this.userId,
@@ -175,7 +175,7 @@
                     this.requestingLikeUsers = true;
                     this.likeUsersPage += 1;
 
-                    Requests.getContentLikeUsers({
+                    ContentService.getContentLikeUsers({
                         id: this.contentId,
                         page: this.likeUsersPage
                     })

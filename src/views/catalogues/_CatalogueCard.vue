@@ -60,7 +60,7 @@
     </div>
 </template>
 <script>
-    import * as DataMapper from '../../assets/js/classes/data-mapper.js';
+    import * as Model from '../../assets/js/models/_model.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 
     export default {
@@ -175,12 +175,12 @@
             mappedData(){
                 const type = this.$_contentTypeOverride || this.$_item.type.replace(/-/g, '_');
 
-                const dataMapper = new DataMapper[type]({
+                const model = new Model[type]({
                     brand: this.$_brand,
                     post: this.$_item
                 });
 
-                return dataMapper['card'];
+                return model['card'];
             },
 
             thumbnailType(){

@@ -143,7 +143,8 @@
     </div>
 </template>
 <script>
-    import Requests from '../../assets/js/classes/requests';
+    import CommentService from '../../assets/js/services/comments';
+    import ContentService from '../../assets/js/services/content';
     import Utils from '../../assets/js/classes/utils';
     import CommentPost from './_CommentPost';
     import CommentLikesModal from './_CommentLikesModal.vue';
@@ -293,7 +294,7 @@
                     this.loading = true;
                 }
 
-                Requests.getComments({
+                CommentService.getComments({
                     brand: 'drumeo',
                     limit: 100,
                     content_type: this.activeTypes,
@@ -308,7 +309,7 @@
                         if(response){
                             const comments = response.data;
 
-                            Requests.getContentByIds(allContentIds.join(','))
+                            ContentService.getContentByIds(allContentIds.join(','))
                                 .then(response => {
                                     const content = Utils.flattenContent(response.data.data);
 

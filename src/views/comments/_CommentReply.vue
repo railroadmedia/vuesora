@@ -135,7 +135,7 @@
     import Utils from '../../assets/js/classes/utils';
     import TextEditor from '../../components/TextEditor.vue';
     import Toasts from '../../assets/js/classes/toasts';
-    import Requests from '../../assets/js/classes/requests';
+    import CommentService from '../../assets/js/services/comments';
 
     export default {
         name: 'comment-reply',
@@ -333,7 +333,7 @@
                 if (this.reply.currentValue) {
                     this.loading = true;
 
-                    return Requests.postReply({
+                    return CommentService.postReply({
                         parent_id: this.parentId,
                         comment: this.reply.currentValue
                     })

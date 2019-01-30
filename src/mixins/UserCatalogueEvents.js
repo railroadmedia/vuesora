@@ -1,6 +1,5 @@
-import Requests from '../assets/js/classes/requests';
+import ContentService from '../assets/js/services/content';
 import Toasts from '../assets/js/classes/toasts';
-import Noty from "noty";
 
 export default {
 
@@ -83,7 +82,7 @@ export default {
                 this.content.splice(post_index, 1);
             }
 
-            Requests.addOrRemoveContentFromList(payload.content_id, payload.is_added)
+            ContentService.addOrRemoveContentFromList(payload.content_id, payload.is_added)
                 .then(response => {
 
                     if(!response){
@@ -95,7 +94,7 @@ export default {
         resetProgressEventHandler(payload){
             const post_index = this.content.map(post => post.id).indexOf(payload.content_id);
 
-            Requests.resetContentProgress(payload.content_id)
+            ContentService.resetContentProgress(payload.content_id)
                 .then(response => {
                     if(response){
                         Toasts.push({

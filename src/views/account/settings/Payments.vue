@@ -38,7 +38,7 @@
     </div>
 </template>
 <script>
-    import Requests from '../../../assets/js/classes/requests';
+    import UserService from '../../../assets/js/services/user';
     import PaymentMethod from './PaymentMethod.vue';
     import PaymentMethodModal from './PaymentMethodModal.vue';
     import LoadingDialog from '../../../components/LoadingDialog.vue';
@@ -123,7 +123,7 @@
             },
             refreshPaymentMethods() {
 
-                Requests
+                UserService
                     .getPaymentMethods()
                     .then((response) => {
                         if (response && response.paymentMethods) {
@@ -142,7 +142,7 @@
                         // Confirm Button
                         Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
 
-                            Requests
+                            UserService
                                 .setDefaultPaymentMethod(paypalPaymentMethodId)
                                 .then(this.refreshPaymentMethods);
 

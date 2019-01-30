@@ -48,7 +48,7 @@
     </div>
 </template>
 <script>
-    import Requests from '../assets/js/classes/requests';
+    import UserService from '../assets/js/services/user';
     import Toasts from '../assets/js/classes/toasts';
 
     export default {
@@ -116,7 +116,7 @@
                 if(this.value){
                     this.loading = true;
 
-                    Requests.sendEmail({
+                    UserService.sendEmail({
                         message: this.value,
                         type: this.emailType,
                         subject: this.emailSubject,
