@@ -60,50 +60,12 @@
     </div>
 </template>
 <script>
+    import Mixin from './_mixin';
     import * as Model from '../../assets/js/models/_model.js';
-    import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 
     export default {
-        mixins: [UserCatalogueEvents],
+        mixins: [Mixin],
         name: 'catalogue-card',
-        props: {
-            $_item: {
-                type: Object
-            },
-            $_themeColor: {
-                type: String,
-                default: () => 'drumeo'
-            },
-            $_brand: {
-                type: String,
-                default: () => 'drumeo'
-            },
-            $_userId: {
-                type: String,
-                default: () => ''
-            },
-            $_forceWideThumbs: {
-                type: Boolean,
-                default: () => false
-            },
-            $_contentTypeOverride: {
-                type: String,
-                default: ''
-            },
-            $_lockUnowned: {
-                type: Boolean,
-                default: () => false
-            },
-            $_useThemeColor: {
-                type: Boolean,
-                default: () => false
-            }
-        },
-        data(){
-            return {
-                mapper: null
-            }
-        },
         computed: {
 
             $_is_added:{
@@ -117,61 +79,6 @@
                 return this.$_item['type'] === 'pack-bundle' && this.$_item['completed'] === true;
             },
 
-            $_thumbnail(){
-                if(this.$_item['type'] === 'chord-and-scale'){
-                    return this.$_item['guitar_chord_image_url'];
-                }
-
-                return this.$_item['thumbnail_url'] ||
-                    'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
-            },
-
-            $_progress_percent(){
-                if(this.$_item.type === 'course' ||
-                    this.$_item.type === 'pack' ||
-                    this.$_item.type === 'pack-bundle' ||
-                    this.$_item.type === 'semester-pack' ||
-                    this.$_item.type === 'learning-path'){
-
-                    return this.$_item['progress_percent'];
-                }
-
-                if(this.$_item.video != null){
-                    return (Number(this.$_item['last_watch_position_in_seconds']) / Number(this.$_item.video.length_in_seconds)) * 100;
-                }
-
-                return 0;
-            },
-
-            $_thumbnailIcon(){
-                const contentWithHierarchy = {
-                    'drumeo': ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
-                    'guitareo': ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack']
-                };
-
-                if(this.$_noAccess){
-                    return 'fa-clock';
-                }
-
-                return contentWithHierarchy[this.$_brand].indexOf(this.$_item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
-            },
-
-            $_noAccess(){
-                return this.$_lockUnowned && this.$_item.is_owned === false;
-            },
-
-            $_releaseDate(){
-                return moment(this.$_item['published_on']).format('MMM D');
-            },
-
-            theme(){
-                if(this.$_useThemeColor){
-                    return this.$_themeColor
-                }
-
-                return this.$_item.type;
-            },
-
             mappedData(){
                 const type = this.$_contentTypeOverride || this.$_item.type.replace(/-/g, '_');
 
@@ -182,10 +89,6 @@
 
                 return model['card'];
             },
-
-            thumbnailType(){
-                return ['song', 'chord-and-scale'].indexOf(this.$_item['type']) !== -1 && this.$_forceWideThumbs === false ? 'square' : 'widescreen' + ' ' + this.$_item['type'];
-            }
         },
         mounted(){
 
