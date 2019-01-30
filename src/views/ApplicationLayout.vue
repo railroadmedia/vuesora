@@ -4,7 +4,7 @@
         <p class="body font-light mb-5 text-center">All of the properties for basic page flow and consistency, from the grid, to spacing, to the typography.</p>
 
         <!-- GRID SYSTEM -->
-        <div id="grid-system" class="flex flex-column bg-white shadow corners-3 pa mb-4">
+        <div id="grid-system" class="flex flex-column pa mb-4">
             <h2 class="subheading text-secondary">Grid System</h2>
             <p class="body mb-3">Vuesora uses a 12 point grid system. Built using the <span class="keyword">flex-box</span> css spec, the grid is used to layout an application’s content. It contains 5 types of media breakpoints that are used for targeting specific screen sizes or orientations. The modifier classes represent a fraction of the pages width over 12.</p>
             <h4 class="title text-secondary">Breakpoints</h4>
@@ -165,7 +165,7 @@
         </div>
 
         <!-- SPACING -->
-        <div id="spacing" class="flex flex-column bg-white shadow corners-3 pa mb-5">
+        <div id="spacing" class="flex flex-column pa mb-5">
             <h2 class="subheading text-secondary">Spacing</h2>
             <p class="body mb-3">Vuesora uses a dyamic spacing system built off of a variable titled <span class="keyword">$gutterWidth</span> which is defined at 1.875rem (roughly 32px). To add spacing to an element either use the margin or padding modifiers using the following convention <span class="keyword">{ type }{ part }-{ amount }</span>.</p>
 
@@ -175,7 +175,7 @@
                 <li><span class="keyword">m</span> - applies margin.</li>
             </ul>
 
-            <p class="body">The <span class="keyword">{ part }</span> applies a specific part of the element:</p>
+            <p class="body">The <span class="keyword">{ part }</span> applies to a specific part of the element:</p>
             <ul class="body mb-3">
                 <li><span class="keyword">a</span> - applies spacing to all sides</li>
                 <li><span class="keyword">v</span> - applies spacing to the top and bottom.</li>
@@ -200,9 +200,9 @@
             <p class="body"><i>Alternatively, you can choose to omit the <span class="keyword">{ amount }</span> to give it a responsive spacing amount. (Equivalent to 2 on desktop and tablet sizes and 1 on mobile sizes) Ex: <span class="keyword">.pa</span></i></p>
         </div>
 
-        <div id="typography" class="flex flex-column bg-white shadow corners-3 pa">
+        <div id="typography" class="flex flex-column pa">
             <h2 class="subheading text-secondary">Typography</h2>
-            <p class="body mb-3">For the sake of consistency, Vuesora has 4 standards for font sizes. Resize your browser to sample how they respond.</p>
+            <p class="body mb-3">For the sake of consistency, Vuesora has 8 standards for font sizes. Simply give any element a class matching the table below ex. <span class="keyword">.heading</span> will give you the heading font style</p>
 
 
             <table class="body">
@@ -215,6 +215,13 @@
                         <td class="pa-1 corners-top-5">Weight</td>
                     </tr>
                 </thead>
+                <tr class="bg-light">
+                    <td class="display pa-1">Display</td>
+                    <td class="pa-1">40px</td>
+                    <td class="pa-1">36px</td>
+                    <td class="pa-1">32px</td>
+                    <td class="pa-1">700</td>
+                </tr>
                 <tr class="bg-light">
                     <td class="heading pa-1">Heading</td>
                     <td class="pa-1">32px</td>
@@ -231,19 +238,35 @@
                 </tr>
                 <tr class="bg-light">
                     <td class="title pa-1">Title</td>
-                    <td class="pa-1">22px</td>
                     <td class="pa-1">20px</td>
+                    <td class="pa-1">18px</td>
                     <td class="pa-1">18px</td>
                     <td class="pa-1">600</td>
                 </tr>
                 <tr class="bg-light">
                     <td class="body pa-1">Body</td>
                     <td class="pa-1">16px</td>
-                    <td class="pa-1">14px</td>
-                    <td class="pa-1">12px</td>
+                    <td class="pa-1">16px</td>
+                    <td class="pa-1">16px</td>
+                    <td class="pa-1">400</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="tiny pa-1">Tiny</td>
+                    <td class="pa-1">13px</td>
+                    <td class="pa-1">13px</td>
+                    <td class="pa-1">13px</td>
+                    <td class="pa-1">400</td>
+                </tr>
+                <tr class="bg-light">
+                    <td class="x-tiny pa-1">X-Tiny</td>
+                    <td class="pa-1">10px</td>
+                    <td class="pa-1">10px</td>
+                    <td class="pa-1">10px</td>
                     <td class="pa-1">400</td>
                 </tr>
             </table>
+
+            <p class="mt-2 body dense mb-3">If you wish to use the compressed font in Vuesora, add the <span class="keyword">.dense</span> class to the element</p>
         </div>
     </div>
 </template>

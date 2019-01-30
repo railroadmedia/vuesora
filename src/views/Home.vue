@@ -3,7 +3,7 @@
         <h1 class="heading text-center">Vuesora</h1>
         <p class="body font-light mb-5 text-center">Vuesora is a CSS and Vue Component Library built for use within the Musora member's areas.</p>
 
-        <div class="flex flex-column bg-white shadow corners-3 pa mb-4">
+        <div class="flex flex-column pa mb-4">
             <h1 class="title text-secondary mb">Local Development Environment</h1>
 
             <p class="body mb-3">The interactions between all of the packages that make up the Musora stack can be quite daunting. The commands below should be able to fix most common issues than can occur.</p>
@@ -13,19 +13,19 @@
             <p class="body mb-1">Applications use the Laravel Mix wrapper for webpack to compile/transpile all assets in a project, they use the default npm scripts that come installed with Laravel</p>
 
             <p class="body mb-1">
-                <span class="keyword">$ npm run dev</span> - This command will run a quick compilation with inline source maps, bundle sizes will be big.
+                <span class="keyword">npm run dev</span> - This command will run a quick compilation with inline source maps, bundle sizes will be big.
             </p>
 
             <p class="body mb-1">
-                <span class="keyword">$ npm run prod</span> - This command will run a full compilation without sourcemaps, bundle sizes will be smaller. <span class="font-bold">This command should always be run before a deploy!</span>
+                <span class="keyword">npm run prod</span> - This command will run a full compilation without sourcemaps, bundle sizes will be smaller. <span class="font-bold">This command should always be run before a deploy!</span>
             </p>
 
             <p class="body mb-1">
-                <span class="keyword">$ npm run watch</span> - This command will run a quick compilation with inline source maps everytime a file is saved, bundle sizes will be big.
+                <span class="keyword">npm run watch</span> - This command will run a quick compilation with inline source maps everytime a file is saved, bundle sizes will be big.
             </p>
 
             <p class="body mb-3">
-                <span class="keyword">$ npm run watch-poll</span> - This is the exact same command as <span class="keyword">watch</span>, it just uses Chokidar's polling feature so it can watch for changes on the windows file system.
+                <span class="keyword">npm run watch-poll</span> - This is the exact same command as <span class="keyword">watch</span>, it just uses Chokidar's polling feature so it can watch for changes on the windows file system.
             </p>
 
             <h1 class="title text-secondary mb-1">Symlinking Vuesora</h1>
@@ -33,20 +33,20 @@
             <p class="body mb-1">If you try to run <span class="keyword">npm run dev</span> or <span class="keyword">npm run watch</span> etc.. And you get an error that says something like "module can't be found" and the path looks like it comes from Vuesora, you likely don't have the most recent version installed. Since that version changes constantly, for local development it's best to set up a symbolic link between the projects.</p>
 
             <p class="body mb-1">
-                <span class="keyword">$ cd /app/vuesora</span>
+                <span class="keyword">cd /app/vuesora</span>
             </p>
 
             <p class="body">
-                <span class="keyword">$ npm link</span>
+                <span class="keyword">npm link</span>
             </p>
             <p class="tiny font-italic mb-1">Wait for the command to finish</p>
 
             <p class="body mb-1">
-                <span class="keyword">$ cd /app/recordeo</span>
+                <span class="keyword">cd /app/recordeo</span>
             </p>
 
             <p class="body mb-3">
-                <span class="keyword">$ npm link vuesora</span>
+                <span class="keyword">npm link vuesora</span>
             </p>
 
             <h1 class="title text-secondary mb-1">Symlinking Bladesora</h1>
@@ -54,19 +54,19 @@
             <p class="body mb-1">If you are trying to build out views for an application and you get a laravel error saying a bladesora view cannot be found, you likely don't have the most recent version installed. Since that version changes constantly, for local development it's best to set up a symbolic link between the projects.</p>
 
             <p class="body mb-1">
-                <span class="keyword">$ cd /app/recordeo</span>
+                <span class="keyword">cd /app/recordeo</span>
             </p>
 
             <p class="body mb-1">
-                <span class="keyword">$ rm -rf /vendor/railroad/bladesora</span>
+                <span class="keyword">rm -rf /vendor/railroad/bladesora</span>
             </p>
 
             <p class="body mb-1">
-                <span class="keyword">$ ln -s /app/bladesora /app/recordeo/vendor/railroad</span>
+                <span class="keyword">ln -s /app/bladesora /app/recordeo/vendor/railroad</span>
             </p>
         </div>
 
-        <div class="flex flex-column bg-white shadow corners-3 pa mb-4">
+        <div class="flex flex-column pa mb-4">
             <h1 class="title text-secondary mb">Publishing Vuesora</h1>
 
             <p class="body mb-3">Publishing vuesora is fairly simple: update the version, push the repo, publish the package, and update your applications package.json.</p>
@@ -90,7 +90,7 @@
             <span class="bb-grey-1-1 mb-3"></span>
 
             <p class="body mb-1">
-                <span class="keyword">$ npm version patch</span> - If your railenv container has your git information, this should make a commit with a version tag
+                <span class="keyword">npm version patch</span> - If your railenv container has your git information, this should make a commit with a version tag
             </p>
 
             <p class="body mb-1">
@@ -98,7 +98,7 @@
             </p>
 
             <p class="body mb-1">
-                <span class="keyword">$ npm publish</span>
+                <span class="keyword">npm publish</span>
             </p>
 
             <p class="body mb-1">
@@ -106,11 +106,11 @@
             </p>
 
             <p class="body mb-1">
-                <span class="keyword">$ npm install --save-dev vuesora</span> - This will update the applications package.json with the newest version of Vuesora
+                <span class="keyword">npm install --save-dev vuesora</span> - This will update the applications package.json with the newest version of Vuesora
             </p>
 
             <p class="body mb-1">
-                <span class="keyword">$ npm run prod</span> - You are now ready to deploy
+                <span class="keyword">npm run prod</span> - You are now ready to deploy
             </p>
         </div>
     </div>
