@@ -112,14 +112,65 @@
             <p class="body mb-1">
                 <span class="keyword">npm run prod</span> - You are now ready to deploy
             </p>
+
+            <va-row class="mt-5 test-row"
+                    :wrap="true">
+                <va-column class="bg-black xs-4"
+                           align-h="center"
+                           align-v="center">
+
+                    <h1 class="heading text-white">Hello</h1>
+                </va-column>
+
+                <va-column class="bg-black xs-4"
+                           align-h="left"
+                           align-v="bottom">
+
+                    <h1 class="heading text-white">Hello</h1>
+                </va-column>
+
+                <va-column class="bg-black xs-4"
+                           align-h="right"
+                           align-v="top">
+
+                    <h1 class="heading text-white">Hello</h1>
+                </va-column>
+
+                <va-column class="bg-black xs-4"
+                           align-h="right"
+                           align-v="top">
+
+                    <h1 class="heading text-white">Hello</h1>
+                </va-column>
+
+                <va-column class="bg-black xs-4"
+                           align-h="right"
+                           align-v="top">
+
+                    <va-modal>
+                        <h1 slot="activator"
+                            class="heading text-white">Hello</h1>
+
+
+                    </va-modal>
+                </va-column>
+            </va-row>
         </div>
     </div>
 </template>
 
 <script>
+    import VaRow from '../components/VaRow/VaRow';
+    import VaColumn from '../components/VaColumn/VaColumn';
+    import VaModal from '../components/VaModal/VaModal';
 
     export default {
         name: "home",
+        components: {
+            VaRow,
+            VaColumn,
+            VaModal
+        },
         data() {
             return {
 
@@ -129,5 +180,9 @@
 </script>
 
 <style lang="scss">
-
+    .test-row {
+        .flex-column {
+            height:75px;
+        }
+    }
 </style>
