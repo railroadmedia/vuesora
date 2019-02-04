@@ -80,5 +80,13 @@
         background-color:$guitareoGreen;
       }
     }
+
+    &.piano {
+
+      img {
+        border-color:$pianoteRed;
+        background-color:$pianoteRed;
+      }
+    }
   }
 }
