@@ -7,6 +7,7 @@ export default (function () {
         const markAsCompleteButtons = document.querySelectorAll('.completeButton');
         const addToListButtons = document.querySelectorAll('.addToList');
         const resetProgressButtons = document.querySelectorAll('.resetProgress');
+        let clickTimeout = false;
 
         if (markAsCompleteButtons.length) {
             Array.from(markAsCompleteButtons).forEach(button => {
@@ -33,38 +34,41 @@ export default (function () {
             const brand = element.dataset['brand'] || 'drumeo';
             const icon = element.querySelector('.fas');
 
-            // Create a confirmation dialogue using Noty
-            Toasts.confirm({
-                title: 'Hold your Horses… This will reset all of your progress on this ' + contentType + ', are you sure about this?',
-                submitButton: {
-                    text: '<span class="bg-' + brand + ' text-white">YES</span>',
-                    callback: () => {
-                        icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
-                        icon.classList.add('fa-spin', 'fa-spinner');
+            if(!clickTimeout) {
+                Toasts.confirm({
+                    title: 'Hold your Horses… This will reset all of your progress on this ' + contentType + ', are you sure about this?',
+                    submitButton: {
+                        text: '<span class="bg-' + brand + ' text-white">YES</span>',
+                        callback: () => {
+                            icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
+                            icon.classList.add('fa-spin', 'fa-spinner');
 
-                        ContentService.resetContentProgress(contentId)
-                            .then(resolved => {
-                                if (resolved) {
-                                    Toasts.push({
-                                        icon: 'happy',
-                                        title: 'READY TO START AGAIN?',
-                                        message: 'Your progress has been reset.'
-                                    });
+                            Requests.resetContentProgress(contentId)
+                                .then(resolved => {
+                                    if (resolved) {
+                                        Toasts.push({
+                                            icon: 'happy',
+                                            title: 'READY TO START AGAIN?',
+                                            message: 'Your progress has been reset.'
+                                        });
 
-                                    setTimeout(() => {
-                                        location.reload();
-                                    }, 100);
-                                }
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 100);
+                                    }
 
-                                icon.classList.remove('fa-spin', 'fa-spinner');
-                                icon.classList.add('fa-redo-alt', 'fa-flip-horizontal');
-                            });
+                                    icon.classList.remove('fa-spin', 'fa-spinner');
+                                    icon.classList.add('fa-redo-alt', 'fa-flip-horizontal');
+                                });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">NO</span>',
                     }
-                },
-                cancelButton: {
-                    text: '<span class="bg-grey-3 inverted text-grey-3">NO</span>',
-                }
-            });
+                });
+            }
+
+            setClickTimeout();
         }
 
         function addToList(event) {
@@ -72,24 +76,29 @@ export default (function () {
             const contentId = element.dataset['contentId'];
             const is_added = element.classList.contains('added');
 
-            ContentService.addOrRemoveContentFromList(contentId, is_added)
-                .then(response => {
-                    if (response) {
-                        if (is_added) {
-                            element.classList.add('add-request-complete');
-                        } else {
-                            element.classList.add('remove-request-complete');
-                        }
-                    }
-                });
 
-            if (is_added) {
-                element.classList.remove('added', 'text-white');
-                element.classList.add('inverted');
-            } else {
-                element.classList.add('added', 'text-white');
-                element.classList.remove('inverted');
+            if(!clickTimeout) {
+                Requests.addOrRemoveContentFromList(contentId, is_added)
+                    .then(response => {
+                        if (response) {
+                            if (is_added) {
+                                element.classList.add('add-request-complete');
+                            } else {
+                                element.classList.add('remove-request-complete');
+                            }
+                        }
+                    });
+
+                if (is_added) {
+                    element.classList.remove('added', 'text-white');
+                    element.classList.add('inverted');
+                } else {
+                    element.classList.add('added', 'text-white');
+                    element.classList.remove('inverted');
+                }
             }
+
+            setClickTimeout();
         }
 
         function markAsComplete(event) {
@@ -98,50 +107,52 @@ export default (function () {
             const isRemoving = element.classList.contains('is-complete');
             const brand = element.dataset['brand'] || 'drumeo';
 
-            if (isRemoving) {
+            if(!clickTimeout) {
+                if (isRemoving) {
+                    Toasts.confirm({
+                        title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
+                        submitButton: {
+                            text: '<span class="bg-' + brand + ' text-white">Reset</span>',
+                            callback: () => {
 
-                Toasts.confirm({
-                    title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
-                    submitButton: {
-                        text: '<span class="bg-' + brand + ' text-white">Reset</span>',
-                        callback: () => {
+                                Requests.resetContentProgress(contentId)
+                                    .then(resolved => {
+                                        if (resolved) {
+                                            element.classList.remove('is-complete');
+                                            element.classList.add('remove-request-complete');
 
-                            ContentService.resetContentProgress(contentId)
-                                .then(resolved => {
-                                    if (resolved) {
-                                        element.classList.remove('is-complete');
-                                        element.classList.add('remove-request-complete');
+                                            handleCompleteEvent(isRemoving);
 
-                                        handleCompleteEvent(isRemoving);
-
-                                        Toasts.push({
-                                            icon: 'happy',
-                                            title: 'READY TO START AGAIN?',
-                                            message: 'Your progress has been reset.'
-                                        });
-                                    }
-                                });
-                        }
-                    },
-                    cancelButton: {
-                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
-                    }
-                });
-
-
-            } else {
-                element.classList.add('is-complete');
-
-                ContentService.markContentAsComplete(contentId)
-                    .then(resolved => {
-                        if (resolved) {
-                            element.classList.add('add-request-complete');
-
-                            handleCompleteEvent(isRemoving);
+                                            Toasts.push({
+                                                icon: 'happy',
+                                                title: 'READY TO START AGAIN?',
+                                                message: 'Your progress has been reset.'
+                                            });
+                                        }
+                                    });
+                            }
+                        },
+                        cancelButton: {
+                            text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
                         }
                     });
+
+
+                } else {
+                    element.classList.add('is-complete');
+
+                    Requests.markContentAsComplete(contentId)
+                        .then(resolved => {
+                            if (resolved) {
+                                element.classList.add('add-request-complete');
+
+                                handleCompleteEvent(isRemoving);
+                            }
+                        });
+                }
             }
 
+            setClickTimeout();
         }
 
         window.recalculateProgress = function (complete) {
@@ -183,6 +194,13 @@ export default (function () {
             if (progressContainer) {
                 progressContainer.classList.toggle('complete');
             }
+        }
+
+        function setClickTimeout(){
+            clickTimeout = true;
+            setTimeout(() => {
+                clickTimeout = false;
+            }, 200);
         }
     });
 })();
