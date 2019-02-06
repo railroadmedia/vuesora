@@ -160,6 +160,237 @@ export default {
     },
 
     /**
+     * Pull all of the top level content types, does not include child types
+     *
+     * @returns {array}
+     */
+    topLevelContentTypes(){
+        return [
+            {
+                type: 'course',
+                label: 'Course',
+                icon: 'icon-courses',
+                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
+            },
+            {
+                type: 'song',
+                label: 'Song',
+                icon: 'icon-songs',
+                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
+            },
+            {
+                type: 'play-along',
+                label: 'Play-Along',
+                icon: 'icon-play-alongs',
+                brands: ['drumeo', 'guitareo', 'pianote'],
+            },
+            {
+                type: 'student-focus',
+                label: 'Student Focus',
+                icon: 'icon-student-focus',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'recording',
+                label: 'Recording',
+                icon: 'icon-library',
+                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
+            },
+            {
+                type: 'learning-path',
+                label: 'Learning Path',
+                icon: 'icon-learning-paths',
+                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
+            },
+            {
+                type: 'pack',
+                label: 'Pack',
+                icon: 'icon-packs',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'semester-pack',
+                label: 'Semester Pack',
+                icon: 'icon-packs',
+                brands: ['drumeo', 'guitareo'],
+            },
+            {
+                type: 'rudiment',
+                label: 'Rudiment',
+                icon: 'icon-drums',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'chord-and-scale',
+                label: 'Chords & Scales',
+                icon: 'icon-chord-and-scale',
+                brands: ['guitareo', 'pianote'],
+            },
+            {
+                type: 'question-and-answer',
+                label: 'Q & A',
+                icon: 'icon-student-focus',
+                brands: ['recordeo'],
+            },
+            {
+                type: 'student-review',
+                label: 'Student Review',
+                icon: 'icon-student-focus',
+                brands: ['recordeo'],
+            },
+            {
+                type: 'gear-guides',
+                label: 'Gear Guides',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'challenges',
+                label: 'Challenges',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'boot-camps',
+                label: 'Boot Camps',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'quick-tips',
+                label: 'Quick Tips',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'podcasts',
+                label: 'Podcasts',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'on-the-road',
+                label: 'On the Road',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'behind-the-scenes',
+                label: 'Behind the Scenes',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'study-the-greats',
+                label: 'Study the Greats',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'live',
+                label: 'Live',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'solos',
+                label: 'Solos',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'performances',
+                label: 'Performances',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'exploring-beats',
+                label: 'Exploring Beats',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'sonor-drums',
+                label: 'Sonor Drums',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'paiste-cymbals',
+                label: 'Paiste Cymbals',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'rhythms-from-another-planet',
+                label: 'Rhythms from Another Planet',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: '25-days-of-christmas',
+                label: '25 Days of Christmas',
+                icon: 'icon-shows',
+                brands: ['drumeo'],
+            },
+            {
+                type: 'assignment',
+                label: 'Assignment',
+                icon: 'icon-metronome',
+                brands: ['drumeo', 'pianote', 'guitareo'],
+            },
+            {
+                type: 'instructor',
+                label: 'Instructor',
+                icon: 'wc',
+                brands: ['drumeo', 'pianote', 'guitareo', 'recordeo'],
+            },
+        ]
+    },
+
+    getParentContentType(childType) {
+        return {
+            'course-part': 'course',
+            'song-part': 'song',
+            'play-along-part': 'play-along',
+            'pack-bundle': 'pack',
+            'pack-bundle-lesson': 'pack-bundle',
+            'semester-pack-lesson': 'semester-pack'
+        }[childType];
+    },
+
+    /**
+     * Pull all of the top level content types, does not include child types
+     *
+     * @param {string} brand
+     * @returns {array}
+     */
+    getBrandSpecificTopLevelContentTypes(brand){
+        return this.topLevelContentTypes().filter(type =>
+            type.type !== 'assignment' && type.brands.indexOf(brand) !== -1
+        );
+    },
+
+    /**
+     * Get the icon for a specific content type
+     *
+     * @param {string} type
+     * @returns {string} - the icon class name
+     */
+    getContentTypeIcon(type){
+        type = type
+            .replace(/-part/g, '') // Remove the -part
+            .replace(/-bundle/g, '') // Remove the -bundle
+            .replace(/-lesson/g, '');  // Remove -lesson
+        const contentType = this.topLevelContentTypes().filter(content =>
+            content.type === type
+        )[0];
+
+        return contentType ? contentType.icon : undefined;
+    },
+
+    /**
      * Take a string and capitalize the first letter of every word
      *
      * @param {string} phrase

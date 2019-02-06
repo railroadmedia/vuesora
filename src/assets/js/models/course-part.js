@@ -34,7 +34,7 @@ export default class CoursePartDataMapper extends DataMapper {
         };
 
         if(this.brand === 'guitareo'){
-            this.card.color_title = this.post.type;
+            this.card.color_title = this.getTypeWithIcon();
 
             this.list.color_title = null;
             this.list.column_data = [

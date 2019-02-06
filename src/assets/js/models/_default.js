@@ -1,4 +1,5 @@
 import { DateTime, Duration } from "luxon";
+import Utils from '../classes/utils';
 
 export default class DataMapper {
     constructor({brand = 'drumeo', post}){
@@ -65,6 +66,13 @@ export default class DataMapper {
 
     getType(){
         return this.post['type'].replace('bundle-', '').replace(/-/g, ' ');
+    }
+
+    getTypeWithIcon(){
+        const icon = Utils.getContentTypeIcon(this.getType());
+        const type = this.getType();
+
+        return `<i class="${ icon }" style="margin-right:5px;"></i> <span class="text-white">${ type }</span>`;
     }
 
     getStyle(){
