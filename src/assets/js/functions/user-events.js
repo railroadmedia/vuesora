@@ -43,7 +43,7 @@ export default (function () {
                             icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
                             icon.classList.add('fa-spin', 'fa-spinner');
 
-                            Requests.resetContentProgress(contentId)
+                            ContentService.resetContentProgress(contentId)
                                 .then(resolved => {
                                     if (resolved) {
                                         Toasts.push({
@@ -78,7 +78,7 @@ export default (function () {
 
 
             if(!clickTimeout) {
-                Requests.addOrRemoveContentFromList(contentId, is_added)
+                ContentService.addOrRemoveContentFromList(contentId, is_added)
                     .then(response => {
                         if (response) {
                             if (is_added) {
@@ -115,7 +115,7 @@ export default (function () {
                             text: '<span class="bg-' + brand + ' text-white">Reset</span>',
                             callback: () => {
 
-                                Requests.resetContentProgress(contentId)
+                                ContentService.resetContentProgress(contentId)
                                     .then(resolved => {
                                         if (resolved) {
                                             element.classList.remove('is-complete');
@@ -141,7 +141,7 @@ export default (function () {
                 } else {
                     element.classList.add('is-complete');
 
-                    Requests.markContentAsComplete(contentId)
+                    ContentService.markContentAsComplete(contentId)
                         .then(resolved => {
                             if (resolved) {
                                 element.classList.add('add-request-complete');

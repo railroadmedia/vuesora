@@ -154,7 +154,8 @@ export default {
         $_thumbnailIcon(){
             const contentWithHierarchy = {
                 'drumeo': ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
-                'guitareo': ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack']
+                'guitareo': ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
+                'pianote': ['course', 'learning-path', 'pack', 'chord-and-scale']
             };
 
             if(this.$_noAccess){
