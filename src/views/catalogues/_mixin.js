@@ -188,7 +188,16 @@ export default {
         },
 
         thumbnailType(){
-            return ['song', 'chord-and-scale'].indexOf(this.$_item['type']) !== -1 && this.$_forceWideThumbs === false ? 'square' : 'widescreen' + ' ' + this.$_item['type'];
+            if(this.$_forceWideThumbs){
+                return 'widescreen';
+            }
+            else {
+                return {
+                    'drumeo': ['song'],
+                    'guitareo': ['song', 'chord-and-scale'],
+                    'pianote': ['song']
+                }[this.$_brand].indexOf(this.$_item.type) !== -1 ? 'square' : 'widescreen';
+            }
         },
     }
 }

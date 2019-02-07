@@ -193,6 +193,7 @@
 <script>
     import Mixin from './_mixin';
     import * as Model from '../../assets/js/models/_model.js';
+    import { Content as ContentHelpers }  from 'js-helper-functions';
 
     export default {
         mixins: [Mixin],
@@ -213,7 +214,12 @@
             },
 
             mappedData(){
-                const type = this.$_contentTypeOverride || this.$_item.type;
+                const shows = ContentHelpers.shows();
+                let type = this.$_contentTypeOverride || this.$_item.type;
+
+                if(shows.indexOf(type) !== -1){
+                    type = 'show';
+                }
 
                 const model = new Model[type.replace(/-/g, '_')]({
                     brand: this.$_brand,
@@ -230,7 +236,7 @@
                     'active': this.$_active,
                     'background-cards': this.$_item.type === 'learning-path'
                 }
-            },
+            }
         }
     }
 </script>

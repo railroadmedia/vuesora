@@ -10,6 +10,7 @@ export default class DataMapper {
             color_title: this.getType(),
             black_title: this.post['title'],
             description: this.post['description'],
+            sheet_music: null,
             grey_title: DataMapper.mapDifficulty(this.post)
         };
 
@@ -17,6 +18,7 @@ export default class DataMapper {
             color_title: this.getPostInstructor(),
             black_title: this.post['title'],
             description: this.post['description'],
+            sheet_music: null,
             column_data: [
                 this.getPostDuration(),
                 this.getPostDate()

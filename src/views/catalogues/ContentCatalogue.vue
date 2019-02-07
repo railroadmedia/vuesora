@@ -126,6 +126,7 @@
     import Pagination from '../../components/Pagination.vue';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
     import * as QueryString from 'query-string';
+    import { Content as ContentHelpers } from 'js-helper-functions';
 
     export default {
         mixins: [UserCatalogueEvents],
@@ -291,7 +292,7 @@
         data() {
             return {
                 page: this.$_initialPage || 1,
-                content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.data) : [],
+                content: this.$_preLoadedContent ? ContentHelpers.flattenContent(this.$_preLoadedContent.data, true) : [],
                 filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.meta.filterOptions || []) : {},
                 total_results: this.$_totalResults || 0,
                 total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.meta.totalResults / this.$_limit) : 0,
@@ -484,11 +485,11 @@
                                 if (!replace) {
                                     this.content = [
                                         ...this.content,
-                                        ...Utils.flattenContent(response.data.data)
+                                        ...ContentHelpers.flattenContent(response.data.data, true)
                                     ]
                                 }
                                 else {
-                                    this.content = Utils.flattenContent(response.data.data);
+                                    this.content = ContentHelpers.flattenContent(response.data.data, true);
                                 }
                                 this.page = Number(response.data.meta.page);
                                 this.total_results = response.data.meta.totalResults;

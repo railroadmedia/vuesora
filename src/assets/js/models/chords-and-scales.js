@@ -32,5 +32,9 @@ export default class ChordsAndScalesDataMapper extends DataMapper {
                 DataMapper.mapDifficulty(this.post)
             ]
         };
+
+        if(brand === 'pianote'){
+            this.list.sheet_music = this.post['piano_keys_thumbnail_url'];
+        }
     }
 }
