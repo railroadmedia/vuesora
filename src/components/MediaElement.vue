@@ -347,7 +347,7 @@
                     defaultVideoWidth: 1280,
                     defaultVideoHeight: 720,
                     autosizeProgress: false,
-                    startVolume: 0.5,
+                    startVolume: 1,
                     preload: 'metadata',
                     // stretching: 'responsive',
                     stretching: 'fill',
