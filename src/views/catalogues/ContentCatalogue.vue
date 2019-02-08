@@ -121,7 +121,6 @@
     import CatalogueTabFilters from './_CatalogueTabFilters.vue';
     import AddEventDropdown from '../../components/AddEvent/AddEventDropdown.vue';
     import axios from 'axios';
-    import Utils from '../../assets/js/classes/utils';
     import Toasts from '../../assets/js/classes/toasts'
     import Pagination from '../../components/Pagination.vue';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
@@ -293,7 +292,7 @@
             return {
                 page: this.$_initialPage || 1,
                 content: this.$_preLoadedContent ? ContentHelpers.flattenContent(this.$_preLoadedContent.data, true) : [],
-                filters: this.$_preLoadedContent ? Utils.flattenFilters(this.$_preLoadedContent.meta.filterOptions || []) : {},
+                filters: this.$_preLoadedContent ? ContentHelpers.flattenFilters(this.$_preLoadedContent.meta.filterOptions || []) : {},
                 total_results: this.$_totalResults || 0,
                 total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.meta.totalResults / this.$_limit) : 0,
                 catalogue_type: this.$_catalogueType,
@@ -369,13 +368,6 @@
                 }
 
                 return this.$_sortOverride || '-published_on';
-            },
-
-            eventData(){
-                return {
-                    title: this.singleEventTitle,
-                    date: this.singleEventDate
-                }
             }
         },
         methods: {
@@ -496,7 +488,7 @@
                                 this.total_pages = Math.ceil(response.data.meta.totalResults / this.$_limit);
 
                                 if(response.data.meta.filterOptions){
-                                    this.filters = Utils.flattenFilters(response.data.meta.filterOptions);
+                                    this.filters = ContentHelpers.flattenFilters(response.data.meta.filterOptions);
                                 }
                             }
 
