@@ -33,7 +33,7 @@
                         <h6 class="tiny text-white">
                             If the problem persists please contact support, either by clicking the chat widget
                             on the bottom of your screen, or by emailing
-                            <a href="mailto:support@drumeo.com">support@drumeo.com</a>.
+                            <a :href="'mailto:support@ ' + brand + '.com'">support@{{ brand }}.com</a>.
                         </h6>
                     </div>
                 </div>
@@ -348,7 +348,7 @@
                     defaultVideoWidth: 1280,
                     defaultVideoHeight: 720,
                     autosizeProgress: false,
-                    startVolume: 0.5,
+                    startVolume: 1,
                     preload: 'metadata',
                     // stretching: 'responsive',
                     stretching: 'fill',
