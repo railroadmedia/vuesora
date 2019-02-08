@@ -196,7 +196,7 @@
                     },
                     {
                         key: 'song',
-                        value: ['song'],
+                        value: ['song', 'song-part'],
                         icon: 'icon-songs',
                         active: true,
                     },
@@ -208,7 +208,7 @@
                     },
                     {
                         key: 'play-along',
-                        value: ['play-along'],
+                        value: ['play-along', 'play-along-part'],
                         icon: 'icon-play-alongs',
                         active: true,
                     },
