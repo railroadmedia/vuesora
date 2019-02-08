@@ -34,6 +34,25 @@
                             {{ contentType.key.replace(/-/g, ' ') }}
                         </label>
                     </div>
+
+                    <div class="flex flex-row form-group align-v-center mb-1">
+                        <span class="toggle-input mr-1">
+                            <input id="noRepliedTo"
+                                   name="noRepliedTo"
+                                   :v-model="noRepliedTo"
+                                   :checked="noRepliedTo"
+                                   @change="removeCommentsWithReplies"
+                                   type="checkbox">
+
+                            <span class="toggle">
+                                <span class="handle"></span>
+                            </span>
+                        </span>
+
+                        <label :for="noRepliedTo" class="toggle-label capitalize">
+                            Dont show comments we've replied to
+                        </label>
+                    </div>
                 </div>
             </div>
         </transition>
@@ -60,7 +79,7 @@
         <div class="comment-item flex flex-row bb-grey-1-1 pointer hover-bg-grey-7"
              v-if="!loading"
              v-for="comment in comments"
-             :class="openCommentId === comment.id ? 'bg-grey-7' : ''"
+             :class="[openCommentId === comment.id ? 'bg-grey-7' : '', lastReplyIsByTeam(comment) && noRepliedTo ? 'replied' : '']"
              @click="openCommentThread(comment)">
             <div class="flex flex-column">
                 <div class="comment-data flex flex-row align-v-top pa-2">
@@ -125,13 +144,6 @@
                 </transition>
             </div>
         </div>
-        <div v-if="loading"
-             class="flex flex-row pa-2 align-center">
-            <h1 class="display">
-                <i class="fas fa-spin fa-spinner"
-                   :class="'text-' + themeColor"></i>
-            </h1>
-        </div>
 
         <comment-likes-modal :themeColor="themeColor"
                              :commentId="currentLikeUsersId"
@@ -140,6 +152,17 @@
                              :loadingLikeUsers="loadingLikeUsers"
                              :requestingLikeUsers="requestingLikeUsers"
                              @loadMoreLikeUsers="addLikeUsersToModal"></comment-likes-modal>
+
+        <div class="flex flex-row pa-3 align-center">
+            <button class="button btn collapse-250"
+                    @click="loadMore">
+                <span class="text-white" :class="'bg-' + themeColor">
+                    <i v-if="loading || requestingData"
+                       class="fas fa-spin fa-spinner mr-1"></i>
+                    {{ loading || requestingData ?  'Loading...' : 'Load More' }}
+                </span>
+            </button>
+        </div>
     </div>
 </template>
 <script>
@@ -164,6 +187,7 @@
                 loading: false,
                 openCommentId: 0,
                 filterTimeout: null,
+                noRepliedTo: true,
                 contentTypes: [
                     {
                         key: 'course-part',
@@ -293,10 +317,11 @@
                     this.currentPage = 1;
                     this.loading = true;
                 }
-
+                
                 CommentService.getComments({
                     brand: 'drumeo',
                     limit: 100,
+                    sort: '-replied_on',
                     content_type: this.activeTypes,
                     page: this.currentPage,
                 })
@@ -342,23 +367,20 @@
                     });
             },
 
+            loadMore(){
+                if(!this.requestingData){
+                    this.currentPage += 1;
 
+                    this.getComments(false);
+                }
+            },
+
+            removeCommentsWithReplies(){
+                this.noRepliedTo = !this.noRepliedTo;
+            }
         },
         mounted(){
             this.getComments(true);
-
-            window.addEventListener('scroll', () => {
-                let scrollPosition = window.pageYOffset + window.innerHeight;
-                let bodyHeight = document.body.scrollHeight;
-
-                if((scrollPosition > (bodyHeight - 500)) && (this.comments.length !== this.totalComments)){
-                    if(!this.requestingData){
-                        this.currentPage += 1;
-
-                        this.getComments(false);
-                    }
-                }
-            });
         }
     }
 </script>
@@ -396,6 +418,10 @@
         i {
             font-size:12px;
         }
+    }
+
+    .comment-item.replied {
+        display:none;
     }
 
     .replied-to {

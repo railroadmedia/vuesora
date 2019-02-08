@@ -485,3 +485,18 @@
     .stop { display:flex; }
   }
 }
+
+.four-cards-row {
+
+  @include small {
+    .catalogue-card:last-child {
+      display:none;
+    }
+  }
+
+  @include medium {
+    .catalogue-card:last-child {
+      display:flex;
+    }
+  }
+}
