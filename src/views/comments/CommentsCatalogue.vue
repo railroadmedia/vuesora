@@ -318,7 +318,7 @@
                 }
 
                 Requests.getComments({
-                    brand: 'drumeo',
+                    brand: 'guitareo',
                     limit: 50,
                     sort: '-replied_on',
                     content_type: this.activeTypes,
