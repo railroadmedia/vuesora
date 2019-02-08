@@ -160,6 +160,7 @@
                 set(val){
                     this.sortOption = val;
 
+                    this.currentPage = 1;
                     this.getComments(this.requestParams, true);
                 }
             },
