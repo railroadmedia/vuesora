@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Toasts from '../classes/toasts'
+import ErrorHandler from './_error-handler';
 const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 
 export default {
@@ -15,7 +15,7 @@ export default {
             params: params
         })
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -29,7 +29,7 @@ export default {
     getCommentById(id) {
         return axios.get(endpoint_prefix + '/railcontent/comment/' + id)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -41,7 +41,7 @@ export default {
     postComment(data) {
         return axios.put(endpoint_prefix + '/railcontent/comment', data)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -53,7 +53,7 @@ export default {
     postReply(data) {
         return axios.put(endpoint_prefix + '/railcontent/comment/reply', data)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -65,7 +65,7 @@ export default {
     likeComment(id) {
         return axios.put(endpoint_prefix + '/railcontent/comment-like/' + id)
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -77,7 +77,7 @@ export default {
     unlikeComment(id) {
         return axios.delete(endpoint_prefix + '/railcontent/comment-like/' + id)
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -89,7 +89,7 @@ export default {
     deleteComment(id) {
         return axios.delete(endpoint_prefix + '/railcontent/comment/' + id)
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -108,20 +108,6 @@ export default {
             }
         })
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
-
-    /**
-     * Display an error message and console the error if any request fails
-     *
-     * @param {object} error - the error object returned by the request
-     */
-    handleError(error) {
-        console.error(error);
-        Toasts.push({
-            icon: 'doh',
-            title: 'This is Embarrassing! That didn\'t work',
-            message: 'Refresh the page to try once more, if it happens again please let us know using the chat below.'
-        });
-    }
 }

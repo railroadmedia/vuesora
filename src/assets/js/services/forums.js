@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Toasts from '../classes/toasts'
+import ErrorHandler from './_error-handler';
 const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 
 export default {
@@ -31,7 +31,7 @@ export default {
             params: params
         })
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -43,7 +43,7 @@ export default {
     getForumThreads() {
         return axios.get(endpoint_prefix + '/members/forums/threads-json')
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -54,7 +54,7 @@ export default {
     getForumThreadPosts() {
         return axios.get(endpoint_prefix + '/members/forums/post-json')
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -66,7 +66,7 @@ export default {
     reportForumPost(id) {
         return axios.put('/forums/post/report/' + id)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -78,7 +78,7 @@ export default {
     likeForumPost(id) {
         return axios.put(endpoint_prefix + '/forums/post/like/' + id)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -90,7 +90,7 @@ export default {
     unlikeForumPost(id) {
         return axios.delete(endpoint_prefix + '/forums/post/unlike/' + id)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -102,7 +102,7 @@ export default {
     followForumsThread(id) {
         return axios.put(endpoint_prefix + '/forums/thread/follow/' + id)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -117,7 +117,7 @@ export default {
             pinned: pinned
         })
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -132,7 +132,7 @@ export default {
             locked: locked
         })
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -144,7 +144,7 @@ export default {
     deleteForumsPost(id) {
         return axios.delete(endpoint_prefix + '/forums/post/delete/' + id)
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**

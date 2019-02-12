@@ -72,8 +72,8 @@ export default {
                 '<div class="icon-wrap square ' + icon + '"></div>' +
                 '</div>' +
                 '<div class="flex flex-column ph-1">' +
-                '<h6 class="tiny uppercase text-' + themeColor + '">' + title + '</h6>' +
-                '<h5 class="body font-bold font-compressed">' + message + '</h5>' +
+                '<h6 class="tiny uppercase font-bold text-' + themeColor + '">' + title + '</h6>' +
+                '<h5 class="tiny font-compressed">' + message + '</h5>' +
                 '</div>' +
                 '<div class="flex flex-column icon-column flex-center subheading">' +
                 '<i class="fas fa-times"></i>' +

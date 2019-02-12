@@ -49,6 +49,7 @@ export default (function () {
                                         Toasts.push({
                                             icon: 'happy',
                                             title: 'READY TO START AGAIN?',
+                                            themeColor: this.$_themeColor,
                                             message: 'Your progress has been reset.'
                                         });
 
@@ -126,6 +127,7 @@ export default (function () {
                                             Toasts.push({
                                                 icon: 'happy',
                                                 title: 'READY TO START AGAIN?',
+                                                themeColor: this.$_themeColor,
                                                 message: 'Your progress has been reset.'
                                             });
                                         }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Toasts from '../classes/toasts'
+import ErrorHandler from './_error-handler';
 const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 
 export default {
@@ -12,7 +12,7 @@ export default {
     getContentById(id){
         return axios.get(endpoint_prefix + '/railcontent/content/' + id)
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
 
@@ -28,7 +28,7 @@ export default {
             }
         })
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -44,7 +44,7 @@ export default {
             }
         })
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -77,7 +77,7 @@ export default {
             content_id: contentId
         })
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -107,7 +107,7 @@ export default {
             content_id: contentId
         })
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -127,7 +127,7 @@ export default {
             type: is_added ? 'remove-from-list' : 'my-list-addition'
         })
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -141,20 +141,6 @@ export default {
     markLearningPathAsStarted(content_id){
         return axios.post(endpoint_prefix + '/members/start-learning-path/' + content_id)
             .then(response => response)
-            .catch(this.handleError)
-    },
-
-    /**
-     * Display an error message and console the error if any request fails
-     *
-     * @param {object} error - the error object returned by the request
-     */
-    handleError(error) {
-        console.error(error);
-        Toasts.push({
-            icon: 'doh',
-            title: 'This is Embarrassing! That didn\'t work',
-            message: 'Refresh the page to try once more, if it happens again please let us know using the chat below.'
-        });
+            .catch(ErrorHandler)
     },
 }

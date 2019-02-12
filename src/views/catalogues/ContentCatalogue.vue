@@ -508,6 +508,7 @@
                             console.error(error);
                             Toasts.push({
                                 icon: 'doh',
+                                themeColor: this.$_themeColor,
                                 title: 'This is Embarassing That didn\'t work',
                                 message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. '
                             });
@@ -524,20 +525,6 @@
                 if ((scroll_position >= scroll_buffer) && (this.page < this.total_pages)) {
                     this.loadMore();
                 }
-            },
-
-            loadNewPosts() {
-                this.selected_tab = 'new';
-                this.required_user_states = [];
-
-                this.getContent();
-            },
-
-            loadStartedPosts() {
-                this.selected_tab = 'continue';
-                this.required_user_states = ['started'];
-
-                this.getContent();
             },
 
             loadMore() {

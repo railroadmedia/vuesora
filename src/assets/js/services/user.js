@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Toasts from '../classes/toasts'
+import ErrorHandler from './_error-handler';
 const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 
 export default {
@@ -12,7 +12,7 @@ export default {
 
         return axios.patch('/payment-method/set-default', {id: paypalPaymentMethodId})
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -24,7 +24,7 @@ export default {
 
         return axios.get('/members/account/settings/payment-methods')
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -36,7 +36,7 @@ export default {
 
         return axios.get('/payment-method/paypal-url')
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -50,7 +50,7 @@ export default {
 
         return axios.patch('/payment-method/' + id, payload)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -63,7 +63,7 @@ export default {
 
         return axios.delete('/payment-method/' + id)
             .then(response => response)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -80,7 +80,7 @@ export default {
                 if (error.response && error.response.status == 422) {
                     return error.response.data;
                 } else {
-                    this.handleError(error);
+                    ErrorHandler(error);
                 }
             });
     },
@@ -103,7 +103,7 @@ export default {
 
         return axios.post(endpoint_prefix + endpoint, formData, config)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -124,7 +124,7 @@ export default {
             recipient: recipient
         })
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -136,7 +136,7 @@ export default {
     markNotificationAsRead(id) {
         return axios.post(endpoint_prefix + '/members/notifications/mark-read/' + id)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -148,7 +148,7 @@ export default {
     markNotificationAsUnRead(id) {
         return axios.post(endpoint_prefix + '/members/notifications/mark-unread/' + id)
             .then(response => response.data)
-            .catch(this.handleError);
+            .catch(ErrorHandler);
     },
 
     /**
@@ -159,20 +159,6 @@ export default {
     markAllNotificationsAsRead() {
         return axios.post(endpoint_prefix + '/members/notifications/mark-all-read')
             .then(response => response.data)
-            .catch(this.handleError);
-    },
-
-    /**
-     * Display an error message and console the error if any request fails
-     *
-     * @param {object} error - the error object returned by the request
-     */
-    handleError(error) {
-        console.error(error);
-        Toasts.push({
-            icon: 'doh',
-            title: 'This is Embarrassing! That didn\'t work',
-            message: 'Refresh the page to try once more, if it happens again please let us know using the chat below.'
-        });
+            .catch(ErrorHandler);
     }
 }
