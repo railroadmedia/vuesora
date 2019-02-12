@@ -17,6 +17,8 @@ import SongPartModel from './song-part';
 import StudentFocusModel from './student-focus';
 import StudentReviewModel from './student-review';
 import QnaModel from './question-and-answer';
+import UnitModel from './unit';
+import UnitPartModel from './unit-part';
 
 export {
     ChordsAndScalesModel as chord_and_scale,
@@ -49,4 +51,7 @@ export {
     StudentReviewModel as student_review,
 
     QnaModel as question_and_answer,
+
+    UnitModel as unit,
+    UnitPartModel as unit_part
 }
