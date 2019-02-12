@@ -6,7 +6,7 @@ export default {
     methods: {
         // Used at the top level to emit the event with a payload
         addToList(){
-            if(this.$_destroyOnListRemoval){
+            if(this.destroyOnListRemoval){
 
                 Toasts.confirm({
                     title: 'Hold your horses… This will remove this lesson from your list, are you sure about this?',
@@ -15,8 +15,8 @@ export default {
                         callback: () => {
 
                             this.emitAddToList({
-                                content_id: this.$_item.id,
-                                is_added: this.$_item.is_added_to_primary_playlist || false
+                                content_id: this.item.id,
+                                is_added: this.item.is_added_to_primary_playlist || false
                             });
 
                             Toasts.push({
@@ -33,13 +33,13 @@ export default {
             }
             else {
                 this.emitAddToList({
-                    content_id: this.$_item.id,
-                    is_added: this.$_item.is_added_to_primary_playlist || false
+                    content_id: this.item.id,
+                    is_added: this.item.is_added_to_primary_playlist || false
                 });
             }
         },
 
-        resetProgress(event){
+        progressReset(event){
             const icon = event.target;
 
             Toasts.confirm({
@@ -52,7 +52,7 @@ export default {
                         icon.classList.add('fa-spin', 'fa-spinner');
 
                         this.emitResetProgress({
-                            content_id: this.$_item.id,
+                            content_id: this.item.id,
                             icon: icon
                         });
                     }
@@ -69,7 +69,7 @@ export default {
         },
 
         emitResetProgress(payload){
-            this.$emit('resetProgress', payload);
+            this.$emit('progressReset', payload);
         },
 
         // Used to handle the event when bussed to the top level parent
@@ -78,7 +78,7 @@ export default {
 
             this.content[post_index].is_added_to_primary_playlist = !this.content[post_index].is_added_to_primary_playlist;
 
-            if(payload.is_added && this.$_destroyOnListRemoval){
+            if(payload.is_added && this.destroyOnListRemoval){
                 this.content.splice(post_index, 1);
             }
 
@@ -114,8 +114,8 @@ export default {
 
         addEvent(payload){
             const payloadObject = payload.title ? payload : {
-                title: this.$_item.title,
-                date: this.$_item.published_on
+                title: this.item.title,
+                date: this.item.published_on
             };
 
             this.$emit('addEvent', payloadObject);

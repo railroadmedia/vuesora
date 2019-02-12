@@ -4,90 +4,90 @@ import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 export default {
     mixins: [UserCatalogueEvents],
     props: {
-        $_item: {
+        item: {
             type: Object
         },
 
-        $_themeColor: {
+        themeColor: {
             type: String,
             default: () => 'drumeo'
         },
 
-        $_brand: {
+        brand: {
             type: String,
             default: () => 'drumeo'
         },
 
-        $_userId: {
+        userId: {
             type: String,
             default: () => ''
         },
 
-        $_contentTypeOverride: {
+        contentTypeOverride: {
             type: String,
             default: ''
         },
 
-        $_forceWideThumbs: {
+        forceWideThumbs: {
             type: Boolean,
             default: () => false
         },
 
-        $_lockUnowned: {
+        lockUnowned: {
             type: Boolean,
             default: () => false
         },
 
-        $_useThemeColor: {
+        useThemeColor: {
             type: Boolean,
             default: () => false
         },
 
-        $_resetProgress: {
+        resetProgress: {
             type: Boolean,
             default: () => false
         },
 
-        $_overview: {
+        overview: {
             type: Boolean,
             default: () => false
         },
 
-        $_index: {
+        index: {
             default: () => ''
         },
 
-        $_active: {
+        active: {
             type: Boolean,
             default: () => false
         },
 
-        $_displayUserInteractions: {
+        displayUserInteractions: {
             type: Boolean,
             default: () => true
         },
 
-        $_showNumbers: {
+        showNumbers: {
             type: Boolean,
             default: () => false
         },
 
-        $_noLink: {
+        noLink: {
             type: Boolean,
             default: () => false
         },
 
-        $_is_search: {
+        is_search: {
             type: Boolean,
             default: false
         },
 
-        $_destroyOnListRemoval: {
+        destroyOnListRemoval: {
             type: Boolean,
             default: () => false
         },
 
-        $_compactLayout: {
+        compactLayout: {
             type: Boolean,
             default: () => false
         }
@@ -101,94 +101,94 @@ export default {
 
     computed: {
 
-        $_is_added:{
+        is_added:{
             cache: false,
             get(){
-                return this.$_item.is_added_to_primary_playlist;
+                return this.item.is_added_to_primary_playlist;
             }
         },
 
-        $_thumbnail(){
-            if(this.$_item.type === 'learning-path' && this.brand === 'drumeo'){
-                return this.$_item['background_image_url'] ||
+        thumbnail(){
+            if(this.item.type === 'learning-path' && this.brand === 'drumeo'){
+                return this.item['background_image_url'] ||
                     'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
             }
 
-            return this.$_item['thumbnail_url'] ||
+            return this.item['thumbnail_url'] ||
                 'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
         },
 
-        $_progress_percent(){
-            if(this.$_item.type === 'course' ||
-                this.$_item.type === 'pack' ||
-                this.$_item.type === 'pack-bundle' ||
-                this.$_item.type === 'semester-pack' ||
-                this.$_item.type === 'learning-path'){
+        progress_percent(){
+            if(this.item.type === 'course' ||
+                this.item.type === 'pack' ||
+                this.item.type === 'pack-bundle' ||
+                this.item.type === 'semester-pack' ||
+                this.item.type === 'learning-path'){
 
-                return this.$_item['progress_percent'];
+                return this.item['progress_percent'];
             }
 
-            if(this.$_item.video != null){
-                return (Number(this.$_item['last_watch_position_in_seconds']) / Number(this.$_item.video.length_in_seconds)) * 100;
+            if(this.item.video != null){
+                return (Number(this.item['last_watch_position_in_seconds']) / Number(this.item.video.length_in_seconds)) * 100;
             }
 
             return 0;
         },
 
-        $_noAccess(){
-            return (this.$_lockUnowned && this.$_item.is_owned === false) || (this.$_lockUnowned && !this.$_isReleased);
+        noAccess(){
+            return (this.lockUnowned && this.item.is_owned === false) || (this.lockUnowned && !this.isReleased);
         },
 
-        $_isReleased(){
-            return DateTime.fromSQL(this.$_item['published_on']).toFormat('x') < Date.now();
+        isReleased(){
+            return DateTime.fromSQL(this.item['published_on']).toFormat('x') < Date.now();
         },
 
-        $_releaseDate(){
-            return DateTime.fromSQL(this.$_item['published_on']).toFormat('LLL d/yy');
+        releaseDate(){
+            return DateTime.fromSQL(this.item['published_on']).toFormat('LLL d/yy');
         },
 
-        $_completedIcon(){
-            return this.$_item['type'] === 'course' ? 'fa-trophy' : 'fa-check-circle';
+        completedIcon(){
+            return this.item['type'] === 'course' ? 'fa-trophy' : 'fa-check-circle';
         },
 
-        $_thumbnailIcon(){
+        thumbnailIcon(){
             const contentWithHierarchy = {
                 'drumeo': ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
                 'guitareo': ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
                 'pianote': ['course', 'learning-path', 'pack', 'chord-and-scale']
             };
 
-            if(this.$_noAccess){
-                if(this.$_lockUnowned && this.$_item.is_owned === false){
+            if(this.noAccess){
+                if(this.lockUnowned && this.item.is_owned === false){
                     return 'fa-lock';
                 }
 
-                if(!this.$_isReleased){
+                if(!this.isReleased){
                     return 'fa-clock';
                 }
             }
 
-            return contentWithHierarchy[this.$_brand].indexOf(this.$_item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
+            return contentWithHierarchy[this.brand].indexOf(this.item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
         },
 
-        $_renderLink(){
-            if(this.$_noLink){
+        renderLink(){
+            if(this.noLink){
                 return false;
             }
 
-            return this.$_noAccess;
+            return this.noAccess;
         },
 
         theme(){
-            if(this.$_useThemeColor){
-                return this.$_themeColor
+            if(this.useThemeColor){
+                return this.themeColor
             }
 
-            return this.$_item.type;
+            return this.item.type;
         },
 
         thumbnailType(){
-            if(this.$_forceWideThumbs){
+            if(this.forceWideThumbs){
                 return 'widescreen';
             }
             else {
@@ -196,7 +196,7 @@ export default {
                     'drumeo': ['song'],
                     'guitareo': ['song', 'chord-and-scale'],
                     'pianote': ['song']
-                }[this.$_brand].indexOf(this.$_item.type) !== -1 ? 'square' : 'widescreen';
+                }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
             }
         },
     }

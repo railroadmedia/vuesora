@@ -27,7 +27,7 @@ export default (function () {
             });
         }
 
-        function resetProgress(event) {
+        function progressReset(event) {
             const element = event.target;
             const contentType = Utils.toTitleCase(element.dataset['contentType'] || 'content');
             const contentId = element.dataset['contentId'];

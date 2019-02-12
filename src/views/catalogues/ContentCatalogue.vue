@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column grow align-v-center">
-        <div v-if="$_gridOrListButtons"
+        <div v-if="gridOrListButtons"
              class="flex flex-row pv">
             <button class="btn mh-1"
                     @click="toggleCatalogueType('list')">
@@ -18,71 +18,71 @@
             </button>
         </div>
 
-        <catalogue-search v-if="$_searchBar"
-                          :$_themeColor="$_themeColor"
-                          :$_included_types="$_includedTypes"
-                          :$_selected_types="selected_types"
-                          :$_search_term="search_term"
-                          :$_current_page="page"
-                          :$_total_results="total_results"
+        <catalogue-search v-if="searchBar"
+                          :themeColor="themeColor"
+                          :included_types="includedTypes"
+                          :selected_types="selected_types"
+                          :search_term="search_term"
+                          :current_page="page"
+                          :total_results="total_results"
                           @typeChange="handleTypeChange"
                           @searchChange="handleSearch"></catalogue-search>
 
 
-        <catalogue-playlist-tabs v-if="$_isPlaylists"
-                                 :$_themeColor="$_themeColor"
-                                 :$_included_types="$_includedTypes"></catalogue-playlist-tabs>
+        <catalogue-playlist-tabs v-if="isPlaylists"
+                                 :themeColor="themeColor"
+                                 :included_types="includedTypes"></catalogue-playlist-tabs>
 
 
-        <catalogue-filters v-if="$_filterableValues.length"
-                           :$_filters="filters"
-                           :$_filterableValues="$_filterableValues"
+        <catalogue-filters v-if="filterableValues.length"
+                           :filters="filters"
+                           :filterableValues="filterableValues"
                            :required_user_states="required_user_states"
                            :filter_params="filter_params"
                            :loading="loading"
-                           :$_themeColor="$_themeColor"
+                           :themeColor="themeColor"
                            @filterChange="handleFilterChange"
                            @progressChange="handleProgressChange"></catalogue-filters>
 
-        <div v-if="content.length === 0 && $_noResultsMessage.length > 0"
+        <div v-if="content.length === 0 && noResultsMessage.length > 0"
              class="flex flex-row ph pv-3">
-            <h4 class="body">{{ $_noResultsMessage }}</h4>
+            <h4 class="body">{{ noResultsMessage }}</h4>
         </div>
 
         <grid-catalogue v-if="catalogue_type === 'grid'"
-                        :$_content="content"
-                        :$_brand="$_brand"
-                        :$_themeColor="$_themeColor"
-                        :$_noWrap="$_noWrapGrid"
-                        :$_userId="$_userId"
-                        :$_lockUnowned="$_lockUnowned"
-                        :$_forceWideThumbs="$_forceWideThumbs"
-                        :$_contentTypeOverride="$_contentTypeOverride"
-                        :$_useThemeColor="$_useThemeColor"
+                        :content="content"
+                        :brand="brand"
+                        :themeColor="themeColor"
+                        :noWrap="noWrapGrid"
+                        :userId="userId"
+                        :lockUnowned="lockUnowned"
+                        :forceWideThumbs="forceWideThumbs"
+                        :contentTypeOverride="contentTypeOverride"
+                        :useThemeColor="useThemeColor"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
         <list-catalogue v-if="catalogue_type === 'list' || catalogue_type === 'schedule'"
-                        :$_content="content"
-                        :$_brand="$_brand"
-                        :$_themeColor="$_themeColor"
-                        :$_card_type="$_catalogueType"
-                        :$_userId="$_userId"
-                        :$_displayItemsAsOverview="$_displayItemsAsOverview"
-                        :$_displayUserInteractions="$_displayUserInteractions"
-                        :$_contentTypeOverride="$_contentTypeOverride"
-                        :$_lockUnowned="$_lockUnowned"
-                        :$_showNumbers="$_showNumbers"
-                        :$_is_search="$_searchBar || $_isPlaylists"
-                        :$_resetProgress="$_resetProgress"
-                        :$_useThemeColor="$_useThemeColor"
-                        :$_forceWideThumbs="$_forceWideThumbs"
-                        :$_destroyOnListRemoval="$_destroyOnListRemoval"
-                        :$_compactLayout="$_compactLayout"
-                        :$_subscriptionCalendarId="$_subscriptionCalendarId"
+                        :content="content"
+                        :brand="brand"
+                        :themeColor="themeColor"
+                        :card_type="catalogueType"
+                        :userId="userId"
+                        :displayItemsAsOverview="displayItemsAsOverview"
+                        :displayUserInteractions="displayUserInteractions"
+                        :contentTypeOverride="contentTypeOverride"
+                        :lockUnowned="lockUnowned"
+                        :showNumbers="showNumbers"
+                        :is_search="searchBar || isPlaylists"
+                        :resetProgress="resetProgress"
+                        :useThemeColor="useThemeColor"
+                        :forceWideThumbs="forceWideThumbs"
+                        :destroyOnListRemoval="destroyOnListRemoval"
+                        :compactLayout="compactLayout"
+                        :subscriptionCalendarId="subscriptionCalendarId"
                         @addToList="addToListEventHandler"
-                        @resetProgress="resetProgressEventHandler"></list-catalogue>
+                        @progressReset="resetProgressEventHandler"></list-catalogue>
 
-        <div v-if="($_infiniteScroll && $_loadMoreButton) && (page < total_pages)"
+        <div v-if="(infiniteScroll && loadMoreButton) && (page < total_pages)"
              class="flex flex-row pa">
             <button class="btn collapse-150 short"
                     @click="loadMore"
@@ -93,7 +93,7 @@
             </button>
         </div>
 
-        <div v-if="$_paginate && total_pages > 1 && !$_infiniteScroll"
+        <div v-if="paginate && total_pages > 1 && !infiniteScroll"
              class="flex flex-row bg-light pagination-row align-h-right">
             <pagination :currentPage="Number(page)"
                         :totalPages="total_pages"
@@ -101,10 +101,10 @@
         </div>
 
         <transition name="show-from-bottom">
-            <div id="loadingDialog" v-if="loading && $_showLoadingAnimation"
+            <div id="loadingDialog" v-if="loading && showLoadingAnimation"
                  class="flex flex-row align-center">
                 <div class="loading-spinner corners-5 shadow pa flex-center"
-                     :class="'bg-' + $_themeColor">
+                     :class="'bg-' + themeColor">
                     <i class="fas fa-spinner fa-spin text-white"></i>
                     <p class="x-tiny text-white">Loading Please Wait...</p>
                 </div>
@@ -141,161 +141,161 @@
             'add-event-dropdown': AddEventDropdown
         },
         props: {
-            $_catalogueType: {
+            catalogueType: {
                 type: String,
                 default: () => 'grid'
             },
-            $_userId: {
+            userId: {
                 type: String,
                 default: () => ''
             },
-            $_gridOrListButtons: {
+            gridOrListButtons: {
                 type: Boolean,
                 default: () => false
             },
-            $_brand: {
+            brand: {
                 type: String,
                 default: () => 'drumeo'
             },
-            $_preLoadedContent: {
+            preLoadedContent: {
                 type: Object
             },
-            $_limit: {
+            limit: {
                 type: String,
                 default: () => '10'
             },
-            $_totalPages: {
+            totalPages: {
                 type: String,
                 default: () => ''
             },
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => 'drumeo'
             },
-            $_statuses: {
+            statuses: {
                 type: Array,
                 default: () => ['published']
             },
-            $_contentEndpoint: {
+            contentEndpoint: {
                 type: String,
                 default: () => '/railcontent/content'
             },
-            $_includedTypes: {
+            includedTypes: {
                 type: Array,
                 default: () => ['recording', 'course', 'song', 'play-along', 'student-focus', 'learning-path', 'pack']
             },
-            $_requiredUserStates: {
+            requiredUserStates: {
                 type: Array,
                 default: () => []
             },
-            $_filterableValues: {
+            filterableValues: {
                 type: Array,
                 default: () => []
             },
-            $_paginate: {
+            paginate: {
                 type: Boolean,
                 default: () => false
             },
-            $_infiniteScroll: {
+            infiniteScroll: {
                 type: Boolean,
                 default: () => false
             },
-            $_loadMoreButton: {
+            loadMoreButton: {
                 type: Boolean,
                 default: () => false
             },
-            $_destroyOnListRemoval: {
+            destroyOnListRemoval: {
                 type: Boolean,
                 default: () => false
             },
-            $_displayItemsAsOverview: {
+            displayItemsAsOverview: {
                 type: Boolean,
                 default: () => false
             },
-            $_displayUserInteractions: {
+            displayUserInteractions: {
                 type: Boolean,
                 default: () => true
             },
-            $_noWrapGrid: {
+            noWrapGrid: {
                 type: Boolean,
                 default: () => false
             },
-            $_showLoadingAnimation: {
+            showLoadingAnimation: {
                 type: Boolean,
                 default: () => false
             },
-            $_useUrlParams: {
+            useUrlParams: {
                 type: Boolean,
                 default: () => false
             },
-            $_noResultsMessage: {
+            noResultsMessage: {
                 type: String,
                 default: () => ''
             },
-            $_forceWideThumbs: {
+            forceWideThumbs: {
                 type: Boolean,
                 default: () => false
             },
-            $_contentTypeOverride: {
+            contentTypeOverride: {
                 type: String,
                 default: () => ''
             },
-            $_showNumbers: {
+            showNumbers: {
                 type: Boolean,
                 default: () => false
             },
-            $_lockUnowned: {
+            lockUnowned: {
                 type: Boolean,
                 default: () => false
             },
-            $_searchBar: {
+            searchBar: {
                 type: Boolean,
                 default: () => false
             },
-            $_searchEndpoint: {
+            searchEndpoint: {
                 type: String,
                 default: () => '/laravel/public/railcontent/search'
             },
-            $_isPlaylists: {
+            isPlaylists: {
                 type: Boolean,
                 default: () => false
             },
-            $_resetProgress: {
+            resetProgress: {
                 type: Boolean,
                 default: () => false
             },
-            $_initialPage: {
+            initialPage: {
                 default: null
             },
-            $_useThemeColor: {
+            useThemeColor: {
                 type: Boolean,
                 default: () => false
             },
-            $_sortOverride: {
+            sortOverride: {
                 type: String,
                 default: () => ''
             },
-            $_compactLayout: {
+            compactLayout: {
                 type: Boolean,
                 default: () => false
             },
-            $_subscriptionCalendarId: {
+            subscriptionCalendarId: {
                 type: String,
                 default: ''
             },
-            $_totalResults: {
+            totalResults: {
                 type: String|Number,
                 default: () => 0
             }
         },
         data() {
             return {
-                page: this.$_initialPage || 1,
-                content: this.$_preLoadedContent ? ContentHelpers.flattenContent(this.$_preLoadedContent.data, true) : [],
-                filters: this.$_preLoadedContent ? ContentHelpers.flattenFilters(this.$_preLoadedContent.meta.filterOptions || []) : {},
-                total_results: this.$_totalResults || 0,
-                total_pages: this.$_preLoadedContent ? Math.ceil(this.$_preLoadedContent.meta.totalResults / this.$_limit) : 0,
-                catalogue_type: this.$_catalogueType,
+                page: this.initialPage || 1,
+                content: this.preLoadedContent ? ContentHelpers.flattenContent(this.preLoadedContent.data, true) : [],
+                filters: this.preLoadedContent ? ContentHelpers.flattenFilters(this.preLoadedContent.meta.filterOptions || []) : {},
+                total_results: this.totalResults || 0,
+                total_pages: this.preLoadedContent ? Math.ceil(this.preLoadedContent.meta.totalResults / this.limit) : 0,
+                catalogue_type: this.catalogueType,
                 loading: false,
                 requestingMore: false,
                 filter_params: {
@@ -308,7 +308,7 @@
                 },
                 selected_types: null,
                 search_term: undefined,
-                required_user_states: this.$_requiredUserStates || [],
+                required_user_states: this.requiredUserStates || [],
                 selected_tab: 'new',
                 singleEventDropdown: false,
                 subscriptionCalendarDropdown: false,
@@ -320,7 +320,7 @@
         },
         computed: {
 
-            $_required_fields() {
+            required_fields() {
                 let filter_keys = Object.keys(this.filter_params);
                 let included_fields = [];
 
@@ -336,17 +336,17 @@
             },
 
             selectedTypes() {
-                if (this.$_searchBar) {
+                if (this.searchBar) {
                     return this.selected_types ? [this.selected_types] : [];
                 }
 
-                return this.$_includedTypes;
+                return this.includedTypes;
             },
 
-            $_request_params() {
+            request_params() {
                 return {
-                    'required_fields': this.$_required_fields,
-                    'statuses': this.$_statuses,
+                    'required_fields': this.required_fields,
+                    'statuses': this.statuses,
                     'required_user_states': this.required_user_states,
                     'term': this.search_term,
                     'included_types': this.selectedTypes,
@@ -354,12 +354,12 @@
                 }
             },
 
-            contentEndpoint(){
+            $_contentEndpoint(){
                 if(this.search_term){
-                    return this.$_searchEndpoint;
+                    return this.searchEndpoint;
                 }
 
-                return this.$_contentEndpoint;
+                return this.contentEndpoint;
             },
 
             sortBy(){
@@ -367,7 +367,7 @@
                     return '-score';
                 }
 
-                return this.$_sortOverride || '-published_on';
+                return this.sortOverride || '-published_on';
             }
         },
         methods: {
@@ -406,7 +406,7 @@
                             });
                         }
                     }
-                    else if (key === 'included_types' && this.$_searchBar) {
+                    else if (key === 'included_types' && this.searchBar) {
                         if (!Array.isArray(query_object[key])) {
                             let this_val = query_object[key].split(',');
                             this.selected_types[this_val[0]] = this_val[1];
@@ -417,19 +417,19 @@
                             });
                         }
                     }
-                    else if (key === 'term' && this.$_searchBar) {
+                    else if (key === 'term' && this.searchBar) {
                         this.search_term = query_object[key];
                     }
-                    else if (key === 'page' && this.$_paginate) {
+                    else if (key === 'page' && this.paginate) {
                         this.page = query_object[key];
                     }
                 });
             },
 
             setUrlParams() {
-                const params = JSON.parse(JSON.stringify(this.$_request_params));
+                const params = JSON.parse(JSON.stringify(this.request_params));
 
-                if(!this.$_searchBar){
+                if(!this.searchBar){
                     if(params['included_types']){
                         delete params['included_types'];
                     }
@@ -438,14 +438,14 @@
                     }
                 }
 
-                if(!this.$_paginate){
+                if(!this.paginate){
                     if(params['page']){
                         delete params['page'];
                     }
                 }
 
                 // If published is our only status just remove it fromm the url params
-                if(this.$_statuses[0] === 'published' && this.$_statuses.length === 1){
+                if(this.statuses[0] === 'published' && this.statuses.length === 1){
                     delete params['statuses'];
                 }
 
@@ -461,13 +461,13 @@
                     this.loading = displayLoading;
                     this.requestingMore = true;
 
-                    axios.get(this.contentEndpoint, {
+                    axios.get(this.$_contentEndpoint, {
                         params: {
-                            brand: this.$_brand,
-                            limit: this.$_limit,
-                            statuses: this.$_statuses,
+                            brand: this.brand,
+                            limit: this.limit,
+                            statuses: this.statuses,
                             sort: this.sortBy,
-                            ...this.$_request_params
+                            ...this.request_params
                         }
                     })
                         .then(response => {
@@ -485,7 +485,7 @@
                                 }
                                 this.page = Number(response.data.meta.page);
                                 this.total_results = response.data.meta.totalResults;
-                                this.total_pages = Math.ceil(response.data.meta.totalResults / this.$_limit);
+                                this.total_pages = Math.ceil(response.data.meta.totalResults / this.limit);
 
                                 if(response.data.meta.filterOptions){
                                     this.filters = ContentHelpers.flattenFilters(response.data.meta.filterOptions);
@@ -508,7 +508,7 @@
                             console.error(error);
                             Toasts.push({
                                 icon: 'doh',
-                                themeColor: this.$_themeColor,
+                                themeColor: this.themeColor,
                                 title: 'This is Embarassing That didn\'t work',
                                 message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. '
                             });
@@ -536,10 +536,10 @@
             },
 
             handlePageChange(payload) {
-                if(!this.$_isPlaylists){
+                if(!this.isPlaylists){
                     this.page = payload.page;
 
-                    if (this.$_paginate) {
+                    if (this.paginate) {
                         this.setUrlParams();
                     }
 
@@ -560,7 +560,7 @@
                 this.filter_params[payload.key] = payload.value;
                 this.page = 1;
 
-                if (this.$_useUrlParams) {
+                if (this.useUrlParams) {
                     this.setUrlParams();
                 }
                 this.getContent();
@@ -574,7 +574,7 @@
                     this.required_user_states.push(payload.type);
                 }
 
-                if(this.$_useUrlParams){
+                if(this.useUrlParams){
                     this.setUrlParams();
                 }
 
@@ -600,20 +600,20 @@
             },
         },
         mounted() {
-            if (!this.$_preLoadedContent && !this.$_preLoadedContent.results.length) {
+            if (!this.preLoadedContent && !this.preLoadedContent.results.length) {
                 this.getContent();
             }
 
-            if (this.$_infiniteScroll && !this.$_loadMoreButton) {
+            if (this.infiniteScroll && !this.loadMoreButton) {
                 window.addEventListener('scroll', this.infiniteScrollEventHandler);
             }
 
-            if (this.$_useUrlParams) {
+            if (this.useUrlParams) {
                 this.getUrlParams();
             }
         },
         beforeDestroy() {
-            if (this.$_infiniteScroll && !this.$_loadMoreButton) {
+            if (this.infiniteScroll && !this.loadMoreButton) {
                 window.removeEventListener('scroll', this.infiniteScrollEventHandler);
             }
         }
