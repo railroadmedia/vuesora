@@ -14,17 +14,17 @@
             </div>
 
             <div class="flex flex-column xs-12 sm-4 pv-1">
-                <catalogue-filter $_filter_name="type"
-                                  :$_item="parsedTypes"
-                                  :$_themeColor="$_themeColor"
+                <catalogue-filter filter_name="type"
+                                  :item="parsedTypes"
+                                  :themeColor="themeColor"
                                   :loading="loading"
-                                  :$_initial_value="$_selected_types"
+                                  :initial_value="selected_types"
                                   @filterChange="changeFilter"></catalogue-filter>
             </div>
         </div>
         <div class="flex flex-row ph-1 pb-1">
             <p class="tiny text-grey-3 font-italic">
-                Displaying <span v-if="$_total_results > 0">{{ currentResults }} of</span> {{ $_total_results }} results.
+                Displaying <span v-if="total_results > 0">{{ currentResults }} of</span> {{ total_results }} results.
             </p>
         </div>
     </div>
@@ -38,7 +38,7 @@
             'catalogue-filter': CatalogueFilter
         },
         props: {
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => ''
             },
@@ -46,27 +46,27 @@
                 type: Boolean,
                 default: () => false
             },
-            $_included_types: {
+            included_types: {
                 type: Array,
                 default: () => []
             },
-            $_selected_types: {
+            selected_types: {
                 type: String,
                 default: () => null
             },
-            $_search_term: {
+            search_term: {
                 type: String,
                 default: () => undefined
             },
-            $_current_page: {
+            current_page: {
                 type: String|Number,
                 default: () => 1
             },
-            $_limit: {
+            limit: {
                 type: String|Number,
                 default: () => 20
             },
-            $_total_results: {
+            total_results: {
                 type: String|Number,
                 default: () => 0
             }
@@ -74,7 +74,7 @@
         computed: {
             searchTermInterface: {
                 get(){
-                    return this.$_search_term;
+                    return this.search_term;
                 },
                 set(value){
                     if(value){
@@ -86,17 +86,17 @@
             },
 
             currentResults(){
-                return (1 + ((this.$_current_page * this.$_limit) - this.$_limit)) + '-' + this.displayedLimit;
+                return (1 + ((this.current_page * this.limit) - this.limit)) + '-' + this.displayedLimit;
             },
 
             displayedLimit(){
-                return this.$_limit > this.$_total_results ? this.$_total_results : this.$_limit;
+                return this.limit > this.total_results ? this.total_results : this.limit;
             },
 
             parsedTypes(){
                 let parsedArray = [];
 
-                this.$_included_types.forEach(type => {
+                this.included_types.forEach(type => {
                     parsedArray.push({
                         key: type,
                         value: type

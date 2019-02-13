@@ -1,23 +1,23 @@
 <template>
     <div class="flex flex-column pa-1 catalogue-card">
-        <a :href="$_item.url"
+        <a :href="item.url"
            class="no-decoration">
             <div class="card-media corners-5 mb-1"
                  :class="thumbnailType">
 
                 <div class="thumb-img bg-center"
-                     :style="'background-image:url(' + $_thumbnail + ');'"
-                     :class="$_item.type === 'chord-and-scale' ? 'no-bg' : ''"></div>
+                     :style="'background-image:url(' + thumbnail + ');'"
+                     :class="item.type === 'chord-and-scale' ? 'no-bg' : ''"></div>
 
                 <i class="add-to-list fas fa-plus"
-                   v-if="$_item.type !== 'pack-bundle'"
-                   :class="$_is_added ? 'is-added text-' + theme : 'text-white'"
-                   :title="$_is_added ? 'Remove from list' : 'Add to list'"
-                   :data-content-id="$_item.id"
-                   :data-content-type="$_item.type"
+                   v-if="item.type !== 'pack-bundle'"
+                   :class="is_added ? 'is-added text-' + theme : 'text-white'"
+                   :title="is_added ? 'Remove from list' : 'Add to list'"
+                   :data-content-id="item.id"
+                   :data-content-type="item.type"
                    @click.stop.prevent="addToList"></i>
 
-                <h3 v-if="$_item['type'] !== 'chord-and-scale'"
+                <h3 v-if="item['type'] !== 'chord-and-scale'"
                     class="thumbnail-title tiny font-compressed uppercase dense font-bold"
                     :class="'text-' + theme" v-html="mappedData.color_title">
                     {{ mappedData.color_title }}
@@ -26,18 +26,18 @@
                 <div class="lesson-progress overflow corners-bottom-5">
                     <span class="progress"
                           :class="'bg-' + theme"
-                          :style="'width:' + $_progress_percent + '%'"></span>
+                          :style="'width:' + progress_percent + '%'"></span>
                 </div>
 
-                <span v-if="$_showTrophy" class="bundle-complete flex-center">
+                <span v-if="showTrophy" class="bundle-complete flex-center">
                     <i class="fas fa-trophy"></i>
                 </span>
                 <span v-else class="thumb-hover flex-center">
                     <i class="fas"
-                       :class="$_thumbnailIcon"></i>
-                    <p v-if="$_noAccess"
+                       :class="thumbnailIcon"></i>
+                    <p v-if="noAccess"
                        class="x-tiny text-white font-bold">
-                        {{ $_releaseDate }}
+                        {{ releaseDate }}
                     </p>
                 </span>
             </div>
@@ -45,7 +45,7 @@
             <img v-if="mappedData.sheet_music" :src="mappedData.sheet_music">
 
             <h1 class="tiny text-black mb-1 font-compressed font-bold capitalize"
-                :class="{'text-center': this.$_item['type'] === 'chord-and-scale'}">
+                :class="{'text-center': this.item['type'] === 'chord-and-scale'}">
                 {{ mappedData.black_title }}
             </h1>
 
@@ -55,7 +55,7 @@
             </p>
 
             <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase"
-                :class="{'text-center': this.$_item['type'] === 'chord-and-scale'}">
+                :class="{'text-center': this.item['type'] === 'chord-and-scale'}">
                 {{ mappedData.grey_title }}
             </h4>
         </a>
@@ -70,23 +70,23 @@
         name: 'catalogue-card',
         computed: {
 
-            $_is_added:{
+            is_added:{
                 cache: false,
                 get(){
-                    return this.$_item.is_added_to_primary_playlist;
+                    return this.item.is_added_to_primary_playlist;
                 }
             },
 
-            $_showTrophy(){
-                return this.$_item['type'] === 'pack-bundle' && this.$_item['completed'] === true;
+            showTrophy(){
+                return this.item['type'] === 'pack-bundle' && this.item['completed'] === true;
             },
 
             mappedData(){
-                const type = this.$_contentTypeOverride || this.$_item.type.replace(/-/g, '_');
+                const type = this.contentTypeOverride || this.item.type.replace(/-/g, '_');
 
                 const model = new Model[type]({
-                    brand: this.$_brand,
-                    post: this.$_item
+                    brand: this.brand,
+                    post: this.item
                 });
 
                 return model['card'];

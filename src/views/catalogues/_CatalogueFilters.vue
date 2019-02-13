@@ -1,21 +1,21 @@
 <template>
     <div class="flex flex-row flex-wrap pb">
-        <catalogue-filter v-for="item in $_filterableValues"
+        <catalogue-filter v-for="item in filterableValues"
                           v-if="item !== 'progress'"
                           :key="item.key"
-                          :$_filter_name="item"
-                          :$_item="$_filters[item]"
-                          :$_themeColor="$_themeColor"
+                          :filter_name="item"
+                          :item="filters[item]"
+                          :themeColor="themeColor"
                           :loading="loading"
-                          :$_initial_value="filter_params[item]"
+                          :initial_value="filter_params[item]"
                           @filterChange="handleFilterChange"></catalogue-filter>
 
         <catalogue-filter v-if="hasProgressFilter"
-                          $_filter_name="progress"
-                          :$_item="progress_options"
-                          :$_themeColor="$_themeColor"
+                          filter_name="progress"
+                          :item="progress_options"
+                          :themeColor="themeColor"
                           :loading="loading"
-                          :$_initial_value="$_user_state"
+                          :initial_value="user_state"
                           @filterChange="handleProgressChange"></catalogue-filter>
     </div>
 </template>
@@ -32,14 +32,14 @@
                 type: Boolean,
                 default: () => false
             },
-            $_filters: {
+            filters: {
                 type: Object
             },
-            $_filterableValues: {
+            filterableValues: {
                 type: Array,
                 default: () => []
             },
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => 'drumeo'
             },
@@ -72,12 +72,12 @@
             }
         },
         computed: {
-            $_user_state(){
+            user_state(){
                 return this.required_user_states.length ? this.required_user_states[0] : null
             },
 
             hasProgressFilter(){
-                return this.$_filterableValues.indexOf('progress') !== -1;
+                return this.filterableValues.indexOf('progress') !== -1;
             }
         },
         methods: {
