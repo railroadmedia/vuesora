@@ -321,7 +321,7 @@
                 Requests.getComments({
                     brand: 'drumeo',
                     limit: 50,
-                    sort: '-replied_on',
+                    sort: '-created_on',
                     content_type: this.activeTypes,
                     page: this.currentPage,
                 })
