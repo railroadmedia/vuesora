@@ -28,7 +28,7 @@
 
         <div v-if="thread.isNew" class="flex flex-column icon-col align-center hide-xs-only new-post-badge">
             <span class="text-white corners-3 uppercase flex flex-row x-tiny align-center font-bold"
-                  :class="brandBgClass">
+                  :class="themeBgClass">
                 <i class="fas fa-star flex-center"></i> New
             </span>
         </div>
@@ -44,18 +44,23 @@
         <div class="flex flex-column icon-col align-v-center">
             <div class="body">
                 <i class="fas fa-arrow-circle-right flex-center rounded"
-                   :class="thread.isRead ? 'text-grey-2' : brandTextClass"></i>
+                   :class="thread.isRead ? 'text-grey-2' : themeTextClass"></i>
             </div>
         </div>
     </a>
 </template>
 <script>
-    import BrandClasses from '../../mixins/BrandClasses.js'
+    import ThemeClasses from '../../mixins/ThemeClasses.js'
 
     export default {
-        mixins: [BrandClasses],
+        mixins: [ThemeClasses],
         name: 'forum-threads-table-item',
         props: {
+            themeColor: {
+                type: String,
+                default: () => 'drumeo'
+            },
+
             thread: {
                 type: Object,
                 default: () => {}

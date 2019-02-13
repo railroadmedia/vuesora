@@ -1,18 +1,18 @@
 <template>
     <div class="flex flex-column bg-white shadow corners-3 content-table">
-        <div class="flex flex-row flex-wrap ph-3 pt-3 align-v-center">
+        <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column mb-3 align-v-center">
                 <div class="flex flex-row">
                     <a href="/members/forums"
                        class="no-decoration text-black mr-3"
-                       :class="{ 'bb-recordeo-2': !isFollowedSection }">
+                       :class="!isFollowedSection ? 'bb-' + themeColor + '-1' : ''">
                         <h1 class="heading pointer">
                             All Forums
                         </h1>
                     </a>
                     <a href="/members/forums?followed=true"
                        class="no-decoration text-black"
-                       :class="{ 'bb-recordeo-2': isFollowedSection, 'hide': searching }">
+                       :class="[isFollowedSection ? 'bb-' + themeColor + '-1' : '', {'hide': searching}]">
                         <h1 class="heading pointer">
                             Followed
                         </h1>
@@ -20,13 +20,13 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-row flex-wrap ph-3 align-v-center">
+        <div class="flex flex-row flex-wrap ph align-v-center">
             <div class="flex flex-column mb-3 search-box">
                 <div class="form-group">
                     <input id="threadSearch"
                            type="text"
                            v-model.lazy="searchInterface">
-                    <label for="threadSearch" class="recordeo">Search</label>
+                    <label for="threadSearch" :class="themeColor">Search</label>
 
                     <span id="clearSearch" v-if="searching"
                           class="body pointer"
@@ -48,7 +48,7 @@
                                 :key="option.label"
                                 :value="option.value">{{ option.label }}</option>
                     </select>
-                    <label for="commentSort" :class="brand">Select a Topic</label>
+                    <label for="commentSort" :class="themeColor">Select a Topic</label>
                 </div>
             </div>
         </div>
@@ -56,18 +56,21 @@
         <forum-threads-table-item v-for="thread in pinnedThreads"
                                   :key="'pinned' + thread.id"
                                   :thread="thread"
+                                  :themeColor="themeColor"
                                   :brand="brand"
                                   v-if="!searching"></forum-threads-table-item>
 
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
                                   :thread="thread"
+                                  :themeColor="themeColor"
                                   :brand="brand"
                                   v-if="!searching"></forum-threads-table-item>
 
         <forum-search-result v-for="item in searchResults"
                                 :key="item.id"
                                 :item="item"
+                                :themeColor="themeColor"
                                 :brand="brand"
                                 :term="searchInterface"
                                 v-if="searching"></forum-search-result>
@@ -105,8 +108,10 @@
     import ClearableFilter from '../../components/ClearableFilter.vue';
     import ForumService from '../../assets/js/services/forums';
     import * as QueryString from 'query-string';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'forum-threads-table',
         components: {
             'forum-threads-table-item': ForumThreadsTableItem,
@@ -119,6 +124,10 @@
                 type: Array,
                 default: () => []
             },
+            themeColor: {
+                type: String,
+                default: () => 'drumeo',
+            },
             threads: {
                 type: Array,
                 default: () => []
@@ -128,7 +137,7 @@
                 default: () => 'recordeo'
             },
             threadCount: {
-                type: Number,
+                type: Number|String,
                 default: () => 0
             }
         },

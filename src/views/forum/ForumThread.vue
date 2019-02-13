@@ -16,7 +16,8 @@
                     <div class="flex flex-row align-h-right">
                         <button class="btn collapse-square mr-1" @click="update"
                                 v-if="currentUser.isAdmin">
-                            <span class="bg-recordeo corners-3 inverted text-recordeo">
+                            <span class="corners-3 inverted"
+                                  :class="[themeTextClass, themeBgClass]">
                                 <i class="fas fa-edit"></i>
                             </span>
                         </button>
@@ -24,28 +25,29 @@
                         <button class="btn collapse-square mr-1" @click="pinPost"
                                 v-if="currentUser.isAdmin">
                             <span class="bg-recordeo corners-3"
-                                  :class="isPinned ? 'text-white' : 'inverted text-recordeo'">
+                                  :class="[themeBgClass, isPinned ? 'text-white' : 'inverted ' + themeTextClass]">
                                 <i class="fas fa-thumbtack"></i>
                             </span>
                         </button>
 
                         <button class="btn collapse-square mr-1" @click="lockPost"
                                 v-if="currentUser.isAdmin">
-                            <span class="bg-recordeo corners-3"
-                                  :class="isLocked ? 'text-white' : 'inverted text-recordeo'">
+                            <span class="corners-3"
+                                  :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
                                 <i class="fas fa-lock"></i>
                             </span>
                         </button>
 
                         <button class="btn collapse-150 mr-1" @click="followPost">
-                            <span class="bg-recordeo corners-3"
-                                  :class="isFollowed ? 'text-white' : 'inverted text-recordeo'">
+                            <span class="corners-3"
+                                  :class="[themeBgClass, isFollowed ? 'text-white' : 'inverted ' + themeTextClass]">
                                 {{ isFollowed ? 'Followed' : 'Follow' }}
                             </span>
                         </button>
 
                         <button class="btn collapse-150" @click="scrollToReply">
-                            <span class="bg-recordeo corners-3 inverted text-recordeo">
+                            <span class="corners-3 inverted"
+                                  :class="[themeTextClass, themeBgClass]">
                                   Add Reply
                             </span>
                         </button>
@@ -66,6 +68,7 @@
                                :currentPage="currentPage"
                                :currentUser="currentUser"
                                :isLocked="thread.isLocked"
+                               :themeColor="themeColor"
                                @likePost="handlePostLike"
                                @deletePost="handlePostDelete"
                                @replyToPost="handleReplyToPost"></forum-thread-post>
@@ -95,7 +98,8 @@
                         <div class="flex flex-row align-h-right mt-2">
 
                             <button class="btn collapse-250 thread-reply-button" type="submit">
-                                <span class="bg-recordeo text-white corners-3">
+                                <span class="text-white corners-3"
+                                      :class="themeBgClass">
                                     Reply
                                 </span>
                             </button>
@@ -113,8 +117,10 @@
     import TextEditor from '../../components/TextEditor.vue';
     import Toasts from '../../assets/js/classes/toasts';
     import * as QueryString from 'query-string';
+    import ThemeClasses from '../../mixins/ThemeClasses'
 
     export default {
+        mixins: [ThemeClasses],
         name: 'forum-thread',
         components: {
             "forum-thread-post": ForumThreadPost,

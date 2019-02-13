@@ -40,7 +40,8 @@
                             </a>
 
                             <button class="btn collapse-250" type="submit">
-                                <span class="bg-recordeo text-white corners-3">
+                                <span class="text-white corners-3"
+                                      :class="themeBgClass">
                                     Save Post
                                 </span>
                             </button>
@@ -59,7 +60,7 @@
                         </p>
 
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? 'text-recordeo' : 'text-grey-3'"
+                           :class="isLiked ? themeTextClass : 'text-grey-3'"
                            @click="likePost">
                             <i class="fas fa-thumbs-up"></i>
                             {{ isLiked ? 'Liked' : 'Like' }}
@@ -100,12 +101,12 @@
 </template>
 <script>
     import TextEditor from '../../components/TextEditor.vue';
-    import BrandClasses from '../../mixins/BrandClasses.js';
     import Toasts from '../../assets/js/classes/toasts';
     import ForumService from '../../assets/js/services/forums';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [BrandClasses],
+        mixins: [ThemeClasses],
         name: 'forum-thread-post',
         components: {
             "text-editor": TextEditor
