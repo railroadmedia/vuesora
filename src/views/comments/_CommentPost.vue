@@ -68,7 +68,7 @@
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                           :class="replying ? 'text-' + themeColor : 'text-grey-3'"
+                           :class="replying ? themeTextClass : 'text-grey-3'"
                            @click="replyToComment"
                            dusk="reply-button">
                             <i class="fas fa-reply"></i>
@@ -79,7 +79,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                           :class="is_liked ? 'text-' + themeColor : 'text-grey-3'"
+                           :class="is_liked ? themeTextClass : 'text-grey-3'"
                            @click="likeComment"
                            dusk="like-button">
                             <i class="fas fa-thumbs-up"></i>
@@ -94,7 +94,7 @@
                            :data-open-modal="openModalString"
                            @click="openLikes">
                             <i class="fas fa-thumbs-up text-white likes-icon"
-                               :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
+                               :class="like_count > 0 ? themeBgClass : 'bg-grey-2'"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -123,14 +123,14 @@
                                     @click="postReply"
                                     dusk="submit-reply">
                                 <span class="text-white short"
-                                      :class="'bg-' + themeColor">
+                                      :class="themeBgClass">
                                     Reply
                                 </span>
                             </button>
                         </div>
 
                         <div class="loading-reply flex-center" v-show="loading">
-                            <i class="fas fa-spinner fa-spin" :class="'text-' + themeColor"></i>
+                            <i class="fas fa-spinner fa-spin" :class="themeTextClass"></i>
                             <p class="x-tiny text-grey-3">loading...</p>
                         </div>
                     </div>
@@ -175,8 +175,10 @@
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
     import { DateTime } from 'luxon';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'comment-post',
         components: {
             'text-editor': TextEditor,
@@ -186,10 +188,6 @@
             brand: {
                 type: String,
                 default: () => ''
-            },
-            themeColor: {
-                type: String,
-                default: () => 'recordeo'
             },
             currentUser: {
                 type: Object,

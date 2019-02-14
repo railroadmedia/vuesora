@@ -16,7 +16,7 @@
         <!-- THUMBNAIL COLUMN -->
         <div v-if="item.type !== 'student-review'"
              class="flex flex-column align-v-center"
-             :class="[thumbnailColumnClass, theme]">
+             :class="[thumbnailColumnClass, themeColor]">
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
                      :class="thumbnailType"
@@ -24,7 +24,7 @@
 
                     <div class="lesson-progress overflow">
                         <span class="progress"
-                              :class="'bg-' + theme"
+                              :class="themeBgClass"
                               :style="'width:' + progress_percent + '%'"></span>
                     </div>
 
@@ -47,12 +47,6 @@
                 <div class="thumb-img corners-3 square rounded"
                      :style="'background-image:url( ' + thumbnail + ' );'">
 
-                    <!--<div class="lesson-progress overflow">-->
-                        <!--<span class="progress"-->
-                              <!--:class="'bg-' + theme"-->
-                              <!--:style="'width:' + progress_percent + '%'"></span>-->
-                    <!--</div>-->
-
                     <span class="thumb-hover rounded flex-center"
                           style="border-radius:50%;">
                         <i class="fas"
@@ -71,7 +65,7 @@
 
             <p v-if="brand !== 'guitareo'"
                class="tiny font-compressed uppercase text-truncate"
-               :class="'text-' + theme">
+               :class="themeTextClass">
                 {{ mappedData.color_title }}
             </p>
 
@@ -143,7 +137,7 @@
             <div v-else
                  class="body">
                 <i class="add-to-list fas fa-plus flex-center"
-                   :class="is_added ? 'is-added text-' + theme : 'text-grey-2'"
+                   :class="is_added ? 'is-added ' + themeTextClass : 'text-grey-2'"
                    :title="is_added ? 'Remove from list' : 'Add to list'"
                    @click.stop.prevent="addToList"></i>
             </div>
@@ -172,7 +166,7 @@
                  class="body">
                 <i v-if="item.started || item.completed"
                    class="fas flex-center rounded"
-                   :class="item.completed ? completedIcon + ' text-' + theme : 'fa-adjust text-' + theme"></i>
+                   :class="[item.completed ? completedIcon : 'fa-adjust', themeTextClass]"></i>
 
                 <i v-else
                    class="fas flex-center text-grey-2 rounded"
@@ -186,9 +180,10 @@
     import Mixin from './_mixin';
     import * as Model from '../../assets/js/models/_model.js';
     import { Content as ContentHelpers }  from 'js-helper-functions';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [Mixin],
+        mixins: [Mixin, ThemeClasses],
         name: 'catalogue-list-item',
         computed: {
 

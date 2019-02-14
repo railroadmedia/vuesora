@@ -8,11 +8,6 @@ export default {
             type: Object
         },
 
-        themeColor: {
-            type: String,
-            default: () => 'drumeo'
-        },
-
         brand: {
             type: String,
             default: () => 'drumeo'
@@ -34,11 +29,6 @@ export default {
         },
 
         lockUnowned: {
-            type: Boolean,
-            default: () => false
-        },
-
-        useThemeColor: {
             type: Boolean,
             default: () => false
         },
@@ -177,14 +167,6 @@ export default {
             }
 
             return this.noAccess;
-        },
-
-        theme(){
-            if(this.useThemeColor){
-                return this.themeColor
-            }
-
-            return this.item.type;
         },
 
         thumbnailType(){

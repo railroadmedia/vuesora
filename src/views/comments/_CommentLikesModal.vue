@@ -5,14 +5,14 @@
                  class="flex flex-column pa-3">
                 <h1 class="heading text-center">
                     <i class="fas fa-spinner fa-spin"
-                       :class="'text-' + themeColor"></i>
+                       :class="themeTextClass"></i>
                 </h1>
             </div>
             <div v-else
                  class="flex flex-column">
                 <h1 class="heading align-v-center pa-3">
                     <i class="fas fa-thumbs-up rounded text-white mr-1 big likes-icon"
-                       :class="'bg-' + themeColor"></i>
+                       :class="themeBgClass"></i>
                     {{ totalLikeUsers }} Like{{ totalLikeUsers == 1 ? '' : 's' }}
                 </h1>
 
@@ -39,7 +39,10 @@
     </div>
 </template>
 <script>
+    import ThemeClasses from "../../mixins/ThemeClasses";
+
     export default {
+        mixins: [ThemeClasses],
         name: 'comment-likes-modal',
         props: {
             brand: {
@@ -49,10 +52,6 @@
             customId: {
                 type: String,
                 default: () => null
-            },
-            themeColor: {
-                type: String,
-                default: () => 'drumeo'
             },
             likeUsers: {
                 type: Array,

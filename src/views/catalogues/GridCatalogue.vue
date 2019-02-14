@@ -12,7 +12,6 @@
                 :lockUnowned="lockUnowned"
                 :forceWideThumbs="forceWideThumbs"
                 :contentTypeOverride="contentTypeOverride"
-                :useThemeColor="useThemeColor"
                 @addToList="emitAddToList"></catalogue-card>
     </div>
 </template>
@@ -62,10 +61,6 @@
             lockUnowned: {
                 type: Boolean,
                 default: () => false
-            },
-            useThemeColor: {
-                type: Boolean,
-                default: () => true
             }
         }
     }

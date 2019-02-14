@@ -3,11 +3,6 @@ import Toasts from '../../assets/js/classes/toasts';
 
 export default {
     props: {
-        themeColor: {
-            type: String,
-            default: () => 'drumeo'
-        },
-
         brand: {
             type: String,
             default: () => 'drumeo'

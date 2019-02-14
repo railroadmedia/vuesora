@@ -18,7 +18,6 @@
                 :is_search="is_search"
                 :forceWideThumbs="forceWideThumbs"
                 :resetProgress="resetProgress"
-                :useThemeColor="useThemeColor"
                 :destroyOnListRemoval="destroyOnListRemoval"
                 :compactLayout="compactLayout"
                 @addToList="emitAddToList"
@@ -99,10 +98,6 @@
             resetProgress: {
                 type: Boolean,
                 default: () => false
-            },
-            useThemeColor: {
-                type: Boolean,
-                default: () => true
             },
             destroyOnListRemoval: {
                 type: Boolean,

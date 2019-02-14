@@ -19,7 +19,7 @@
         </div>
 
         <catalogue-search v-if="searchBar"
-                          :themeColor="themeColor"
+                          :themeColor="theme"
                           :included_types="includedTypes"
                           :selected_types="selected_types"
                           :search_term="search_term"
@@ -30,7 +30,7 @@
 
 
         <catalogue-playlist-tabs v-if="isPlaylists"
-                                 :themeColor="themeColor"
+                                 :themeColor="theme"
                                  :included_types="includedTypes"></catalogue-playlist-tabs>
 
 
@@ -40,7 +40,7 @@
                            :required_user_states="required_user_states"
                            :filter_params="filter_params"
                            :loading="loading"
-                           :themeColor="themeColor"
+                           :themeColor="theme"
                            @filterChange="handleFilterChange"
                            @progressChange="handleProgressChange"></catalogue-filters>
 
@@ -52,19 +52,18 @@
         <grid-catalogue v-if="catalogue_type === 'grid'"
                         :content="content"
                         :brand="brand"
-                        :themeColor="themeColor"
+                        :themeColor="theme"
                         :noWrap="noWrapGrid"
                         :userId="userId"
                         :lockUnowned="lockUnowned"
                         :forceWideThumbs="forceWideThumbs"
                         :contentTypeOverride="contentTypeOverride"
-                        :useThemeColor="useThemeColor"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
         <list-catalogue v-if="catalogue_type === 'list' || catalogue_type === 'schedule'"
                         :content="content"
                         :brand="brand"
-                        :themeColor="themeColor"
+                        :themeColor="theme"
                         :card_type="catalogueType"
                         :userId="userId"
                         :displayItemsAsOverview="displayItemsAsOverview"
@@ -74,7 +73,6 @@
                         :showNumbers="showNumbers"
                         :is_search="searchBar || isPlaylists"
                         :resetProgress="resetProgress"
-                        :useThemeColor="useThemeColor"
                         :forceWideThumbs="forceWideThumbs"
                         :destroyOnListRemoval="destroyOnListRemoval"
                         :compactLayout="compactLayout"
@@ -104,7 +102,7 @@
             <div id="loadingDialog" v-if="loading && showLoadingAnimation"
                  class="flex flex-row align-center">
                 <div class="loading-spinner corners-5 shadow pa flex-center"
-                     :class="'bg-' + themeColor">
+                     :class="themeBgClass">
                     <i class="fas fa-spinner fa-spin text-white"></i>
                     <p class="x-tiny text-white">Loading Please Wait...</p>
                 </div>
@@ -126,9 +124,10 @@
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
     import * as QueryString from 'query-string';
     import { Content as ContentHelpers } from 'js-helper-functions';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [UserCatalogueEvents],
+        mixins: [UserCatalogueEvents, ThemeClasses],
         name: 'content-catalogue',
         components: {
             'grid-catalogue': GridCatalogue,
@@ -167,10 +166,6 @@
             totalPages: {
                 type: String,
                 default: () => ''
-            },
-            themeColor: {
-                type: String,
-                default: () => 'drumeo'
             },
             statuses: {
                 type: Array,
@@ -269,7 +264,7 @@
             },
             useThemeColor: {
                 type: Boolean,
-                default: () => false
+                default: () => true
             },
             sortOverride: {
                 type: String,
@@ -368,7 +363,15 @@
                 }
 
                 return this.sortOverride || '-published_on';
-            }
+            },
+
+            theme(){
+                if(this.useThemeColor){
+                    return this.themeColor
+                }
+
+                return this.item.type;
+            },
         },
         methods: {
             toggleCatalogueType(type) {

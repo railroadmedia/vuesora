@@ -4,7 +4,7 @@
         <div class="flex flex-row pa-2 align-v-center bb-grey-1-1">
             <h1 class="heading grow">Comments</h1>
             <button class="btn collapse-square" @click="filters = !filters">
-                <span :class="['bg-' + themeColor, filters ? 'text-white' : 'inverted text-' + themeColor]">
+                <span :class="[themeBgClass, filters ? 'text-white' : 'inverted ' + themeTextClass]">
                     <i class="fas fa-filter"></i>
                 </span>
             </button>
@@ -102,7 +102,7 @@
 
                     <div class="flex flex-column lesson-type hide-xs-only ph-1 align-center">
                         <i  v-if="comment.content"
-                            :class="[getContentTypeIcon(comment.content.type), 'text-' + themeColor]"></i>
+                            :class="[getContentTypeIcon(comment.content.type), themeTextClass]"></i>
                         <h6 v-if="comment.content"
                             class="tiny capitalize text-center">
                             {{ comment.content.type.replace(/-/g, ' ') }}
@@ -136,7 +136,7 @@
                             <a :href="comment.content.url + '?goToComment=' + comment.id"
                                class="btn flat"
                                target="_blank"
-                               :class="'text-' + themeColor">
+                               :class="themeTextClass">
                                 Go to Lesson
                             </a>
                         </div>
@@ -156,7 +156,7 @@
         <div class="flex flex-row pa-3 align-center">
             <button class="button btn collapse-250"
                     @click="loadMore">
-                <span class="text-white" :class="'bg-' + themeColor">
+                <span class="text-white" :class="themeBgClass">
                     <i v-if="loading || requestingData"
                        class="fas fa-spin fa-spinner mr-1"></i>
                     {{ loading || requestingData ?  'Loading...' : 'Load More' }}
@@ -172,9 +172,10 @@
     import CommentPost from './_CommentPost';
     import CommentLikesModal from './_CommentLikesModal.vue';
     import CommentMixin from './_mixin';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [CommentMixin],
+        mixins: [CommentMixin, ThemeClasses],
         name: 'comments-catalogue',
         components: {
             'comment-post': CommentPost,

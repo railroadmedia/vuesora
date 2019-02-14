@@ -19,13 +19,14 @@
 
                 <h3 v-if="item['type'] !== 'chord-and-scale'"
                     class="thumbnail-title tiny font-compressed uppercase dense font-bold"
-                    :class="'text-' + theme" v-html="mappedData.color_title">
+                    :class="themeTextClass"
+                    v-html="mappedData.color_title">
                     {{ mappedData.color_title }}
                 </h3>
 
                 <div class="lesson-progress overflow corners-bottom-5">
                     <span class="progress"
-                          :class="'bg-' + theme"
+                          :class="themeBgClass"
                           :style="'width:' + progress_percent + '%'"></span>
                 </div>
 
@@ -64,9 +65,10 @@
 <script>
     import Mixin from './_mixin';
     import * as Model from '../../assets/js/models/_model.js';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [Mixin],
+        mixins: [Mixin, ThemeClasses],
         name: 'catalogue-card',
         computed: {
 

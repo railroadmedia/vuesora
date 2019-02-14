@@ -60,7 +60,7 @@
                     <div class="flex flex-row align-v-center">
 
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                           :class="replying ? 'text-' + themeColor : 'text-grey-3'"
+                           :class="replying ? themeTextClass : 'text-grey-3'"
                            @click="openReply"
                            dusk="reply-button">
                             <i class="fas fa-reply"></i>
@@ -71,7 +71,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                           :class="isLiked ? 'text-' + themeColor : 'text-grey-3'"
+                           :class="isLiked ? themeTextClass : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
@@ -85,7 +85,7 @@
                            :data-open-modal="openModalString"
                            @click="openLikes">
                             <i class="fas fa-thumbs-up text-white likes-icon"
-                               :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
+                               :class="like_count > 0 ? themeBgClass : 'bg-grey-2'"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -112,14 +112,14 @@
                                     @click="postReply"
                                     dusk="submit-reply">
                                 <span class="text-white short"
-                                      :class="'bg-' + themeColor">
+                                      :class="themeBgClass">
                                     Reply
                                 </span>
                             </button>
                         </div>
 
                         <div class="loading-reply flex-center" v-show="loading">
-                            <i class="fas fa-spinner fa-spin" :class="'text-' + themeColor"></i>
+                            <i class="fas fa-spinner fa-spin" :class="themeTextClass"></i>
                             <p class="x-tiny text-grey-3">loading...</p>
                         </div>
                     </div>
@@ -136,8 +136,10 @@
     import TextEditor from '../../components/TextEditor.vue';
     import Toasts from '../../assets/js/classes/toasts';
     import CommentService from '../../assets/js/services/comments';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'comment-reply',
         components: {
             'text-editor': TextEditor
@@ -146,10 +148,6 @@
             brand: {
                 type: String,
                 default: () => ''
-            },
-            themeColor: {
-                type: String,
-                default: () => 'recordeo'
             },
             currentUser: {
                 type: Object,
