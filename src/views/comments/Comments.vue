@@ -42,7 +42,7 @@
                             @click="postComment"
                             dusk="submit-comment">
                         <span class="text-white short"
-                              :class="'bg-' + themeColor">
+                              :class="themeBgClass">
                             Comment
                         </span>
                     </button>
@@ -50,7 +50,7 @@
 
                 <div class="loading-reply flex-center" v-show="loading">
                     <i class="fas fa-spinner fa-spin"
-                       :class="'text-' + themeColor"></i>
+                       :class="themeTextClass"></i>
                     <p class="x-tiny text-grey-3">loading...</p>
                 </div>
             </div>
@@ -94,7 +94,6 @@
     </div>
 </template>
 <script>
-    import BrandClasses from '../../mixins/BrandClasses.js';
     import TextEditor from '../../components/TextEditor.vue';
     import CommentService from '../../assets/js/services/comments';
     import CommentPost from './_CommentPost.vue';
@@ -105,9 +104,10 @@
     import axios from 'axios';
     import * as QueryString from 'query-string';
     import CommentMixin from './_mixin';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [BrandClasses, CommentMixin],
+        mixins: [ThemeClasses, CommentMixin],
         name: 'comments',
         components: {
             'text-editor': TextEditor,
