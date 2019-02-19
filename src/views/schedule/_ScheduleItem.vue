@@ -19,7 +19,7 @@
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
             <p class="tiny uppercase text-truncate"
-               :class="'text-' + $_themeColor">
+               :class="'text-' + themeColor">
                 {{ mappedData.color_title }}
             </p>
 
@@ -46,8 +46,8 @@
 
             <div class="body">
                 <i class="add-to-list fas fa-plus flex-center pointer"
-                   :class="$_is_added ? 'is-added text-' + $_themeColor : 'text-grey-2'"
-                   :title="$_is_added ? 'Remove from list' : 'Add to list'"
+                   :class="is_added ? 'is-added text-' + themeColor : 'text-grey-2'"
+                   :title="is_added ? 'Remove from list' : 'Add to list'"
                    @click.stop.prevent="addToList"></i>
             </div>
         </div>
@@ -71,13 +71,13 @@
         mixins: [UserCatalogueEvents],
         name: 'schedule-item',
         props: {
-            $_item: {
+            item: {
                 type: Object
             },
-            $_timezone: {
+            timezone: {
                 type: String,
             },
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => 'drumeo'
             }
@@ -85,12 +85,18 @@
         computed: {
 
             time_to_display(){
-                // Pull the live start time if it exists, otherwise just get the publish on date
-                if(this.$_item['live_event_start_time_in_timezone']){
-                    return this.$_item['live_event_start_time_in_timezone']['date'];
+                // Pull the live start time with timezoe if it exists
+                if(this.item['live_event_start_time_in_timezone']){
+                    return this.item['live_event_start_time_in_timezone']['date'];
                 }
 
-                return this.$_item['published_on_in_timezone']['date'];
+                // Pull the published on with timezone if it exists
+                if(this.item['published_on_in_timezone']){
+                    return this.item['published_on_in_timezone']['date'];
+                }
+
+                // Just pull the default published on
+                return this.item['published_on'];
             },
 
             month(){
@@ -106,18 +112,18 @@
             },
 
             mappedData(){
-                const type = this.$_contentTypeOverride || this.$_item.type;
+                const type = this.contentTypeOverride || this.item.type;
 
                 const model = new Model[type.replace(/-/g, '_')]({
-                    brand: this.$_brand,
-                    post: this.$_item
+                    brand: this.brand,
+                    post: this.item
                 });
 
                 return model['schedule'];
             },
 
-            $_is_added(){
-                return this.$_item.is_added_to_primary_playlist;
+            is_added(){
+                return this.item.is_added_to_primary_playlist;
             },
         }
     }

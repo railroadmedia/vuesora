@@ -2,21 +2,22 @@
     <div class="flex flex-column">
         <schedule-item v-for="(item, i) in content"
                        :key="'schedule-item-' + item.id"
-                       :$_item="item"
-                       :$_timezone="$_timezone"
-                       :$_themeColor="$_themeColor"
+                       :item="item"
+                       :timezone="timezone"
+                       :themeColor="themeColor"
                        @addToList="addToListEventHandler"
                        @addEvent="addEventToDropdown"></schedule-item>
 
-        <add-event-modal $_modalId="scheduleAddToCalendarModal"
-                         :$_subscriptionCalendarId="$_subscriptionCalendarId"
+        <add-event-modal modalId="scheduleAddToCalendarModal"
+                         :subscriptionCalendarId="subscriptionCalendarId"
                          :singleEvent="singleEvent"
-                         :$_themeColor="$_themeColor"
+                         :themeColor="themeColor"
                          @modalClose="handleModalClose"></add-event-modal>
     </div>
 </template>
 <script>
     import Utils from '../../assets/js/classes/utils';
+    import { Content as ContentHelpers }  from 'js-helper-functions';
     import ScheduleItem from './_ScheduleItem.vue'
     import AddEventModal from '../../components/AddEvent/AddEventModal';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
@@ -29,19 +30,19 @@
             'add-event-modal': AddEventModal
         },
         props: {
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => 'drumeo'
             },
-            $_content: {
+            preloadedContent: {
                 type: Array,
                 default: () => []
             },
-            $_timezone: {
+            timezone: {
                 type: String,
                 default: 'America/Los_Angeles'
             },
-            $_subscriptionCalendarId: {
+            subscriptionCalendarId: {
                 type: String,
                 default: ''
             }
@@ -52,7 +53,7 @@
                     title: null,
                     date: null
                 },
-                content: Utils.flattenContent(this.$_content)
+                content: ContentHelpers.flattenContent(this.preloadedContent, true)
             }
         },
         computed: {
