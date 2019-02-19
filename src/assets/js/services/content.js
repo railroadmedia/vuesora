@@ -69,7 +69,7 @@ export default {
     /**
      * Flag a piece of content as "complete"
      *
-     * @param {number} contentId - the content ID
+     * @param {string|number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
     markContentAsComplete(contentId) {

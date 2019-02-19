@@ -23,7 +23,7 @@ export default (function () {
 
         if (resetProgressButtons.length) {
             Array.from(resetProgressButtons).forEach(button => {
-                button.addEventListener('click', resetProgress);
+                button.addEventListener('click', progressReset);
             });
         }
 
@@ -49,13 +49,14 @@ export default (function () {
                                         Toasts.push({
                                             icon: 'happy',
                                             title: 'READY TO START AGAIN?',
-                                            themeColor: this.$_themeColor,
+                                            themeColor: brand,
                                             message: 'Your progress has been reset.'
                                         });
 
-                                        setTimeout(() => {
-                                            location.reload();
-                                        }, 100);
+                                        document.querySelector('.trophy-progress').style.width = 0;
+                                        Array.from(resetProgressButtons).forEach(button => {
+                                            button.parentElement.classList.add('hide');
+                                        });
                                     }
 
                                     icon.classList.remove('fa-spin', 'fa-spinner');
@@ -127,7 +128,7 @@ export default (function () {
                                             Toasts.push({
                                                 icon: 'happy',
                                                 title: 'READY TO START AGAIN?',
-                                                themeColor: this.$_themeColor,
+                                                themeColor: brand,
                                                 message: 'Your progress has been reset.'
                                             });
                                         }

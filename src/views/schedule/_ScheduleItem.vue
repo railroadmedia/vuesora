@@ -19,7 +19,7 @@
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
             <p class="tiny uppercase text-truncate"
-               :class="'text-' + themeColor">
+               :class="themeTextClass">
                 {{ mappedData.color_title }}
             </p>
 
@@ -36,6 +36,10 @@
             </p>
         </div>
 
+        <div class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+            {{ releaseType }}
+        </div>
+
         <div v-for="(item, i) in mappedData.column_data"
              class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
             {{ item }}
@@ -46,7 +50,7 @@
 
             <div class="body">
                 <i class="add-to-list fas fa-plus flex-center pointer"
-                   :class="is_added ? 'is-added text-' + themeColor : 'text-grey-2'"
+                   :class="is_added ? 'is-added ' + themeTextClass : 'text-grey-2'"
                    :title="is_added ? 'Remove from list' : 'Add to list'"
                    @click.stop.prevent="addToList"></i>
             </div>
@@ -66,9 +70,10 @@
     import * as Model from '../../assets/js/models/_model.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
     import { DateTime } from 'luxon';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [UserCatalogueEvents],
+        mixins: [UserCatalogueEvents, ThemeClasses],
         name: 'schedule-item',
         props: {
             item: {
@@ -76,10 +81,6 @@
             },
             timezone: {
                 type: String,
-            },
-            themeColor: {
-                type: String,
-                default: () => 'drumeo'
             }
         },
         computed: {
@@ -109,6 +110,14 @@
 
             time(){
                 return DateTime.fromSQL(this.time_to_display).toFormat('h:mm a');
+            },
+
+            releaseType(){
+                if(this.item['status'] === 'scheduled'){
+                    return 'Live Broadcast';
+                }
+
+                return 'Lesson Release';
             },
 
             mappedData(){

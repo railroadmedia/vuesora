@@ -16,7 +16,6 @@
     </div>
 </template>
 <script>
-    import Utils from '../../assets/js/classes/utils';
     import { Content as ContentHelpers }  from 'js-helper-functions';
     import ScheduleItem from './_ScheduleItem.vue'
     import AddEventModal from '../../components/AddEvent/AddEventModal';
