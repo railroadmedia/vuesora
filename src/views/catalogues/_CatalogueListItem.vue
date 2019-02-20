@@ -176,6 +176,7 @@
         </div>
     </a>
 </template>
+</template>
 <script>
     import Mixin from './_mixin';
     import * as Model from '../../assets/js/models/_model.js';
@@ -213,6 +214,17 @@
                 });
 
                 return model['list'];
+            },
+
+            parsed_difficulty(){
+                const shows = ContentHelpers.shows();
+                let type = this.contentTypeOverride || this.item.type;
+
+                if(shows.indexOf(type) !== -1){
+                    type = 'show';
+                }
+
+                return Model[type.replace(/-/g, '_')].mapDifficulty(this.item);
             },
 
             thumbnailColumnClass(){

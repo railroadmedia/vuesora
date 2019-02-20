@@ -282,7 +282,7 @@
 
             isRepliedTo(comment){
                 comment.replies = comment.replies || [];
-
+                
                 for(let i = 0; i < comment.replies.length; i++){
                     if(comment.replies[i].user.access_level === 'team'){
                         return true;

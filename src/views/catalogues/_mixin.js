@@ -99,13 +99,17 @@ export default {
         },
 
         thumbnail(){
+            const defaults = {
+                drumeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg',
+                pianote: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg',
+                guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg'
+            };
+
             if(this.item.type === 'learning-path' && this.brand === 'drumeo'){
-                return this.item['background_image_url'] ||
-                    'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
+                return this.item['background_image_url'] || defaults['drumeo'];
             }
 
-            return this.item['thumbnail_url'] ||
-                'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
+            return this.item['thumbnail_url'] || defaults[this.brand];
         },
 
         progress_percent(){

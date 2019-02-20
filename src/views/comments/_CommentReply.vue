@@ -240,7 +240,7 @@
         computed: {
             avatarClassObject(){
                 return {
-                    'subscriber': ['edge', 'lifetime', 'team', 'guitar'].indexOf(this.user.access_level) !== -1,
+                    'subscriber': ['edge', 'lifetime', 'team', 'guitar', 'piano'].indexOf(this.user.access_level) !== -1,
                     'edge': this.user.access_level === 'edge',
                     'pack': this.user.access_level === 'pack',
                     'team': this.user.access_level === 'team',
@@ -259,7 +259,7 @@
             },
 
             userExpValue(){
-                if(this.brand !== 'drumeo'){
+                if(this.brand !== 'drumeo' && this.brand !== 'pianote'){
                     return null;
                 }
 

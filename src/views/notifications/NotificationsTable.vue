@@ -13,7 +13,8 @@
             </div>
 
             <div class="flex flex-column button-col">
-                <a class="btn bg-recordeo short text-white"
+                <a class="btn short text-white"
+                   :class="themeBgClass"
                    @click.stop="markAllAsRead">
                     <i class="fas fa-eye mr-1"></i>
                     Mark All As Read
@@ -46,8 +47,10 @@
     import Pagination from '../../components/Pagination.vue';
     import UserService from '../../assets/js/services/user';
     import * as QueryString from 'query-string';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'notifications-table',
         components: {
             "notifications-table-row": NotificationsTableRow,
@@ -71,7 +74,7 @@
                 default: () => ''
             },
             notificationCount: {
-                type: Number,
+                type: Number|String,
                 default: () => 1
             }
         },

@@ -8,5 +8,6 @@ export { default as ContentCatalogue } from '../views/catalogues/ContentCatalogu
 export { default as Schedule } from '../views/schedule/Schedule';
 export { default as Comments } from '../views/comments/Comments';
 export { default as CommentsCatalogue } from '../views/comments/CommentsCatalogue';
+export { default as NotificationsTable } from '../views/notifications/NotificationsTable';
 export { default as ForumThreadsTable } from '../views/forum/ForumThreadsTable';
 export { default as ForumThread } from '../views/forum/ForumThread';

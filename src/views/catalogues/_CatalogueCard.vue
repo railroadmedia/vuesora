@@ -65,6 +65,7 @@
 <script>
     import Mixin from './_mixin';
     import * as Model from '../../assets/js/models/_model.js';
+    import { Content as ContentHelpers }  from 'js-helper-functions';
     import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
@@ -84,12 +85,18 @@
             },
 
             mappedData(){
-                const type = this.contentTypeOverride || this.item.type.replace(/-/g, '_');
+                const shows = ContentHelpers.shows();
+                let type = this.contentTypeOverride || this.item.type;
 
-                const model = new Model[type]({
+                if(shows.indexOf(type) !== -1){
+                    type = 'show';
+                }
+
+                const model = new Model[type.replace(/-/g, '_')]({
                     brand: this.brand,
                     post: this.item
                 });
+
 
                 return model['card'];
             },
