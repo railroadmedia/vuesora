@@ -42,6 +42,10 @@ button {
     cursor:pointer;
     outline:none;
 
+    &.short > span {
+      height:35px;
+    }
+
     & > span {
       pointer-events:none;
       @extend a.btn;
@@ -78,6 +82,10 @@ button {
 
   &.collapse-square {
     max-width:50px;
+
+    &.short {
+      max-width:35px;
+    }
   }
 
   &.collapse-150 {

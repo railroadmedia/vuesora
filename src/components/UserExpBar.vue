@@ -3,7 +3,7 @@
         <div class="flex flex-row">
             <div class="exp-wrap">
                 <div class="exp flex flex-column align-v-center align-h-right"
-                     :class="'bg-' + themeColor"
+                     :class="themeBgClass"
                      :style="'width:' + xpPercentage + '%;'">
                     <p class="body dense font-bold ph-2 nowrap"
                        :class="expBarClassObject">
@@ -29,22 +29,29 @@
 <script>
     import xpMap from '../assets/js/classes/xp-mapper';
     import Utils from '../assets/js/classes/utils';
+    import ThemeClasses from "../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'user-exp-bar',
         props: {
             themeColor: {
                 type: String,
                 default: () => 'drumeo'
             },
+            brand: {
+                type: String,
+                default: () => 'drumeo'
+            },
             xp: {
+                type: String|Number,
                 default: () => 0
             }
         },
         computed: {
             xpPercentage(){
-                const thisKey = xpMap.getNearestKey(this.xp);
-                const nextKey = xpMap.getNearestKey(this.xp, 1);
+                const thisKey = xpMap.getNearestKey(this.xp, this.brand);
+                const nextKey = xpMap.getNearestKey(this.xp, this.brand, 1);
                 const difference = nextKey - thisKey;
                 const currentLevelProgress = this.xp - thisKey;
 
@@ -68,16 +75,16 @@
             },
 
             userExpRank(){
-                return xpMap.getNearestValue(this.xp);
+                return xpMap.getNearestValue(this.xp, this.brand);
             },
 
             userExpRankAmount(){
-                return Utils.formatNumbersWithCommas(xpMap.getNearestKey(this.xp));
+                return Utils.formatNumbersWithCommas(xpMap.getNearestKey(this.xp, this.brand));
             },
 
             nextUserExpRank(){
                 if(this.xp < 10000000){
-                    return xpMap.getNearestValue(this.xp, 1);
+                    return xpMap.getNearestValue(this.xp, this.brand, 1);
                 }
 
                 return '';
@@ -85,14 +92,11 @@
 
             nextUserExpRankAmount(){
                 if(this.xp < 10000000) {
-                    return Utils.formatNumbersWithCommas(xpMap.getNearestKey(this.xp, 1));
+                    return Utils.formatNumbersWithCommas(xpMap.getNearestKey(this.xp, this.brand, 1));
                 }
 
                 return '';
             },
-        },
-        mounted(){
-
         }
     }
 </script>

@@ -14,39 +14,36 @@
 
                 <div class="flex flex-column mb-1 xs-12 sm-6">
                     <div class="flex flex-row align-h-right">
-                        <button class="btn collapse-square mr-1" @click="update"
+                        <button class="btn collapse-square short mr-1" @click="update"
                                 v-if="currentUser.isAdmin">
-                            <span class="corners-3 inverted"
+                            <span class="inverted"
                                   :class="[themeTextClass, themeBgClass]">
                                 <i class="fas fa-edit"></i>
                             </span>
                         </button>
 
-                        <button class="btn collapse-square mr-1" @click="pinPost"
+                        <button class="btn collapse-square short mr-1" @click="pinPost"
                                 v-if="currentUser.isAdmin">
-                            <span class="bg-recordeo corners-3"
-                                  :class="[themeBgClass, isPinned ? 'text-white' : 'inverted ' + themeTextClass]">
+                            <span :class="[themeBgClass, isPinned ? 'text-white' : 'inverted ' + themeTextClass]">
                                 <i class="fas fa-thumbtack"></i>
                             </span>
                         </button>
 
-                        <button class="btn collapse-square mr-1" @click="lockPost"
+                        <button class="btn collapse-square short mr-1" @click="lockPost"
                                 v-if="currentUser.isAdmin">
-                            <span class="corners-3"
-                                  :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
+                            <span :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
                                 <i class="fas fa-lock"></i>
                             </span>
                         </button>
 
-                        <button class="btn collapse-150 mr-1" @click="followPost">
-                            <span class="corners-3"
-                                  :class="[themeBgClass, isFollowed ? 'text-white' : 'inverted ' + themeTextClass]">
+                        <button class="btn collapse-150 short mr-1" @click="followPost">
+                            <span :class="[themeBgClass, isFollowed ? 'text-white' : 'inverted ' + themeTextClass]">
                                 {{ isFollowed ? 'Followed' : 'Follow' }}
                             </span>
                         </button>
 
-                        <button class="btn collapse-150" @click="scrollToReply">
-                            <span class="corners-3 inverted"
+                        <button class="btn collapse-150 short" @click="scrollToReply">
+                            <span class="inverted"
                                   :class="[themeTextClass, themeBgClass]">
                                   Add Reply
                             </span>
@@ -198,6 +195,7 @@
                         Toasts.push({
                             icon: 'happy',
                             title: 'YOU\'RE OUTTA HERE!',
+                            themeColor: this.themeColor,
                             message: 'We have deleted this post.'
                         });
 
@@ -297,7 +295,7 @@
         }
     }
 
-    .reply-like {
-        min-width: 50px;
-    }
+    /*.reply-like {*/
+        /*min-width: 50px;*/
+    /*}*/
 </style>

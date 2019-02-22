@@ -39,7 +39,7 @@
                     Showing results for <span class="font-bold text-black">"{{ searchInterface }}"</span> in All Forums.
                 </p>
             </div>
-            <div v-if="!searching"
+            <div v-if="!searching && brand !== 'pianote'"
                  class="flex flex-column mb-3 form-group topic-col">
 
                 <div class="form-group xs-12" style="width:100%;">
@@ -123,10 +123,6 @@
             pinnedThreads: {
                 type: Array,
                 default: () => []
-            },
-            themeColor: {
-                type: String,
-                default: () => 'drumeo',
             },
             threads: {
                 type: Array,

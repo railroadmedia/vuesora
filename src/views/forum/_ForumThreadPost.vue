@@ -53,23 +53,24 @@
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
-                        <p class="tiny text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           @click="replyToPost"
-                           v-if="!isLocked">
-                            <i class="fas fa-reply"></i> Reply
-                        </p>
 
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
                            :class="isLiked ? themeTextClass : 'text-grey-3'"
                            @click="likePost">
-                            <i class="fas fa-thumbs-up"></i>
-                            {{ isLiked ? 'Liked' : 'Like' }}
+                            <i class="fa-thumbs-up"
+                               :class="isLiked ? 'fas' : 'fal'"></i> {{ totalLikes }}
                         </p>
 
-                        <p class="x-tiny text-grey-3 uppercase font-italic"
-                           v-html="userLikeString">
-                            {{ userLikeString }}
+                        <p class="tiny text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
+                           @click="replyToPost"
+                           v-if="!isLocked">
+                            Reply
                         </p>
+
+                        <!--<p class="x-tiny text-grey-3 uppercase font-italic"-->
+                           <!--v-html="userLikeString">-->
+                            <!--{{ userLikeString }}-->
+                        <!--</p>-->
                     </div>
                 </div>
                 <div class="flex flex-column mb-1">
@@ -182,44 +183,44 @@
                 return this.currentUser.id === this.authorId || this.currentUser.isAdmin;
             },
 
-            userLikeString(){
-                let userNames = [];
-                let userNameString;
-                let suffixString = ' like this';
-
-                for(let i = 0; i < this.userLikes.length; i++){
-                    let nameExistsOrIsntCurrentUser = this.userLikes[i]['name'] != null
-                        && this.userLikes[i]['name'] !== this.currentUser.name;
-
-                    if(nameExistsOrIsntCurrentUser){
-                        userNames.push(this.userLikes[i]['name']);
-                    }
-                }
-
-                if(userNames.length){
-                    userNameString = userNames.join(', ');
-                }
-
-                if(this.totalLikes > 3){
-                    suffixString = ' & ' + String(this.totalLikes - 3) + ' others like this';
-                }
-                else if(this.totalLikes === 0) {
-                    suffixString = '';
-                }
-
-                if(this.isLiked){
-                    userNames.splice((userNames.length - 1), 1);
-
-                    return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
-                }
-                else {
-                    if(this.totalLikes > 0){
-                        return '<span class="font-bold">' + userNameString + '</span>' + suffixString;
-                    }
-                }
-
-                return 'Be the first to like this!';
-            },
+            // userLikeString(){
+            //     let userNames = [];
+            //     let userNameString;
+            //     let suffixString = ' like this';
+            //
+            //     for(let i = 0; i < this.userLikes.length; i++){
+            //         let nameExistsOrIsntCurrentUser = this.userLikes[i]['name'] != null
+            //             && this.userLikes[i]['name'] !== this.currentUser.name;
+            //
+            //         if(nameExistsOrIsntCurrentUser){
+            //             userNames.push(this.userLikes[i]['name']);
+            //         }
+            //     }
+            //
+            //     if(userNames.length){
+            //         userNameString = userNames.join(', ');
+            //     }
+            //
+            //     if(this.totalLikes > 3){
+            //         suffixString = ' & ' + String(this.totalLikes - 3) + ' others like this';
+            //     }
+            //     else if(this.totalLikes === 0) {
+            //         suffixString = '';
+            //     }
+            //
+            //     if(this.isLiked){
+            //         userNames.splice((userNames.length - 1), 1);
+            //
+            //         return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
+            //     }
+            //     else {
+            //         if(this.totalLikes > 0){
+            //             return '<span class="font-bold">' + userNameString + '</span>' + suffixString;
+            //         }
+            //     }
+            //
+            //     return 'Be the first to like this!';
+            // },
 
             postNumber(){
                 return ((this.currentPage - 1) * 15) + (this.index + 1)
@@ -256,6 +257,7 @@
                                     Toasts.push({
                                         icon: 'happy',
                                         title: 'GOOD EYE!',
+                                        themeColor: this.themeColor,
                                         message: 'We will look into this post.'
                                     });
                                 });
@@ -283,6 +285,7 @@
                             Toasts.push({
                                 icon: 'happy',
                                 title: 'GOOD EYE!',
+                                themeColor: this.themeColor,
                                 message: 'We have hidden this post.'
                             });
                         }
