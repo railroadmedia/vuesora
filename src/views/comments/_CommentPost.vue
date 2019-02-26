@@ -281,12 +281,13 @@
                     'pack': this.user.access_level === 'pack',
                     'team': this.user.access_level === 'team',
                     'guitar': this.user.access_level === 'guitar',
+                    'piano': this.user.access_level === 'piano',
                     'lifetime': this.user.access_level === 'lifetime'
                 }
             },
 
             userExpValue() {
-                if(this.brand !== 'drumeo' && this.brand !== 'pianote'){
+                if(this.brand !== 'drumeo'){
                     return null;
                 }
 

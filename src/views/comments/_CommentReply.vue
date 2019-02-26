@@ -245,7 +245,8 @@
                     'pack': this.user.access_level === 'pack',
                     'team': this.user.access_level === 'team',
                     'guitar': this.user.access_level === 'guitar',
-                    'lifetime': this.user.access_level === 'lifetime'
+                    'piano': this.user.access_level === 'piano',
+                    'lifetime': this.user.access_level === 'lifetime',
                 }
             },
 

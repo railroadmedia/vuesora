@@ -46,5 +46,14 @@ export default class SongDataMapper extends DataMapper {
                 this.getPostDate()
             ]
         }
+
+        if(this.brand === 'pianote'){
+            this.list.column_data = [
+                this.getStyle(),
+                DataMapper.mapDifficulty(this.post),
+                this.getChildLessonCount(),
+                this.getPostDate()
+            ]
+        }
     }
 }
