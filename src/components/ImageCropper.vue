@@ -59,7 +59,7 @@
                 <div class="flex flex-column"></div>
 
                 <a class="btn normal text-white short mh-1"
-                   :class="'bg-' + brand"
+                   :class="themeBgClass"
                    @click="cropImage">
                     Crop
                 </a>
@@ -72,7 +72,7 @@
 
                     <span v-if="loading"
                           class="loading-element tiny font-italic"
-                          :class="'text-' + brand">
+                          :class="themeTextClass">
                         <i class="fas fa-spinner fa-spin"></i>
                         Loading please wait...
                     </span>
@@ -93,7 +93,7 @@
                             @click="uploadImage"
                             :disabled="loading">
                         <span class="text-white short"
-                              :class="'bg-' + brand">
+                              :class="themeBgClass">
                             Save
                         </span>
                     </button>
@@ -110,8 +110,10 @@
     import Toasts from '../assets/js/classes/toasts';
     import UserService from '../assets/js/services/user';
     import Dropzone from 'dropzone';
+    import ThemeClasses from "../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'image-cropper',
         data(){
             return {
@@ -245,10 +247,12 @@
             },
 
             setImageAsAvatar(imageUrl){
-                axios.patch(this.saveEndpoint, {
-                    key: this.fieldKey,
-                    value: imageUrl,
-                    '_method': 'PATCH'
+                axios.patch(this.saveEndpoint + '/' + this.userId, {
+                    data: {
+                        attributes: {
+                            'profile_picture_url': imageUrl
+                        }
+                    }
                 })
                     .then(response => {
                         if(response.data){
@@ -263,6 +267,7 @@
                         Toasts.push({
                             icon: 'sad',
                             title: 'This is Embarassing That didn\'t work',
+                            themeColor: this.themeColor,
                             message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. '
                         });
                     })
@@ -283,6 +288,7 @@
                 Toasts.push({
                     icon: 'happy',
                     title: 'AHH, MUCH BETTER!',
+                    themeColor: this.themeColor,
                     message: 'The new "you" is being refreshed...'
                 });
 
