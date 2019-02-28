@@ -560,7 +560,7 @@
             },
 
             handleFilterChange(payload) {
-                this.filter_params[payload.key] = payload.value;
+                this.$set(this.filter_params, payload.key, payload.value);
                 this.page = 1;
 
                 if (this.useUrlParams) {
