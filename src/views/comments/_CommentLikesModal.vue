@@ -78,6 +78,10 @@
                     return '/members/account/';
                 }
 
+                if(this.brand === 'pianote'){
+                    return '/members/profile/';
+                }
+
                 return '/laravel/public/members/profile/';
             }
         },
