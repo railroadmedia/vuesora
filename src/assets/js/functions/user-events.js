@@ -48,9 +48,9 @@ export default (function () {
                                     if (resolved) {
                                         Toasts.push({
                                             icon: 'happy',
-                                            title: 'READY TO START AGAIN?',
+                                            title: 'REMOVED!',
                                             themeColor: brand,
-                                            message: 'Your progress has been reset.'
+                                            message: 'The lesson has been removed from your list.'
                                         });
 
                                         document.querySelector('.trophy-progress').style.width = 0;

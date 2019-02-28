@@ -21,9 +21,9 @@ export default {
 
                             Toasts.push({
                                 icon: 'happy',
-                                title: 'Ready to start again?',
+                                title: 'REMOVED!',
                                 themeColor: this.themeColor,
-                                message: 'Item removed from list.'
+                                message: 'The lesson has been removed from your list.'
                             });
                         }
                     },
