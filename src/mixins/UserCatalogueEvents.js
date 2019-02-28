@@ -22,6 +22,7 @@ export default {
                             Toasts.push({
                                 icon: 'happy',
                                 title: 'Ready to start again?',
+                                themeColor: this.themeColor,
                                 message: 'Item removed from list.'
                             });
                         }
@@ -100,6 +101,7 @@ export default {
                         Toasts.push({
                             icon: 'happy',
                             title: 'READY TO START AGAIN?',
+                            themeColor: this.themeColor,
                             message: 'Your progress has been reset.'
                         });
 

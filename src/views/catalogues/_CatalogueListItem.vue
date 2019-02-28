@@ -14,7 +14,7 @@
         </div>
 
         <!-- THUMBNAIL COLUMN -->
-        <div v-if="item.type !== 'student-review'"
+        <div v-if="!showStudentReviewThumbsAsAvatar"
              class="flex flex-column align-v-center"
              :class="[thumbnailColumnClass, themeColor]">
             <div class="thumb-wrap corners-3">
@@ -41,7 +41,7 @@
         </div>
 
         <!-- AVATAR INSTEAD OF THUMBNAIL -->
-        <div v-if="item.type === 'student-review'"
+        <div v-if="showStudentReviewThumbsAsAvatar"
              class="flex flex-column align-v-center avatar-col">
             <div class="thumb-wrap rounded" style="border-radius:50%;">
                 <div class="thumb-img corners-3 square rounded"
@@ -225,6 +225,10 @@
                 }
 
                 return Model[type.replace(/-/g, '_')].mapDifficulty(this.item);
+            },
+
+            showStudentReviewThumbsAsAvatar(){
+                return this.item.type === 'student-review' && this.forceWideThumbs === false;
             },
 
             thumbnailColumnClass(){
