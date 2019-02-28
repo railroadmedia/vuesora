@@ -78,6 +78,11 @@ export default class Forms {
         else {
             element.classList.remove('has-input');
         }
+
+
+        if(element.type === 'checkbox'){
+            element.value = element.checked ? 1 : 0;
+        }
     }
 
     /**
