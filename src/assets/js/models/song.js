@@ -51,7 +51,7 @@ export default class SongDataMapper extends DataMapper {
             this.list.column_data = [
                 this.getStyle(),
                 DataMapper.mapDifficulty(this.post),
-                this.getChildLessonCount(),
+                // this.getChildLessonCount(),
                 this.getPostDate()
             ]
         }
