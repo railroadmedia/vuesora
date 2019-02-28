@@ -25,7 +25,7 @@
             </div>
 
             <div class="flex flex-row body mv-2">
-                <div v-if="!editing" class="flex flex-column post-body" v-html="postBody">
+                <div v-if="!editing" class="flex flex-column post-body grow" v-html="postBody">
                     {{ postBody }}
                 </div>
 
