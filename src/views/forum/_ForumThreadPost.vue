@@ -1,5 +1,6 @@
 <template>
-    <div class="flex flex-row ph pv-3 bb-grey-1-1" v-bind:id="'post' + id">
+    <div class="flex flex-row ph pv-3 bb-grey-1-1">
+        <a :id="'post' + id" style="position:relative;top:-75px;"></a>
         <div class="flex flex-column avatar-column">
             <div class="square">
                 <img class="rounded" :src="authorAvatar">
