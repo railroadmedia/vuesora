@@ -18,7 +18,7 @@
             </div>
             <div class="flex flex-column send-button-col">
                 <a class="btn text-white"
-                   :class="'bg-' + themeColor"
+                   :class="themeBgClass"
                    @click="submitForm">
                     <i class="fas fa-envelope"></i>
                     <span class="hide-xs-only ml-1">Send Question</span>
@@ -28,7 +28,7 @@
         <div class="flex flex-column relative" v-if="!lessonPage">
             <div v-if="loading"
                  class="loading-element"
-                 :class="'text-' + themeColor">
+                 :class="themeTextClass">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p class="x-tiny font-italic">Loading Please Wait...</p>
             </div>
@@ -39,7 +39,7 @@
             <div class="form-group">
                 <button class="btn"
                         @click="submitForm">
-                    <span class="text-white" :class="'bg-' + themeColor">
+                    <span class="text-white" :class="themeBgClass">
                         Submit
                     </span>
                 </button>
@@ -50,50 +50,76 @@
 <script>
     import UserService from '../assets/js/services/user';
     import Toasts from '../assets/js/classes/toasts';
+    import ThemeClasses from "../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'email-form',
         props: {
             brand: {
                 type: String,
-                default: () => 'recordeo'
+                default: () => 'musora'
             },
-            themeColor: {
-                type: String,
-                default: () => 'drumeo'
-            },
-            emailSubject: {
-                type: String,
-                default: () => ''
-            },
+
             recipient:{
                 type: String,
                 default: () => null
             },
+
             emailType: {
                 type: String,
-                default: () => 'general'
+                default: () => 'alert'
             },
+
+            emailSubject: {
+                type: String,
+                default: () => ''
+            },
+
+            emailLogo: {
+                type: String,
+                default: () => 'https://dmmior4id2ysr.cloudfront.net/logos/musora-logo-white.png'
+            },
+
+            emailView: {
+                type: String,
+                default: () => null
+            },
+
+            emailCallToActionText: {
+                type: String,
+                default: () => null
+            },
+
+            emailCallToActionUrl: {
+                type: String,
+                default: () => null
+            },
+
             lessonPage: {
                 type: Boolean,
                 default: () => false
             },
+
             userAvatar: {
                 type: String,
                 default: () => ''
             },
+
             inputLabel: {
                 type: String,
                 default: () => 'Ask a Question...'
             },
+
             successMessage: {
                 type: String,
                 default: () => 'Your email has been sent! Thank you for your input.'
             },
+
             emailEndpoint: {
                 type: String,
-                default: () => '/members/mail'
-            }
+                default: () => '/mailora/public/send'
+            },
         },
         data (){
             return {
@@ -109,6 +135,17 @@
                 set (val){
                     this.value = val;
                 }
+            },
+
+            callToAction(){
+                if(this.emailCallToActionText && this.emailCallToActionUrl){
+                    return {
+                        text: this.emailCallToActionText,
+                        url: this.emailCallToActionUrl
+                    }
+                }
+
+                return null;
             }
         },
         methods: {
@@ -117,9 +154,12 @@
                     this.loading = true;
 
                     UserService.sendEmail({
-                        message: this.value,
                         type: this.emailType,
                         subject: this.emailSubject,
+                        lines: [this.value],
+                        callToAction: this.callToAction,
+                        brand: this.brand,
+                        logo: this.emailLogo,
                         recipient: this.recipient,
                         endpoint: this.emailEndpoint
                     })
@@ -133,10 +173,10 @@
                                 });
 
                                 this.$emit('formSuccess');
-
-                                this.loading = false;
                                 this.valueInterface = '';
                             }
+
+                            this.loading = false;
                         })
                 }
             }

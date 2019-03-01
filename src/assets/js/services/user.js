@@ -109,19 +109,35 @@ export default {
     /**
      * Send an Email
      *
-     * @param {string} message - the content of the text area element within the email form
-     * @param {string} type - the type of email to send ['general', 'ask-question', 'support', 'suggest-learning-path']
-     * @param {string} subject - the subject for the email
-     * @param {string} recipient - who to send to (default set on backend)
-     * @param {string} endpoint - the mail package endpoint to hit
+     * @param {string} type - the type of email to send (action or alert)
+     * @param {string} subject
+     * @param {array} lines - array of lines to display in the email, new index = new line break
+     * @param {object} callToAction - CTA with 2 keys, text and url
+     * @param {string} brand
+     * @param {string} logo
+     * @param {string} view - The laravel dot notated blade template to use
+     * @param {string} recipient
+     * @param {string} endpoint
      * @returns {Promise} resolved promise with the response.data object
      */
-    sendEmail({message, type, subject, recipient, endpoint}) {
+    sendEmail({
+        type,
+        subject,
+        lines,
+        callToAction,
+        brand,
+        logo,
+        recipient,
+        endpoint
+    }) {
         return axios.post(endpoint_prefix + endpoint, {
-            message: message,
             type: type,
             subject: subject,
-            recipient: recipient
+            lines: lines,
+            'call-to-action': callToAction,
+            brand: brand,
+            logo: logo,
+            recipient: recipient,
         })
             .then(response => response.data)
             .catch(ErrorHandler);
