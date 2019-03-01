@@ -25,6 +25,7 @@
                 @addEvent="addEventToDropdown"></catalogue-list-item>
 
         <add-event-modal :singleEvent="singleEvent"
+                         :brand="brand"
                          :subscriptionCalendarId="subscriptionCalendarId"
                          :themeColor="themeColor"
                          @modalClose="handleModalClose"></add-event-modal>

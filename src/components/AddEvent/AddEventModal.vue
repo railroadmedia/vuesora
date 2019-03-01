@@ -3,7 +3,7 @@
         <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible">
             <h1 class="subheading text-center mb-2">Subscribe to Calendar</h1>
 
-            <p class="tiny text-center mb-2">Here you can subscribe to this lesson format's full release calendar using the calendar provider you already use - Apple Calendar, Google Calendar, Outlook and Yahoo Calendar are all supported.</p>
+            <p class="tiny text-center mb-2">Here you can add this event to your personal calendar - Apple Calendar, Google Calendar, Outlook and Yahoo Calendar are all supported.</p>
 
             <div class="relative" style="width:100%;" v-show="subscriptionCalendarId">
                 <button class="btn mb-1"
@@ -24,7 +24,7 @@
             </div>
 
             <p v-show="subscriptionCalendarId"
-               class="x-tiny font-italic text-center mb-2">{{ subscriptionDescription }}</p>
+               class="x-tiny font-italic text-center mb-2">Any upcoming releases will automatically show up in this calendar as they are scheduled by the {{ toCapitalCase(brand) }} Team.</p>
 
             <div v-show="hasSingleEvent"
                  class="tiny pointer relative" style="width:100%;">
@@ -51,6 +51,7 @@
 </template>
 <script>
     import AddEventDropdown from './AddEventDropdown.vue';
+    import UtilsHelpers from 'js-helper-functions/modules/utils';
     import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
@@ -64,6 +65,10 @@
                 type: String,
                 default: 'addToCalendarModal'
             },
+            brand: {
+                type: String,
+                default: () => 'Musora'
+            },
             singleEvent: {
                 title: null,
                 date: null
@@ -71,10 +76,6 @@
             subscriptionCalendarId: {
                 type: String,
                 default: ''
-            },
-            subscriptionDescription: {
-                type: String,
-                default: () => 'Any upcoming releases will automatically show up in this calendar as they are scheduled by the Drumeo Team.'
             },
             singleEventDescription: {
                 type: String,
@@ -89,8 +90,11 @@
         },
         computed: {
             hasSingleEvent(){
-                return this.singleEvent.title != null;
+                return this.singleEvent.title != null && this.singleEvent.title.length > 0;
             }
+        },
+        methods: {
+            toCapitalCase: (string) => UtilsHelpers.toCapitalCase(string),
         },
         watch: {
             singleEventDropdown(val){
