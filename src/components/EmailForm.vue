@@ -81,7 +81,7 @@
                 default: () => 'https://dmmior4id2ysr.cloudfront.net/logos/musora-logo-white.png'
             },
 
-            emailView: {
+            emailAlert: {
                 type: String,
                 default: () => null
             },
@@ -158,6 +158,7 @@
                         subject: this.emailSubject,
                         lines: [this.value],
                         callToAction: this.callToAction,
+                        alert: this.emailAlert,
                         brand: this.brand,
                         logo: this.emailLogo,
                         recipient: this.recipient,

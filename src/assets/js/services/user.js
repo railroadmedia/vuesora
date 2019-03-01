@@ -113,6 +113,7 @@ export default {
      * @param {string} subject
      * @param {array} lines - array of lines to display in the email, new index = new line break
      * @param {object} callToAction - CTA with 2 keys, text and url
+     * @param {string} alert
      * @param {string} brand
      * @param {string} logo
      * @param {string} view - The laravel dot notated blade template to use
@@ -125,6 +126,7 @@ export default {
         subject,
         lines,
         callToAction,
+        alert,
         brand,
         logo,
         recipient,
@@ -134,7 +136,8 @@ export default {
             type: type,
             subject: subject,
             lines: lines,
-            'call-to-action': callToAction,
+            callToAction: callToAction,
+            alert: alert,
             brand: brand,
             logo: logo,
             recipient: recipient,
