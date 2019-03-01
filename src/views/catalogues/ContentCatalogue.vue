@@ -46,7 +46,7 @@
 
         <div v-if="content.length === 0 && noResultsMessage.length > 0"
              class="flex flex-row ph pv-3">
-            <h4 class="body">{{ noResultsMessage }}</h4>
+            <h4 class="body">{{ noResultsMessageWithProgress }}</h4>
         </div>
 
         <grid-catalogue v-if="catalogue_type === 'grid'"
@@ -281,6 +281,10 @@
             totalResults: {
                 type: String|Number,
                 default: () => 0
+            },
+            catalogueName: {
+                type: String,
+                default: () => ''
             }
         },
         data() {
@@ -372,6 +376,14 @@
 
                 return this.item.type;
             },
+
+            noResultsMessageWithProgress(){
+                if(this.required_user_states){
+                    return `You do not have any ${this.required_user_states[0]} ${this.catalogueName || 'lessons' } that match those filters. Please remove some filters.`;
+                }
+
+                return this.noResultsMessage;
+            }
         },
         methods: {
             toggleCatalogueType(type) {
