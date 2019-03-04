@@ -11,7 +11,7 @@ export default {
                 Toasts.confirm({
                     title: 'Hold your horses… This will remove this lesson from your list, are you sure about this?',
                     submitButton: {
-                        text: '<span class="bg-drumeo text-white">I want to remove it</span>',
+                        text: '<span class="bg-' + this.themeColor + ' text-white short">I want to remove it</span>',
                         callback: () => {
 
                             this.emitAddToList({
@@ -28,7 +28,7 @@ export default {
                         }
                     },
                     cancelButton: {
-                        text: '<span class="bg-grey-3 inverted text-grey-3">Get me out of here</span>'
+                        text: '<span class="bg-grey-3 inverted text-grey-3 short">Get me out of here</span>'
                     }
                 });
             }
@@ -46,7 +46,7 @@ export default {
             Toasts.confirm({
                 title: 'Hold your horses… This will reset your progress, are you sure about this?',
                 submitButton: {
-                    text: '<span class="bg-drumeo text-white">I want to start over</span>',
+                    text: '<span class="bg-' + this.themeColor + ' text-white short">I want to start over</span>',
                     callback: () => {
 
                         icon.classList.remove('fa-undo');
@@ -59,7 +59,7 @@ export default {
                     }
                 },
                 cancelButton: {
-                    text: '<span class="bg-grey-3 inverted text-grey-3">Get me out of here</span>'
+                    text: '<span class="bg-grey-3 inverted text-grey-3 short">Get me out of here</span>'
                 }
             });
         },

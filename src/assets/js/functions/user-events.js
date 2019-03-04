@@ -36,9 +36,9 @@ export default (function () {
 
             if(!clickTimeout) {
                 Toasts.confirm({
-                    title: 'Hold your Horses… This will reset all of your progress on this ' + contentType + ', are you sure about this?',
+                    title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
                     submitButton: {
-                        text: '<span class="bg-' + brand + ' text-white">YES</span>',
+                        text: '<span class="bg-' + brand + ' text-white short">YES</span>',
                         callback: () => {
                             icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
                             icon.classList.add('fa-spin', 'fa-spinner');
@@ -65,7 +65,7 @@ export default (function () {
                         }
                     },
                     cancelButton: {
-                        text: '<span class="bg-grey-3 inverted text-grey-3">NO</span>',
+                        text: '<span class="bg-grey-3 inverted text-grey-3 short">NO</span>',
                     }
                 });
             }
