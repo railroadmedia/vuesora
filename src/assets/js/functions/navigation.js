@@ -131,17 +131,16 @@ export default (function(){
             localStorage.setItem('open_items', JSON.stringify(openItems));
         }
 
+        subNavWrap.addEventListener('scroll', showOrHideButtons);
+
         // Scroll the subnav
         function scrollSubNav(backwards = false){
             const amountToScroll = subNavWrap.clientWidth;
-
-            currentSubNavScrollPosition = backwards ? currentSubNavScrollPosition - amountToScroll : currentSubNavScrollPosition + amountToScroll;
-
-            showOrHideButtons();
+            const positionToScrollTo = backwards ? currentSubNavScrollPosition - amountToScroll : currentSubNavScrollPosition + amountToScroll;
 
             subNavWrap.scrollTo({
                 top: 0,
-                left: currentSubNavScrollPosition,
+                left: positionToScrollTo,
                 behavior: 'smooth'
             });
         }
@@ -149,6 +148,8 @@ export default (function(){
         // Show or hide the left or right buttons depending on the scroll position
         function showOrHideButtons(){
             const maximumScrollAmount = getMaximumScrollAmount();
+
+            currentSubNavScrollPosition = subNavWrap.scrollLeft;
 
             if(currentSubNavScrollPosition <= 35){
                 currentSubNavScrollPosition = 0;
