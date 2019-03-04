@@ -379,7 +379,7 @@
 
             noResultsMessageWithProgress(){
                 if(this.required_user_states){
-                    return `You do not have any ${this.required_user_states[0]} ${this.catalogueName || 'lessons' } that match those filters. Please remove some filters.`;
+                    return `You do not have any ${this.required_user_states[0] || ''} ${this.catalogueName || 'lessons'} that match those filters. Please remove some filters.`;
                 }
 
                 return this.noResultsMessage;
