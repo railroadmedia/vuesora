@@ -3,7 +3,7 @@
        :class="class_object"
        :href="renderLink ? false : item.url">
         <div v-if="mappedData.sheet_music && !is_search"
-             class="flex flex-column xs-12 pa hide-sm-up">
+             class="flex flex-column xs-12 pv hide-sm-up">
             <img :src="mappedData.sheet_music" style="width:100%;">
         </div>
 
