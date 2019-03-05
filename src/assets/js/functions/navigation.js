@@ -131,7 +131,9 @@ export default (function(){
             localStorage.setItem('open_items', JSON.stringify(openItems));
         }
 
-        subNavWrap.addEventListener('scroll', showOrHideButtons);
+        if(subNavWrap){
+            subNavWrap.addEventListener('scroll', showOrHideButtons);
+        }
 
         // Scroll the subnav
         function scrollSubNav(backwards = false){
