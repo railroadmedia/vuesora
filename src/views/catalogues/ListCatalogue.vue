@@ -21,7 +21,7 @@
                 :destroyOnListRemoval="destroyOnListRemoval"
                 :compactLayout="compactLayout"
                 @addToList="emitAddToList"
-                @resetProgress="emitResetProgress"
+                @progressReset="emitResetProgress"
                 @addEvent="addEventToDropdown"></catalogue-list-item>
 
         <add-event-modal :singleEvent="singleEvent"
