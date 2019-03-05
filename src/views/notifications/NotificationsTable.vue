@@ -13,12 +13,14 @@
             </div>
 
             <div class="flex flex-column button-col">
-                <a class="btn short text-white"
-                   :class="themeBgClass"
-                   @click.stop="markAllAsRead">
-                    <i class="fas fa-eye mr-1"></i>
-                    Mark All As Read
-                </a>
+                <button class="btn"
+                        @click.stop="markAllAsRead"
+                        :disabled="!hasUnreadNotifications">
+                    <span class="text-white short" :class="themeBgClass">
+                        <i class="fas fa-eye mr-1"></i>
+                        Mark All As Read
+                    </span>
+                </button>
             </div>
         </div>
 
@@ -80,13 +82,15 @@
         },
         data(){
             return {
-                notificationsArray: this.notifications
+                notificationsArray: this.notifications,
+                markingAllAsRead: false
             }
         },
         computed: {
             totalPages() {
                 return Math.ceil(this.notificationCount / 20);
             },
+
             currentPage() {
                 const urlParams = QueryString.parse(location.search);
 
@@ -95,22 +99,31 @@
                 }
 
                 return 1;
+            },
+
+            hasUnreadNotifications(){
+                return this.notifications.filter(notification =>
+                    notification.isRead === false
+                ).length > 0;
             }
         },
         methods: {
             markAllAsRead() {
-                // Mark all of the rows as read
-                const notificationRows = document.querySelectorAll('.content-table-row');
-                Array.from(notificationRows).forEach(row => {
-                    if (!row.classList.contains('is-read')) {
-                        row.classList.add('is-read');
-                    }
-                });
+                if(!this.markingAllAsRead){
+                    this.markingAllAsRead = true;
 
-                // Send request to server
-                UserService.markAllNotificationsAsRead()
-                    .then(resolved => {
-                    });
+                    // Send request to server
+                    UserService.markAllNotificationsAsRead()
+                        .then(resolved => {
+
+                            if(resolved){
+                                this.notifications.forEach(notification => {
+                                    this.$set(notification, 'isRead', true);
+                                })
+                            }
+                            this.markingAllAsRead = false;
+                        });
+                }
             },
 
             markAsRead(payload) {
