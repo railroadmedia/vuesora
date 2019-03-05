@@ -257,7 +257,7 @@
             },
 
             followPost() {
-                ForumService.followForumsThread(this.thread.id)
+                ForumService.followForumsThread(this.thread.id, this.isFollowed)
                     .then(resolved => resolved);
 
                 this.isFollowed = !this.isFollowed;

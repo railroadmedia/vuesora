@@ -97,10 +97,17 @@ export default {
      * Follow a forum thread
      *
      * @param {number} id - thread id
+     * @param {boolean} isFollowed
      * @returns {Promise} resolved promise with the response.data object
      */
-    followForumsThread(id) {
-        return axios.put(endpoint_prefix + '/forums/thread/follow/' + id)
+    followForumsThread(id, isFollowed = false) {
+        const url = isFollowed ? '/forums/thread/unfollow/' : '/forums/thread/follow/';
+        const method = isFollowed ? 'DELETE' : 'PUT';
+
+        return axios({
+            method: method,
+            url: endpoint_prefix + url + id
+        })
             .then(response => response.data)
             .catch(ErrorHandler);
     },
