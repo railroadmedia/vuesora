@@ -130,17 +130,19 @@
                 let index = this.notifications.map(notification => notification.id).indexOf(payload.id);
 
                 if(payload.isRead){
-                    UserService.markNotificationAsUnRead(payload.id)
-                        .then(resolved => {
-                        });
+                    if(payload.canCancel){
+                        UserService.markNotificationAsUnRead(payload.id)
+                            .then(resolved => resolved);
+                    }
                 }
                 else {
                     UserService.markNotificationAsRead(payload.id)
-                        .then(resolved => {
-                        });
+                        .then(resolved => resolved);
                 }
 
-                this.notificationsArray[index].isRead = !this.notificationsArray[index].isRead;
+                if(payload.canCancel){
+                    this.notificationsArray[index].isRead = !this.notificationsArray[index].isRead;
+                }
             },
 
             handlePageChange(payload) {

@@ -2,7 +2,7 @@
     <a :href="linkedContent.url"
        class="content-table-row flex flex-row bt-grey-1-1 pa-1 relative no-decoration"
        :class="{'is-read': isRead}"
-       @click="markAsRead">
+       @click="markAsRead(false)">
         <div class="flex flex-column avatar-col align-v-center">
             <div class="thumb-img square rounded bg-center"
                  :style="'background-image:url(' + userAvatar + ');'"></div>
@@ -25,7 +25,7 @@
 
         <div class="flex flex-column icon-col align-v-center">
             <div class="body" title="Mark as Read"
-                 @click.stop.prevent="markAsRead">
+                 @click.stop.prevent="markAsRead(true)">
                 <i class="far fa-eye flex-center text-grey-2 rounded read-icon"></i>
             </div>
         </div>
@@ -97,12 +97,11 @@
             }
         },
         methods: {
-            markAsRead(event){
-                const thisRow = event.target.parentElement.parentElement;
-
+            markAsRead(canCancel = true){
                 this.$emit('notificationRead', {
                     id: this.id,
-                    isRead: this.isRead
+                    isRead: this.isRead,
+                    canCancel: canCancel
                 });
             }
         }
