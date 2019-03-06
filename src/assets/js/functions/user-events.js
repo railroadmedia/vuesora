@@ -8,6 +8,15 @@ export default (function () {
         const addToListButtons = document.querySelectorAll('.addToList');
         const resetProgressButtons = document.querySelectorAll('.resetProgress');
         let clickTimeout = false;
+        let isRequesting = false;
+
+        window.addEventListener('vue-requesting-completion', event => {
+            isRequesting = true;
+        });
+
+        window.addEventListener('vue-request-complete', event => {
+            isRequesting = false;
+        });
 
         if (markAsCompleteButtons.length) {
             Array.from(markAsCompleteButtons).forEach(button => {
@@ -109,7 +118,9 @@ export default (function () {
             const isRemoving = element.classList.contains('is-complete');
             const brand = element.dataset['brand'] || 'drumeo';
 
-            if(!clickTimeout) {
+            Utils.triggerEvent(window, 'requesting-completion');
+
+            if(!clickTimeout && !isRequesting) {
                 if (isRemoving) {
                     Toasts.confirm({
                         title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
@@ -132,6 +143,8 @@ export default (function () {
                                                 message: 'Your progress has been reset.'
                                             });
                                         }
+
+                                        isRequesting = false;
                                     });
                             }
                         },
@@ -151,6 +164,8 @@ export default (function () {
 
                                 handleCompleteEvent(isRemoving);
                             }
+
+                            isRequesting = false;
                         });
                 }
             }

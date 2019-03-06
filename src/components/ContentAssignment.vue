@@ -48,6 +48,7 @@
                     </button>
 
                     <button class="btn collapse-100"
+                            :disabled="isRequesting"
                             @click.stop="markAsComplete">
                         <span :class="completeButtonClasses">
                             <i class="fas fa-check mr-1"></i>
@@ -212,6 +213,7 @@
                     soundslice_slug: '',
                     description: '',
                 },
+                isRequesting: false,
                 isComplete: this.completed,
             }
         },
@@ -281,6 +283,8 @@
                 const element = event.target;
                 const vm = this;
 
+                Utils.triggerEvent(window, 'vue-requesting-completion');
+
                 if(this.isComplete){
                     Toasts.confirm({
                         title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
@@ -306,8 +310,11 @@
                                                 complete: false
                                             });
 
+                                            Utils.triggerEvent(window, 'vue-request-complete');
+
                                             window.recalculateProgress(false);
                                         }
+                                        this.isRequesting = false;
                                     });
                             }
                         },
@@ -328,14 +335,23 @@
                                     complete: true
                                 });
 
+                                Utils.triggerEvent(window, 'vue-request-complete');
+
                                 window.recalculateProgress(true);
                             }
+
+                            this.isRequesting = false;
                         });
                 }
             },
 
+            setIsRequesting(){
+                this.isRequesting = !this.isRequesting;
+            },
+
             syncCompleteState(complete){
                 this.isComplete = complete.detail.complete;
+                this.isRequesting = false;
             }
         },
         computed: {
@@ -428,9 +444,11 @@
             });
 
 
+            window.addEventListener('requesting-completion', this.setIsRequesting);
             window.addEventListener('lesson-complete', this.syncCompleteState);
         },
         beforeDestroy(){
+            window.addEventListener('requesting-completion', this.setIsRequesting);
             window.removeEventListener('lesson-complete', this.syncCompleteState);
         }
     }
