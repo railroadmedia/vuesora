@@ -85,6 +85,7 @@
                       @openLikes="addLikeUsersToModal"></comment-post>
 
         <comment-likes-modal :themeColor="themeColor"
+                             :brand="brand"
                              :commentId="currentLikeUsersId"
                              :likeUsers="likeUsers"
                              :totalLikeUsers="totalLikeUsers"
