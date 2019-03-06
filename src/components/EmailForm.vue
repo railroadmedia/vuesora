@@ -175,6 +175,8 @@
 
                                 this.$emit('formSuccess');
                                 this.valueInterface = '';
+
+                                window.closeAllModals();
                             }
 
                             this.loading = false;
