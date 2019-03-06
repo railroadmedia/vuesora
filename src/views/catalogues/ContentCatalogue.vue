@@ -45,8 +45,16 @@
                            @progressChange="handleProgressChange"></catalogue-filters>
 
         <div v-if="content.length === 0 && noResultsMessage.length > 0"
-             class="flex flex-row ph pv-3">
-            <h4 class="body">{{ noResultsMessageWithProgress }}</h4>
+             class="flex flex-row ph pv-3 align-v-center">
+            <div class="flex flex-column icon-col face-icon mr-1">
+                <div class="icon-wrap square"
+                     :class="noResultsIcon"></div>
+            </div>
+            <div class="flex flex-column">
+                <h4 class="body" v-html="noResultsMessageWithProgress">
+                    {{ noResultsMessageWithProgress }}
+                </h4>
+            </div>
         </div>
 
         <grid-catalogue v-if="catalogue_type === 'grid'"
@@ -225,7 +233,11 @@
             },
             noResultsMessage: {
                 type: String,
-                default: () => ''
+                default: () => 'No lessons found.'
+            },
+            noResultsIcon: {
+                type: String,
+                default: () => 'disappointed'
             },
             forceWideThumbs: {
                 type: Boolean,
@@ -378,7 +390,7 @@
             },
 
             noResultsMessageWithProgress(){
-                if(this.required_user_states && !this.noResultsMessage){
+                if(this.required_user_states.length){
                     return `You do not have any ${this.required_user_states[0] || ''} ${this.catalogueName || 'lessons'} that match those filters. Please remove some filters.`;
                 }
 

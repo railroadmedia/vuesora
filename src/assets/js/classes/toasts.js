@@ -8,46 +8,6 @@ import Noty from 'noty';
 export default {
 
     /**
-     * DEPRECATED
-     *
-     * Display a basic success message
-     *
-     * @param {string} text - the text to display in the success box
-     * @returns {Object} - Noty object to render the notification
-     */
-    success(text){
-        console.warn('The Toasts.success method has been deprecated as of December 2018, please use the Toasts.push method instead.');
-
-        return new Noty({
-            type: 'success',
-            theme: 'bootstrap-v4',
-            text: text,
-            timeout: 4000,
-            layout: 'topLeft',
-        }).show();
-    },
-
-    /**
-     * DEPRECATED
-     *
-     * Display a basic error warning
-     *
-     * @param {string} text - the text to display in the warning box
-     * @returns {Object} - Noty object to render the notification
-     */
-    errorWarning(text = 'We\'re sorry! An unexpected error occurred. Please refresh the page and try again.'){
-        console.warn('The Toasts.errorWarning method has been deprecated as of December 2018, please use the Toasts.push method instead.');
-
-        return new Noty({
-            type: 'warning',
-            theme: 'bootstrap-v4',
-            text: text + '<br><br><span class="tiny font-italic">If the problem persists, please <a href="mailto:support@recordeo.com" target="_blank">contact support.</a></span>',
-            timeout: 5000,
-            layout: 'topLeft'
-        }).show();
-    },
-
-    /**
      * Display a notification
      *
      * @param {string} icon - the icon to use ('happy', 'doh', 'astonished', 'mad', 'sad', 'xp')
@@ -68,7 +28,7 @@ export default {
             type: 'alert',
             theme: 'musoraNoty',
             text:
-                '<div class="flex flex-column icon-column">' +
+                '<div class="flex flex-column icon-column face-icon">' +
                 '<div class="icon-wrap square ' + icon + '"></div>' +
                 '</div>' +
                 '<div class="flex flex-column ph-1">' +
