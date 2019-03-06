@@ -11,7 +11,7 @@
 
                 <i class="add-to-list fas fa-plus"
                    v-if="item.type !== 'pack-bundle'"
-                   :class="is_added ? 'is-added text-' + theme : 'text-white'"
+                   :class="is_added ? 'is-added ' + themeTextClass : 'text-white'"
                    :title="is_added ? 'Remove from list' : 'Add to list'"
                    :data-content-id="item.id"
                    :data-content-type="item.type"
