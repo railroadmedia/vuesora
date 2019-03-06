@@ -260,7 +260,7 @@
             },
 
             userExpValue(){
-                if(this.brand !== 'drumeo' && this.brand !== 'pianote'){
+                if(this.brand === 'guitareo'){
                     return null;
                 }
 
@@ -268,11 +268,11 @@
             },
 
             userExpRank (){
-                if(this.currentUser.access_level === 'team'){
+                if(this.user.access_level === 'team'){
                     return this.brand + ' Team';
                 }
 
-                return xpMapper.getNearestValue(this.currentUser.xp);
+                return xpMapper.getNearestValue(this.user.xp);
             },
 
             profileRoute(){

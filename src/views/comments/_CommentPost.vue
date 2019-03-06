@@ -287,7 +287,7 @@
             },
 
             userExpValue() {
-                if(this.brand !== 'drumeo'){
+                if(this.brand === 'guitareo'){
                     return null;
                 }
 
