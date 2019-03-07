@@ -3,7 +3,7 @@
         <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible">
             <h1 class="subheading text-center mb-2">Subscribe to Calendar</h1>
 
-            <p class="tiny text-center mb-2">Here you can add this event to your personal calendar - Apple Calendar, Google Calendar, Outlook and Yahoo Calendar are all supported.</p>
+            <p class="tiny text-center mb-2">Here you can subscribe to {{ toCapitalCase(brand) }}'s Lesson Calendar - Apple Calendar, Google Calendar, Outlook, and Yahoo Calendar are all supported.</p>
 
             <div class="relative" style="width:100%;" v-show="subscriptionCalendarId">
                 <button class="btn mb-1"
@@ -26,6 +26,10 @@
             <p v-show="subscriptionCalendarId"
                class="x-tiny font-italic text-center mb-2">Any upcoming releases will automatically show up in this calendar as they are scheduled by the {{ toCapitalCase(brand) }} Team.</p>
 
+            <p v-show="hasSingleEvent"
+               class="tiny text-center mb-2">
+                Or you can subscribe to this event only by clicking the button below.
+            </p>
             <div v-show="hasSingleEvent"
                  class="tiny pointer relative" style="width:100%;">
                 <button class="btn mb-1"
