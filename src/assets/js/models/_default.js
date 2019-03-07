@@ -37,18 +37,7 @@ export default class DataMapper {
 
     getPostInstructor(){
         if(this.post['instructor']){
-            if(Array.isArray(this.post['instructor'])){
-                let instructors = [];
-
-                this.post['instructor'].forEach(instructor => {
-                    instructors.push(instructor['name']);
-                });
-
-                return instructors.join(', ');
-            }
-            else {
-                return this.post['instructor']['name'];
-            }
+            return this.post['instructor'][0]['name'];
         }
 
         return 'TBD';
