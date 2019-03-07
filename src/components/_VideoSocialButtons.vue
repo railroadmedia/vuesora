@@ -66,7 +66,7 @@
                 </div>
 
                 <p class="tiny font-italic text-grey-3">
-                    This link is only accessible by Drumeo Members.
+                    This link is only accessible by {{ toCapitalCase(brand) }} Members.
                 </p>
             </div>
         </div>
@@ -86,7 +86,7 @@
     import Toasts from '../assets/js/classes/toasts';
     import LikesModal from '../views/comments/_CommentLikesModal';
     import ContentService from '../assets/js/services/content';
-    import axios from 'axios';
+    import Utils from 'js-helper-functions/modules/utils';
 
     export default {
         name: 'video-social-buttons',
@@ -145,6 +145,8 @@
             }
         },
         methods: {
+
+            toCapitalCase: (string) => Utils.toCapitalCase(string),
 
             likeLesson(){
                 this.lessonIsLiked = !this.lessonIsLiked;
