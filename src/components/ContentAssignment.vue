@@ -294,6 +294,8 @@
 
                                 this.isComplete = !this.isComplete;
 
+                                window.recalculateProgress(false);
+
                                 ContentService.resetContentProgress(vm.id)
                                     .then(resolved => {
                                         if(resolved){
@@ -311,8 +313,6 @@
                                             });
 
                                             Utils.triggerEvent(window, 'vue-request-complete');
-
-                                            window.recalculateProgress(false);
                                         }
                                         this.isRequesting = false;
                                     });
@@ -326,6 +326,8 @@
                 else {
                     this.isComplete = !this.isComplete;
 
+                    window.recalculateProgress(true);
+
                     ContentService.markContentAsComplete(vm.id)
                         .then(resolved => {
                             if(resolved){
@@ -336,8 +338,6 @@
                                 });
 
                                 Utils.triggerEvent(window, 'vue-request-complete');
-
-                                window.recalculateProgress(true);
                             }
 
                             this.isRequesting = false;

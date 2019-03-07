@@ -127,21 +127,21 @@ export default (function () {
                         submitButton: {
                             text: '<span class="bg-' + brand + ' text-white">Reset</span>',
                             callback: () => {
+                                element.classList.remove('is-complete');
+
+                                handleCompleteEvent(isRemoving);
 
                                 ContentService.resetContentProgress(contentId)
                                     .then(resolved => {
                                         if (resolved) {
-                                            element.classList.remove('is-complete');
-                                            element.classList.add('remove-request-complete');
-
-                                            handleCompleteEvent(isRemoving);
-
                                             Toasts.push({
                                                 icon: 'happy',
                                                 title: 'READY TO START AGAIN?',
                                                 themeColor: brand,
                                                 message: 'Your progress has been reset.'
                                             });
+
+                                            element.classList.add('remove-request-complete');
                                         }
 
                                         isRequesting = false;
@@ -157,12 +157,13 @@ export default (function () {
                 } else {
                     element.classList.add('is-complete');
 
+                    handleCompleteEvent(isRemoving);
+
                     ContentService.markContentAsComplete(contentId)
                         .then(resolved => {
                             if (resolved) {
                                 element.classList.add('add-request-complete');
 
-                                handleCompleteEvent(isRemoving);
                             }
 
                             isRequesting = false;
