@@ -489,13 +489,13 @@
 .four-cards-row {
 
   @include small {
-    .catalogue-card:last-child {
+    .catalogue-card:nth-child(n+4) {
       display:none;
     }
   }
 
   @include medium {
-    .catalogue-card:last-child {
+    .catalogue-card:nth-child(n+4) {
       display:flex;
     }
   }

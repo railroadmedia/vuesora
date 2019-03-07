@@ -71,7 +71,7 @@ export default class DataMapper {
     }
 
     getTypeWithIcon(){
-        const icon = Utils.getContentTypeIcon(this.getType());
+        const icon = Utils.getContentTypeIcon(this.post['type']);
         const type = this.getType();
 
         return `<i class="${ icon }" style="margin-right:5px;"></i> <span class="text-white">${ type }</span>`;

@@ -48,6 +48,8 @@ export default class SongDataMapper extends DataMapper {
         }
 
         if(this.brand === 'pianote'){
+            this.card.color_title = this.getTypeWithIcon();
+
             this.list.column_data = [
                 this.getStyle(),
                 DataMapper.mapDifficulty(this.post),

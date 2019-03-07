@@ -47,5 +47,9 @@ export default class CourseDataMapper extends DataMapper {
                 this.getPostDate()
             ]
         }
+
+        if(this.brand === 'pianote'){
+            this.card.color_title = this.getTypeWithIcon();
+        }
     }
 }

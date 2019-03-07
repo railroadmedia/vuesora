@@ -17,7 +17,7 @@
                    :data-content-type="item.type"
                    @click.stop.prevent="addToList"></i>
 
-                <h3 v-if="item['type'] !== 'chord-and-scale'"
+                <h3 v-if="!isGuitareoChordAndScale"
                     class="thumbnail-title tiny font-compressed uppercase dense font-bold"
                     :class="themeTextClass"
                     v-html="mappedData.color_title">
@@ -46,7 +46,7 @@
             <img v-if="mappedData.sheet_music" :src="mappedData.sheet_music">
 
             <h1 class="tiny text-black mb-1 font-compressed font-bold capitalize"
-                :class="{'text-center': this.item['type'] === 'chord-and-scale'}">
+                :class="{'text-center': isGuitareoChordAndScale}">
                 {{ mappedData.black_title }}
             </h1>
 
@@ -56,7 +56,7 @@
             </p>
 
             <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase"
-                :class="{'text-center': this.item['type'] === 'chord-and-scale'}">
+                :class="{'text-center': isGuitareoChordAndScale}">
                 {{ mappedData.grey_title }}
             </h4>
         </a>
@@ -100,6 +100,10 @@
 
                 return model['card'];
             },
+
+            isGuitareoChordAndScale(){
+                return this.brand === 'guitareo' && this.item.type === 'chord-and-scale';
+            }
         },
         mounted(){
 

@@ -383,11 +383,40 @@ export default {
             .replace(/-part/g, '') // Remove the -part
             .replace(/-bundle/g, '') // Remove the -bundle
             .replace(/-lesson/g, '');  // Remove -lesson
+
         const contentType = this.topLevelContentTypes().filter(content =>
             content.type === type
-        )[0];
+        );
 
-        return contentType ? contentType.icon : undefined;
+        return contentType[0] ? contentType[0].icon : undefined;
+    },
+
+    /**
+     * Get a list of all show types
+     *
+     * @returns {array}
+     */
+    shows(){
+        return [
+            'recording',
+            'gear-guides',
+            'challenges',
+            'boot-camps',
+            'quick-tips',
+            'podcasts',
+            'on-the-road',
+            'behind-the-scenes',
+            'study-the-greats',
+            'live',
+            'solos',
+            'performances',
+            'exploring-beats',
+            'sonor-drums',
+            'paiste-cymbals',
+            '25-days-of-christmas',
+            'rhythms-from-another-planet',
+            'namm-2019'
+        ];
     },
 
     /**

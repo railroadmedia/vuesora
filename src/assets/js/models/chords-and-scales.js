@@ -34,8 +34,9 @@ export default class ChordsAndScalesDataMapper extends DataMapper {
         };
 
         if(brand === 'pianote'){
-            this.list.sheet_music = this.post['piano_keys_thumbnail_url'];
+            this.card.color_title = `<i class="icon-chords" style="margin-right:5px;"></i> <span class="text-white">Chords And Scales</span>`;
 
+            this.list.sheet_music = this.post['piano_keys_thumbnail_url'];
             this.list.column_data = [];
         }
     }

@@ -7,8 +7,6 @@ export default class ShowDataMapper extends DataMapper {
             post
         });
 
-        // TODO: Just so I don't forget this later. I'll likely use this constructor to abstract the different show types.
-
         this.card = {
             color_title: this.getPostInstructor(),
             black_title: this.post['title'],
@@ -35,5 +33,10 @@ export default class ShowDataMapper extends DataMapper {
                 DataMapper.mapDifficulty(this.post)
             ]
         };
+
+
+        if(this.brand === 'pianote'){
+            this.card.color_title = this.getTypeWithIcon();
+        }
     }
 }

@@ -29,5 +29,10 @@ export default class StudentReviewDataMapper extends DataMapper {
                 DataMapper.mapDifficulty(this.post)
             ]
         };
+
+
+        if(this.brand === 'pianote'){
+            this.card.color_title = this.getTypeWithIcon();
+        }
     }
 }
