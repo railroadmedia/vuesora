@@ -1,8 +1,9 @@
 <template>
-    <div class="flex flex-column pa-1 catalogue-card">
-        <a :href="item.url"
+    <div class="flex flex-column pa-1 catalogue-card"
+         :class="{'no-access': this.noAccess}">
+        <a :href="renderLink ? false : item.url"
            class="no-decoration">
-            <div class="card-media corners-5 mb-1"
+            <div class="card-media active corners-5 mb-1"
                  :class="thumbnailType">
 
                 <div class="thumb-img bg-center"
@@ -36,8 +37,8 @@
                 <span v-else class="thumb-hover flex-center">
                     <i class="fas"
                        :class="thumbnailIcon"></i>
-                    <p v-if="noAccess"
-                       class="x-tiny text-white font-bold">
+                    <p v-if="!isReleased"
+                       class="tiny text-white font-bold">
                         {{ releaseDate }}
                     </p>
                 </span>

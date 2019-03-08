@@ -256,6 +256,13 @@
     }
   }
 
+  &.no-access {
+    .card-media .thumb-hover {
+      opacity:1;
+      visibility:visible;
+    }
+  }
+
   h1, h4 {
     word-wrap:break-word;
   }

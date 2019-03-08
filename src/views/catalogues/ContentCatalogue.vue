@@ -125,7 +125,6 @@
     import CatalogueSearch from './_CatalogueSearch.vue';
     import CataloguePlaylistTabs from './_CataloguePlaylistTabs';
     import CatalogueTabFilters from './_CatalogueTabFilters.vue';
-    import AddEventDropdown from '../../components/AddEvent/AddEventDropdown.vue';
     import axios from 'axios';
     import Toasts from '../../assets/js/classes/toasts'
     import Pagination from '../../components/Pagination.vue';
@@ -145,7 +144,6 @@
             'catalogue-tab-filters': CatalogueTabFilters,
             'catalogue-search': CatalogueSearch,
             'catalogue-playlist-tabs': CataloguePlaylistTabs,
-            'add-event-dropdown': AddEventDropdown
         },
         props: {
             catalogueType: {

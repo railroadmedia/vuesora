@@ -177,7 +177,6 @@
         </div>
     </a>
 </template>
-</template>
 <script>
     import Mixin from './_mixin';
     import * as Model from '../../assets/js/models/_model.js';
