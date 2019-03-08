@@ -31,8 +31,9 @@
                     <span class="thumb-hover flex-center">
                         <i class="fas"
                            :class="thumbnailIcon"></i>
-                        <p v-if="this.item.is_owned && !isReleased"
-                           class="x-tiny text-white font-bold">
+                        <p v-if="!isReleased"
+                           class="text-white font-bold"
+                           :class="this.overview ? 'tiny' : 'x-tiny'">
                             {{ releaseDate }}
                         </p>
                     </span>
@@ -51,7 +52,7 @@
                           style="border-radius:50%;">
                         <i class="fas"
                            :class="thumbnailIcon"></i>
-                        <p v-if="this.item.is_owned && !isReleased"
+                        <p v-if="!isReleased"
                            class="x-tiny text-white font-bold">
                             {{ releaseDate }}
                         </p>
