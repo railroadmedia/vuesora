@@ -59,7 +59,7 @@ export default (function () {
                                             icon: 'happy',
                                             title: 'REMOVED!',
                                             themeColor: brand,
-                                            message: 'The lesson has been removed from your list.'
+                                            message: 'Your progress has been reset.'
                                         });
 
                                         document.querySelector('.trophy-progress').style.width = 0;
@@ -70,6 +70,8 @@ export default (function () {
 
                                     icon.classList.remove('fa-spin', 'fa-spinner');
                                     icon.classList.add('fa-redo-alt', 'fa-flip-horizontal');
+
+                                    window.location.reload();
                                 });
                         }
                     },
@@ -138,7 +140,7 @@ export default (function () {
                                                 icon: 'happy',
                                                 title: 'READY TO START AGAIN?',
                                                 themeColor: brand,
-                                                message: 'Your progress has been reset.'
+                                                message: 'The lesson has been removed from your list.'
                                             });
 
                                             element.classList.add('remove-request-complete');
