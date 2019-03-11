@@ -502,11 +502,8 @@
     }
 
     #ssEmbed {
-        /*position:absolute;*/
-        /*left:0;*/
-        /*bottom:0;*/
         width:100%;
-        /*height:calc(100% - 50px);*/
+        height:100%;
     }
 
     .carousel {

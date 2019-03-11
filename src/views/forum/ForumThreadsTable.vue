@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column bg-white shadow corners-3 content-table">
+    <div class="flex flex-column bg-white shadow corners-3 grow content-table">
         <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column mb-3 align-v-center">
                 <div class="flex flex-row">
@@ -22,18 +22,30 @@
         </div>
         <div class="flex flex-row flex-wrap ph align-v-center">
             <div class="flex flex-column mb-3 search-box">
-                <div class="form-group">
-                    <input id="threadSearch"
-                           type="text"
-                           v-model.lazy="searchInterface">
-                    <label for="threadSearch" :class="themeColor">Search</label>
+                <div class="flex flex-row">
+                    <div class="flex flex-column form-group pr-1">
+                        <input id="threadSearch"
+                               type="text"
+                               ref="searchInput"
+                               v-model.lazy="searchInterface">
+                        <label for="threadSearch" :class="themeColor">Search</label>
 
-                    <span id="clearSearch" v-if="searching"
-                          class="body pointer"
-                          @click="clearSearch">
-                        <i class="fas fa-times"></i>
-                    </span>
+                        <span id="clearSearch" v-if="searching"
+                              class="body pointer"
+                              @click="clearSearch">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </div>
+                    <div class="flex flex-column search-icon-col">
+                        <button class="btn collapse-square" @click="$refs.searchInput.blur()">
+                            <span class="text-white"
+                                  :class="themeBgClass">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </button>
+                    </div>
                 </div>
+
                 <p v-if="searching"
                    class="tiny font-italic text-grey-4">
                     Showing results for <span class="font-bold text-black">"{{ searchInterface }}"</span> in All Forums.
@@ -78,7 +90,8 @@
         <div v-if="searching && searchResults.length === 0" class="flex flex-row content-table-row">
             <div class="flex flex-column pv-3 align-center">
                 <i v-if="loading"
-                   class="fas fa-spin fa-circle-notch text-recordeo"
+                   class="fas fa-spin fa-circle-notch"
+                   :class="themeTextClass"
                    style="font-size:32px;"></i>
                 <p v-else class="body font-italic">
                     No results were found matching that query, please try again.
@@ -359,5 +372,9 @@
         width: 50px;
         height: 50px;
         font-size: 20px;
+    }
+
+    .search-icon-col {
+        flex:0 0 50px;
     }
 </style>
