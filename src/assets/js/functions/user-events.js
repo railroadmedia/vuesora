@@ -179,26 +179,31 @@ export default (function () {
         window.recalculateProgress = function (complete) {
             const numberOfAssignments = document.querySelectorAll('.assignment-component').length;
             const progressContainer = document.querySelector('.trophy-progress-bar');
-            const completeButton = document.querySelector('.completeButton');
-            const progressBar = document.querySelector('.trophy-progress');
-            const currentProgress = progressBar.style.width.replace(/%/g, '');
-            const progressDifference = 100 / numberOfAssignments;
-            let newProgress = null;
 
-            if (complete) {
-                newProgress = Math.ceil(Number(currentProgress) + Number(progressDifference));
-            } else {
-                newProgress = Math.ceil(Number(currentProgress) - Number(progressDifference));
-            }
+            if(progressContainer){
+                const completeButton = document.querySelector('.completeButton');
+                const progressBar = document.querySelector('.trophy-progress');
+                const currentProgress = progressBar ? progressBar.style.width.replace(/%/g, '') : 0;
+                const progressDifference = 100 / numberOfAssignments;
+                let newProgress = null;
 
-            progressBar.style.width = newProgress + '%';
+                if (complete) {
+                    newProgress = Math.ceil(Number(currentProgress) + Number(progressDifference));
+                } else {
+                    newProgress = Math.ceil(Number(currentProgress) - Number(progressDifference));
+                }
 
-            if (newProgress >= 100) {
-                progressContainer.classList.add('complete');
-                completeButton.classList.add('is-complete');
-            } else {
-                progressContainer.classList.remove('complete');
-                completeButton.classList.remove('is-complete');
+                if(progressBar){
+                    progressBar.style.width = newProgress + '%';
+                }
+
+                if (newProgress >= 100) {
+                    progressContainer.classList.add('complete');
+                    completeButton.classList.add('is-complete');
+                } else {
+                    progressContainer.classList.remove('complete');
+                    completeButton.classList.remove('is-complete');
+                }
             }
         };
 
