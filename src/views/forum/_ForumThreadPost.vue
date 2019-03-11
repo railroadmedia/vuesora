@@ -1,21 +1,30 @@
 <template>
     <div class="flex flex-row ph pv-3 bb-grey-1-1">
-        <a :id="'post' + id" style="position:relative;top:-75px;"></a>
+        <a :id="'post' + post.id" style="position:relative;top:-75px;"></a>
         <div class="flex flex-column avatar-column">
-            <div class="square">
-                <img class="rounded" :src="authorAvatar">
+            <div class="user-avatar smaller"
+                 :class="[avatarClassObject, brand]">
+                <a :href="profileRoute" target="_blank"
+                   class="no-decoration">
+                    <img :src="post.authorAvatar" class="rounded">
+                </a>
             </div>
+
+            <p v-if="userExpValue"
+               class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
+            <p v-if="userExpValue && this.post.access_level !== 'admin'"
+               class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
         </div>
         <div class="flex flex-column ph">
             <div class="flex flex-row align-v-center mb-1">
                 <div class="flex flex-column">
-                    <h2 class="title">{{ authorUsername }}</h2>
+                    <h2 class="title">{{ post.authorUsername }}</h2>
                 </div>
 
                 <div class="flex flex-column align-h-right">
                     <div class="flex flex-row">
                         <p class="x-tiny text-grey-3 font-bold font-italic uppercase mr-2">
-                            {{ createdOn }}
+                            {{ post.createdOn }}
                         </p>
                         <p class="x-tiny text-grey-3 font-bold font-italic uppercase">
                             #{{ postNumber }}
@@ -25,14 +34,14 @@
             </div>
 
             <div class="flex flex-row body mv-2">
-                <div v-if="!editing" class="flex flex-column post-body grow" v-html="postBody">
-                    {{ postBody }}
+                <div v-if="!editing" class="flex flex-column post-body grow" v-html="post.postBody">
+                    {{ post.postBody }}
                 </div>
 
                 <div v-if="editing" class="flex flex-column mb-1">
-                    <form :action="'/post/update/' + this.id" method="post">
+                    <form :action="'/post/update/' + this.post.id" method="post">
                         <input type="hidden" name="_method" value="patch">
-                        <text-editor :initialValue="postBody"></text-editor>
+                        <text-editor :initialValue="post.postBody"></text-editor>
 
                         <div class="flex flex-row align-h-right mt-2">
                             <a class="btn bg-black text-black no-decoration flat collapse-150 no-border mr-1"
@@ -56,22 +65,17 @@
                     <div class="flex flex-row align-v-center">
 
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                           :class="isLiked ? themeTextClass : 'text-grey-3'"
+                           :class="post.isLiked ? themeTextClass : 'text-grey-3'"
                            @click="likePost">
                             <i class="fa-thumbs-up"
-                               :class="isLiked ? 'fas' : 'fal'"></i> {{ totalLikes }}
+                               :class="post.isLiked ? 'fas' : 'fal'"></i> {{ post.totalLikes }}
                         </p>
 
                         <p class="tiny text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
                            @click="replyToPost"
-                           v-if="!isLocked">
+                           v-if="!post.isLocked">
                             Reply
                         </p>
-
-                        <!--<p class="x-tiny text-grey-3 uppercase font-italic"-->
-                           <!--v-html="userLikeString">-->
-                            <!--{{ userLikeString }}-->
-                        <!--</p>-->
                     </div>
                 </div>
                 <div class="flex flex-column mb-1">
@@ -106,6 +110,8 @@
     import Toasts from '../../assets/js/classes/toasts';
     import ForumService from '../../assets/js/services/forums';
     import ThemeClasses from "../../mixins/ThemeClasses";
+    import Utils from '../../assets/js/classes/utils';
+    import xpMapper from '../../assets/js/classes/xp-mapper';
 
     export default {
         mixins: [ThemeClasses],
@@ -114,54 +120,25 @@
             "text-editor": TextEditor
         },
         props: {
-            authorAvatar: {
+            post: {
+                type: Object
+            },
+
+            brand: {
                 type: String,
-                default: () => ''
+                default: 'drumeo',
             },
-            authorUsername: {
-                type: String,
-                default: () => ''
-            },
-            authorId: {
-                type: Number,
-                default: () => 0
-            },
-            createdOn: {
-                type: String,
-                default: () => ''
-            },
-            id: {
-                type: Number,
-                default: () => 0
-            },
-            isLiked: {
-                type: Boolean,
-                default: () => false
-            },
-            postBody: {
-                type: String,
-                default: () => ''
-            },
-            totalLikes: {
-                type: Number,
-                default: () => 0
-            },
-            userLikes: {
-                type: Array,
-                default: () => ''
-            },
+
             index: {
                 type: Number,
                 default: () => 0
             },
+
             currentPage: {
                 type: Number,
                 default: () => 1
             },
-            isLocked: {
-                type: Boolean,
-                default: () => false
-            },
+
             currentUser: {
                 type: Object,
                 default: () => {
@@ -172,7 +149,12 @@
                         isAdmin: false
                     }
                 }
-            }
+            },
+
+            profileBaseRoute: {
+                type: String,
+                default: '/members/profile/'
+            },
         },
         data(){
             return {
@@ -181,56 +163,45 @@
         },
         computed: {
             canEdit(){
-                return this.currentUser.id === this.authorId || this.currentUser.isAdmin;
+                return this.currentUser.id === this.post.authorId || this.currentUser.isAdmin;
             },
 
-            // userLikeString(){
-            //     let userNames = [];
-            //     let userNameString;
-            //     let suffixString = ' like this';
-            //
-            //     for(let i = 0; i < this.userLikes.length; i++){
-            //         let nameExistsOrIsntCurrentUser = this.userLikes[i]['name'] != null
-            //             && this.userLikes[i]['name'] !== this.currentUser.name;
-            //
-            //         if(nameExistsOrIsntCurrentUser){
-            //             userNames.push(this.userLikes[i]['name']);
-            //         }
-            //     }
-            //
-            //     if(userNames.length){
-            //         userNameString = userNames.join(', ');
-            //     }
-            //
-            //     if(this.totalLikes > 3){
-            //         suffixString = ' & ' + String(this.totalLikes - 3) + ' others like this';
-            //     }
-            //     else if(this.totalLikes === 0) {
-            //         suffixString = '';
-            //     }
-            //
-            //     if(this.isLiked){
-            //         userNames.splice((userNames.length - 1), 1);
-            //
-            //         return '<span class="font-bold">You' + (userNameString ? ', ' + userNameString : ' ')  + '</span>' + suffixString;
-            //     }
-            //     else {
-            //         if(this.totalLikes > 0){
-            //             return '<span class="font-bold">' + userNameString + '</span>' + suffixString;
-            //         }
-            //     }
-            //
-            //     return 'Be the first to like this!';
-            // },
+            avatarClassObject() {
+                return {
+                    'subscriber': ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.post.access_level) !== -1,
+                    'edge': this.post.access_level === 'edge',
+                    'pack': this.post.access_level === 'pack',
+                    'team': ['team', 'admin'].indexOf(this.post.access_level) !== -1,
+                    'guitar': this.post.access_level === 'guitar',
+                    'piano': this.post.access_level === 'piano',
+                    'lifetime': this.post.access_level === 'lifetime'
+                }
+            },
+
+            userExpValue() {
+                return Utils.parseXpValue(this.post.xp);
+            },
+
+            userExpRank() {
+                if(this.post.access_level === 'team'){
+                    return  this.brand + ' Team';
+                }
+
+                return xpMapper.getNearestValue(this.post.xp);
+            },
 
             postNumber(){
                 return ((this.currentPage - 1) * 15) + (this.index + 1)
-            }
+            },
+
+            profileRoute() {
+                return this.profileBaseRoute + this.user_id
+            },
         },
         methods: {
             replyToPost(){
                 this.$emit('replyToPost', {
-                    id: this.id,
+                    id: this.post.id,
                     userName: this.authorUsername,
                     createdOn: this.createdOn,
                     postBody: this.postBody
@@ -239,8 +210,8 @@
 
             likePost(){
                 this.$emit('likePost', {
-                    id: this.id,
-                    isLiked: this.isLiked
+                    id: this.post.id,
+                    isLiked: this.post.isLiked
                 })
             },
 
@@ -253,7 +224,7 @@
                         text: '<span class="bg-error text-white">Report</span>',
                         callback: () => {
 
-                            ForumService.reportForumPost(vm.id)
+                            ForumService.reportForumPost(vm.post.id)
                                 .then(resolved => {
                                     Toasts.push({
                                         icon: 'happy',
@@ -280,7 +251,7 @@
                         callback: () => {
 
                             this.$emit('hidePost', {
-                                id: vm.id
+                                id: vm.post.id
                             });
 
                             Toasts.push({
@@ -307,7 +278,7 @@
                         callback: () => {
 
                             this.$emit('deletePost', {
-                                id: this.id
+                                id: this.post.id
                             });
 
 
@@ -321,7 +292,7 @@
 
             editPost(){
                 this.$emit('editPost', {
-                    id: this.id
+                    id: this.post.id
                 })
             }
         }

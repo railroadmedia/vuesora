@@ -61,7 +61,7 @@
             <forum-thread-post v-for="(post, i) in posts"
                                :key="post.id"
                                :index="i"
-                               v-bind="post"
+                               :post="post"
                                :currentPage="currentPage"
                                :currentUser="currentUser"
                                :isLocked="thread.isLocked"
