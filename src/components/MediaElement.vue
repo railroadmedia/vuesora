@@ -88,6 +88,10 @@
                 type: Array,
                 default: () => []
             },
+            hlsManifestUrl: {
+                type: String,
+                default: () => ''
+            },
             poster: {
                 type: String,
                 default: () => ''
