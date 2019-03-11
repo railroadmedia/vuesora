@@ -20,8 +20,8 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-row flex-wrap ph align-v-center">
-            <div class="flex flex-column mb-3 search-box">
+        <div class="flex flex-row flex-wrap ph-1 align-v-center">
+            <div class="flex flex-column mb-2 search-box">
                 <div class="flex flex-row">
                     <div class="flex flex-column form-group pr-1">
                         <input id="threadSearch"
@@ -38,8 +38,7 @@
                     </div>
                     <div class="flex flex-column search-icon-col">
                         <button class="btn collapse-square" @click="$refs.searchInput.blur()">
-                            <span class="text-white"
-                                  :class="themeBgClass">
+                            <span class="bg-white text-black flat">
                                 <i class="fas fa-search"></i>
                             </span>
                         </button>

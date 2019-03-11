@@ -195,7 +195,7 @@
             },
 
             profileRoute() {
-                return this.profileBaseRoute + this.user_id
+                return this.profileBaseRoute + this.post.authorId
             },
         },
         methods: {
