@@ -1,0 +1,94 @@
+@import './_variables.scss';
+
+.widescreen {
+
+  video {
+    max-width:100%;
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:1;
+  }
+}
+
+.vjs_video_3-dimensions {
+  height:auto;
+  width:auto;
+  outline:none;
+}
+
+[data-vjs-player] {
+  overflow:hidden;
+
+  &.vjs-user-active {
+    .controls {
+      transform:translateY(0);
+    }
+  }
+
+  &.vjs-user-inactive {
+    .controls {
+      transform:translateY(100%);
+    }
+
+    &.vjs-has-started {
+      .controls {
+        transform:translateY(0);
+      }
+
+      &.vjs-playing {
+        .controls {
+          transform: translateY(100%);
+        }
+      }
+    }
+  }
+}
+
+.controls-wrap {
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:15;
+  overflow:hidden;
+}
+
+.controls {
+  transition: transform .1s ease-in-out;
+
+  button {
+    span {
+      background:none!important;
+      transition:color .1s ease-in-out;
+    }
+  }
+}
+
+.player-progress {
+  padding:7px;
+  width:100%;
+  cursor:pointer;
+
+  &:hover {
+    .progress-rail {
+      height:6px;
+    }
+  }
+
+  .progress-rail {
+    width:100%;
+    height:3px;
+    background:#e4e4e4;
+    transition:height .1s ease-in-out;
+    border-radius:3px;
+    overflow:hidden;
+  }
+
+  .progress-fill {
+    width:100%;
+    height:105%;
+  }
+}

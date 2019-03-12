@@ -12,6 +12,14 @@ export default {
 
         themeTextClass(){
             return 'text-' + this.themeColor
-        }
+        },
+
+        themeHoverBgClass(){
+            return 'hover-bg-' + this.themeColor
+        },
+
+        themeHoverTextClass(){
+            return 'hover-text-' + this.themeColor
+        },
     }
 }
