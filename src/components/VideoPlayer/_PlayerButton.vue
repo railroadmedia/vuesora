@@ -1,10 +1,12 @@
 <template>
-    <button class="btn collapse-square"
-            :class="themeHoverTextClass">
+    <div class="flex flex-column player-button">
+        <button class="btn collapse-square"
+                :class="themeHoverTextClass">
             <span class="flat text-white">
                 <slot></slot>
             </span>
-    </button>
+        </button>
+    </div>
 </template>
 <script>
 

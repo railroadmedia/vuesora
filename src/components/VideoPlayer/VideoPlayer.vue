@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-column" data-vjs-player @mousemove="trackMousePosition">
+    <div class="flex flex-column"
+         data-vjs-player
+         @mousemove="trackMousePosition">
 
         <video ref="player"></video>
 
@@ -21,11 +23,15 @@
                 </div>
 
                 <!--  MIDDLE ROW  -->
-                <player-progress :themeColor="themeColor"
-                                 :currentProgress="currentProgress"
-                                 :currentMouseX="currentMouseX"
-                                 :mousedown="mousedown"
-                                 @mousedown.native="mousedown = true"></player-progress>
+                <div class="flex flex-row">
+                    <player-progress :themeColor="themeColor"
+                                     :currentProgress="currentProgress"
+                                     :playerWidth="playerWidth"
+                                     :currentMouseX="currentMouseX"
+                                     :totalDuration="totalDuration"
+                                     :mousedown="mousedown"
+                                     @mousedown.native="mousedown = true"></player-progress>
+                </div>
 
                 <!--  BOTTOM ROW  -->
                 <div class="flex flex-row">
@@ -35,19 +41,17 @@
                            :class="isPlaying ? 'fa-pause' : 'fa-play'"></i>
                     </player-button>
 
-                    <div class="flex flex-column text-white body align-v-center">
+                    <div class="flex flex-column text-white body align-v-center flex-auto">
                         {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
                     </div>
 
                     <div class="flex flex-column spacer"></div>
 
-                    <player-button :themeColor="themeColor">
-                        <i class="fas fa-volume"></i>
-                    </player-button>
+                    <player-volume :themeColor="themeColor"
+                                   :currentVolume="currentVolume"
+                                   @volumeChange="changeVolume"></player-volume>
 
-                    <player-button :themeColor="themeColor">
-                        <i class="fas fa-cog"></i>
-                    </player-button>
+                    <player-settings :themeColor="themeColor"></player-settings>
 
                     <player-button @click.native="fullscreen"
                                    :themeColor="themeColor">
@@ -64,6 +68,8 @@
     import ThemeClasses from "../../mixins/ThemeClasses";
     import PlayerButton from './_PlayerButton';
     import PlayerProgress from './_PlayerProgress';
+    import PlayerVolume from './_PlayerVolume';
+    import PlayerSettings from './_PlayerSettings';
 
     export default {
         mixins: [ThemeClasses],
@@ -71,6 +77,8 @@
         components: {
             'player-button': PlayerButton,
             'player-progress': PlayerProgress,
+            'player-volume': PlayerVolume,
+            'player-settings': PlayerSettings,
         },
         props: {
             sources: {
@@ -85,7 +93,8 @@
                 currentTime: 0,
                 totalDuration: 0,
                 mousedown: false,
-                currentMouseX: 0
+                currentMouseX: 0,
+                currentVolume: 1
             }
         },
         methods: {
@@ -100,6 +109,7 @@
 
             seek(time){
                 this.videojsInstance.currentTime(time);
+                this.videojsInstance.play();
             },
 
             fullscreen(){
@@ -113,6 +123,11 @@
                 }
             },
 
+            changeVolume(payload){
+                this.videojsInstance.volume(payload.volume / 100);
+                this.currentVolume = this.videojsInstance.volume();
+            },
+
             parseTime: (time) => PlayerUtils.parseTime(time),
 
             trackMousePosition(event){
@@ -123,6 +138,13 @@
             },
         },
         computed: {
+            playerWidth:{
+                cache: false,
+                get(){
+                    return this.$refs.player ? this.$refs.player.clientWidth : 0;
+                }
+            },
+
             currentProgress(){
                 const progress = (this.currentTime / this.totalDuration) * 100;
 
@@ -140,6 +162,10 @@
             });
 
             this.videojsInstance.src(this.sources[0].file);
+
+            this.videojsInstance.on('durationchange', () => {
+                this.totalDuration = this.videojsInstance.duration();
+            });
 
             this.videojsInstance.on(['waiting', 'pause'], () => {
                 this.isPlaying = false;

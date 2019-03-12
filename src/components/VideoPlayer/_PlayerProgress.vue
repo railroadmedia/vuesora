@@ -1,16 +1,19 @@
 <template>
-    <div class="flex flex-row">
-        <div class="player-progress">
-            <div class="progress-rail">
-                <div class="progress-fill"
-                     :class="themeBgClass"
-                     :style="progressTransforms"></div>
-            </div>
+    <div class="player-progress">
+        <div class="progress-tooltip tiny text-white"
+             :style="toolTipOffset">
+            {{ toolTipValue }}
+        </div>
+
+        <div class="progress-rail">
+            <div class="progress-fill"
+                 :class="themeBgClass"
+                 :style="progressTransforms"></div>
         </div>
     </div>
 </template>
 <script>
-
+    import PlayerUtils from './player-utils';
     import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
@@ -21,6 +24,10 @@
                 type: Number,
                 default: () => 0
             },
+            playerWidth: {
+                type: Number,
+                default: () => 0
+            },
             currentMouseX: {
                 type: Number,
                 default: () => 0
@@ -28,18 +35,24 @@
             mousedown: {
                 type: Boolean,
                 default: () => false
+            },
+            totalDuration: {
+                type: Number,
+                default: () => 0
             }
         },
         computed: {
             progressTransforms(){
                 if(this.mousedown){
                     return {
-                        'transform': 'translateX(-' + (100 - this.currentMouseX) + '%)'
+                        'transform': 'translateX(-' + (100 - this.currentMouseX) + '%)',
+                        '-webkit-transform': 'translateX(-' + (100 - this.currentMouseX) + '%)',
                     }
                 }
 
                 return {
                     'transform': 'translateX(-' + (100 - this.currentProgress) + '%)',
+                    '-webkit-transform': 'translateX(-' + (100 - this.currentProgress) + '%)',
                 }
             },
 
@@ -50,31 +63,24 @@
                 }
             },
 
-            currentPlayerWidth: {
-                cache: false,
-                get(){
-                    return document.querySelector('[data-vjs-player]').clientWidth;
-                }
-            }
-        },
-        methods: {
-            seekToPosition(event){
-                const mouseX = event.clientX || (event.touches[0] ? event.touches[0].clientX : event.changedTouches[0].clientX);
-                const percentageToSeekTo = (mouseX - this.currentOffsetLeft) / this.currentPlayerWidth;
+            toolTipOffset(){
+                let offset = (this.currentMouseX / 100) * this.playerWidth;
 
-                console.log((mouseX - this.currentOffsetLeft));
-                console.log(this.currentPlayerWidth);
-                console.log(percentageToSeekTo);
+                if(offset < 4){
+                    offset = 4;
+                }
+                else if(offset > (this.playerWidth - 36)){
+                    offset = this.playerWidth - 36;
+                }
+
+                return {
+                    'transform': 'translateX(' + offset + 'px)',
+                }
             },
 
-
-        },
-        mounted(){
-            console.log(this.currentOffsetLeft);
-
-            window.addEventListener('resize', () => {
-                console.log(this.currentOffsetLeft);
-            })
+            toolTipValue(){
+                return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
+            }
         }
     }
 </script>
