@@ -183,7 +183,7 @@
             },
 
             userExpRank() {
-                if(this.post.access_level === 'team'){
+                if(['team', 'admin'].indexOf(this.post.access_level) !== -1){
                     return  this.brand + ' Team';
                 }
 
@@ -202,9 +202,9 @@
             replyToPost(){
                 this.$emit('replyToPost', {
                     id: this.post.id,
-                    userName: this.authorUsername,
-                    createdOn: this.createdOn,
-                    postBody: this.postBody
+                    userName: this.post.authorUsername,
+                    createdOn: this.post.createdOn,
+                    postBody: this.post.postBody
                 })
             },
 
