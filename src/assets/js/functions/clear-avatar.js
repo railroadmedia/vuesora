@@ -24,9 +24,11 @@ export default (function(){
 
                         notification.close();
                         axios.patch(saveEndpoint, {
-                            key: fieldKey,
-                            value: '',
-                            '_method': 'PATCH'
+                            data: {
+                                attributes: {
+                                    'profile_picture_url': ''
+                                }
+                            }
                         })
                             .then(response => {
                                 if(response.data){

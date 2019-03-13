@@ -253,9 +253,11 @@
 
             setImageAsAvatar(imageUrl){
                 axios.patch(this.saveEndpoint, {
-                    key: this.fieldKey,
-                    value: imageUrl,
-                    '_method': 'PATCH'
+                    data: {
+                        attributes: {
+                            'profile_picture_url': imageUrl
+                        }
+                    }
                 })
                     .then(response => {
                         if(response.data){
