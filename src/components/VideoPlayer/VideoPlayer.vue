@@ -90,6 +90,10 @@
             sources: {
                 type: Array,
                 default: () => []
+            },
+            hlsManifestUrl: {
+                type: String,
+                default: () => null
             }
         },
         data(){
@@ -192,6 +196,15 @@
 
             setRate(payload){
                 this.videojsInstance.playbackRate(payload.rate);
+            },
+
+            getDefaultPlaybackQuality(){
+                // Pull the first source that matches the users screen size
+                const closestQuality = this.sources.filter(source =>
+                    source.width > document.documentElement.clientWidth
+                );
+
+                return closestQuality[0] ? closestQuality[0].file : this.sources[0].file;
             }
         },
         mounted(){
@@ -203,7 +216,12 @@
                 responsive: false,
             });
 
-            this.videojsInstance.src(this.sources[0].file);
+            // this.videojsInstance.src(this.getDefaultPlaybackQuality());
+            this.videojsInstance.src(this.hlsManifestUrl);
+
+            this.videojsInstance.ready(() => {
+                console.log(this.videojsInstance.tech().hls);
+            });
 
             this.videojsInstance.on('durationchange', () => {
                 this.totalDuration = this.videojsInstance.duration();
@@ -234,6 +252,8 @@
 
                 this.mousedown = false;
             });
+
+            this.getDefaultPlaybackQuality();
         }
     }
 </script>
