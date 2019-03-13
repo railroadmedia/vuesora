@@ -62,6 +62,7 @@
                                :key="post.id"
                                :index="i"
                                :post="post"
+                               :brand="brand"
                                :currentPage="currentPage"
                                :currentUser="currentUser"
                                :isLocked="thread.isLocked"
@@ -129,6 +130,10 @@
                 type: Object,
                 default: () => {
                 }
+            },
+            brand: {
+                type: String,
+                default: () => 'drumeo'
             },
             currentUser: {
                 type: Object,

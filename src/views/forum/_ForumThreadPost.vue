@@ -183,7 +183,7 @@
             },
 
             userExpRank() {
-                if(this.post.access_level === 'team'){
+                if(['team', 'admin'].indexOf(this.post.access_level) !== -1){
                     return  this.brand + ' Team';
                 }
 
