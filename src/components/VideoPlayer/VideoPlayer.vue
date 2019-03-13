@@ -6,7 +6,7 @@
         <video ref="player"></video>
 
         <div class="controls-wrap">
-            <div class="controls flex flex-column">
+            <div class="controls flex flex-column noselect">
                 <!--  TOP ROW  -->
                 <div class="flex flex-row">
                     <player-button @click.native="seek(currentTime - 10)"
@@ -41,7 +41,7 @@
                            :class="isPlaying ? 'fa-pause' : 'fa-play'"></i>
                     </player-button>
 
-                    <div class="flex flex-column text-white body align-v-center flex-auto">
+                    <div class="flex flex-column text-white body align-v-center noselect flex-auto">
                         {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
                     </div>
 
@@ -51,7 +51,13 @@
                                    :currentVolume="currentVolume"
                                    @volumeChange="changeVolume"></player-volume>
 
-                    <player-settings :themeColor="themeColor"></player-settings>
+                    <player-settings :themeColor="themeColor"
+                                     :videojsInstance="videojsInstance"
+                                     :currentSource="currentSource"
+                                     :currentPlaybackRate="currentPlaybackRate"
+                                     :playbackQualities="playbackQualities"
+                                     @setQuality="setQuality"
+                                     @setRate="setRate"></player-settings>
 
                     <player-button @click.native="fullscreen"
                                    :themeColor="themeColor">
@@ -97,6 +103,43 @@
                 currentVolume: 1
             }
         },
+        computed: {
+            playerWidth:{
+                cache: false,
+                get(){
+                    return this.$refs.player ? this.$refs.player.clientWidth : 0;
+                }
+            },
+
+            playbackQualities(){
+                return this.sources.map(source => {
+                    return {
+                        label: source.height === 2160 ? '4k' : source.height + 'p',
+                        source: source.file
+                    }
+                });
+            },
+
+            currentProgress(){
+                const progress = (this.currentTime / this.totalDuration) * 100;
+
+                return isNaN(progress) ? 0 : progress;
+            },
+
+            currentSource: {
+                cache: false,
+                get(){
+                    return this.videojsInstance ? this.videojsInstance.src() : '';
+                }
+            },
+
+            currentPlaybackRate: {
+                cache: false,
+                get(){
+                    return this.videojsInstance ? this.videojsInstance.playbackRate() : 1;
+                }
+            }
+        },
         methods: {
             playPause(){
                 if(this.isPlaying){
@@ -136,19 +179,19 @@
                     this.$refs.player
                 );
             },
-        },
-        computed: {
-            playerWidth:{
-                cache: false,
-                get(){
-                    return this.$refs.player ? this.$refs.player.clientWidth : 0;
-                }
+
+            setQuality(payload){
+                const currentTime = this.videojsInstance.currentTime();
+
+                this.videojsInstance.src(payload.source);
+
+                setTimeout(() => {
+                    this.seek(currentTime);
+                }, 200);
             },
 
-            currentProgress(){
-                const progress = (this.currentTime / this.totalDuration) * 100;
-
-                return isNaN(progress) ? 0 : progress;
+            setRate(payload){
+                this.videojsInstance.playbackRate(payload.rate);
             }
         },
         mounted(){
@@ -158,7 +201,6 @@
                 controls: false,
                 children: [],
                 responsive: false,
-                aspectRatio: '16:9'
             });
 
             this.videojsInstance.src(this.sources[0].file);
@@ -178,6 +220,10 @@
             this.videojsInstance.on('timeupdate', () => {
                 this.totalDuration = this.videojsInstance.duration();
                 this.currentTime = this.videojsInstance.currentTime();
+            });
+
+            this.videojsInstance.on('userinactive', () => {
+                this.$emit('userinactive');
             });
 
             document.addEventListener('mouseup', () => {

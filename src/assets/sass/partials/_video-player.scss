@@ -17,11 +17,11 @@
   height:auto;
   width:auto;
   outline:none;
-  overflow:hidden;
+  //overflow:hidden;
 }
 
 [data-vjs-player] {
-  overflow:hidden;
+  //overflow:hidden;
 
   &.vjs-user-active {
     .controls {
@@ -50,11 +50,11 @@
 
 .controls-wrap {
   position:absolute;
+  overflow:hidden;
   bottom:0;
   left:0;
   right:0;
   z-index:15;
-  overflow:hidden;
   height:100%;
 }
 
@@ -105,7 +105,7 @@
 
 .progress-rail, .volume-rail {
   width:100%;
-  height:4px;
+  height:3px;
   background:#e4e4e4;
   transition:height .1s ease-in-out;
   border-radius:3px;
@@ -160,12 +160,23 @@
 }
 
 .settings-drawer {
+  width:240px;
+  z-index:20;
   position:absolute;
   bottom:70px;
-  width:240px;
   right:0;
 
   .selected-setting {
     flex:0 0 60px;
   }
+}
+
+.settings-mobile-overlay {
+  z-index:19;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.4);
 }

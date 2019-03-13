@@ -1,5 +1,8 @@
 <template>
-    <div class="player-progress">
+    <div class="player-progress"
+         @drag.prevent.stop
+         @dragstart.prevent.stop
+         @dragenter.prevent.stop>
         <div class="progress-tooltip tiny text-white"
              :style="toolTipOffset">
             {{ toolTipValue }}
