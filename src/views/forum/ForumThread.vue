@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div id="replyContainer" class="flex flex-column ph">
-                    <form method="post" action="/post/store">
+                    <form method="post" action="/post/store" @submit="formDisabled = !formDisabled">
                         <text-editor v-model="postReplyInterface"
                                      ref="textEditor"
                                      @input="handleInput"></text-editor>
@@ -95,7 +95,9 @@
 
                         <div class="flex flex-row align-h-right mt-2">
 
-                            <button class="btn collapse-250 thread-reply-button" type="submit">
+                            <button class="btn collapse-250 thread-reply-button"
+                                    type="submit"
+                                    :disabled="formDisabled">
                                 <span class="text-white corners-3"
                                       :class="themeBgClass">
                                     Reply
@@ -155,7 +157,8 @@
                 isFollowed: this.thread.isFollowed,
                 isLocked: this.thread.isLocked,
                 isPinned: this.thread.isPinned,
-                postReplyBody: ''
+                postReplyBody: '',
+                formDisabled: false,
             }
         },
         computed: {
