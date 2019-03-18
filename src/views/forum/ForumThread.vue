@@ -274,6 +274,15 @@
             scrollToReply(){
                 window.scrollTo(0, document.getElementById('replyContainer').offsetTop);
             }
+        },
+
+        mounted(){
+            const youtubeIframes = document.querySelectorAll('iframe');
+
+            Array.from(youtubeIframes).forEach(iframe => {
+                iframe.setAttribute('width', '360');
+                iframe.setAttribute('height', '205');
+            });
         }
     }
 </script>
@@ -303,7 +312,7 @@
         }
     }
 
-    /*.reply-like {*/
-        /*min-width: 50px;*/
-    /*}*/
+    p iframe {
+        max-width:100%;
+    }
 </style>
