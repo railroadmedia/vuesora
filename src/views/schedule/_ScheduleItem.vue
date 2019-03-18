@@ -69,6 +69,7 @@
 <script>
     import * as Model from '../../assets/js/models/_model.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
+    import { Content as ContentHelpers }  from 'js-helper-functions';
     import { DateTime } from 'luxon';
     import ThemeClasses from "../../mixins/ThemeClasses";
 
@@ -121,7 +122,12 @@
             },
 
             mappedData(){
-                const type = this.contentTypeOverride || this.item.type;
+                const shows = ContentHelpers.shows();
+                let type = this.contentTypeOverride || this.item.type;
+
+                if(shows.indexOf(type) !== -1){
+                    type = 'show';
+                }
 
                 const model = new Model[type.replace(/-/g, '_')]({
                     brand: this.brand,

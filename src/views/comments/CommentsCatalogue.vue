@@ -15,7 +15,7 @@
                  class="flex flex-row pa-2 bb-grey-1-1">
                 <div class="flex flex-column">
 
-                    <div v-for="contentType in contentTypes"
+                    <div v-for="contentType in availableTypes"
                          class="flex flex-row form-group align-v-center mb-1">
                         <span class="toggle-input mr-1">
                             <input :id="contentType.key"
@@ -192,60 +192,88 @@
                 contentTypes: [
                     {
                         key: 'course-part',
+                        brand: ['drumeo', 'pianote', 'guitareo'],
                         value: ['course-part'],
                         icon: 'icon-courses',
                         active: true,
                     },
                     {
                         key: 'song',
+                        brand: ['drumeo', 'pianote', 'guitareo'],
                         value: ['song', 'song-part'],
                         icon: 'icon-songs',
                         active: true,
                     },
                     {
                         key: 'show',
+                        brand: ['drumeo'],
                         value: ['gear-guides', 'challenges', 'boot-camps', 'quick-tips', 'podcasts', 'on-the-road', 'behind-the-scenes', 'study-the-greats', 'live', 'solos', 'performances', 'exploring-beats', 'sonor-drums', 'paiste-cymbals', '25-days-of-christmas', 'rhythms-from-another-planet'],
                         icon: 'icon-shows',
                         active: true,
                     },
                     {
                         key: 'play-along',
+                        brand: ['drumeo', 'guitareo'],
                         value: ['play-along', 'play-along-part'],
                         icon: 'icon-play-alongs',
                         active: true,
                     },
                     {
                         key: 'student-focus',
+                        brand: ['drumeo'],
                         value: ['student-focus'],
                         icon: 'icon-student-focus',
                         active: true,
                     },
                     {
+                        key: 'student-focus',
+                        brand: ['pianote'],
+                        value: ['quick-tips', 'boot-camps', 'question-and-answer', 'student-review'],
+                        icon: 'icon-student-focus',
+                        active: true,
+                    },
+                    {
                         key: 'rudiment',
+                        brand: ['drumeo'],
                         value: ['rudiment'],
                         icon: 'icon-drums',
                         active: true,
                     },
                     {
                         key: 'semester-pack-lesson',
+                        brand: ['drumeo', 'guitareo'],
                         value: ['semester-pack-lesson'],
                         icon: 'icon-packs',
                         active: false,
                     },
                     {
                         key: 'pack-bundle-lesson',
+                        brand: ['drumeo', 'guitareo'],
                         value: ['pack-bundle-lesson'],
                         icon: 'icon-packs',
                         active: true,
-                    }
+                    },
+                    {
+                        key: 'unit',
+                        brand: ['pianote'],
+                        value: ['unit-part'],
+                        icon: 'icon-course',
+                        active: true,
+                    },
                 ]
             }
         },
         computed: {
+            availableTypes(){
+                return this.contentTypes.filter(type =>
+                    type.brand.indexOf(this.brand) !== -1
+                );
+            },
+
             activeTypes(){
                 const parsedTypes = [];
 
-                this.contentTypes.forEach(type => {
+                this.availableTypes.forEach(type => {
                     if(type.active){
                         parsedTypes.push(
                             ...type.value
