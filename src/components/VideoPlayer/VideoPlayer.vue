@@ -3,6 +3,22 @@
          data-vjs-player
          @mousemove="trackMousePosition">
 
+        <transition name="grow-fade">
+            <div v-if="loading"
+                 class="loading-wrap heading"
+                 :class="themeTextClass"
+                 @click.stop.prevent>
+                <!--<i class="fas fa-spinner fa-spin"></i>-->
+                <div class="loader text-white" :class="themeColor">
+                    <div class="square-1"></div>
+                    <div class="square-2"></div>
+                    <div class="square-3"></div>
+                    <div class="square-4"></div>
+                    loading..
+                </div>
+            </div>
+        </transition>
+
         <video ref="player"></video>
 
         <div class="controls-wrap">
@@ -76,6 +92,7 @@
     import PlayerProgress from './_PlayerProgress';
     import PlayerVolume from './_PlayerVolume';
     import PlayerSettings from './_PlayerSettings';
+    import 'videojs-contrib-quality-levels';
 
     export default {
         mixins: [ThemeClasses],
@@ -98,13 +115,15 @@
         },
         data(){
             return {
+                loading: false,
                 videojsInstance: null,
+                hlsInstance: null,
                 isPlaying: false,
                 currentTime: 0,
                 totalDuration: 0,
                 mousedown: false,
                 currentMouseX: 0,
-                currentVolume: 1
+                currentVolume: 1,
             }
         },
         computed: {
@@ -115,13 +134,29 @@
                 }
             },
 
-            playbackQualities(){
-                return this.sources.map(source => {
-                    return {
-                        label: source.height === 2160 ? '4k' : source.height + 'p',
-                        source: source.file
+            playbackQualities: {
+                cache: false,
+                get(){
+                    if(this.hlsInstance != null && this.videojsInstance.qualityLevels().levels_){
+                        return this.videojsInstance.qualityLevels().levels_.map(source => {
+                            return {
+                                label: PlayerUtils.getQualityLabelByHeight(source.height),
+                                source: source.id,
+                                width: source.width,
+                                height: source.height,
+                            }
+                        });
                     }
-                });
+
+                    return this.sources.map(source => {
+                        return {
+                            label: PlayerUtils.getQualityLabelByHeight(source.height),
+                            source: source.file,
+                            width: source.width,
+                            height: source.height,
+                        }
+                    });
+                },
             },
 
             currentProgress(){
@@ -133,7 +168,26 @@
             currentSource: {
                 cache: false,
                 get(){
+                    if(this.hlsInstance != null && this.hlsInstance.playlists.media_){
+                        return this.hlsInstance.playlists.media_.resolvedUri;
+                    }
+
                     return this.videojsInstance ? this.videojsInstance.src() : '';
+                }
+            },
+
+            currentSourceIndex: {
+                cache: false,
+                get(){
+                    if(this.hlsInstance){
+                        return this.videojsInstance.qualityLevels().selectedIndex;
+                    }
+
+                    return this.playbackQualities.forEach((quality, index) => {
+                        if(quality.source === this.currentSource){
+                            return index;
+                        }
+                    })
                 }
             },
 
@@ -186,29 +240,57 @@
 
             setQuality(payload){
                 const currentTime = this.videojsInstance.currentTime();
+                const wasPlaying = this.isPlaying;
 
-                this.videojsInstance.src(payload.source);
+                if(this.hlsInstance != null){
+                    this.videojsInstance.qualityLevels().levels_.forEach((quality, index) => {
+                        quality.enabled = index === payload.index;
+                    });
 
-                setTimeout(() => {
-                    this.seek(currentTime);
-                }, 200);
+                    this.videojsInstance.qualityLevels().selectedIndex_ = payload.index;
+                    this.videojsInstance.qualityLevels().trigger({
+                        type: 'change', selectedIndex: payload.index
+                    });
+                }
+                else {
+                    this.videojsInstance.src(this.sources[payload.index]);
+                }
+
+                this.setDefaultPlaybackQualityWidth(this.playbackQualities[payload.index].width);
+                if(wasPlaying){
+                    setTimeout(() => {
+                        this.seek(currentTime);
+                    }, 200);
+                }
             },
 
             setRate(payload){
                 this.videojsInstance.playbackRate(payload.rate);
             },
 
-            getDefaultPlaybackQuality(){
-                // Pull the first source that matches the users screen size
-                const closestQuality = this.sources.filter(source =>
-                    source.width > document.documentElement.clientWidth
-                );
+            setDefaultPlaybackQualityWidth(width){
+                window.localStorage.setItem('defaultPlaybackQualityWidth', width);
+            },
 
-                return closestQuality[0] ? closestQuality[0].file : this.sources[0].file;
-            }
+            getDefaultPlaybackQualityIndex(){
+                let widthToCheck = window.localStorage.getItem('defaultPlaybackQualityWidth') || document.documentElement.clientWidth;
+                let qualityIndexes = this.playbackQualities.map((quality, index) => {
+                    if(quality.width > widthToCheck){
+                        return index;
+                    }
+                });
+                const closestIndex = qualityIndexes.filter(index => index != null)[0];
+
+                // If we don't find an index, that probably means we're looking at a massive viewport,
+                // Just take the highest quality
+                return closestIndex || (this.playbackQualities.length - 1);
+            },
         },
         mounted(){
             const player = this.$refs.player;
+            let source = this.hlsManifestUrl;
+
+            this.loading  = true;
 
             this.videojsInstance = videojs(player, {
                 controls: false,
@@ -216,11 +298,31 @@
                 responsive: false,
             });
 
-            // this.videojsInstance.src(this.getDefaultPlaybackQuality());
-            this.videojsInstance.src(this.hlsManifestUrl);
+            this.videojsInstance.src(source);
 
             this.videojsInstance.ready(() => {
-                console.log(this.videojsInstance.tech().hls);
+                console.log(MediaSource);
+
+                if(typeof MediaSource === 'undefined'){
+                    console.log('Media Source not supported, defaulting to mp4');
+
+                    source = this.sources[this.getDefaultPlaybackQualityIndex()];
+
+                    this.videojsInstance.src(source);
+                }
+                else {
+                    this.hlsInstance = this.videojsInstance.tech({ IWillNotUseThisInPlugins: true }).hls;
+                }
+            });
+
+            this.videojsInstance.on('loadeddata', () => {
+                if(this.hlsInstance){
+                    this.setQuality({ index: this.getDefaultPlaybackQualityIndex() });
+                }
+
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
             });
 
             this.videojsInstance.on('durationchange', () => {
@@ -231,8 +333,13 @@
                 this.isPlaying = false;
             });
 
+            this.videojsInstance.on('waiting', () => {
+                this.loading = true;
+            });
+
             this.videojsInstance.on(['play', 'playing'], () => {
                 this.isPlaying = true;
+                this.loading = false;
             });
 
             this.videojsInstance.on('timeupdate', () => {
@@ -252,8 +359,6 @@
 
                 this.mousedown = false;
             });
-
-            this.getDefaultPlaybackQuality();
         }
     }
 </script>

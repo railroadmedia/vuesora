@@ -56,4 +56,8 @@ export default {
 
         return parsedTime;
     },
+
+    getQualityLabelByHeight(height){
+        return height === 2160 ? '4k' : height + 'p'
+    }
 }

@@ -22,14 +22,15 @@
                             </p>
                         </div>
                     </div>
-                    <transition name="slide-fade">
+
+                    <transition name="show-from-bottom">
                         <div class="flex flex-row bb-grey-4-1" v-if="qualitiesDropdown">
                             <div class="flex flex-column">
                                 <ul class="list-style-none body text-right dense">
-                                    <li v-for="quality in playbackQualities"
+                                    <li v-for="(quality, i) in playbackQualities"
                                         class="pa-1 hover-bg-grey-4 pointer"
                                         :class="quality.source === currentSource ? themeTextClass : ''"
-                                        @click="setQuality(quality.source)">
+                                        @click="setQuality(i)">
                                         {{ quality.label }}
                                     </li>
                                 </ul>
@@ -48,7 +49,7 @@
                         </div>
                     </div>
 
-                    <transition name="slide-fade">
+                    <transition name="show-from-bottom">
                         <div class="flex flex-row bt-grey-4-1" v-if="ratesDropdown">
                             <div class="flex flex-column">
                                 <ul class="list-style-none body text-right dense">
@@ -84,7 +85,7 @@
 
             currentSource: {
                 type: String,
-                default: () => null
+                default: () => ''
             },
 
             currentPlaybackRate: {
@@ -107,9 +108,11 @@
         },
         computed: {
             currentSourceLabel(){
-                return this.playbackQualities.find(quality =>
-                    quality.source === this.currentSource
-                ).label;
+                // return this.playbackQualities ? this.playbackQualities.filter(quality =>
+                //     quality.source === this.currentSource
+                // )[0].label : null;
+
+                return '????';
             }
         },
         methods: {
@@ -129,8 +132,8 @@
                 this.ratesDropdown = true;
             },
 
-            setQuality(source){
-                this.$emit('setQuality', { source });
+            setQuality(index){
+                this.$emit('setQuality', { index });
             },
 
             setRate(rate){
