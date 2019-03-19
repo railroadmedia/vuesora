@@ -109,6 +109,10 @@ export default {
                 return this.item['background_image_url'] || defaults['drumeo'];
             }
 
+            if(this.item.type === 'chord-and-scale' && this.brand === 'guitareo'){
+                return this.item['guitar_chord_image_url'] || defaults[this.brand];
+            }
+
             return this.item['thumbnail_url'] || defaults[this.brand];
         },
 
