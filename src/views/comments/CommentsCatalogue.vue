@@ -289,7 +289,7 @@
                     return '-created_on'
                 }
 
-                return '-replied-on'
+                return '-replied_on'
             }
         },
         methods: {
