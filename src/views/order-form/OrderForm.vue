@@ -8,6 +8,6 @@
 
     export default {
         mixins: [ThemeClasses],
-        name: 'va-order-form',
+        name: 'order-form',
     }
 </script>

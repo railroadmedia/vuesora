@@ -1,4 +1,4 @@
-import vaComponent from './VaOrderForm.vue';
+import vaComponent from './OrderForm.vue';
 
 export default {
     install(Vue, options){
