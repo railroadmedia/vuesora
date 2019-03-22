@@ -247,13 +247,23 @@
             },
 
             setImageAsAvatar(imageUrl){
-                axios.patch(this.saveEndpoint + '/' + this.userId, {
-                    data: {
-                        attributes: {
-                            'profile_picture_url': imageUrl
+                let data = {
+                    key: this.fieldKey,
+                    value: imageUrl,
+                    '_method': 'PATCH'
+                };
+
+                if(this.brand === 'pianote'){
+                    data = {
+                        data: {
+                            attributes: {
+                                'profile_picture_url': imageUrl
+                            }
                         }
-                    }
-                })
+                    };
+                }
+
+                axios.patch(this.saveEndpoint, data)
                     .then(response => {
                         if(response.data){
                             this.saveImage(imageUrl);
