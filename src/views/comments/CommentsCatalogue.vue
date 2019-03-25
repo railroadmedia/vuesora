@@ -320,7 +320,7 @@
                 Requests.getComments({
                     brand: 'guitareo',
                     limit: 50,
-                    sort: '-replied_on',
+                    sort: '-created_on',
                     content_type: this.activeTypes,
                     page: this.currentPage,
                 })
