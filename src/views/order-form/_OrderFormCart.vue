@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-    import OrderFormCartItem from './_OrderFormCartItem.vue'
+    import OrderFormCartItem from './_OrderFormCartItem.vue';
 
     export default {
         name: 'order-form-cart',
