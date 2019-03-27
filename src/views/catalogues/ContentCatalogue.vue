@@ -19,7 +19,7 @@
         </div>
 
         <catalogue-search v-if="searchBar"
-                          :themeColor="theme"
+                          :themeColor="themeColor"
                           :included_types="includedTypes"
                           :selected_types="selected_types"
                           :search_term="search_term"
@@ -30,7 +30,7 @@
 
 
         <catalogue-playlist-tabs v-if="isPlaylists"
-                                 :themeColor="theme"
+                                 :themeColor="themeColor"
                                  :included_types="includedTypes"></catalogue-playlist-tabs>
 
 
@@ -40,7 +40,7 @@
                            :required_user_states="required_user_states"
                            :filter_params="filter_params"
                            :loading="loading"
-                           :themeColor="theme"
+                           :themeColor="themeColor"
                            @filterChange="handleFilterChange"
                            @progressChange="handleProgressChange"></catalogue-filters>
 
@@ -60,7 +60,8 @@
         <grid-catalogue v-if="catalogue_type === 'grid'"
                         :content="content"
                         :brand="brand"
-                        :themeColor="theme"
+                        :themeColor="themeColor"
+                        :useThemeColor="useThemeColor"
                         :noWrap="noWrapGrid"
                         :userId="userId"
                         :lockUnowned="lockUnowned"
@@ -71,7 +72,8 @@
         <list-catalogue v-if="catalogue_type === 'list' || catalogue_type === 'schedule'"
                         :content="content"
                         :brand="brand"
-                        :themeColor="theme"
+                        :themeColor="themeColor"
+                        :useThemeColor="useThemeColor"
                         :card_type="catalogueType"
                         :userId="userId"
                         :displayItemsAsOverview="displayItemsAsOverview"
@@ -377,14 +379,6 @@
                 }
 
                 return this.sortOverride || '-published_on';
-            },
-
-            theme(){
-                if(this.useThemeColor){
-                    return this.themeColor
-                }
-
-                return this.item.type;
             },
 
             noResultsMessageWithProgress(){

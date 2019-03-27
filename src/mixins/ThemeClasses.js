@@ -1,17 +1,34 @@
 export default {
     props: {
+        contentType: {
+            type: String
+        },
+
         themeColor: {
             type: String,
             default: () => 'drumeo'
-        }
+        },
+
+        useThemeColor: {
+            type: Boolean,
+            default: () => true
+        },
     },
     computed: {
         themeBgClass(){
-            return 'bg-' + this.themeColor
+            if(this.useThemeColor){
+                return 'bg-' + this.themeColor
+            }
+
+            return 'bg-' + this.contentType;
         },
 
         themeTextClass(){
-            return 'text-' + this.themeColor
+            if(this.useThemeColor) {
+                return 'text-' + this.themeColor
+            }
+
+            return 'text-' + this.contentType;
         }
     }
 }
