@@ -1,30 +1,67 @@
 <template>
     <div class="flex flex-column mv-2">
         <div v-if="state == 'billing'">
-            <div class="flex flex-row align-v-center pb-2">
-                <h3 class="heading color-blue">Billing Email</h3>
-                <a class="body color-blue font-underline pl-3" v-on:click.stop.prevent="showLoginForm">Have an account?</a>
-            </div>
-            <div class="flex flex-column bg-white shadow corners-5 pa-3">
-                <h4 class="body">Email input</h4>
-            </div>
-        </div>
-
-        <div v-if="state == 'login'">
-            <div class="flex flex-row align-h-left align-v-center pb-2">
-                <div class="flex-auto">
-                    <h3 class="heading color-blue">Log In To Your Account</h3>
+            <div v-if="!requiresAccount">
+                <div class="flex flex-row align-v-center pb-2">
+                    <h3 class="heading color-blue">Billing Email</h3>
+                    <a class="body color-blue font-underline pl-3" v-on:click.stop.prevent="login">Already have an account? Click here to login.</a>
                 </div>
-                <div class="flex flex-grow">
-                    <a class="body color-blue font-underline pl-3" v-on:click.stop.prevent="showBillingEmailForm">Checkout as guest</a>
-                </div>
-                <div class="flex-auto">
-                    <h4 class="body text-dark">All fields are mandatory.</h4>
+                <div class="flex flex-column bg-white shadow corners-5 pa-3">
+                    <input
+                        type="email"
+                        name="billing-email"
+                        placeholder="Email Address"
+                        class="order-form-input"
+                        v-bind:class="{ invalid: validation.billingEmail }"
+                        v-model="controls.billingEmail"
+                        v-on:blur="validateControl('billingEmail')">
+                    <span class="validation tiny">{{ validation.billingEmail }}</span>
                 </div>
             </div>
-            <div class="flex flex-column bg-white shadow corners-5 pa-3">
-                <h4 class="body">Login form</h4>
-                <h4 class="body">Login error message & forgot password link</h4>
+            <div v-if="requiresAccount">
+                <div class="flex flex-row align-v-center pb-2">
+                    <div class="flex flex-grow flex-row align-v-center">
+                        <h3 class="heading color-blue">Create Your Account</h3>
+                        <a class="body color-blue font-underline pl-3" v-on:click.stop.prevent="login">Already have an account? Click here to login.</a>
+                    </div>
+                    <div class="flex flex-auto">
+                        <h4 class="body text-dark">All fields are mandatory.</h4>
+                    </div>
+                </div>
+                <div class="flex flex-row bg-white shadow corners-5 pv-3 ph-2">
+                    <div class="flex flex-column ph-1">
+                        <input
+                            type="email"
+                            name="account-creation-email"
+                            placeholder="Email Address"
+                            class="order-form-input"
+                            v-bind:class="{ invalid: validation.accountEmail }"
+                            v-model="controls.accountEmail"
+                            v-on:blur="validateControl('accountEmail')">
+                        <span class="validation tiny">{{ validation.accountEmail }}</span>
+                    </div>
+                    <div class="flex flex-column ph-1">
+                        <input
+                            type="password"
+                            name="account-creation-password"
+                            placeholder="Password"
+                            class="order-form-input"
+                            v-bind:class="{ invalid: validation.accountPassword }"
+                            v-model="controls.accountPassword"
+                            v-on:blur="validateControl('accountPassword') || validatePasswordConfirmation()">
+                        <span class="validation tiny">{{ validation.accountPassword }}</span>
+                    </div>
+                    <div class="flex flex-column ph-1">
+                        <input
+                            type="password"
+                            placeholder="Password Confirm"
+                            class="order-form-input"
+                            v-bind:class="{ invalid: validation.accountPasswordConfirmation }"
+                            v-model="controls.accountPasswordConfirmation"
+                            v-on:blur="validatePasswordConfirmation()">
+                        <span class="validation tiny">{{ validation.accountPasswordConfirmation }}</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -57,29 +94,110 @@
                 type: Object,
                 default: () => null
             },
+            requiresAccount: {
+                type: Boolean,
+                default: () => false
+            },
+            loginUrl: {
+                type: String,
+                default: '/login',
+            },
+            logoutUrl: {
+                type: String,
+                default: '/',
+            }
         },
         data() {
             return {
-                state: 'billing', // states: billing, login, account
+                state: 'billing', // states: billing, account
+                validation: {
+                    billingEmail: '',
+                    accountEmail: '',
+                    accountPassword: '',
+                    accountPasswordConfirmation: '',
+                },
+                controls: {
+                    billingEmail: '',
+                    accountEmail: '',
+                    accountPassword: '',
+                    accountPasswordConfirmation: '',
+                },
+                rules: {
+                    billingEmail: {
+                        pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        message: 'Invalid billing email address'
+                    },
+                    accountEmail: {
+                        pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        message: 'Invalid email address'
+                    },
+                    accountPassword: {
+                        pattern: /([^\s])/,
+                        message: 'Invalid password'
+                    }
+                }
+            }
+        },
+        computed: {
+            createLabel() {
+                return this.requiresAccount ? 'Create a new account' : 'Checkout as guest';
             }
         },
         methods: {
+            validateControl(controlName) {
+
+                return this.validation[controlName] = (
+                    this.rules.hasOwnProperty(controlName) &&
+                    this.controls.hasOwnProperty(controlName) &&
+                    !this.rules[controlName].pattern.test(this.controls[controlName])
+                ) ? this.rules[controlName].message : '';
+            },
+            validatePasswordConfirmation() {
+
+                return this.validation.accountPasswordConfirmation = this.controls.accountPassword &&
+                        this.controls.accountPassword != this.controls.accountPasswordConfirmation ?
+                            'Invalid password confirmation' : '';
+            },
             showBillingEmailForm() {
                 this.state = 'billing';
             },
+            login() {
+                // todo - test SSO
+                window.location.assign(this.loginUrl);
+            },
             logout() {
-                // todo - add logout AJAX request
-                this.state = 'login';
+                window.location.assign(this.logoutUrl);
             },
-            showLoginForm() {
-                this.state = 'login';
-            },
-            showAccountDetails() {
-                this.state = 'account';
+            validateForm() {
+
+                let validationSuccessful = true;
+
+                if (!this.currentUser) {
+                    // if user logged in, no form controls to validate
+
+                    let controls = this.requiresAccount ?
+                        ['accountEmail', 'accountPassword'] : ['billingEmail'];
+
+                    controls.forEach((control) => {
+                        validationSuccessful = !this.validateControl(control) && validationSuccessful;
+                    });
+
+                    validationSuccessful = validationSuccessful && !this.validatePasswordConfirmation();
+                }
+
+                this.$root.$emit(
+                    'registerSubformValidation',
+                    {
+                        form: 'account',
+                        result: validationSuccessful
+                    }
+                );
             },
         },
         mounted() {
             this.state = (this.currentUser == null) ? 'billing' : 'account';
+
+            this.$root.$on('validateOrderForm', this.validateForm);
         }
     }
 </script>
@@ -87,5 +205,4 @@
     .color-blue {
         color: dodgerblue;
     }
-
 </style>

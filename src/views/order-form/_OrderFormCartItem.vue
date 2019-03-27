@@ -1,6 +1,5 @@
 <template>
-    <div
-        class="flex flex-row pa-2 align-v-top">
+    <div class="flex flex-row pa-2 align-v-top">
         <div class="flex md-2 ph-2">
             <img v-bind:src="item.attributes.options.thumbnail_url" class="rounded" alt="product image">
         </div>
@@ -16,12 +15,19 @@
                     <h4 class="body quantity-label">Quantity</h4>
                 </div>
                 <div class="flex quantity-wrapper ph-1">
-                    <input
-                        type="text"
-                        v-model="quantity"
-                        class="quantity-input text-center">
+                    <div
+                        class="mr-2"
+                        v-if="item.attributes.subscriptionIntervalType == null">
+                        <input
+                            type="text"
+                            v-model="quantity"
+                            class="quantity-input text-center">
+                    </div>
+                    <span
+                        class="body"
+                        v-if="item.attributes.subscriptionIntervalType != null">{{ item.attributes.quantity }}</span>
                 </div>
-                <div class="flex grow pl-2">
+                <div class="flex grow">
                     <a
                         class="body quantity-remove font-bold"
                         v-on:click.stop.prevent="removeCartItem">X</a>
@@ -126,7 +132,7 @@
         color: dodgerblue;
     }
     .quantity-wrapper {
-        max-width: 35px;
+        max-width: 55px;
         max-height: 30px;
 
         .quantity-input {
