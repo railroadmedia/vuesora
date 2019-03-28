@@ -8,15 +8,22 @@
             :current-user="user"
             :requires-account="requiresAccount"
             :login-url="loginUrl"
-            :logout-url="logoutUrl"></order-form-account>
+            :logout-url="logoutUrl"
+            :billing-address="billingAddress"></order-form-account>
+
+        <order-form-shipping
+            :shipping-address="shippingAddress"
+            :countries="countries"></order-form-shipping>
 
         <order-form-payment></order-form-payment>
     </div>
 </template>
 <script>
+    import Api from './api.js';
     import OrderFormAccount from './_OrderFormAccount.vue';
     import OrderFormCart from './_OrderFormCart.vue';
     import OrderFormPayment from './_OrderFormPayment.vue';
+    import OrderFormShipping from './_OrderFormShipping.vue';
     import ThemeClasses from '../../mixins/ThemeClasses';
     import Toasts from '../../assets/js/classes/toasts';
 
@@ -26,6 +33,7 @@
         components: {
             'order-form-account': OrderFormAccount,
             'order-form-cart': OrderFormCart,
+            'order-form-shipping': OrderFormShipping,
             'order-form-payment': OrderFormPayment,
         },
         data() {
@@ -37,7 +45,11 @@
                     account: false,
                     shipping: false,
                     payment: false
-                }
+                },
+                addresses: {
+                },
+                addressesPersisted: null,
+                updateAddressesTimeout: null,
             }
         },
         props: {
@@ -65,6 +77,12 @@
                 type: String,
                 default: '/',
             },
+            countries: {
+                type: Object,
+                default: () => {
+                    return {}
+                }
+            },
         },
         methods: {
             processCartItems(cartItems) {
@@ -81,7 +99,43 @@
                         this.requiresShippingAddress = true;
                     }
                 });
-            }
+            },
+            shouldSaveAddresses() {
+                if (!this.addressesPersisted) {
+                    return true;
+                }
+
+                let hasDifferences = false;
+
+                for (let key in this.addresses) {
+                    if (
+                        !this.addressesPersisted.hasOwnProperty(key) ||
+                        this.addressesPersisted[key] != this.addresses[key]
+                    ) {
+                        hasDifferences = true;
+                    }
+                }
+
+                return hasDifferences;
+            },
+            updateAddress(addressObject) {
+
+                this.addresses = {...this.addresses, ...addressObject};
+
+                if (this.shouldSaveAddresses()) {
+
+                    clearTimeout(this.updateAddressesTimeout);
+
+                    this.updateAddressesTimeout = setTimeout(() => {
+                        Api
+                            .updateAddresses(this.addresses)
+                            .then((response) => {
+                                this.addressesPersisted = {...this.addresses};
+                            });
+                    }, 750);
+                }
+            },
+
         },
         mounted() {
 
@@ -111,8 +165,7 @@
 
                 this.validationForms = {
                     account: false,
-                    shipping: false,
-                    payment: false
+                    shipping: false
                 };
 
                 this.$root.$emit('validateOrderForm');
@@ -126,14 +179,12 @@
                     // if current result is successful, check the other results
                     let complete = true;
 
-                    /*
                     for (let key in this.validationForms) {
                         if (!this.validationForms[key]) {
                             complete = false;
                             break;
                         }
                     }
-                    */
 
                     if (complete) {
                         // if the form is complete & valid, start payment routine
@@ -142,6 +193,8 @@
                     }
                 }
             });
+
+            this.$root.$on('saveAddress', this.updateAddress);
         }
     }
 </script>

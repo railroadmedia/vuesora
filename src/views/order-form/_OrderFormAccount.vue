@@ -15,6 +15,7 @@
                         v-bind:class="{ invalid: validation.billingEmail }"
                         v-model="controls.billingEmail"
                         v-on:blur="validateControl('billingEmail')">
+                        <!-- todo - add event trigger to save billing address on blur -->
                     <span class="validation tiny">{{ validation.billingEmail }}</span>
                 </div>
             </div>

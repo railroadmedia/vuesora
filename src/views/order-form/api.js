@@ -40,4 +40,75 @@ export default {
                 .then(response => response.data)
                 .catch(ErrorHandler.push);
     },
+
+    /**
+     * Updates the session addresses
+     *
+     * @param {string} billingEmail
+     * @param {string} billingCountry
+     * @param {string} billingState
+     * @param {string} billingZip
+     * @param {string} shippingFirstName
+     * @param {string} shippingLastName
+     * @param {string} shippingAddressLine1
+     * @param {string} shippingAddressLine2
+     * @param {string} shippingCity
+     * @param {string} shippingState
+     * @param {string} shippingCountry
+     * @param {string} shippingZip
+     *
+     * @returns {Promise}
+     */
+    updateAddresses({
+        billingEmail,
+        billingCountry,
+        billingState,
+        billingZip,
+        shippingFirstName,
+        shippingLastName,
+        shippingAddressLine1,
+        shippingAddressLine2,
+        shippingCity,
+        shippingState,
+        shippingCountry,
+        shippingZip
+    }) {
+        let payload = {
+                        'shipping-address-line-1': shippingAddressLine1,
+                        'shipping-address-line-2': shippingAddressLine2,
+                        'shipping-city': shippingCity,
+                        'shipping-country': shippingCountry,
+                        'shipping-first-name': shippingFirstName,
+                        'shipping-last-name': shippingLastName,
+                        'shipping-region': shippingState,
+                        'shipping-zip-or-postal-code': shippingZip,
+                        'billing-country': billingCountry,
+                        'billing-region': billingState,
+                        'billing-zip-or-postal-code': billingZip,
+                        'billing-email': billingEmail,
+                    };
+
+        console.log("payload: %s", JSON.stringify(payload));
+
+        return axios
+                .put(
+                    '/ecommerce/session/address',
+                    {
+                        'shipping-address-line-1': shippingAddressLine1,
+                        'shipping-address-line-2': shippingAddressLine2,
+                        'shipping-city': shippingCity,
+                        'shipping-country': shippingCountry,
+                        'shipping-first-name': shippingFirstName,
+                        'shipping-last-name': shippingLastName,
+                        'shipping-region': shippingState,
+                        'shipping-zip-or-postal-code': shippingZip,
+                        'billing-country': billingCountry,
+                        'billing-region': billingState,
+                        'billing-zip-or-postal-code': billingZip,
+                        'billing-email': billingEmail,
+                    }
+                )
+                .then(response => response.data)
+                .catch(ErrorHandler.push);
+    }
 }
