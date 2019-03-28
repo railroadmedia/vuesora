@@ -114,6 +114,12 @@
 
   .image-col {
     flex:0 0 200px;
+    max-width:100%;
+  }
+
+  .gear-photo-col {
+    flex:0 0 500px;
+    max-width:100%;
   }
 
   .payment-col {
