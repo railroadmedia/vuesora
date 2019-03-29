@@ -388,7 +388,11 @@
             },
 
             mappedData(){
-                const type = this.$_contentTypeOverride || this.$_item.type;
+                let type = this.$_contentTypeOverride || this.$_item.type;
+
+                if(type === 'entertainment'){
+                    type = 'show';
+                }
 
                 const dataMapper = new DataMapper[type.replace(/-/g, '_')]({
                     brand: this.$_brand,
