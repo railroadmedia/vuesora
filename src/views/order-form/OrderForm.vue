@@ -9,17 +9,28 @@
             :requires-account="requiresAccount"
             :login-url="loginUrl"
             :logout-url="logoutUrl"
-            :billing-address="billingAddress"></order-form-account>
+            :billing-address="billingAddress"
+            :validation-trigger="validationTrigger"
+            @saveAddress="updateAddress"
+            @registerSubformValidation="registerSubformValidation"></order-form-account>
 
         <order-form-shipping
             :shipping-address="shippingAddress"
-            :countries="countries"></order-form-shipping>
+            :validation-trigger="validationTrigger"
+            @saveAddress="updateAddress"
+            @registerSubformValidation="registerSubformValidation"></order-form-shipping>
 
-        <order-form-payment></order-form-payment>
+        <order-form-payment
+            :billing-address="billingAddress"
+            :stripe-publishable-key="stripePublishableKey"
+            :validation-trigger="validationTrigger"
+            @startValidation="startValidation"
+            @saveAddress="updateAddress"
+            @registerSubformValidation="registerSubformValidation"></order-form-payment>
     </div>
 </template>
 <script>
-    import Api from './api.js';
+    import Api from '../../assets/js/services/order-form.js';
     import OrderFormAccount from './_OrderFormAccount.vue';
     import OrderFormCart from './_OrderFormCart.vue';
     import OrderFormPayment from './_OrderFormPayment.vue';
@@ -50,6 +61,7 @@
                 },
                 addressesPersisted: null,
                 updateAddressesTimeout: null,
+                validationTrigger: false,
             }
         },
         props: {
@@ -77,12 +89,9 @@
                 type: String,
                 default: '/',
             },
-            countries: {
-                type: Object,
-                default: () => {
-                    return {}
-                }
-            },
+            stripePublishableKey: {
+                type: String
+            }
         },
         methods: {
             processCartItems(cartItems) {
@@ -135,7 +144,36 @@
                     }, 750);
                 }
             },
+            startValidation() {
 
+                this.validationForms = {
+                    account: false,
+                    shipping: false
+                };
+
+                this.validationTrigger = !this.validationTrigger;
+            },
+            registerSubformValidation({form, result}) {
+                this.validationForms[form] = result;
+
+                if (result) {
+                    // if current result is successful, check the other results
+                    let complete = true;
+
+                    for (let key in this.validationForms) {
+                        if (!this.validationForms[key]) {
+                            complete = false;
+                            break;
+                        }
+                    }
+
+                    if (complete) {
+                        // if the form is complete & valid, start payment routine
+                        // this.$emit('makePayment', this.orderFormData);
+                        console.log("should attempt payment");
+                    }
+                }
+            }
         },
         mounted() {
 
@@ -159,49 +197,12 @@
 
                 // todo - PMP-339 - update shipping, tax, total and playment plans data
             });
-
-            this.$root.$on('startValidation', () => {
-                // triggered by pressing submit order button
-
-                this.validationForms = {
-                    account: false,
-                    shipping: false
-                };
-
-                this.$root.$emit('validateOrderForm');
-            });
-
-            this.$root.$on('registerSubformValidation', ({form, result}) => {
-                // triggered by child components
-                this.validationForms[form] = result;
-
-                if (result) {
-                    // if current result is successful, check the other results
-                    let complete = true;
-
-                    for (let key in this.validationForms) {
-                        if (!this.validationForms[key]) {
-                            complete = false;
-                            break;
-                        }
-                    }
-
-                    if (complete) {
-                        // if the form is complete & valid, start payment routine
-                        // this.$root.$emit('makePayment', this.orderFormData);
-                        console.log("should attempt payment");
-                    }
-                }
-            });
-
-            this.$root.$on('saveAddress', this.updateAddress);
         }
     }
 </script>
 <style lang="scss">
     .order-form {
         .order-form-input {
-            padding-top: 0;
 
             + .validation {
                 display: none;

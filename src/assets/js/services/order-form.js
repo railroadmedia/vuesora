@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ErrorHandler from './error-handler';
+import ErrorHandler from './_error-handler';
 
 export default {
 
@@ -21,7 +21,7 @@ export default {
                     {}
                 )
                 .then(response => response.data)
-                .catch(ErrorHandler.push);
+                .catch(ErrorHandler);
     },
 
     /**
@@ -38,7 +38,7 @@ export default {
                     {}
                 )
                 .then(response => response.data)
-                .catch(ErrorHandler.push);
+                .catch(ErrorHandler);
     },
 
     /**
@@ -73,22 +73,6 @@ export default {
         shippingCountry,
         shippingZip
     }) {
-        let payload = {
-                        'shipping-address-line-1': shippingAddressLine1,
-                        'shipping-address-line-2': shippingAddressLine2,
-                        'shipping-city': shippingCity,
-                        'shipping-country': shippingCountry,
-                        'shipping-first-name': shippingFirstName,
-                        'shipping-last-name': shippingLastName,
-                        'shipping-region': shippingState,
-                        'shipping-zip-or-postal-code': shippingZip,
-                        'billing-country': billingCountry,
-                        'billing-region': billingState,
-                        'billing-zip-or-postal-code': billingZip,
-                        'billing-email': billingEmail,
-                    };
-
-        console.log("payload: %s", JSON.stringify(payload));
 
         return axios
                 .put(
@@ -109,6 +93,6 @@ export default {
                     }
                 )
                 .then(response => response.data)
-                .catch(ErrorHandler.push);
+                .catch(ErrorHandler);
     }
 }

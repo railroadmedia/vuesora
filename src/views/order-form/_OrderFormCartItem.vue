@@ -48,7 +48,7 @@
     </div>
 </template>
 <script>
-    import Api from './api.js';
+    import Api from '../../assets/js/services/order-form.js';
 
     export default {
         name: 'order-form-cart-item',

@@ -15,7 +15,7 @@
                         type="text"
                         name="first-name"
                         placeholder="First Name"
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingFirstName }"
                         v-model="controls.shippingFirstName"
                         v-on:blur="handleBlurControl('shippingFirstName')">
@@ -26,7 +26,7 @@
                         type="text"
                         name="last-name"
                         placeholder="Last Name"
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingLastName }"
                         v-model="controls.shippingLastName"
                         v-on:blur="handleBlurControl('shippingLastName')">
@@ -39,7 +39,7 @@
                         type="text"
                         name="address-line1"
                         placeholder="Address - Line 1"
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingAddressLine1 }"
                         v-model="controls.shippingAddressLine1"
                         v-on:blur="handleBlurControl('shippingAddressLine1')">
@@ -50,7 +50,7 @@
                         type="text"
                         name="address-line2"
                         placeholder="Address - Line 2"
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-model="controls.shippingAddressLine2"
                         v-on:blur="handleBlurControl('shippingAddressLine2')">
                 </div>
@@ -61,7 +61,7 @@
                         type="text"
                         name="city"
                         placeholder="City"
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingCity }"
                         v-model="controls.shippingCity"
                         v-on:blur="handleBlurControl('shippingCity')">
@@ -72,7 +72,7 @@
                         type="text"
                         name="state"
                         placeholder="State/Province"
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingState }"
                         v-model="controls.shippingState"
                         v-on:blur="handleBlurControl('shippingState')">
@@ -82,16 +82,16 @@
             <div class="flex flex-row pv-1">
                 <div class="flex flex-column ph-1 md-6 sm-12">
                     <select
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingCountry }"
                         v-model="controls.shippingCountry"
                         v-on:blur="handleBlurControl('shippingCountry')">
 
                         <option disabled value="">Country</option>
                         <option
-                            v-for="(country, code) in countries"
-                            :key="code"
-                            :value="country">{{ country }}</option>
+                            v-for="country in countries"
+                            :key="country.code"
+                            :value="country.name">{{ country.name }}</option>
                     </select>
                     <span class="validation tiny">{{ validation.shippingCountry }}</span>
                 </div>
@@ -100,7 +100,7 @@
                         type="text"
                         name="zip"
                         placeholder="Zip/Postal Code"
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingZip }"
                         v-model="controls.shippingZip"
                         v-on:blur="handleBlurControl('shippingZip')">
@@ -111,18 +111,16 @@
     </div>
 </template>
 <script>
+    import Utils from 'js-helper-functions/modules/utils';
+    import ValidationTriggerMixin from './_mixin';
+
     export default {
+        mixins: [ValidationTriggerMixin],
         name: 'order-form-shipping',
         props: {
             shippingAddress: {
                 type: Object,
                 default: () => null
-            },
-            countries: {
-                type: Object,
-                default: () => {
-                    return {}
-                }
             },
         },
         data() {
@@ -178,21 +176,31 @@
                 }
             }
         },
+        computed: {
+            countries() {
+                return Utils.countries();
+            }
+        },
         methods: {
             handleBlurControl(controlName) {
                 this.validateControl(controlName);
                 this.saveShippingAddress();
             },
             saveShippingAddress() {
-                this.$root.$emit('saveAddress', this.controls);
+                this.$emit('saveAddress', this.controls);
             },
             validateControl(controlName) {
 
-                return this.validation[controlName] = (
+                let validation = this.validation[controlName] = (
                     this.rules.hasOwnProperty(controlName) &&
                     this.controls.hasOwnProperty(controlName) &&
-                    !this.rules[controlName].pattern.test(this.controls[controlName])
+                    (
+                        this.controls[controlName] == null ||
+                        !this.rules[controlName].pattern.test(this.controls[controlName])
+                    )
                 ) ? this.rules[controlName].message : '';
+
+                return validation;
             },
             validateForm() {
 
@@ -202,7 +210,7 @@
                     validationSuccessful = !this.validateControl(controlName) && validationSuccessful;
                 }
 
-                this.$root.$emit(
+                this.$emit(
                     'registerSubformValidation',
                     {
                         form: 'shipping',
@@ -234,8 +242,6 @@
                                                     this.shippingAddress[backendKey] : '';
                 }
             }
-
-            this.$root.$on('validateOrderForm', this.validateForm);
         }
     }
 </script>

@@ -11,7 +11,7 @@
                         type="email"
                         name="billing-email"
                         placeholder="Email Address"
-                        class="order-form-input"
+                        class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.billingEmail }"
                         v-model="controls.billingEmail"
                         v-on:blur="validateControl('billingEmail')">
@@ -35,7 +35,7 @@
                             type="email"
                             name="account-creation-email"
                             placeholder="Email Address"
-                            class="order-form-input"
+                            class="order-form-input no-label"
                             v-bind:class="{ invalid: validation.accountEmail }"
                             v-model="controls.accountEmail"
                             v-on:blur="validateControl('accountEmail')">
@@ -46,7 +46,7 @@
                             type="password"
                             name="account-creation-password"
                             placeholder="Password"
-                            class="order-form-input"
+                            class="order-form-input no-label"
                             v-bind:class="{ invalid: validation.accountPassword }"
                             v-model="controls.accountPassword"
                             v-on:blur="validateControl('accountPassword') || validatePasswordConfirmation()">
@@ -56,7 +56,7 @@
                         <input
                             type="password"
                             placeholder="Password Confirm"
-                            class="order-form-input"
+                            class="order-form-input no-label"
                             v-bind:class="{ invalid: validation.accountPasswordConfirmation }"
                             v-model="controls.accountPasswordConfirmation"
                             v-on:blur="validatePasswordConfirmation()">
@@ -88,7 +88,10 @@
     </div>
 </template>
 <script>
+    import ValidationTriggerMixin from './_mixin';
+
     export default {
+        mixins: [ValidationTriggerMixin],
         name: 'order-form-account',
         props: {
             currentUser: {
@@ -106,7 +109,7 @@
             logoutUrl: {
                 type: String,
                 default: '/',
-            }
+            },
         },
         data() {
             return {
@@ -150,7 +153,10 @@
                 return this.validation[controlName] = (
                     this.rules.hasOwnProperty(controlName) &&
                     this.controls.hasOwnProperty(controlName) &&
-                    !this.rules[controlName].pattern.test(this.controls[controlName])
+                    (
+                        this.controls[controlName] == null ||
+                        !this.rules[controlName].pattern.test(this.controls[controlName])
+                    )
                 ) ? this.rules[controlName].message : '';
             },
             validatePasswordConfirmation() {
@@ -186,7 +192,7 @@
                     validationSuccessful = validationSuccessful && !this.validatePasswordConfirmation();
                 }
 
-                this.$root.$emit(
+                this.$emit(
                     'registerSubformValidation',
                     {
                         form: 'account',
@@ -197,8 +203,6 @@
         },
         mounted() {
             this.state = (this.currentUser == null) ? 'billing' : 'account';
-
-            this.$root.$on('validateOrderForm', this.validateForm);
         }
     }
 </script>
