@@ -144,6 +144,8 @@ export default (function(){
             const amountToScroll = subNavWrap.clientWidth;
             const positionToScrollTo = backwards ? currentSubNavScrollPosition - amountToScroll : currentSubNavScrollPosition + amountToScroll;
 
+
+
             subNavWrap.scrollTo({
                 top: 0,
                 left: positionToScrollTo,
@@ -165,7 +167,7 @@ export default (function(){
                 scrollSubNavLeft.classList.remove('hide');
             }
 
-            if(currentSubNavScrollPosition >= maximumScrollAmount){
+            if(currentSubNavScrollPosition >= (maximumScrollAmount - 35)){
                 currentSubNavScrollPosition = maximumScrollAmount;
                 scrollSubNavRight.classList.add('hide');
             }
