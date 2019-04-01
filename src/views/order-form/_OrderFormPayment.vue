@@ -8,28 +8,40 @@
                 <div class="flex md-6 ph-1">
                     <select
                         class="order-form-input no-label"
-                        v-model="paymentMethod">
-                        <option value="cc">Credit Card</option>
-                        <option value="pp">PayPal</option>
+                        v-model.lazy="paymentMethod">
+                        <option value="credit-card">Credit Card</option>
+                        <option value="paypal">PayPal</option>
                     </select>
                 </div>
                 <div class="flex flex-row">
                     <div class="ph-1">
-                        <i class="fab fa-cc-visa cc-icon"></i>
+                        <i
+                            class="fab fa-cc-visa cc-icon"
+                            v-bind:class="{ selected: selectedPaymentMethodIcon == 'visa' }"
+                            v-on:click.stop.prevent="selectPaymentMethodIcon('visa')"></i>
                     </div>
                     <div class="ph-1">
-                        <i class="fab fa-cc-mastercard cc-icon"></i>
+                        <i
+                            class="fab fa-cc-mastercard cc-icon"
+                            v-bind:class="{ selected: selectedPaymentMethodIcon == 'mastercard' }"
+                            v-on:click.stop.prevent="selectPaymentMethodIcon('mastercard')"></i>
                     </div>
                     <div class="ph-1">
-                        <i class="fab fa-cc-amex cc-icon"></i>
+                        <i
+                            class="fab fa-cc-amex cc-icon"
+                            v-bind:class="{ selected: selectedPaymentMethodIcon == 'amex' }"
+                            v-on:click.stop.prevent="selectPaymentMethodIcon('amex')"></i>
                     </div>
                     <div class="ph-1">
-                        <i class="fab fa-cc-paypal cc-icon"></i>
+                        <i
+                            class="fab fa-cc-paypal cc-icon"
+                            v-bind:class="{ selected: selectedPaymentMethodIcon == 'paypal' }"
+                            v-on:click.stop.prevent="selectPaymentMethodIcon('paypal')"></i>
                     </div>
                 </div>
             </div>
             <!-- v-show is used to keep the stripe elements iframes loaded but hidden, using v-if would require re-initialization -->
-            <div class="flex flex-row pv-1" v-show="paymentMethod == 'cc'">
+            <div class="flex flex-row pv-1" v-show="paymentMethod == 'credit-card'">
                 <div class="md-6 ph-1">
                     <div
                         class="stripe-element-container order-form-input no-label"
@@ -60,8 +72,7 @@
                     <select
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.billingCountry }"
-                        v-model="controls.billingCountry"
-                        v-on:blur="handleBlurControl('billingCountry')">
+                        v-model.lazy="billingCountry">
 
                         <option disabled value="">Country</option>
                         <option
@@ -75,8 +86,7 @@
                     <select
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.billingState }"
-                        v-model="controls.billingState"
-                        v-on:blur="handleBlurControl('billingState')">
+                        v-model.lazy="billingState">
 
                         <option disabled value="">State</option>
                         <option
@@ -87,7 +97,7 @@
                     <span class="validation tiny">{{ validation.billingState }}</span>
                 </div>
             </div>
-            <div class="flex flex-row pa-1" v-if="paymentMethod == 'pp'">
+            <div class="flex flex-row pa-1" v-if="paymentMethod == 'paypal'">
                 <h3 class="title">Hitting submit will redirect you to PayPal to complete your order.</h3>
             </div>
             <div class="flex flex-row pv-1">
@@ -101,6 +111,7 @@
     </div>
 </template>
 <script>
+    import Api from '../../assets/js/services/order-form.js';
     import Utils from 'js-helper-functions/modules/utils';
     import ValidationTriggerMixin from './_mixin';
 
@@ -120,6 +131,21 @@
                     billingCountry: '',
                     billingState: '',
                 },
+                stripeErrorMap: {
+                    'incomplete_number': 'Your card number is incomplete.',
+                    'incomplete_expiry': 'Expiration date is incomplete.',
+                    'incomplete_cvc': 'CVC is incomplete.',
+                },
+                stripeInvalidMessages: {
+                    cardNumber: 'Your card number is invalid.',
+                    cardExpiry: 'Expiration date is invalid.',
+                    cardCvc: 'CVC is invalid.',
+                },
+                stripeElementsCompleteness: {
+                    cardNumber: false,
+                    cardExpiry: false,
+                    cardCvc: false,
+                },
                 controls: {
                     billingCountry: '',
                     billingState: '',
@@ -134,7 +160,17 @@
                         message: 'Invalid State'
                     },
                 },
-                paymentMethod: 'cc'
+                selectedPaymentMethod: 'credit-card',
+                selectedPaymentMethodIcon: '',
+                controlsMap: {
+                    billingState: 'state',
+                    billingCountry: 'country',
+                },
+                backendKeysMap: {
+                    state: 'billingState',
+                    country: 'billingCountry',
+                },
+                updateAddressesTimeout: null,
             }
         },
         computed: {
@@ -143,6 +179,50 @@
             },
             states() {
                 return Utils.provinces();
+            },
+            paymentMethod: {
+                get() {
+                    return this.selectedPaymentMethod;
+                },
+                set(value) {
+                    this.selectedPaymentMethod = value;
+
+                    this.$emit(
+                        'savePaymentData',
+                        {
+                            field: 'payment_method_type',
+                            value: this.selectedPaymentMethod
+                        }
+                    );
+
+                    if (value == 'paypal') {
+                        this.selectedPaymentMethodIcon = 'paypal';
+                    } else {
+                        this.selectedPaymentMethodIcon = '';
+                    }
+                }
+            },
+            billingCountry: {
+                get() {
+                    return this.controls.billingCountry;
+                },
+                set(value) {
+                    if (this.controls.billingCountry != value) {
+                        this.controls.billingCountry = value;
+                        this.update('billingCountry');
+                    }
+                }
+            },
+            billingState: {
+                get() {
+                    return this.controls.billingState;
+                },
+                set(value) {
+                    if (this.controls.billingState != value) {
+                        this.controls.billingState = value;
+                        this.update('billingState');
+                    }
+                }
             },
         },
         props: {
@@ -154,33 +234,91 @@
                 type: String
             },
         },
+        watch: {
+            billingAddress: function() {
+                this.processFactoryData();
+            }
+        },
         methods: {
-            handleBlurControl(controlName) {
-                this.validateControl(controlName);
-                this.saveBillingAddress();
+            update(controlName) {
+
+                this.$emit(
+                    'savePaymentData',
+                    {
+                        field: this.controlsMap[controlName],
+                        value: this.controls[controlName]
+                    }
+                );
+
+                clearTimeout(this.updateAddressesTimeout);
+
+                this.updateAddressesTimeout = setTimeout(() => {
+                    // todo - if country is not 'Canada' should remove the billing state - to be confirmed
+                    Api.updateAddresses(this.controls);
+                }, 750);
             },
-            saveBillingAddress() {
-                // todo - if country is not 'Canada' should remove the billing state - to be confirmed
-                this.$emit('saveAddress', this.controls);
+            selectPaymentMethodIcon(name) {
+                this.selectedPaymentMethodIcon = name;
+                this.selectedPaymentMethod = (name == 'paypal') ? 'paypal' : 'credit-card';
+                this.$emit(
+                    'savePaymentData',
+                    {
+                        field: 'payment_method_type',
+                        value: this.selectedPaymentMethod
+                    }
+                );
             },
             validateControl(controlName) {
 
-                let validation = this.validation[controlName] = (
+                if (
+                    this.selectedPaymentMethod == 'credit-card' &&
+                    this.stripeElementsCompleteness.hasOwnProperty(controlName) &&
+                    !this.stripeElementsCompleteness[controlName]
+                ) {
+                    // stripe element failed validation
+                    let elementIsValid = this.stripeElementsCompleteness[controlName];
+
+                    this.validation[controlName] = this.stripeInvalidMessages[controlName];
+
+                } else if (
                     this.rules.hasOwnProperty(controlName) &&
                     this.controls.hasOwnProperty(controlName) &&
                     (
                         this.controls[controlName] == null ||
                         !this.rules[controlName].pattern.test(this.controls[controlName])
                     )
-                ) ? this.rules[controlName].message : '';
+                ) {
+                    // normal form element failed validation
+                    this.validation[controlName] = this.rules[controlName].message;
 
-                return validation;
+                } else {
+                    // validation passed
+                    this.validation[controlName] = '';
+                }
+
+                return this.validation[controlName];
             },
             startValidation() {
                 this.$emit('startValidation');
             },
             validateForm() {
                 // todo - add validation logic
+                console.log("start form validation");
+
+                let validationSuccessful = true;
+
+                for (let controlName in this.validation) {
+
+                    validationSuccessful = !this.validateControl(controlName) && validationSuccessful;
+                }
+
+                this.$emit(
+                    'registerSubformValidation',
+                    {
+                        form: 'payment',
+                        result: validationSuccessful
+                    }
+                );
             },
             initStripeElements() {
 
@@ -200,42 +338,61 @@
 
                 this.cardNumberElement = elementsFactory.create('cardNumber', {style: style});
                 this.cardNumberElement.mount('#card-number');
-                this.cardNumberElement.on('change', this.elementsChangeHandler);
+                this.cardNumberElement.on('change', (payload) => {
+                    this.elementsChangeHandler(payload, 'cardNumber');
+                });
 
                 this.cardExpiryElement = elementsFactory.create('cardExpiry', {style: style});
                 this.cardExpiryElement.mount('#card-expiry');
-                this.cardExpiryElement.on('change', this.elementsChangeHandler);
+                this.cardExpiryElement.on('change', (payload) => {
+                    this.elementsChangeHandler(payload, 'cardExpiry');
+                });
 
                 this.cardCvcElement = elementsFactory.create('cardCvc', {style: style});
                 this.cardCvcElement.mount('#card-cvc');
-                this.cardCvcElement.on('change', this.elementsChangeHandler);
+                this.cardCvcElement.on('change', (payload) => {
+                    this.elementsChangeHandler(payload, 'cardCvc');
+                });
 
             },
-            elementsChangeHandler(payload) {
-                // todo - add validation logic
-                console.log("stripe elements change handler payload: %s", JSON.stringify(payload));
-            }
+            elementsChangeHandler(payload, controlName) {
+
+                this.stripeElementsCompleteness[controlName] = payload.complete;
+
+                if (payload.error) {
+                    this.validation[controlName] = this.stripeErrorMap.hasOwnProperty(payload.error.code) ?
+                                this.stripeErrorMap[payload.error.code] : payload.error.message;
+                } else if (payload.complete) {
+                    this.validation[controlName] = '';
+                }
+            },
+            processFactoryData() {
+                if (this.billingAddress) {
+
+                    for (let backendKey in this.backendKeysMap) {
+
+                        let controlKey = this.backendKeysMap[backendKey];
+
+                        this.controls[controlKey] = this.billingAddress.hasOwnProperty(backendKey) ?
+                                                        this.billingAddress[backendKey] : '';
+                    }
+                }
+            },
             // todo - add method to handle order form submission - stripe token fetch, then backend ajax request to place order
         },
         mounted() {
             this.stripe = Stripe(this.stripePublishableKey);
             this.initStripeElements();
 
-            let keysMap = {
-                'state': 'billingState',
-                'country': 'billingCountry',
-            };
+            this.processFactoryData();
 
-            if (this.billingAddress) {
-
-                for (let backendKey in keysMap) {
-
-                    let controlKey = keysMap[backendKey];
-
-                    this.controls[controlKey] = this.billingAddress.hasOwnProperty(backendKey) ?
-                                                    this.billingAddress[backendKey] : '';
+            this.$emit(
+                'savePaymentData',
+                {
+                    field: 'payment_method_type',
+                    value: this.selectedPaymentMethod
                 }
-            }
+            );
         }
     }
 </script>
@@ -243,6 +400,16 @@
     .cc-icon {
         font-size: 55px;
         line-height: 50px;
+
+        &.fa-cc-visa.selected,
+        &.fa-cc-amex.selected,
+        &.fa-cc-paypal.selected {
+            color: #0a87c1;
+        }
+
+        &.fa-cc-mastercard.selected {
+            color: #ed1c2d;
+        }
     }
     .stripe-element-container {
         height: 50px;

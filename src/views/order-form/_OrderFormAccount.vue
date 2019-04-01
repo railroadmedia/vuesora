@@ -13,9 +13,7 @@
                         placeholder="Email Address"
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.billingEmail }"
-                        v-model="controls.billingEmail"
-                        v-on:blur="validateControl('billingEmail')">
-                        <!-- todo - add event trigger to save billing address on blur -->
+                        v-model.lazy="billingEmail">
                     <span class="validation tiny">{{ validation.billingEmail }}</span>
                 </div>
             </div>
@@ -37,8 +35,7 @@
                             placeholder="Email Address"
                             class="order-form-input no-label"
                             v-bind:class="{ invalid: validation.accountEmail }"
-                            v-model="controls.accountEmail"
-                            v-on:blur="validateControl('accountEmail')">
+                            v-model.lazy="accountEmail">
                         <span class="validation tiny">{{ validation.accountEmail }}</span>
                     </div>
                     <div class="flex flex-column ph-1">
@@ -48,8 +45,7 @@
                             placeholder="Password"
                             class="order-form-input no-label"
                             v-bind:class="{ invalid: validation.accountPassword }"
-                            v-model="controls.accountPassword"
-                            v-on:blur="validateControl('accountPassword') || validatePasswordConfirmation()">
+                            v-model.lazy="accountPassword">
                         <span class="validation tiny">{{ validation.accountPassword }}</span>
                     </div>
                     <div class="flex flex-column ph-1">
@@ -58,8 +54,7 @@
                             placeholder="Password Confirm"
                             class="order-form-input no-label"
                             v-bind:class="{ invalid: validation.accountPasswordConfirmation }"
-                            v-model="controls.accountPasswordConfirmation"
-                            v-on:blur="validatePasswordConfirmation()">
+                            v-model.lazy="accountPasswordConfirmation">
                         <span class="validation tiny">{{ validation.accountPasswordConfirmation }}</span>
                     </div>
                 </div>
@@ -143,6 +138,64 @@
             }
         },
         computed: {
+            billingEmail: {
+                get() {
+                    return this.controls.billingEmail;
+                },
+                set(value) {
+                    this.controls.billingEmail = value;
+                    this.validateControl('billingEmail');
+                    this.$emit(
+                        'saveAccountData',
+                        {
+                            field: 'billingEmail',
+                            value: this.controls.billingEmail
+                        }
+                    );
+                }
+            },
+            accountEmail: {
+                get() {
+                    return this.controls.accountEmail;
+                },
+                set(value) {
+                    this.controls.accountEmail = value;
+                    this.validateControl('accountEmail');
+                    this.$emit(
+                        'saveAccountData',
+                        {
+                            field: 'accountEmail',
+                            value: this.controls.accountEmail
+                        }
+                    );
+                }
+            },
+            accountPassword: {
+                get() {
+                    return this.controls.accountPassword;
+                },
+                set(value) {
+                    this.controls.accountPassword = value;
+                    this.validateControl('accountPassword');
+                    this.validatePasswordConfirmation();
+                    this.$emit(
+                        'saveAccountData',
+                        {
+                            field: 'accountPassword',
+                            value: this.controls.accountPassword
+                        }
+                    );
+                }
+            },
+            accountPasswordConfirmation: {
+                get() {
+                    return this.controls.accountPasswordConfirmation;
+                },
+                set(value) {
+                    this.controls.accountPasswordConfirmation = value;
+                    this.validatePasswordConfirmation();
+                }
+            },
             createLabel() {
                 return this.requiresAccount ? 'Create a new account' : 'Checkout as guest';
             }

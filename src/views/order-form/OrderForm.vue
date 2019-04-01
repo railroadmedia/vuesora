@@ -9,23 +9,23 @@
             :requires-account="requiresAccount"
             :login-url="loginUrl"
             :logout-url="logoutUrl"
-            :billing-address="billingAddress"
             :validation-trigger="validationTrigger"
-            @saveAddress="updateAddress"
+            @saveAccountData="updateAccountData"
             @registerSubformValidation="registerSubformValidation"></order-form-account>
 
         <order-form-shipping
-            :shipping-address="shippingAddress"
+            :shipping-address="factoryState.shipping"
             :validation-trigger="validationTrigger"
-            @saveAddress="updateAddress"
-            @registerSubformValidation="registerSubformValidation"></order-form-shipping>
+            @saveShippingData="updateShippingData"
+            @registerSubformValidation="registerSubformValidation"
+            v-if="requiresShippingAddress"></order-form-shipping>
 
         <order-form-payment
             :billing-address="billingAddress"
             :stripe-publishable-key="stripePublishableKey"
             :validation-trigger="validationTrigger"
             @startValidation="startValidation"
-            @saveAddress="updateAddress"
+            @savePaymentData="updatePaymentData"
             @registerSubformValidation="registerSubformValidation"></order-form-payment>
     </div>
 </template>
@@ -57,10 +57,11 @@
                     shipping: false,
                     payment: false
                 },
-                addresses: {
+                factoryState: {
+                    account: {},
+                    shipping: this.shippingAddress,
+                    payment: this.billingAddress,
                 },
-                addressesPersisted: null,
-                updateAddressesTimeout: null,
                 validationTrigger: false,
             }
         },
@@ -109,47 +110,28 @@
                     }
                 });
             },
-            shouldSaveAddresses() {
-                if (!this.addressesPersisted) {
-                    return true;
-                }
+            updateAccountData({field, value}) {
 
-                let hasDifferences = false;
-
-                for (let key in this.addresses) {
-                    if (
-                        !this.addressesPersisted.hasOwnProperty(key) ||
-                        this.addressesPersisted[key] != this.addresses[key]
-                    ) {
-                        hasDifferences = true;
-                    }
-                }
-
-                return hasDifferences;
+                this.factoryState.account[field] = value;
             },
-            updateAddress(addressObject) {
+            updateShippingData({field, value}) {
 
-                this.addresses = {...this.addresses, ...addressObject};
+                this.factoryState.shipping[field] = value;
+            },
+            updatePaymentData({field, value}) {
 
-                if (this.shouldSaveAddresses()) {
-
-                    clearTimeout(this.updateAddressesTimeout);
-
-                    this.updateAddressesTimeout = setTimeout(() => {
-                        Api
-                            .updateAddresses(this.addresses)
-                            .then((response) => {
-                                this.addressesPersisted = {...this.addresses};
-                            });
-                    }, 750);
-                }
+                this.factoryState.payment[field] = value;
             },
             startValidation() {
 
                 this.validationForms = {
                     account: false,
-                    shipping: false
+                    payment: false,
                 };
+
+                if (this.requiresShippingAddress) {
+                    this.validationForms.shipping = false;
+                }
 
                 this.validationTrigger = !this.validationTrigger;
             },

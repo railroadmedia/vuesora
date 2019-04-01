@@ -17,8 +17,7 @@
                         placeholder="First Name"
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingFirstName }"
-                        v-model="controls.shippingFirstName"
-                        v-on:blur="handleBlurControl('shippingFirstName')">
+                        v-model.lazy="firstName">
                     <span class="validation tiny">{{ validation.shippingFirstName }}</span>
                 </div>
                 <div class="flex flex-column ph-1">
@@ -28,8 +27,7 @@
                         placeholder="Last Name"
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingLastName }"
-                        v-model="controls.shippingLastName"
-                        v-on:blur="handleBlurControl('shippingLastName')">
+                        v-model.lazy="lastName">
                     <span class="validation tiny">{{ validation.shippingLastName }}</span>
                 </div>
             </div>
@@ -41,8 +39,7 @@
                         placeholder="Address - Line 1"
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingAddressLine1 }"
-                        v-model="controls.shippingAddressLine1"
-                        v-on:blur="handleBlurControl('shippingAddressLine1')">
+                        v-model.lazy="addressLine1">
                     <span class="validation tiny">{{ validation.shippingAddressLine1 }}</span>
                 </div>
                 <div class="flex flex-column ph-1">
@@ -51,8 +48,7 @@
                         name="address-line2"
                         placeholder="Address - Line 2"
                         class="order-form-input no-label"
-                        v-model="controls.shippingAddressLine2"
-                        v-on:blur="handleBlurControl('shippingAddressLine2')">
+                        v-model.lazy="addressLine2">
                 </div>
             </div>
             <div class="flex flex-row pv-1">
@@ -63,8 +59,7 @@
                         placeholder="City"
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingCity }"
-                        v-model="controls.shippingCity"
-                        v-on:blur="handleBlurControl('shippingCity')">
+                        v-model.lazy="city">
                     <span class="validation tiny">{{ validation.shippingCity }}</span>
                 </div>
                 <div class="flex flex-column ph-1">
@@ -74,8 +69,7 @@
                         placeholder="State/Province"
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingState }"
-                        v-model="controls.shippingState"
-                        v-on:blur="handleBlurControl('shippingState')">
+                        v-model.lazy="state">
                     <span class="validation tiny">{{ validation.shippingState }}</span>
                 </div>
             </div>
@@ -84,8 +78,7 @@
                     <select
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingCountry }"
-                        v-model="controls.shippingCountry"
-                        v-on:blur="handleBlurControl('shippingCountry')">
+                        v-model.lazy="country">
 
                         <option disabled value="">Country</option>
                         <option
@@ -102,8 +95,7 @@
                         placeholder="Zip/Postal Code"
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingZip }"
-                        v-model="controls.shippingZip"
-                        v-on:blur="handleBlurControl('shippingZip')">
+                        v-model.lazy="zip">
                     <span class="validation tiny">{{ validation.shippingZip }}</span>
                 </div>
             </div>
@@ -111,6 +103,7 @@
     </div>
 </template>
 <script>
+    import Api from '../../assets/js/services/order-form.js';
     import Utils from 'js-helper-functions/modules/utils';
     import ValidationTriggerMixin from './_mixin';
 
@@ -173,25 +166,148 @@
                         pattern: /([^\s])/,
                         message: 'Invalid Zip/Postal code'
                     },
-                }
+                },
+                controlsMap: {
+                    shippingFirstName: 'first_name',
+                    shippingLastName: 'last_name',
+                    shippingAddressLine1: 'street_line_one',
+                    shippingAddressLine2: 'street_line_two',
+                    shippingCity: 'city',
+                    shippingState: 'state',
+                    shippingCountry: 'country',
+                    shippingZip: 'zip_or_postal_code',
+                },
+                backendKeysMap: {
+                    'first_name': 'shippingFirstName',
+                    'last_name': 'shippingLastName',
+                    'street_line_one': 'shippingAddressLine1',
+                    'street_line_two': 'shippingAddressLine2',
+                    'city': 'shippingCity',
+                    'state': 'shippingState',
+                    'country': 'shippingCountry',
+                    'zip_or_postal_code': 'shippingZip',
+                },
+                updateAddressesTimeout: null,
             }
         },
         computed: {
+            firstName: {
+                get() {
+                    return this.controls.shippingFirstName;
+                },
+                set(value) {
+                    if (this.controls.shippingFirstName != value) {
+                        this.controls.shippingFirstName = value;
+                        this.update('shippingFirstName');
+                    }
+                }
+            },
+            lastName: {
+                get() {
+                    return this.controls.shippingLastName;
+                },
+                set(value) {
+                    if (this.controls.shippingLastName != value) {
+                        this.controls.shippingLastName = value;
+                        this.update('shippingLastName');
+                    }
+                }
+            },
+            addressLine1: {
+                get() {
+                    return this.controls.shippingAddressLine1;
+                },
+                set(value) {
+                    if (this.controls.shippingAddressLine1 != value) {
+                        this.controls.shippingAddressLine1 = value;
+                        this.update('shippingAddressLine1');
+                    }
+                }
+            },
+            addressLine2: {
+                get() {
+                    return this.controls.shippingAddressLine2;
+                },
+                set(value) {
+                    if (this.controls.shippingAddressLine2 != value) {
+                        this.controls.shippingAddressLine2 = value;
+                        this.update('shippingAddressLine2');
+                    }
+                }
+            },
+            city: {
+                get() {
+                    return this.controls.shippingCity;
+                },
+                set(value) {
+                    if (this.controls.shippingCity != value) {
+                        this.controls.shippingCity = value;
+                        this.update('shippingCity');
+                    }
+                }
+            },
+            state: {
+                get() {
+                    return this.controls.shippingState;
+                },
+                set(value) {
+                    if (this.controls.shippingState != value) {
+                        this.controls.shippingState = value;
+                        this.update('shippingState');
+                    }
+                }
+            },
+            country: {
+                get() {
+                    return this.controls.shippingCountry;
+                },
+                set(value) {
+                    if (this.controls.shippingCountry != value) {
+                        this.controls.shippingCountry = value;
+                        this.update('shippingCountry');
+                    }
+                }
+            },
+            zip: {
+                get() {
+                    return this.controls.shippingZip;
+                },
+                set(value) {
+                    if (this.controls.shippingZip != value) {
+                        this.controls.shippingZip = value;
+                        this.update('shippingZip');
+                    }
+                }
+            },
             countries() {
                 return Utils.countries();
             }
         },
+        watch: {
+            shippingAddress: function() {
+                this.processFactoryData();
+            }
+        },
         methods: {
-            handleBlurControl(controlName) {
-                this.validateControl(controlName);
-                this.saveShippingAddress();
-            },
-            saveShippingAddress() {
-                this.$emit('saveAddress', this.controls);
+            update(controlName) {
+
+                this.$emit(
+                    'saveShippingData',
+                    {
+                        field: this.controlsMap[controlName],
+                        value: this.controls[controlName]
+                    }
+                );
+
+                clearTimeout(this.updateAddressesTimeout);
+
+                this.updateAddressesTimeout = setTimeout(() => {
+                    Api.updateAddresses(this.controls);
+                }, 750);
             },
             validateControl(controlName) {
 
-                let validation = this.validation[controlName] = (
+                return this.validation[controlName] = (
                     this.rules.hasOwnProperty(controlName) &&
                     this.controls.hasOwnProperty(controlName) &&
                     (
@@ -199,8 +315,6 @@
                         !this.rules[controlName].pattern.test(this.controls[controlName])
                     )
                 ) ? this.rules[controlName].message : '';
-
-                return validation;
             },
             validateForm() {
 
@@ -218,30 +332,21 @@
                     }
                 );
             },
-        },
-        mounted() {
+            processFactoryData() {
+                if (this.shippingAddress) {
 
-            let keysMap = {
-                'zip_or_postal_code': 'shippingZip',
-                'street_line_two': 'shippingAddressLine2',
-                'street_line_one': 'shippingAddressLine1',
-                'last_name': 'shippingLastName',
-                'first_name': 'shippingFirstName',
-                'state': 'shippingState',
-                'country': 'shippingCountry',
-                'city': 'shippingCity'
-            };
+                    for (let backendKey in this.backendKeysMap) {
 
-            if (this.shippingAddress) {
+                        let controlKey = this.backendKeysMap[backendKey];
 
-                for (let backendKey in keysMap) {
-
-                    let controlKey = keysMap[backendKey];
-
-                    this.controls[controlKey] = this.shippingAddress.hasOwnProperty(backendKey) ?
-                                                    this.shippingAddress[backendKey] : '';
+                        this.controls[controlKey] = this.shippingAddress.hasOwnProperty(backendKey) ?
+                                                        this.shippingAddress[backendKey] : '';
+                    }
                 }
             }
+        },
+        mounted() {
+            this.processFactoryData();
         }
     }
 </script>
