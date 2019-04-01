@@ -5,8 +5,10 @@
                 :key="'list' + item.id"
                 :index="item.week || i + 1"
                 :item="item"
+                :contentType="item.type"
                 :brand="brand"
                 :themeColor="themeColor"
+                :useThemeColor="useThemeColor"
                 :class="card_grid_classes"
                 :overview="displayItemsAsOverview"
                 :userId="userId"
@@ -51,6 +53,10 @@
             themeColor: {
                 type: String,
                 default: () => 'drumeo'
+            },
+            useThemeColor: {
+                type: Boolean,
+                default: () => true
             },
             userId: {
                 type: String,

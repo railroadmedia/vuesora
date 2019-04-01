@@ -5,8 +5,10 @@
                 v-for="(item, i) in content"
                 :key="'grid' + item.id"
                 :item="item"
+                :contentType="item.type"
                 :brand="brand"
                 :themeColor="themeColor"
+                :useThemeColor="useThemeColor"
                 :class="card_grid_classes"
                 :userId="userId"
                 :lockUnowned="lockUnowned"
@@ -33,6 +35,10 @@
             themeColor: {
                 type: String,
                 default: () => 'drumeo'
+            },
+            useThemeColor: {
+                type: Boolean,
+                default: () => true
             },
             userId: {
                 type: String,

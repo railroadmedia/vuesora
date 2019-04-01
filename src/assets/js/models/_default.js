@@ -44,9 +44,11 @@ export default class DataMapper {
     }
 
     getPostDuration(){
-        return this.post['video'] ?
+        const duration = this.post['video'] ? this.post['video']['length_in_seconds'] : 0;
+
+        return duration ?
             Math.round(
-                Duration.fromMillis((this.post['video']['length_in_seconds'] * 1000)).as('minutes')
+                Duration.fromMillis((duration * 1000)).as('minutes')
             ) + ' mins' :
             'TBD'
     }

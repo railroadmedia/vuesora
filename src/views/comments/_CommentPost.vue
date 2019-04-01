@@ -375,6 +375,7 @@
                                 Toasts.push({
                                     icon: 'happy',
                                     title: 'Woohoo!',
+                                    themeColor: this.themeColor,
                                     message: 'Thanks for your reply!'
                                 });
 

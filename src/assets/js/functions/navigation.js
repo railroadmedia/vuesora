@@ -128,7 +128,11 @@ export default (function(){
                 openItems.push(value);
             }
 
-            localStorage.setItem('open_items', JSON.stringify(openItems));
+            try {
+                localStorage.setItem('open_items', JSON.stringify(openItems));
+            } catch(e){
+                console.warn('Local storage not available in this browser');
+            }
         }
 
         if(subNavWrap){
