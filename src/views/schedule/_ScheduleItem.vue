@@ -125,8 +125,6 @@
                 const shows = ContentHelpers.shows();
                 let type = this.contentTypeOverride || this.item.type;
 
-                console.log(type);
-
                 if(shows.indexOf(type) !== -1){
                     type = 'show';
                 }
