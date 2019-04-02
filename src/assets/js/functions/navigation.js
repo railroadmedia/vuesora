@@ -144,8 +144,6 @@ export default (function(){
             const amountToScroll = subNavWrap.clientWidth;
             const positionToScrollTo = backwards ? currentSubNavScrollPosition - amountToScroll : currentSubNavScrollPosition + amountToScroll;
 
-
-
             subNavWrap.scrollTo({
                 top: 0,
                 left: positionToScrollTo,
