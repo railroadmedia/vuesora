@@ -137,8 +137,16 @@ export default {
             return (this.lockUnowned && this.item.is_owned === false) || (this.lockUnowned && !this.isReleased);
         },
 
+        datePublshedOn(){
+            return DateTime.fromSQL(this.item['published_on'], {zone: "UTC"}).toFormat('x');
+        },
+
+        dateNow(){
+            return Date.now();
+        },
+
         isReleased(){
-            return DateTime.fromSQL(this.item['published_on']).toFormat('x') < Date.now();
+            return this.dateNow > this.datePublshedOn;
         },
 
         releaseDate(){
