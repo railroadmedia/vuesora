@@ -34,9 +34,12 @@ export default class ShowDataMapper extends DataMapper {
             ]
         };
 
-
         if(this.brand === 'pianote'){
             this.card.color_title = this.getTypeWithIcon();
+        }
+
+        if(this.brand === 'guitareo'){
+            this.card.color_title = this.getTypeWithIcon().replace(/recording/, 'archives');
         }
     }
 }
