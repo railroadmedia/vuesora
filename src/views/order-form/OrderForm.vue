@@ -24,6 +24,7 @@
             :billing-address="billingAddress"
             :stripe-publishable-key="stripePublishableKey"
             :validation-trigger="validationTrigger"
+            :stripe-token-trigger="stripeTokenTrigger"
             @startValidation="startValidation"
             @savePaymentData="updatePaymentData"
             @registerSubformValidation="registerSubformValidation"></order-form-payment>
@@ -63,6 +64,7 @@
                     payment: this.billingAddress,
                 },
                 validationTrigger: false,
+                stripeTokenTrigger: false,
             }
         },
         props: {
@@ -92,7 +94,10 @@
             },
             stripePublishableKey: {
                 type: String
-            }
+            },
+            gateway: {
+                type: String
+            },
         },
         methods: {
             processCartItems(cartItems) {
@@ -121,6 +126,11 @@
             updatePaymentData({field, value}) {
 
                 this.factoryState.payment[field] = value;
+
+                if (field == 'card-token') {
+                    // stripe token fetch succeeded, submit credit card payment type order
+                    this.submitOrder();
+                }
             },
             startValidation() {
 
@@ -150,11 +160,65 @@
                     }
 
                     if (complete) {
-                        // if the form is complete & valid, start payment routine
-                        // this.$emit('makePayment', this.orderFormData);
-                        console.log("should attempt payment");
+                        // if subforms validation succeeded
+                        if (this.factoryState.payment['payment_method_type'] == 'credit-card') {
+                            // trigger stripe token fetch
+                            this.stripeTokenTrigger = !this.stripeTokenTrigger;
+                        } else {
+                            // submit paypal payment type order
+                            this.submitOrder();
+                        }
                     }
                 }
+            },
+            submitOrder() {
+                let payload = this.createOrderPayload();
+                console.log("OrderForm::submitOrder payload: %s", JSON.stringify(payload));
+
+                Api
+                    .submitOrder(payload)
+                    .then((result) => {
+                        console.log("OrderForm::submitOrder result: %s", JSON.stringify(result));
+                    })
+                    .catch((error) => {
+                        console.log("OrderForm::submitOrder error: %s", JSON.stringify(error));
+                    });
+            },
+            createOrderPayload() {
+
+                let payload = {
+                    'gateway': this.gateway,
+                    'payment_method_type': this.factoryState.payment['payment_method_type'],
+                    'billing-country': this.factoryState.payment.country,
+                    'billing-region': this.factoryState.payment.state,
+                    'billing-zip-or-postal-code': this.factoryState.payment['zip_or_postal_code'],
+                };
+
+                if (!this.user) {
+                    if (this.requiresAccount) {
+                        payload['account-creation-email'] = this.factoryState.account.accountEmail;
+                        payload['account-creation-password'] = this.factoryState.account.accountPassword;
+                    } else {
+                        payload['billing-email'] = this.factoryState.account.billingEmail;
+                    }
+                }
+
+                if (this.requiresShippingAddress) {
+                    payload['shipping-first-name'] = this.factoryState.shipping['first_name'];
+                    payload['shipping-last-name'] = this.factoryState.shipping['last_name'];
+                    payload['shipping-address-line-1'] = this.factoryState.shipping['street_line_one'];
+                    payload['shipping-address-line-2'] = this.factoryState.shipping['street_line_two'];
+                    payload['shipping-zip-or-postal-code'] = this.factoryState.shipping['zip_or_postal_code'];
+                    payload['shipping-city'] = this.factoryState.shipping['city'];
+                    payload['shipping-region'] = this.factoryState.shipping['state'];
+                    payload['shipping-country'] = this.factoryState.shipping['country'];
+                }
+
+                if (this.factoryState.payment['payment_method_type'] == 'credit-card') {
+                    payload['card-token'] = this.factoryState.payment['card-token'];
+                }
+
+                return payload;
             }
         },
         mounted() {

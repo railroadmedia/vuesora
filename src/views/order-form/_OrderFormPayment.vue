@@ -82,7 +82,7 @@
                     </select>
                     <span class="validation tiny">{{ validation.billingCountry }}</span>
                 </div>
-                <div class="md-6 ph-1" v-if="controls.billingCountry.toLowerCase() == 'canada'">
+                <div class="ph-1" v-if="controls.billingCountry.toLowerCase() == 'canada'">
                     <select
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.billingState }"
@@ -95,6 +95,16 @@
                             :value="state">{{ state }}</option>
                     </select>
                     <span class="validation tiny">{{ validation.billingState }}</span>
+                </div>
+                <div class="md-3 ph-1">
+                    <input
+                        type="text"
+                        name="zip"
+                        placeholder="Zip/Postal Code"
+                        class="order-form-input no-label"
+                        v-bind:class="{ invalid: validation.billingZip }"
+                        v-model.lazy="billingZip">
+                    <span class="validation tiny">{{ validation.billingZip }}</span>
                 </div>
             </div>
             <div class="flex flex-row pa-1" v-if="paymentMethod == 'paypal'">
@@ -130,6 +140,7 @@
                     cardCvc: '',
                     billingCountry: '',
                     billingState: '',
+                    billingZip: '',
                 },
                 stripeErrorMap: {
                     'incomplete_number': 'Your card number is incomplete.',
@@ -149,6 +160,7 @@
                 controls: {
                     billingCountry: '',
                     billingState: '',
+                    billingZip: '',
                 },
                 rules: {
                     billingCountry: {
@@ -159,18 +171,25 @@
                         pattern: /([^\s])/,
                         message: 'Invalid State'
                     },
+                    billingZip: {
+                        pattern: /([^\s])/,
+                        message: 'Invalid Zip'
+                    },
                 },
                 selectedPaymentMethod: 'credit-card',
                 selectedPaymentMethodIcon: '',
                 controlsMap: {
                     billingState: 'state',
                     billingCountry: 'country',
+                    billingZip: 'zip_or_postal_code',
                 },
                 backendKeysMap: {
-                    state: 'billingState',
-                    country: 'billingCountry',
+                    'state': 'billingState',
+                    'country': 'billingCountry',
+                    'zip_or_postal_code': 'billingZip',
                 },
                 updateAddressesTimeout: null,
+                stripeToken: '',
             }
         },
         computed: {
@@ -224,6 +243,17 @@
                     }
                 }
             },
+            billingZip: {
+                get() {
+                    return this.controls.billingZip;
+                },
+                set(value) {
+                    if (this.controls.billingZip != value) {
+                        this.controls.billingZip = value;
+                        this.update('billingZip');
+                    }
+                }
+            }
         },
         props: {
             billingAddress: {
@@ -233,10 +263,17 @@
             stripePublishableKey: {
                 type: String
             },
+            stripeTokenTrigger: {
+                type: Boolean,
+                default: () => false
+            }
         },
         watch: {
             billingAddress: function() {
                 this.processFactoryData();
+            },
+            stripeTokenTrigger: function() {
+                this.fetchStripeToken();
             }
         },
         methods: {
@@ -302,8 +339,6 @@
                 this.$emit('startValidation');
             },
             validateForm() {
-                // todo - add validation logic
-                console.log("start form validation");
 
                 let validationSuccessful = true;
 
@@ -366,6 +401,31 @@
                     this.validation[controlName] = '';
                 }
             },
+            fetchStripeToken() {
+                this.stripe
+                    .createToken(
+                        this.cardNumberElement,
+                        {'address_country': this.controls.billingCountry}
+                    )
+                    .then((result) => {
+                        this.stripeToken = result.token.id;
+
+                        this.$emit(
+                            'savePaymentData',
+                            {
+                                field: 'card-token',
+                                value: this.stripeToken
+                            }
+                        );
+                    })
+                    .catch((error) => {
+                        // could not reach this block with current stripe test credit cards that generate errors
+
+                        console.log("stripe token fetch error: %s", JSON.stringify(error));
+
+                        this.validation.cardNumber = 'Unexpected processing error, please retry';
+                    });
+            },
             processFactoryData() {
                 if (this.billingAddress) {
 
@@ -378,7 +438,6 @@
                     }
                 }
             },
-            // todo - add method to handle order form submission - stripe token fetch, then backend ajax request to place order
         },
         mounted() {
             this.stripe = Stripe(this.stripePublishableKey);

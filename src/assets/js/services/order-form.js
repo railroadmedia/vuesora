@@ -4,6 +4,26 @@ import ErrorHandler from './_error-handler';
 export default {
 
     /**
+     * Request to submit the order form data
+     *
+     * @param {object} payload
+     *
+     * @returns {Promise}
+     */
+    submitOrder(payload) {
+
+        return axios
+                .put(
+                    '/ecommerce/order',
+                    payload
+                )
+                .then(response => response.data)
+                .catch((error) => {
+                    return error;
+                });
+    },
+
+    /**
      * Updates the cart item quantity
      *
      * @param {number} productId
