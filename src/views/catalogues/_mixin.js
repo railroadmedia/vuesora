@@ -83,12 +83,6 @@ export default {
         }
     },
 
-    data(){
-        return {
-            model: null
-        }
-    },
-
     computed: {
 
         is_added:{
