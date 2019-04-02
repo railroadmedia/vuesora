@@ -41,7 +41,7 @@
         </div>
 
         <div v-for="(item, i) in mappedData.column_data"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down text-center">
             {{ item }}
         </div>
 

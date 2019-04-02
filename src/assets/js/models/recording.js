@@ -33,5 +33,9 @@ export default class RecordingDataMapper extends DataMapper {
                 DataMapper.mapDifficulty(this.post)
             ]
         };
+
+        if(this.brand === 'guitareo'){
+            this.card.color_title = this.getTypeWithIcon()
+        }
     }
 }

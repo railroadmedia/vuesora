@@ -1,5 +1,5 @@
 import { DateTime, Duration } from "luxon";
-import Utils from '../classes/utils';
+import { Content as ContentHelpers } from 'js-helper-functions';
 
 export default class DataMapper {
     constructor({brand = 'drumeo', post}){
@@ -36,7 +36,7 @@ export default class DataMapper {
     }
 
     getPostInstructor(){
-        if(this.post['instructor']){
+        if(this.post['instructor'] && this.post['instructor'][0]){
             return this.post['instructor'][0]['name'];
         }
 
@@ -62,7 +62,7 @@ export default class DataMapper {
     }
 
     getTypeWithIcon(){
-        const icon = Utils.getContentTypeIcon(this.post['type']);
+        const icon = ContentHelpers.getContentTypeIcon(this.post['type']);
         const type = this.getType();
 
         return `<i class="${ icon }" style="margin-right:5px;"></i> <span class="text-white">${ type }</span>`;
