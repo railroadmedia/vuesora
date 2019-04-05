@@ -7,14 +7,14 @@ export default class SongPartDataMapper extends DataMapper {
             post
         });
 
-        this.card.color_title = this.post['artist'];
+        this.card.color_title = this.getPostField('artist');
 
         this.list.column_data = [
             this.getPostDuration(),
         ];
 
-        if(this.brand === 'guitareo'){
-            this.card.color_title = this.postType;
+        if(this.brand === 'guitareo' || this.brand === 'pianote'){
+            this.card.color_title = this.getTypeWithIcon;
 
             this.list.color_title = null;
         }

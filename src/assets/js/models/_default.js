@@ -53,7 +53,7 @@ export default class DataMapper {
     get postInstructor(){
         const instructor = this.getPostField('instructor');
 
-        if(instructor !== 'TBD'){
+        if(typeof instructor === 'object' && instructor != null){
             return instructor['fields'].find(field => field.key === 'name').value;
         }
 
@@ -116,7 +116,7 @@ export default class DataMapper {
             thumb = this.getPostDatum('background_image_url');
         }
 
-        if(this.postType === 'chord-and-scale' && this.brand === 'guitareo'){
+        if(this.postType === 'chord and scale' && this.brand === 'guitareo'){
             thumb = this.getPostDatum('guitar_chord_image_url');
         }
 
@@ -124,7 +124,8 @@ export default class DataMapper {
     }
 
     static mapDifficulty(post){
-        const difficulty = post['fields'].find(field => field.key === 'difficulty').value;
+        const difficultyField = post['fields'].find(field => field.key === 'difficulty');
+        let difficulty = difficultyField ? difficultyField.value : null;
 
         if(difficulty <= 3){
             return 'beginner ' + difficulty

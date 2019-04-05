@@ -19,7 +19,7 @@ export default class SongDataMapper extends DataMapper {
 
         if(this.brand === 'guitareo'){
             this.card.color_title = this.getTypeWithIcon();
-            this.card.grey_title = this.postInstructor() + ', ' + DataMapper.mapDifficulty(this.post);
+            this.card.grey_title = this.postInstructor + ', ' + DataMapper.mapDifficulty(this.post);
 
             this.list.color_title = null;
             this.list.column_data = [
