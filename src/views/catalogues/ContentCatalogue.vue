@@ -265,7 +265,7 @@
         data() {
             return {
                 page: this.initialPage || 1,
-                content: this.preLoadedContent ? ContentHelpers.flattenContent(this.preLoadedContent.data, true) : [],
+                content: this.preLoadedContent ? this.preLoadedContent.data : [],
                 filters: this.preLoadedContent ? ContentHelpers.flattenFilters(this.preLoadedContent.meta.filterOptions || []) : {},
                 total_results: this.totalResults || 0,
                 total_pages: this.preLoadedContent ? Math.ceil(this.preLoadedContent.meta.totalResults / this.limit) : 0,
@@ -479,11 +479,11 @@
                     if (!replace) {
                         this.content = [
                             ...this.content,
-                            ...ContentHelpers.flattenContent(response.data.data, true)
+                            ...response.data.data
                         ]
                     }
                     else {
-                        this.content = ContentHelpers.flattenContent(response.data.data, true);
+                        this.content = response.data.data;
                     }
                     this.page = Number(response.data.meta.page);
                     this.total_results = response.data.meta.totalResults;

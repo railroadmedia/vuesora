@@ -7,7 +7,7 @@
                  :class="thumbnailType">
 
                 <div class="thumb-img bg-center"
-                     :style="'background-image:url(' + thumbnail + ');'"
+                     :style="'background-image:url(' + mappedData.thumbnail + ');'"
                      :class="item.type === 'chord-and-scale' ? 'no-bg' : ''"></div>
 
                 <i class="add-to-list fas fa-plus"

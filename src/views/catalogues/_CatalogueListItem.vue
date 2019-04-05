@@ -20,7 +20,7 @@
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
                      :class="thumbnailType"
-                     :style="'background-image:url( ' + thumbnail + ' );'">
+                     :style="'background-image:url( ' + mappedData.thumbnail + ' );'">
 
                     <div class="lesson-progress overflow">
                         <span class="progress"
@@ -88,22 +88,13 @@
                     {{ item }}
                 </span>
             </p>
-
-            <p v-if="is_search"
-               class="x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up">
-                {{ item.type.replace('bundle-', '').replace(/-/g, ' ') }}
-
-                <span class="bullet">-</span>
-
-                {{ parsed_difficulty }}
-            </p>
         </div>
 
         <!-- SHEET MUSIC IMAGE IF IT EXISTS -->
-<!--        <div v-if="mappedData.sheet_music && !is_search"-->
-<!--             class="flex flex-column sheet-music-col ph-1 hide-xs-only">-->
-<!--            <img :src="mappedData.sheet_music">-->
-<!--        </div>-->
+        <div v-if="mappedData.sheet_music && !is_search"
+             class="flex flex-column sheet-music-col ph-1 hide-xs-only">
+            <img :src="mappedData.sheet_music">
+        </div>
 
         <!-- SHOW ALL OF THE DATA COLUMNS FROM THE DATA MAPPER -->
         <div v-if="!is_search"
@@ -116,12 +107,6 @@
         <div v-if="is_search"
              class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
             {{ item.type.replace('bundle-', '').replace(/-/g, ' ') }}
-        </div>
-
-        <!-- ONLY SHOW DIFFICULTY ON SEARCHES -->
-        <div v-if="is_search"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
-            {{ parsed_difficulty }}
         </div>
 
         <!-- ADD TO LIST OR RESET PROGRESS BUTTONS -->
@@ -203,18 +188,6 @@
                     'compact' : this.compactLayout,
                     'start-learning-path': this.contentTypeOverride === 'learning-path-part'
                 }
-            },
-
-            parsed_difficulty(){
-                const shows = ContentHelpers.shows();
-                let type = this.contentTypeOverride || this.item.type;
-
-                if(shows.indexOf(type) !== -1){
-                    type = 'show';
-                }
-
-                // return Model[type.replace(/-/g, '_')].mapDifficulty(this.item);
-                return 'undefined';
             },
 
             showStudentReviewThumbsAsAvatar(){
