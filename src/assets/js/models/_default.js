@@ -44,7 +44,9 @@ export default class DataMapper {
     }
 
     getPostDuration(){
-        const duration = this.post['video'] ? this.post['video']['length_in_seconds']['value'] : 0;
+        const duration = this.post['video'] && this.post['video']['length_in_seconds']
+            ? this.post['video']['length_in_seconds']['value']
+            : 0;
 
         return duration ?
             Math.round(
