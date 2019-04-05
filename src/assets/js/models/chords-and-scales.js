@@ -7,36 +7,19 @@ export default class ChordsAndScalesDataMapper extends DataMapper {
             post
         });
 
-        this.card = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
-            description: this.post['description'],
-            grey_title: this.post['chord_or_scale']
-        };
+        this.card.color_title = this.postType;
+        this.card.grey_title = this.post['chord_or_scale'];
 
-        this.list = {
-            show_numbers: true,
-            black_title: this.post['title'],
-            description: this.post['description'],
-            column_data: [
-                this.getPostDuration(),
-                this.getPostDate()
-            ]
-        };
-
-        this.schedule = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
-            column_data: [
-                this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post)
-            ]
-        };
+        this.list.show_numbers = true,
+        this.list.column_data = [
+            this.getPostDuration(),
+            this.postPublisedOn,
+        ];
 
         if(brand === 'pianote'){
             this.card.color_title = `<i class="icon-chords" style="margin-right:5px;"></i> <span class="text-white">Chords And Scales</span>`;
 
-            this.list.sheet_music = this.post['piano_keys_thumbnail_url'];
+            this.list.sheet_music = this.getPostDatum('piano_keys_thumbnail_url');
             this.list.column_data = [];
         }
     }

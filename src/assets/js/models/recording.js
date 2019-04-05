@@ -7,32 +7,14 @@ export default class RecordingDataMapper extends DataMapper {
             post
         });
 
-        this.card = {
-            color_title: this.getPostInstructor(),
-            black_title: this.post['title'],
-            description: this.post['description'],
-            grey_title: DataMapper.mapDifficulty(this.post)
-        };
+        this.card.color_title = this.postInstructor;
 
-        this.list = {
-            color_title: this.getPostInstructor(),
-            black_title: this.post['title'],
-            description: this.post['description'],
-            column_data: [
-                DataMapper.mapDifficulty(this.post),
-                this.getPostDuration(),
-                this.getPostDate()
-            ]
-        };
-
-        this.schedule = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
-            column_data: [
-                this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post)
-            ]
-        };
+        this.list.color_title = this.postInstructor;
+        this.list.column_data = [
+            DataMapper.mapDifficulty(this.post),
+            this.getPostDuration(),
+            this.postPublisedOn
+        ];
 
         if(this.brand === 'guitareo'){
             this.card.color_title = this.getTypeWithIcon()

@@ -7,104 +7,137 @@ export default class DataMapper {
         this.post = post;
 
         this.card = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
-            description: this.post['description'],
+            thumbnail: this.getPostThumbnail(),
+            color_title: this.postType,
+            black_title: this.getPostField('title'),
+            description: this.getPostDatum('description'),
             sheet_music: null,
-            grey_title: DataMapper.mapDifficulty(this.post)
+            grey_title: DataMapper.mapDifficulty(this.post),
         };
 
         this.list = {
-            color_title: this.getPostInstructor(),
-            black_title: this.post['title'],
-            description: this.post['description'],
+            thumbnail: this.getPostThumbnail(),
+            color_title: this.postInstructor,
+            black_title: this.getPostField('title'),
+            description: this.getPostDatum('description'),
             sheet_music: null,
             column_data: [
                 this.getPostDuration(),
-                this.getPostDate()
+                this.postPublisedOn
             ]
         };
 
         this.schedule = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
+            thumbnail: this.getPostThumbnail(),
+            color_title: this.postType,
+            black_title: this.getPostField('title'),
             column_data: [
-                this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post)
+                this.postInstructor,
+                DataMapper.mapDifficulty(post)
             ]
         };
     }
 
-    getPostInstructor(){
-        if(this.post['instructor'] && this.post['instructor'][0]){
-            return this.post['instructor'][0]['name'];
+    getPostField(key){
+        const field = this.post['fields'].find(field => field.key === key);
+
+        return field ? field.value : 'TBD';
+    }
+
+    getPostDatum(key){
+        const datum = this.post['data'].find(data => data.key === key);
+
+        return datum ? datum.value : 'TBD';
+    }
+
+    get postInstructor(){
+        const instructor = this.getPostField('instructor');
+
+        if(instructor !== 'TBD'){
+            return instructor['fields'].find(field => field.key === 'name').value;
         }
 
         return 'TBD';
     }
 
     getPostDuration(){
-        const duration = this.post['video'] && this.post['video']['length_in_seconds']
-            ? this.post['video']['length_in_seconds']['value']
-            : 0;
+        const video = this.post['fields'].find(field => {
+            return field.key === 'video'
+        });
 
-        return duration ?
-            Math.round(
+        if(video){
+            let duration = 0;
+            const videoLength = video['value']['fields'].find(field => field.key === 'length_in_seconds');
+
+            if(videoLength){
+                duration =  videoLength.value;
+            }
+
+            return Math.round(
                 Duration.fromMillis((duration * 1000)).as('minutes')
-            ) + ' mins' :
-            'TBD'
+            ) + ' mins';
+        }
+
+        return 'TBD';
     }
 
-    getPostDate(){
+    get postPublisedOn(){
         return DateTime.fromSQL(this.post['published_on']).toFormat('LLL d/yy');
     }
 
-    getType(){
+    get postType(){
         return this.post['type'].replace('bundle-', '').replace(/-/g, ' ');
     }
 
     getTypeWithIcon(){
         const icon = ContentHelpers.getContentTypeIcon(this.post['type']);
-        const type = this.getType();
+        const type = this.postType;
 
         return `<i class="${ icon }" style="margin-right:5px;"></i> <span class="text-white">${ type }</span>`;
     }
 
-    getStyle(){
-        if(Array.isArray(this.post['style'])){
-            // We only return the first style field
-            return this.post['style'][0];
-        }
-
-        return this.post['style'];
-    }
-
-    getEpisodeNumber(){
+    get episodeNumber(){
         return this.post['sort'] ? 'Episode #' + this.post['sort'] : 'TBD';
     }
 
-    getChildLessonCount(){
+    get postChildLessonCount(){
         return this.post['lesson_count'] ? this.post['lesson_count'] + ' Lessons' : 'TBD';
     }
 
-    static mapDifficulty(post){
-        if(post['difficulty_range']){
-            return 'Levels ' + post['difficulty_range'][0] + '-' + post['difficulty_range'][post['difficulty_range'].length - 1];
+    getPostThumbnail(){
+        const defaults = {
+            drumeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg',
+            pianote: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg',
+            guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg'
+        };
+        let thumb = this.getPostDatum('thumbnail_url');
+
+        if(this.postType === 'learning-path' && this.brand === 'drumeo'){
+            thumb = this.getPostDatum('background_image_url');
         }
-        else {
-            if(post['difficulty'] <= 3){
-                return 'beginner ' + post['difficulty']
-            }
-            else if(post['difficulty'] > 3 && post['difficulty'] <= 6){
-                return 'intermediate ' + post['difficulty']
-            }
-            else if(post['difficulty'] > 6){
-                return 'advanced ' + post['difficulty']
-            }
+
+        if(this.postType === 'chord-and-scale' && this.brand === 'guitareo'){
+            thumb = this.getPostDatum('guitar_chord_image_url');
+        }
+
+        return thumb !== 'TBD' ? thumb : defaults[this.brand];
+    }
+
+    static mapDifficulty(post){
+        const difficulty = post['fields'].find(field => field.key === 'difficulty').value;
+
+        if(difficulty <= 3){
+            return 'beginner ' + difficulty
+        }
+        else if(difficulty > 3 && difficulty <= 6){
+            return 'intermediate ' + difficulty
+        }
+        else if(difficulty > 6){
+            return 'advanced ' + difficulty
         }
 
         // Some content has difficulty already parsed as a word so we return that,
         // if its falsey, just default it to 'TBD'
-        return post['difficulty'] || 'TBD';
+        return difficulty || 'TBD';
     }
 }

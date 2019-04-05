@@ -7,35 +7,11 @@ export default class LearningPathDataMapper extends DataMapper {
             post
         });
 
-        this.card = {
-            black_title: this.post['title'],
-            description: this.post['description'],
-            grey_title: this.getDifficultyRange(),
-        };
+        this.card.grey_title = this.getPostField('difficulty_range');
 
-        this.list = {
-            black_title: this.post['title'],
-            description: this.post['description'],
-            column_data: [
-                this.getDifficultyRange()
-            ]
-        };
-
-        this.schedule = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
-            column_data: [
-                this.getPostInstructor(),
-                this.getDifficultyRange()
-            ]
-        };
-    }
-
-    getDifficultyRange(){
-        if(this.post['difficulty_range']){
-            return 'Levels ' + this.post['difficulty_range'];
-        }
-
-        return 'TBD';
+        this.list.color_title = null;
+        this.list.column_data = [
+            this.getPostField('difficulty_range')
+        ];
     }
 }
