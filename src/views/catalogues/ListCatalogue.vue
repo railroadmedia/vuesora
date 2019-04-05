@@ -9,7 +9,6 @@
                 :brand="brand"
                 :themeColor="themeColor"
                 :useThemeColor="useThemeColor"
-                :class="card_grid_classes"
                 :overview="displayItemsAsOverview"
                 :userId="userId"
                 :displayUserInteractions="displayUserInteractions"
@@ -77,10 +76,6 @@
             displayUserInteractions: {
                 type: Boolean,
                 default: () => true
-            },
-            card_grid_classes: {
-                type: String,
-                default: () => ''
             },
             contentTypeOverride: {
                 type: String,
