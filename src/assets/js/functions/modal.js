@@ -80,8 +80,14 @@ export default (function(){
             // Add an event listener
             modalOverlay.addEventListener('click', closeModal);
 
-            document.body.style.paddingRight = Utils.getScrollBarWidth() + 'px';
-            topBar.style.paddingRight = Utils.getScrollBarWidth() + 'px';
+            // Add padding to the right of the page if there's a scrollbar
+            const bodyHeight = document.body.clientHeight;
+            const clientHeight = document.documentElement.clientHeight;
+
+            if(bodyHeight > clientHeight){
+                document.body.style.paddingRight = Utils.getScrollBarWidth() + 'px';
+                topBar.style.paddingRight = Utils.getScrollBarWidth() + 'px';
+            }
         }
     });
 })();
