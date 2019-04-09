@@ -157,7 +157,7 @@ export default (function(){
 
             currentSubNavScrollPosition = subNavWrap.scrollLeft;
 
-            if(currentSubNavScrollPosition <= 35){
+            if(currentSubNavScrollPosition <= 0){
                 currentSubNavScrollPosition = 0;
                 scrollSubNavLeft.classList.add('hide');
             }
@@ -165,7 +165,7 @@ export default (function(){
                 scrollSubNavLeft.classList.remove('hide');
             }
 
-            if(currentSubNavScrollPosition >= (maximumScrollAmount - 35)){
+            if(currentSubNavScrollPosition >= maximumScrollAmount){
                 currentSubNavScrollPosition = maximumScrollAmount;
                 scrollSubNavRight.classList.add('hide');
             }
