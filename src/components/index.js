@@ -1,5 +1,4 @@
 export { default as ContentAssignment } from './ContentAssignment';
-export { default as ContentExercise } from './ContentExercise';
 export { default as EmailForm } from './EmailForm';
 export { default as ImageCropper } from './ImageCropper';
 export { default as TextEditor } from './TextEditor';
