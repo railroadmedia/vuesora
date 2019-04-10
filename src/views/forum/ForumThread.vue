@@ -68,6 +68,7 @@
                                :isLocked="thread.isLocked"
                                :themeColor="themeColor"
                                @likePost="handlePostLike"
+                               @openLikes="addLikeUsersToModal"
                                @deletePost="handlePostDelete"
                                @replyToPost="handleReplyToPost"></forum-thread-post>
 
@@ -107,6 +108,15 @@
                     </form>
                 </div>
             </div>
+
+            <comment-likes-modal :themeColor="themeColor"
+                                 :brand="brand"
+                                 :commentId="currentLikeUsersId"
+                                 :likeUsers="likeUsers"
+                                 :totalLikeUsers="totalLikeUsers"
+                                 :loadingLikeUsers="loadingLikeUsers"
+                                 :requestingLikeUsers="requestingLikeUsers"
+                                 @loadMoreLikeUsers="addLikeUsersToModal"></comment-likes-modal>
         </div>
     </div>
 </template>
@@ -117,7 +127,8 @@
     import TextEditor from '../../components/TextEditor.vue';
     import Toasts from '../../assets/js/classes/toasts';
     import * as QueryString from 'query-string';
-    import ThemeClasses from '../../mixins/ThemeClasses'
+    import ThemeClasses from '../../mixins/ThemeClasses';
+    import CommentLikesModal from '../../views/comments/_CommentLikesModal.vue';
 
     export default {
         mixins: [ThemeClasses],
@@ -125,7 +136,8 @@
         components: {
             "forum-thread-post": ForumThreadPost,
             "pagination": Pagination,
-            "text-editor": TextEditor
+            "text-editor": TextEditor,
+            "comment-likes-modal": CommentLikesModal,
         },
         props: {
             thread: {
@@ -159,6 +171,12 @@
                 isPinned: this.thread.isPinned,
                 postReplyBody: '',
                 formDisabled: false,
+                currentLikeUsersId: 0,
+                likeUsers: [],
+                loadingLikeUsers: false,
+                requestingLikeUsers: true,
+                totalLikeUsers: 0,
+                likeUsersPage: 1,
             }
         },
         computed: {
@@ -273,6 +291,46 @@
 
             scrollToReply(){
                 window.scrollTo(0, document.getElementById('replyContainer').offsetTop);
+            },
+
+            addLikeUsersToModal(payload){
+                const isSameComment = payload.id === this.currentLikeUsersId;
+
+                this.likeUsersPage += 1;
+                this.requestingLikeUsers = true;
+                this.totalLikeUsers = payload.totalLikeUsers;
+
+                if(!isSameComment){
+                    this.loadingLikeUsers = true;
+                    this.likeUsersPage = 1;
+                }
+
+                // ForumService.getForumPostById(payload.id)
+                //     .then(response => {
+                //         console.log(response);
+                //     });
+
+                // CommentService.getCommentLikeUsers({
+                //     id: payload.id,
+                //     page: this.likeUsersPage
+                // })
+                //     .then(response => {
+                //         if(response){
+                //             if(isSameComment){
+                //                 this.likeUsers = [...this.likeUsers, ...response.data.data];
+                //             }
+                //             else {
+                //                 this.likeUsers = response.data.data;
+                //             }
+                //
+                //             this.requestingLikeUsers = false;
+                //             this.currentLikeUsersId = payload.id;
+                //
+                //             // window.modalSimpleBar.recalculate();
+                //         }
+                //
+                //         this.loadingLikeUsers = false;
+                //     });
             }
         },
 

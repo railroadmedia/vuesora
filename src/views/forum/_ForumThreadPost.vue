@@ -64,11 +64,16 @@
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
 
-                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        <p class="tiny mr-1 font-bold uppercase dense pointer reply-like noselect"
                            :class="post.isLiked ? themeTextClass : 'text-grey-3'"
                            @click="likePost">
                             <i class="fa-thumbs-up"
-                               :class="post.isLiked ? 'fas' : 'fal'"></i> {{ post.totalLikes }}
+                               :class="post.isLiked ? 'fas' : 'fal'"></i>
+                        </p>
+                        <p class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                           :class="post.isLiked ? themeTextClass : 'text-grey-3'"
+                           @click="openLikes">
+                            {{ post.totalLikes }}
                         </p>
 
                         <p class="tiny text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
@@ -294,6 +299,15 @@
                 this.$emit('editPost', {
                     id: this.post.id
                 })
+            },
+
+            openLikes(){
+                if(this.post.totalLikes > 0){
+                    this.$emit('openLikes', {
+                        id: this.post.id,
+                        totalLikeUsers: this.post.totalLikes
+                    });
+                }
             }
         }
     }
