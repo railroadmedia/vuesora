@@ -403,8 +403,7 @@ body {
   .subnav-link {
     transition:color .1s ease-in-out, background-color .1s ease-in-out;
     will-change:color, background-color;
-    flex:0 0 125px;
-    //min-width:25%;
+    flex:0 0 120px;
     box-sizing:border-box;
     border-bottom:2px solid transparent;
     white-space:nowrap;
