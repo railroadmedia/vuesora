@@ -68,6 +68,7 @@ body {
     &.live-button {
       flex:0 0 auto;
       max-width:none;
+      z-index:8;
     }
   }
 
@@ -107,6 +108,7 @@ body {
       top:0;
       left:0;
       bottom:0;
+      z-index:3;
       background:#000;
       transform:translateX(0);
       transition:transform .2s ease-in-out;
@@ -401,8 +403,7 @@ body {
   .subnav-link {
     transition:color .1s ease-in-out, background-color .1s ease-in-out;
     will-change:color, background-color;
-    flex:0 0 125px;
-    //min-width:25%;
+    flex:0 0 120px;
     box-sizing:border-box;
     border-bottom:2px solid transparent;
     white-space:nowrap;
@@ -497,13 +498,7 @@ footer {
     }
 
     a {
-      //margin:0 3px;
-      &:first-of-type {
-        margin-right:3px;
-      }
-      &:last-of-type {
-        margin-left:3px;
-      }
+      margin:0 3px;
 
       &.social-media-link {
 

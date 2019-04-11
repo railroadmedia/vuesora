@@ -20,38 +20,43 @@ import QnaModel from './question-and-answer';
 import UnitModel from './unit';
 import UnitPartModel from './unit-part';
 
-export {
-    ChordsAndScalesModel as chord_and_scale,
+export default class ContentModel {
+    constructor(type, {
+        brand,
+        post
+    }){
+        const model = ContentModel.models()[type];
 
-    CourseModel as course,
-    CoursePartModel as course_part,
+        if(model){
+            return new model({brand, post});
+        }
 
-    LearningPathModel as learning_path,
-    LearningPathPartModel as learning_path_part,
+        return ContentModel.models()['recording']({brand, post});
+    }
 
-    PackBundleModel as pack_bundle,
-    PackBundleLessonModel as pack_bundle_lesson,
-
-    PlayAlongModel as play_along,
-    PlayAlongPartModel as play_along_part,
-
-    RecordingModel as recording,
-
-    RudimentModel as rudiment,
-
-    SemesterPackModel as semester_pack,
-    SemesterPackLessonModel as semester_pack_lesson,
-
-    ShowModel as show,
-
-    SongModel as song,
-    SongPartModel as song_part,
-
-    StudentFocusModel as student_focus,
-    StudentReviewModel as student_review,
-
-    QnaModel as question_and_answer,
-
-    UnitModel as unit,
-    UnitPartModel as unit_part
+    static models() {
+        return {
+            'chord-and-scale': ChordsAndScalesModel,
+            'course': CourseModel,
+            'course-part': CoursePartModel,
+            'learning-path': LearningPathModel,
+            'learning-path-part': LearningPathPartModel,
+            'pack-bundle': PackBundleModel,
+            'pack-bundle-lesson': PackBundleLessonModel,
+            'play-along': PlayAlongModel,
+            'play-along-part': PlayAlongPartModel,
+            'recording': RecordingModel,
+            'rudiment': RudimentModel,
+            'semester-pack': SemesterPackModel,
+            'semester-pack-lesson': SemesterPackLessonModel,
+            'show': ShowModel,
+            'song': SongModel,
+            'song-part': SongPartModel,
+            'student-focus': StudentFocusModel,
+            'student-review': StudentReviewModel,
+            'question-and-answer': QnaModel,
+            'unit': UnitModel,
+            'unit-part': UnitPartModel,
+        };
+    }
 }

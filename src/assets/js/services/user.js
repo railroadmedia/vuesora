@@ -4,6 +4,24 @@ const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
 
 export default {
     /**
+     * Set a specific users details
+     *
+     * @param {number|string} id
+     * @param {object} attributes
+     * @returns {Promise} - resolved promise with the response object
+     */
+    setUserAttributes(id, attributes = {}) {
+
+        return axios.patch('/usora/json-api/user/update/' + id, {
+            data: {
+                attributes: attributes
+            }
+        })
+            .then(response => response)
+            .catch(ErrorHandler.push);
+    },
+
+    /**
      * Set users default payment method
      *
      * @returns {Promise} - resolved promise with the response.data object

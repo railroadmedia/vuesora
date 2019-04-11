@@ -7,27 +7,19 @@ export default class LearningPathPartDataMapper extends DataMapper {
             post
         });
 
-        this.card = {
-            black_title: this.post['title'],
-            description: this.post['learning_path_description'],
-            grey_title: this.getPostDuration()
-        };
+        this.card.description = this.getPostDatum('learning_path_description');
+        this.card.grey_title = this.getPostDuration();
 
-        this.list = {
-            black_title: this.post['title'],
-            description: this.post['learning_path_description'] || this.post['description'],
-            column_data: [
-                this.post['lesson_count'] ? this.getChildLessonCount() : this.getPostDuration()
-            ]
-        };
+        this.list.color_title = null;
+        this.list.description = this.getPostDatum('learning_path_description');
+        this.list.column_data = [
+            this.getPostDuration()
+        ];
 
-        this.schedule = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
-            column_data: [
-                this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post)
-            ]
-        };
+        if(this.brand === 'guitareo' || this.brand === 'pianote'){
+            this.list.column_data = [
+                this.postChildLessonCount
+            ];
+        }
     }
 }

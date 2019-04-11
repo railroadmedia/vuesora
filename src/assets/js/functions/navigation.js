@@ -128,7 +128,11 @@ export default (function(){
                 openItems.push(value);
             }
 
-            localStorage.setItem('open_items', JSON.stringify(openItems));
+            try {
+                localStorage.setItem('open_items', JSON.stringify(openItems));
+            } catch(e){
+                console.warn('Local storage not available in this browser');
+            }
         }
 
         if(subNavWrap){
@@ -153,7 +157,7 @@ export default (function(){
 
             currentSubNavScrollPosition = subNavWrap.scrollLeft;
 
-            if(currentSubNavScrollPosition <= 35){
+            if(currentSubNavScrollPosition <= 0){
                 currentSubNavScrollPosition = 0;
                 scrollSubNavLeft.classList.add('hide');
             }

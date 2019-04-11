@@ -282,6 +282,14 @@
                 });
 
                 return parsedTypes;
+            },
+
+            sortParam(){
+                if(this.brand === 'guitareo'){
+                    return '-created_on'
+                }
+
+                return '-replied_on'
             }
         },
         methods: {
@@ -350,7 +358,7 @@
                 CommentService.getComments({
                     brand: 'drumeo',
                     limit: 100,
-                    sort: '-replied_on',
+                    sort: this.sortParam,
                     content_type: this.activeTypes,
                     page: this.currentPage,
                 })

@@ -83,12 +83,6 @@ export default {
         }
     },
 
-    data(){
-        return {
-            model: null
-        }
-    },
-
     computed: {
 
         is_added:{
@@ -96,20 +90,6 @@ export default {
             get(){
                 return this.item.is_added_to_primary_playlist;
             }
-        },
-
-        thumbnail(){
-            const defaults = {
-                drumeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg',
-                pianote: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg',
-                guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg'
-            };
-
-            if(this.item.type === 'learning-path' && this.brand === 'drumeo'){
-                return this.item['background_image_url'] || defaults['drumeo'];
-            }
-
-            return this.item['thumbnail_url'] || defaults[this.brand];
         },
 
         progress_percent(){
@@ -133,8 +113,16 @@ export default {
             return (this.lockUnowned && this.item.is_owned === false) || (this.lockUnowned && !this.isReleased);
         },
 
+        datePublshedOn(){
+            return DateTime.fromSQL(this.item['published_on'], {zone: "UTC"}).toFormat('x');
+        },
+
+        dateNow(){
+            return Date.now();
+        },
+
         isReleased(){
-            return DateTime.fromSQL(this.item['published_on']).toFormat('x') < Date.now();
+            return this.dateNow > this.datePublshedOn;
         },
 
         releaseDate(){

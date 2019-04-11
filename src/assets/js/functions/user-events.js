@@ -62,7 +62,9 @@ export default (function () {
                                             message: 'Your progress has been reset.'
                                         });
 
-                                        document.querySelector('.trophy-progress').style.width = 0;
+                                        if(document.querySelector('.trophy-progress')){
+                                            document.querySelector('.trophy-progress').style.width = 0;
+                                        }
                                         Array.from(resetProgressButtons).forEach(button => {
                                             button.parentElement.classList.add('hide');
                                         });

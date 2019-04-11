@@ -5,9 +5,10 @@
                 :key="'list' + item.id"
                 :index="item.week || i + 1"
                 :item="item"
+                :contentType="item.type"
                 :brand="brand"
                 :themeColor="themeColor"
-                :class="card_grid_classes"
+                :useThemeColor="useThemeColor"
                 :overview="displayItemsAsOverview"
                 :userId="userId"
                 :displayUserInteractions="displayUserInteractions"
@@ -52,6 +53,10 @@
                 type: String,
                 default: () => 'drumeo'
             },
+            useThemeColor: {
+                type: Boolean,
+                default: () => true
+            },
             userId: {
                 type: String,
                 default: () => ''
@@ -71,10 +76,6 @@
             displayUserInteractions: {
                 type: Boolean,
                 default: () => true
-            },
-            card_grid_classes: {
-                type: String,
-                default: () => ''
             },
             contentTypeOverride: {
                 type: String,

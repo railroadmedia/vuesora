@@ -21,7 +21,7 @@
                 </a>
 
                 <p class="tiny font-italic text-grey-3 mt-2">
-                    Max file size: 5MB
+                    Max file size: <strong>5MB</strong>
                 </p>
             </div>
         </div>
@@ -68,7 +68,8 @@
             <div class="image-preview bg-white"
                  v-show="croppedImage">
                 <div class="widescreen bg-white">
-                    <img :src="croppedImage" class="rounded shadow">
+                    <img :src="croppedImage" class="shadow"
+                         :class="aspectRatio === 1 ? 'rounded' : ''">
 
                     <span v-if="loading"
                           class="loading-element tiny font-italic"
@@ -115,17 +116,6 @@
     export default {
         mixins: [ThemeClasses],
         name: 'image-cropper',
-        data(){
-            return {
-                fileToCrop: null,
-                cropperInstance: null,
-                dropZoneInstance: null,
-                dropZoneError: null,
-                croppedImage: null,
-                imageBlob: null,
-                loading: false
-            }
-        },
         props: {
             brand: {
                 type: String,
@@ -147,16 +137,14 @@
                 default: () => null
             },
 
-            cropperConfig: {
-                type: Object,
-                default: () => {
-                    return {
-                        viewMode: 1,
-                        aspectRatio: 1,
-                        dragMode: 'move',
-                        autoCrop: true
-                    }
-                }
+            aspectRatio: {
+                type: Number,
+                default: () => 1
+            },
+
+            isAvatar: {
+                type: Boolean,
+                default: () => false
             },
 
             fieldKey: {
@@ -180,9 +168,40 @@
                 }
             }
         },
+        data(){
+            return {
+                fileToCrop: null,
+                cropperConfig: {
+                    viewMode: 1,
+                    aspectRatio: this.aspectRatio,
+                    dragMode: 'move',
+                    autoCrop: true
+                },
+                cropperInstance: null,
+                dropZoneInstance: null,
+                dropZoneError: null,
+                croppedImage: null,
+                imageBlob: null,
+                loading: false
+            }
+        },
         computed: {
             hasFileToCrop(){
                 return this.fileToCrop !== null;
+            },
+
+            imageDimensions(){
+                if(this.isAvatar){
+                    return {
+                        width: 500,
+                        height: 500,
+                    }
+                }
+
+                return {
+                    width: 1280,
+                    height: (1280 / this.aspectRatio),
+                }
             }
         },
         watch: {
@@ -213,10 +232,7 @@
             },
 
             cropImage(){
-                const canvasOutput = this.cropperInstance.getCroppedCanvas({
-                    width: 500,
-                    height: 500,
-                });
+                const canvasOutput = this.cropperInstance.getCroppedCanvas(this.imageDimensions);
 
                 canvasOutput.toBlob(blob => {
                     this.imageBlob = blob;
@@ -241,58 +257,22 @@
                     .then(resolved => {
                         if(resolved){
                             let remoteStorageUrl = resolved['results'] || resolved.data[0].url;
-                            this.setImageAsAvatar(remoteStorageUrl);
+
+                            this.$emit('image-uploaded', {
+                                image_url: remoteStorageUrl,
+                                cropper: this
+                            });
+
+                            // this.setImageAsAvatar(remoteStorageUrl);
                         }
                     })
             },
 
-            setImageAsAvatar(imageUrl){
-                axios.patch(this.saveEndpoint + '/' + this.userId, {
-                    data: {
-                        attributes: {
-                            'profile_picture_url': imageUrl
-                        }
-                    }
-                })
-                    .then(response => {
-                        if(response.data){
-                            this.saveImage(imageUrl);
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-
-                        this.loading = false;
-
-                        Toasts.push({
-                            icon: 'sad',
-                            title: 'This is Embarassing That didn\'t work',
-                            themeColor: this.themeColor,
-                            message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. '
-                        });
-                    })
-            },
-
-            saveImage(imageUrl){
-                const avatarsToUpdate = document.querySelectorAll('img[data-avatar-update]');
-
-                Array.from(avatarsToUpdate).forEach(avatar => {
-                    avatar.setAttribute('src', imageUrl);
-                });
-
-                this.imageBlob = null;
-                this.croppedImage = null;
-                this.fileToCrop = null;
-                this.loading = false;
-
-                Toasts.push({
-                    icon: 'happy',
-                    title: 'AHH, MUCH BETTER!',
-                    themeColor: this.themeColor,
-                    message: 'The new "you" is being refreshed...'
-                });
-
-                window.closeAllModals();
+            resetCropper(){
+                    this.imageBlob = null;
+                    this.croppedImage = null;
+                    this.fileToCrop = null;
+                    this.loading = false;
             }
         },
         created(){
@@ -434,12 +414,16 @@
             height:100%;
 
             img {
-                max-width:250px;
+                max-width:500px;
                 max-height:100%;
                 position:absolute;
                 top:50%;
                 left:50%;
                 transform:translate(-50%, -50%);
+
+                &.rounded {
+                    max-width:250px;
+                }
             }
         }
     }

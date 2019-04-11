@@ -2,10 +2,10 @@
     <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative"
        :class="class_object"
        :href="renderLink ? false : item.url">
-        <div v-if="mappedData.sheet_music && !is_search"
-             class="flex flex-column xs-12 pv hide-sm-up">
-            <img :src="mappedData.sheet_music" style="width:100%;">
-        </div>
+<!--        <div v-if="mappedData.sheet_music && !is_search"-->
+<!--             class="flex flex-column xs-12 pv hide-sm-up">-->
+<!--            <img :src="mappedData.sheet_music" style="width:100%;">-->
+<!--        </div>-->
 
         <!-- LESSON NUMBERS -->
         <div v-if="showNumbers"
@@ -20,7 +20,7 @@
             <div class="thumb-wrap corners-3">
                 <div class="thumb-img corners-3"
                      :class="thumbnailType"
-                     :style="'background-image:url( ' + thumbnail + ' );'">
+                     :style="'background-image:url( ' + mappedData.thumbnail + ' );'">
 
                     <div class="lesson-progress overflow">
                         <span class="progress"
@@ -88,15 +88,6 @@
                     {{ item }}
                 </span>
             </p>
-
-            <p v-if="is_search"
-               class="x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up">
-                {{ item.type.replace('bundle-', '').replace(/-/g, ' ') }}
-
-                <span class="bullet">-</span>
-
-                {{ parsed_difficulty }}
-            </p>
         </div>
 
         <!-- SHEET MUSIC IMAGE IF IT EXISTS -->
@@ -116,12 +107,6 @@
         <div v-if="is_search"
              class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
             {{ item.type.replace('bundle-', '').replace(/-/g, ' ') }}
-        </div>
-
-        <!-- ONLY SHOW DIFFICULTY ON SEARCHES -->
-        <div v-if="is_search"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
-            {{ parsed_difficulty }}
         </div>
 
         <!-- ADD TO LIST OR RESET PROGRESS BUTTONS -->
@@ -179,13 +164,18 @@
 </template>
 <script>
     import Mixin from './_mixin';
-    import * as Model from '../../assets/js/models/_model.js';
+    import ContentModel from '../../assets/js/models/_model.js';
     import { Content as ContentHelpers }  from 'js-helper-functions';
     import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
         mixins: [Mixin, ThemeClasses],
         name: 'catalogue-list-item',
+        data() {
+            return {
+                mappedData: this.getContentModel()
+            }
+        },
         computed: {
 
             class_object(){
@@ -194,37 +184,10 @@
                     'content-overview': this.overview,
                     'content-table-row': !this.overview,
                     'no-access': this.noAccess,
-                    'wrap-on-mobile': this.mappedData.sheet_music != null,
+                    'wrap-on-mobile': false,
                     'compact' : this.compactLayout,
                     'start-learning-path': this.contentTypeOverride === 'learning-path-part'
                 }
-            },
-
-            mappedData(){
-                const shows = ContentHelpers.shows();
-                let type = this.contentTypeOverride || this.item.type;
-
-                if(shows.indexOf(type) !== -1){
-                    type = 'show';
-                }
-
-                const model = new Model[type.replace(/-/g, '_')]({
-                    brand: this.brand,
-                    post: this.item
-                });
-
-                return model['list'];
-            },
-
-            parsed_difficulty(){
-                const shows = ContentHelpers.shows();
-                let type = this.contentTypeOverride || this.item.type;
-
-                if(shows.indexOf(type) !== -1){
-                    type = 'show';
-                }
-
-                return Model[type.replace(/-/g, '_')].mapDifficulty(this.item);
             },
 
             showStudentReviewThumbsAsAvatar(){
@@ -239,6 +202,26 @@
                     'background-cards': this.item.type === 'learning-path'
                 }
             }
+        },
+        methods: {
+            getContentModel(){
+                const shows = ContentHelpers.shows();
+                let type = this.contentTypeOverride || this.item.type;
+
+                if(shows.indexOf(type) !== -1){
+                    type = 'show';
+                }
+
+                const model = new ContentModel(type, {
+                    brand: this.brand,
+                    post: this.item
+                });
+
+                return model['list'];
+            }
+        },
+        beforeDestroy(){
+            this.mappedData = null;
         }
     }
 </script>

@@ -7,7 +7,7 @@
                  :class="thumbnailType">
 
                 <div class="thumb-img bg-center"
-                     :style="'background-image:url(' + thumbnail + ');'"
+                     :style="'background-image:url(' + mappedData.thumbnail + ');'"
                      :class="item.type === 'chord-and-scale' ? 'no-bg' : ''"></div>
 
                 <i class="add-to-list fas fa-plus"
@@ -65,13 +65,18 @@
 </template>
 <script>
     import Mixin from './_mixin';
-    import * as Model from '../../assets/js/models/_model.js';
+    import ContentModel from '../../assets/js/models/_model.js';
     import { Content as ContentHelpers }  from 'js-helper-functions';
     import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
         mixins: [Mixin, ThemeClasses],
         name: 'catalogue-card',
+        data() {
+            return {
+                mappedData: this.getContentModel()
+            }
+        },
         computed: {
 
             is_added:{
@@ -85,7 +90,12 @@
                 return this.item['type'] === 'pack-bundle' && this.item['completed'] === true;
             },
 
-            mappedData(){
+            isGuitareoChordAndScale(){
+                return this.brand === 'guitareo' && this.item.type === 'chord-and-scale';
+            }
+        },
+        methods: {
+            getContentModel(){
                 const shows = ContentHelpers.shows();
                 let type = this.contentTypeOverride || this.item.type;
 
@@ -93,21 +103,16 @@
                     type = 'show';
                 }
 
-                const model = new Model[type.replace(/-/g, '_')]({
+                const model = new ContentModel(type, {
                     brand: this.brand,
                     post: this.item
                 });
 
-
                 return model['card'];
-            },
-
-            isGuitareoChordAndScale(){
-                return this.brand === 'guitareo' && this.item.type === 'chord-and-scale';
             }
         },
-        mounted(){
-
+        beforeDestroy(){
+            this.mappedData = null;
         }
     }
 </script>
