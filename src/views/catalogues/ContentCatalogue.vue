@@ -152,7 +152,7 @@
             },
             includedTypes: {
                 type: Array,
-                default: () => ['recording', 'course', 'song', 'play-along', 'student-focus', 'learning-path', 'pack']
+                default: () => []
             },
             requiredUserStates: {
                 type: Array,

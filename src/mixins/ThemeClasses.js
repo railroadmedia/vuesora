@@ -1,7 +1,8 @@
 export default {
     props: {
         contentType: {
-            type: String
+            type: String,
+            default: () => 'drumeo'
         },
 
         themeColor: {

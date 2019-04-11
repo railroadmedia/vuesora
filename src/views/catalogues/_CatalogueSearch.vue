@@ -1,7 +1,8 @@
 <template>
     <div class="flex flex-column">
         <div class="flex flex-row flex-wrap">
-            <div class="flex flex-column xs-12 sm-8 pa-1">
+            <div class="flex flex-column xs-12 pa-1"
+                 :class="included_types.length ? 'sm-8' : ''">
                 <div class="form-group">
                     <input type="text"
                            id="catalogueSearch"
@@ -13,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-column xs-12 sm-4 pv-1">
+            <div class="flex flex-column xs-12 sm-4 pv-1" v-if="included_types.length">
                 <catalogue-filter filter_name="type"
                                   :item="parsedTypes"
                                   :themeColor="themeColor"
