@@ -318,6 +318,10 @@
                     this.validation[controlName] = this.stripeInvalidMessages[controlName];
 
                 } else if (
+                    (
+                        controlName == 'billingState' &&
+                        this.controls.billingCountry.toLowerCase() == 'canada'
+                    ) &&
                     this.rules.hasOwnProperty(controlName) &&
                     this.controls.hasOwnProperty(controlName) &&
                     (

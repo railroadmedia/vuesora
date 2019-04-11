@@ -60,8 +60,8 @@
                 },
                 factoryState: {
                     account: {},
-                    shipping: this.shippingAddress,
-                    payment: this.billingAddress,
+                    shipping: this.shippingAddress || {},
+                    payment: this.billingAddress || {},
                 },
                 validationTrigger: false,
                 stripeTokenTrigger: false,
