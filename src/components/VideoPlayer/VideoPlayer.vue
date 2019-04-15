@@ -4,24 +4,13 @@
          @mousemove="trackMousePosition">
 
         <transition name="grow-fade">
-            <div v-if="loading"
-                 class="loading-wrap heading"
-                 :class="themeTextClass"
-                 @click.stop.prevent>
-                <!--<i class="fas fa-spinner fa-spin"></i>-->
-                <div class="loader text-white" :class="themeColor">
-                    <div class="square-1"></div>
-                    <div class="square-2"></div>
-                    <div class="square-3"></div>
-                    <div class="square-4"></div>
-                    loading..
-                </div>
-            </div>
+            <player-loading v-if="loading && !isPlaying"
+                            :themeColor="themeColor"></player-loading>
         </transition>
 
-        <video ref="player"></video>
+        <video ref="player" playsinline preload="auto"></video>
 
-        <div class="controls-wrap">
+        <div class="controls-wrap" v-if="playerReady">
             <div class="controls flex flex-column noselect">
                 <!--  TOP ROW  -->
                 <div class="flex flex-row">
@@ -63,17 +52,15 @@
 
                     <div class="flex flex-column spacer"></div>
 
-                    <player-volume :themeColor="themeColor"
+                    <player-volume v-if="!isMobile"
+                                   :themeColor="themeColor"
                                    :currentVolume="currentVolume"
                                    @volumeChange="changeVolume"></player-volume>
 
-                    <player-settings :themeColor="themeColor"
-                                     :videojsInstance="videojsInstance"
-                                     :currentSource="currentSource"
-                                     :currentPlaybackRate="currentPlaybackRate"
-                                     :playbackQualities="playbackQualities"
-                                     @setQuality="setQuality"
-                                     @setRate="setRate"></player-settings>
+                    <player-button :themeColor="themeColor"
+                                   @click.native.stop="toggleDrawer">
+                        <i class="fas fa-cog"></i>
+                    </player-button>
 
                     <player-button @click.native="fullscreen"
                                    :themeColor="themeColor">
@@ -82,6 +69,23 @@
                 </div>
             </div>
         </div>
+
+        <div v-if="settingsDrawer && isMobile"
+             class="settings-mobile-overlay"
+             @click="settingsDrawer = false"></div>
+        <transition name="show-from-bottom">
+            <player-settings v-show="settingsDrawer"
+                             :drawer="settingsDrawer"
+                             :themeColor="themeColor"
+                             :videojsInstance="videojsInstance"
+                             :currentSource="currentSource"
+                             :currentSourceIndex="currentSourceIndex"
+                             :currentPlaybackRate="currentPlaybackRate"
+                             :playbackQualities="playbackQualities"
+                             @setQuality="setQuality"
+                             @setRate="setRate"></player-settings>
+        </transition>
+
     </div>
 </template>
 <script>
@@ -92,6 +96,7 @@
     import PlayerProgress from './_PlayerProgress';
     import PlayerVolume from './_PlayerVolume';
     import PlayerSettings from './_PlayerSettings';
+    import PlayerLoading from './_PlayerLoading';
     import 'videojs-contrib-quality-levels';
 
     export default {
@@ -102,6 +107,7 @@
             'player-progress': PlayerProgress,
             'player-volume': PlayerVolume,
             'player-settings': PlayerSettings,
+            'player-loading': PlayerLoading,
         },
         props: {
             sources: {
@@ -117,6 +123,7 @@
             return {
                 loading: false,
                 videojsInstance: null,
+                playerReady: false,
                 hlsInstance: null,
                 isPlaying: false,
                 currentTime: 0,
@@ -124,6 +131,7 @@
                 mousedown: false,
                 currentMouseX: 0,
                 currentVolume: 1,
+                settingsDrawer: false,
             }
         },
         computed: {
@@ -183,11 +191,7 @@
                         return this.videojsInstance.qualityLevels().selectedIndex;
                     }
 
-                    return this.playbackQualities.forEach((quality, index) => {
-                        if(quality.source === this.currentSource){
-                            return index;
-                        }
-                    })
+                    return this.playbackQualities.map(quality => quality.source).indexOf(this.currentSource);
                 }
             },
 
@@ -196,7 +200,15 @@
                 get(){
                     return this.videojsInstance ? this.videojsInstance.playbackRate() : 1;
                 }
-            }
+            },
+
+            dontUseHls(){
+                return typeof MediaSource === 'undefined' || this.hlsManifestUrl == null;
+            },
+
+            isMobile:() => PlayerUtils.isMobile().any,
+
+            isSafari:() => PlayerUtils.isSafari()
         },
         methods: {
             playPause(){
@@ -253,7 +265,7 @@
                     });
                 }
                 else {
-                    this.videojsInstance.src(this.sources[payload.index]);
+                    this.videojsInstance.src(this.sources[payload.index].file);
                 }
 
                 this.setDefaultPlaybackQualityWidth(this.playbackQualities[payload.index].width);
@@ -269,13 +281,13 @@
             },
 
             setDefaultPlaybackQualityWidth(width){
-                window.localStorage.setItem('defaultPlaybackQualityWidth', width);
+                window.localStorage.setItem('vuesoraDefaultVideoQuality', width);
             },
 
             getDefaultPlaybackQualityIndex(){
-                let widthToCheck = window.localStorage.getItem('defaultPlaybackQualityWidth') || document.documentElement.clientWidth;
+                let widthToCheck = window.localStorage.getItem('vuesoraDefaultVideoQuality') || document.documentElement.clientWidth;
                 let qualityIndexes = this.playbackQualities.map((quality, index) => {
-                    if(quality.width > widthToCheck){
+                    if(quality.width >= widthToCheck){
                         return index;
                     }
                 });
@@ -285,10 +297,41 @@
                 // Just take the highest quality
                 return closestIndex || (this.playbackQualities.length - 1);
             },
+
+            toggleDrawer(){
+                this.settingsDrawer = !this.settingsDrawer;
+                if(this.isMobile && this.settingsDrawer) document.body.classList.add('drawer-open');
+                if(this.isMobile && !this.settingsDrawer) document.body.classList.remove('drawer-open');
+            },
+
+            closeDrawer(){
+                this.settingsDrawer = false;
+                if(this.isMobile) document.body.classList.remove('drawer-open');
+            },
         },
         mounted(){
             const player = this.$refs.player;
-            let source = this.hlsManifestUrl;
+            let source = [
+                {
+                    src: this.hlsManifestUrl,
+                    type: 'application/x-mpegURL',
+                    overrideNative: !this.isSafari,
+                },
+                {
+                    src: this.sources[this.getDefaultPlaybackQualityIndex()].file,
+                    type: 'video/mp4',
+                }
+            ];
+
+            // if(typeof MediaSource === 'undefined' || this.hlsManifestUrl == null){
+            //     source = this.sources[this.getDefaultPlaybackQualityIndex()].file;
+            // }
+            // else {
+            //     source = {
+            //         src: this.hlsManifestUrl,
+            //         overrideNative: !this.isSafari,
+            //     };
+            // }
 
             this.loading  = true;
 
@@ -296,23 +339,40 @@
                 controls: false,
                 children: [],
                 responsive: false,
+                inactivityTimeout: 5000,
+                nativeAudioTracks: false,
+                nativeVideoTracks: false,
+                html5: {
+                    hls: {
+                        overrideNative: !this.isSafari,
+                    }
+                }
             });
 
             this.videojsInstance.src(source);
 
             this.videojsInstance.ready(() => {
-                console.log(MediaSource);
-
-                if(typeof MediaSource === 'undefined'){
-                    console.log('Media Source not supported, defaulting to mp4');
-
-                    source = this.sources[this.getDefaultPlaybackQualityIndex()];
-
-                    this.videojsInstance.src(source);
-                }
-                else {
+                // if(!this.dontUseHls) {
                     this.hlsInstance = this.videojsInstance.tech({ IWillNotUseThisInPlugins: true }).hls;
+                // }
+
+                // alert(this.videojsInstance.readyState());
+
+                if(this.isSafari){
+                    this.videojsInstance.load();
                 }
+
+                // if(PlayerUtils.isMobile().apple){
+                //     this.videojsInstance.load();
+                // }
+
+                this.playerReady = true;
+            });
+
+            this.videojsInstance.on('canplaythrough', () => {
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
             });
 
             this.videojsInstance.on('loadeddata', () => {
@@ -347,9 +407,13 @@
                 this.currentTime = this.videojsInstance.currentTime();
             });
 
-            this.videojsInstance.on('userinactive', () => {
-                this.$emit('userinactive');
+            this.videojsInstance.on('error', event => {
+                alert(event.type);
             });
+
+            this.videojsInstance.on('userinactive', this.closeDrawer);
+
+            document.addEventListener('click', this.closeDrawer);
 
             document.addEventListener('mouseup', () => {
                 if(this.mousedown){
@@ -359,6 +423,9 @@
 
                 this.mousedown = false;
             });
+        },
+        beforeDestroy() {
+            document.removeEventListener('click', this.closeDrawer);
         }
     }
 </script>
