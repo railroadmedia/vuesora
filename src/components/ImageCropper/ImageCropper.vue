@@ -180,7 +180,7 @@
                 dropZoneError: null,
                 croppedImage: null,
                 imageBlob: null,
-                loading: true
+                loading: false
             }
         },
         computed: {
