@@ -27,7 +27,7 @@
         </div>
         <div class="flex flex-column relative" v-if="!lessonPage">
             <div v-if="loading"
-                 class="loading-element"
+                 class="email-loading"
                  :class="themeTextClass">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p class="x-tiny font-italic">Loading Please Wait...</p>
@@ -186,31 +186,3 @@
         }
     }
 </script>
-<style lang="scss">
-    @import "../../assets/sass/partials/variables";
-
-    #questionInput.text-white {
-        color:#fff;
-    }
-    .send-button-col {
-        flex:0 0 50px;
-
-        @include small {
-            flex:0 0 175px;
-        }
-    }
-    .avatar-col {
-        flex:0 0 50px;
-    }
-    .loading-element {
-        position:absolute;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        background-color:rgba(255,255,255,.8);
-        @include flexCenter();
-        font-size:32px;
-        z-index:10;
-    }
-</style>
