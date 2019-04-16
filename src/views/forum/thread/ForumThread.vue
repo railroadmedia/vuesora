@@ -122,13 +122,13 @@
 </template>
 <script>
     import ForumThreadPost from './_ForumThreadPost.vue';
-    import Pagination from '../../components/Pagination.vue';
-    import ForumService from '../../assets/js/services/forums';
-    import TextEditor from '../../components/TextEditor.vue';
-    import Toasts from '../../assets/js/classes/toasts';
-    import * as QueryString from 'query-string';
-    import ThemeClasses from '../../mixins/ThemeClasses';
-    import CommentLikesModal from '../../views/comments/_CommentLikesModal.vue';
+    import Pagination from '../../../components/Pagination.vue';
+    import ForumService from '../../../assets/js/services/forums';
+    import TextEditor from '../../../components/TextEditor/TextEditor.vue';
+    import Toasts from '../../../assets/js/classes/toasts';
+    import * as QueryString from 'query-string/index';
+    import ThemeClasses from '../../../mixins/ThemeClasses';
+    import CommentLikesModal from '../../comments/_CommentLikesModal.vue';
 
     export default {
         mixins: [ThemeClasses],
@@ -345,7 +345,7 @@
     }
 </script>
 <style lang="scss">
-    @import '../../assets/sass/partials/_variables.scss';
+    @import '../../../assets/sass/partials/variables';
 
     .thread-title {
         @include xSmallOnly {

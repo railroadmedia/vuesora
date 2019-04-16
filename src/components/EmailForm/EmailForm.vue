@@ -48,9 +48,9 @@
     </div>
 </template>
 <script>
-    import UserService from '../assets/js/services/user';
-    import Toasts from '../assets/js/classes/toasts';
-    import ThemeClasses from "../mixins/ThemeClasses";
+    import UserService from '../../assets/js/services/user';
+    import Toasts from '../../assets/js/classes/toasts';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
         mixins: [ThemeClasses],
@@ -187,7 +187,7 @@
     }
 </script>
 <style lang="scss">
-    @import "../assets/sass/partials/_variables";
+    @import "../../assets/sass/partials/variables";
 
     #questionInput.text-white {
         color:#fff;

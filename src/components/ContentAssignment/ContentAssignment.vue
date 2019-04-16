@@ -146,9 +146,9 @@
 </template>
 <script>
     import { Duration } from 'luxon';
-    import ContentService from '../assets/js/services/content';
-    import Utils from '../assets/js/classes/utils';
-    import Toasts from '../assets/js/classes/toasts';
+    import ContentService from '../../assets/js/services/content';
+    import Utils from '../../assets/js/classes/utils';
+    import Toasts from '../../assets/js/classes/toasts';
 
     export default {
         name: 'content-assignment',
@@ -454,7 +454,7 @@
     }
 </script>
 <style lang="scss">
-    @import '../assets/sass/partials/_variables.scss';
+    @import '../../assets/sass/partials/variables';
 
     .arrow-column {
         display:flex;

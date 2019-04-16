@@ -107,11 +107,9 @@
 </template>
 <script>
     import Cropper from 'cropperjs';
-    import axios from 'axios';
-    import Toasts from '../assets/js/classes/toasts';
-    import UserService from '../assets/js/services/user';
+    import UserService from '../../assets/js/services/user';
     import Dropzone from 'dropzone';
-    import ThemeClasses from "../mixins/ThemeClasses";
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
         mixins: [ThemeClasses],
@@ -333,9 +331,9 @@
     }
 </script>
 <style lang="scss">
-    @import '~cropperjs/dist/cropper.min.css';
-    @import '~dropzone/dist/min/dropzone.min.css';
-    @import '../assets/sass/partials/_variables.scss';
+    @import '../../../node_modules/cropperjs/dist/cropper.min.css';
+    @import '../../../node_modules/dropzone/dist/min/dropzone.min.css';
+    @import '../../assets/sass/partials/variables';
 
     .image-processor {
         text-align:center;

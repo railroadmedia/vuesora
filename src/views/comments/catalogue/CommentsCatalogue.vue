@@ -166,13 +166,13 @@
     </div>
 </template>
 <script>
-    import CommentService from '../../assets/js/services/comments';
-    import ContentService from '../../assets/js/services/content';
-    import Utils from '../../assets/js/classes/utils';
-    import CommentPost from './_CommentPost';
-    import CommentLikesModal from './_CommentLikesModal.vue';
-    import CommentMixin from './_mixin';
-    import ThemeClasses from "../../mixins/ThemeClasses";
+    import CommentService from '../../../assets/js/services/comments';
+    import ContentService from '../../../assets/js/services/content';
+    import Utils from '../../../assets/js/classes/utils';
+    import CommentPost from '../_CommentPost';
+    import CommentLikesModal from '../_CommentLikesModal.vue';
+    import CommentMixin from '../_mixin';
+    import ThemeClasses from "../../../mixins/ThemeClasses";
 
     export default {
         mixins: [CommentMixin, ThemeClasses],
@@ -422,7 +422,7 @@
     }
 </script>
 <style lang="scss">
-    @import '../../assets/sass/partials/variables';
+    @import '../../../assets/sass/partials/variables';
 
     .user-name {
         flex:0 0 100px;
