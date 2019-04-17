@@ -470,6 +470,10 @@
             if(this.elementId === 'lessonPlayer'){
                 this.initializeChapterMarkerLinks();
             }
+
+            this.$root.$on('pauseVideos', () => {
+                this.pauseVideo();
+            });
         },
         beforeDestroy () {
             const vm = this;
