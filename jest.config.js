@@ -24,7 +24,7 @@ module.exports = {
   ],
   testURL: 'http://localhost/',
   watchPlugins: [
-    '/app/vuesora/node_modules/jest-watch-typeahead/filename.js',
-    '/app/vuesora/node_modules/jest-watch-typeahead/testname.js'
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname'
   ]
 }

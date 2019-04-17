@@ -133,7 +133,7 @@
     import { DateTime } from 'luxon';
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
-    import TextEditor from '../../components/TextEditor.vue';
+    import TextEditor from '../../components/TextEditor/TextEditor.vue';
     import Toasts from '../../assets/js/classes/toasts';
     import CommentService from '../../assets/js/services/comments';
     import ThemeClasses from "../../mixins/ThemeClasses";

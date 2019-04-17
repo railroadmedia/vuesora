@@ -107,11 +107,9 @@
 </template>
 <script>
     import Cropper from 'cropperjs';
-    import axios from 'axios';
-    import Toasts from '../assets/js/classes/toasts';
-    import UserService from '../assets/js/services/user';
+    import UserService from '../../assets/js/services/user';
     import Dropzone from 'dropzone';
-    import ThemeClasses from "../mixins/ThemeClasses";
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
         mixins: [ThemeClasses],
@@ -332,99 +330,3 @@
         }
     }
 </script>
-<style lang="scss">
-    @import '~cropperjs/dist/cropper.min.css';
-    @import '~dropzone/dist/min/dropzone.min.css';
-    @import '../assets/sass/partials/_variables.scss';
-
-    .image-processor {
-        text-align:center;
-    }
-    .image-uploader {
-        cursor:pointer;
-        text-align:center;
-
-        &.dz-drag-hover {
-            .choose {
-                display:none;
-            }
-            .drop {
-                display:flex;
-            }
-        }
-
-        .drop {
-            display:none;
-        }
-
-        * {
-            pointer-events:none;
-        }
-
-        .dz-preview {
-            display:none;
-        }
-
-        a {
-            margin:0 auto;
-        }
-
-        .uploader-content {
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%, -50%);
-            width:100%;
-            max-width:400px;
-        }
-    }
-
-    .loading-element {
-        position:absolute;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        background-color:rgba(255,255,255,.8);
-        @include flexCenter();
-
-        i {
-            font-size:32px;
-        }
-    }
-
-    .image-cropper {
-        position:relative;
-
-        .cropper-controls {
-            a {
-                width:35px;
-
-                &.normal {
-                    width:100px;
-                }
-            }
-        }
-
-        .image-preview {
-            position:absolute;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-
-            img {
-                max-width:500px;
-                max-height:100%;
-                position:absolute;
-                top:50%;
-                left:50%;
-                transform:translate(-50%, -50%);
-
-                &.rounded {
-                    max-width:250px;
-                }
-            }
-        }
-    }
-</style>

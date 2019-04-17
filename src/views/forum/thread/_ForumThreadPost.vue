@@ -111,12 +111,12 @@
     </div>
 </template>
 <script>
-    import TextEditor from '../../components/TextEditor.vue';
-    import Toasts from '../../assets/js/classes/toasts';
-    import ForumService from '../../assets/js/services/forums';
-    import ThemeClasses from "../../mixins/ThemeClasses";
-    import Utils from '../../assets/js/classes/utils';
-    import xpMapper from '../../assets/js/classes/xp-mapper';
+    import TextEditor from '../../../components/TextEditor/TextEditor.vue';
+    import Toasts from '../../../assets/js/classes/toasts';
+    import ForumService from '../../../assets/js/services/forums';
+    import ThemeClasses from "../../../mixins/ThemeClasses";
+    import Utils from '../../../assets/js/classes/utils';
+    import xpMapper from '../../../assets/js/classes/xp-mapper';
 
     export default {
         mixins: [ThemeClasses],

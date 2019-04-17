@@ -1,6 +1,6 @@
 {
   "name": "vuesora",
-  "version": "0.8.7",
+  "version": "0.9.1",
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
@@ -21,7 +21,6 @@
   "dependencies": {
     "@tinymce/tinymce-vue": "^1.0.6",
     "axios": "^0.18.0",
-    "babel-loader": "^8.0.4",
     "core-js": "^2.6.5",
     "cropperjs": "^1.3.5",
     "dropzone": "^5.4.0",

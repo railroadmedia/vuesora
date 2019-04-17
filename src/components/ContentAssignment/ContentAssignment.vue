@@ -491,7 +491,7 @@
     }
 </script>
 <style lang="scss">
-    @import '../assets/sass/partials/_variables.scss';
+    @import '../../assets/sass/partials/variables';
 
     .arrow-column {
         display:flex;

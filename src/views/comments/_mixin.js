@@ -122,6 +122,7 @@ export default {
 
                     Toasts.push({
                         icon: 'happy',
+                        themeColor: this.themeColor,
                         title: 'TRASHED!',
                         message: 'We have removed your comment. Please add a better one!'
                     });
@@ -143,6 +144,7 @@ export default {
 
                         Toasts.push({
                             icon: 'happy',
+                            themeColor: this.themeColor,
                             title: 'TRASHED!',
                             message: 'We have removed your reply. Please add a better one!'
                         });
