@@ -23,10 +23,6 @@
                 <div class="user-avatar smaller" :class="avatarClassObject">
                     <img :src="currentUser.avatar" class="rounded">
                 </div>
-
-                <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-                <p v-if="this.currentUser.access_level !== 'team'"
-                   class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
             </div>
 
             <div class="flex flex-column">

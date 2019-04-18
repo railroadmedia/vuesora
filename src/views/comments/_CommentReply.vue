@@ -1,32 +1,14 @@
 <template>
     <div class="flex flex-row comment-post pl pv mv-1">
         <div class="flex flex-column avatar-column pr">
-            <div v-if="hasPublicProfiles"
-                 class="user-avatar smaller"
-                 :class="[avatarClassObject, brand]">
-                <a :href="profileRoute" target="_blank"
-                   class="no-decoration">
-                    <img :src="user['fields.profile_picture_image_url']" class="rounded">
-                </a>
-            </div>
-            <img v-if="!hasPublicProfiles"
-                 :src="user['fields.profile_picture_image_url']" class="rounded">
-
-            <p class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-            <p v-if="this.user.access_level !== 'team'"
-               class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
+            <img :src="avatar_url" class="rounded">
         </div>
         <div class="flex flex-column grow">
             <div class="flex flex-row align-v-center mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
                     <h2 class="body font-bold">
-                        <a v-if="hasPublicProfiles"
-                           :href="profileRoute" target="_blank"
-                           class="text-black no-decoration">
-                            {{ user.display_name }}
-                        </a>
-                        <span v-else class="text-black no-decoration">
-                            {{ user.display_name }}
+                        <span class="text-black no-decoration">
+                            {{ display_name }}
                         </span>
 
                         <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
@@ -174,6 +156,9 @@
                 type: Boolean,
                 default: () => true
             },
+            avatar_url: {
+                type: String,
+            }
         },
         data(){
             return {
