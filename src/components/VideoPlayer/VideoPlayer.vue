@@ -92,11 +92,11 @@
     import videojs from 'video.js';
     import PlayerUtils from './player-utils';
     import ThemeClasses from "../../mixins/ThemeClasses";
-    import PlayerButton from './_PlayerButton';
-    import PlayerProgress from './_PlayerProgress';
-    import PlayerVolume from './_PlayerVolume';
-    import PlayerSettings from './_PlayerSettings';
-    import PlayerLoading from './_PlayerLoading';
+    import PlayerButton from './_PlayerButton.vue';
+    import PlayerProgress from './_PlayerProgress.vue';
+    import PlayerVolume from './_PlayerVolume.vue';
+    import PlayerSettings from './_PlayerSettings.vue';
+    import PlayerLoading from './_PlayerLoading.vue';
     import 'videojs-contrib-quality-levels';
 
     export default {

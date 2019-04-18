@@ -62,7 +62,7 @@
     </div>
 </template>
 <script>
-    import PlayerButton from "./_PlayerButton";
+    import PlayerButton from "./_PlayerButton.vue";
     import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
