@@ -1,7 +1,6 @@
 {
   "name": "vuesora",
-  "version": "0.9.1",
-  "private": false,
+  "version": "0.9.4",
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
@@ -21,7 +20,7 @@
     "dropzone": "^5.4.0",
     "es6-promise": "^4.2.4",
     "flatpickr": "^4.4.6",
-    "js-helper-functions": "^1.0.15",
+    "js-helper-functions": "^1.0.18",
     "luxon": "^1.9.0",
     "mediaelement": "^4.2.8",
     "mediaelement-plugins": "^2.5.0",
