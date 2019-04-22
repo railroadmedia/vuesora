@@ -1,23 +1,5 @@
 <template>
     <div class="flex flex-column grow align-v-center">
-        <div v-if="gridOrListButtons"
-             class="flex flex-row pv">
-            <button class="btn mh-1"
-                    @click="toggleCatalogueType('list')">
-                <span class="bg-drumeo"
-                      :class="catalogue_type === 'list' ? 'text-white' : 'inverted text-drumeo'">
-                    List
-                </span>
-            </button>
-            <button class="btn mh-1"
-                    @click="toggleCatalogueType('grid')">
-                <span class="bg-drumeo"
-                      :class="catalogue_type === 'grid' ? 'text-white' : 'inverted text-drumeo'">
-                    Grid
-                </span>
-            </button>
-        </div>
-
         <catalogue-search v-if="searchBar"
                           :themeColor="themeColor"
                           :included_types="includedTypes"
@@ -69,7 +51,7 @@
                         :contentTypeOverride="contentTypeOverride"
                         @addToList="addToListEventHandler"></grid-catalogue>
 
-        <list-catalogue v-if="catalogue_type === 'list' || catalogue_type === 'schedule'"
+        <list-catalogue v-if="catalogue_type === 'list'"
                         :content="content"
                         :brand="brand"
                         :themeColor="themeColor"
@@ -90,17 +72,6 @@
                         @addToList="addToListEventHandler"
                         @progressReset="resetProgressEventHandler"></list-catalogue>
 
-        <div v-if="(infiniteScroll && loadMoreButton) && (page < total_pages)"
-             class="flex flex-row pa">
-            <button class="btn collapse-150 short"
-                    @click="loadMore"
-                    :disabled="loading">
-                <span class="flat text-grey-2">
-                    Load More...
-                </span>
-            </button>
-        </div>
-
         <div v-if="paginate && total_pages > 1 && !infiniteScroll"
              class="flex flex-row bg-light pagination-row align-h-right">
             <pagination :currentPage="Number(page)"
@@ -109,7 +80,7 @@
         </div>
 
         <transition name="show-from-bottom">
-            <div id="loadingDialog" v-if="loading && showLoadingAnimation"
+            <div id="loadingDialog" v-show="loading && showLoadingAnimation"
                  class="flex flex-row align-center">
                 <div class="loading-spinner corners-5 shadow pa flex-center"
                      :class="themeBgClass">
@@ -156,10 +127,6 @@
                 type: String,
                 default: () => ''
             },
-            gridOrListButtons: {
-                type: Boolean,
-                default: () => false
-            },
             brand: {
                 type: String,
                 default: () => 'drumeo'
@@ -185,7 +152,7 @@
             },
             includedTypes: {
                 type: Array,
-                default: () => ['recording', 'course', 'song', 'play-along', 'student-focus', 'learning-path', 'pack']
+                default: () => []
             },
             requiredUserStates: {
                 type: Array,
@@ -200,10 +167,6 @@
                 default: () => false
             },
             infiniteScroll: {
-                type: Boolean,
-                default: () => false
-            },
-            loadMoreButton: {
                 type: Boolean,
                 default: () => false
             },
@@ -302,7 +265,7 @@
         data() {
             return {
                 page: this.initialPage || 1,
-                content: this.preLoadedContent ? ContentHelpers.flattenContent(this.preLoadedContent.data, true) : [],
+                content: this.preLoadedContent ? this.preLoadedContent.data : [],
                 filters: this.preLoadedContent ? ContentHelpers.flattenFilters(this.preLoadedContent.meta.filterOptions || []) : {},
                 total_results: this.totalResults || 0,
                 total_pages: this.preLoadedContent ? Math.ceil(this.preLoadedContent.meta.totalResults / this.limit) : 0,
@@ -475,66 +438,73 @@
                 window.history.replaceState(history.state, null, new_url);
             },
 
+            fetchContent(){
+                return axios.get(this.$_contentEndpoint, {
+                    params: {
+                        brand: this.brand,
+                        limit: this.limit,
+                        statuses: this.statuses,
+                        sort: this.sortBy,
+                        ...this.request_params
+                    }
+                })
+                    .then(response => response)
+                    .catch(error => {
+                        console.error(error);
+                        Toasts.push({
+                            icon: 'doh',
+                            themeColor: this.themeColor,
+                            title: 'This is Embarassing That didn\'t work',
+                            message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. '
+                        });
+
+                        this.loading = false;
+                    })
+            },
+
             getContent(replace = true, displayLoading = true) {
                 if (!this.loading) {
                     this.loading = displayLoading;
                     this.requestingMore = true;
 
-                    axios.get(this.$_contentEndpoint, {
-                        params: {
-                            brand: this.brand,
-                            limit: this.limit,
-                            statuses: this.statuses,
-                            sort: this.sortBy,
-                            ...this.request_params
-                        }
-                    })
-                        .then(response => {
-                            if (response) {
-                                // If infinite scroll is enabled:
-                                // Just add it to the array, don't replace it
-                                if (!replace) {
-                                    this.content = [
-                                        ...this.content,
-                                        ...ContentHelpers.flattenContent(response.data.data, true)
-                                    ]
-                                }
-                                else {
-                                    this.content = ContentHelpers.flattenContent(response.data.data, true);
-                                }
-                                this.page = Number(response.data.meta.page);
-                                this.total_results = response.data.meta.totalResults;
-                                this.total_pages = Math.ceil(response.data.meta.totalResults / this.limit);
-
-                                if(response.data.meta.filterOptions){
-                                    this.filters = ContentHelpers.flattenFilters(response.data.meta.filterOptions);
-                                }
-                            }
-
-                            // Sometimes vue caches the add event button.
-                            // If it doesn't we need to force a refresh, done with a timeout to
-                            // Prevent race conditions.
-                            if(window.addeventatc){
-                                setTimeout(() => {
-                                    window.addeventatc.refresh();
-                                }, 500);
-                            }
-
-                            this.loading = false;
-                            this.requestingMore = false;
-                        })
-                        .catch(error => {
-                            console.error(error);
-                            Toasts.push({
-                                icon: 'doh',
-                                themeColor: this.themeColor,
-                                title: 'This is Embarassing That didn\'t work',
-                                message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. '
-                            });
-
-                            this.loading = false;
-                        })
+                    return this.fetchContent()
+                        .then(response => this.setContent(response, replace));
                 }
+            },
+
+            setContent(response, replace){
+                if (response) {
+                    // If infinite scroll is enabled:
+                    // Just add it to the array, don't replace it
+                    if (!replace) {
+                        this.content = [
+                            ...this.content,
+                            ...response.data.data
+                        ]
+                    }
+                    else {
+                        this.content = response.data.data;
+                    }
+                    this.page = Number(response.data.meta.page);
+                    this.total_results = response.data.meta.totalResults;
+                    this.total_pages = Math.ceil(response.data.meta.totalResults / this.limit);
+
+                    if(response.data.meta.filterOptions){
+                        this.filters = ContentHelpers.flattenFilters(response.data.meta.filterOptions);
+                    }
+                }
+
+                // Sometimes vue caches the add event button.
+                // If it doesn't we need to force a refresh, done with a timeout to
+                // Prevent race conditions.
+                if(window.addeventatc){
+                    setTimeout(() => {
+                        window.addeventatc.refresh();
+                    }, 500);
+                }
+
+                this.loading = false;
+                this.requestingMore = false;
             },
 
             infiniteScrollEventHandler() {

@@ -157,7 +157,7 @@ export default (function(){
 
             currentSubNavScrollPosition = subNavWrap.scrollLeft;
 
-            if(currentSubNavScrollPosition <= 35){
+            if(currentSubNavScrollPosition <= 0){
                 currentSubNavScrollPosition = 0;
                 scrollSubNavLeft.classList.add('hide');
             }

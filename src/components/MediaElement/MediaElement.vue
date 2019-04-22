@@ -69,13 +69,13 @@
     // import 'mediaelement-plugins/src/chromecast/chromecast.css';
     import 'mediaelement-plugins/src/airplay/airplay';
     import 'mediaelement-plugins/src/airplay/airplay.css';
-    import Utils from '../assets/js/classes/utils';
+    import Utils from '../../assets/js/classes/utils';
     import * as QueryString from 'query-string';
-    import Toasts from '../assets/js/classes/toasts';
-    import VideoSocialButtons from './_VideoSocialButtons';
+    import Toasts from '../../assets/js/classes/toasts';
+    import VideoSocialButtons from '../_VideoSocialButtons';
 
     export default {
-        name: "media-element",
+        name: "video-media-element",
         components: {
             'video-social-buttons': VideoSocialButtons
         },
@@ -135,6 +135,22 @@
             userId: {
                 type: String|Number,
                 default: () => null
+            },
+            progressState: {
+                type: String,
+                default: () => null
+            },
+            currentSecond: {
+                type: String|Number,
+                default: () => 0,
+            },
+            videoId: {
+                type: String|Number,
+                default: () => null,
+            },
+            videoLength: {
+                type: String|Number,
+                default: () => null,
             }
         },
         data () {
@@ -276,7 +292,15 @@
                     this.currentTimeInSeconds = this.mediaElement.getCurrentTime();
                 }
 
-                this.$emit(event.type, event);
+                this.$emit(event.type, {
+                    ...event,
+                    progressState: this.progressState,
+                    contentId: this.contentId,
+                    videoId: this.videoId,
+                    currentSecond: this.currentSecond,
+                    videoLength: this.videoLength,
+                    instance: this,
+                });
             },
 
             emitCustomEvent(event){
@@ -446,6 +470,10 @@
             if(this.elementId === 'lessonPlayer'){
                 this.initializeChapterMarkerLinks();
             }
+
+            this.$root.$on('pauseVideos', () => {
+                this.pauseVideo();
+            });
         },
         beforeDestroy () {
             const vm = this;
@@ -456,7 +484,7 @@
 </script>
 
 <style lang="scss">
-    @import '../assets/sass/partials/_variables.scss';
+    @import '../../assets/sass/partials/variables';
 
     @each $key, $value in $brand_colors {
         ##{$key}Theme {

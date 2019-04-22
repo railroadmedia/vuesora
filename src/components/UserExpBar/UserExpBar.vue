@@ -27,9 +27,9 @@
     </div>
 </template>
 <script>
-    import xpMap from '../assets/js/classes/xp-mapper';
-    import Utils from '../assets/js/classes/utils';
-    import ThemeClasses from "../mixins/ThemeClasses";
+    import xpMap from '../../assets/js/classes/xp-mapper';
+    import Utils from '../../assets/js/classes/utils';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
         mixins: [ThemeClasses],

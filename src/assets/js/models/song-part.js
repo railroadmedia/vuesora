@@ -7,32 +7,14 @@ export default class SongPartDataMapper extends DataMapper {
             post
         });
 
-        this.card = {
-            color_title: this.post['artist'],
-            black_title: this.post['title'],
-            description: this.post['description'],
-            grey_title: DataMapper.mapDifficulty(this.post)
-        };
+        this.card.color_title = this.getPostField('artist');
 
-        this.list = {
-            black_title: this.post['title'],
-            description: this.post['description'],
-            column_data: [
-                this.getPostDuration(),
-            ]
-        };
+        this.list.column_data = [
+            this.getPostDuration(),
+        ];
 
-        this.schedule = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
-            column_data: [
-                this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post)
-            ]
-        };
-
-        if(this.brand === 'guitareo'){
-            this.card.color_title = this.post.type;
+        if(this.brand === 'guitareo' || this.brand === 'pianote'){
+            this.card.color_title = this.getTypeWithIcon;
 
             this.list.color_title = null;
         }

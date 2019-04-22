@@ -7,28 +7,11 @@ export default class QnaDataMapper extends DataMapper {
             post
         });
 
-        this.card = {
-            black_title: this.post['title'],
-            description: this.post['description'],
-            grey_title: this.getPostDuration()
-        };
+        this.card.grey_title = this.getPostDuration();
 
-        this.list = {
-            black_title: this.post['title'],
-            description: this.post['description'],
-            column_data: [
-                this.getPostDuration(),
-            ]
-        };
-
-        this.schedule = {
-            color_title: this.getType(),
-            black_title: this.post['title'],
-            column_data: [
-                this.getPostInstructor(),
-                DataMapper.mapDifficulty(this.post)
-            ]
-        };
+        this.list.column_data = [
+            this.getPostDuration(),
+        ];
 
         if(this.brand === 'pianote'){
             this.card.color_title = this.getTypeWithIcon();

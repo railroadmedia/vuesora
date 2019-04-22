@@ -1,7 +1,10 @@
+import Utils from 'js-helper-functions/modules/utils';
+
 export default {
     props: {
         contentType: {
-            type: String
+            type: String,
+            default: () => 'drumeo'
         },
 
         themeColor: {
@@ -20,7 +23,9 @@ export default {
                 return 'bg-' + this.themeColor
             }
 
-            return 'bg-' + this.contentType;
+            const type = Utils.getThemeColorByContentType(this.contentType);
+
+            return 'bg-' + type;
         },
 
         themeTextClass(){
@@ -28,7 +33,9 @@ export default {
                 return 'text-' + this.themeColor
             }
 
-            return 'text-' + this.contentType;
+            const type = Utils.getThemeColorByContentType(this.contentType);
+
+            return 'text-' + type;
         }
-    }
+    },
 }

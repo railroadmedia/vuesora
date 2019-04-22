@@ -67,7 +67,7 @@
     </div>
 </template>
 <script>
-    import * as Model from '../../assets/js/models/_model.js';
+    import ContentModel from '../../assets/js/models/_model.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
     import { Content as ContentHelpers }  from 'js-helper-functions';
     import { DateTime } from 'luxon';
@@ -82,6 +82,11 @@
             },
             timezone: {
                 type: String,
+            }
+        },
+        data() {
+            return {
+                mappedData: this.getContentModel()
             }
         },
         computed: {
@@ -121,27 +126,30 @@
                 return 'Lesson Release';
             },
 
-            mappedData(){
+            is_added(){
+                return this.item.is_added_to_primary_playlist;
+            },
+        },
+        methods: {
+
+            getContentModel(){
                 const shows = ContentHelpers.shows();
                 let type = this.contentTypeOverride || this.item.type;
-
-                console.log(type);
 
                 if(shows.indexOf(type) !== -1){
                     type = 'show';
                 }
 
-                const model = new Model[type.replace(/-/g, '_')]({
+                const model = new ContentModel(type, {
                     brand: this.brand,
                     post: this.item
                 });
 
                 return model['schedule'];
-            },
-
-            is_added(){
-                return this.item.is_added_to_primary_playlist;
-            },
+            }
+        },
+        beforeDestroy(){
+            this.mappedData = null;
         }
     }
 </script>

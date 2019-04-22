@@ -57,6 +57,12 @@ export default {
             .catch(ErrorHandler);
     },
 
+    getForumPostById(id){
+        return axios.get('/forums/post/show/' + id)
+            .then(response => response.data)
+            .catch(ErrorHandler);
+    },
+
     /**
      * Report a forum post
      *

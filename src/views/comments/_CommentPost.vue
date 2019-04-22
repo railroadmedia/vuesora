@@ -170,7 +170,7 @@
 <script>
     import Toasts from '../../assets/js/classes/toasts';
     import CommentService from '../../assets/js/services/comments';
-    import TextEditor from '../../components/TextEditor.vue';
+    import TextEditor from '../../components/TextEditor/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
