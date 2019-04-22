@@ -43,8 +43,12 @@
     z-index:20;
 
     .content-table {
-      max-height:calc(100vh - 230px);
+      max-height:calc(100vh - 180px);
       overflow:auto;
+
+      &.has-see-all {
+        max-height:calc(100vh - 230px);
+      }
     }
   }
 
