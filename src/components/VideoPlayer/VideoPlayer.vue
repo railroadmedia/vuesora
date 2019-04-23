@@ -383,6 +383,8 @@
             });
 
             this.videojsInstance.on('canplaythrough', () => {
+                this.$emit('canplaythrough');
+
                 setTimeout(() => {
                     this.loading = false;
                 }, 500);
@@ -404,6 +406,8 @@
 
             this.videojsInstance.on(['waiting', 'pause'], () => {
                 this.isPlaying = false;
+
+                this.$emit('paused');
             });
 
             this.videojsInstance.on('waiting', () => {
@@ -413,15 +417,13 @@
             this.videojsInstance.on(['play', 'playing'], () => {
                 this.isPlaying = true;
                 this.loading = false;
+
+                this.$emit('playing');
             });
 
             this.videojsInstance.on('timeupdate', () => {
                 this.totalDuration = this.videojsInstance.duration();
                 this.currentTime = this.videojsInstance.currentTime();
-            });
-
-            this.videojsInstance.on('error', event => {
-                alert(event.type);
             });
 
             this.videojsInstance.on('userinactive', this.closeDrawer);
