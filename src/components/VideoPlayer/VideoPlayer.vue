@@ -15,14 +15,16 @@
                 <!--  TOP ROW  -->
                 <div class="flex flex-row">
                     <player-button @click.native="seek(currentTime - 10)"
-                                   :themeColor="themeColor">
+                                   :themeColor="themeColor"
+                                   data-cy="rewind-button">
                         <i class="fas fa-undo"></i>
                     </player-button>
 
                     <div class="flex flex-column spacer"></div>
 
                     <player-button @click.native="seek(currentTime + 10)"
-                                   :themeColor="themeColor">
+                                   :themeColor="themeColor"
+                                   data-cy="fast-forward-button">
                         <i class="fas fa-redo"></i>
                     </player-button>
                 </div>
@@ -35,13 +37,15 @@
                                      :currentMouseX="currentMouseX"
                                      :totalDuration="totalDuration"
                                      :mousedown="mousedown"
-                                     @mousedown.native="mousedown = true"></player-progress>
+                                     @mousedown.native="mousedown = true"
+                                     data-cy="progress-rail"></player-progress>
                 </div>
 
                 <!--  BOTTOM ROW  -->
                 <div class="flex flex-row">
                     <player-button @click.native="playPause"
-                                   :themeColor="themeColor">
+                                   :themeColor="themeColor"
+                                   data-cy="play-pause-button">
                         <i class="fas"
                            :class="isPlaying ? 'fa-pause' : 'fa-play'"></i>
                     </player-button>
@@ -222,7 +226,10 @@
 
             seek(time){
                 this.videojsInstance.currentTime(time);
-                this.videojsInstance.play();
+
+                if(this.isPlaying){
+                    this.videojsInstance.play();
+                }
             },
 
             fullscreen(){
@@ -311,17 +318,22 @@
         },
         mounted(){
             const player = this.$refs.player;
-            let source = [
-                {
+            let source = [];
+
+            if(this.hlsManifestUrl != null){
+                source.push({
                     src: this.hlsManifestUrl,
                     type: 'application/x-mpegURL',
                     overrideNative: !this.isSafari,
-                },
-                {
+                });
+            }
+
+            if(this.sources.length > 0){
+                source.push({
                     src: this.sources[this.getDefaultPlaybackQualityIndex()].file,
                     type: 'video/mp4',
-                }
-            ];
+                });
+            }
 
             // if(typeof MediaSource === 'undefined' || this.hlsManifestUrl == null){
             //     source = this.sources[this.getDefaultPlaybackQualityIndex()].file;
@@ -367,6 +379,7 @@
                 // }
 
                 this.playerReady = true;
+                this.$emit('playerReady');
             });
 
             this.videojsInstance.on('canplaythrough', () => {

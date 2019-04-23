@@ -146,10 +146,10 @@
 </template>
 <script>
     import { Duration } from 'luxon';
-    import ContentService from '../assets/js/services/content';
-    import Utils from '../assets/js/classes/utils';
-    import Toasts from '../assets/js/classes/toasts';
-    import ProgressTracker from '../assets/js/classes/progress-tracker';
+    import ContentService from '../../assets/js/services/content';
+    import Utils from '../../assets/js/classes/utils';
+    import Toasts from '../../assets/js/classes/toasts';
+    import ProgressTracker from '../../assets/js/classes/progress-tracker';
 
     export default {
         name: 'content-assignment',
