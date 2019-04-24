@@ -62,15 +62,11 @@
     </div>
 </template>
 <script>
-    import PlayerButton from "./_PlayerButton.vue";
     import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
         mixins: [ThemeClasses],
         name: 'player-settings',
-        components: {
-            'player-button': PlayerButton
-        },
         props: {
             videojsInstance: {
                 type: Object

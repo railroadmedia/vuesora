@@ -5,7 +5,7 @@ const videoProps = {
     hlsManifestUrl: 'https://player.vimeo.com/external/274923593.m3u8?s=9c979ea3779e99a331215c8d003252d760b19c28&oauth2_token_id=1081192161'
 };
 
-describe('Video Player', () => {
+describe('Video Player - HLS', () => {
     beforeEach(mountVue(VideoPlayer, {
         propsData: videoProps
     }));
@@ -57,9 +57,17 @@ describe('Video Player', () => {
         });
     });
 
+    it('can get the current source', (done) => {
+        Cypress.vue.$once('canplaythrough', () => {
+            expect(Cypress.vue.currentSource).to.not.be.null;
+
+            done();
+        });
+    });
+
     it('can play and pause', (done) => {
 
-            Cypress.vue.$once('playerReady', () => {
+            Cypress.vue.$once('canplaythrough', () => {
                 Cypress.vue.playPause();
 
                 Cypress.vue.$once('playing', () => {
@@ -124,7 +132,7 @@ describe('Video Player', () => {
         });
     });
 
-    it('can SET the playback rate', (done) => {
+    it('can set the playback rate', (done) => {
 
         Cypress.vue.$once('canplaythrough', () => {
             Cypress.vue.setRate({rate: 0.5});
@@ -138,13 +146,13 @@ describe('Video Player', () => {
         });
     });
 
-    it('can SET the default playback quality', () => {
+    it('can set the default playback quality', () => {
         Cypress.vue.setDefaultPlaybackQualityWidth('1280');
 
         expect(window.localStorage.getItem('vuesoraDefaultVideoQuality')).to.equal('1280');
     });
 
-    it('can GET the default playback quality', (done) => {
+    it('can get the default playback quality', (done) => {
         Cypress.vue.$once('canplaythrough', () => {
             const qualityIndex = Cypress.vue.getDefaultPlaybackQualityIndex();
             expect(qualityIndex).to.be.greaterThan(-1);

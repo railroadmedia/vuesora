@@ -21,29 +21,52 @@
   //overflow:hidden;
 }
 
+@mixin playerActive(){
+  .controls {
+    transform:translateY(0);
+  }
+
+  video::-webkit-media-text-track-container {
+    transform:translateY(-60px);
+  }
+}
+
+@mixin playerInactive(){
+  .controls {
+    transform:translateY(100%);
+  }
+
+  video::-webkit-media-text-track-container {
+    transform:translateY(0);
+  }
+}
+
 [data-vjs-player] {
   //overflow:hidden;
 
   &.vjs-user-active {
-    .controls {
-      transform:translateY(0);
+    @include playerActive();
+  }
+
+  video {
+    &::cue {
+      font-size:24px;
+      line-height:1em;
+    }
+
+    &::-webkit-media-text-track-container {
+      transition: transform .2s ease-in-out;
     }
   }
 
   &.vjs-user-inactive {
-    .controls {
-      transform:translateY(100%);
-    }
+    @include playerInactive();
 
     &.vjs-has-started {
-      .controls {
-        transform:translateY(0);
-      }
+      @include playerActive();
 
       &.vjs-playing {
-        .controls {
-          transform: translateY(100%);
-        }
+        @include playerInactive();
       }
     }
   }
@@ -174,11 +197,26 @@
     right:50px;
     position:absolute;
     border-radius:3px;
+
+    &.captions {
+      max-width:175px;
+    }
   }
 
   .selected-setting {
     flex:0 0 60px;
   }
+}
+
+.selected-caption:before {
+  content: '\f111';
+  font-family: "Font Awesome 5 Pro";
+  font-size:10px;
+  position:absolute;
+  left:$gutterWidth / 2;
+  top:50%;
+  transform:translateY(-50%);
+  @include flexCenter();
 }
 
 .settings-mobile-overlay {

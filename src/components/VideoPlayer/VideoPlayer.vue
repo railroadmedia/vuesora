@@ -4,48 +4,58 @@
          @mousemove="trackMousePosition">
 
         <transition name="grow-fade">
-            <player-loading v-if="loading && !isPlaying"
-                            :themeColor="themeColor"></player-loading>
+            <player-loading
+                    v-if="loading && !isPlaying"
+                    :themeColor="themeColor" />
         </transition>
 
-        <video ref="player" playsinline preload="auto"></video>
+        <video ref="player"
+               playsinline
+               crossorigin="anonymous"
+               preload="auto">
+        </video>
 
-        <div class="controls-wrap" v-if="playerReady">
+        <div v-if="playerReady"
+             class="controls-wrap">
             <div class="controls flex flex-column noselect">
                 <!--  TOP ROW  -->
                 <div class="flex flex-row">
-                    <player-button @click.native="seek(currentTime - 10)"
-                                   :themeColor="themeColor"
-                                   data-cy="rewind-button">
+                    <player-button
+                            @click.native="seek(currentTime - 10)"
+                            :themeColor="themeColor"
+                            data-cy="rewind-button">
                         <i class="fas fa-undo"></i>
                     </player-button>
 
                     <div class="flex flex-column spacer"></div>
 
-                    <player-button @click.native="seek(currentTime + 10)"
-                                   :themeColor="themeColor"
-                                   data-cy="fast-forward-button">
+                    <player-button
+                            @click.native="seek(currentTime + 10)"
+                            :themeColor="themeColor"
+                            data-cy="fast-forward-button">
                         <i class="fas fa-redo"></i>
                     </player-button>
                 </div>
 
                 <!--  MIDDLE ROW  -->
                 <div class="flex flex-row">
-                    <player-progress :themeColor="themeColor"
-                                     :currentProgress="currentProgress"
-                                     :playerWidth="playerWidth"
-                                     :currentMouseX="currentMouseX"
-                                     :totalDuration="totalDuration"
-                                     :mousedown="mousedown"
-                                     @mousedown.native="mousedown = true"
-                                     data-cy="progress-rail"></player-progress>
+                    <player-progress
+                            :themeColor="themeColor"
+                            :currentProgress="currentProgress"
+                            :playerWidth="playerWidth"
+                            :currentMouseX="currentMouseX"
+                            :totalDuration="totalDuration"
+                            :mousedown="mousedown"
+                            @mousedown.native="mousedown = true"
+                            data-cy="progress-rail" />
                 </div>
 
                 <!--  BOTTOM ROW  -->
                 <div class="flex flex-row">
-                    <player-button @click.native="playPause"
-                                   :themeColor="themeColor"
-                                   data-cy="play-pause-button">
+                    <player-button
+                            @click.native="playPause"
+                            :themeColor="themeColor"
+                            data-cy="play-pause-button">
                         <i class="fas"
                            :class="isPlaying ? 'fa-pause' : 'fa-play'"></i>
                     </player-button>
@@ -56,44 +66,63 @@
 
                     <div class="flex flex-column spacer"></div>
 
-                    <player-volume v-if="!isMobile"
-                                   :themeColor="themeColor"
-                                   :currentVolume="currentVolume"
-                                   @volumeChange="changeVolume"></player-volume>
+                    <player-volume
+                            v-if="!isMobile"
+                            :themeColor="themeColor"
+                            :currentVolume="currentVolume"
+                            @volumeChange="changeVolume" />
 
-                    <player-button :themeColor="themeColor"
-                                   @click.native.stop="toggleDrawer">
+                    <player-button
+                            :themeColor="themeColor"
+                            @click.native.stop="toggleCaptionsDrawer">
+                        <i class="fas fa-closed-captioning"></i>
+                    </player-button>
+
+                    <player-button
+                            :themeColor="themeColor"
+                            @click.native.stop="toggleSettingsDrawer">
                         <i class="fas fa-cog"></i>
                     </player-button>
 
-                    <player-button @click.native="fullscreen"
-                                   :themeColor="themeColor">
+                    <player-button
+                            @click.native="fullscreen"
+                            :themeColor="themeColor">
                         <i class="fas fa-expand"></i>
                     </player-button>
                 </div>
             </div>
         </div>
 
-        <div v-if="settingsDrawer && isMobile"
+        <div v-show="isMobileDrawerOpen"
              class="settings-mobile-overlay"
              @click="settingsDrawer = false"></div>
+
         <transition name="show-from-bottom">
-            <player-settings v-show="settingsDrawer"
-                             :drawer="settingsDrawer"
-                             :themeColor="themeColor"
-                             :videojsInstance="videojsInstance"
-                             :currentSource="currentSource"
-                             :currentSourceIndex="currentSourceIndex"
-                             :currentPlaybackRate="currentPlaybackRate"
-                             :playbackQualities="playbackQualities"
-                             @setQuality="setQuality"
-                             @setRate="setRate"></player-settings>
+            <player-settings
+                    v-show="settingsDrawer"
+                    :drawer="settingsDrawer"
+                    :themeColor="themeColor"
+                    :videojsInstance="videojsInstance"
+                    :currentSource="currentSource"
+                    :currentSourceIndex="currentSourceIndex"
+                    :currentPlaybackRate="currentPlaybackRate"
+                    :playbackQualities="playbackQualities"
+                    @setQuality="setQuality"
+                    @setRate="setRate" />
         </transition>
 
+        <transition name="show-from-bottom">
+            <player-captions
+                    v-show="captionsDrawer"
+                    :themeColor="themeColor"
+                    :captions="captions" />
+        </transition>
     </div>
 </template>
 <script>
     import videojs from 'video.js';
+    import 'videojs-contrib-quality-levels';
+    import { getNativeName } from 'iso-639-1';
     import PlayerUtils from './player-utils';
     import ThemeClasses from "../../mixins/ThemeClasses";
     import PlayerButton from './_PlayerButton.vue';
@@ -101,7 +130,7 @@
     import PlayerVolume from './_PlayerVolume.vue';
     import PlayerSettings from './_PlayerSettings.vue';
     import PlayerLoading from './_PlayerLoading.vue';
-    import 'videojs-contrib-quality-levels';
+    import PlayerCaptions from './_PlayerCaptions.vue';
 
     export default {
         mixins: [ThemeClasses],
@@ -112,18 +141,25 @@
             'player-volume': PlayerVolume,
             'player-settings': PlayerSettings,
             'player-loading': PlayerLoading,
+            'player-captions': PlayerCaptions,
         },
         props: {
             sources: {
                 type: Array,
                 default: () => []
             },
+
             hlsManifestUrl: {
                 type: String,
                 default: () => null
-            }
+            },
+
+            captions: {
+                type: Array,
+                default: () => []
+            },
         },
-        data(){
+        data() {
             return {
                 loading: false,
                 videojsInstance: null,
@@ -136,20 +172,21 @@
                 currentMouseX: 0,
                 currentVolume: 1,
                 settingsDrawer: false,
+                captionsDrawer: false,
             }
         },
         computed: {
-            playerWidth:{
+            playerWidth: {
                 cache: false,
-                get(){
+                get() {
                     return this.$refs.player ? this.$refs.player.clientWidth : 0;
                 }
             },
 
             playbackQualities: {
                 cache: false,
-                get(){
-                    if(this.hlsInstance != null && this.videojsInstance.qualityLevels().levels_){
+                get() {
+                    if (this.hlsInstance != null && this.videojsInstance.qualityLevels().levels_) {
                         return this.videojsInstance.qualityLevels().levels_.map(source => {
                             return {
                                 label: PlayerUtils.getQualityLabelByHeight(source.height),
@@ -171,7 +208,7 @@
                 },
             },
 
-            currentProgress(){
+            currentProgress() {
                 const progress = (this.currentTime / this.totalDuration) * 100;
 
                 return isNaN(progress) ? 0 : progress;
@@ -179,8 +216,8 @@
 
             currentSource: {
                 cache: false,
-                get(){
-                    if(this.hlsInstance != null && this.hlsInstance.playlists.media_){
+                get() {
+                    if (this.hlsInstance != null && this.hlsInstance.playlists.media_) {
                         return this.hlsInstance.playlists.media_.resolvedUri;
                     }
 
@@ -190,8 +227,8 @@
 
             currentSourceIndex: {
                 cache: false,
-                get(){
-                    if(this.hlsInstance){
+                get() {
+                    if (this.hlsInstance) {
                         return this.videojsInstance.qualityLevels().selectedIndex;
                     }
 
@@ -201,67 +238,65 @@
 
             currentPlaybackRate: {
                 cache: false,
-                get(){
+                get() {
                     return this.videojsInstance ? this.videojsInstance.playbackRate() : 1;
                 }
             },
 
-            dontUseHls(){
-                return typeof MediaSource === 'undefined' || this.hlsManifestUrl == null;
-            },
+            isMobile: () => PlayerUtils.isMobile().any,
 
-            isMobile:() => PlayerUtils.isMobile().any,
+            isSafari: () => PlayerUtils.isSafari(),
 
-            isSafari:() => PlayerUtils.isSafari()
+            isMobileDrawerOpen(){
+                return (this.settingsDrawer || this.captionsDrawer) && this.isMobile;
+            }
         },
         methods: {
-            playPause(){
-                if(this.isPlaying){
+            playPause() {
+                if (this.isPlaying) {
                     this.videojsInstance.pause();
-                }
-                else {
+                } else {
                     this.videojsInstance.play();
                 }
             },
 
-            seek(time){
+            seek(time) {
                 this.videojsInstance.currentTime(time);
 
-                if(this.isPlaying){
+                if (this.isPlaying) {
                     this.videojsInstance.play();
                 }
             },
 
-            fullscreen(){
-                if(this.videojsInstance.isFullscreen()){
+            fullscreen() {
+                if (this.videojsInstance.isFullscreen()) {
                     this.videojsInstance.exitFullscreen();
                     this.videojsInstance.isFullscreen(false);
-                }
-                else {
+                } else {
                     this.videojsInstance.requestFullscreen();
                     this.videojsInstance.isFullscreen(true);
                 }
             },
 
-            changeVolume(payload){
+            changeVolume(payload) {
                 this.videojsInstance.volume(payload.volume / 100);
                 this.currentVolume = this.videojsInstance.volume();
             },
 
             parseTime: (time) => PlayerUtils.parseTime(time),
 
-            trackMousePosition(event){
+            trackMousePosition(event) {
                 this.currentMouseX = PlayerUtils.getTimeRailMouseEventOffsetPercentage(
                     event,
                     this.$refs.player
                 );
             },
 
-            setQuality(payload){
+            setQuality(payload) {
                 const currentTime = this.videojsInstance.currentTime();
                 const wasPlaying = this.isPlaying;
 
-                if(this.hlsInstance != null){
+                if (this.hlsInstance != null) {
                     this.videojsInstance.qualityLevels().levels_.forEach((quality, index) => {
                         quality.enabled = index === payload.index;
                     });
@@ -270,31 +305,30 @@
                     this.videojsInstance.qualityLevels().trigger({
                         type: 'change', selectedIndex: payload.index
                     });
-                }
-                else {
+                } else {
                     this.videojsInstance.src(this.sources[payload.index].file);
                 }
 
                 this.setDefaultPlaybackQualityWidth(this.playbackQualities[payload.index].width);
-                if(wasPlaying){
+                if (wasPlaying) {
                     setTimeout(() => {
                         this.seek(currentTime);
                     }, 200);
                 }
             },
 
-            setRate(payload){
+            setRate(payload) {
                 this.videojsInstance.playbackRate(payload.rate);
             },
 
-            setDefaultPlaybackQualityWidth(width){
+            setDefaultPlaybackQualityWidth(width) {
                 window.localStorage.setItem('vuesoraDefaultVideoQuality', width);
             },
 
-            getDefaultPlaybackQualityIndex(){
+            getDefaultPlaybackQualityIndex() {
                 let widthToCheck = window.localStorage.getItem('vuesoraDefaultVideoQuality') || document.documentElement.clientWidth;
                 let qualityIndexes = this.playbackQualities.map((quality, index) => {
-                    if(quality.width >= widthToCheck){
+                    if (quality.width >= widthToCheck) {
                         return index;
                     }
                 });
@@ -305,22 +339,45 @@
                 return closestIndex || (this.playbackQualities.length - 1);
             },
 
-            toggleDrawer(){
+            toggleSettingsDrawer() {
+                this.captionsDrawer = false;
                 this.settingsDrawer = !this.settingsDrawer;
-                if(this.isMobile && this.settingsDrawer) document.body.classList.add('drawer-open');
-                if(this.isMobile && !this.settingsDrawer) document.body.classList.remove('drawer-open');
+                if (this.isMobile && this.settingsDrawer) document.body.classList.add('drawer-open');
+                if (this.isMobile && !this.settingsDrawer) document.body.classList.remove('drawer-open');
             },
 
-            closeDrawer(){
+            toggleCaptionsDrawer() {
+                this.enableCaptions();
+
+                this.captionsDrawer = !this.captionsDrawer;
                 this.settingsDrawer = false;
-                if(this.isMobile) document.body.classList.remove('drawer-open');
+                if (this.isMobile && this.captionsDrawer) document.body.classList.add('drawer-open');
+                if (this.isMobile && !this.captionsDrawer) document.body.classList.remove('drawer-open');
+            },
+
+            closeDrawers() {
+                this.settingsDrawer = false;
+                this.captionsDrawer = false;
+                if (this.isMobile) document.body.classList.remove('drawer-open');
+            },
+
+            enableCaptions(payload) {
+                const tracks = this.videojsInstance.remoteTextTracks();
+
+                console.log(tracks);
+                for(let i = 0; i < tracks.length; i++){
+                    if(tracks[i].kind === 'captions'){
+                        tracks[i].mode = 'showing';
+                        tracks[i].default = true;
+                    }
+                }
             },
         },
-        mounted(){
+        mounted() {
             const player = this.$refs.player;
             let source = [];
 
-            if(this.hlsManifestUrl != null){
+            if (this.hlsManifestUrl != null) {
                 source.push({
                     src: this.hlsManifestUrl,
                     type: 'application/x-mpegURL',
@@ -328,24 +385,14 @@
                 });
             }
 
-            if(this.sources.length > 0){
+            if (this.sources.length > 0) {
                 source.push({
                     src: this.sources[this.getDefaultPlaybackQualityIndex()].file,
                     type: 'video/mp4',
                 });
             }
 
-            // if(typeof MediaSource === 'undefined' || this.hlsManifestUrl == null){
-            //     source = this.sources[this.getDefaultPlaybackQualityIndex()].file;
-            // }
-            // else {
-            //     source = {
-            //         src: this.hlsManifestUrl,
-            //         overrideNative: !this.isSafari,
-            //     };
-            // }
-
-            this.loading  = true;
+            this.loading = true;
 
             this.videojsInstance = videojs(player, {
                 controls: false,
@@ -354,29 +401,33 @@
                 inactivityTimeout: 5000,
                 nativeAudioTracks: false,
                 nativeVideoTracks: false,
+                textTrackSettings: false,
                 html5: {
                     hls: {
                         overrideNative: !this.isSafari,
-                    }
+                    },
+                    nativeTextTracks: true,
                 }
             });
 
             this.videojsInstance.src(source);
 
             this.videojsInstance.ready(() => {
-                // if(!this.dontUseHls) {
-                    this.hlsInstance = this.videojsInstance.tech({ IWillNotUseThisInPlugins: true }).hls;
-                // }
+                this.hlsInstance = this.videojsInstance.tech({IWillNotUseThisInPlugins: true}).hls;
 
-                // alert(this.videojsInstance.readyState());
-
-                if(this.isSafari){
+                if (this.isSafari) {
                     this.videojsInstance.load();
                 }
 
-                // if(PlayerUtils.isMobile().apple){
-                //     this.videojsInstance.load();
-                // }
+                this.captions.forEach(caption => {
+                    this.videojsInstance.addRemoteTextTrack({
+                        kind: 'captions',
+                        label: getNativeName(caption.language),
+                        language: caption.language,
+                        src: caption.mp4,
+                    }, false);
+                });
+
 
                 this.playerReady = true;
                 this.$emit('playerReady');
@@ -391,8 +442,8 @@
             });
 
             this.videojsInstance.on('loadeddata', () => {
-                if(this.hlsInstance){
-                    this.setQuality({ index: this.getDefaultPlaybackQualityIndex() });
+                if (this.hlsInstance) {
+                    this.setQuality({index: this.getDefaultPlaybackQualityIndex()});
                 }
 
                 setTimeout(() => {
@@ -426,12 +477,12 @@
                 this.currentTime = this.videojsInstance.currentTime();
             });
 
-            this.videojsInstance.on('userinactive', this.closeDrawer);
+            this.videojsInstance.on('userinactive', this.closeDrawers);
 
-            document.addEventListener('click', this.closeDrawer);
+            document.addEventListener('click', this.closeDrawers);
 
             document.addEventListener('mouseup', () => {
-                if(this.mousedown){
+                if (this.mousedown) {
                     const timeToSeekTo = this.totalDuration * (this.currentMouseX / 100);
                     this.seek(timeToSeekTo);
                 }
@@ -440,7 +491,7 @@
             });
         },
         beforeDestroy() {
-            document.removeEventListener('click', this.closeDrawer);
+            document.removeEventListener('click', this.closeDrawers);
         }
     }
 </script>
