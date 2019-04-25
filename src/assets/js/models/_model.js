@@ -19,44 +19,36 @@ import StudentReviewModel from './student-review';
 import QnaModel from './question-and-answer';
 import UnitModel from './unit';
 import UnitPartModel from './unit-part';
+import DataMapper from './_default';
 
 export default class ContentModel {
     constructor(type, {
         brand,
         post
     }){
-        const model = ContentModel.models()[type];
-
-        if(model){
-            return new model({brand, post});
+        switch(type){
+            case 'chord-and-scale': return new ChordsAndScalesModel({brand, post});
+            case 'course': return new CourseModel({brand, post});
+            case 'course-part': return new CoursePartModel({brand, post});
+            case 'learning-path': return new LearningPathModel({brand, post});
+            case 'learning-path-part': return new LearningPathPartModel({brand, post});
+            case 'pack-bundle': return new PackBundleModel({brand, post});
+            case 'pack-bundle-lesson': return new PackBundleLessonModel({brand, post});
+            case 'play-along': return new PlayAlongModel({brand, post});
+            case 'play-along-part': return new PlayAlongPartModel({brand, post});
+            case 'recording': return new RecordingModel({brand, post});
+            case 'rudiment': return new RudimentModel({brand, post});
+            case 'semester-pack': return new SemesterPackModel({brand, post});
+            case 'semester-pack-lesson': return new SemesterPackLessonModel({brand, post});
+            case 'show': return new ShowModel({brand, post});
+            case 'song': return new SongModel({brand, post});
+            case 'song-part': return new SongPartModel({brand, post});
+            case 'student-focus': return new StudentFocusModel({brand, post});
+            case 'student-review': return new StudentReviewModel({brand, post});
+            case 'question-and-answer': return new QnaModel({brand, post});
+            case 'unit': return new UnitModel({brand, post});
+            case 'unit-part': return new UnitPartModel({brand, post});
+            default: return new DataMapper({brand, post});
         }
-
-        return ContentModel.models()['recording']({brand, post});
-    }
-
-    static models() {
-        return {
-            'chord-and-scale': ChordsAndScalesModel,
-            'course': CourseModel,
-            'course-part': CoursePartModel,
-            'learning-path': LearningPathModel,
-            'learning-path-part': LearningPathPartModel,
-            'pack-bundle': PackBundleModel,
-            'pack-bundle-lesson': PackBundleLessonModel,
-            'play-along': PlayAlongModel,
-            'play-along-part': PlayAlongPartModel,
-            'recording': RecordingModel,
-            'rudiment': RudimentModel,
-            'semester-pack': SemesterPackModel,
-            'semester-pack-lesson': SemesterPackLessonModel,
-            'show': ShowModel,
-            'song': SongModel,
-            'song-part': SongPartModel,
-            'student-focus': StudentFocusModel,
-            'student-review': StudentReviewModel,
-            'question-and-answer': QnaModel,
-            'unit': UnitModel,
-            'unit-part': UnitPartModel,
-        };
     }
 }
