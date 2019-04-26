@@ -21,6 +21,14 @@ import UnitModel from './unit';
 import UnitPartModel from './unit-part';
 import ContentModel from './_default';
 
+/**
+ * Map the data of a specific content type to a model
+ *
+ * @param {String} type - The content type to map
+ * @param {String} brand - The brand to map the content for
+ * @param {Object} post - The post object you wish to map
+ * @returns {ContentModel}
+ */
 export default class ContentTypeModel {
     constructor(type, {
         brand,
