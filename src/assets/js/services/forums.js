@@ -7,11 +7,11 @@ export default {
     /**
      * Get the forum search results
      *
-     * @param {string} term - the search terms
-     * @param {string} type - the search type, 'posts' or 'threads' - default null
-     * @param {number} page - the results page - default 1
-     * @param {number} limit - the results page amount - 10
-     * @param {string} sort - the column to sort - default 'score'
+     * @param {String} term - the search terms
+     * @param {String} type - the search type, 'posts' or 'threads' - default null
+     * @param {Number} page - the results page - default 1
+     * @param {Number} limit - the results page amount - 10
+     * @param {String} sort - the column to sort - default 'score'
      * @returns {Promise} - resolved promise with the response.data object
      */
     getForumSearchResults(term, type, page, limit, sort) {
@@ -66,7 +66,7 @@ export default {
     /**
      * Report a forum post
      *
-     * @param {number} id - the post ID to report
+     * @param {String|Number} id - the post ID to report
      * @returns {Promise} resolved promise with the response.data object
      */
     reportForumPost(id) {
@@ -78,7 +78,7 @@ export default {
     /**
      * Like a forum thread
      *
-     * @param {number} id - the comment ID to delete
+     * @param {String|Number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
     likeForumPost(id) {
@@ -90,7 +90,7 @@ export default {
     /**
      * Unlike a forum thread
      *
-     * @param {number} id - the comment ID to delete
+     * @param {String|Number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
     unlikeForumPost(id) {
@@ -102,8 +102,8 @@ export default {
     /**
      * Follow a forum thread
      *
-     * @param {number} id - thread id
-     * @param {boolean} isFollowed
+     * @param {String|Number} id - thread id
+     * @param {Boolean} isFollowed
      * @returns {Promise} resolved promise with the response.data object
      */
     followForumsThread(id, isFollowed = false) {
@@ -121,8 +121,8 @@ export default {
     /**
      * Pin a forum thread
      *
-     * @param {number} id - thread id
-     * @param {boolean} pinned
+     * @param {String|Number} id - thread id
+     * @param {Boolean} pinned
      * @returns {Promise} resolved promise with the response.data object
      */
     pinForumsThread(id, pinned) {
@@ -136,8 +136,8 @@ export default {
     /**
      * Lock a forum thread
      *
-     * @param {number} id - thread id
-     * @param {boolean} locked
+     * @param {String|Number} id - thread id
+     * @param {Boolean} locked
      * @returns {Promise} resolved promise with the response.data object
      */
     lockForumsThread(id, locked) {
@@ -151,7 +151,7 @@ export default {
     /**
      * Delete a Forum thread
      *
-     * @param {number} id - thread id
+     * @param {String|Number} id - thread id
      * @returns {Promise} resolved promise with the response object
      */
     deleteForumsPost(id) {
@@ -159,18 +159,4 @@ export default {
             .then(response => response)
             .catch(ErrorHandler);
     },
-
-    /**
-     * Display an error message and console the error if any request fails
-     *
-     * @param {object} error - the error object returned by the request
-     */
-    handleError(error) {
-        console.error(error);
-        Toasts.push({
-            icon: 'doh',
-            title: 'This is Embarrassing! That didn\'t work',
-            message: 'Refresh the page to try once more, if it happens again please let us know using the chat below.'
-        });
-    }
 }
