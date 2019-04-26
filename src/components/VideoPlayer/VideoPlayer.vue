@@ -74,7 +74,14 @@
 
                     <player-button
                             :themeColor="themeColor"
-                            @click.native.stop="toggleCaptionsDrawer">
+                            @click.native.stop="enableChromeCast">
+                        <i class="fab fa-chromecast"></i>
+                    </player-button>
+
+                    <player-button
+                            :themeColor="themeColor"
+                            @click.native.stop="toggleCaptionsDrawer"
+                            :active="currentCaptions != null">
                         <i class="fas fa-closed-captioning"></i>
                     </player-button>
 
@@ -97,7 +104,7 @@
              class="settings-mobile-overlay"
              @click="settingsDrawer = false"></div>
 
-        <transition name="show-from-bottom">
+        <transition :name="isMobile ? 'show-from-bottom' : 'grow-fade'">
             <player-settings
                     v-show="settingsDrawer"
                     :drawer="settingsDrawer"
@@ -111,19 +118,22 @@
                     @setRate="setRate" />
         </transition>
 
-        <transition name="show-from-bottom">
+        <transition :name="isMobile ? 'show-from-bottom' : 'grow-fade'">
             <player-captions
                     v-show="captionsDrawer"
                     :themeColor="themeColor"
-                    :captions="captions" />
+                    :captionOptions="captionOptions"
+                    :currentCaptions="currentCaptions"
+                    @captionsSelected="enableCaptions"/>
         </transition>
     </div>
 </template>
 <script>
     import videojs from 'video.js';
     import 'videojs-contrib-quality-levels';
-    import { getNativeName } from 'iso-639-1';
+    import ISO6391 from '../../../node_modules/iso-639-1';
     import PlayerUtils from './player-utils';
+    import ChromeCastPlugin from './chromecast';
     import ThemeClasses from "../../mixins/ThemeClasses";
     import PlayerButton from './_PlayerButton.vue';
     import PlayerProgress from './_PlayerProgress.vue';
@@ -173,6 +183,8 @@
                 currentVolume: 1,
                 settingsDrawer: false,
                 captionsDrawer: false,
+                currentCaptions: null,
+                chromeCast: null,
             }
         },
         computed: {
@@ -240,6 +252,26 @@
                 cache: false,
                 get() {
                     return this.videojsInstance ? this.videojsInstance.playbackRate() : 1;
+                }
+            },
+
+            captionOptions: {
+                cache: false,
+                get() {
+                    const tracks = this.videojsInstance ? this.videojsInstance.remoteTextTracks() : [];
+                    const tracks_map = [];
+
+                    for(let i = 0; i < tracks.length; i++){
+
+                        if(tracks[i].kind === 'captions'){
+                            tracks_map.push({
+                                language: tracks[i].language,
+                                label: ISO6391.getNativeName(tracks[i].language),
+                            });
+                        }
+                    }
+
+                    return tracks_map;
                 }
             },
 
@@ -347,8 +379,6 @@
             },
 
             toggleCaptionsDrawer() {
-                this.enableCaptions();
-
                 this.captionsDrawer = !this.captionsDrawer;
                 this.settingsDrawer = false;
                 if (this.isMobile && this.captionsDrawer) document.body.classList.add('drawer-open');
@@ -363,15 +393,24 @@
 
             enableCaptions(payload) {
                 const tracks = this.videojsInstance.remoteTextTracks();
+                let foundCaptions;
 
-                console.log(tracks);
                 for(let i = 0; i < tracks.length; i++){
-                    if(tracks[i].kind === 'captions'){
+                    if(tracks[i].kind === 'captions' && tracks[i].language === payload.language){
                         tracks[i].mode = 'showing';
-                        tracks[i].default = true;
+                        foundCaptions = tracks[i].language;
+                    } else {
+                        tracks[i].mode = 'disabled';
                     }
                 }
+                this.currentCaptions = foundCaptions || null;
             },
+
+            async enableChromeCast(){
+                await this.chromeCast.loadMedia(this.currentSource, 'application/x-mpegURL');
+
+                this.chromeCast.loadRemotePlayer();
+            }
         },
         mounted() {
             const player = this.$refs.player;
@@ -422,9 +461,9 @@
                 this.captions.forEach(caption => {
                     this.videojsInstance.addRemoteTextTrack({
                         kind: 'captions',
-                        label: getNativeName(caption.language),
+                        label: ISO6391.getNativeName(caption.language),
                         language: caption.language,
-                        src: caption.mp4,
+                        src: caption.url,
                     }, false);
                 });
 
@@ -489,6 +528,8 @@
 
                 this.mousedown = false;
             });
+
+            this.chromeCast = new ChromeCastPlugin();
         },
         beforeDestroy() {
             document.removeEventListener('click', this.closeDrawers);

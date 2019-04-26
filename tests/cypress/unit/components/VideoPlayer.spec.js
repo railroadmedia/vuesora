@@ -2,7 +2,8 @@ import VideoPlayer from '../../../../src/components/VideoPlayer/VideoPlayer.vue'
 const mountVue = require('cypress-vue-unit-test/src');
 
 const videoProps = {
-    hlsManifestUrl: 'https://player.vimeo.com/external/274923593.m3u8?s=9c979ea3779e99a331215c8d003252d760b19c28&oauth2_token_id=1081192161'
+    hlsManifestUrl: 'https://player.vimeo.com/external/274923593.m3u8?s=9c979ea3779e99a331215c8d003252d760b19c28&oauth2_token_id=1081192161',
+    captions: [{language:"en",url:"https://captions.cloud.vimeo.com/captions/4987495.vtt?expires=1556233938&sig=7dc2b492cbe9088a9dec8f5b8ca4649708d31988&download=dcb-37a-introduction.scc.vtt"}]
 };
 
 describe('Video Player - HLS', () => {
@@ -123,7 +124,7 @@ describe('Video Player - HLS', () => {
         expect(time).to.equal('1:00');
     });
 
-    it('can SET the playback quality', (done) => {
+    it('can set the playback quality', (done) => {
         Cypress.vue.$once('canplaythrough', () => {
             Cypress.vue.setQuality({ index: 2 });
             expect(Cypress.vue.currentSourceIndex).to.equal(2);
@@ -162,11 +163,31 @@ describe('Video Player - HLS', () => {
     });
 
     it('can toggle the settings drawer', () => {
-        Cypress.vue.toggleDrawer();
+        Cypress.vue.toggleSettingsDrawer();
         expect(Cypress.vue.settingsDrawer).to.be.true;
 
-        Cypress.vue.toggleDrawer();
+        Cypress.vue.toggleSettingsDrawer();
         expect(Cypress.vue.settingsDrawer).to.be.false;
+    });
+
+    it('can toggle the captions drawer', () => {
+        Cypress.vue.toggleCaptionsDrawer();
+        expect(Cypress.vue.captionsDrawer).to.be.true;
+
+        Cypress.vue.toggleCaptionsDrawer();
+        expect(Cypress.vue.captionsDrawer).to.be.false;
+    });
+
+    it('can set the captions', (done) => {
+        Cypress.vue.$once('canplaythrough', () => {
+            Cypress.vue.enableCaptions({
+                label: 'English',
+                language: 'en',
+            });
+
+            expect(Cypress.vue.currentCaptions).to.equal('en');
+            done();
+        });
     });
 });
 
