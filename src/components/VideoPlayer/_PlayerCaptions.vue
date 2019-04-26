@@ -4,11 +4,16 @@
             <div class="flex flex-row">
                 <div class="flex flex-column">
                     <ul class="list-style-none body text-right dense font-bold">
-                        <li class="pa-1 hover-bg-grey-4 pointer relative"
-                            :class="[themeTextClass, 'selected-caption']">
-                            English
+                        <li v-for="caption in captionOptions"
+                            :key="caption.language"
+                            class="pa-1 hover-bg-grey-4 pointer relative"
+                            :class="[{ 'selected-caption': isSelected(caption) }, isSelected(caption) ? themeTextClass : '']"
+                            @click="selectCaptionHandler(caption)">
+                            {{ caption.label }}
                         </li>
-                        <li class="pa-1 hover-bg-grey-4 pointer">
+                        <li class="pa-1 hover-bg-grey-4 pointer relative"
+                            :class="noCaptions ? [this.themeTextClass, 'selected-caption'] : ''"
+                            @click="selectCaptionHandler({})">
                             Off
                         </li>
                     </ul>
@@ -24,5 +29,37 @@
     export default {
         mixins: [ThemeClasses],
         name: 'player-captions',
+        props: {
+            themeColor: {
+                type: String,
+                default: () => 'drumeo',
+            },
+
+            captionOptions: {
+                type: Array,
+                default: () => []
+            },
+
+            currentCaptions: {
+                type: String,
+                default: () => null
+            }
+        },
+
+        computed: {
+            noCaptions(){
+                return this.currentCaptions === null;
+            }
+        },
+
+        methods: {
+            isSelected(caption){
+                return caption.language === this.currentCaptions;
+            },
+
+            selectCaptionHandler(caption){
+                this.$emit('captionsSelected', caption);
+            },
+        }
     }
 </script>
