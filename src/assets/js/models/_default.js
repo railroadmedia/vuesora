@@ -1,7 +1,7 @@
 import { DateTime, Duration } from "luxon";
 import { Content as ContentHelpers } from 'js-helper-functions';
 
-export default class DataMapper {
+export default class ContentModel {
     constructor({brand = 'drumeo', post}){
         this.brand = brand;
         this.post = post;
@@ -12,7 +12,7 @@ export default class DataMapper {
             black_title: this.getPostField('title'),
             description: this.getPostDatum('description'),
             sheet_music: null,
-            grey_title: DataMapper.mapDifficulty(this.post),
+            grey_title: ContentModel.mapDifficulty(this.post),
         };
 
         this.list = {
@@ -33,7 +33,7 @@ export default class DataMapper {
             black_title: this.getPostField('title'),
             column_data: [
                 this.postInstructor,
-                DataMapper.mapDifficulty(post)
+                ContentModel.mapDifficulty(post)
             ]
         };
     }

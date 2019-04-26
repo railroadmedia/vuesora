@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class LearningPathPartDataMapper extends DataMapper {
+export default class LearningPathPartModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

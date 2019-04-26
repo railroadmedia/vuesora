@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class CoursePartDataMapper extends DataMapper {
+export default class CoursePartModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
@@ -16,7 +16,7 @@ export default class CoursePartDataMapper extends DataMapper {
             this.card.color_title = this.getTypeWithIcon();
 
             this.list.column_data = [
-                this.postDuration
+                this.getPostDuration()
             ];
         }
     }
