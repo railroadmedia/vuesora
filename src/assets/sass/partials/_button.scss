@@ -46,6 +46,10 @@ button {
       height:35px;
     }
 
+    &:disabled {
+      opacity:.5;
+    }
+
     & > span {
       pointer-events:none;
       position:relative;
