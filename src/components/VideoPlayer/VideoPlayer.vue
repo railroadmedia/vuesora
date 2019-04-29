@@ -9,6 +9,15 @@
                     :themeColor="themeColor" />
         </transition>
 
+        <transition name="grow-fade">
+            <div v-show="isChromeCastConnected"
+                 class="cast-dialog flex flex-center bg-black">
+                <h1 class="heading text-white">
+                    Video is Casting to Another Device
+                </h1>
+            </div>
+        </transition>
+
         <video ref="player"
                playsinline
                crossorigin="anonymous"
@@ -74,7 +83,8 @@
 
                     <player-button
                             :themeColor="themeColor"
-                            @click.native.stop="enableChromeCast">
+                            @click.native.stop="enableChromeCast"
+                            :active="this.chromeCast && this.chromeCast.Connected">
                         <i class="fab fa-chromecast"></i>
                     </player-button>
 
@@ -87,13 +97,15 @@
 
                     <player-button
                             :themeColor="themeColor"
-                            @click.native.stop="toggleSettingsDrawer">
+                            @click.native.stop="toggleSettingsDrawer"
+                            :disabled="isChromeCastConnected">
                         <i class="fas fa-cog"></i>
                     </player-button>
 
                     <player-button
                             @click.native="fullscreen"
-                            :themeColor="themeColor">
+                            :themeColor="themeColor"
+                            :disabled="isChromeCastConnected">
                         <i class="fas fa-expand"></i>
                     </player-button>
                 </div>
@@ -185,6 +197,7 @@
                 captionsDrawer: false,
                 currentCaptions: null,
                 chromeCast: null,
+                isChromeCastConnected: false,
             }
         },
         computed: {
@@ -285,18 +298,26 @@
         },
         methods: {
             playPause() {
-                if (this.isPlaying) {
-                    this.videojsInstance.pause();
+                if(this.chromeCast && this.chromeCast.Connected){
+                    this.chromeCast.playOrPause();
                 } else {
-                    this.videojsInstance.play();
+                    if (this.isPlaying) {
+                        this.videojsInstance.pause();
+                    } else {
+                        this.videojsInstance.play();
+                    }
                 }
             },
 
             seek(time) {
-                this.videojsInstance.currentTime(time);
+                if(this.isChromeCastConnected){
+                    this.chromeCast.seek(time);
+                } else {
+                    this.videojsInstance.currentTime(time);
 
-                if (this.isPlaying) {
-                    this.videojsInstance.play();
+                    if (this.isPlaying) {
+                        this.videojsInstance.play();
+                    }
                 }
             },
 
@@ -313,6 +334,10 @@
             changeVolume(payload) {
                 this.videojsInstance.volume(payload.volume / 100);
                 this.currentVolume = this.videojsInstance.volume();
+
+                if(this.isChromeCastConnected){
+                    this.chromeCast.volume(payload.volume);
+                }
             },
 
             parseTime: (time) => PlayerUtils.parseTime(time),
@@ -404,12 +429,32 @@
                     }
                 }
                 this.currentCaptions = foundCaptions || null;
+
+                if(this.isChromeCastConnected){
+                    this.chromeCast.changeSubtitle(foundCaptions ? 0 : null);
+                }
             },
 
-            async enableChromeCast(){
-                await this.chromeCast.loadMedia(this.currentSource, 'application/x-mpegURL');
-
-                this.chromeCast.loadRemotePlayer();
+            enableChromeCast(){
+                this.chromeCast.cast({
+                    content: this.currentSource,
+                    poster: this.poster,
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    subtitles: this.captions.map(caption => ({
+                        active: false,
+                        srclang: caption.language,
+                        src: caption.url,
+                    })),
+                    time: this.currentTime,
+                    volume: this.currentVolume,
+                    muted: false,
+                    paused: false,
+                }, (err) => {
+                    window.addEventListener('unload', () => {
+                        this.chromeCast.disconnect();
+                    });
+                })
             }
         },
         mounted() {
@@ -530,6 +575,55 @@
             });
 
             this.chromeCast = new ChromeCastPlugin();
+
+            this.chromeCast.on('available', () => {
+                console.log('available');
+            });
+
+            this.chromeCast.on('time', event => {
+                if(event.time){
+                    this.currentTime = event.time;
+                }
+            });
+
+            this.chromeCast.on('playOrPause', event => {
+                this.isPlaying = !event;
+            });
+
+            this.chromeCast.on('media', event => {
+                this.isPlaying = true;
+                this.isChromeCastConnected = true;
+
+                this.videojsInstance.pause();
+                if(this.videojsInstance.isFullscreen()){
+                    this.videojsInstance.exitFullscreen();
+                    this.videojsInstance.isFullscreen(false);
+                }
+
+                const currentCaptions = this.captions.filter(caption => caption.language === this.currentCaptions);
+                if(currentCaptions.length){
+                    this.enableCaptions(currentCaptions[0]);
+                }
+
+                if(this.currentTime){
+                    this.seek(this.currentTime);
+                }
+            });
+
+            this.chromeCast.on('disconnect', event => {
+                this.isChromeCastConnected = false;
+                this.isPlaying = true;
+
+                if(this.currentTime){
+                    this.seek(this.currentTime);
+                }
+            });
+
+            this.chromeCast.on('state', event => {
+                if(event === 'IDLE'){
+                    this.chromeCast.disconnect();
+                }
+            });
         },
         beforeDestroy() {
             document.removeEventListener('click', this.closeDrawers);
