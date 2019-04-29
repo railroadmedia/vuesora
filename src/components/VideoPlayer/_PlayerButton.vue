@@ -1,7 +1,8 @@
 <template>
     <div class="flex flex-column player-button">
         <button class="btn collapse-square"
-                :class="[themeHoverTextClass]">
+                :class="!disabled ? themeHoverTextClass : ''"
+                :disabled="disabled">
             <span class="flat text-white"
                   :class="active ? themeTextClass : ''">
                 <slot></slot>
@@ -20,6 +21,10 @@
             active: {
                 type: Boolean,
                 default: () => false
+            },
+            disabled: {
+                type: Boolean,
+                default: () => false,
             }
         }
     }
