@@ -26,18 +26,18 @@ export default {
     /**
      * Updates the cart item quantity
      *
-     * @param {number} productId
+     * @param {string} productSku
      * @param {number} quantity
      *
      * @returns {Promise}
      */
     updateCartItemQuantity({
-        productId,
+        productSku,
         quantity
     }) {
         return axios
-                .put(
-                    '/ecommerce/update-product-quantity/' + productId + '/' + quantity,
+                .patch(
+                    '/ecommerce/json/update-product-quantity/' + productSku + '/' + quantity,
                     {}
                 )
                 .then(response => response.data)
@@ -47,14 +47,14 @@ export default {
     /**
      * Removes a cart item
      *
-     * @param {number} productId
+     * @param {string} productSku
      *
      * @returns {Promise}
      */
-    removeCartItem({productId}) {
+    removeCartItem({productSku}) {
         return axios
-                .put(
-                    '/ecommerce/remove-from-cart/' + productId,
+                .delete(
+                    '/ecommerce/json/remove-from-cart/' + productSku,
                     {}
                 )
                 .then(response => response.data)

@@ -9,7 +9,7 @@
                     <select
                         class="order-form-input no-label"
                         v-model.lazy="paymentMethod">
-                        <option value="credit-card">Credit Card</option>
+                        <option value="credit_card">Credit Card</option>
                         <option value="paypal">PayPal</option>
                     </select>
                 </div>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <!-- v-show is used to keep the stripe elements iframes loaded but hidden, using v-if would require re-initialization -->
-            <div class="flex flex-row pv-1" v-show="paymentMethod == 'credit-card'">
+            <div class="flex flex-row pv-1" v-show="paymentMethod == 'credit_card'">
                 <div class="md-6 ph-1">
                     <div
                         class="stripe-element-container order-form-input no-label"
@@ -176,7 +176,7 @@
                         message: 'Invalid Zip'
                     },
                 },
-                selectedPaymentMethod: 'credit-card',
+                selectedPaymentMethod: 'credit_card',
                 selectedPaymentMethodIcon: '',
                 controlsMap: {
                     billingState: 'state',
@@ -296,7 +296,7 @@
             },
             selectPaymentMethodIcon(name) {
                 this.selectedPaymentMethodIcon = name;
-                this.selectedPaymentMethod = (name == 'paypal') ? 'paypal' : 'credit-card';
+                this.selectedPaymentMethod = (name == 'paypal') ? 'paypal' : 'credit_card';
                 this.$emit(
                     'savePaymentData',
                     {
@@ -308,7 +308,7 @@
             validateControl(controlName) {
 
                 if (
-                    this.selectedPaymentMethod == 'credit-card' &&
+                    this.selectedPaymentMethod == 'credit_card' &&
                     this.stripeElementsCompleteness.hasOwnProperty(controlName) &&
                     !this.stripeElementsCompleteness[controlName]
                 ) {

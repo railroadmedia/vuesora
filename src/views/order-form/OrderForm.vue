@@ -3,7 +3,7 @@
         <h3 class="subheading text-center">Your Order is Protected by Our Extended 90-Day 100% Money Back
                 Guarantee!</h3>
         <order-form-cart
-            :cart-items="items"></order-form-cart>
+            :cart-items="cartData.items"></order-form-cart>
         <order-form-account
             :current-user="user"
             :requires-account="requiresAccount"
@@ -50,7 +50,7 @@
         },
         data() {
             return {
-                items: [],
+                cartData: {},
                 requiresAccount: false,
                 requiresShippingAddress: false,
                 validationForms: {
@@ -76,9 +76,11 @@
                 type: Object,
                 default: () => null
             },
-            cartItems: {
-                type: Array,
-                default: () => []
+            cart: {
+                type: Object,
+                default: () => {
+                    items: []
+                }
             },
             user: {
                 type: Object,
@@ -100,17 +102,17 @@
             },
         },
         methods: {
-            processCartItems(cartItems) {
+            processCart(cart) {
 
-                this.items = cartItems;
+                this.cartData = cart;
                 this.requiresAccount = false;
                 this.requiresShippingAddress = false;
 
-                this.items.forEach(item => {
-                    if (item.attributes.subscriptionIntervalType) {
+                this.cartData.items.forEach(item => {
+                    if (item.subscription_interval_type) {
                         this.requiresAccount = true;
                     }
-                    if (item.attributes.requiresShippingAddress) {
+                    if (item.requires_shipping) {
                         this.requiresShippingAddress = true;
                     }
                 });
@@ -161,7 +163,7 @@
 
                     if (complete) {
                         // if subforms validation succeeded
-                        if (this.factoryState.payment['payment_method_type'] == 'credit-card') {
+                        if (this.factoryState.payment['payment_method_type'] == 'credit_card') {
                             // trigger stripe token fetch
                             this.stripeTokenTrigger = !this.stripeTokenTrigger;
                         } else {
@@ -173,7 +175,6 @@
             },
             submitOrder() {
                 let payload = this.createOrderPayload();
-                console.log("OrderForm::submitOrder payload: %s", JSON.stringify(payload));
 
                 Api
                     .submitOrder(payload)
@@ -189,33 +190,35 @@
                 let payload = {
                     'gateway': this.gateway,
                     'payment_method_type': this.factoryState.payment['payment_method_type'],
-                    'billing-country': this.factoryState.payment.country,
-                    'billing-region': this.factoryState.payment.state,
-                    'billing-zip-or-postal-code': this.factoryState.payment['zip_or_postal_code'],
+                    'billing_country': this.factoryState.payment.country,
+                    'billing_region': this.factoryState.payment.state,
+                    'billing_zip_or_postal_code': this.factoryState.payment['zip_or_postal_code'],
                 };
 
                 if (!this.user) {
                     if (this.requiresAccount) {
-                        payload['account-creation-email'] = this.factoryState.account.accountEmail;
-                        payload['account-creation-password'] = this.factoryState.account.accountPassword;
+                        payload['account_creation_email'] = this.factoryState.account.accountEmail;
+                        payload['account_creation_password'] = this.factoryState.account.accountPassword;
+                        payload['account_creation_password_confirmation'] = this.factoryState.account.accountPasswordConfirmation;
                     } else {
-                        payload['billing-email'] = this.factoryState.account.billingEmail;
+                        payload['billing_email'] = this.factoryState.account.billingEmail;
                     }
                 }
 
                 if (this.requiresShippingAddress) {
-                    payload['shipping-first-name'] = this.factoryState.shipping['first_name'];
-                    payload['shipping-last-name'] = this.factoryState.shipping['last_name'];
-                    payload['shipping-address-line-1'] = this.factoryState.shipping['street_line_one'];
-                    payload['shipping-address-line-2'] = this.factoryState.shipping['street_line_two'];
-                    payload['shipping-zip-or-postal-code'] = this.factoryState.shipping['zip_or_postal_code'];
-                    payload['shipping-city'] = this.factoryState.shipping['city'];
-                    payload['shipping-region'] = this.factoryState.shipping['state'];
-                    payload['shipping-country'] = this.factoryState.shipping['country'];
+                    payload['shipping_first_name'] = this.factoryState.shipping['first_name'];
+                    payload['shipping_last_name'] = this.factoryState.shipping['last_name'];
+                    payload['shipping_address_line_1'] = this.factoryState.shipping['street_line_one'];
+                    payload['shipping_address_line_2'] = this.factoryState.shipping['street_line_two'];
+                    payload['shipping_zip_or_postal_code'] = this.factoryState.shipping['zip_or_postal_code'];
+                    payload['shipping_city'] = this.factoryState.shipping['city'];
+                    payload['shipping_region'] = this.factoryState.shipping['state'];
+                    payload['shipping_country'] = this.factoryState.shipping['country'];
                 }
 
-                if (this.factoryState.payment['payment_method_type'] == 'credit-card') {
-                    payload['card-token'] = this.factoryState.payment['card-token'];
+                if (this.factoryState.payment['payment_method_type'] == 'credit_card') {
+                    console.log("OrderForm::createOrderPayload card token: %s", JSON.stringify(this.factoryState.payment['card-token']));
+                    payload['card_token'] = this.factoryState.payment['card-token'];
                 }
 
                 return payload;
@@ -223,23 +226,23 @@
         },
         mounted() {
 
-            this.processCartItems(this.cartItems);
+            this.processCart(this.cart);
 
-            this.$root.$on('updateCartData', (cartData) => {
+            this.$root.$on('updateCartData', (response) => {
                 // triggered by cart items quantity update/removal
-                this.processCartItems(cartData.data);
+                this.processCart(response.meta.cart);
 
-                if (cartData.meta && cartData.meta.notAvailableProducts) {
-                    cartData.meta.notAvailableProducts.forEach(error => {
-                        Toasts.push({
-                            icon: 'astonished',
-                            themeColor: this.themeColor,
-                            title: 'Oups',
-                            message: error,
-                            timeout: 20000
-                        });
-                    })
-                }
+                // if (cartData.meta && cartData.meta.notAvailableProducts) {
+                //     cartData.meta.notAvailableProducts.forEach(error => {
+                //         Toasts.push({
+                //             icon: 'astonished',
+                //             themeColor: this.themeColor,
+                //             title: 'Oups',
+                //             message: error,
+                //             timeout: 20000
+                //         });
+                //     })
+                // }
 
                 // todo - PMP-339 - update shipping, tax, total and playment plans data
             });

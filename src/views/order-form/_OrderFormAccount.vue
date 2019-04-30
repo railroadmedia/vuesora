@@ -194,6 +194,13 @@
                 set(value) {
                     this.controls.accountPasswordConfirmation = value;
                     this.validatePasswordConfirmation();
+                    this.$emit(
+                        'saveAccountData',
+                        {
+                            field: 'accountPasswordConfirmation',
+                            value: this.controls.accountPasswordConfirmation
+                        }
+                    );
                 }
             },
             createLabel() {
