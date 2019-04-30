@@ -451,11 +451,7 @@
                     volume: this.currentVolume,
                     muted: false,
                     paused: false,
-                }, (err) => {
-                    window.addEventListener('unload', () => {
-                        this.chromeCast.disconnect();
-                    });
-                })
+                });
             }
         },
         mounted() {
@@ -537,6 +533,10 @@
             this.chromeCast = new ChromeCastPlugin();
             Object.keys(this.chromeCastEventHandlers).forEach(event => {
                 this.chromeCast.on(event, this.chromeCastEventHandlers[event]);
+            });
+            // Immediately disconnect ChromeCast if the user refreshes/leaves the page
+            window.addEventListener('unload', () => {
+                this.chromeCast.disconnect();
             });
         },
         beforeDestroy() {
