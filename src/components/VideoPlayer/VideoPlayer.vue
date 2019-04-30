@@ -81,12 +81,25 @@
                             :currentVolume="currentVolume"
                             @volumeChange="changeVolume" />
 
-                    <player-button
-                            :themeColor="themeColor"
-                            @click.native.stop="enableChromeCast"
-                            :active="this.chromeCast && this.chromeCast.Connected">
-                        <i class="fab fa-chromecast"></i>
-                    </player-button>
+                    <transition name="grow-fade">
+                        <player-button
+                                v-if="isChromeCastSupported"
+                                :themeColor="themeColor"
+                                @click.native.stop="enableChromeCast"
+                                :active="this.chromeCast && this.chromeCast.Connected">
+                            <i class="fab fa-chromecast"></i>
+                        </player-button>
+                    </transition>
+
+                    <transition name="grow-fade">
+                        <player-button
+                                v-if="isAirplaySupported"
+                                :themeColor="themeColor"
+                                @click.native.stop="enableAirplay"
+                                :active="isAirplayConnected">
+                            <i class="fab fa-apple"></i>
+                        </player-button>
+                    </transition>
 
                     <player-button
                             :themeColor="themeColor"
@@ -181,6 +194,11 @@
                 type: Array,
                 default: () => []
             },
+
+            poster: {
+                type: String,
+                default: () => null
+            },
         },
         data() {
             return {
@@ -198,7 +216,10 @@
                 captionsDrawer: false,
                 currentCaptions: null,
                 chromeCast: null,
+                isChromeCastSupported: false,
                 isChromeCastConnected: false,
+                isAirplaySupported: false,
+                isAirplayConnected: false,
             }
         },
         computed: {
@@ -452,7 +473,11 @@
                     muted: false,
                     paused: false,
                 });
-            }
+            },
+
+            enableAirplay(){
+                this.$refs.player.webkitShowPlaybackTargetPicker();
+            },
         },
         mounted() {
             const player = this.$refs.player;
@@ -485,7 +510,7 @@
                 textTrackSettings: false,
                 html5: {
                     hls: {
-                        overrideNative: !this.isSafari,
+                        overrideNative: false,
                     },
                     nativeTextTracks: true,
                 }
@@ -493,30 +518,35 @@
 
             this.videojsInstance.src(source);
 
-            this.videojsInstance.ready(() => {
+            this.videojsInstance.on('ready', () => {
                 this.hlsInstance = this.videojsInstance.tech({IWillNotUseThisInPlugins: true}).hls;
-
-                if (this.isSafari) {
-                    this.videojsInstance.load();
-                }
 
                 this.captions.forEach(caption => {
                     this.videojsInstance.addRemoteTextTrack({
                         kind: 'captions',
                         label: ISO6391.getNativeName(caption.language),
+                        mode: 'disabled',
                         language: caption.language,
                         src: caption.url,
                     }, false);
                 });
 
+                if (this.isSafari) {
+                    this.videojsInstance.load();
+
+                    setTimeout(() => {
+                        this.enableCaptions({});
+                    }, 2000);
+                }
 
                 this.playerReady = true;
                 this.$emit('playerReady');
+
+                Object.keys(this.videoJsEventHandlers).forEach(event => {
+                    this.videojsInstance.on(event, this.videoJsEventHandlers[event]);
+                });
             });
 
-            Object.keys(this.videoJsEventHandlers).forEach(event => {
-                this.videojsInstance.on(event, this.videoJsEventHandlers[event]);
-            });
 
             document.addEventListener('click', this.closeDrawers);
 
@@ -529,14 +559,33 @@
                 this.mousedown = false;
             });
 
+
             // Initialize the ChromeCast plugin and it's event handlers
             this.chromeCast = new ChromeCastPlugin();
-            Object.keys(this.chromeCastEventHandlers).forEach(event => {
-                this.chromeCast.on(event, this.chromeCastEventHandlers[event]);
+
+            this.chromeCast.on('available', () => {
+                this.isChromeCastSupported = true;
+
+                Object.keys(this.chromeCastEventHandlers).forEach(event => {
+                    this.chromeCast.on(event, this.chromeCastEventHandlers[event]);
+                });
+
+                // Immediately disconnect ChromeCast if the user refreshes/leaves the page
+                window.addEventListener('unload', () => {
+                    this.chromeCast.disconnect();
+                });
             });
-            // Immediately disconnect ChromeCast if the user refreshes/leaves the page
-            window.addEventListener('unload', () => {
-                this.chromeCast.disconnect();
+
+            if(window.WebKitPlaybackTargetAvailabilityEvent){
+                this.$refs.player.addEventListener('webkitplaybacktargetavailabilitychanged', event => {
+                    if(event.availability === 'available'){
+                        this.isAirplaySupported = true;
+                    }
+                });
+            }
+
+            this.$refs.player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', event => {
+                this.isAirplayConnected = !this.isAirplayConnected;
             });
         },
         beforeDestroy() {
