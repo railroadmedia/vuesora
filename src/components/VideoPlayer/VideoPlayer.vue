@@ -153,9 +153,10 @@
     import PlayerSettings from './_PlayerSettings.vue';
     import PlayerLoading from './_PlayerLoading.vue';
     import PlayerCaptions from './_PlayerCaptions.vue';
+    import EventHandlers from './event-handlers';
 
     export default {
-        mixins: [ThemeClasses],
+        mixins: [ThemeClasses, EventHandlers],
         name: 'video-player',
         components: {
             'player-button': PlayerButton,
@@ -517,51 +518,9 @@
                 this.$emit('playerReady');
             });
 
-            this.videojsInstance.on('canplaythrough', () => {
-                this.$emit('canplaythrough');
-
-                setTimeout(() => {
-                    this.loading = false;
-                }, 500);
+            Object.keys(this.videoJsEventHandlers).forEach(event => {
+                this.videojsInstance.on(event, this.videoJsEventHandlers[event]);
             });
-
-            this.videojsInstance.on('loadeddata', () => {
-                if (this.hlsInstance) {
-                    this.setQuality({index: this.getDefaultPlaybackQualityIndex()});
-                }
-
-                setTimeout(() => {
-                    this.loading = false;
-                }, 500);
-            });
-
-            this.videojsInstance.on('durationchange', () => {
-                this.totalDuration = this.videojsInstance.duration();
-            });
-
-            this.videojsInstance.on(['waiting', 'pause'], () => {
-                this.isPlaying = false;
-
-                this.$emit('paused');
-            });
-
-            this.videojsInstance.on('waiting', () => {
-                this.loading = true;
-            });
-
-            this.videojsInstance.on(['play', 'playing'], () => {
-                this.isPlaying = true;
-                this.loading = false;
-
-                this.$emit('playing');
-            });
-
-            this.videojsInstance.on('timeupdate', () => {
-                this.totalDuration = this.videojsInstance.duration();
-                this.currentTime = this.videojsInstance.currentTime();
-            });
-
-            this.videojsInstance.on('userinactive', this.closeDrawers);
 
             document.addEventListener('click', this.closeDrawers);
 
@@ -574,55 +533,10 @@
                 this.mousedown = false;
             });
 
+            // Initialize the ChromeCast plugin and it's event handlers
             this.chromeCast = new ChromeCastPlugin();
-
-            this.chromeCast.on('available', () => {
-                console.log('available');
-            });
-
-            this.chromeCast.on('time', event => {
-                if(event.time){
-                    this.currentTime = event.time;
-                }
-            });
-
-            this.chromeCast.on('playOrPause', event => {
-                this.isPlaying = !event;
-            });
-
-            this.chromeCast.on('media', event => {
-                this.isPlaying = true;
-                this.isChromeCastConnected = true;
-
-                this.videojsInstance.pause();
-                if(this.videojsInstance.isFullscreen()){
-                    this.videojsInstance.exitFullscreen();
-                    this.videojsInstance.isFullscreen(false);
-                }
-
-                const currentCaptions = this.captions.filter(caption => caption.language === this.currentCaptions);
-                if(currentCaptions.length){
-                    this.enableCaptions(currentCaptions[0]);
-                }
-
-                if(this.currentTime){
-                    this.seek(this.currentTime);
-                }
-            });
-
-            this.chromeCast.on('disconnect', event => {
-                this.isChromeCastConnected = false;
-                this.isPlaying = true;
-
-                if(this.currentTime){
-                    this.seek(this.currentTime);
-                }
-            });
-
-            this.chromeCast.on('state', event => {
-                if(event === 'IDLE'){
-                    this.chromeCast.disconnect();
-                }
+            Object.keys(this.chromeCastEventHandlers).forEach(event => {
+                this.chromeCast.on(event, this.chromeCastEventHandlers[event]);
             });
         },
         beforeDestroy() {
