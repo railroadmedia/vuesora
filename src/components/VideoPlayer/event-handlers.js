@@ -3,11 +3,9 @@ export default {
         return {
             videoJsEventHandlers: {
                 'canplaythrough': event => {
-                    this.$emit('canplaythrough');
-
                     setTimeout(() => {
                         this.loading = false;
-                        this.emit('canplaythrough', event);
+                        this.$emit('canplaythrough', event);
                     }, 500);
                 },
 
@@ -30,14 +28,22 @@ export default {
 
                 'waiting': event => {
                     this.loading = true;
+                    this.isPlaying = false;
 
                     this.$emit('waiting', event);
                 },
 
-                'paused': event => {
+                'pause': event => {
                     this.isPlaying = false;
 
-                    this.$emit('paused', event);
+                    this.$emit('pause', event);
+                },
+
+                'play': event => {
+                    this.isPlaying = true;
+                    this.loading = false;
+
+                    this.$emit('playing', event);
                 },
 
                 'playing': event => {
@@ -51,7 +57,11 @@ export default {
                     this.totalDuration = this.videojsInstance.duration();
                     this.currentTime = this.videojsInstance.currentTime();
 
-                    this.emit('timeupdate', event);
+                    this.$emit('timeupdate', event);
+                },
+
+                'error': event => {
+                    console.log(event);
                 },
 
                 'userinactive': this.closeDrawers

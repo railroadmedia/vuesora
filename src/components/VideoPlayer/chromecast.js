@@ -23,8 +23,10 @@ export default class ChromeCastPlugin {
         };
         this.Media = this.Template;
 
-        ChromeCastPlugin.loadChromeCastAPI().then(() => {
-            this.Init();
+        ChromeCastPlugin.loadChromeCastAPI().then(isAvailable => {
+            if(isAvailable){
+                this.Init();
+            }
         })
     }
 
