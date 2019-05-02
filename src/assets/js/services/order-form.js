@@ -14,7 +14,7 @@ export default {
 
         return axios
                 .put(
-                    '/ecommerce/order',
+                    '/ecommerce/json/order-form/submit',
                     payload
                 )
                 .then(response => response.data)
