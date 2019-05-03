@@ -19,7 +19,10 @@ export default {
                 )
                 .then(response => response.data)
                 .catch((error) => {
-                    return error;
+                    if (error.response.status == 422 && error.response.data) {
+                        error = error.response.data
+                    }
+                    return Promise.reject(error);
                 });
     },
 

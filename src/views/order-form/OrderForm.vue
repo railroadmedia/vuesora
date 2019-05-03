@@ -25,6 +25,7 @@
             :stripe-publishable-key="stripePublishableKey"
             :validation-trigger="validationTrigger"
             :stripe-token-trigger="stripeTokenTrigger"
+            :backend-payment-error="backendPaymentError"
             @startValidation="startValidation"
             @savePaymentData="updatePaymentData"
             @registerSubformValidation="registerSubformValidation"></order-form-payment>
@@ -58,13 +59,12 @@
                     shipping: false,
                     payment: false
                 },
-                factoryState: {
-                    account: {},
-                    shipping: this.shippingAddress || {},
-                    payment: this.billingAddress || {},
-                },
+                accountStateFactory: {},
+                shippingStateFactory: {},
+                paymentStateFactory: {},
                 validationTrigger: false,
                 stripeTokenTrigger: false,
+                backendPaymentError: null,
             }
         },
         props: {
@@ -119,15 +119,15 @@
             },
             updateAccountData({field, value}) {
 
-                this.factoryState.account[field] = value;
+                this.$set(this.accountStateFactory, field, value);
             },
             updateShippingData({field, value}) {
 
-                this.factoryState.shipping[field] = value;
+                this.$set(this.shippingStateFactory, field, value);
             },
             updatePaymentData({field, value}) {
 
-                this.factoryState.payment[field] = value;
+                this.$set(this.paymentStateFactory, field, value);
 
                 if (field == 'card-token') {
                     // stripe token fetch succeeded, submit credit card payment type order
@@ -163,7 +163,7 @@
 
                     if (complete) {
                         // if subforms validation succeeded
-                        if (this.factoryState.payment['payment_method_type'] == 'credit_card') {
+                        if (this.paymentStateFactory['payment_method_type'] == 'credit_card') {
                             // trigger stripe token fetch
                             this.stripeTokenTrigger = !this.stripeTokenTrigger;
                         } else {
@@ -174,54 +174,84 @@
                 }
             },
             submitOrder() {
+
+                this.backendPaymentError = null;
+
                 let payload = this.createOrderPayload();
 
                 Api
                     .submitOrder(payload)
-                    .then((result) => {
-                        console.log("OrderForm::submitOrder result: %s", JSON.stringify(result));
-                    })
-                    .catch((error) => {
-                        console.log("OrderForm::submitOrder error: %s", JSON.stringify(error));
-                    });
+                    .then(this.orderSubmitedSuccessfully)
+                    .catch(this.handleOrderSubmitError);
             },
             createOrderPayload() {
 
                 let payload = {
                     'gateway': this.gateway,
-                    'payment_method_type': this.factoryState.payment['payment_method_type'],
-                    'billing_country': this.factoryState.payment.country,
-                    'billing_region': this.factoryState.payment.state,
-                    'billing_zip_or_postal_code': this.factoryState.payment['zip_or_postal_code'],
+                    'payment_method_type': this.paymentStateFactory['payment_method_type'],
+                    'billing_country': this.paymentStateFactory.country,
+                    'billing_region': this.paymentStateFactory.state,
                 };
 
                 if (!this.user) {
                     if (this.requiresAccount) {
-                        payload['account_creation_email'] = this.factoryState.account.accountEmail;
-                        payload['account_creation_password'] = this.factoryState.account.accountPassword;
-                        payload['account_creation_password_confirmation'] = this.factoryState.account.accountPasswordConfirmation;
+                        payload['account_creation_email'] = this.accountStateFactory.accountEmail;
+                        payload['account_creation_password'] = this.accountStateFactory.accountPassword;
+                        payload['account_creation_password_confirmation'] = this.accountStateFactory.accountPasswordConfirmation;
                     } else {
-                        payload['billing_email'] = this.factoryState.account.billingEmail;
+                        payload['billing_email'] = this.accountStateFactory.billingEmail;
                     }
                 }
 
                 if (this.requiresShippingAddress) {
-                    payload['shipping_first_name'] = this.factoryState.shipping['first_name'];
-                    payload['shipping_last_name'] = this.factoryState.shipping['last_name'];
-                    payload['shipping_address_line_1'] = this.factoryState.shipping['street_line_one'];
-                    payload['shipping_address_line_2'] = this.factoryState.shipping['street_line_two'];
-                    payload['shipping_zip_or_postal_code'] = this.factoryState.shipping['zip_or_postal_code'];
-                    payload['shipping_city'] = this.factoryState.shipping['city'];
-                    payload['shipping_region'] = this.factoryState.shipping['state'];
-                    payload['shipping_country'] = this.factoryState.shipping['country'];
+                    payload['shipping_first_name'] = this.shippingStateFactory['first_name'];
+                    payload['shipping_last_name'] = this.shippingStateFactory['last_name'];
+                    payload['shipping_address_line_1'] = this.shippingStateFactory['street_line_one'];
+                    payload['shipping_address_line_2'] = this.shippingStateFactory['street_line_two'];
+                    payload['shipping_zip_or_postal_code'] = this.shippingStateFactory['zip_or_postal_code'];
+                    payload['shipping_city'] = this.shippingStateFactory['city'];
+                    payload['shipping_region'] = this.shippingStateFactory['state'];
+                    payload['shipping_country'] = this.shippingStateFactory['country'];
                 }
 
-                if (this.factoryState.payment['payment_method_type'] == 'credit_card') {
-                    console.log("OrderForm::createOrderPayload card token: %s", JSON.stringify(this.factoryState.payment['card-token']));
-                    payload['card_token'] = this.factoryState.payment['card-token'];
+                if (this.paymentStateFactory['payment_method_type'] == 'credit_card') {
+                    payload['card_token'] = this.paymentStateFactory['card-token'];
                 }
 
                 return payload;
+            },
+            orderSubmitedSuccessfully() {
+                Toasts.push({
+                    icon: 'happy',
+                    themeColor: this.themeColor,
+                    title: 'Success',
+                    message: 'Your order was successfully placed',
+                    timeout: 20000
+                });
+
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 5000);
+            },
+            handleOrderSubmitError(response) {
+                console.log("OrderForm::handleOrderSubmitError response: %s", JSON.stringify(response));
+
+                Toasts.push({
+                    icon: 'sad',
+                    themeColor: this.themeColor,
+                    title: 'Error',
+                    message: 'An error occured while processing the order details',
+                    timeout: 10000
+                });
+
+                if (
+                    response.errors &&
+                    response.errors.detail &&
+                    response.errors.detail.type &&
+                    response.errors.detail.type == 'card_error'
+                ) {
+                    this.backendPaymentError = response.errors;
+                }
             }
         },
         mounted() {
