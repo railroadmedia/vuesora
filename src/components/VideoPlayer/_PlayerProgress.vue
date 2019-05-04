@@ -44,6 +44,12 @@
                 default: () => 0
             }
         },
+        data(){
+            return {
+                toolTipOffset: 0,
+                toolTipInterval: null,
+            }
+        },
         computed: {
             progressTransforms(){
                 if(this.mousedown){
@@ -66,24 +72,32 @@
                 }
             },
 
-            toolTipOffset(){
+            toolTipValue(){
+                return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
+            }
+        },
+        methods: {
+            getToolTipOffset(){
                 let offset = (this.currentMouseX / 100) * this.playerWidth;
 
-                if(offset < 4){
-                    offset = 4;
-                }
-                else if(offset > (this.playerWidth - 36)){
-                    offset = this.playerWidth - 36;
+                if (offset < 25) {
+                    offset = 25;
+                } else if (offset > (this.playerWidth - 25)) {
+                    offset = this.playerWidth - 25;
                 }
 
                 return {
                     'transform': 'translateX(' + offset + 'px)',
                 }
-            },
-
-            toolTipValue(){
-                return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
             }
+        },
+        mounted(){
+            this.toolTipInterval = setInterval(() => {
+                this.toolTipOffset = this.getToolTipOffset();
+            }, 100);
+        },
+        beforeDestroy() {
+            clearInterval(this.toolTipInterval);
         }
     }
 </script>

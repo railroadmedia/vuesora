@@ -10,10 +10,21 @@
         </transition>
 
         <transition name="grow-fade">
+            <span v-show="currentPlaybackRate !== 1"
+                  class="speed-indicator subheading pa-2 text-center text-white">
+                {{ currentPlaybackRate }}x
+                <i class="fas fa-hourglass"></i>
+            </span>
+        </transition>
+
+        <transition name="grow-fade">
             <div v-show="isChromeCastConnected"
-                 class="cast-dialog flex flex-center bg-black">
-                <h1 class="heading text-white">
-                    Video is Casting to Another Device
+                 class="cast-dialog flex flex-center pa-3 text-center">
+                <span style="font-size:72px;">
+                    <i class="fab fa-chromecast"></i>
+                </span>
+                <h1 class="subheading text-white">
+                    Video is playing on another device
                 </h1>
             </div>
         </transition>
@@ -221,6 +232,7 @@
                 isChromeCastConnected: false,
                 isAirplaySupported: false,
                 isAirplayConnected: false,
+                performanceNow: 0,
             }
         },
         computed: {
@@ -333,6 +345,8 @@
             },
 
             seek(time) {
+                this.currentTime = time;
+
                 if(this.isChromeCastConnected){
                     this.chromeCast.seek(time);
                 } else {
@@ -366,6 +380,11 @@
             parseTime: (time) => PlayerUtils.parseTime(time),
 
             trackMousePosition(event) {
+                // This function can be kind of expensive for performance.
+                // This check makes sure it only runs every 100ms
+                if(performance.now() < this.performanceNow + 100) return;
+
+                this.performanceNow = performance.now();
                 this.currentMouseX = PlayerUtils.getTimeRailMouseEventOffsetPercentage(
                     event,
                     this.$refs.player
@@ -414,9 +433,7 @@
                 });
                 const closestIndex = qualityIndexes.filter(index => index != null)[0];
 
-                // If we don't find an index, that probably means we're looking at a massive viewport,
-                // Just take the highest quality
-                return closestIndex || (this.playbackQualities.length - 1);
+                return closestIndex || 0;
             },
 
             toggleSettingsDrawer() {
@@ -532,13 +549,17 @@
                     }, false);
                 });
 
-                if (this.isSafari) {
-                    this.videojsInstance.load();
+                setTimeout(() => {
+                    this.seek(0);
+                }, 100);
 
-                    setTimeout(() => {
-                        this.enableCaptions({});
-                    }, 2000);
-                }
+                setTimeout(() => {
+                    this.enableCaptions({});
+                }, 2000);
+
+                // if (this.isSafari) {
+                //
+                // }
 
                 this.playerReady = true;
                 this.$emit('playerReady');
