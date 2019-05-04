@@ -1,7 +1,6 @@
 @import './_variables.scss';
 
 .content-table-row {
-  background-color:#fff;
   transition:background-color .2s ease-in-out;
 
   &.no-access {
@@ -36,15 +35,6 @@
   }
 
   &:hover:not(.scheduled), &.active {
-    .basic-col, .icon-col {
-      color:#000;
-    }
-
-    .icon-col {
-      i.text-light {
-        color:#000;
-      }
-    }
 
     .thumb-wrap {
       .thumb-img {
@@ -437,13 +427,6 @@
   transition:color .2s ease-in-out;
 }
 
-.add-to:hover {
-
-  i {
-    color:#000;
-  }
-}
-
 .icon-col {
   flex:0 0 50px;
 
@@ -451,10 +434,6 @@
     font-size:28px;
     transition:color .1s ease-in-out, transform .1s ease-in-out;
     will-change: color, transform;
-
-    &:hover:not(.is-added) {
-      color:#000;
-    }
 
     &.reset {
       font-size:20px;

@@ -1,0 +1,42 @@
+body.dark-mode {
+  color:#fefefe;
+  background-color:#141414;
+
+  .bg-white:not(.btn):not(span) {
+    background-color:#242424;
+  }
+
+  .text-black {
+    color:#fefefe;
+  }
+
+  .bg-black:not(header):not(#subNav):not(#breadCrumbs) {
+    background-color:#fff;
+
+    &.inverted {
+      background-color:transparent;
+      border-color:#fff;
+    }
+  }
+
+  .hover-text-black:hover {
+    color:#ffffff;
+  }
+
+  select, input[type='text'] {
+    color:#fefefe;
+    background-color:#242424;
+  }
+
+  [class*='-grey-1-'] {
+    border-color:#444444;
+  }
+
+  .carousel {
+    background-color:#fff;
+  }
+
+  .noty_theme__musoraNoty {
+    background-color:#242424;
+  }
+}
