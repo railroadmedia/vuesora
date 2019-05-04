@@ -1,5 +1,5 @@
 <template>
-    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative"
+    <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative bg-white text-grey-3 hover-text-black"
        :class="class_object"
        :href="renderLink ? false : item.url">
 <!--        <div v-if="mappedData.sheet_music && !is_search"-->
@@ -99,13 +99,13 @@
         <!-- SHOW ALL OF THE DATA COLUMNS FROM THE DATA MAPPER -->
         <div v-if="!is_search"
              v-for="(item, i) in mappedData.column_data"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny font-compressed hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-center font-italic x-tiny font-compressed hide-sm-down">
             {{ item }}
         </div>
 
         <!-- ONLY SHOW TYPE ON SEARCHES -->
         <div v-if="is_search"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 text-center font-italic x-tiny hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-center font-italic x-tiny hide-sm-down">
             {{ item.type.replace('bundle-', '').replace(/-/g, ' ') }}
         </div>
 
@@ -116,13 +116,13 @@
 
             <div v-if="resetProgress"
                  class="body">
-                <i class="fas fa-undo flex-center text-grey-2 reset"
+                <i class="fas fa-undo flex-center text-grey-2 hover-text-black reset"
                    title="Reset Progress"
                    @click.stop.prevent="progressReset"></i>
             </div>
             <div v-else
                  class="body">
-                <i class="add-to-list fas fa-plus flex-center"
+                <i class="add-to-list fas fa-plus flex-center hover-text-black"
                    :class="is_added ? 'is-added ' + themeTextClass : 'text-grey-2'"
                    :title="is_added ? 'Remove from list' : 'Add to list'"
                    @click.stop.prevent="addToList"></i>
@@ -137,25 +137,23 @@
              :class="is_search || overview ? 'hide-xs-only' : ''">
 
             <!-- LOCK ICON OR ADD TO CALENDAR -->
-            <div v-if="noAccess" class="body add-to"
+            <div v-if="noAccess" class="body text-grey-2 hover-text-black"
                  @click="addEvent"
                  title="Add to Calendar"
                  data-open-modal="addToCalendarModal">
-                <i v-if="isReleased"
-                   class="fas fa-lock flex-center rounded text-grey-2"></i>
-                <i v-else
-                   class="fas fa-calendar-plus flex-center text-grey-2"></i>
+                <i class="fas flex-center rounded"
+                   :class="isReleased ? 'fa-lock' : 'fa-calendar-plus'"></i>
             </div>
 
             <!-- STARTED OR COMPLETED -->
             <div v-else
                  class="body">
                 <i v-if="item.started || item.completed"
-                   class="fas flex-center rounded"
+                   class="fas flex-center rounded hover-text-black"
                    :class="[item.completed ? completedIcon : 'fa-adjust', themeTextClass]"></i>
 
                 <i v-else
-                   class="fas flex-center text-grey-2 rounded"
+                   class="fas flex-center text-grey-2 rounded hover-text-black"
                    :class="['course', 'learning-path', 'pack', 'pack-bundle'].indexOf(item.type) !== -1 ?
                             'fa-arrow-circle-right' : 'fa-play-circle'"></i>
             </div>
