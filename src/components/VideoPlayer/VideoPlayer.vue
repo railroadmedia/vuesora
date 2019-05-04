@@ -102,6 +102,7 @@
                     </transition>
 
                     <player-button
+                            v-if="captions.length > 0"
                             :themeColor="themeColor"
                             @click.native.stop="toggleCaptionsDrawer"
                             :active="currentCaptions != null">
