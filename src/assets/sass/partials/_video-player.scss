@@ -84,7 +84,7 @@
 
 .controls {
   transition: transform .1s ease-in-out;
-  background: linear-gradient(transparent,rgba(0,0,0,.6));
+  background: linear-gradient(transparent,rgba(0,0,0,.8));
   position:absolute;
   width:100%;
   bottom:0;
@@ -120,11 +120,15 @@
   bottom:20px;
   left:0;
   background:#000;
-  padding:3px 6px;
+  padding:3px 0;
+  width:50px;
+  margin-left:-25px;
+  text-align:center;
   transform-origin:50% 50%;
   opacity:0;
   visibility:hidden;
   pointer-events:none;
+  transition:transform .1s ease-in-out;
 }
 
 .progress-rail, .volume-rail {
@@ -139,6 +143,14 @@
 .progress-fill, .volume-fill {
   width:100%;
   height:105%;
+}
+
+.progress-fill {
+  transition:transform .1s ease-in-out;
+}
+
+.volume-rail {
+  height:6px;
 }
 
 .volume {
@@ -169,6 +181,15 @@
 
 .player-button {
   flex:0 0 50px;
+}
+
+.speed-indicator {
+  position:absolute;
+  top:0;
+  right:0;
+  z-index:20;
+  opacity: .2;
+  pointer-events:none;
 }
 
 .volume-range {
@@ -231,6 +252,7 @@
 
 .cast-dialog {
   position:absolute;
+  background-color:#000;
   top:0;
   left:0;
   bottom:0;
@@ -246,54 +268,9 @@
   right:0;
   z-index:25;
   @include flexCenter();
-}
 
-.loader {
-  width: 100px;
-  height: 100px;
-  font-size:10px;
-  text-transform:uppercase;
-  text-align:center;
-
-  @include xSmallOnly {
-    margin-top:-60px;
-    width: 80px;
-    height: 80px;
-  }
-
-  & > div {
-    float: left;
-    width: 50%;
-    height: 50%;
-
-    &::after {
-      content: '';
-      display: block;
-      margin: 50% 0 0 50%;
-      width: 50%;
-      height: 50%;
-      background: #fff;
-      animation: squareSplit 1.25s infinite ease-in-out alternate;
-    }
-  }
-
-  .square-2 {
-    transform: rotate(90deg);
-  }
-
-  .square-3 {
-    transform: rotate(270deg);
-    animation-direction: reverse;
-  }
-
-  .square-4 {
-    transform: rotate(180deg);
-    animation-direction: reverse;
-  }
-}
-
-@each $key, $value in $brand_colors {
-  .loader.#{$key} > div::after {
-    background: $value;
+  svg {
+    height:100px;
+    width:100px;
   }
 }
