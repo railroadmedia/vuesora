@@ -345,6 +345,7 @@
             },
 
             seek(time) {
+                time = time < 0 ? 0 : time;
                 this.currentTime = time;
 
                 if(this.isChromeCastConnected){
