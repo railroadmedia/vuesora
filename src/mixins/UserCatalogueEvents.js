@@ -116,9 +116,11 @@ export default {
 
         addEvent(payload){
             const payloadObject = payload.title ? payload : {
-                title: this.item.title,
+                title: this.mappedData.black_title,
                 date: this.item.published_on
             };
+
+            console.log(payload);
 
             this.$emit('addEvent', payloadObject);
         }
