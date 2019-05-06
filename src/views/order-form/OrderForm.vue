@@ -14,7 +14,7 @@
             @registerSubformValidation="registerSubformValidation"></order-form-account>
 
         <order-form-shipping
-            :shipping-address="factoryState.shipping"
+            :shipping-address="shippingStateFactory"
             :validation-trigger="validationTrigger"
             @saveShippingData="updateShippingData"
             @registerSubformValidation="registerSubformValidation"
@@ -26,6 +26,8 @@
             :validation-trigger="validationTrigger"
             :stripe-token-trigger="stripeTokenTrigger"
             :backend-payment-error="backendPaymentError"
+            :discounts="discountsData"
+            :totals="totalsData"
             @startValidation="startValidation"
             @savePaymentData="updatePaymentData"
             @registerSubformValidation="registerSubformValidation"></order-form-payment>
@@ -52,6 +54,7 @@
         data() {
             return {
                 cartData: {},
+                discountsData: [],
                 requiresAccount: false,
                 requiresShippingAddress: false,
                 validationForms: {
@@ -65,6 +68,11 @@
                 validationTrigger: false,
                 stripeTokenTrigger: false,
                 backendPaymentError: null,
+                totalsData: {
+                    shipping: null,
+                    tax: 0,
+                    due: 0
+                }
             }
         },
         props: {
@@ -107,6 +115,8 @@
                 this.cartData = cart;
                 this.requiresAccount = false;
                 this.requiresShippingAddress = false;
+                this.discountsData = cart.discounts;
+                this.totalsData = cart.totals;
 
                 this.cartData.items.forEach(item => {
                     if (item.subscription_interval_type) {
@@ -220,18 +230,23 @@
 
                 return payload;
             },
-            orderSubmitedSuccessfully() {
-                Toasts.push({
-                    icon: 'happy',
-                    themeColor: this.themeColor,
-                    title: 'Success',
-                    message: 'Your order was successfully placed',
-                    timeout: 20000
-                });
+            orderSubmitedSuccessfully(response) {
 
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 5000);
+                if (response.data == null && response.meta && response.meta.redirect) {
+                    window.location.href = response.meta.redirect;
+                } else {
+                    Toasts.push({
+                        icon: 'happy',
+                        themeColor: this.themeColor,
+                        title: 'Success',
+                        message: 'Your order was successfully placed',
+                        timeout: 20000
+                    });
+
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 5000);
+                }
             },
             handleOrderSubmitError(response) {
                 console.log("OrderForm::handleOrderSubmitError response: %s", JSON.stringify(response));
@@ -252,6 +267,10 @@
                 ) {
                     this.backendPaymentError = response.errors;
                 }
+
+                if (response.meta && response.meta.user) {
+                    this.user = response.meta.user;
+                }
             }
         },
         mounted() {
@@ -261,21 +280,9 @@
             this.$root.$on('updateCartData', (response) => {
                 // triggered by cart items quantity update/removal
                 this.processCart(response.meta.cart);
-
-                // if (cartData.meta && cartData.meta.notAvailableProducts) {
-                //     cartData.meta.notAvailableProducts.forEach(error => {
-                //         Toasts.push({
-                //             icon: 'astonished',
-                //             themeColor: this.themeColor,
-                //             title: 'Oups',
-                //             message: error,
-                //             timeout: 20000
-                //         });
-                //     })
-                // }
-
-                // todo - PMP-339 - update shipping, tax, total and playment plans data
             });
+
+            this.shippingStateFactory = this.shippingAddress;
         }
     }
 </script>

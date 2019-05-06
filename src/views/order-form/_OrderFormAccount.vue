@@ -37,6 +37,7 @@
                             v-bind:class="{ invalid: validation.accountEmail }"
                             v-model.lazy="accountEmail">
                         <span class="validation tiny">{{ validation.accountEmail }}</span>
+                        <a class="tiny color-blue font-underline" :href="loginUrl" v-if="emailExists">Forgot your password?</a>
                     </div>
                     <div class="flex flex-column ph-1">
                         <input
@@ -83,6 +84,7 @@
     </div>
 </template>
 <script>
+    import Api from '../../assets/js/services/order-form.js';
     import ValidationTriggerMixin from './_mixin';
 
     export default {
@@ -134,7 +136,8 @@
                         pattern: /([^\s])/,
                         message: 'Invalid password'
                     }
-                }
+                },
+                emailExists: false
             }
         },
         computed: {
@@ -159,6 +162,7 @@
                     return this.controls.accountEmail;
                 },
                 set(value) {
+                    this.emailExists = false;
                     this.controls.accountEmail = value;
                     this.validateControl('accountEmail');
                     this.$emit(
@@ -168,6 +172,7 @@
                             value: this.controls.accountEmail
                         }
                     );
+                    this.checkEmailExists(value);
                 }
             },
             accountPassword: {
@@ -205,6 +210,11 @@
             },
             createLabel() {
                 return this.requiresAccount ? 'Create a new account' : 'Checkout as guest';
+            }
+        },
+        watch: {
+            currentUser: function(value) {
+                this.state = (value == null) ? 'billing' : 'account';
             }
         },
         methods: {
@@ -260,6 +270,16 @@
                     }
                 );
             },
+            checkEmailExists(email) {
+                Api
+                    .checkEmail(email)
+                    .then(response => {
+                        if (!response.unique) {
+                            this.validation.accountEmail = 'An account already exists with this email';
+                            this.emailExists = true;
+                        }
+                    })
+            }
         },
         mounted() {
             this.state = (this.currentUser == null) ? 'billing' : 'account';

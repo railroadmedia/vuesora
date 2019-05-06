@@ -4,6 +4,24 @@ import ErrorHandler from './_error-handler';
 export default {
 
     /**
+     * Request to check if new account email is exists
+     *
+     * @param {object} payload
+     *
+     * @returns {Promise}
+     */
+    checkEmail(email) {
+
+        return axios
+                .post(
+                    '/order/check-email-exists',
+                    {email}
+                )
+                .then(response => response.data)
+                .catch(ErrorHandler);
+    },
+
+    /**
      * Request to submit the order form data
      *
      * @param {object} payload

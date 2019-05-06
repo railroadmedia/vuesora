@@ -106,6 +106,15 @@
                         class="btn submit-order text-white"
                         v-on:click.stop.prevent="startValidation">Buy Now</a>
                 </div>
+                <div class="flex flex-column md-6 ph-1 align-h-right">
+                    <div v-if="discounts.length">
+                        <div class="body font-bold" v-for="item in discounts" :key="item.id">{{ item.name }}</div>
+                    </div>
+                    <div class="body font-bold" v-if="totals.shipping">Shipping: ${{ totals.shipping }}</div>
+                    <div class="body font-bold">Tax: ${{ totals.tax }}</div>
+                    <div class="body font-bold"><span class="display">${{ totals.due }}</span> USD</div>
+                    <div class="body font-bold">Due Today</div>
+                </div>
             </div>
         </div>
     </div>
@@ -241,6 +250,20 @@
             backendPaymentError: {
                 type: Object,
                 default: () => null
+            },
+            discounts: {
+                type: Array,
+                default: () => []
+            },
+            totals: {
+                type: Object,
+                default: () => {
+                    return {
+                        shipping: null,
+                        tax: 0,
+                        due: 0,
+                    }
+                }
             }
         },
         watch: {
