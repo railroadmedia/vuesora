@@ -120,8 +120,6 @@ export default {
                 date: this.item.published_on
             };
 
-            console.log(payload);
-
             this.$emit('addEvent', payloadObject);
         }
     }
