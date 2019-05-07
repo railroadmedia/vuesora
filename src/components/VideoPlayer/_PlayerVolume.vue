@@ -75,9 +75,7 @@
                         this.volumeCache = this.currentVolume;
                     }
 
-                    this.$emit('volumeChange', {
-                        volume: volume
-                    })
+                    this.$emit('volumeChange', volume)
                 }
             }
         }

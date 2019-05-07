@@ -1,5 +1,6 @@
 <template>
     <div class="player-progress"
+         @click.stop
          @drag.prevent.stop
          @dragstart.prevent.stop
          @dragenter.prevent.stop>

@@ -1,5 +1,6 @@
 <template>
     <div class="flex flex-column"
+         ref="container"
          data-vjs-player
          @mousemove="trackMousePosition">
 
@@ -35,8 +36,8 @@
                preload="auto">
         </video>
 
-        <div v-if="playerReady"
-             class="controls-wrap"
+        <div class="controls-wrap"
+             ref="controls"
              @click.stop="playPauseViaControlWrap">
             <div class="controls flex flex-column noselect">
                 <!--  TOP ROW  -->
@@ -365,14 +366,16 @@
 
             seek(time) {
                 time = time < 0 ? 0 : time;
+                const wasPlaying  = this.isPlaying;
                 this.currentTime = time;
+                this.videojsInstance.pause();
 
                 if(this.isChromeCastConnected){
                     this.chromeCast.seek(time);
                 } else {
                     this.videojsInstance.currentTime(time);
 
-                    if (this.isPlaying) {
+                    if(wasPlaying){
                         this.videojsInstance.play();
                     }
                 }
@@ -389,11 +392,11 @@
             },
 
             changeVolume(payload) {
-                this.videojsInstance.volume(payload.volume / 100);
+                this.videojsInstance.volume(payload / 100);
                 this.currentVolume = this.videojsInstance.volume();
 
                 if(this.isChromeCastConnected){
-                    this.chromeCast.volume(payload.volume);
+                    this.chromeCast.volume(payload);
                 }
             },
 
@@ -523,11 +526,21 @@
             enableAirplay(){
                 this.$refs.player.webkitShowPlaybackTargetPicker();
             },
+
+            keyboardControlEventHandler(event){
+                if(this.keyboardEventHandlers[event.code]){
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                    this.keyboardEventHandlers[event.code]();
+                }
+            },
         },
         mounted() {
             const player = this.$refs.player;
             let source = [];
 
+            // Add HLS manifest URL
             if (this.hlsManifestUrl != null) {
                 source.push({
                     src: this.hlsManifestUrl,
@@ -536,6 +549,7 @@
                 });
             }
 
+            // Add MP4 Sources
             if (this.sources.length > 0) {
                 source.push({
                     src: this.sources[this.getDefaultPlaybackQualityIndex()].file,
@@ -545,6 +559,7 @@
 
             this.loading = true;
 
+            // Initialize Player
             this.videojsInstance = videojs(player, {
                 controls: false,
                 children: [],
@@ -563,6 +578,7 @@
 
             this.videojsInstance.src(source);
 
+            // On Player Ready
             this.videojsInstance.on('ready', () => {
                 this.hlsInstance = this.videojsInstance.tech({IWillNotUseThisInPlugins: true}).hls;
 
@@ -576,17 +592,15 @@
                     }, false);
                 });
 
+                // Cause a load event to occur
                 setTimeout(() => {
                     this.seek(0);
                 }, 100);
 
+                // This fixes captions for Airplay
                 setTimeout(() => {
                     this.enableCaptions({});
                 }, 2000);
-
-                // if (this.isSafari) {
-                //
-                // }
 
                 this.playerReady = true;
                 this.$emit('playerReady');
@@ -594,11 +608,23 @@
                 Object.keys(this.videoJsEventHandlers).forEach(event => {
                     this.videojsInstance.on(event, this.videoJsEventHandlers[event]);
                 });
+
+                // Add Keyboard Events on video focus
+                this.$refs.container.addEventListener('focus', () => {
+                    document.addEventListener('keydown', this.keyboardControlEventHandler);
+                });
+
+                // Remove keyboard events on video blur
+                this.$refs.container.addEventListener('blur', () => {
+                    document.removeEventListener('keydown', this.keyboardControlEventHandler);
+                });
             });
 
 
+            // Close drawers on any document click
             document.addEventListener('click', this.closeDrawers);
 
+            // Mouse up events
             document.addEventListener('mouseup', () => {
                 if (this.mousedown) {
                     const timeToSeekTo = this.totalDuration * (this.currentMouseX / 100);
@@ -615,6 +641,7 @@
             this.chromeCast.on('available', () => {
                 this.isChromeCastSupported = true;
 
+                // Add all chromecast event handlers
                 Object.keys(this.chromeCastEventHandlers).forEach(event => {
                     this.chromeCast.on(event, this.chromeCastEventHandlers[event]);
                 });
@@ -625,6 +652,7 @@
                 });
             });
 
+            // Initialize Apple Airplay and create an event listener for playback change
             if(window.WebKitPlaybackTargetAvailabilityEvent){
                 this.$refs.player.addEventListener('webkitplaybacktargetavailabilitychanged', event => {
                     if(event.availability === 'available'){
