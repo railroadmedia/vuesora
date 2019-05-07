@@ -50,8 +50,14 @@
 
   video {
     &::cue {
-      font-size:24px;
-      line-height:1em;
+      font: 400 20px/1em $defaultSansSerif;
+      background:none;
+      text-shadow: 1px 1px 2px #000;
+      color:#fff;
+
+      @include medium {
+        font-size:24px;
+      }
     }
 
     &::-webkit-media-text-track-container {
