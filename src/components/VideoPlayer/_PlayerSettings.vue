@@ -23,9 +23,15 @@
                         <ul class="list-style-none tiny text-right dense font-bold">
                             <li v-for="(quality, i) in playbackQualities"
                                 class="pa-1 hover-bg-grey-4 pointer"
-                                :class="[i === currentSourceIndex ? themeTextClass : '']"
+                                :class="[i === currentSourceIndex && !isAutoQuality ? themeTextClass : '']"
                                 @click="setQuality(i)">
                                 {{ quality.label }}
+                            </li>
+
+                            <li class="pa-1 hover-bg-grey-4 pointer"
+                                :class="[isAutoQuality ? themeTextClass : '']"
+                                @click="setQuality('auto')">
+                                Auto
                             </li>
                         </ul>
                     </div>
@@ -105,12 +111,18 @@
         },
         computed: {
             currentSourceLabel(){
-                if(this.currentSourceIndex >= 0){
+                if(this.currentSourceIndex >= 0 && !this.isAutoQuality){
                     return this.playbackQualities[this.currentSourceIndex].label;
                 }
 
                 return 'Auto';
-            }
+            },
+
+            isAutoQuality(){
+                const enabledQualities = this.playbackQualities.map(quality => quality.enabled);
+
+                return enabledQualities.indexOf(false) === -1;
+            },
         },
         methods: {
             openQualities(){

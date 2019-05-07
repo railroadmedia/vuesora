@@ -36,12 +36,13 @@
         </video>
 
         <div v-if="playerReady"
-             class="controls-wrap">
+             class="controls-wrap"
+             @click.stop="playPauseViaControlWrap">
             <div class="controls flex flex-column noselect">
                 <!--  TOP ROW  -->
                 <div class="flex flex-row">
                     <player-button
-                            @click.native="seek(currentTime - 10)"
+                            @click.stop.native="seek(currentTime - 10)"
                             :themeColor="themeColor"
                             data-cy="rewind-button">
                         <i class="fas fa-undo"></i>
@@ -50,7 +51,7 @@
                     <div class="flex flex-column spacer"></div>
 
                     <player-button
-                            @click.native="seek(currentTime + 10)"
+                            @click.stop.native="seek(currentTime + 10)"
                             :themeColor="themeColor"
                             data-cy="fast-forward-button">
                         <i class="fas fa-redo"></i>
@@ -66,14 +67,14 @@
                             :currentMouseX="currentMouseX"
                             :totalDuration="totalDuration"
                             :mousedown="mousedown"
-                            @mousedown.native="mousedown = true"
+                            @mousedown.stop.native="mousedown = true"
                             data-cy="progress-rail" />
                 </div>
 
                 <!--  BOTTOM ROW  -->
                 <div class="flex flex-row">
                     <player-button
-                            @click.native="playPause"
+                            @click.stop.native="playPause"
                             :themeColor="themeColor"
                             data-cy="play-pause-button">
                         <i class="fas"
@@ -96,7 +97,7 @@
                         <player-button
                                 v-if="isChromeCastSupported"
                                 :themeColor="themeColor"
-                                @click.native.stop="enableChromeCast"
+                                @click.stop.native="enableChromeCast"
                                 :active="this.chromeCast && this.chromeCast.Connected">
                             <i class="fab fa-chromecast"></i>
                         </player-button>
@@ -106,7 +107,7 @@
                         <player-button
                                 v-if="isAirplaySupported"
                                 :themeColor="themeColor"
-                                @click.native.stop="enableAirplay"
+                                @click.stop.native="enableAirplay"
                                 :active="isAirplayConnected">
                             <i class="fab fa-apple"></i>
                         </player-button>
@@ -115,20 +116,20 @@
                     <player-button
                             v-if="captions.length > 0"
                             :themeColor="themeColor"
-                            @click.native.stop="toggleCaptionsDrawer"
+                            @click.stop.native="toggleCaptionsDrawer"
                             :active="currentCaptions != null">
                         <i class="fas fa-closed-captioning"></i>
                     </player-button>
 
                     <player-button
                             :themeColor="themeColor"
-                            @click.native.stop="toggleSettingsDrawer"
+                            @click.stop.native="toggleSettingsDrawer"
                             :disabled="isChromeCastConnected">
                         <i class="fas fa-cog"></i>
                     </player-button>
 
                     <player-button
-                            @click.native="fullscreen"
+                            @click.stop.native="fullscreen"
                             :themeColor="themeColor"
                             :disabled="isChromeCastConnected">
                         <i class="fas fa-expand"></i>
@@ -218,6 +219,7 @@
                 videojsInstance: null,
                 playerReady: false,
                 hlsInstance: null,
+                userActive: true,
                 isPlaying: false,
                 currentTime: 0,
                 totalDuration: 0,
@@ -253,6 +255,7 @@
                                 source: source.id,
                                 width: source.width,
                                 height: source.height,
+                                enabled: source.enabled,
                             }
                         });
                     }
@@ -323,6 +326,14 @@
                 }
             },
 
+            canPlayPause(){
+                if(!this.isPlaying){
+                    return true;
+                }
+
+                return this.userActive;
+            },
+
             isMobile: () => PlayerUtils.isMobile().any,
 
             isSafari: () => PlayerUtils.isSafari(),
@@ -342,6 +353,14 @@
                         this.videojsInstance.play();
                     }
                 }
+            },
+
+            playPauseViaControlWrap(){
+                if(!this.canPlayPause){
+                    return;
+                }
+
+                this.playPause();
             },
 
             seek(time) {
@@ -397,19 +416,26 @@
                 const wasPlaying = this.isPlaying;
 
                 if (this.hlsInstance != null) {
-                    this.videojsInstance.qualityLevels().levels_.forEach((quality, index) => {
-                        quality.enabled = index === payload.index;
-                    });
+                    if(payload.index === 'auto'){
+                        this.videojsInstance.qualityLevels().levels_.forEach(quality => {
+                            quality.enabled = true;
+                        });
+                    } else {
+                        this.videojsInstance.qualityLevels().levels_.forEach((quality, index) => {
+                            quality.enabled = index === payload.index;
+                        });
 
-                    this.videojsInstance.qualityLevels().selectedIndex_ = payload.index;
-                    this.videojsInstance.qualityLevels().trigger({
-                        type: 'change', selectedIndex: payload.index
-                    });
+                        this.videojsInstance.qualityLevels().selectedIndex_ = payload.index;
+                        this.videojsInstance.qualityLevels().trigger({
+                            type: 'change', selectedIndex: payload.index
+                        });
+                    }
+
                 } else {
                     this.videojsInstance.src(this.sources[payload.index].file);
+                    this.setDefaultPlaybackQualityWidth(this.playbackQualities[payload.index].width);
                 }
 
-                this.setDefaultPlaybackQualityWidth(this.playbackQualities[payload.index].width);
                 if (wasPlaying) {
                     setTimeout(() => {
                         this.seek(currentTime);

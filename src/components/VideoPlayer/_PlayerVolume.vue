@@ -18,7 +18,7 @@
 
             <player-button :themeColor="themeColor"
                            :active="currentVolume === 0"
-                           @click.native="emitVolumeChange(0)">
+                           @click.native.stop="emitVolumeChange(0)">
                 <i class="fas" :class="volumeButtonClass"></i>
             </player-button>
         </div>
