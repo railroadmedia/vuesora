@@ -10,10 +10,6 @@ export default {
                 },
 
                 'loadeddata': event => {
-                    if (this.hlsInstance) {
-                        this.setQuality({index: this.getDefaultPlaybackQualityIndex()});
-                    }
-
                     setTimeout(() => {
                         this.loading = false;
                         this.$emit('loadeddata', event);
@@ -64,7 +60,14 @@ export default {
                     console.log(event);
                 },
 
-                'userinactive': this.closeDrawers
+                'useractive': () => {
+                    this.userActive = true;
+                },
+
+                'userinactive': () => {
+                    this.userActive = false;
+                    this.closeDrawers();
+                },
             },
 
             chromeCastEventHandlers: {
