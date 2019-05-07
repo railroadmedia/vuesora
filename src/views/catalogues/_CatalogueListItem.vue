@@ -1,7 +1,7 @@
 <template>
     <a class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative bg-white text-grey-3 hover-text-black"
        :class="class_object"
-       :href="renderLink ? false : item.url">
+       :href="renderLink ? item.url : false">
 <!--        <div v-if="mappedData.sheet_music && !is_search"-->
 <!--             class="flex flex-column xs-12 pv hide-sm-up">-->
 <!--            <img :src="mappedData.sheet_music" style="width:100%;">-->

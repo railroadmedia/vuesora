@@ -415,9 +415,15 @@
                                 }
                             });
 
+                            if(this.currentSecond > 0 && urlParams['time'] == null){
+                                setTimeout(() => {
+                                    vm.jumpToTime(this.currentSecond, false);
+                                }, 200);
+                            }
+
                             if(this.checkForTimecode && urlParams['time'] != null){
                                 setTimeout(() => {
-                                    vm.jumpToTime(urlParams['time'], true);
+                                    vm.jumpToTime(urlParams['time'], false);
                                 }, 200);
                             }
 

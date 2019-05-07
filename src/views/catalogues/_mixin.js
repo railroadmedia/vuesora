@@ -158,7 +158,7 @@ export default {
                 return false;
             }
 
-            return this.noAccess;
+            return !this.noAccess;
         },
 
         thumbnailType(){

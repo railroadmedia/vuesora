@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-column pa-1 catalogue-card"
          :class="{'no-access': this.noAccess}">
-        <a :href="renderLink ? false : item.url"
+        <a :href="renderLink ? item.url : false"
            class="no-decoration">
             <div class="card-media active corners-5 mb-1"
                  :class="thumbnailType">
