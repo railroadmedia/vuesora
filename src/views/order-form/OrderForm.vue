@@ -4,6 +4,7 @@
                 Guarantee!</h3>
         <order-form-cart
             :cart-items="cartData.items"></order-form-cart>
+
         <order-form-account
             :current-user="user"
             :requires-account="requiresAccount"
@@ -19,6 +20,12 @@
             @saveShippingData="updateShippingData"
             @registerSubformValidation="registerSubformValidation"
             v-if="requiresShippingAddress"></order-form-shipping>
+
+        <order-form-payment-plan
+            :number-of-payments="numberOfPayments"
+            :payment-plan-options="paymentPlanOptions"
+            @updateCartData="processCart"
+            v-if="paymentPlanOptions.length"></order-form-payment-plan>
 
         <order-form-payment
             :billing-address="billingAddress"
@@ -38,6 +45,7 @@
     import OrderFormAccount from './_OrderFormAccount.vue';
     import OrderFormCart from './_OrderFormCart.vue';
     import OrderFormPayment from './_OrderFormPayment.vue';
+    import OrderFormPaymentPlan from './_OrderFormPaymentPlan.vue';
     import OrderFormShipping from './_OrderFormShipping.vue';
     import ThemeClasses from '../../mixins/ThemeClasses';
     import Toasts from '../../assets/js/classes/toasts';
@@ -50,6 +58,7 @@
             'order-form-cart': OrderFormCart,
             'order-form-shipping': OrderFormShipping,
             'order-form-payment': OrderFormPayment,
+            'order-form-payment-plan': OrderFormPaymentPlan,
         },
         data() {
             return {
@@ -72,7 +81,9 @@
                     shipping: null,
                     tax: 0,
                     due: 0
-                }
+                },
+                numberOfPayments: 1,
+                paymentPlanOptions: [],
             }
         },
         props: {
@@ -117,6 +128,8 @@
                 this.requiresShippingAddress = false;
                 this.discountsData = cart.discounts;
                 this.totalsData = cart.totals;
+                this.numberOfPayments = cart.number_of_payments;
+                this.paymentPlanOptions = cart.payment_plan_options;
 
                 this.cartData.items.forEach(item => {
                     if (item.subscription_interval_type) {
@@ -201,6 +214,7 @@
                     'payment_method_type': this.paymentStateFactory['payment_method_type'],
                     'billing_country': this.paymentStateFactory.country,
                     'billing_region': this.paymentStateFactory.state,
+                    'payment_plan_number_of_payments': this.numberOfPayments,
                 };
 
                 if (!this.user) {

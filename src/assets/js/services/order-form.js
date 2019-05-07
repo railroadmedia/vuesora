@@ -135,5 +135,22 @@ export default {
                 )
                 .then(response => response.data)
                 .catch(ErrorHandler);
-    }
+    },
+
+    /**
+     * Updates number of payments
+     *
+     * @param int numberOfPayments
+     *
+     * @returns {Promise}
+     */
+    updateNumberOfPayments(numberOfPayments) {
+        return axios
+                .put(
+                    '/ecommerce/json/update-number-of-payments/' + numberOfPayments,
+                    {}
+                )
+                .then(response => response.data)
+                .catch(ErrorHandler);
+    },
 }
