@@ -37,6 +37,7 @@
             :totals="totalsData"
             @startValidation="startValidation"
             @savePaymentData="updatePaymentData"
+            @updateCartData="processCart"
             @registerSubformValidation="registerSubformValidation"></order-form-payment>
     </div>
 </template>

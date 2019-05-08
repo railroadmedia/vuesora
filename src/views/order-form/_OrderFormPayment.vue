@@ -290,12 +290,17 @@
                     }
                 );
 
-                clearTimeout(this.updateAddressesTimeout);
+                Api.updateAddresses(this.controls)
+                    .then(response => {
 
-                this.updateAddressesTimeout = setTimeout(() => {
-                    // todo - if country is not 'Canada' should remove the billing state - to be confirmed
-                    Api.updateAddresses(this.controls);
-                }, 750);
+                    if (response.meta && response.meta.cart) {
+                        this.$emit(
+                            'updateCartData',
+                            response.meta.cart
+                        );
+                    }
+
+                });
             },
             selectPaymentMethodIcon(name) {
                 this.selectedPaymentMethodIcon = name;
