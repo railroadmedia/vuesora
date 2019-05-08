@@ -25,7 +25,7 @@
             :number-of-payments="numberOfPayments"
             :payment-plan-options="paymentPlanOptions"
             @updateCartData="processCart"
-            v-if="paymentPlanOptions.length"></order-form-payment-plan>
+            v-if="paymentPlanOptions.length && canUsePaymentPlan"></order-form-payment-plan>
 
         <order-form-payment
             :billing-address="billingAddress"
@@ -66,6 +66,7 @@
                 discountsData: [],
                 requiresAccount: false,
                 requiresShippingAddress: false,
+                canUsePaymentPlan: false,
                 validationForms: {
                     account: false,
                     shipping: false,
@@ -130,14 +131,20 @@
                 this.totalsData = cart.totals;
                 this.numberOfPayments = cart.number_of_payments;
                 this.paymentPlanOptions = cart.payment_plan_options;
+                this.canUsePaymentPlan = true;
 
                 this.cartData.items.forEach(item => {
+
                     if (item.subscription_interval_type) {
                         this.requiresAccount = true;
                     }
                     if (item.requires_shipping) {
                         this.requiresShippingAddress = true;
                     }
+                    if (item.subscription_interval_count) {
+                        this.canUsePaymentPlan = false;
+                    }
+
                 });
             },
             updateAccountData({field, value}) {
