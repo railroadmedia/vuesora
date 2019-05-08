@@ -182,7 +182,11 @@
                 set(value) {
                     this.controls.accountPassword = value;
                     this.validateControl('accountPassword');
-                    this.validatePasswordConfirmation();
+
+                    if (this.controls.accountPasswordConfirmation !== '') {
+                        this.validatePasswordConfirmation();
+                    }
+
                     this.$emit(
                         'saveAccountData',
                         {
