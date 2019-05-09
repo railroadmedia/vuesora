@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column order-form">
+    <div class="flex flex-column order-form pv-5 mv-5">
         <h3 class="subheading text-center">Your Order is Protected by Our Extended 90-Day 100% Money Back
                 Guarantee!</h3>
         <order-form-cart
@@ -19,6 +19,7 @@
             :validation-trigger="validationTrigger"
             @saveShippingData="updateShippingData"
             @registerSubformValidation="registerSubformValidation"
+            @updateCartData="processCart"
             v-if="requiresShippingAddress"></order-form-shipping>
 
         <order-form-payment-plan
@@ -39,6 +40,26 @@
             @savePaymentData="updatePaymentData"
             @updateCartData="processCart"
             @registerSubformValidation="registerSubformValidation"></order-form-payment>
+
+        <div class="flex flex-row pt-5 mt-2 text-center features">
+            <div class="md-4 ph-5">
+                <i class="fa fa-phone"></i>
+                <p class="small-body-bold">We're always here to help</p>
+                <p class="small-body">1-800-439-8921 or email support@pianote.com</p>
+            </div>
+            <div class="md-4 ph-5">
+                <i class="fa fa-lock"></i>
+                <p class="small-body-bold">Your Information is Secure</p>
+                <p class="small-body">This page is securely encrypted with world-class SSL protection.</p>
+            </div>
+            <div class="md-4 ph-5">
+                <i class="fa fa-certificate">
+                    <i class="fa fa-check"></i>
+                </i>
+                <p class="small-body-bold">100% Money Back Guarantee</p>
+                <p class="small-body">Order risk-free with our 90-day, 100% money back guarantee.</p>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -114,6 +135,10 @@
             logoutUrl: {
                 type: String,
                 default: '/',
+            },
+            successRedirectUrl: {
+                type: String,
+                default: '/members',
             },
             stripePublishableKey: {
                 type: String
@@ -266,7 +291,7 @@
                     });
 
                     setTimeout(() => {
-                        window.location.href = '/';
+                        window.location.href = this.successRedirectUrl;
                     }, 5000);
                 }
             },
@@ -330,6 +355,29 @@
                 border: 1px solid #8a8a8a;
                 box-shadow: 0 0 5px #cacaca;
             }
+        }
+    }
+    #app .container.order-form {
+        max-width: 100%;
+    }
+    #app .features i {
+        display: block;
+        font-size: 48px;
+        color: #666;
+
+        &.fa-certificate {
+            position: relative;
+        }
+
+        &.fa-check {
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            -webkit-transform: translate(-50%,-50%);
+            -moz-transform: translate(-50%,-50%);
+            font-size: 22px;
         }
     }
 </style>

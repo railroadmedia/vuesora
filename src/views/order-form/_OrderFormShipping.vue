@@ -62,7 +62,7 @@
                         v-model.lazy="city">
                     <span class="validation tiny">{{ validation.shippingCity }}</span>
                 </div>
-                <div class="flex flex-column ph-1">
+                <div class="flex flex-column ph-1" v-if="country.toLowerCase() != 'canada'">
                     <input
                         type="text"
                         name="state"
@@ -70,6 +70,20 @@
                         class="order-form-input no-label"
                         v-bind:class="{ invalid: validation.shippingState }"
                         v-model.lazy="state">
+                    <span class="validation tiny">{{ validation.shippingState }}</span>
+                </div>
+                <div class="md-6 ph-1" v-if="country.toLowerCase() == 'canada'">
+                    <select
+                        class="order-form-input no-label"
+                        v-bind:class="{ invalid: validation.shippingState }"
+                        v-model.lazy="state">
+
+                        <option disabled value="">State/Province</option>
+                        <option
+                            v-for="state in states"
+                            :key="state"
+                            :value="state">{{ state }}</option>
+                    </select>
                     <span class="validation tiny">{{ validation.shippingState }}</span>
                 </div>
             </div>
@@ -187,7 +201,6 @@
                     'country': 'shippingCountry',
                     'zip_or_postal_code': 'shippingZip',
                 },
-                updateAddressesTimeout: null,
             }
         },
         computed: {
@@ -281,7 +294,10 @@
             },
             countries() {
                 return Utils.countries();
-            }
+            },
+            states() {
+                return Utils.provinces();
+            },
         },
         watch: {
             shippingAddress: function() {
@@ -299,11 +315,15 @@
                     }
                 );
 
-                clearTimeout(this.updateAddressesTimeout);
-
-                this.updateAddressesTimeout = setTimeout(() => {
-                    Api.updateAddresses(this.controls);
-                }, 750);
+                Api.updateAddresses(this.controls)
+                    .then(response => {
+                        if (response.meta && response.meta.cart) {
+                            this.$emit(
+                                'updateCartData',
+                                response.meta.cart
+                            );
+                        }
+                    });
             },
             validateControl(controlName) {
 

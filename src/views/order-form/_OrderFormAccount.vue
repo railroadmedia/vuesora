@@ -234,9 +234,11 @@
                 ) ? this.rules[controlName].message : '';
             },
             validatePasswordConfirmation() {
-
-                return this.validation.accountPasswordConfirmation = this.controls.accountPassword &&
-                        this.controls.accountPassword != this.controls.accountPasswordConfirmation ?
+                return this.validation.accountPasswordConfirmation = (
+                            !this.controls.accountPasswordConfirmation ||
+                            (this.controls.accountPassword &&
+                            this.controls.accountPassword != this.controls.accountPasswordConfirmation)
+                        ) ?
                             'Invalid password confirmation' : '';
             },
             showBillingEmailForm() {
@@ -263,7 +265,7 @@
                         validationSuccessful = !this.validateControl(control) && validationSuccessful;
                     });
 
-                    validationSuccessful = validationSuccessful && !this.validatePasswordConfirmation();
+                    validationSuccessful = !this.validatePasswordConfirmation() && validationSuccessful;
                 }
 
                 this.$emit(

@@ -101,9 +101,9 @@
                 <h3 class="title">Hitting submit will redirect you to PayPal to complete your order.</h3>
             </div>
             <div class="flex flex-row pv-1">
-                <div class="flex md-6 ph-1">
+                <div class="flex flex-column align-v-bottom md-6 ph-1">
                     <a
-                        class="btn submit-order text-white"
+                        class="btn submit-order text-white mb-1"
                         v-on:click.stop.prevent="startValidation">Buy Now</a>
                 </div>
                 <div class="flex flex-column md-6 ph-1 align-h-right">
@@ -114,6 +114,13 @@
                     <div class="body font-bold">Tax: ${{ totals.tax }}</div>
                     <div class="body font-bold"><span class="display">${{ totals.due }}</span> USD</div>
                     <div class="body font-bold">Due Today</div>
+                </div>
+            </div>
+            <div class="flex flex-row pv-1">
+                <div class="flex flex-column md-6 ph-1">
+                    <h5 class="tiny disclaimer">By completing your renewal you agree to the Pianote Terms
+                                Of Service. All payments in US dollars. You
+                                can cancel your subscription at any time by emailing support@pianote.com.</h5>
                 </div>
             </div>
         </div>
@@ -292,15 +299,13 @@
 
                 Api.updateAddresses(this.controls)
                     .then(response => {
-
-                    if (response.meta && response.meta.cart) {
-                        this.$emit(
-                            'updateCartData',
-                            response.meta.cart
-                        );
-                    }
-
-                });
+                        if (response.meta && response.meta.cart) {
+                            this.$emit(
+                                'updateCartData',
+                                response.meta.cart
+                            );
+                        }
+                    });
             },
             selectPaymentMethodIcon(name) {
                 this.selectedPaymentMethodIcon = name;
@@ -513,6 +518,10 @@
         &.fa-cc-mastercard.selected {
             color: #ed1c2d;
         }
+
+        &:hover {
+            cursor: pointer;
+        }
     }
     .stripe-element-container {
         height: 50px;
@@ -527,5 +536,9 @@
         &:hover {
             background-color: limegreen;
         }
+    }
+    .disclaimer {
+        font-size: 14px;
+        font-weight: 300;
     }
 </style>

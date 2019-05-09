@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row pa-2 align-v-top">
-        <div class="flex md-2 ph-2">
+        <div class="flex md-2 ph-2 thumbnail-container">
             <img v-bind:src="item.thumbnail_url" class="rounded" alt="product image">
         </div>
         <div class="flex flex-column grow ph-2">
@@ -143,5 +143,8 @@
     }
     .quantity-remove {
         color: red;
+    }
+    .thumbnail-container img {
+        align-self: center;
     }
 </style>
