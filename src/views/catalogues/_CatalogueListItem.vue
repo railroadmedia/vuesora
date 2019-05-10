@@ -10,7 +10,7 @@
         <!-- LESSON NUMBERS -->
         <div v-if="showNumbers"
              class="flex flex-column align-center number-col title text-black hide-sm-down">
-            {{ index }}
+            {{ lesson_number }}
         </div>
 
         <!-- THUMBNAIL COLUMN -->
@@ -171,12 +171,10 @@
     export default {
         mixins: [Mixin, ThemeClasses],
         name: 'catalogue-list-item',
-        data() {
-            return {
-                mappedData: this.getContentModel()
-            }
-        },
         computed: {
+            mappedData(){
+                return this.contentModel['list'];
+            },
 
             class_object(){
                 return {
@@ -201,27 +199,18 @@
                     'active': this.active,
                     'background-cards': this.item.type === 'learning-path'
                 }
-            }
-        },
-        methods: {
-            getContentModel(){
-                const shows = ContentHelpers.shows();
-                let type = this.contentTypeOverride || this.item.type;
+            },
 
-                if(shows.indexOf(type) !== -1){
-                    type = 'show';
+            lesson_number(){
+                if(this.item.type === 'semester-pack-lesson'){
+                    return this.contentModel.getPostField('week');
                 }
 
-                const model = new ContentModel(type, {
-                    brand: this.brand,
-                    post: this.item
-                });
-
-                return model['list'];
-            }
+                return this.index;
+            },
         },
         beforeDestroy(){
-            this.mappedData = null;
+            this.contentModel = null;
         }
     }
 </script>

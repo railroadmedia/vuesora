@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
+import { Content as ContentHelpers }  from 'js-helper-functions';
+import ContentModel from '../../assets/js/models/_model.js';
 
 export default {
     mixins: [UserCatalogueEvents],
@@ -80,6 +82,12 @@ export default {
         compactLayout: {
             type: Boolean,
             default: () => false
+        }
+    },
+
+    data(){
+        return {
+            contentModel: this.getContentModel()
         }
     },
 
@@ -173,5 +181,22 @@ export default {
                 }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
             }
         },
+    },
+
+    methods: {
+
+        getContentModel(){
+            const shows = ContentHelpers.shows();
+            let type = this.contentTypeOverride || this.item.type;
+
+            if(shows.indexOf(type) !== -1){
+                type = 'show';
+            }
+
+            return new ContentModel(type, {
+                brand: this.brand,
+                post: this.item
+            });
+        }
     }
 }
