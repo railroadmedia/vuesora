@@ -8,7 +8,7 @@
                 <h4 class="body text-dark">All fields are mandatory.</h4>
             </div>
         </div>
-        <div class="flex flex-row bg-white shadow corners-5 pa-3">
+        <div class="flex flex-row bg-white shadow corners-5 pa-2">
             <div class="flex flex-row pv-1">
                 <div class="flex flex-column ph-1 md-6 sm-12">
                     <select

@@ -265,7 +265,9 @@
                         validationSuccessful = !this.validateControl(control) && validationSuccessful;
                     });
 
-                    validationSuccessful = !this.validatePasswordConfirmation() && validationSuccessful;
+                    if (this.requiresAccount) {
+                        validationSuccessful = !this.validatePasswordConfirmation() && validationSuccessful;
+                    }
                 }
 
                 this.$emit(

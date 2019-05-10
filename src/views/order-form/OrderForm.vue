@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-column order-form pv-5 mv-5">
-        <h3 class="subheading text-center">Your Order is Protected by Our Extended 90-Day 100% Money Back
+    <div class="flex flex-column order-form pv-2">
+        <h3 class="subheading text-center pv-1">Your Order is Protected by Our Extended 90-Day 100% Money Back
                 Guarantee!</h3>
         <order-form-cart
             :cart-items="cartData.items"></order-form-cart>
@@ -41,23 +41,23 @@
             @updateCartData="processCart"
             @registerSubformValidation="registerSubformValidation"></order-form-payment>
 
-        <div class="flex flex-row pt-5 mt-2 text-center features">
+        <div class="flex flex-row pv-3 text-center features">
             <div class="md-4 ph-5">
                 <i class="fa fa-phone"></i>
-                <p class="small-body-bold">We're always here to help</p>
-                <p class="small-body">1-800-439-8921 or email support@pianote.com</p>
+                <p class="body font-bold">We're always here to help</p>
+                <p class="body">1-800-439-8921 or email support@pianote.com</p>
             </div>
             <div class="md-4 ph-5">
                 <i class="fa fa-lock"></i>
-                <p class="small-body-bold">Your Information is Secure</p>
-                <p class="small-body">This page is securely encrypted with world-class SSL protection.</p>
+                <p class="body font-bold">Your Information is Secure</p>
+                <p class="body">This page is securely encrypted with world-class SSL protection.</p>
             </div>
             <div class="md-4 ph-5">
                 <i class="fa fa-certificate">
                     <i class="fa fa-check"></i>
                 </i>
-                <p class="small-body-bold">100% Money Back Guarantee</p>
-                <p class="small-body">Order risk-free with our 90-day, 100% money back guarantee.</p>
+                <p class="body font-bold">100% Money Back Guarantee</p>
+                <p class="body">Order risk-free with our 90-day, 100% money back guarantee.</p>
             </div>
         </div>
     </div>
@@ -357,8 +357,47 @@
             }
         }
     }
-    #app .container.order-form {
-        max-width: 100%;
+    #nav.order-form-nav {
+        background: #e4e8e9;
+        box-shadow: 0 1px 10px rgba(0,0,0,.4);
+    }
+    .order-form-footer {
+        background: #000;
+        color: #8c9698;
+
+        img {
+            width: 150px;
+            height: auto;
+            opacity: .5;
+            vertical-align: middle;
+        }
+
+        a {
+            color: #8c9698;
+            text-decoration: none;
+
+            &:focus,
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .social-link i {
+            color: #000;
+            height: 45px;
+            width: 45px;
+            line-height: 45px;
+            font-size: 24px;
+            border-radius: 50%;
+            background: #8c9698;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+
+            &:hover {
+                background: #a7afb0;
+            }
+        }
     }
     #app .features i {
         display: block;
