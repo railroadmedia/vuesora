@@ -3,7 +3,9 @@
         <h3 class="subheading text-center pv-1">Your Order is Protected by Our Extended 90-Day 100% Money Back
                 Guarantee!</h3>
         <order-form-cart
-            :cart-items="cartData.items"></order-form-cart>
+            :themeColor="themeColor"
+            :cart-items="cartData.items"
+            @updateCartItem="updateCart"></order-form-cart>
 
         <order-form-account
             :current-user="user"
@@ -22,24 +24,24 @@
             @updateCartData="processCart"
             v-if="requiresShippingAddress"></order-form-shipping>
 
-        <order-form-payment-plan
-            :number-of-payments="numberOfPayments"
-            :payment-plan-options="paymentPlanOptions"
-            @updateCartData="processCart"
-            v-if="paymentPlanOptions.length && canUsePaymentPlan"></order-form-payment-plan>
+<!--        <order-form-payment-plan-->
+<!--            :number-of-payments="numberOfPayments"-->
+<!--            :payment-plan-options="paymentPlanOptions"-->
+<!--            @updateCartData="processCart"-->
+<!--            v-if="paymentPlanOptions.length && canUsePaymentPlan"></order-form-payment-plan>-->
 
-        <order-form-payment
-            :billing-address="billingAddress"
-            :stripe-publishable-key="stripePublishableKey"
-            :validation-trigger="validationTrigger"
-            :stripe-token-trigger="stripeTokenTrigger"
-            :backend-payment-error="backendPaymentError"
-            :discounts="discountsData"
-            :totals="totalsData"
-            @startValidation="startValidation"
-            @savePaymentData="updatePaymentData"
-            @updateCartData="processCart"
-            @registerSubformValidation="registerSubformValidation"></order-form-payment>
+<!--        <order-form-payment-->
+<!--            :billing-address="billingAddress"-->
+<!--            :stripe-publishable-key="stripePublishableKey"-->
+<!--            :validation-trigger="validationTrigger"-->
+<!--            :stripe-token-trigger="stripeTokenTrigger"-->
+<!--            :backend-payment-error="backendPaymentError"-->
+<!--            :discounts="discountsData"-->
+<!--            :totals="totalsData"-->
+<!--            @startValidation="startValidation"-->
+<!--            @savePaymentData="updatePaymentData"-->
+<!--            @updateCartData="processCart"-->
+<!--            @registerSubformValidation="registerSubformValidation"></order-form-payment>-->
 
         <div class="flex flex-row pv-3 text-center features">
             <div class="md-4 ph-5">
@@ -63,7 +65,7 @@
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/order-form.js';
+    import Api from '../../assets/js/services/ecommerce.js';
     import OrderFormAccount from './_OrderFormAccount.vue';
     import OrderFormCart from './_OrderFormCart.vue';
     import OrderFormPayment from './_OrderFormPayment.vue';
@@ -81,33 +83,6 @@
             'order-form-shipping': OrderFormShipping,
             'order-form-payment': OrderFormPayment,
             'order-form-payment-plan': OrderFormPaymentPlan,
-        },
-        data() {
-            return {
-                cartData: {},
-                discountsData: [],
-                requiresAccount: false,
-                requiresShippingAddress: false,
-                canUsePaymentPlan: false,
-                validationForms: {
-                    account: false,
-                    shipping: false,
-                    payment: false
-                },
-                accountStateFactory: {},
-                shippingStateFactory: {},
-                paymentStateFactory: {},
-                validationTrigger: false,
-                stripeTokenTrigger: false,
-                backendPaymentError: null,
-                totalsData: {
-                    shipping: null,
-                    tax: 0,
-                    due: 0
-                },
-                numberOfPayments: 1,
-                paymentPlanOptions: [],
-            }
         },
         props: {
             billingAddress: {
@@ -147,32 +122,38 @@
                 type: String
             },
         },
+        data() {
+            return {
+                cartData: this.cart,
+                discountsData: [],
+                requiresAccount: false,
+                requiresShippingAddress: false,
+                canUsePaymentPlan: false,
+                validationForms: {
+                    account: false,
+                    shipping: false,
+                    payment: false
+                },
+                accountStateFactory: {},
+                shippingStateFactory: {},
+                paymentStateFactory: {},
+                validationTrigger: false,
+                stripeTokenTrigger: false,
+                backendPaymentError: null,
+                totalsData: {
+                    shipping: null,
+                    tax: 0,
+                    due: 0
+                },
+                numberOfPayments: 1,
+                paymentPlanOptions: [],
+            }
+        },
         methods: {
-            processCart(cart) {
-
-                this.cartData = cart;
-                this.requiresAccount = false;
-                this.requiresShippingAddress = false;
-                this.discountsData = cart.discounts;
-                this.totalsData = cart.totals;
-                this.numberOfPayments = cart.number_of_payments;
-                this.paymentPlanOptions = cart.payment_plan_options;
-                this.canUsePaymentPlan = true;
-
-                this.cartData.items.forEach(item => {
-
-                    if (item.subscription_interval_type) {
-                        this.requiresAccount = true;
-                    }
-                    if (item.requires_shipping) {
-                        this.requiresShippingAddress = true;
-                    }
-                    if (item.subscription_interval_count) {
-                        this.canUsePaymentPlan = false;
-                    }
-
-                });
+            updateCart(payload){
+                this.cartData = payload.meta.cart;
             },
+
             updateAccountData({field, value}) {
 
                 this.$set(this.accountStateFactory, field, value);
@@ -322,101 +303,14 @@
         },
         mounted() {
 
-            this.processCart(this.cart);
+            // this.processCart(this.cart);
 
-            this.$root.$on('updateCartData', (response) => {
-                // triggered by cart items quantity update/removal
-                this.processCart(response.meta.cart);
-            });
+            // this.$root.$on('updateCartData', (response) => {
+            //     // triggered by cart items quantity update/removal
+            //     this.processCart(response.meta.cart);
+            // });
 
             this.shippingStateFactory = this.shippingAddress;
         }
     }
 </script>
-<style lang="scss">
-    .order-form {
-        .order-form-input {
-
-            + .validation {
-                display: none;
-            }
-
-            &.invalid {
-                border: 1px solid #f07575;
-                background-color: #fff0f0;
-
-                + .validation {
-                    color: #F00;
-                    display: inline-block;
-                }
-            }
-
-            &:focus {
-                border: 1px solid #8a8a8a;
-                box-shadow: 0 0 5px #cacaca;
-            }
-        }
-    }
-    #nav.order-form-nav {
-        background: #e4e8e9;
-        box-shadow: 0 1px 10px rgba(0,0,0,.4);
-    }
-    .order-form-footer {
-        background: #000;
-        color: #8c9698;
-
-        img {
-            width: 150px;
-            height: auto;
-            opacity: .5;
-            vertical-align: middle;
-        }
-
-        a {
-            color: #8c9698;
-            text-decoration: none;
-
-            &:focus,
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-
-        .social-link i {
-            color: #000;
-            height: 45px;
-            width: 45px;
-            line-height: 45px;
-            font-size: 24px;
-            border-radius: 50%;
-            background: #8c9698;
-            text-align: center;
-            vertical-align: middle;
-            cursor: pointer;
-
-            &:hover {
-                background: #a7afb0;
-            }
-        }
-    }
-    #app .features i {
-        display: block;
-        font-size: 48px;
-        color: #666;
-
-        &.fa-certificate {
-            position: relative;
-        }
-
-        &.fa-check {
-            color: #fff;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-            -webkit-transform: translate(-50%,-50%);
-            -moz-transform: translate(-50%,-50%);
-            font-size: 22px;
-        }
-    }
-</style>

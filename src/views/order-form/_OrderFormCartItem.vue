@@ -1,150 +1,157 @@
 <template>
-    <div class="flex flex-row pa-2 align-v-top">
-        <div class="flex md-2 ph-2 thumbnail-container">
-            <img v-bind:src="item.thumbnail_url" class="rounded" alt="product image">
+    <div class="flex flex-row pa-2 align-v-center">
+        <div class="flex flex-column xs-12 sm-2 ph-2">
+            <div class="square">
+                <img :src="item.thumbnail_url"
+                     class="rounded"
+                     alt="product image">
+            </div>
         </div>
+
         <div class="flex flex-column grow ph-2">
-            <div class="flex">
-                <h3 class="subheading">{{ item.name }}</h3>
-            </div>
-            <div class="flex">
-                <h4 class="subtitle">{{ item.description }}</h4>
-            </div>
+            <h3 class="subheading">{{ item.name }}</h3>
+            <h4 class="body dense text-grey-4">{{ item.description }}</h4>
+
             <div class="flex flex-row align-h-left align-v-center pt-2">
-                <div class="flex">
-                    <h4 class="body quantity-label">Quantity</h4>
+                <div class="flex flex-column flex-auto">
+                    <h4 class="body quantity-label dense font-bold">Quantity:</h4>
                 </div>
-                <div class="flex quantity-wrapper ph-1">
-                    <div
-                        class="mr-2"
-                        v-if="item.subscription_interval_type == null">
-                        <input
-                            type="text"
-                            v-model="quantity"
-                            class="quantity-input text-center">
-                    </div>
-                    <span
-                        class="body"
-                        v-if="item.subscription_interval_type != null">{{ item.quantity }}</span>
+
+                <div class="flex flex-column flex-auto quantity-column">
+                    <input type="number"
+                           v-model="$_itemQuantity"
+                           min="1"
+                           class="no-label text-center"
+                           style="border:none;background:none;">
                 </div>
-                <div class="flex grow">
-                    <a
-                        class="body quantity-remove font-bold"
-                        v-on:click.stop.prevent="removeCartItem">X</a>
+
+                <div v-show="loading"
+                     class="flex flex-column flex-auto body">
+                    <i class="fas fa-spin fa-spinner"
+                       :class="themeTextClass"></i>
+                </div>
+            </div>
+
+            <div class="flex flex-row">
+                <div class="flex flex-column flex-auto">
+                    <a class="text-error tiny dense font-bold pointer uppercase"
+                       title="Remove Item"
+                       @click.stop.prevent="removeCartItem">
+                        Remove
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="flex flex-column flex-auto ph-3 pt-1 align-h-right">
-            <div class="flex" v-if="initialPrice()">
-                <h3 class="title text-dark font-strike">${{ initialPrice() }}</h3>
-            </div>
-            <div class="flex">
-                <h3 class="heading">${{ totalPrice() }}</h3>
-            </div>
-            <div class="flex" v-if="item.subscription_interval_type">
-                <h3 class="tiny">per {{ item.subscription_interval_type }}</h3>
-            </div>
+        <div class="flex flex-column flex-auto ph-3 pt-1 text-right">
+                <h3 v-if="isDiscounted"
+                    class="body font-bold dense font-strike text-error">
+                    ${{ item.price_before_discounts }}
+                </h3>
+
+                <h2 class="display dense">${{ item.price_after_discounts }}</h2>
+
+                <h3 v-if="item.subscription_interval_type"
+                    class="x-tiny text-grey-3">
+                    per {{ item.subscription_interval_type }}
+                </h3>
         </div>
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/order-form.js';
+    import EcommerceService from '../../assets/js/services/ecommerce.js';
+    import ThemeClasses from "../../mixins/ThemeClasses";
+    import Toasts from '../../assets/js/classes/toasts';
+    import CartEvents from './events';
+
 
     export default {
+        mixins: [ThemeClasses, CartEvents],
         name: 'order-form-cart-item',
         props: {
             item: {
                 type: Object,
-                default: () => {
-                    sku: '';
-                    name: '';
-                    description: '';
-                    quantity: '';
-                    stock: '';
-                    subscription_interval_type: null;
-                    subscription_interval_count: null;
-                    price_before_discounts: 0;
-                    price_after_discounts: 0;
-                    requires_shipping: false;
-                    thumbnail_url: null;
-                }
             },
         },
         data() {
             return {
-                updateQuantity: '',
+                loading: false,
                 updateQuantityTimeout: null,
+                itemQuantity: this.item.quantity,
             }
         },
         computed: {
-            quantity: {
+            $_itemQuantity: {
                 get() {
-                    return this.item.quantity;
+                    return this.itemQuantity;
                 },
                 set(val) {
+                    // This timeout prevents multiple requests from being sent
+                    clearTimeout(this.updateQuantityTimeout);
 
-                    this.updateQuantity = val;
-
-                    if (val) {
-
-                        clearTimeout(this.updateQuantityTimeout);
-
-                        this.updateQuantityTimeout = setTimeout(this.updateCartItemQuantity, 750);
-                    }
+                    this.updateQuantityTimeout = setTimeout(() => {
+                        this.updateCartItemQuantity(val);
+                        this.itemQuantity = val;
+                    }, 500);
                 }
-            }
+            },
+
+            isDiscounted(){
+                return this.item.price_after_discounts !== this.item.price_before_discounts;
+            },
         },
         methods: {
-            initialPrice() {
-                return this.item.price_after_discounts != this.item.price_before_discounts ?
-                    this.item.price_before_discounts : false;
-            },
-            totalPrice() {
-                return this.item.price_after_discounts;
-            },
-            updateCartItemQuantity() {
-                Api
-                    .updateCartItemQuantity({
-                        productSku: this.item.sku,
-                        quantity: this.updateQuantity
-                    })
+            updateCartItemQuantity(quantity) {
+                this.loading = true;
+
+                EcommerceService.updateCartItemQuantity({
+                    productSku: this.item.sku,
+                    quantity: quantity
+                })
                     .then(this.handleResponse);
             },
+
             removeCartItem() {
-                Api
-                    .removeCartItem({
-                        productSku: this.item.sku
-                    })
+                this.loading = true;
+
+                EcommerceService.removeCartItem({
+                    productSku: this.item.sku
+                })
                     .then(this.handleResponse);
             },
+
             handleResponse(response) {
-                // parent order form component handles the UI updates
-                // with all data from the response - cart items, taxes, shipping, total, etc
-                this.$root.$emit('updateCartData', response);
+                if(response){
+                    Toasts.push({
+                        icon: 'happy',
+                        title: 'Success!',
+                        themeColor: this.themeColor,
+                        message: 'Your cart has been updated!'
+                    });
+
+                    this.emitUpdateCartItem(response.data);
+                } else {
+                    Toasts.push({
+                        icon: 'disappointed',
+                        title: 'Something went wrong!',
+                        themeColor: this.themeColor,
+                        message: 'Please contact support using the chat widget at the bottom of the page.'
+                    });
+
+                    this.itemQuantity = this.item.quantity;
+                }
+
+                this.loading = false;
             },
         },
         mounted() {
         }
     }
 </script>
-<style lang="scss">
-    .quantity-label {
-        color: dodgerblue;
-    }
-    .quantity-wrapper {
-        max-width: 55px;
-        max-height: 30px;
 
-        .quantity-input {
-            padding: 0;
-            width: 35px;
-            height: 30px;
-        }
-    }
-    .quantity-remove {
-        color: red;
-    }
-    .thumbnail-container img {
-        align-self: center;
+<style lang="scss">
+
+    .quantity-column {
+        flex:0 0 75px;
+        max-width:75px;
     }
 </style>
