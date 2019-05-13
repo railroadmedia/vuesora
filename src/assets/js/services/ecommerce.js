@@ -57,28 +57,20 @@ export default {
         quantity
     }) {
         return axios
-                .patch(
-                    '/ecommerce/json/update-product-quantity/' + productSku + '/' + quantity,
-                    {}
-                )
-                .then(response => response.data)
+                .patch(`/ecommerce/json/updatse-product-quantity/${ productSku }/${ quantity }`)
                 .catch(ErrorHandler);
     },
 
     /**
      * Removes a cart item
      *
-     * @param {string} productSku
+     * @param {String} productSku
      *
      * @returns {Promise}
      */
     removeCartItem({productSku}) {
-        return axios
-                .delete(
-                    '/ecommerce/json/remove-from-cart/' + productSku,
-                    {}
-                )
-                .then(response => response.data)
+        return axios.delete(`/ecommerce/json/remove-from-cart/${ productSku }`)
+                .then(response => response)
                 .catch(ErrorHandler);
     },
 
