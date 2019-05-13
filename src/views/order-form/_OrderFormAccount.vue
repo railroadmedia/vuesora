@@ -84,7 +84,7 @@
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/order-form.js';
+    import Api from '../../assets/js/services/ecommerce.js';
     import ValidationTriggerMixin from './_mixin';
 
     export default {

@@ -127,7 +127,7 @@
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/order-form.js';
+    import Api from '../../assets/js/services/ecommerce.js';
     import Utils from 'js-helper-functions/modules/utils';
     import ValidationTriggerMixin from './_mixin';
 

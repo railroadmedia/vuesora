@@ -13,7 +13,7 @@
                 <div class="flex flex-column ph-1 md-6 sm-12">
                     <select
                         class="order-form-input no-label"
-                        v-model.lazy="$_numberOfPayaments">
+                        v-model.lazy="$_numberOfPayments">
 
                         <option
                             v-for="item in paymentPlanOptions"
@@ -32,21 +32,21 @@
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/order-form.js';
+    import Api from '../../assets/js/services/ecommerce.js';
 
     export default {
         data() {
             return {
-                selectedNumberOfPayaments: 1,
+                selectedNumberOfPayments: 1,
             }
         },
         computed: {
-            $_numberOfPayaments: {
+            $_numberOfPayments: {
                 get() {
-                    return this.selectedNumberOfPayaments;
+                    return this.selectedNumberOfPayments;
                 },
                 set(value) {
-                    this.selectedNumberOfPayaments = value;
+                    this.selectedNumberOfPayments = value;
                     this.updateNumberOfPayments(value);
                 }
             }
@@ -63,7 +63,7 @@
         },
         watch: {
             numberOfPayments: function(value) {
-                this.selectedNumberOfPayaments = value;
+                this.selectedNumberOfPayments = value;
             }
         },
         methods: {
@@ -81,7 +81,7 @@
             }
         },
         mounted() {
-            this.selectedNumberOfPayaments = this.numberOfPayments || 1;
+            this.selectedNumberOfPayments = this.numberOfPayments || 1;
         }
     }
 </script>
