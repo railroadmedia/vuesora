@@ -72,12 +72,10 @@
     export default {
         mixins: [Mixin, ThemeClasses],
         name: 'catalogue-card',
-        data() {
-            return {
-                mappedData: this.getContentModel()
-            }
-        },
         computed: {
+            mappedData(){
+                return this.contentModel['card'];
+            },
 
             is_added:{
                 cache: false,
@@ -92,23 +90,6 @@
 
             isGuitareoChordAndScale(){
                 return this.brand === 'guitareo' && this.item.type === 'chord-and-scale';
-            }
-        },
-        methods: {
-            getContentModel(){
-                const shows = ContentHelpers.shows();
-                let type = this.contentTypeOverride || this.item.type;
-
-                if(shows.indexOf(type) !== -1){
-                    type = 'show';
-                }
-
-                const model = new ContentModel(type, {
-                    brand: this.brand,
-                    post: this.item
-                });
-
-                return model['card'];
             }
         },
         beforeDestroy(){
