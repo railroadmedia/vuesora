@@ -14,7 +14,7 @@
 <script>
     import OrderFormCartItem from './_OrderFormCartItem.vue';
     import ThemeClasses from "../../mixins/ThemeClasses";
-    import CartEvents from './events';
+    import CartEvents from './_events';
 
     export default {
         mixins: [ThemeClasses, CartEvents],

@@ -8,6 +8,7 @@
             @updateCartItem="updateCart"></order-form-cart>
 
         <order-form-account
+            :themeColor="themeColor"
             :current-user="user"
             :requires-account="requiresAccount"
             :login-url="loginUrl"

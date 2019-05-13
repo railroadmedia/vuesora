@@ -61,7 +61,7 @@
     import EcommerceService from '../../assets/js/services/ecommerce.js';
     import ThemeClasses from "../../mixins/ThemeClasses";
     import Toasts from '../../assets/js/classes/toasts';
-    import CartEvents from './events';
+    import CartEvents from './_events';
 
 
     export default {

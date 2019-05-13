@@ -1,9 +1,10 @@
 <template>
     <div class="flex flex-column mv-2">
-        <div v-if="state == 'billing'">
+        <div v-if="state === 'billing'">
             <div v-if="!requiresAccount">
                 <div class="flex flex-row align-v-center pb-2">
-                    <h3 class="heading color-blue">Billing Email</h3>
+                    <h3 class="heading">Billing Email</h3>
+
                     <a class="body color-blue font-underline pl-3" v-on:click.stop.prevent="login">Already have an account? Click here to login.</a>
                 </div>
                 <div class="flex flex-column bg-white shadow corners-5 pa-3">
@@ -20,7 +21,8 @@
             <div v-if="requiresAccount">
                 <div class="flex flex-row align-v-center pb-2">
                     <div class="flex flex-grow flex-row align-v-center">
-                        <h3 class="heading color-blue">Create Your Account</h3>
+                        <h3 class="heading">Create Your Account</h3>
+
                         <a class="body color-blue font-underline pl-3" v-on:click.stop.prevent="login">Already have an account? Click here to login.</a>
                     </div>
                     <div class="flex flex-auto">
@@ -62,22 +64,23 @@
             </div>
         </div>
 
-        <div v-if="state == 'account'">
+        <div v-if="state === 'account'">
             <div class="flex flex-row align-v-center pb-2">
                 <div class="flex flex-grow">
-                    <h3 class="heading color-blue">Add To Existing Account</h3>
+                    <h3 class="heading">Add To Existing Account</h3>
                 </div>
+
                 <div class="flex-auto">
                     <a class="body color-blue font-underline" v-on:click.stop.prevent="logout">Need to log in to a different account?</a>
                 </div>
             </div>
             <div class="flex flex-row bg-white shadow corners-5 pa-3">
                 <div class="flex flex-column">
-                    <h4 class="body text-dark">You are logged in as:</h4>
-                    <h4 class="subheading">{{ currentUser.email }}</h4>
-                </div>
-                <div class="flex flex-column md-5 sm-12">
-                    <h4 class="body text-dark">Your products will be added to the account you are currently logged in with. </h4>
+                    <h4 class="body text-grey-3">You are logged in as:</h4>
+
+                    <h4 class="subheading mb-2">{{ currentUser.email }}</h4>
+
+                    <h4 class="tiny text-grey-3">Your products will be added to the account you are currently logged in with. </h4>
                 </div>
             </div>
         </div>
@@ -86,9 +89,10 @@
 <script>
     import Api from '../../assets/js/services/ecommerce.js';
     import ValidationTriggerMixin from './_mixin';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [ValidationTriggerMixin],
+        mixins: [ValidationTriggerMixin, ThemeClasses],
         name: 'order-form-account',
         props: {
             currentUser: {
