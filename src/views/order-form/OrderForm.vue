@@ -1,19 +1,21 @@
 <template>
     <div class="flex flex-column order-form pv-2">
-        <h3 class="subheading text-center pv-1">Your Order is Protected by Our Extended 90-Day 100% Money Back
-                Guarantee!</h3>
+        <h3 class="subheading text-center pv-1">
+            Your Order is Protected by Our Extended 90-Day 100% Money Back Guarantee!
+        </h3>
+
         <order-form-cart
             :themeColor="themeColor"
-            :cart-items="cartData.items"
+            :cartItems="cartData.items"
             @updateCartItem="updateCart"></order-form-cart>
 
         <order-form-account
             :themeColor="themeColor"
-            :current-user="user"
-            :requires-account="requiresAccount"
-            :login-url="loginUrl"
-            :logout-url="logoutUrl"
-            :validation-trigger="validationTrigger"
+            :currentUser="user"
+            :requiresAccountInfo="cartContainsSubscription"
+            :loginUrl="loginUrl"
+            :logoutUrl="logoutUrl"
+            :validationTrigger="validationTrigger"
             @saveAccountData="updateAccountData"
             @registerSubformValidation="registerSubformValidation"></order-form-account>
 
@@ -148,6 +150,11 @@
                 },
                 numberOfPayments: 1,
                 paymentPlanOptions: [],
+            }
+        },
+        computed: {
+            cartContainsSubscription(){
+                return this.cartData.items.find(item => item.subscription_interval_type != null) != null;
             }
         },
         methods: {

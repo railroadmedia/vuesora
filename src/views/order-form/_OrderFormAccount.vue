@@ -1,93 +1,167 @@
 <template>
     <div class="flex flex-column mv-2">
-        <div v-if="state === 'billing'">
-            <div v-if="!requiresAccount">
+        <div v-if="!isSignedIn">
+            <div v-if="!requiresAccountInfo">
                 <div class="flex flex-row align-v-center pb-2">
                     <h3 class="heading">Billing Email</h3>
 
-                    <a class="body color-blue font-underline pl-3" v-on:click.stop.prevent="login">Already have an account? Click here to login.</a>
+                    <a :href="loginUrl"
+                       class="body color-blue font-underline pl-3">
+                        Already have an account? Click here to login.
+                    </a>
                 </div>
+
                 <div class="flex flex-column bg-white shadow corners-5 pa-3">
-                    <input
-                        type="email"
-                        name="billing-email"
-                        placeholder="Email Address"
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.billingEmail }"
-                        v-model.lazy="billingEmail">
-                    <span class="validation tiny">{{ validation.billingEmail }}</span>
+                    <div class="form-group">
+                        <input type="email"
+                               id="billingEmail"
+                               name="billing-email"
+                               class="order-form-input"
+                               :class="{ 'has-error': errors.billingEmail.length,
+                               'has-input': $_billingEmail != null }"
+                               v-model.lazy="$_billingEmail">
+
+                        <label for="newAccountEmail"
+                               class="pianote">
+                            Email Address
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li v-for="(error, i) in errors.billingEmail"
+                                :key="'accountEmailError' + i">
+                                {{ error || null }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div v-if="requiresAccount">
-                <div class="flex flex-row align-v-center pb-2">
-                    <div class="flex flex-grow flex-row align-v-center">
-                        <h3 class="heading">Create Your Account</h3>
 
-                        <a class="body color-blue font-underline pl-3" v-on:click.stop.prevent="login">Already have an account? Click here to login.</a>
+            <div v-if="requiresAccountInfo">
+                <div class="flex flex-row align-v-center pb-2">
+                    <div class="flex flex-column grow">
+                        <div class="flex flex-row align-v-center">
+                            <h3 class="heading">Create Your Account</h3>
+
+                            <a :href="loginUrl"
+                               class="body color-blue font-underline pl-3">
+                                Already have an account? Click here to login.
+                            </a>
+                        </div>
                     </div>
-                    <div class="flex flex-auto">
+
+                    <div class="flex flex-column flex-auto">
                         <h4 class="body text-dark">All fields are mandatory.</h4>
                     </div>
                 </div>
-                <div class="flex flex-row bg-white shadow corners-5 pv-3 ph-2">
+                <div class="flex flex-row bg-white shadow corners-5 pv-3 ph-2 mb-1">
                     <div class="flex flex-column ph-1">
-                        <input
-                            type="email"
-                            name="account-creation-email"
-                            placeholder="Email Address"
-                            class="order-form-input no-label"
-                            v-bind:class="{ invalid: validation.accountEmail }"
-                            v-model.lazy="accountEmail">
-                        <span class="validation tiny">{{ validation.accountEmail }}</span>
-                        <a class="tiny color-blue font-underline" :href="loginUrl" v-if="emailExists">Forgot your password?</a>
+                        <div class="form-group">
+                            <input type="email"
+                                   id="newAccountEmail"
+                                   name="account-creation-email"
+                                   class="order-form-input"
+                                   :class="{ 'has-error': errors.accountEmail.length,
+                                   'has-input': $_accountEmail != null }"
+                                   v-model.lazy="$_accountEmail">
+
+                            <label for="newAccountEmail"
+                                   class="pianote">
+                                Email Address
+                            </label>
+
+                            <ul class="errors tiny">
+                                <li v-for="(error, i) in errors.accountEmail"
+                                    :key="'accountEmailError' + i">
+                                    {{ error || null }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
                     <div class="flex flex-column ph-1">
-                        <input
-                            type="password"
-                            name="account-creation-password"
-                            placeholder="Password"
-                            class="order-form-input no-label"
-                            v-bind:class="{ invalid: validation.accountPassword }"
-                            v-model.lazy="accountPassword">
-                        <span class="validation tiny">{{ validation.accountPassword }}</span>
+                        <div class="form-group">
+                            <input type="password"
+                                   id="newAccountPassword"
+                                   name="account-creation-password"
+                                   class="order-form-input"
+                                   :class="{ 'has-error': errors.accountPassword.length,
+                                    'has-input': $_accountPassword != null }"
+                                   v-model="$_accountPassword">
+
+                            <label for="newAccountPassword"
+                                   class="pianote">
+                                Password
+                            </label>
+
+                            <ul class="errors tiny">
+                                <li v-for="(error, i) in errors.accountPassword"
+                                    :key="'accountPasswordError' + i">
+                                    {{ error }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
                     <div class="flex flex-column ph-1">
-                        <input
-                            type="password"
-                            placeholder="Password Confirm"
-                            class="order-form-input no-label"
-                            v-bind:class="{ invalid: validation.accountPasswordConfirmation }"
-                            v-model.lazy="accountPasswordConfirmation">
-                        <span class="validation tiny">{{ validation.accountPasswordConfirmation }}</span>
+                        <div class="form-group">
+                            <input type="password"
+                                   id="newAccountPasswordConfirm"
+                                   class="order-form-input"
+                                   :class="{ 'has-error': errors.accountPasswordConfirm.length,
+                                   'has-input': $_accountPasswordConfirm != null }"
+                                   v-model="$_accountPasswordConfirm">
+
+                            <label for="newAccountPasswordConfirm"
+                                   class="pianote">
+                                Confirm Password
+                            </label>
+
+                            <ul class="errors tiny">
+                                <li v-for="(error, i) in errors.accountPasswordConfirm"
+                                    :key="'accountPasswordConfirmError' + i">
+                                    {{ error || null }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <a :href="loginUrl"
+                   class="tiny color-blue font-underline">
+                    Forgot your password?
+                </a>
             </div>
         </div>
 
-        <div v-if="state === 'account'">
+        <div v-if="isSignedIn">
             <div class="flex flex-row align-v-center pb-2">
-                <div class="flex flex-grow">
+                <div class="flex flex-column flex-grow">
                     <h3 class="heading">Add To Existing Account</h3>
                 </div>
 
-                <div class="flex-auto">
-                    <a class="body color-blue font-underline" v-on:click.stop.prevent="logout">Need to log in to a different account?</a>
+                <div class="flex flex-column flex-auto">
+                    <a :href="logoutUrl"
+                       class="body color-blue font-underline">
+                        Need to log in to a different account?
+                    </a>
                 </div>
             </div>
+
             <div class="flex flex-row bg-white shadow corners-5 pa-3">
-                <div class="flex flex-column">
-                    <h4 class="body text-grey-3">You are logged in as:</h4>
+                <div class="flex flex-column text-center">
+                    <h4 class="body text-grey-3 mb-1">You are currently logged in as:</h4>
 
                     <h4 class="subheading mb-2">{{ currentUser.email }}</h4>
 
-                    <h4 class="tiny text-grey-3">Your products will be added to the account you are currently logged in with. </h4>
+                    <h4 class="tiny text-grey-3 font-italic">
+                        Your products will be added to the account you are currently logged in with.
+                    </h4>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/ecommerce.js';
     import ValidationTriggerMixin from './_mixin';
     import ThemeClasses from "../../mixins/ThemeClasses";
 
@@ -99,7 +173,7 @@
                 type: Object,
                 default: () => null
             },
-            requiresAccount: {
+            requiresAccountInfo: {
                 type: Boolean,
                 default: () => false
             },
@@ -114,192 +188,125 @@
         },
         data() {
             return {
-                state: 'billing', // states: billing, account
-                validation: {
-                    billingEmail: '',
-                    accountEmail: '',
-                    accountPassword: '',
-                    accountPasswordConfirmation: '',
-                },
                 controls: {
-                    billingEmail: '',
-                    accountEmail: '',
-                    accountPassword: '',
-                    accountPasswordConfirmation: '',
+                    billingEmail: null,
+                    accountEmail: null,
+                    accountPassword: null,
+                    accountPasswordConfirmation: null,
                 },
                 rules: {
-                    billingEmail: {
-                        pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        message: 'Invalid billing email address'
-                    },
-                    accountEmail: {
-                        pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        message: 'Invalid email address'
-                    },
-                    accountPassword: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid password'
-                    }
+                    billingEmail: [
+                        v => !!v || 'Email is required.',
+                        v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Must be a valid email'
+                    ],
+                    accountEmail: [
+                        v => !!v || 'Email is required.',
+                        v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Must be a valid email'
+                    ],
+                    accountPassword: [
+                        v => !!v || 'Password is required.',
+                        v => v === this.$_accountPasswordConfirm || 'Passwords must match.'
+                    ],
+                    accountPasswordConfirm: [
+                        v => !!v || 'Password is required.',
+                        v => v === this.$_accountPassword || 'Passwords must match.'
+                    ],
                 },
-                emailExists: false
+                errors: {
+                    billingEmail: [],
+                    accountEmail: [],
+                    accountPassword: [],
+                    accountPasswordConfirm: [],
+                },
             }
         },
         computed: {
-            billingEmail: {
+            isSignedIn(){
+                return this.currentUser != null;
+            },
+
+            $_billingEmail: {
                 get() {
                     return this.controls.billingEmail;
                 },
                 set(value) {
-                    this.controls.billingEmail = value;
-                    this.validateControl('billingEmail');
-                    this.$emit(
-                        'saveAccountData',
-                        {
-                            field: 'billingEmail',
-                            value: this.controls.billingEmail
-                        }
-                    );
+                    this.$set(this.controls, 'billingEmail', value);
+                    this.validateControl('billingEmail', value);
+
+                    this.$emit('saveAccountData', {
+                        field: 'billingEmail',
+                        value: this.controls.billingEmail
+                    });
                 }
             },
-            accountEmail: {
+
+            $_accountEmail: {
                 get() {
                     return this.controls.accountEmail;
                 },
                 set(value) {
-                    this.emailExists = false;
-                    this.controls.accountEmail = value;
-                    this.validateControl('accountEmail');
-                    this.$emit(
-                        'saveAccountData',
-                        {
-                            field: 'accountEmail',
-                            value: this.controls.accountEmail
-                        }
-                    );
-                    this.checkEmailExists(value);
+                    this.$set(this.controls, 'accountEmail', value);
+                    this.validateControl('accountEmail', value);
+
+                    this.$emit('saveAccountData', {
+                        field: 'accountEmail',
+                        value: this.controls.accountEmail
+                    });
                 }
             },
-            accountPassword: {
+
+            $_accountPassword: {
                 get() {
                     return this.controls.accountPassword;
                 },
                 set(value) {
-                    this.controls.accountPassword = value;
-                    this.validateControl('accountPassword');
-
-                    if (this.controls.accountPasswordConfirmation !== '') {
-                        this.validatePasswordConfirmation();
+                    this.$set(this.controls, 'accountPassword', value);
+                    this.validateControl('accountPassword', value);
+                    
+                    // If the other password input has a value - validate it at the same time
+                    if(this.$_accountPasswordConfirm != null){
+                        this.validateControl('accountPasswordConfirm', this.$_accountPasswordConfirm);
                     }
-
-                    this.$emit(
-                        'saveAccountData',
-                        {
-                            field: 'accountPassword',
-                            value: this.controls.accountPassword
-                        }
-                    );
+                    
+                    this.$emit('saveAccountData', {
+                        field: 'accountPassword',
+                        value: this.controls.accountPassword
+                    });
                 }
             },
-            accountPasswordConfirmation: {
+
+            $_accountPasswordConfirm: {
                 get() {
                     return this.controls.accountPasswordConfirmation;
                 },
                 set(value) {
-                    this.controls.accountPasswordConfirmation = value;
-                    this.validatePasswordConfirmation();
-                    this.$emit(
-                        'saveAccountData',
-                        {
-                            field: 'accountPasswordConfirmation',
-                            value: this.controls.accountPasswordConfirmation
-                        }
-                    );
+                    this.$set(this.controls, 'accountPasswordConfirmation', value);
+                    this.validateControl('accountPasswordConfirm', value);
+                    
+                    // If the other password input has a value - validate it at the same time
+                    if(this.$_accountPassword != null){
+                        this.validateControl('accountPassword', this.$_accountPassword);
+                    }
+
+                    this.$emit('saveAccountData', {
+                        field: 'accountPasswordConfirmation',
+                        value: this.controls.accountPasswordConfirmation
+                    });
                 }
             },
-            createLabel() {
-                return this.requiresAccount ? 'Create a new account' : 'Checkout as guest';
-            }
-        },
-        watch: {
-            currentUser: function(value) {
-                this.state = (value == null) ? 'billing' : 'account';
-            }
         },
         methods: {
-            validateControl(controlName) {
+            validateControl(controlName, value) {
+                const errors = [];
 
-                return this.validation[controlName] = (
-                    this.rules.hasOwnProperty(controlName) &&
-                    this.controls.hasOwnProperty(controlName) &&
-                    (
-                        this.controls[controlName] == null ||
-                        !this.rules[controlName].pattern.test(this.controls[controlName])
-                    )
-                ) ? this.rules[controlName].message : '';
-            },
-            validatePasswordConfirmation() {
-                return this.validation.accountPasswordConfirmation = (
-                            !this.controls.accountPasswordConfirmation ||
-                            (this.controls.accountPassword &&
-                            this.controls.accountPassword != this.controls.accountPasswordConfirmation)
-                        ) ?
-                            'Invalid password confirmation' : '';
-            },
-            showBillingEmailForm() {
-                this.state = 'billing';
-            },
-            login() {
-                // todo - test SSO
-                window.location.assign(this.loginUrl);
-            },
-            logout() {
-                window.location.assign(this.logoutUrl);
-            },
-            validateForm() {
-
-                let validationSuccessful = true;
-
-                if (!this.currentUser) {
-                    // if user logged in, no form controls to validate
-
-                    let controls = this.requiresAccount ?
-                        ['accountEmail', 'accountPassword'] : ['billingEmail'];
-
-                    controls.forEach((control) => {
-                        validationSuccessful = !this.validateControl(control) && validationSuccessful;
-                    });
-
-                    if (this.requiresAccount) {
-                        validationSuccessful = !this.validatePasswordConfirmation() && validationSuccessful;
+                this.rules[controlName].forEach(rule => {
+                    if(rule(value) !== true){
+                        errors.push(rule(value));
                     }
-                }
+                });
 
-                this.$emit(
-                    'registerSubformValidation',
-                    {
-                        form: 'account',
-                        result: validationSuccessful
-                    }
-                );
+                this.$set(this.errors, controlName, errors);
             },
-            checkEmailExists(email) {
-                Api
-                    .checkEmail(email)
-                    .then(response => {
-                        if (!response.unique) {
-                            this.validation.accountEmail = 'An account already exists with this email';
-                            this.emailExists = true;
-                        }
-                    })
-            }
-        },
-        mounted() {
-            this.state = (this.currentUser == null) ? 'billing' : 'account';
         }
     }
 </script>
-<style lang="scss">
-    .color-blue {
-        color: dodgerblue;
-    }
-</style>
