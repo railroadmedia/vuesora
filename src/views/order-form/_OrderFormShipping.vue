@@ -12,15 +12,19 @@
                                type="text"
                                name="first-name"
                                class="order-form-input"
-                               :class="{ 'has-error': validation.shippingFirstName }"
-                               v-model.lazy="firstName">
+                               :class="{ 'has-error': errors.first_name.length,
+                               'has-input': $_first_name != null }"
+                               v-model.lazy="$_first_name">
 
                         <label for="shippingFirstName" :class="brand">
                             First Name
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.shippingFirstName }}</li>
+                            <li v-for="(error, i) in errors.first_name"
+                                :key="'firstNameError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -31,15 +35,19 @@
                                type="text"
                                name="last-name"
                                class="order-form-input"
-                               :class="{ 'has-error': validation.shippingLastName }"
-                               v-model.lazy="lastName">
+                               :class="{ 'has-error': errors.last_name.length,
+                               'has-input': $_last_name != null }"
+                               v-model.lazy="$_last_name">
 
                         <label for="shippingLastName" :class="brand">
                             Last Name
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.shippingLastName }}</li>
+                            <li v-for="(error, i) in errors.last_name"
+                                :key="'lastNameError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -50,15 +58,19 @@
                                type="text"
                                name="address-line1"
                                class="order-form-input"
-                               :class="{ 'has-error': validation.shippingAddressLine1 }"
-                               v-model.lazy="addressLine1">
+                               :class="{ 'has-error': errors.street_line_one.length,
+                               'has-input': $_street_line_one != null }"
+                               v-model.lazy="$_street_line_one">
 
                         <label for="shippingAddressLine1" :class="brand">
                             Address - Line 1
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.shippingAddressLine1 }}</li>
+                            <li v-for="(error, i) in errors.street_line_one"
+                                :key="'streetLineOneError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -69,7 +81,7 @@
                             type="text"
                             name="address-line2"
                             class="order-form-input"
-                            v-model.lazy="addressLine2">
+                            v-model.lazy="$_street_line_two">
 
                         <label for="shippingAddressLine2" :class="brand">
                             Address - Line 2
@@ -83,15 +95,19 @@
                                type="text"
                                name="city"
                                class="order-form-input"
-                               :class="{ 'has-error': validation.shippingCity }"
-                               v-model.lazy="city">
+                               :class="{ 'has-error': errors.city.length,
+                               'has-input': $_city != null }"
+                               v-model.lazy="$_city">
 
                         <label for="shippingCity" :class="brand">
                             City
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.shippingCity }}</li>
+                            <li v-for="(error, i) in errors.city"
+                                :key="'cityError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -102,15 +118,19 @@
                                type="text"
                                name="state"
                                class="order-form-input"
-                               :class="{ 'has-error': validation.shippingState }"
-                               v-model.lazy="state">
+                               :class="{ 'has-error': $_country === 'Canada' && errors.state.length,
+                               'has-input': this.$_state != null }"
+                               v-model.lazy="$_state">
 
                         <label for="shippingState" :class="brand">
                             State/Province
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.shippingState }}</li>
+                            <li v-for="(error, i) in errors.state"
+                                :key="'stateError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -119,8 +139,9 @@
                     <div class="form-group">
                         <select id="shippingCountry"
                                 class="order-form-input"
-                                :class="{ 'has-error': validation.shippingCountry }"
-                                v-model.lazy="country">
+                                :class="{ 'has-error': errors.country.length,
+                                'has-input': $_country != null }"
+                                v-model.lazy="$_country">
 
                             <option v-for="country in countries"
                                     :key="country.code"
@@ -132,7 +153,10 @@
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.shippingCountry }}</li>
+                            <li v-for="(error, i) in errors.country"
+                                :key="'countryError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -143,15 +167,19 @@
                                 type="text"
                                 name="zip"
                                 class="order-form-input"
-                                :class="{ invalid: validation.shippingZip }"
-                                v-model.lazy="zip">
+                                :class="{ 'has-error': errors.zip_or_postal_code.length,
+                                'has-input': $_zip_or_postal_code != null }"
+                                v-model.lazy="$_zip_or_postal_code">
 
                         <label for="shippingZip" :class="brand">
                             Zip/Postal Code
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.shippingZip }}</li>
+                            <li v-for="(error, i) in errors.zip_or_postal_code"
+                                :key="'zipOrPostalCodeError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -171,6 +199,22 @@
             brand: {
                 type: String,
             },
+
+            shippingData: {
+                type: Object,
+                default: () => ({
+                    city: null,
+                    country: null,
+                    first_name: null,
+                    last_name: null,
+                    state: null,
+                    street_line_one: null,
+                    street_line_two: null,
+                    zip_or_postal_code: null,
+
+                })
+            },
+
             shippingAddress: {
                 type: Object,
                 default: () => null
@@ -178,210 +222,158 @@
         },
         data() {
             return {
-                validation: {
-                    shippingFirstName: '',
-                    shippingLastName: '',
-                    shippingAddressLine1: '',
-                    shippingCity: '',
-                    shippingState: '',
-                    shippingCountry: '',
-                    shippingZip: '',
-                },
-                controls: {
-                    shippingFirstName: '',
-                    shippingLastName: '',
-                    shippingAddressLine1: '',
-                    shippingAddressLine2: '',
-                    shippingCity: '',
-                    shippingState: '',
-                    shippingCountry: '',
-                    shippingZip: '',
-                },
                 rules: {
-                    shippingFirstName: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid First Name'
-                    },
-                    shippingLastName: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid Last Name'
-                    },
-                    shippingAddressLine1: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid Address'
-                    },
-                    shippingCity: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid City'
-                    },
-                    shippingState: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid State/Province'
-                    },
-                    shippingCountry: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid Country'
-                    },
-                    shippingZip: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid Zip/Postal code'
-                    },
+                    first_name: [
+                        v => !!v || 'First Name is required'
+                    ],
+                    last_name: [
+                        v => !!v || 'Last Name is required'
+                    ],
+                    street_line_one: [
+                        v => !!v || 'Address is required'
+                    ],
+                    state: [
+                        v => !!v || 'State/Province is required'
+                    ],
+                    city: [
+                        v => !!v || 'City is required'
+                    ],
+                    country: [
+                        v => !!v || 'Country is required'
+                    ],
+                    zip_or_postal_code: [
+                        v => !!v || 'Zip or Postal Code is required'
+                    ],
                 },
-                controlsMap: {
-                    shippingFirstName: 'first_name',
-                    shippingLastName: 'last_name',
-                    shippingAddressLine1: 'street_line_one',
-                    shippingAddressLine2: 'street_line_two',
-                    shippingCity: 'city',
-                    shippingState: 'state',
-                    shippingCountry: 'country',
-                    shippingZip: 'zip_or_postal_code',
-                },
-                backendKeysMap: {
-                    'first_name': 'shippingFirstName',
-                    'last_name': 'shippingLastName',
-                    'street_line_one': 'shippingAddressLine1',
-                    'street_line_two': 'shippingAddressLine2',
-                    'city': 'shippingCity',
-                    'state': 'shippingState',
-                    'country': 'shippingCountry',
-                    'zip_or_postal_code': 'shippingZip',
+                errors: {
+                    first_name: [],
+                    last_name: [],
+                    street_line_one: [],
+                    state: [],
+                    city: [],
+                    country: [],
+                    zip_or_postal_code: [],
                 },
             }
         },
         computed: {
-            firstName: {
-                get() {
-                    return this.controls.shippingFirstName;
-                },
-                set(value) {
-                    if (this.controls.shippingFirstName != value) {
-                        this.controls.shippingFirstName = value;
-                        this.update('shippingFirstName');
-                    }
-                }
-            },
-            lastName: {
-                get() {
-                    return this.controls.shippingLastName;
-                },
-                set(value) {
-                    if (this.controls.shippingLastName != value) {
-                        this.controls.shippingLastName = value;
-                        this.update('shippingLastName');
-                    }
-                }
-            },
-            addressLine1: {
-                get() {
-                    return this.controls.shippingAddressLine1;
-                },
-                set(value) {
-                    if (this.controls.shippingAddressLine1 != value) {
-                        this.controls.shippingAddressLine1 = value;
-                        this.update('shippingAddressLine1');
-                    }
-                }
-            },
-            addressLine2: {
-                get() {
-                    return this.controls.shippingAddressLine2;
-                },
-                set(value) {
-                    if (this.controls.shippingAddressLine2 != value) {
-                        this.controls.shippingAddressLine2 = value;
-                        this.update('shippingAddressLine2');
-                    }
-                }
-            },
-            city: {
-                get() {
-                    return this.controls.shippingCity;
-                },
-                set(value) {
-                    if (this.controls.shippingCity != value) {
-                        this.controls.shippingCity = value;
-                        this.update('shippingCity');
-                    }
-                }
-            },
-            state: {
-                get() {
-                    return this.controls.shippingState;
-                },
-                set(value) {
-                    if (this.controls.shippingState != value) {
-                        this.controls.shippingState = value;
-                        this.update('shippingState');
-                    }
-                }
-            },
-            country: {
-                get() {
-                    return this.controls.shippingCountry;
-                },
-                set(value) {
-                    if (this.controls.shippingCountry != value) {
-                        this.controls.shippingCountry = value;
-                        this.update('shippingCountry');
-                    }
-                }
-            },
-            zip: {
-                get() {
-                    return this.controls.shippingZip;
-                },
-                set(value) {
-                    if (this.controls.shippingZip != value) {
-                        this.controls.shippingZip = value;
-                        this.update('shippingZip');
-                    }
-                }
-            },
             countries() {
                 return Utils.countries();
             },
+
             states() {
                 return Utils.provinces();
             },
-        },
-        watch: {
-            shippingAddress: function() {
-                this.processFactoryData();
-            }
+
+            $_first_name: {
+                get() {
+                    return this.shippingData.first_name;
+                },
+                set(value) {
+                    this.$emit('updateShippingData', {
+                        key: 'first_name',
+                        value: value,
+                    });
+                }
+            },
+
+            $_last_name: {
+                get() {
+                    return this.shippingData.last_name;
+                },
+                set(value) {
+                    this.$emit('updateShippingData', {
+                        key: 'last_name',
+                        value: value,
+                    });
+                }
+            },
+
+            $_street_line_one: {
+                get() {
+                    return this.shippingData.street_line_one;
+                },
+                set(value) {
+                    this.$emit('updateShippingData', {
+                        key: 'street_line_one',
+                        value: value,
+                    });
+                }
+            },
+
+            $_street_line_two: {
+                get() {
+                    return this.shippingData.street_line_two;
+                },
+                set(value) {
+                    this.$emit('updateShippingData', {
+                        key: 'street_line_two',
+                        value: value,
+                    });
+                }
+            },
+
+            $_city: {
+                get() {
+                    return this.shippingData.city;
+                },
+                set(value) {
+                    this.$emit('updateShippingData', {
+                        key: 'city',
+                        value: value,
+                    });
+                }
+            },
+
+            $_state: {
+                get() {
+                    return this.shippingData.state;
+                },
+                set(value) {
+                    this.$emit('updateShippingData', {
+                        key: 'state',
+                        value: value,
+                    });
+                }
+            },
+
+            $_country: {
+                get() {
+                    return this.shippingData.country;
+                },
+                set(value) {
+                    this.$emit('updateShippingData', {
+                        key: 'country',
+                        value: value,
+                    });
+                }
+            },
+
+            $_zip_or_postal_code: {
+                get() {
+                    return this.shippingData.zip_or_postal_code;
+                },
+                set(value) {
+                    this.$emit('updateShippingData', {
+                        key: 'zip_or_postal_code',
+                        value: value,
+                    });
+                }
+            },
         },
         methods: {
-            update(controlName) {
-
-                this.$emit(
-                    'saveShippingData',
-                    {
-                        field: this.controlsMap[controlName],
-                        value: this.controls[controlName]
-                    }
-                );
-
-                Api.updateAddresses(this.controls)
-                    .then(response => {
-                        if (response.meta && response.meta.cart) {
-                            this.$emit(
-                                'updateCartData',
-                                response.meta.cart
-                            );
-                        }
-                    });
-            },
             validateControl(controlName) {
+                const errors = [];
 
-                return this.validation[controlName] = (
-                    this.rules.hasOwnProperty(controlName) &&
-                    this.controls.hasOwnProperty(controlName) &&
-                    (
-                        this.controls[controlName] == null ||
-                        !this.rules[controlName].pattern.test(this.controls[controlName])
-                    )
-                ) ? this.rules[controlName].message : '';
+                this.rules[controlName].forEach(rule => {
+                    if(rule(value) !== true){
+                        errors.push(rule(value));
+                    }
+                });
+
+                this.$set(this.errors, controlName, errors);
             },
+
             validateForm() {
 
                 let validationSuccessful = true;
@@ -398,22 +390,7 @@
                     }
                 );
             },
-            processFactoryData() {
-                if (this.shippingAddress) {
-
-                    for (let backendKey in this.backendKeysMap) {
-
-                        let controlKey = this.backendKeysMap[backendKey];
-
-                        this.controls[controlKey] = this.shippingAddress.hasOwnProperty(backendKey) ?
-                                                        this.shippingAddress[backendKey] : '';
-                    }
-                }
-            }
         },
-        mounted() {
-            this.processFactoryData();
-        }
     }
 </script>
 <style lang="scss">

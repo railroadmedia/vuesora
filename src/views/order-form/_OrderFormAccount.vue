@@ -168,17 +168,31 @@
                 type: Object,
                 default: () => null
             },
+
             brand: {
                 type: String,
             },
+
+            accountDetails: {
+                type: Object,
+                default: () => ({
+                    billingEmail: null,
+                    accountEmail: null,
+                    accountPassword: null,
+                    accountPasswordConfirm: null,
+                })
+            },
+
             requiresAccountInfo: {
                 type: Boolean,
                 default: () => false
             },
+
             loginUrl: {
                 type: String,
                 default: '/login',
             },
+
             logoutUrl: {
                 type: String,
                 default: '/',
@@ -186,12 +200,6 @@
         },
         data() {
             return {
-                controls: {
-                    billingEmail: null,
-                    accountEmail: null,
-                    accountPassword: null,
-                    accountPasswordConfirmation: null,
-                },
                 rules: {
                     billingEmail: [
                         v => !!v || 'Email is required.',
@@ -225,40 +233,37 @@
 
             $_billingEmail: {
                 get() {
-                    return this.controls.billingEmail;
+                    return this.accountDetails.billingEmail;
                 },
                 set(value) {
-                    this.$set(this.controls, 'billingEmail', value);
                     this.validateControl('billingEmail', value);
 
-                    this.$emit('saveAccountData', {
-                        field: 'billingEmail',
-                        value: this.controls.billingEmail
+                    this.$emit('updateAccountData', {
+                        key: 'billingEmail',
+                        value: value
                     });
                 }
             },
 
             $_accountEmail: {
                 get() {
-                    return this.controls.accountEmail;
+                    return this.accountDetails.accountEmail;
                 },
                 set(value) {
-                    this.$set(this.controls, 'accountEmail', value);
                     this.validateControl('accountEmail', value);
 
-                    this.$emit('saveAccountData', {
-                        field: 'accountEmail',
-                        value: this.controls.accountEmail
+                    this.$emit('updateAccountData', {
+                        key: 'accountEmail',
+                        value: value
                     });
                 }
             },
 
             $_accountPassword: {
                 get() {
-                    return this.controls.accountPassword;
+                    return this.accountDetails.accountPassword;
                 },
                 set(value) {
-                    this.$set(this.controls, 'accountPassword', value);
                     this.validateControl('accountPassword', value);
                     
                     // If the other password input has a value - validate it at the same time
@@ -266,19 +271,18 @@
                         this.validateControl('accountPasswordConfirm', this.$_accountPasswordConfirm);
                     }
                     
-                    this.$emit('saveAccountData', {
-                        field: 'accountPassword',
-                        value: this.controls.accountPassword
+                    this.$emit('updateAccountData', {
+                        key: 'accountPassword',
+                        value: value
                     });
                 }
             },
 
             $_accountPasswordConfirm: {
                 get() {
-                    return this.controls.accountPasswordConfirmation;
+                    return this.accountDetails.accountPasswordConfirm;
                 },
                 set(value) {
-                    this.$set(this.controls, 'accountPasswordConfirmation', value);
                     this.validateControl('accountPasswordConfirm', value);
                     
                     // If the other password input has a value - validate it at the same time
@@ -286,9 +290,9 @@
                         this.validateControl('accountPassword', this.$_accountPassword);
                     }
 
-                    this.$emit('saveAccountData', {
-                        field: 'accountPasswordConfirmation',
-                        value: this.controls.accountPasswordConfirmation
+                    this.$emit('updateAccountData', {
+                        key: 'accountPasswordConfirmation',
+                        value: value
                     });
                 }
             },

@@ -10,7 +10,7 @@
                     <div class="form-group">
                         <select id="paymentMethodType"
                                 class="order-form-input"
-                                v-model.lazy="paymentMethod">
+                                v-model.lazy="$_paymentMethod">
                             <option value="credit_card">Credit Card</option>
                             <option value="paypal">PayPal</option>
                         </select>
@@ -43,7 +43,7 @@
             </div>
 
             <!-- v-show is used to keep the stripe elements iframes loaded but hidden, using v-if would require re-initialization -->
-            <div v-show="paymentMethod === 'credit_card'"
+            <div v-show="$_paymentMethod === 'credit_card'"
                  class="flex flex-row flex-wrap">
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
@@ -100,11 +100,11 @@
 
             <div class="flex flex-row flex-wrap mb-2">
                 <div class="flex flex-column xs-12 ph-1 mb-2"
-                     :class="billingCountry === 'Canada' ? 'sm-6' : ''">
+                     :class="$_billingCountry === 'Canada' ? 'sm-6' : ''">
                     <div class="form-group">
                         <select id="billingCountry"
-                                :class="{ invalid: validation.billingCountry, 'has-input': billingCountry != null }"
-                                v-model.lazy="billingCountry">
+                                :class="{ invalid: validation.billingCountry, 'has-input': $_billingCountry != null }"
+                                v-model.lazy="$_billingCountry">
 
                             <option
                                     v-for="country in countries"
@@ -122,31 +122,31 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 ph-1 sm-6" v-if="billingCountry === 'Canada'">
+                <div class="flex flex-column xs-12 ph-1 sm-6" v-if="$_billingCountry === 'Canada'">
                     <div class="form-group">
-                        <select id="billingProvince"
-                                :disabled="billingCountry !== 'Canada'"
-                                :class="{ invalid: validation.billingProvince, 'has-input': billingProvince != null }"
-                                v-model.lazy="billingProvince">
+                        <select id="billingRegion"
+                                :disabled="$_billingCountry !== 'Canada'"
+                                :class="{ invalid: validation.billingRegion, 'has-input': $_billingRegion != null }"
+                                v-model.lazy="$_billingRegion">
 
                             <option v-for="province in provinces"
                                     :key="province"
                                     :value="province">{{ province }}</option>
                         </select>
 
-                        <label for="billingProvince" :class="brand">
+                        <label for="billingRegion" :class="brand">
                             State/Province
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.billingProvince }}</li>
+                            <li>{{ validation.billingRegion }}</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="flex flex-row pa-1"
-                 v-if="paymentMethod === 'paypal'">
+                 v-if="$_paymentMethod === 'paypal'">
                 <h3 class="title">Hitting submit will redirect you to PayPal to complete your order.</h3>
             </div>
 
@@ -160,15 +160,15 @@
                     </button>
                 </div>
 
-                <div class="flex flex-column md-6 ph-1 align-h-right">
-                    <div v-if="discounts.length">
-                        <div class="body font-bold" v-for="item in discounts" :key="item.id">{{ item.name }}</div>
-                    </div>
-                    <div class="body font-bold" v-if="totals.shipping">Shipping: ${{ totals.shipping }}</div>
-                    <div class="body font-bold">Tax: ${{ totals.tax }}</div>
-                    <div class="body font-bold"><span class="display">${{ totals.due }}</span> USD</div>
-                    <div class="body font-bold">Due Today</div>
-                </div>
+<!--                <div class="flex flex-column md-6 ph-1 align-h-right">-->
+<!--                    <div v-if="discounts.length">-->
+<!--                        <div class="body font-bold" v-for="item in discounts" :key="item.id">{{ item.name }}</div>-->
+<!--                    </div>-->
+<!--                    <div class="body font-bold" v-if="totals.shipping">Shipping: ${{ totals.shipping }}</div>-->
+<!--                    <div class="body font-bold">Tax: ${{ totals.tax }}</div>-->
+<!--                    <div class="body font-bold"><span class="display">${{ totals.due }}</span> USD</div>-->
+<!--                    <div class="body font-bold">Due Today</div>-->
+<!--                </div>-->
             </div>
 
             <div class="flex flex-row pv-1">
@@ -194,35 +194,30 @@
             brand: {
                 type: String,
             },
+
+            paymentDetails: {
+                type: Object,
+                default: () => ({
+                    cardToken: null,
+                    methodType: 'credit_card',
+                    billingCountry: null,
+                    billingRegion: null,
+                })
+            },
+
             billingAddress: {
                 type: Object,
                 default: () => null
             },
+
             stripePublishableKey: {
                 type: String
             },
-            stripeTokenTrigger: {
-                type: Boolean,
-                default: () => false
-            },
-            backendPaymentError: {
-                type: Object,
-                default: () => null
-            },
+
             discounts: {
                 type: Array,
                 default: () => []
             },
-            totals: {
-                type: Object,
-                default: () => {
-                    return {
-                        shipping: null,
-                        tax: 0,
-                        due: 0,
-                    }
-                }
-            }
         },
         data() {
             return {
@@ -235,29 +230,26 @@
                     cardExpiry: '',
                     cardCvc: '',
                     billingCountry: '',
-                    billingProvince: '',
+                    billingRegion: '',
                 },
                 controls: {
+                    methodType: 'credit_card',
                     billingCountry: null,
-                    billingProvince: null,
+                    billingRegion: null,
                 },
                 rules: {
                     billingCountry: {
                         pattern: /([^\s])/,
                         message: 'Invalid Country'
                     },
-                    billingProvince: {
+                    billingRegion: {
                         pattern: /([^\s])/,
                         message: 'Invalid Province'
                     },
                 },
                 selectedPaymentMethod: 'credit_card',
-                controlsMap: {
-                    billingProvince: 'state',
-                    billingCountry: 'country',
-                },
                 backendKeysMap: {
-                    'state': 'billingProvince',
+                    'state': 'billingRegion',
                     'country': 'billingCountry',
                 },
                 updateAddressesTimeout: null,
@@ -268,81 +260,48 @@
             countries() {
                 return Utils.countries();
             },
+
             provinces() {
                 return Utils.provinces();
             },
-            paymentMethod: {
+
+            $_paymentMethod: {
                 get() {
-                    return this.selectedPaymentMethod;
+                    return this.paymentDetails.methodType;
                 },
                 set(value) {
-                    this.selectedPaymentMethod = value;
-
-                    this.$emit(
-                        'savePaymentData',
-                        {
-                            field: 'payment_method_type',
-                            value: this.selectedPaymentMethod
-                        }
-                    );
+                    this.$emit('updatePaymentData', {
+                        key: 'methodType',
+                        value: value,
+                    });
                 }
             },
-            billingCountry: {
+
+            $_billingCountry: {
                 get() {
-                    return this.controls.billingCountry;
+                    return this.paymentDetails.billingCountry;
                 },
                 set(value) {
-                    this.$set(this.controls, 'billingCountry', value);
-
-                    this.update('billingCountry');
+                    this.$emit('updatePaymentData', {
+                        key: 'billingCountry',
+                        value: value,
+                    });
                 }
             },
-            billingProvince: {
+
+            $_billingRegion: {
                 get() {
-                    return this.controls.billingProvince;
+                    return this.paymentDetails.billingRegion;
                 },
                 set(value) {
-                    this.$set(this.controls, 'billingProvince', value);
-
-                    this.update('billingProvince');
+                    this.$emit('updatePaymentData', {
+                        key: 'billingRegion',
+                        value: value,
+                    });
                 }
             },
-        },
-        watch: {
-            billingAddress: function() {
-                this.processFactoryData();
-            },
-            stripeTokenTrigger: function() {
-                this.fetchStripeToken();
-            },
-            backendPaymentError: function(value) {
-                if (value) {
-                    this.processBackendPaymentError(value);
-                }
-            }
         },
         methods: {
-            update(controlName) {
-
-                this.$emit(
-                    'savePaymentData',
-                    {
-                        field: this.controlsMap[controlName],
-                        value: this.controls[controlName]
-                    }
-                );
-
-                Api.updateAddresses(this.controls)
-                    .then(response => {
-                        if (response.meta && response.meta.cart) {
-                            this.$emit(
-                                'updateCartData',
-                                response.meta.cart
-                            );
-                        }
-                    });
-            },
-
             startValidation() {
                 this.$emit('startValidation');
             },
@@ -366,6 +325,8 @@
             },
 
             initStripeElements() {
+                this.stripe = Stripe(this.stripePublishableKey);
+
                 const elements = this.stripe.elements();
                 const style = {
                     base: {
@@ -413,11 +374,9 @@
             },
 
             fetchStripeToken() {
-                this.stripe
-                    .createToken(
-                        this.cardNumberElement,
-                        {'address_country': this.controls.billingCountry}
-                    )
+                this.stripe.createToken(this.cardNumberElement, {
+                    address_country: this.$_billingCountry
+                })
                     .then((result) => {
                         this.stripeToken = result.token.id;
 
@@ -475,7 +434,7 @@
                         field: 'cardExpiry',
                         message: 'Your card has expired'
                     }
-                }
+                };
 
                 if (error.detail && error.detail.code && codes[error.detail.code]) {
                     this.validation[codes[error.detail.code].field] = codes[error.detail.code].message;
@@ -485,19 +444,7 @@
             }
         },
         mounted() {
-            this.stripe = Stripe(this.stripePublishableKey);
-
             this.initStripeElements();
-
-            this.processFactoryData();
-
-            this.$emit(
-                'savePaymentData',
-                {
-                    field: 'payment_method_type',
-                    value: this.selectedPaymentMethod
-                }
-            );
         }
     }
 </script>

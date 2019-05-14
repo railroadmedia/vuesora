@@ -13,18 +13,19 @@
             :themeColor="themeColor"
             :brand="brand"
             :currentUser="user"
+            :accountDetails="accountStateFactory"
             :requiresAccountInfo="cartContainsSubscription"
             :loginUrl="loginUrl"
             :logoutUrl="logoutUrl"
-            :validationTrigger="validationTrigger"
-            @saveAccountData="updateAccountData"
+            @updateAccountData="updateAccountData"
             @registerSubformValidation="registerSubformValidation"></order-form-account>
 
         <order-form-shipping
             :brand="brand"
+            :shippingData="shippingStateFactory"
             :shipping-address="shippingStateFactory"
             :validation-trigger="validationTrigger"
-            @saveShippingData="updateShippingData"
+            @updateShippingData="updateShippingData"
             @registerSubformValidation="registerSubformValidation"
             v-if="!cartRequiresShippingAddress"></order-form-shipping>
 
@@ -36,16 +37,10 @@
         <order-form-payment
             :themeColor="themeColor"
             :brand="brand"
-            :billing-address="billingAddress"
+            :paymentDetails="paymentStateFactory"
             :stripe-publishable-key="stripePublishableKey"
-            :validation-trigger="validationTrigger"
-            :stripe-token-trigger="stripeTokenTrigger"
-            :backend-payment-error="backendPaymentError"
             :discounts="discountsData"
-            :totals="totalsData"
-            @startValidation="startValidation"
-            @savePaymentData="updatePaymentData"
-            @registerSubformValidation="registerSubformValidation"></order-form-payment>
+            @updatePaymentData="updatePaymentData"></order-form-payment>
 
 <!--        <div class="flex flex-row pv-3 text-center features">-->
 <!--            <div class="md-4 ph-5">-->
@@ -93,33 +88,41 @@
                 type: Object,
                 default: () => null
             },
+
             shippingAddress: {
                 type: Object,
                 default: () => null
             },
+
             cart: {
                 type: Object,
                 default: () => ({})
             },
+
             user: {
                 type: Object,
                 default: () => null
             },
+
             loginUrl: {
                 type: String,
                 default: '/login',
             },
+
             logoutUrl: {
                 type: String,
                 default: '/',
             },
+
             successRedirectUrl: {
                 type: String,
                 default: '/members',
             },
+
             stripePublishableKey: {
                 type: String
             },
+
             brand: {
                 type: String
             },
@@ -135,9 +138,19 @@
                     shipping: false,
                     payment: false
                 },
-                accountStateFactory: {},
-                shippingStateFactory: {},
-                paymentStateFactory: {},
+                accountStateFactory: {
+                    billingEmail: null,
+                    accountEmail: null,
+                    accountPassword: null,
+                    accountPasswordConfirm: null,
+                },
+                shippingStateFactory: this.shippingAddress,
+                paymentStateFactory: {
+                    cardToken: null,
+                    methodType: 'credit_card',
+                    billingCountry: this.billingAddress.country,
+                    billingRegion: this.billingAddress.state,
+                },
                 validationTrigger: false,
                 stripeTokenTrigger: false,
                 backendPaymentError: null,
@@ -168,23 +181,18 @@
                 this.cartData = payload.meta.cart;
             },
 
-            updateAccountData({field, value}) {
-                this.$set(this.accountStateFactory, field, value);
+            updateAccountData({key, value}) {
+                this.$set(this.accountStateFactory, key, value);
             },
 
-            updateShippingData({field, value}) {
-                this.$set(this.shippingStateFactory, field, value);
+            updateShippingData({key, value}) {
+                this.$set(this.shippingStateFactory, key, value);
             },
 
-            updatePaymentData({field, value}) {
-
-                this.$set(this.paymentStateFactory, field, value);
-
-                if (field == 'card-token') {
-                    // stripe token fetch succeeded, submit credit card payment type order
-                    this.submitOrder();
-                }
+            updatePaymentData({key, value}) {
+                this.$set(this.paymentStateFactory, key, value);
             },
+
             startValidation() {
 
                 this.validationForms = {
