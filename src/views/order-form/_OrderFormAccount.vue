@@ -22,7 +22,7 @@
                                v-model.lazy="$_billingEmail">
 
                         <label for="newAccountEmail"
-                               class="pianote">
+                               :class="brand">
                             Email Address
                         </label>
 
@@ -65,7 +65,7 @@
                                    v-model.lazy="$_accountEmail">
 
                             <label for="newAccountEmail"
-                                   class="pianote">
+                                   :class="brand">
                                 Email Address
                             </label>
 
@@ -89,7 +89,7 @@
                                    v-model="$_accountPassword">
 
                             <label for="newAccountPassword"
-                                   class="pianote">
+                                   :class="brand">
                                 Password
                             </label>
 
@@ -112,7 +112,7 @@
                                    v-model="$_accountPasswordConfirm">
 
                             <label for="newAccountPasswordConfirm"
-                                   class="pianote">
+                                   :class="brand">
                                 Confirm Password
                             </label>
 
@@ -172,6 +172,9 @@
             currentUser: {
                 type: Object,
                 default: () => null
+            },
+            brand: {
+                type: String,
             },
             requiresAccountInfo: {
                 type: Boolean,

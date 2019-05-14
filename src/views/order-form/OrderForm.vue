@@ -11,6 +11,7 @@
 
         <order-form-account
             :themeColor="themeColor"
+            :brand="brand"
             :currentUser="user"
             :requiresAccountInfo="cartContainsSubscription"
             :loginUrl="loginUrl"
@@ -121,7 +122,7 @@
             stripePublishableKey: {
                 type: String
             },
-            gateway: {
+            brand: {
                 type: String
             },
         },
@@ -232,7 +233,7 @@
             createOrderPayload() {
 
                 let payload = {
-                    'gateway': this.gateway,
+                    'gateway': this.brand,
                     'payment_method_type': this.paymentStateFactory['payment_method_type'],
                     'billing_country': this.paymentStateFactory.country,
                     'billing_region': this.paymentStateFactory.state,
