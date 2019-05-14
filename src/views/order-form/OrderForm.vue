@@ -23,10 +23,7 @@
         <order-form-shipping
             :brand="brand"
             :shippingData="shippingStateFactory"
-            :shipping-address="shippingStateFactory"
-            :validation-trigger="validationTrigger"
             @updateShippingData="updateShippingData"
-            @registerSubformValidation="registerSubformValidation"
             v-if="!cartRequiresShippingAddress"></order-form-shipping>
 
 <!--        <order-form-payment-plan-->
