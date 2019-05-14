@@ -20,13 +20,13 @@
             @saveAccountData="updateAccountData"
             @registerSubformValidation="registerSubformValidation"></order-form-account>
 
-<!--        <order-form-shipping-->
-<!--            :shipping-address="shippingStateFactory"-->
-<!--            :validation-trigger="validationTrigger"-->
-<!--            @saveShippingData="updateShippingData"-->
-<!--            @registerSubformValidation="registerSubformValidation"-->
-<!--            @updateCartData="processCart"-->
-<!--            v-if="requiresShippingAddress"></order-form-shipping>-->
+        <order-form-shipping
+            :brand="brand"
+            :shipping-address="shippingStateFactory"
+            :validation-trigger="validationTrigger"
+            @saveShippingData="updateShippingData"
+            @registerSubformValidation="registerSubformValidation"
+            v-if="!cartRequiresShippingAddress"></order-form-shipping>
 
 <!--        <order-form-payment-plan-->
 <!--            :number-of-payments="numberOfPayments"-->
@@ -34,6 +34,8 @@
 <!--            v-if="paymentPlanOptions.length && !cartContainsSubscription"></order-form-payment-plan>-->
 
         <order-form-payment
+            :themeColor="themeColor"
+            :brand="brand"
             :billing-address="billingAddress"
             :stripe-publishable-key="stripePublishableKey"
             :validation-trigger="validationTrigger"
@@ -45,25 +47,25 @@
             @savePaymentData="updatePaymentData"
             @registerSubformValidation="registerSubformValidation"></order-form-payment>
 
-        <div class="flex flex-row pv-3 text-center features">
-            <div class="md-4 ph-5">
-                <i class="fa fa-phone"></i>
-                <p class="body font-bold">We're always here to help</p>
-                <p class="body">1-800-439-8921 or email support@pianote.com</p>
-            </div>
-            <div class="md-4 ph-5">
-                <i class="fa fa-lock"></i>
-                <p class="body font-bold">Your Information is Secure</p>
-                <p class="body">This page is securely encrypted with world-class SSL protection.</p>
-            </div>
-            <div class="md-4 ph-5">
-                <i class="fa fa-certificate">
-                    <i class="fa fa-check"></i>
-                </i>
-                <p class="body font-bold">100% Money Back Guarantee</p>
-                <p class="body">Order risk-free with our 90-day, 100% money back guarantee.</p>
-            </div>
-        </div>
+<!--        <div class="flex flex-row pv-3 text-center features">-->
+<!--            <div class="md-4 ph-5">-->
+<!--                <i class="fa fa-phone"></i>-->
+<!--                <p class="body font-bold">We're always here to help</p>-->
+<!--                <p class="body">1-800-439-8921 or email support@pianote.com</p>-->
+<!--            </div>-->
+<!--            <div class="md-4 ph-5">-->
+<!--                <i class="fa fa-lock"></i>-->
+<!--                <p class="body font-bold">Your Information is Secure</p>-->
+<!--                <p class="body">This page is securely encrypted with world-class SSL protection.</p>-->
+<!--            </div>-->
+<!--            <div class="md-4 ph-5">-->
+<!--                <i class="fa fa-certificate">-->
+<!--                    <i class="fa fa-check"></i>-->
+<!--                </i>-->
+<!--                <p class="body font-bold">100% Money Back Guarantee</p>-->
+<!--                <p class="body">Order risk-free with our 90-day, 100% money back guarantee.</p>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </template>
 <script>
@@ -97,9 +99,7 @@
             },
             cart: {
                 type: Object,
-                default: () => {
-                    items: []
-                }
+                default: () => ({})
             },
             user: {
                 type: Object,
