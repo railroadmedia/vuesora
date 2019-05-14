@@ -6,19 +6,17 @@ export default {
     /**
      * Request to check if new account email is exists
      *
-     * @param {object} payload
+     * @param {object} email
      *
      * @returns {Promise}
      */
     checkEmail(email) {
 
-        return axios
-                .post(
-                    '/order/check-email-exists',
-                    {email}
-                )
-                .then(response => response.data)
-                .catch(ErrorHandler);
+        return axios.post('/order/check-email-exists', {
+            email
+        })
+            .then(response => response)
+            .catch(ErrorHandler);
     },
 
     /**
@@ -30,18 +28,9 @@ export default {
      */
     submitOrder(payload) {
 
-        return axios
-                .put(
-                    '/ecommerce/json/order-form/submit',
-                    payload
-                )
-                .then(response => response.data)
-                .catch((error) => {
-                    if (error.response.status == 422 && error.response.data) {
-                        error = error.response.data
-                    }
-                    return Promise.reject(error);
-                });
+        return axios.put('/ecommerce/json/order-form/submit', payload)
+                .then(response => response)
+                .catch(ErrorHandler);
     },
 
     /**
@@ -57,7 +46,7 @@ export default {
         quantity
     }) {
         return axios
-                .patch(`/ecommerce/json/updatse-product-quantity/${ productSku }/${ quantity }`)
+                .patch(`/ecommerce/json/update-product-quantity/${ productSku }/${ quantity }`)
                 .catch(ErrorHandler);
     },
 
