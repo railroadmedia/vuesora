@@ -190,10 +190,10 @@
 <script>
     import Api from '../../assets/js/services/ecommerce.js';
     import Utils from 'js-helper-functions/modules/utils';
-    import ValidationTriggerMixin from './_mixin';
+    import Validation from './_validation';
 
     export default {
-        mixins: [ValidationTriggerMixin],
+        mixins: [Validation],
         name: 'order-form-shipping',
         props: {
             brand: {
@@ -211,7 +211,6 @@
                     street_line_one: null,
                     street_line_two: null,
                     zip_or_postal_code: null,
-
                 })
             },
         },
@@ -265,6 +264,8 @@
                     return this.shippingData.first_name;
                 },
                 set(value) {
+                    this.validateInput('first_name', value);
+
                     this.$emit('updateShippingData', {
                         key: 'first_name',
                         value: value,
@@ -277,6 +278,8 @@
                     return this.shippingData.last_name;
                 },
                 set(value) {
+                    this.validateInput('last_name', value);
+
                     this.$emit('updateShippingData', {
                         key: 'last_name',
                         value: value,
@@ -289,6 +292,8 @@
                     return this.shippingData.street_line_one;
                 },
                 set(value) {
+                    this.validateInput('street_line_one', value);
+
                     this.$emit('updateShippingData', {
                         key: 'street_line_one',
                         value: value,
@@ -313,6 +318,8 @@
                     return this.shippingData.city;
                 },
                 set(value) {
+                    this.validateInput('city', value);
+
                     this.$emit('updateShippingData', {
                         key: 'city',
                         value: value,
@@ -325,6 +332,8 @@
                     return this.shippingData.state;
                 },
                 set(value) {
+                    this.validateInput('state', value);
+
                     this.$emit('updateShippingData', {
                         key: 'state',
                         value: value,
@@ -337,6 +346,8 @@
                     return this.shippingData.country;
                 },
                 set(value) {
+                    this.validateInput('country', value);
+
                     this.$emit('updateShippingData', {
                         key: 'country',
                         value: value,
@@ -349,43 +360,15 @@
                     return this.shippingData.zip_or_postal_code;
                 },
                 set(value) {
+                    this.validateInput('zip_or_postal_code', value);
+
                     this.$emit('updateShippingData', {
                         key: 'zip_or_postal_code',
                         value: value,
                     });
                 }
             },
-        },
-        methods: {
-            validateControl(controlName) {
-                const errors = [];
-
-                this.rules[controlName].forEach(rule => {
-                    if(rule(value) !== true){
-                        errors.push(rule(value));
-                    }
-                });
-
-                this.$set(this.errors, controlName, errors);
-            },
-
-            validateForm() {
-
-                let validationSuccessful = true;
-
-                for (let controlName in this.rules) {
-                    validationSuccessful = !this.validateControl(controlName) && validationSuccessful;
-                }
-
-                this.$emit(
-                    'registerSubformValidation',
-                    {
-                        form: 'shipping',
-                        result: validationSuccessful
-                    }
-                );
-            },
-        },
+        }
     }
 </script>
 <style lang="scss">

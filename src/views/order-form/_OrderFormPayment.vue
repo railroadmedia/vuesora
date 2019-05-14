@@ -56,14 +56,17 @@
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.cardNumber }}</li>
+                            <li v-for="(error, i) in errors.cardNumber"
+                                :key="'cardNumberError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="flex flex-column xs-12 sm-6 mb-2">
                     <div class="flex flex-row">
-                        <div class="flex flex-column ph-1">
+                        <div class="flex flex-column xs-12 sm-6 ph-1">
                             <div class="form-group">
                                 <div id="card-expiry"
                                      class="stripe-element-container order-form-input">
@@ -74,12 +77,15 @@
                                 </label>
 
                                 <ul class="errors tiny">
-                                    <li>{{ validation.cardExpiry }}</li>
+                                    <li v-for="(error, i) in errors.cardExpiry"
+                                        :key="'cardExpiryError' + i">
+                                        {{ error || null }}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
 
-                        <div class="flex flex-column ph-1">
+                        <div class="flex flex-column xs-12 sm-6 ph-1">
                             <div class="form-group">
                                 <div id="card-cvc"
                                      class="stripe-element-container order-form-input">
@@ -90,7 +96,10 @@
                                 </label>
 
                                 <ul class="errors tiny">
-                                    <li>{{ validation.cardCvc }}</li>
+                                    <li v-for="(error, i) in errors.cardCvc"
+                                        :key="'cardCvcError' + i">
+                                        {{ error || null }}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -103,11 +112,10 @@
                      :class="$_billingCountry === 'Canada' ? 'sm-6' : ''">
                     <div class="form-group">
                         <select id="billingCountry"
-                                :class="{ invalid: validation.billingCountry, 'has-input': $_billingCountry != null }"
+                                :class="{ invalid: errors.billingCountry, 'has-input': $_billingCountry != null }"
                                 v-model.lazy="$_billingCountry">
 
-                            <option
-                                    v-for="country in countries"
+                            <option v-for="country in countries"
                                     :key="country.code"
                                     :value="country.name">{{ country.name }}</option>
                         </select>
@@ -117,7 +125,10 @@
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.billingCountry }}</li>
+                            <li v-for="(error, i) in errors.billingCountry"
+                                :key="'billingCountryError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -126,7 +137,7 @@
                     <div class="form-group">
                         <select id="billingRegion"
                                 :disabled="$_billingCountry !== 'Canada'"
-                                :class="{ invalid: validation.billingRegion, 'has-input': $_billingRegion != null }"
+                                :class="{ invalid: errors.billingRegion, 'has-input': $_billingRegion != null }"
                                 v-model.lazy="$_billingRegion">
 
                             <option v-for="province in provinces"
@@ -139,7 +150,10 @@
                         </label>
 
                         <ul class="errors tiny">
-                            <li>{{ validation.billingRegion }}</li>
+                            <li v-for="(error, i) in errors.billingRegion"
+                                :key="'billingRegionError' + i">
+                                {{ error || null }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -153,7 +167,7 @@
             <div class="flex flex-row pv-1">
                 <div class="flex flex-column align-v-bottom md-6 ph-1">
                     <button class="btn mb-1"
-                            @click.stop.prevent="startValidation">
+                            @click.stop.prevent="submitForm">
                         <span class="text-white bg-success" :class="themeBgClass">
                             Buy Now
                         </span>
@@ -184,11 +198,11 @@
 <script>
     import Api from '../../assets/js/services/ecommerce.js';
     import Utils from 'js-helper-functions/modules/utils';
-    import ValidationTriggerMixin from './_mixin';
+    import Validation from './_validation';
     import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [ValidationTriggerMixin, ThemeClasses],
+        mixins: [Validation, ThemeClasses],
         name: 'order-form-payment',
         props: {
             brand: {
@@ -225,34 +239,25 @@
                 cardNumberElement: null,
                 cardExpiryElement: null,
                 cardCvcElement: null,
-                validation: {
-                    cardNumber: '',
-                    cardExpiry: '',
-                    cardCvc: '',
-                    billingCountry: '',
-                    billingRegion: '',
-                },
-                controls: {
-                    methodType: 'credit_card',
-                    billingCountry: null,
-                    billingRegion: null,
+                errors: {
+                    methodType: [],
+                    billingCountry: [],
+                    billingRegion: [],
+                    cardNumber: [],
+                    cardExpiry: [],
+                    cardCvc: []
                 },
                 rules: {
-                    billingCountry: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid Country'
-                    },
-                    billingRegion: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid Province'
-                    },
+                    methodType: [
+                        v => !!v || 'Payment Method Type is required'
+                    ],
+                    billingCountry: [
+                        v => !!v || 'Country is required'
+                    ],
+                    billingRegion: [
+                        v => !!v || 'State/Province is required'
+                    ],
                 },
-                selectedPaymentMethod: 'credit_card',
-                backendKeysMap: {
-                    'state': 'billingRegion',
-                    'country': 'billingCountry',
-                },
-                updateAddressesTimeout: null,
                 stripeToken: '',
             }
         },
@@ -270,6 +275,8 @@
                     return this.paymentDetails.methodType;
                 },
                 set(value) {
+                    this.validateInput('methodType', value);
+
                     this.$emit('updatePaymentData', {
                         key: 'methodType',
                         value: value,
@@ -282,6 +289,8 @@
                     return this.paymentDetails.billingCountry;
                 },
                 set(value) {
+                    this.validateInput('billingCountry', value);
+
                     this.$emit('updatePaymentData', {
                         key: 'billingCountry',
                         value: value,
@@ -294,6 +303,8 @@
                     return this.paymentDetails.billingRegion;
                 },
                 set(value) {
+                    this.validateInput('billingRegion', value);
+
                     this.$emit('updatePaymentData', {
                         key: 'billingRegion',
                         value: value,
@@ -302,26 +313,8 @@
             },
         },
         methods: {
-            startValidation() {
-                this.$emit('startValidation');
-            },
-
-            validateForm() {
-
-                let validationSuccessful = true;
-
-                for (let controlName in this.validation) {
-
-                    // validationSuccessful = !this.validateControl(controlName) && validationSuccessful;
-                }
-
-                this.$emit(
-                    'registerSubformValidation',
-                    {
-                        form: 'payment',
-                        result: validationSuccessful
-                    }
-                );
+            submitForm() {
+                this.$emit('formSubmit');
             },
 
             initStripeElements() {
@@ -366,14 +359,16 @@
             },
 
             elementsChangeHandler(payload, controlName) {
+                this.errors[controlName] = [];
+
                 if (payload.error) {
-                    this.validation[controlName] =  payload.error.message;
-                } else if (payload.complete) {
-                    this.validation[controlName] = '';
+                    this.errors[controlName].push(payload.error.message);
                 }
             },
 
             fetchStripeToken() {
+                
+
                 this.stripe.createToken(this.cardNumberElement, {
                     address_country: this.$_billingCountry
                 })
@@ -393,55 +388,9 @@
 
                         console.log("stripe token fetch error: %s", JSON.stringify(error));
 
-                        this.validation.cardNumber = 'Unexpected processing error, please retry';
+                        this.errors.cardNumber = 'Unexpected processing error, please retry';
                     });
             },
-
-            processFactoryData() {
-                if (this.billingAddress) {
-
-                    for (let backendKey in this.backendKeysMap) {
-
-                        let controlKey = this.backendKeysMap[backendKey];
-
-                        this.controls[controlKey] = this.billingAddress.hasOwnProperty(backendKey) ?
-                                                        this.billingAddress[backendKey] : '';
-
-                        if (this.controls[controlKey]) {
-                            this.$emit(
-                                'savePaymentData',
-                                {
-                                    field: this.controlsMap[controlKey],
-                                    value: this.controls[controlKey]
-                                }
-                            );
-                        }
-                    }
-                }
-            },
-
-            processBackendPaymentError(error) {
-                let codes = {
-                    'card_declined': {
-                        field: 'cardNumber',
-                        message: 'Your card was declined by our payment processor',
-                    },
-                    'incorrect_cvc': {
-                        field: 'cardCvc',
-                        message: 'Incorect CVC/CVV',
-                    },
-                    'expired_card': {
-                        field: 'cardExpiry',
-                        message: 'Your card has expired'
-                    }
-                };
-
-                if (error.detail && error.detail.code && codes[error.detail.code]) {
-                    this.validation[codes[error.detail.code].field] = codes[error.detail.code].message;
-                } else if (error.detail && error.detail.message) {
-                    this.validation.cardNumber = error.detail.message;
-                }
-            }
         },
         mounted() {
             this.initStripeElements();

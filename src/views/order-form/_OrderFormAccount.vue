@@ -157,11 +157,11 @@
     </div>
 </template>
 <script>
-    import ValidationTriggerMixin from './_mixin';
     import ThemeClasses from "../../mixins/ThemeClasses";
+    import Validation from './_validation';
 
     export default {
-        mixins: [ValidationTriggerMixin, ThemeClasses],
+        mixins: [Validation, ThemeClasses],
         name: 'order-form-account',
         props: {
             currentUser: {
@@ -236,7 +236,7 @@
                     return this.accountDetails.billingEmail;
                 },
                 set(value) {
-                    this.validateControl('billingEmail', value);
+                    this.validateInput('billingEmail', value);
 
                     this.$emit('updateAccountData', {
                         key: 'billingEmail',
@@ -250,7 +250,7 @@
                     return this.accountDetails.accountEmail;
                 },
                 set(value) {
-                    this.validateControl('accountEmail', value);
+                    this.validateInput('accountEmail', value);
 
                     this.$emit('updateAccountData', {
                         key: 'accountEmail',
@@ -264,11 +264,11 @@
                     return this.accountDetails.accountPassword;
                 },
                 set(value) {
-                    this.validateControl('accountPassword', value);
+                    this.validateInput('accountPassword', value);
                     
                     // If the other password input has a value - validate it at the same time
                     if(this.$_accountPasswordConfirm != null){
-                        this.validateControl('accountPasswordConfirm', this.$_accountPasswordConfirm);
+                        this.validateInput('accountPasswordConfirm', this.$_accountPasswordConfirm);
                     }
                     
                     this.$emit('updateAccountData', {
@@ -283,11 +283,11 @@
                     return this.accountDetails.accountPasswordConfirm;
                 },
                 set(value) {
-                    this.validateControl('accountPasswordConfirm', value);
+                    this.validateInput('accountPasswordConfirm', value);
                     
                     // If the other password input has a value - validate it at the same time
                     if(this.$_accountPassword != null){
-                        this.validateControl('accountPassword', this.$_accountPassword);
+                        this.validateInput('accountPassword', this.$_accountPassword);
                     }
 
                     this.$emit('updateAccountData', {
@@ -295,19 +295,6 @@
                         value: value
                     });
                 }
-            },
-        },
-        methods: {
-            validateControl(controlName, value) {
-                const errors = [];
-
-                this.rules[controlName].forEach(rule => {
-                    if(rule(value) !== true){
-                        errors.push(rule(value));
-                    }
-                });
-
-                this.$set(this.errors, controlName, errors);
             },
         }
     }

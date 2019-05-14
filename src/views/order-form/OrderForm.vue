@@ -10,6 +10,7 @@
             @updateCartItem="updateCart"></order-form-cart>
 
         <order-form-account
+            ref="accountForm"
             :themeColor="themeColor"
             :brand="brand"
             :currentUser="user"
@@ -21,22 +22,24 @@
             @registerSubformValidation="registerSubformValidation"></order-form-account>
 
         <order-form-shipping
+            ref="shippingForm"
             :brand="brand"
             :shippingData="shippingStateFactory"
             @updateShippingData="updateShippingData"
             v-if="!cartRequiresShippingAddress"></order-form-shipping>
 
-<!--        <order-form-payment-plan-->
-<!--            :number-of-payments="numberOfPayments"-->
-<!--            :payment-plan-options="paymentPlanOptions"-->
-<!--            v-if="paymentPlanOptions.length && !cartContainsSubscription"></order-form-payment-plan>-->
+        <order-form-payment-plan
+            :number-of-payments="numberOfPayments"
+            :payment-plan-options="paymentPlanOptions"
+            v-if="paymentPlanOptions.length && !cartContainsSubscription"></order-form-payment-plan>
 
         <order-form-payment
+            ref="paymentForm"
             :themeColor="themeColor"
             :brand="brand"
             :paymentDetails="paymentStateFactory"
             :stripe-publishable-key="stripePublishableKey"
-            :discounts="discountsData"
+            :discounts="cartData.discounts"
             @updatePaymentData="updatePaymentData"></order-form-payment>
 
 <!--        <div class="flex flex-row pv-3 text-center features">-->
@@ -127,37 +130,25 @@
         data() {
             return {
                 cartData: this.cart,
-                discountsData: [],
                 requiresAccount: false,
-                requiresShippingAddress: false,
-                validationForms: {
-                    account: false,
-                    shipping: false,
-                    payment: false
-                },
+                numberOfPayments: 1,
+                paymentPlanOptions: [],
+
                 accountStateFactory: {
                     billingEmail: null,
                     accountEmail: null,
                     accountPassword: null,
                     accountPasswordConfirm: null,
                 },
+
                 shippingStateFactory: this.shippingAddress,
+
                 paymentStateFactory: {
                     cardToken: null,
                     methodType: 'credit_card',
                     billingCountry: this.billingAddress.country,
                     billingRegion: this.billingAddress.state,
                 },
-                validationTrigger: false,
-                stripeTokenTrigger: false,
-                backendPaymentError: null,
-                totalsData: {
-                    shipping: null,
-                    tax: 0,
-                    due: 0
-                },
-                numberOfPayments: 1,
-                paymentPlanOptions: [],
             }
         },
         computed: {
@@ -203,6 +194,7 @@
 
                 this.validationTrigger = !this.validationTrigger;
             },
+
             registerSubformValidation({form, result}) {
                 this.validationForms[form] = result;
 
@@ -319,17 +311,6 @@
                     this.user = response.meta.user;
                 }
             }
-        },
-        mounted() {
-
-            // this.processCart(this.cart);
-
-            // this.$root.$on('updateCartData', (response) => {
-            //     // triggered by cart items quantity update/removal
-            //     this.processCart(response.meta.cart);
-            // });
-
-            this.shippingStateFactory = this.shippingAddress;
         }
     }
 </script>
