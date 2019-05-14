@@ -20,32 +20,30 @@
             @saveAccountData="updateAccountData"
             @registerSubformValidation="registerSubformValidation"></order-form-account>
 
-        <order-form-shipping
-            :shipping-address="shippingStateFactory"
-            :validation-trigger="validationTrigger"
-            @saveShippingData="updateShippingData"
-            @registerSubformValidation="registerSubformValidation"
-            @updateCartData="processCart"
-            v-if="requiresShippingAddress"></order-form-shipping>
+<!--        <order-form-shipping-->
+<!--            :shipping-address="shippingStateFactory"-->
+<!--            :validation-trigger="validationTrigger"-->
+<!--            @saveShippingData="updateShippingData"-->
+<!--            @registerSubformValidation="registerSubformValidation"-->
+<!--            @updateCartData="processCart"-->
+<!--            v-if="requiresShippingAddress"></order-form-shipping>-->
 
 <!--        <order-form-payment-plan-->
 <!--            :number-of-payments="numberOfPayments"-->
 <!--            :payment-plan-options="paymentPlanOptions"-->
-<!--            @updateCartData="processCart"-->
-<!--            v-if="paymentPlanOptions.length && canUsePaymentPlan"></order-form-payment-plan>-->
+<!--            v-if="paymentPlanOptions.length && !cartContainsSubscription"></order-form-payment-plan>-->
 
-<!--        <order-form-payment-->
-<!--            :billing-address="billingAddress"-->
-<!--            :stripe-publishable-key="stripePublishableKey"-->
-<!--            :validation-trigger="validationTrigger"-->
-<!--            :stripe-token-trigger="stripeTokenTrigger"-->
-<!--            :backend-payment-error="backendPaymentError"-->
-<!--            :discounts="discountsData"-->
-<!--            :totals="totalsData"-->
-<!--            @startValidation="startValidation"-->
-<!--            @savePaymentData="updatePaymentData"-->
-<!--            @updateCartData="processCart"-->
-<!--            @registerSubformValidation="registerSubformValidation"></order-form-payment>-->
+        <order-form-payment
+            :billing-address="billingAddress"
+            :stripe-publishable-key="stripePublishableKey"
+            :validation-trigger="validationTrigger"
+            :stripe-token-trigger="stripeTokenTrigger"
+            :backend-payment-error="backendPaymentError"
+            :discounts="discountsData"
+            :totals="totalsData"
+            @startValidation="startValidation"
+            @savePaymentData="updatePaymentData"
+            @registerSubformValidation="registerSubformValidation"></order-form-payment>
 
         <div class="flex flex-row pv-3 text-center features">
             <div class="md-4 ph-5">
@@ -132,7 +130,6 @@
                 discountsData: [],
                 requiresAccount: false,
                 requiresShippingAddress: false,
-                canUsePaymentPlan: false,
                 validationForms: {
                     account: false,
                     shipping: false,
@@ -155,8 +152,16 @@
         },
         computed: {
             cartContainsSubscription(){
-                return this.cartData.items.find(item => item.subscription_interval_type != null) != null;
-            }
+                return this.cartData.items.filter(item => !!item.subscription_interval_type).length > 0;
+            },
+
+            cartRequiresShippingAddress(){
+                return this.cartData.items.filter(item => item.requires_shipping === true).length > 0;
+            },
+
+            canUsePaymentPlan(){
+                return this.cartData.items.filter(item => !!item.subscription_interval_count).length > 0;
+            },
         },
         methods: {
             updateCart(payload){
@@ -164,13 +169,13 @@
             },
 
             updateAccountData({field, value}) {
-
                 this.$set(this.accountStateFactory, field, value);
             },
-            updateShippingData({field, value}) {
 
+            updateShippingData({field, value}) {
                 this.$set(this.shippingStateFactory, field, value);
             },
+
             updatePaymentData({field, value}) {
 
                 this.$set(this.paymentStateFactory, field, value);
