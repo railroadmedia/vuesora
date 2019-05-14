@@ -1,111 +1,165 @@
 <template>
     <div class="flex flex-column mv-2">
-        <div class="flex pb-2">
-            <h3 class="heading color-blue">Payment Details</h3>
+        <div class="flex flex-row">
+            <h3 class="heading">Payment Details</h3>
         </div>
-        <div class="flex flex-column bg-white shadow corners-5 mt-2 pa-2">
-            <div class="flex flex-row align-v-center pv-1">
-                <div class="flex md-6 ph-1">
-                    <select
-                        class="order-form-input no-label"
-                        v-model.lazy="paymentMethod">
-                        <option value="credit_card">Credit Card</option>
-                        <option value="paypal">PayPal</option>
-                    </select>
+
+        <div class="flex flex-column bg-white shadow corners-5 mt-2 pv-3 ph-2">
+            <div class="flex flex-row flex-wrap align-v-center">
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <select id="paymentMethodType"
+                                class="order-form-input"
+                                v-model.lazy="paymentMethod">
+                            <option value="credit_card">Credit Card</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+
+                        <label for="paymentMethodType" :class="brand">
+                            Payment Method Type
+                        </label>
+                    </div>
                 </div>
-                <div class="flex flex-row">
-                    <div class="ph-1">
-                        <i
-                            class="fab fa-cc-visa cc-icon"
-                            v-bind:class="{ selected: selectedPaymentMethodIcon == 'visa' }"
-                            v-on:click.stop.prevent="selectPaymentMethodIcon('visa')"></i>
-                    </div>
-                    <div class="ph-1">
-                        <i
-                            class="fab fa-cc-mastercard cc-icon"
-                            v-bind:class="{ selected: selectedPaymentMethodIcon == 'mastercard' }"
-                            v-on:click.stop.prevent="selectPaymentMethodIcon('mastercard')"></i>
-                    </div>
-                    <div class="ph-1">
-                        <i
-                            class="fab fa-cc-amex cc-icon"
-                            v-bind:class="{ selected: selectedPaymentMethodIcon == 'amex' }"
-                            v-on:click.stop.prevent="selectPaymentMethodIcon('amex')"></i>
-                    </div>
-                    <div class="ph-1">
-                        <i
-                            class="fab fa-cc-paypal cc-icon"
-                            v-bind:class="{ selected: selectedPaymentMethodIcon == 'paypal' }"
-                            v-on:click.stop.prevent="selectPaymentMethodIcon('paypal')"></i>
+
+                <div class="flex flex-column xs-12 sm-6 mb-2">
+                    <div class="flex flex-row">
+                        <div class="ph-1">
+                            <i class="fab fa-cc-visa cc-icon"></i>
+                        </div>
+
+                        <div class="ph-1">
+                            <i class="fab fa-cc-mastercard cc-icon"></i>
+                        </div>
+
+                        <div class="ph-1">
+                            <i class="fab fa-cc-amex cc-icon"></i>
+                        </div>
+
+                        <div class="ph-1">
+                            <i class="fab fa-cc-paypal cc-icon"></i>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <!-- v-show is used to keep the stripe elements iframes loaded but hidden, using v-if would require re-initialization -->
-            <div class="flex flex-row pv-1" v-show="paymentMethod == 'credit_card'">
-                <div class="md-6 ph-1">
-                    <div
-                        class="stripe-element-container order-form-input no-label"
-                        v-bind:class="{ invalid: validation.cardNumber }"
-                        id="card-number">
+            <div v-show="paymentMethod === 'credit_card'"
+                 class="flex flex-row flex-wrap">
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <div id="card-number"
+                             class="stripe-element-container order-form-input">
+                        </div>
+
+                        <label for="card-number" :class="brand">
+                            Card Number
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.cardNumber }}</li>
+                        </ul>
                     </div>
-                    <span class="validation tiny">{{ validation.cardNumber }}</span>
                 </div>
-                <div class="md-3 ph-1">
-                    <div
-                        class="stripe-element-container order-form-input"
-                        v-bind:class="{ invalid: validation.cardExpiry }"
-                        id="card-expiry">
+
+                <div class="flex flex-column xs-12 sm-6 mb-2">
+                    <div class="flex flex-row">
+                        <div class="flex flex-column ph-1">
+                            <div class="form-group">
+                                <div id="card-expiry"
+                                     class="stripe-element-container order-form-input">
+                                </div>
+
+                                <label for="card-number" :class="brand">
+                                    Expiry (MM / YY)
+                                </label>
+
+                                <ul class="errors tiny">
+                                    <li>{{ validation.cardExpiry }}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-column ph-1">
+                            <div class="form-group">
+                                <div id="card-cvc"
+                                     class="stripe-element-container order-form-input">
+                                </div>
+
+                                <label for="card-number" :class="brand">
+                                    CVC
+                                </label>
+
+                                <ul class="errors tiny">
+                                    <li>{{ validation.cardCvc }}</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <span class="validation tiny">{{ validation.cardExpiry }}</span>
-                </div>
-                <div class="md-3 ph-1">
-                    <div
-                        class="stripe-element-container order-form-input"
-                        v-bind:class="{ invalid: validation.cardCvc }"
-                        id="card-cvc">
-                    </div>
-                    <span class="validation tiny">{{ validation.cardCvc }}</span>
                 </div>
             </div>
-            <div class="flex flex-row pv-1">
-                <div class="md-6 ph-1">
-                    <select
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.billingCountry }"
-                        v-model.lazy="billingCountry">
 
-                        <option disabled value="">Country</option>
-                        <option
-                            v-for="country in countries"
-                            :key="country.code"
-                            :value="country.name">{{ country.name }}</option>
-                    </select>
-                    <span class="validation tiny">{{ validation.billingCountry }}</span>
+            <div class="flex flex-row flex-wrap mb-2">
+                <div class="flex flex-column xs-12 ph-1 mb-2"
+                     :class="billingCountry === 'Canada' ? 'sm-6' : ''">
+                    <div class="form-group">
+                        <select id="billingCountry"
+                                :class="{ invalid: validation.billingCountry, 'has-input': billingCountry != null }"
+                                v-model.lazy="billingCountry">
+
+                            <option
+                                    v-for="country in countries"
+                                    :key="country.code"
+                                    :value="country.name">{{ country.name }}</option>
+                        </select>
+
+                        <label for="billingCountry" :class="brand">
+                            Country
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.billingCountry }}</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="md-6 ph-1" v-if="controls.billingCountry.toLowerCase() == 'canada'">
-                    <select
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.billingState }"
-                        v-model.lazy="billingState">
 
-                        <option disabled value="">State</option>
-                        <option
-                            v-for="state in states"
-                            :key="state"
-                            :value="state">{{ state }}</option>
-                    </select>
-                    <span class="validation tiny">{{ validation.billingState }}</span>
+                <div class="flex flex-column xs-12 ph-1 sm-6" v-if="billingCountry === 'Canada'">
+                    <div class="form-group">
+                        <select id="billingProvince"
+                                :disabled="billingCountry !== 'Canada'"
+                                :class="{ invalid: validation.billingProvince, 'has-input': billingProvince != null }"
+                                v-model.lazy="billingProvince">
+
+                            <option v-for="province in provinces"
+                                    :key="province"
+                                    :value="province">{{ province }}</option>
+                        </select>
+
+                        <label for="billingProvince" :class="brand">
+                            State/Province
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.billingProvince }}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="flex flex-row pa-1" v-if="paymentMethod == 'paypal'">
+
+            <div class="flex flex-row pa-1"
+                 v-if="paymentMethod === 'paypal'">
                 <h3 class="title">Hitting submit will redirect you to PayPal to complete your order.</h3>
             </div>
+
             <div class="flex flex-row pv-1">
                 <div class="flex flex-column align-v-bottom md-6 ph-1">
-                    <a
-                        class="btn submit-order text-white mb-1"
-                        v-on:click.stop.prevent="startValidation">Buy Now</a>
+                    <button class="btn mb-1"
+                            @click.stop.prevent="startValidation">
+                        <span class="text-white bg-success" :class="themeBgClass">
+                            Buy Now
+                        </span>
+                    </button>
                 </div>
+
                 <div class="flex flex-column md-6 ph-1 align-h-right">
                     <div v-if="discounts.length">
                         <div class="body font-bold" v-for="item in discounts" :key="item.id">{{ item.name }}</div>
@@ -116,6 +170,7 @@
                     <div class="body font-bold">Due Today</div>
                 </div>
             </div>
+
             <div class="flex flex-row pv-1">
                 <div class="flex flex-column md-6 ph-1">
                     <h5 class="tiny disclaimer">By completing your renewal you agree to the Pianote Terms
@@ -130,119 +185,15 @@
     import Api from '../../assets/js/services/ecommerce.js';
     import Utils from 'js-helper-functions/modules/utils';
     import ValidationTriggerMixin from './_mixin';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [ValidationTriggerMixin],
+        mixins: [ValidationTriggerMixin, ThemeClasses],
         name: 'order-form-payment',
-        data() {
-            return {
-                stripe: null,
-                cardNumberElement: null,
-                cardExpiryElement: null,
-                cardCvcElement: null,
-                validation: {
-                    cardNumber: '',
-                    cardExpiry: '',
-                    cardCvc: '',
-                    billingCountry: '',
-                    billingState: '',
-                },
-                stripeErrorMap: {
-                    'incomplete_number': 'Your card number is incomplete.',
-                    'incomplete_expiry': 'Expiration date is incomplete.',
-                    'incomplete_cvc': 'CVC is incomplete.',
-                },
-                stripeInvalidMessages: {
-                    cardNumber: 'Your card number is invalid.',
-                    cardExpiry: 'Expiration date is invalid.',
-                    cardCvc: 'CVC is invalid.',
-                },
-                stripeElementsCompleteness: {
-                    cardNumber: false,
-                    cardExpiry: false,
-                    cardCvc: false,
-                },
-                controls: {
-                    billingCountry: '',
-                    billingState: '',
-                },
-                rules: {
-                    billingCountry: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid Country'
-                    },
-                    billingState: {
-                        pattern: /([^\s])/,
-                        message: 'Invalid State'
-                    },
-                },
-                selectedPaymentMethod: 'credit_card',
-                selectedPaymentMethodIcon: '',
-                controlsMap: {
-                    billingState: 'state',
-                    billingCountry: 'country',
-                },
-                backendKeysMap: {
-                    'state': 'billingState',
-                    'country': 'billingCountry',
-                },
-                updateAddressesTimeout: null,
-                stripeToken: '',
-            }
-        },
-        computed: {
-            countries() {
-                return Utils.countries();
-            },
-            states() {
-                return Utils.provinces();
-            },
-            paymentMethod: {
-                get() {
-                    return this.selectedPaymentMethod;
-                },
-                set(value) {
-                    this.selectedPaymentMethod = value;
-
-                    this.$emit(
-                        'savePaymentData',
-                        {
-                            field: 'payment_method_type',
-                            value: this.selectedPaymentMethod
-                        }
-                    );
-
-                    if (value == 'paypal') {
-                        this.selectedPaymentMethodIcon = 'paypal';
-                    } else {
-                        this.selectedPaymentMethodIcon = '';
-                    }
-                }
-            },
-            billingCountry: {
-                get() {
-                    return this.controls.billingCountry;
-                },
-                set(value) {
-                    if (this.controls.billingCountry != value) {
-                        this.controls.billingCountry = value;
-                        this.update('billingCountry');
-                    }
-                }
-            },
-            billingState: {
-                get() {
-                    return this.controls.billingState;
-                },
-                set(value) {
-                    if (this.controls.billingState != value) {
-                        this.controls.billingState = value;
-                        this.update('billingState');
-                    }
-                }
-            },
-        },
         props: {
+            brand: {
+                type: String,
+            },
             billingAddress: {
                 type: Object,
                 default: () => null
@@ -272,6 +223,90 @@
                     }
                 }
             }
+        },
+        data() {
+            return {
+                stripe: null,
+                cardNumberElement: null,
+                cardExpiryElement: null,
+                cardCvcElement: null,
+                validation: {
+                    cardNumber: '',
+                    cardExpiry: '',
+                    cardCvc: '',
+                    billingCountry: '',
+                    billingProvince: '',
+                },
+                controls: {
+                    billingCountry: null,
+                    billingProvince: null,
+                },
+                rules: {
+                    billingCountry: {
+                        pattern: /([^\s])/,
+                        message: 'Invalid Country'
+                    },
+                    billingProvince: {
+                        pattern: /([^\s])/,
+                        message: 'Invalid Province'
+                    },
+                },
+                selectedPaymentMethod: 'credit_card',
+                controlsMap: {
+                    billingProvince: 'state',
+                    billingCountry: 'country',
+                },
+                backendKeysMap: {
+                    'state': 'billingProvince',
+                    'country': 'billingCountry',
+                },
+                updateAddressesTimeout: null,
+                stripeToken: '',
+            }
+        },
+        computed: {
+            countries() {
+                return Utils.countries();
+            },
+            provinces() {
+                return Utils.provinces();
+            },
+            paymentMethod: {
+                get() {
+                    return this.selectedPaymentMethod;
+                },
+                set(value) {
+                    this.selectedPaymentMethod = value;
+
+                    this.$emit(
+                        'savePaymentData',
+                        {
+                            field: 'payment_method_type',
+                            value: this.selectedPaymentMethod
+                        }
+                    );
+                }
+            },
+            billingCountry: {
+                get() {
+                    return this.controls.billingCountry;
+                },
+                set(value) {
+                    this.$set(this.controls, 'billingCountry', value);
+
+                    this.update('billingCountry');
+                }
+            },
+            billingProvince: {
+                get() {
+                    return this.controls.billingProvince;
+                },
+                set(value) {
+                    this.$set(this.controls, 'billingProvince', value);
+
+                    this.update('billingProvince');
+                }
+            },
         },
         watch: {
             billingAddress: function() {
@@ -307,61 +342,18 @@
                         }
                     });
             },
-            selectPaymentMethodIcon(name) {
-                this.selectedPaymentMethodIcon = name;
-                this.selectedPaymentMethod = (name == 'paypal') ? 'paypal' : 'credit_card';
-                this.$emit(
-                    'savePaymentData',
-                    {
-                        field: 'payment_method_type',
-                        value: this.selectedPaymentMethod
-                    }
-                );
-            },
-            validateControl(controlName) {
 
-                if (
-                    this.selectedPaymentMethod == 'credit_card' &&
-                    this.stripeElementsCompleteness.hasOwnProperty(controlName) &&
-                    !this.stripeElementsCompleteness[controlName]
-                ) {
-                    // stripe element failed validation
-                    let elementIsValid = this.stripeElementsCompleteness[controlName];
-
-                    this.validation[controlName] = this.stripeInvalidMessages[controlName];
-
-                } else if (
-                    (
-                        controlName == 'billingState' &&
-                        this.controls.billingCountry.toLowerCase() == 'canada'
-                    ) &&
-                    this.rules.hasOwnProperty(controlName) &&
-                    this.controls.hasOwnProperty(controlName) &&
-                    (
-                        this.controls[controlName] == null ||
-                        !this.rules[controlName].pattern.test(this.controls[controlName])
-                    )
-                ) {
-                    // normal form element failed validation
-                    this.validation[controlName] = this.rules[controlName].message;
-
-                } else {
-                    // validation passed
-                    this.validation[controlName] = '';
-                }
-
-                return this.validation[controlName];
-            },
             startValidation() {
                 this.$emit('startValidation');
             },
+
             validateForm() {
 
                 let validationSuccessful = true;
 
                 for (let controlName in this.validation) {
 
-                    validationSuccessful = !this.validateControl(controlName) && validationSuccessful;
+                    // validationSuccessful = !this.validateControl(controlName) && validationSuccessful;
                 }
 
                 this.$emit(
@@ -372,11 +364,10 @@
                     }
                 );
             },
+
             initStripeElements() {
-
-                let elementsFactory = this.stripe.elements();
-
-                let style = {
+                const elements = this.stripe.elements();
+                const style = {
                     base: {
                         fontFamily: '"Open Sans", sans-serif',
                         fontSize: '18px',
@@ -384,40 +375,43 @@
                         fontWeight: 300,
                         fontVariant: 'normal',
                         color: '#333333',
-                        lineHeight: '1.5em',
+                        '::placeholder': {
+                            color: 'transparent'
+                        }
                     },
+                    invalid: {
+                        color: '#F71B26',
+                    }
                 };
 
-                this.cardNumberElement = elementsFactory.create('cardNumber', {style: style});
+                this.cardNumberElement = elements.create('cardNumber', {style: style});
                 this.cardNumberElement.mount('#card-number');
                 this.cardNumberElement.on('change', (payload) => {
                     this.elementsChangeHandler(payload, 'cardNumber');
                 });
 
-                this.cardExpiryElement = elementsFactory.create('cardExpiry', {style: style});
+                this.cardExpiryElement = elements.create('cardExpiry', {style: style});
                 this.cardExpiryElement.mount('#card-expiry');
                 this.cardExpiryElement.on('change', (payload) => {
                     this.elementsChangeHandler(payload, 'cardExpiry');
                 });
 
-                this.cardCvcElement = elementsFactory.create('cardCvc', {style: style});
+                this.cardCvcElement = elements.create('cardCvc', {style: style});
                 this.cardCvcElement.mount('#card-cvc');
                 this.cardCvcElement.on('change', (payload) => {
                     this.elementsChangeHandler(payload, 'cardCvc');
                 });
 
             },
+
             elementsChangeHandler(payload, controlName) {
-
-                this.stripeElementsCompleteness[controlName] = payload.complete;
-
                 if (payload.error) {
-                    this.validation[controlName] = this.stripeErrorMap.hasOwnProperty(payload.error.code) ?
-                                this.stripeErrorMap[payload.error.code] : payload.error.message;
+                    this.validation[controlName] =  payload.error.message;
                 } else if (payload.complete) {
                     this.validation[controlName] = '';
                 }
             },
+
             fetchStripeToken() {
                 this.stripe
                     .createToken(
@@ -443,6 +437,7 @@
                         this.validation.cardNumber = 'Unexpected processing error, please retry';
                     });
             },
+
             processFactoryData() {
                 if (this.billingAddress) {
 
@@ -465,6 +460,7 @@
                     }
                 }
             },
+
             processBackendPaymentError(error) {
                 let codes = {
                     'card_declined': {
@@ -490,6 +486,7 @@
         },
         mounted() {
             this.stripe = Stripe(this.stripePublishableKey);
+
             this.initStripeElements();
 
             this.processFactoryData();
@@ -508,37 +505,5 @@
     .cc-icon {
         font-size: 55px;
         line-height: 50px;
-
-        &.fa-cc-visa.selected,
-        &.fa-cc-amex.selected,
-        &.fa-cc-paypal.selected {
-            color: #0a87c1;
-        }
-
-        &.fa-cc-mastercard.selected {
-            color: #ed1c2d;
-        }
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
-    .stripe-element-container {
-        height: 50px;
-        border-radius: 5px;
-        border: 1px solid #d1d1d1;
-        width: 100%;
-        display: block;
-    }
-    .submit-order {
-        background-color: forestgreen;
-
-        &:hover {
-            background-color: limegreen;
-        }
-    }
-    .disclaimer {
-        font-size: 14px;
-        font-weight: 300;
     }
 </style>

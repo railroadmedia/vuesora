@@ -3,12 +3,14 @@
         <div v-if="!isSignedIn">
             <div v-if="!requiresAccountInfo">
                 <div class="flex flex-row align-v-center mb-2">
-                    <h3 class="heading">Billing Email</h3>
+                    <div class="flex flex-column">
+                        <h3 class="heading">Billing Email</h3>
 
-                    <a :href="loginUrl"
-                       class="body color-blue font-underline pl-3">
-                        Already have an account? Click here to login.
-                    </a>
+                        <a :href="loginUrl"
+                           class="body font-underline">
+                            Already have an account? Click here to login.
+                        </a>
+                    </div>
                 </div>
 
                 <div class="flex flex-column bg-white shadow corners-5 pa-3">
@@ -38,11 +40,11 @@
 
             <div v-if="requiresAccountInfo">
                 <div class="flex flex-row align-v-center pb-2">
-                    <div class="flex flex-column ">
+                    <div class="flex flex-column">
                         <h3 class="heading">Create Your Account</h3>
 
                         <a :href="loginUrl"
-                           class="body color-blue font-underline">
+                           class="body font-underline">
                             Already have an account? Click here to login.
                         </a>
                     </div>
@@ -90,7 +92,7 @@
                             <ul class="errors tiny">
                                 <li v-for="(error, i) in errors.accountPassword"
                                     :key="'accountPasswordError' + i">
-                                    {{ error }}
+                                    {{ error || null }}
                                 </li>
                             </ul>
                         </div>
@@ -130,13 +132,11 @@
 
         <div v-if="isSignedIn">
             <div class="flex flex-row align-v-center pb-2">
-                <div class="flex flex-column flex-grow">
+                <div class="flex flex-column">
                     <h3 class="heading">Add To Existing Account</h3>
-                </div>
 
-                <div class="flex flex-column flex-auto">
                     <a :href="logoutUrl"
-                       class="body color-blue font-underline">
+                       class="body font-underline">
                         Need to log in to a different account?
                     </a>
                 </div>

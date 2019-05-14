@@ -1,116 +1,159 @@
 <template>
     <div class="flex flex-column mv-2">
         <div class="flex flex-row align-v-center pb-2">
-            <div class="flex flex-grow flex-row align-v-center">
-                <h3 class="heading color-blue">Shipping Information</h3>
-            </div>
-            <div class="flex flex-auto">
-                <h4 class="body text-dark">All fields except 'Address - Line 2' are mandatory.</h4>
-            </div>
+            <h3 class="heading color-blue">Shipping Information</h3>
         </div>
-        <div class="flex flex-column bg-white shadow corners-5 pa-2">
-            <div class="flex flex-row pv-1">
-                <div class="flex flex-column ph-1">
-                    <input
-                        type="text"
-                        name="first-name"
-                        placeholder="First Name"
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.shippingFirstName }"
-                        v-model.lazy="firstName">
-                    <span class="validation tiny">{{ validation.shippingFirstName }}</span>
-                </div>
-                <div class="flex flex-column ph-1">
-                    <input
-                        type="text"
-                        name="last-name"
-                        placeholder="Last Name"
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.shippingLastName }"
-                        v-model.lazy="lastName">
-                    <span class="validation tiny">{{ validation.shippingLastName }}</span>
-                </div>
-            </div>
-            <div class="flex flex-row pv-1">
-                <div class="flex flex-column ph-1">
-                    <input
-                        type="text"
-                        name="address-line1"
-                        placeholder="Address - Line 1"
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.shippingAddressLine1 }"
-                        v-model.lazy="addressLine1">
-                    <span class="validation tiny">{{ validation.shippingAddressLine1 }}</span>
-                </div>
-                <div class="flex flex-column ph-1">
-                    <input
-                        type="text"
-                        name="address-line2"
-                        placeholder="Address - Line 2"
-                        class="order-form-input no-label"
-                        v-model.lazy="addressLine2">
-                </div>
-            </div>
-            <div class="flex flex-row pv-1">
-                <div class="flex flex-column ph-1">
-                    <input
-                        type="text"
-                        name="city"
-                        placeholder="City"
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.shippingCity }"
-                        v-model.lazy="city">
-                    <span class="validation tiny">{{ validation.shippingCity }}</span>
-                </div>
-                <div class="flex flex-column ph-1" v-if="country.toLowerCase() != 'canada'">
-                    <input
-                        type="text"
-                        name="state"
-                        placeholder="State/Province"
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.shippingState }"
-                        v-model.lazy="state">
-                    <span class="validation tiny">{{ validation.shippingState }}</span>
-                </div>
-                <div class="md-6 ph-1" v-if="country.toLowerCase() == 'canada'">
-                    <select
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.shippingState }"
-                        v-model.lazy="state">
 
-                        <option disabled value="">State/Province</option>
-                        <option
-                            v-for="state in states"
-                            :key="state"
-                            :value="state">{{ state }}</option>
-                    </select>
-                    <span class="validation tiny">{{ validation.shippingState }}</span>
-                </div>
-            </div>
-            <div class="flex flex-row pv-1">
-                <div class="flex flex-column ph-1 md-6 sm-12">
-                    <select
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.shippingCountry }"
-                        v-model.lazy="country">
+        <div class="flex flex-column bg-white shadow corners-5 pt-2 ph-2">
+            <div class="flex flex-row flex-wrap pv-1">
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingFirstName"
+                               type="text"
+                               name="first-name"
+                               class="order-form-input"
+                               :class="{ 'has-error': validation.shippingFirstName }"
+                               v-model.lazy="firstName">
 
-                        <option disabled value="">Country</option>
-                        <option
-                            v-for="country in countries"
-                            :key="country.code"
-                            :value="country.name">{{ country.name }}</option>
-                    </select>
-                    <span class="validation tiny">{{ validation.shippingCountry }}</span>
+                        <label for="shippingFirstName" :class="brand">
+                            First Name
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.shippingFirstName }}</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="flex flex-column ph-1">
-                    <input
-                        type="text"
-                        name="zip"
-                        placeholder="Zip/Postal Code"
-                        class="order-form-input no-label"
-                        v-bind:class="{ invalid: validation.shippingZip }"
-                        v-model.lazy="zip">
-                    <span class="validation tiny">{{ validation.shippingZip }}</span>
+
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingLastName"
+                               type="text"
+                               name="last-name"
+                               class="order-form-input"
+                               :class="{ 'has-error': validation.shippingLastName }"
+                               v-model.lazy="lastName">
+
+                        <label for="shippingLastName" :class="brand">
+                            Last Name
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.shippingLastName }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingAddressLine1"
+                               type="text"
+                               name="address-line1"
+                               class="order-form-input"
+                               :class="{ 'has-error': validation.shippingAddressLine1 }"
+                               v-model.lazy="addressLine1">
+
+                        <label for="shippingAddressLine1" :class="brand">
+                            Address - Line 1
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.shippingAddressLine1 }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingAddressLine2"
+                            type="text"
+                            name="address-line2"
+                            class="order-form-input"
+                            v-model.lazy="addressLine2">
+
+                        <label for="shippingAddressLine2" :class="brand">
+                            Address - Line 2
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingCity"
+                               type="text"
+                               name="city"
+                               class="order-form-input"
+                               :class="{ 'has-error': validation.shippingCity }"
+                               v-model.lazy="city">
+
+                        <label for="shippingCity" :class="brand">
+                            City
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.shippingCity }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingState"
+                               type="text"
+                               name="state"
+                               class="order-form-input"
+                               :class="{ 'has-error': validation.shippingState }"
+                               v-model.lazy="state">
+
+                        <label for="shippingState" :class="brand">
+                            State/Province
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.shippingState }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <select id="shippingCountry"
+                                class="order-form-input"
+                                :class="{ 'has-error': validation.shippingCountry }"
+                                v-model.lazy="country">
+
+                            <option v-for="country in countries"
+                                    :key="country.code"
+                                    :value="country.name">{{ country.name }}</option>
+                        </select>
+
+                        <label for="shippingCountry" :class="brand">
+                            Country
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.shippingCountry }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingZip"
+                                type="text"
+                                name="zip"
+                                class="order-form-input"
+                                :class="{ invalid: validation.shippingZip }"
+                                v-model.lazy="zip">
+
+                        <label for="shippingZip" :class="brand">
+                            Zip/Postal Code
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li>{{ validation.shippingZip }}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -125,6 +168,9 @@
         mixins: [ValidationTriggerMixin],
         name: 'order-form-shipping',
         props: {
+            brand: {
+                type: String,
+            },
             shippingAddress: {
                 type: Object,
                 default: () => null
