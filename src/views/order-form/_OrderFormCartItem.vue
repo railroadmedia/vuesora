@@ -10,7 +10,7 @@
 
         <div class="flex flex-column grow ph-2">
             <h3 class="subheading">{{ item.name }}</h3>
-            <h4 class="body dense text-grey-4">{{ item.description }}</h4>
+            <h4 class="body text-grey-4">{{ item.description }}</h4>
 
             <div class="flex flex-row align-h-left align-v-center pt-2">
                 <div class="flex flex-column flex-auto">
