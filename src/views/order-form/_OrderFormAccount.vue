@@ -2,7 +2,7 @@
     <div class="flex flex-column mv-2">
         <div v-if="!isSignedIn">
             <div v-if="!requiresAccountInfo">
-                <div class="flex flex-row align-v-center pb-2">
+                <div class="flex flex-row align-v-center mb-2">
                     <h3 class="heading">Billing Email</h3>
 
                     <a :href="loginUrl"
@@ -21,7 +21,7 @@
                                'has-input': $_billingEmail != null }"
                                v-model.lazy="$_billingEmail">
 
-                        <label for="newAccountEmail"
+                        <label for="billingEmail"
                                :class="brand">
                             Email Address
                         </label>
@@ -38,23 +38,17 @@
 
             <div v-if="requiresAccountInfo">
                 <div class="flex flex-row align-v-center pb-2">
-                    <div class="flex flex-column grow">
-                        <div class="flex flex-row align-v-center">
-                            <h3 class="heading">Create Your Account</h3>
+                    <div class="flex flex-column ">
+                        <h3 class="heading">Create Your Account</h3>
 
-                            <a :href="loginUrl"
-                               class="body color-blue font-underline pl-3">
-                                Already have an account? Click here to login.
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-column flex-auto">
-                        <h4 class="body text-dark">All fields are mandatory.</h4>
+                        <a :href="loginUrl"
+                           class="body color-blue font-underline">
+                            Already have an account? Click here to login.
+                        </a>
                     </div>
                 </div>
-                <div class="flex flex-row bg-white shadow corners-5 pv-3 ph-2 mb-1">
-                    <div class="flex flex-column ph-1">
+                <div class="flex flex-row bg-white flex-wrap shadow corners-5 pt-3 ph-2 mb-1">
+                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-3">
                         <div class="form-group">
                             <input type="email"
                                    id="newAccountEmail"
@@ -78,7 +72,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-column ph-1">
+                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-3">
                         <div class="form-group">
                             <input type="password"
                                    id="newAccountPassword"
@@ -102,7 +96,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-column ph-1">
+                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-3">
                         <div class="form-group">
                             <input type="password"
                                    id="newAccountPasswordConfirm"
@@ -127,7 +121,8 @@
                 </div>
 
                 <a :href="loginUrl"
-                   class="tiny color-blue font-underline">
+                   title="Forgot your password"
+                   class="tiny color-blue font-underline text-grey-3">
                     Forgot your password?
                 </a>
             </div>
