@@ -7,7 +7,7 @@
         <order-form-cart
             :themeColor="themeColor"
             :cartItems="cartData.items"
-            @updateCartItem="updateCart"></order-form-cart>
+            @updateCartItem="updateCart" />
 
         <order-form-account
             ref="accountForm"
@@ -18,7 +18,7 @@
             :requiresAccountInfo="cartContainsSubscription"
             :loginUrl="loginUrl"
             :logoutUrl="logoutUrl"
-            @updateAccountData="updateAccountData"></order-form-account>
+            @updateAccountData="updateAccountData" />
 
         <order-form-shipping
             ref="shippingForm"
@@ -26,27 +26,28 @@
             :shippingData="shippingStateFactory"
             @updateShippingData="updateShippingData"
             :countries="countries"
-            v-if="cartRequiresShippingAddress"></order-form-shipping>
+            v-if="cartRequiresShippingAddress" />
 
         <order-form-payment-plan
             :brand="brand"
             :number-of-payments="cartData.number_of_payments"
             :payment-plan-options="cartData.payment_plan_options"
             @updateCartData="updateCart"
-            v-if="cartData.payment_plan_options.length && !cartContainsSubscription"></order-form-payment-plan>
+            v-if="cartData.payment_plan_options.length && !cartContainsSubscription" />
 
         <order-form-payment
-            ref="paymentForm"
-            :themeColor="themeColor"
-            :brand="brand"
-            :paymentDetails="paymentStateFactory"
-            :stripePublishableKey="stripePublishableKey"
-            :totals="cartData.totals"
-            :discounts="cartData.discounts"
-            :stripeToken="stripeToken"
-            @updatePaymentData="updatePaymentData"
-            :countries="countries"
-            @formSubmit="submitForm"></order-form-payment>
+                v-if="this.cartData.items.length"
+                ref="paymentForm"
+                :themeColor="themeColor"
+                :brand="brand"
+                :paymentDetails="paymentStateFactory"
+                :stripePublishableKey="stripePublishableKey"
+                :totals="cartData.totals"
+                :discounts="cartData.discounts"
+                :stripeToken="stripeToken"
+                @updatePaymentData="updatePaymentData"
+                :countries="countries"
+                @formSubmit="submitForm" />
 
         <div class="flex flex-row flex-wrap pv-3 text-center features">
             <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
@@ -57,11 +58,13 @@
                     <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>
                 </p>
             </div>
+
             <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
                 <i class="fa fa-lock text-grey-3 mb-2"></i>
                 <p class="body font-bold">Your Information is Secure</p>
                 <p class="body text-grey-4">This page is securely encrypted with world-class SSL protection.</p>
             </div>
+
             <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
                 <i class="fa fa-check-circle text-grey-3 mb-2"></i>
                 <p class="body font-bold">100% Money Back Guarantee</p>
@@ -71,10 +74,23 @@
 
         <transition name="grow-fade">
             <div v-show="loading"
-                 class="form-loading bg-white shadow corners-3 pa-3 text-center">
-                <loading-animation :themeColor="themeColor"></loading-animation>
+                 class="form-loading bg-white shadow corners-3 overflow pa-3 text-center"
+                 @click.stop>
+                <loading-animation :themeColor="themeColor" />
 
                 <p class="body mt-3">Loading Please Wait...</p>
+
+                <transition name="grow-fade">
+                    <div v-show="formSuccess"
+                         class="success-message flex flex-column flex-center bg-white pa-3">
+                        <i class="fas fa-check-circle text-success"></i>
+
+                        <h4 class="title mb-2">Success!</h4>
+                        <p class="tiny text-grey-3">
+                            Your order has been processed. Redirecting you to the member's area.
+                        </p>
+                    </div>
+                </transition>
             </div>
         </transition>
 
@@ -174,6 +190,7 @@
                 },
                 stripeToken: null,
                 submitTimeout: null,
+                formSuccess: false,
             }
         },
         computed: {
@@ -187,10 +204,6 @@
 
             cartRequiresAccountInfo(){
                 return this.cartContainsSubscription && this.user == null;
-            },
-
-            canUsePaymentPlan(){
-                return this.cartData.items.filter(item => !!item.subscription_interval_count).length > 0;
             },
         },
         methods: {
@@ -320,10 +333,14 @@
 
             orderHandler(response){
                 if(response){
+                    this.formSuccess = true;
+
                     setTimeout(() => {
                         window.location.href = this.successRedirectUrl;
-                    }, 2000);
+                    }, 500);
                 } else {
+                    this.formSuccess = false;
+
                     Toasts.push({
                         icon: 'sad',
                         themeColor: this.themeColor,
@@ -336,7 +353,7 @@
 
                     setTimeout(() => {
                         this.loading = false;
-                    }, 2000);
+                    }, 500);
                 }
             },
         }
@@ -351,7 +368,18 @@
         z-index:200;
         transform:translate(-50%, -50%);
         width:250px;
-        pointer-events:none;
+
+        i {
+            font-size:72px;
+        }
+
+        .success-message {
+            position:absolute;
+            top:0;
+            left:0;
+            bottom:0;
+            right:0;
+        }
     }
     .loading-overlay {
         content: '';
@@ -362,6 +390,5 @@
         right:0;
         z-index:199;
         background:rgba(0,0,0,.4);
-        pointer-events:none;
     }
 </style>
