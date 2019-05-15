@@ -81,7 +81,7 @@ export default {
      *
      * @returns {Promise}
      */
-    updateAddresses({
+    updateAddressesInSession({
         billingEmail,
         billingCountry,
         billingState,
@@ -96,26 +96,22 @@ export default {
         shippingZip
     }) {
 
-        return axios
-                .put(
-                    '/ecommerce/session/address',
-                    {
-                        'shipping-address-line-1': shippingAddressLine1,
-                        'shipping-address-line-2': shippingAddressLine2,
-                        'shipping-city': shippingCity,
-                        'shipping-country': shippingCountry,
-                        'shipping-first-name': shippingFirstName,
-                        'shipping-last-name': shippingLastName,
-                        'shipping-region': shippingState,
-                        'shipping-zip-or-postal-code': shippingZip,
-                        'billing-country': billingCountry,
-                        'billing-region': billingState,
-                        'billing-zip-or-postal-code': billingZip,
-                        'billing-email': billingEmail,
-                    }
-                )
-                .then(response => response.data)
-                .catch(ErrorHandler);
+        return axios.put('/ecommerce/session/address', {
+            'shipping-address-line-1': shippingAddressLine1,
+            'shipping-address-line-2': shippingAddressLine2,
+            'shipping-city': shippingCity,
+            'shipping-country': shippingCountry,
+            'shipping-first-name': shippingFirstName,
+            'shipping-last-name': shippingLastName,
+            'shipping-region': shippingState,
+            'shipping-zip-or-postal-code': shippingZip,
+            'billing-country': billingCountry,
+            'billing-region': billingState,
+            'billing-zip-or-postal-code': billingZip,
+            'billing-email': billingEmail,
+        })
+        .then(response => response)
+        .catch(ErrorHandler);
     },
 
     /**
