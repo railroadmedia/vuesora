@@ -1,87 +1,74 @@
 <template>
     <div class="flex flex-column mv-2">
-        <div class="flex flex-row align-v-center pb-2">
-            <div class="flex flex-grow flex-row align-v-center">
-                <h3 class="heading color-blue">Payment Plan</h3>
-            </div>
-            <div class="flex flex-auto">
-                <h4 class="body text-dark">All fields are mandatory.</h4>
-            </div>
+        <div class="flex flex-row align-v-center mb-2">
+            <h3 class="heading color-blue">Payment Plan</h3>
         </div>
-        <div class="flex flex-row bg-white shadow corners-5 pa-2">
-            <div class="flex flex-row pv-1">
-                <div class="flex flex-column ph-1 md-6 sm-12">
-                    <select
-                        class="order-form-input no-label"
-                        v-model.lazy="$_numberOfPayments">
+        <div class="flex flex-row flex-wrap bg-white shadow corners-5 pt-2 ph-2 align-v-center">
+            <div class="flex flex-column ph-1 xs-12 sm-6 mb-2">
+                <div class="form-group">
+                    <select id="paymentPlans"
+                            class="order-form-input"
+                            v-model.lazy="$_numberOfPayments">
 
-                        <option
-                            v-for="item in paymentPlanOptions"
-                            :key="item.value"
-                            :value="item.value">{{ item.label }}</option>
+                        <option v-for="item in paymentPlanOptions"
+                                :key="item.value"
+                                :value="item.value">{{ item.label }}</option>
                     </select>
+
+                    <label for="paymentPlans" :class="brand">
+                        Payment Plan
+                    </label>
                 </div>
-                <div class="flex flex-column ph-1">
-                    <div class="flex flex-column">
-                    <h4 class="body text-dark">* Payment plans are billed monthly.</h4>
-                    <h4 class="body text-dark">* Shipping is charged on the first payment.</h4>
-                </div>
-                </div>
+
+            </div>
+            <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                <h4 class="tiny text-grey-3">* Payment plans are billed monthly.</h4>
+                <h4 class="tiny text-grey-3">* Shipping is charged on the first payment.</h4>
             </div>
         </div>
     </div>
 </template>
 <script>
     import Api from '../../assets/js/services/ecommerce.js';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        data() {
-            return {
-                selectedNumberOfPayments: 1,
-            }
-        },
-        computed: {
-            $_numberOfPayments: {
-                get() {
-                    return this.selectedNumberOfPayments;
-                },
-                set(value) {
-                    this.selectedNumberOfPayments = value;
-                    this.updateNumberOfPayments(value);
-                }
-            }
-        },
+        mixins: [ThemeClasses],
+        name: 'order-form-payment-plan',
         props: {
+            brand: {
+                type: String,
+            },
+
             numberOfPayments: {
                 type: Number,
                 default: 1
             },
+
             paymentPlanOptions: {
                 type: Array,
                 default: () => []
             },
         },
-        watch: {
-            numberOfPayments: function(value) {
-                this.selectedNumberOfPayments = value;
+        computed: {
+            $_numberOfPayments: {
+                get() {
+                    return this.numberOfPayments;
+                },
+                set(value) {
+                    this.updateNumberOfPayments(value);
+                }
             }
         },
         methods: {
             updateNumberOfPayments(value) {
-                Api
-                    .updateNumberOfPayments(value)
+                Api.updateNumberOfPayments(value)
                     .then(response => {
-                        if (response.meta && response.meta.cart) {
-                            this.$emit(
-                                'updateCartData',
-                                response.meta.cart
-                            );
+                        if (response) {
+                            this.$emit('updateCartData', response.data);
                         }
                     })
             }
         },
-        mounted() {
-            this.selectedNumberOfPayments = this.numberOfPayments || 1;
-        }
     }
 </script>
