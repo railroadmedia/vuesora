@@ -6,10 +6,12 @@
                     <div class="flex flex-column">
                         <h3 class="heading">Billing Email</h3>
 
-                        <a :href="loginUrl"
-                           class="body font-underline">
-                            Already have an account? Click here to login.
-                        </a>
+                        <span class="flex flex-auto">
+                            <a :href="loginUrl"
+                               class="body font-underline">
+                                Already have an account? Click here to login.
+                            </a>
+                        </span>
                     </div>
                 </div>
 
@@ -43,10 +45,12 @@
                     <div class="flex flex-column">
                         <h3 class="heading">Create Your Account</h3>
 
-                        <a :href="loginUrl"
-                           class="body font-underline">
-                            Already have an account? Click here to login.
-                        </a>
+                        <span class="flex flex-auto">
+                            <a :href="loginUrl"
+                               class="body font-underline">
+                                Already have an account? Click here to login.
+                            </a>
+                        </span>
                     </div>
                 </div>
                 <div class="flex flex-row bg-white flex-wrap shadow corners-5 pt-3 ph-2 mb-1">
@@ -122,11 +126,11 @@
                     </div>
                 </div>
 
-                <a :href="loginUrl"
-                   title="Forgot your password"
-                   class="tiny color-blue font-underline text-grey-3">
-                    Forgot your password?
-                </a>
+<!--                <a :href="loginUrl"-->
+<!--                   title="Forgot your password"-->
+<!--                   class="tiny color-blue font-underline text-grey-3">-->
+<!--                    Forgot your password?-->
+<!--                </a>-->
             </div>
         </div>
 
@@ -135,10 +139,12 @@
                 <div class="flex flex-column">
                     <h3 class="heading">Add To Existing Account</h3>
 
-                    <a :href="logoutUrl"
-                       class="body font-underline">
-                        Need to log in to a different account?
-                    </a>
+                    <span class="flex flex-auto">
+                        <a :href="logoutUrl"
+                           class="body font-underline">
+                            Need to log in to a different account?
+                        </a>
+                    </span>
                 </div>
             </div>
 
@@ -211,6 +217,7 @@
                     ],
                     accountPassword: [
                         v => !!v || 'Password is required.',
+                        v => !!v && v.length >= 8 || 'Password must be 8 characters or more.',
                         v => v === this.$_accountPasswordConfirm || 'Passwords must match.'
                     ],
                     accountPasswordConfirm: [
@@ -266,15 +273,15 @@
                 set(value) {
                     this.validateInput('accountPassword', value);
                     
-                    // If the other password input has a value - validate it at the same time
-                    if(this.$_accountPasswordConfirm != null){
-                        this.validateInput('accountPasswordConfirm', this.$_accountPasswordConfirm);
-                    }
-                    
                     this.$emit('updateAccountData', {
                         key: 'accountPassword',
                         value: value
                     });
+
+                    // If the other password input has a value - validate it at the same time
+                    if(this.$_accountPasswordConfirm != null){
+                        this.validateInput('accountPasswordConfirm', this.$_accountPasswordConfirm);
+                    }
                 }
             },
 
@@ -284,16 +291,16 @@
                 },
                 set(value) {
                     this.validateInput('accountPasswordConfirm', value);
-                    
+
+                    this.$emit('updateAccountData', {
+                        key: 'accountPasswordConfirm',
+                        value: value
+                    });
+
                     // If the other password input has a value - validate it at the same time
                     if(this.$_accountPassword != null){
                         this.validateInput('accountPassword', this.$_accountPassword);
                     }
-
-                    this.$emit('updateAccountData', {
-                        key: 'accountPasswordConfirmation',
-                        value: value
-                    });
                 }
             },
         }

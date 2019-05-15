@@ -49,7 +49,7 @@
                         ${{ item.price_before_discounts }}
                     </h3>
 
-                    <h2 class="display dense">${{ item.price_after_discounts }}</h2>
+                    <h2 class="display dense">${{ totalPriceAfterDiscounts }}</h2>
 
                     <h3 v-if="item.subscription_interval_type"
                         class="x-tiny text-grey-3">
@@ -96,6 +96,10 @@
                         this.itemQuantity = val;
                     }, 500);
                 }
+            },
+
+            totalPriceAfterDiscounts(){
+                return Number(this.item.price_after_discounts).toFixed(2);
             },
 
             isDiscounted(){

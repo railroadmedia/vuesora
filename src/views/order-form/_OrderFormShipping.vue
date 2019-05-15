@@ -89,53 +89,8 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
-                    <div class="form-group">
-                        <input id="shippingCity"
-                               type="text"
-                               name="city"
-                               class="order-form-input"
-                               :class="{ 'has-error': errors.city.length,
-                               'has-input': $_city != null }"
-                               v-model.lazy="$_city">
-
-                        <label for="shippingCity" :class="brand">
-                            City
-                        </label>
-
-                        <ul class="errors tiny">
-                            <li v-for="(error, i) in errors.city"
-                                :key="'cityError' + i">
-                                {{ error || null }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
-                    <div class="form-group">
-                        <input id="shippingState"
-                               type="text"
-                               name="state"
-                               class="order-form-input"
-                               :class="{ 'has-error': $_country === 'Canada' && errors.state.length,
-                               'has-input': this.$_state != null }"
-                               v-model.lazy="$_state">
-
-                        <label for="shippingState" :class="brand">
-                            State/Province
-                        </label>
-
-                        <ul class="errors tiny">
-                            <li v-for="(error, i) in errors.state"
-                                :key="'stateError' + i">
-                                {{ error || null }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                <div class="flex flex-column xs-12 ph-1 mb-2"
+                     :class="$_country === 'Canada' ? 'sm-6' : ''">
                     <div class="form-group">
                         <select id="shippingCountry"
                                 class="order-form-input"
@@ -161,15 +116,62 @@
                     </div>
                 </div>
 
+                <div v-if="$_country === 'Canada'"
+                     class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingState"
+                               type="text"
+                               name="state"
+                               class="order-form-input"
+                               :class="{ 'has-error': errors.state.length,
+                               'has-input': this.$_state != null }"
+                               v-model.lazy="$_state">
+
+                        <label for="shippingState" :class="brand">
+                            State/Province
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li v-for="(error, i) in errors.state"
+                                :key="'stateError' + i">
+                                {{ error || null }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingCity"
+                               type="text"
+                               name="city"
+                               class="order-form-input"
+                               :class="{ 'has-error': errors.city.length,
+                               'has-input': $_city != null }"
+                               v-model.lazy="$_city">
+
+                        <label for="shippingCity" :class="brand">
+                            City
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li v-for="(error, i) in errors.city"
+                                :key="'cityError' + i">
+                                {{ error || null }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
                         <input id="shippingZip"
-                                type="text"
-                                name="zip"
-                                class="order-form-input"
-                                :class="{ 'has-error': errors.zip_or_postal_code.length,
+                               type="text"
+                               name="zip"
+                               class="order-form-input"
+                               :class="{ 'has-error': errors.zip_or_postal_code.length,
                                 'has-input': $_zip_or_postal_code != null }"
-                                v-model.lazy="$_zip_or_postal_code">
+                               v-model.lazy="$_zip_or_postal_code">
 
                         <label for="shippingZip" :class="brand">
                             Zip/Postal Code

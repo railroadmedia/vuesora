@@ -21,7 +21,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 sm-6 mb-2">
+                <div class="flex flex-column xs-12 sm-6 mb-2 overflow">
                     <div class="flex flex-row">
                         <div class="ph-1">
                             <i class="fab fa-cc-visa cc-icon"></i>
@@ -64,9 +64,9 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 sm-6 mb-2">
-                    <div class="flex flex-row">
-                        <div class="flex flex-column xs-12 sm-6 ph-1">
+                <div class="flex flex-column xs-12 sm-6">
+                    <div class="flex flex-row flex-wrap">
+                        <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                             <div class="form-group">
                                 <div id="card-expiry"
                                      class="stripe-element-container order-form-input">
@@ -85,7 +85,7 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-column xs-12 sm-6 ph-1">
+                        <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                             <div class="form-group">
                                 <div id="card-cvc"
                                      class="stripe-element-container order-form-input">
@@ -164,25 +164,25 @@
                 <h3 class="title">Hitting submit will redirect you to PayPal to complete your order.</h3>
             </div>
 
-            <div class="flex flex-row pv-1">
-                <div class="flex flex-column align-v-bottom md-6 ph-1">
-                    <button class="btn mb-1"
+            <div class="flex flex-row reverse flex-wrap">
+                <div class="flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2">
+                    <div v-if="discounts.length">
+                        <div class="body font-bold" v-for="item in discounts" :key="item.id">{{ item.name }}</div>
+                    </div>
+                    <div class="body font-bold" v-if="totals.shipping">Shipping: ${{ totalShipping }}</div>
+                    <div class="body font-bold">Tax: ${{ totalTax }}</div>
+                    <div class="body font-bold"><span class="display">${{ totalDue }}</span> USD</div>
+                    <div class="body font-bold">Due Today</div>
+                </div>
+
+                <div class="flex flex-column xs-12 sm-6 align-v-bottom ph-1 mb-2">
+                    <button class="btn"
                             @click.stop.prevent="submitForm">
                         <span class="text-white bg-success" :class="themeBgClass">
                             Buy Now
                         </span>
                     </button>
                 </div>
-
-<!--                <div class="flex flex-column md-6 ph-1 align-h-right">-->
-<!--                    <div v-if="discounts.length">-->
-<!--                        <div class="body font-bold" v-for="item in discounts" :key="item.id">{{ item.name }}</div>-->
-<!--                    </div>-->
-<!--                    <div class="body font-bold" v-if="totals.shipping">Shipping: ${{ totals.shipping }}</div>-->
-<!--                    <div class="body font-bold">Tax: ${{ totals.tax }}</div>-->
-<!--                    <div class="body font-bold"><span class="display">${{ totals.due }}</span> USD</div>-->
-<!--                    <div class="body font-bold">Due Today</div>-->
-<!--                </div>-->
             </div>
 
             <div class="flex flex-row pv-1">
@@ -196,7 +196,6 @@
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/ecommerce.js';
     import Utils from 'js-helper-functions/modules/utils';
     import Validation from './_validation';
     import ThemeClasses from "../../mixins/ThemeClasses";
@@ -228,9 +227,17 @@
                 type: String
             },
 
+            totals: {
+                type: Object
+            },
+
             discounts: {
                 type: Array,
                 default: () => []
+            },
+
+            stripeToken: {
+                type: Object
             },
         },
         data() {
@@ -258,7 +265,6 @@
                         v => !!v || 'State/Province is required'
                     ],
                 },
-                stripeToken: '',
             }
         },
         computed: {
@@ -268,6 +274,18 @@
 
             provinces() {
                 return Utils.provinces();
+            },
+
+            totalTax(){
+                return Number(this.totals.tax).toFixed(2);
+            },
+
+            totalDue(){
+                return Number(this.totals.due).toFixed(2);
+            },
+
+            totalShipping(){
+                return Number(this.totals.shipping).toFixed(2);
             },
 
             $_paymentMethod: {
@@ -338,19 +356,19 @@
                     }
                 };
 
-                this.cardNumberElement = elements.create('cardNumber', {style: style});
+                this.cardNumberElement = elements.create('cardNumber', {style});
                 this.cardNumberElement.mount('#card-number');
                 this.cardNumberElement.on('change', (payload) => {
                     this.elementsChangeHandler(payload, 'cardNumber');
                 });
 
-                this.cardExpiryElement = elements.create('cardExpiry', {style: style});
+                this.cardExpiryElement = elements.create('cardExpiry', {style});
                 this.cardExpiryElement.mount('#card-expiry');
                 this.cardExpiryElement.on('change', (payload) => {
                     this.elementsChangeHandler(payload, 'cardExpiry');
                 });
 
-                this.cardCvcElement = elements.create('cardCvc', {style: style});
+                this.cardCvcElement = elements.create('cardCvc', {style});
                 this.cardCvcElement.mount('#card-cvc');
                 this.cardCvcElement.on('change', (payload) => {
                     this.elementsChangeHandler(payload, 'cardCvc');
@@ -367,29 +385,9 @@
             },
 
             fetchStripeToken() {
-                
-
-                this.stripe.createToken(this.cardNumberElement, {
+                return this.stripe.createToken(this.cardNumberElement, {
                     address_country: this.$_billingCountry
-                })
-                    .then((result) => {
-                        this.stripeToken = result.token.id;
-
-                        this.$emit(
-                            'savePaymentData',
-                            {
-                                field: 'card-token',
-                                value: this.stripeToken
-                            }
-                        );
-                    })
-                    .catch((error) => {
-                        // could not reach this block with current stripe test credit cards that generate errors
-
-                        console.log("stripe token fetch error: %s", JSON.stringify(error));
-
-                        this.errors.cardNumber = 'Unexpected processing error, please retry';
-                    });
+                });
             },
         },
         mounted() {

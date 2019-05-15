@@ -18,15 +18,14 @@
             :requiresAccountInfo="cartContainsSubscription"
             :loginUrl="loginUrl"
             :logoutUrl="logoutUrl"
-            @updateAccountData="updateAccountData"
-            @registerSubformValidation="registerSubformValidation"></order-form-account>
+            @updateAccountData="updateAccountData"></order-form-account>
 
         <order-form-shipping
             ref="shippingForm"
             :brand="brand"
             :shippingData="shippingStateFactory"
             @updateShippingData="updateShippingData"
-            v-if="!cartRequiresShippingAddress"></order-form-shipping>
+            v-if="cartRequiresShippingAddress"></order-form-shipping>
 
         <order-form-payment-plan
             :number-of-payments="numberOfPayments"
@@ -38,33 +37,37 @@
             :themeColor="themeColor"
             :brand="brand"
             :paymentDetails="paymentStateFactory"
-            :stripe-publishable-key="stripePublishableKey"
+            :stripePublishableKey="stripePublishableKey"
+            :totals="cartData.totals"
             :discounts="cartData.discounts"
-            @updatePaymentData="updatePaymentData"></order-form-payment>
+            :stripeToken="stripeToken"
+            @updatePaymentData="updatePaymentData"
+            @formSubmit="submitForm"></order-form-payment>
 
-<!--        <div class="flex flex-row pv-3 text-center features">-->
-<!--            <div class="md-4 ph-5">-->
-<!--                <i class="fa fa-phone"></i>-->
-<!--                <p class="body font-bold">We're always here to help</p>-->
-<!--                <p class="body">1-800-439-8921 or email support@pianote.com</p>-->
-<!--            </div>-->
-<!--            <div class="md-4 ph-5">-->
-<!--                <i class="fa fa-lock"></i>-->
-<!--                <p class="body font-bold">Your Information is Secure</p>-->
-<!--                <p class="body">This page is securely encrypted with world-class SSL protection.</p>-->
-<!--            </div>-->
-<!--            <div class="md-4 ph-5">-->
-<!--                <i class="fa fa-certificate">-->
-<!--                    <i class="fa fa-check"></i>-->
-<!--                </i>-->
-<!--                <p class="body font-bold">100% Money Back Guarantee</p>-->
-<!--                <p class="body">Order risk-free with our 90-day, 100% money back guarantee.</p>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="flex flex-row flex-wrap pv-3 text-center features">
+            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
+                <i class="fa fa-phone text-grey-3 mb-2"></i>
+                <p class="body font-bold">We're always here to help</p>
+                <p class="body text-grey-4">
+                    Call 1-800-439-8921 or email
+                    <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>
+                </p>
+            </div>
+            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
+                <i class="fa fa-lock text-grey-3 mb-2"></i>
+                <p class="body font-bold">Your Information is Secure</p>
+                <p class="body text-grey-4">This page is securely encrypted with world-class SSL protection.</p>
+            </div>
+            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
+                <i class="fa fa-check-circle text-grey-3 mb-2"></i>
+                <p class="body font-bold">100% Money Back Guarantee</p>
+                <p class="body text-grey-4">Order risk-free with our 90-day, 100% money back guarantee.</p>
+            </div>
+        </div>
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/ecommerce.js';
+    import EcommerceService from '../../assets/js/services/ecommerce.js';
     import OrderFormAccount from './_OrderFormAccount.vue';
     import OrderFormCart from './_OrderFormCart.vue';
     import OrderFormPayment from './_OrderFormPayment.vue';
@@ -133,22 +136,20 @@
                 requiresAccount: false,
                 numberOfPayments: 1,
                 paymentPlanOptions: [],
-
                 accountStateFactory: {
                     billingEmail: null,
                     accountEmail: null,
                     accountPassword: null,
                     accountPasswordConfirm: null,
                 },
-
                 shippingStateFactory: this.shippingAddress,
-
                 paymentStateFactory: {
                     cardToken: null,
                     methodType: 'credit_card',
                     billingCountry: this.billingAddress.country,
                     billingRegion: this.billingAddress.state,
                 },
+                stripeToken: null,
             }
         },
         computed: {
@@ -171,104 +172,117 @@
 
             updateAccountData({key, value}) {
                 this.$set(this.accountStateFactory, key, value);
+
+                if(key === 'billingEmail'){
+                    this.updateAddressesInSession();
+                }
             },
 
             updateShippingData({key, value}) {
                 this.$set(this.shippingStateFactory, key, value);
+                this.updateAddressesInSession();
             },
 
             updatePaymentData({key, value}) {
                 this.$set(this.paymentStateFactory, key, value);
+                this.updateAddressesInSession();
+            },
+            
+            updateAddressesInSession(){
+                EcommerceService.updateAddressesInSession({
+                    shippingAddressLine1: this.shippingStateFactory.street_line_one,
+                    shippingAddressLine2: this.shippingStateFactory.street_line_two,
+                    shippingCity: this.shippingStateFactory.city,
+                    shippingCountry: this.shippingStateFactory.country,
+                    shippingFirstName: this.shippingStateFactory.first_name,
+                    shippingLastName: this.shippingStateFactory.last_name,
+                    shippingState: this.shippingStateFactory.state,
+                    shippingZip: this.shippingStateFactory.zip_or_postal_code,
+                    billingCountry: this.paymentStateFactory.billingCountry,
+                    billingState: this.paymentStateFactory.billingRegion,
+                    billingEmail: this.accountStateFactory.billingEmail,
+                })
+                    .then(response => {
+                        if(response){
+                            this.updateCart(response.data);
+                        }
+                    })
             },
 
-            startValidation() {
-
-                this.validationForms = {
-                    account: false,
-                    payment: false,
-                };
-
-                if (this.requiresShippingAddress) {
-                    this.validationForms.shipping = false;
+            submitForm(){
+                this.$refs.accountForm.validateForm();
+                if(!this.$refs.accountForm.formValid){
+                    window.scrollTo({top: this.$refs.accountForm.$el.offsetTop, behavior: 'smooth'});
+                    return;
                 }
 
-                this.validationTrigger = !this.validationTrigger;
-            },
-
-            registerSubformValidation({form, result}) {
-                this.validationForms[form] = result;
-
-                if (result) {
-                    // if current result is successful, check the other results
-                    let complete = true;
-
-                    for (let key in this.validationForms) {
-                        if (!this.validationForms[key]) {
-                            complete = false;
-                            break;
-                        }
-                    }
-
-                    if (complete) {
-                        // if subforms validation succeeded
-                        if (this.paymentStateFactory['payment_method_type'] == 'credit_card') {
-                            // trigger stripe token fetch
-                            this.stripeTokenTrigger = !this.stripeTokenTrigger;
-                        } else {
-                            // submit paypal payment type order
-                            this.submitOrder();
-                        }
+                if(this.cartRequiresShippingAddress){
+                    this.$refs.shippingForm.validateForm();
+                    if(!this.$refs.shippingForm.formValid){
+                        window.scrollTo({top: this.$refs.shippingForm.$el.offsetTop, behavior: 'smooth'});
+                        return;
                     }
                 }
+
+                this.$refs.paymentForm.fetchStripeToken()
+                    .then(({token, error}) => {
+                        if(error){
+                            return;
+                        }
+
+                        this.stripeToken = token;
+
+                        this.submitOrder();
+                    });
             },
+
             submitOrder() {
-
-                this.backendPaymentError = null;
-
                 let payload = this.createOrderPayload();
 
-                Api
-                    .submitOrder(payload)
-                    .then(this.orderSubmitedSuccessfully)
-                    .catch(this.handleOrderSubmitError);
-            },
-            createOrderPayload() {
+                console.log(payload);
 
+                // EcommerceService.submitOrder(payload)
+                //     .then(this.orderSubmitedSuccessfully)
+                //     .catch(this.handleOrderSubmitError);
+            },
+
+            createOrderPayload() {
                 let payload = {
-                    'gateway': this.brand,
-                    'payment_method_type': this.paymentStateFactory['payment_method_type'],
-                    'billing_country': this.paymentStateFactory.country,
-                    'billing_region': this.paymentStateFactory.state,
-                    'payment_plan_number_of_payments': this.numberOfPayments,
+                    gateway: this.brand,
+                    payment_method_type: this.paymentStateFactory.methodType,
+                    billing_country: this.paymentStateFactory.billingCountry,
+                    billing_region: this.paymentStateFactory.billingRegion,
+                    payment_plan_number_of_payments: this.numberOfPayments,
                 };
 
                 if (!this.user) {
-                    if (this.requiresAccount) {
+                    if (this.cartContainsSubscription) {
                         payload['account_creation_email'] = this.accountStateFactory.accountEmail;
                         payload['account_creation_password'] = this.accountStateFactory.accountPassword;
-                        payload['account_creation_password_confirmation'] = this.accountStateFactory.accountPasswordConfirmation;
+                        payload['account_creation_password_confirmation'] = this.accountStateFactory.accountPasswordConfirm;
                     } else {
                         payload['billing_email'] = this.accountStateFactory.billingEmail;
                     }
                 }
 
-                if (this.requiresShippingAddress) {
-                    payload['shipping_first_name'] = this.shippingStateFactory['first_name'];
-                    payload['shipping_last_name'] = this.shippingStateFactory['last_name'];
-                    payload['shipping_address_line_1'] = this.shippingStateFactory['street_line_one'];
-                    payload['shipping_address_line_2'] = this.shippingStateFactory['street_line_two'];
-                    payload['shipping_zip_or_postal_code'] = this.shippingStateFactory['zip_or_postal_code'];
-                    payload['shipping_city'] = this.shippingStateFactory['city'];
-                    payload['shipping_region'] = this.shippingStateFactory['state'];
-                    payload['shipping_country'] = this.shippingStateFactory['country'];
+                if (this.cartRequiresShippingAddress) {
+                    payload['shipping_first_name'] = this.shippingStateFactory.first_name;
+                    payload['shipping_last_name'] = this.shippingStateFactory.last_name;
+                    payload['shipping_address_line_1'] = this.shippingStateFactory.street_line_one;
+                    payload['shipping_address_line_2'] = this.shippingStateFactory.street_line_two;
+                    payload['shipping_zip_or_postal_code'] = this.shippingStateFactory.zip_or_postal_code;
+                    payload['shipping_city'] = this.shippingStateFactory.city;
+                    payload['shipping_region'] = this.shippingStateFactory.state;
+                    payload['shipping_country'] = this.shippingStateFactory.country;
                 }
 
-                if (this.paymentStateFactory['payment_method_type'] == 'credit_card') {
-                    payload['card_token'] = this.paymentStateFactory['card-token'];
+                if (this.paymentStateFactory.methodType === 'credit_card') {
+                    payload['card_token'] = this.stripeToken;
                 }
 
                 return payload;
             },
+
             orderSubmitedSuccessfully(response) {
 
                 if (response.data == null && response.meta && response.meta.redirect) {
@@ -287,6 +301,7 @@
                     }, 5000);
                 }
             },
+
             handleOrderSubmitError(response) {
                 console.log("OrderForm::handleOrderSubmitError response: %s", JSON.stringify(response));
 
