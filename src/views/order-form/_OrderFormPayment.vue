@@ -142,7 +142,7 @@
 
                             <option v-for="province in provinces"
                                     :key="province"
-                                    :value="province">{{ province }}</option>
+                                    :value="province">{{ toCapitalCase(province) }}</option>
                         </select>
 
                         <label for="billingRegion" :class="brand">
@@ -242,8 +242,13 @@
 
             countries: {
                 type: Array,
-                default: () => []
+                default: () => [],
             },
+
+            provinces: {
+                type: Array,
+                default: () => [],
+            }
         },
         data() {
             return {
@@ -273,20 +278,16 @@
             }
         },
         computed: {
-            provinces() {
-                return Utils.provinces();
-            },
-
             totalTax(){
-                return Number(this.totals.tax).toFixed(2);
+                return Number(this.totals.tax || 0).toFixed(2);
             },
 
             totalDue(){
-                return Number(this.totals.due).toFixed(2);
+                return Number(this.totals.due || 0).toFixed(2);
             },
 
             totalShipping(){
-                return Number(this.totals.shipping).toFixed(2);
+                return Number(this.totals.shipping || 0).toFixed(2);
             },
 
             $_paymentMethod: {
@@ -332,6 +333,8 @@
             },
         },
         methods: {
+            toCapitalCase: (string) => Utils.toCapitalCase(string),
+
             submitForm() {
                 this.$emit('formSubmit');
             },
