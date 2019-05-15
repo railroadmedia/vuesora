@@ -6,7 +6,7 @@ export default {
     /**
      * Request to check if new account email is exists
      *
-     * @param {object} email
+     * @param {Object} email
      *
      * @returns {Promise}
      */
@@ -22,12 +22,11 @@ export default {
     /**
      * Request to submit the order form data
      *
-     * @param {object} payload
+     * @param {Object} payload
      *
      * @returns {Promise}
      */
     submitOrder(payload) {
-
         return axios.put('/ecommerce/json/order-form/submit', payload)
                 .then(response => response)
                 .catch(ErrorHandler);
@@ -36,8 +35,8 @@ export default {
     /**
      * Updates the cart item quantity
      *
-     * @param {string} productSku
-     * @param {number} quantity
+     * @param {String} productSku
+     * @param {Number} quantity
      *
      * @returns {Promise}
      */
@@ -45,9 +44,9 @@ export default {
         productSku,
         quantity
     }) {
-        return axios
-                .patch(`/ecommerce/json/update-product-quantity/${ productSku }/${ quantity }`)
-                .catch(ErrorHandler);
+        return axios.patch(`/ecommerce/json/update-product-quantity/${ productSku }/${ quantity }`)
+            .then(response => response)
+            .catch(ErrorHandler);
     },
 
     /**
@@ -66,18 +65,18 @@ export default {
     /**
      * Updates the session addresses
      *
-     * @param {string} billingEmail
-     * @param {string} billingCountry
-     * @param {string} billingState
-     * @param {string} billingZip
-     * @param {string} shippingFirstName
-     * @param {string} shippingLastName
-     * @param {string} shippingAddressLine1
-     * @param {string} shippingAddressLine2
-     * @param {string} shippingCity
-     * @param {string} shippingState
-     * @param {string} shippingCountry
-     * @param {string} shippingZip
+     * @param {String} billingEmail
+     * @param {String} billingCountry
+     * @param {String} billingState
+     * @param {String} billingZip
+     * @param {String} shippingFirstName
+     * @param {String} shippingLastName
+     * @param {String} shippingAddressLine1
+     * @param {String} shippingAddressLine2
+     * @param {String} shippingCity
+     * @param {String} shippingState
+     * @param {String} shippingCountry
+     * @param {String} shippingZip
      *
      * @returns {Promise}
      */
@@ -117,17 +116,12 @@ export default {
     /**
      * Updates number of payments
      *
-     * @param int numberOfPayments
-     *
+     * @param {String|Number} numberOfPayments
      * @returns {Promise}
      */
     updateNumberOfPayments(numberOfPayments) {
-        return axios
-                .put(
-                    '/ecommerce/json/update-number-of-payments/' + numberOfPayments,
-                    {}
-                )
-                .then(response => response.data)
+        return axios.put('/ecommerce/json/update-number-of-payments/' + numberOfPayments)
+                .then(response => response)
                 .catch(ErrorHandler);
     },
 }
