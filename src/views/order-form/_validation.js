@@ -15,14 +15,12 @@ export default {
                 }
             });
 
-            this.formValid = errors.length > 0;
+            this.formValid = errors.length === 0;
 
             this.errors[controlName] = errors;
         },
 
         validateForm() {
-            console.log(Object.keys(this.rules));
-
             Object.keys(this.rules).forEach(key => {
                 const formKey = `$_${ key }`;
 
