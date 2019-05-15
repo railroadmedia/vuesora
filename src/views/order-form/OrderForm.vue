@@ -25,12 +25,15 @@
             :brand="brand"
             :shippingData="shippingStateFactory"
             @updateShippingData="updateShippingData"
+            :countries="countries"
             v-if="cartRequiresShippingAddress"></order-form-shipping>
 
         <order-form-payment-plan
-            :number-of-payments="numberOfPayments"
-            :payment-plan-options="paymentPlanOptions"
-            v-if="paymentPlanOptions.length && !cartContainsSubscription"></order-form-payment-plan>
+            :brand="brand"
+            :number-of-payments="cartData.number_of_payments"
+            :payment-plan-options="cartData.payment_plan_options"
+            @updateCartData="updateCart"
+            v-if="cartData.payment_plan_options.length && !cartContainsSubscription"></order-form-payment-plan>
 
         <order-form-payment
             ref="paymentForm"
@@ -42,6 +45,7 @@
             :discounts="cartData.discounts"
             :stripeToken="stripeToken"
             @updatePaymentData="updatePaymentData"
+            :countries="countries"
             @formSubmit="submitForm"></order-form-payment>
 
         <div class="flex flex-row flex-wrap pv-3 text-center features">
@@ -64,6 +68,17 @@
                 <p class="body text-grey-4">Order risk-free with our 90-day, 100% money back guarantee.</p>
             </div>
         </div>
+
+        <transition name="grow-fade">
+            <div v-show="loading"
+                 class="form-loading bg-white shadow corners-3 pa-3 text-center">
+                <loading-animation :themeColor="themeColor"></loading-animation>
+
+                <p class="body mt-3">Loading Please Wait...</p>
+            </div>
+        </transition>
+
+        <div v-show="loading" class="loading-overlay"></div>
     </div>
 </template>
 <script>
@@ -75,6 +90,7 @@
     import OrderFormShipping from './_OrderFormShipping.vue';
     import ThemeClasses from '../../mixins/ThemeClasses';
     import Toasts from '../../assets/js/classes/toasts';
+    import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
 
     export default {
         mixins: [ThemeClasses],
@@ -85,6 +101,7 @@
             'order-form-shipping': OrderFormShipping,
             'order-form-payment': OrderFormPayment,
             'order-form-payment-plan': OrderFormPaymentPlan,
+            'loading-animation': LoadingAnimation,
         },
         props: {
             billingAddress: {
@@ -129,9 +146,15 @@
             brand: {
                 type: String
             },
+
+            countries: {
+                type: Array,
+                default: () => []
+            }
         },
         data() {
             return {
+                loading: false,
                 cartData: this.cart,
                 requiresAccount: false,
                 numberOfPayments: 1,
@@ -150,6 +173,7 @@
                     billingRegion: this.billingAddress.state,
                 },
                 stripeToken: null,
+                submitTimeout: null,
             }
         },
         computed: {
@@ -159,6 +183,10 @@
 
             cartRequiresShippingAddress(){
                 return this.cartData.items.filter(item => item.requires_shipping === true).length > 0;
+            },
+
+            cartRequiresAccountInfo(){
+                return this.cartContainsSubscription && this.user == null;
             },
 
             canUsePaymentPlan(){
@@ -210,40 +238,47 @@
             },
 
             submitForm(){
-                this.$refs.accountForm.validateForm();
-                if(!this.$refs.accountForm.formValid){
-                    window.scrollTo({top: this.$refs.accountForm.$el.offsetTop, behavior: 'smooth'});
-                    return;
-                }
+                clearTimeout(this.submitTimeout);
 
-                if(this.cartRequiresShippingAddress){
-                    this.$refs.shippingForm.validateForm();
-                    if(!this.$refs.shippingForm.formValid){
-                        window.scrollTo({top: this.$refs.shippingForm.$el.offsetTop, behavior: 'smooth'});
-                        return;
-                    }
-                }
-
-                this.$refs.paymentForm.fetchStripeToken()
-                    .then(({token, error}) => {
-                        if(error){
+                // Wait a quarter of a second before submitting the form, just to prevent double
+                // clicks etc from producing unintended interactions.
+                this.submitTimeout = setTimeout(() => {
+                    if(this.cartRequiresAccountInfo){
+                        this.$refs.accountForm.validateForm();
+                        if(!this.$refs.accountForm.formValid){
+                            window.scrollTo({top: this.$refs.accountForm.$el.offsetTop, behavior: 'smooth'});
                             return;
                         }
+                    }
 
-                        this.stripeToken = token;
+                    if(this.cartRequiresShippingAddress){
+                        this.$refs.shippingForm.validateForm();
+                        if(!this.$refs.shippingForm.formValid){
+                            window.scrollTo({top: this.$refs.shippingForm.$el.offsetTop, behavior: 'smooth'});
+                            return;
+                        }
+                    }
 
-                        this.submitOrder();
-                    });
+                    this.loading = true;
+
+                    this.$refs.paymentForm.fetchStripeToken()
+                        .then(({token, error}) => {
+                            if(error){
+                                return;
+                            }
+
+                            this.stripeToken = token;
+
+                            this.submitOrder();
+                        });
+                }, 250);
             },
 
             submitOrder() {
-                let payload = this.createOrderPayload();
+                const payload = this.createOrderPayload();
 
-                console.log(payload);
-
-                // EcommerceService.submitOrder(payload)
-                //     .then(this.orderSubmitedSuccessfully)
-                //     .catch(this.handleOrderSubmitError);
+                EcommerceService.submitOrder(payload)
+                    .then(this.orderHandler);
             },
 
             createOrderPayload() {
@@ -252,7 +287,7 @@
                     payment_method_type: this.paymentStateFactory.methodType,
                     billing_country: this.paymentStateFactory.billingCountry,
                     billing_region: this.paymentStateFactory.billingRegion,
-                    payment_plan_number_of_payments: this.numberOfPayments,
+                    payment_plan_number_of_payments: this.cartData.number_of_payments,
                 };
 
                 if (!this.user) {
@@ -277,55 +312,56 @@
                 }
 
                 if (this.paymentStateFactory.methodType === 'credit_card') {
-                    payload['card_token'] = this.stripeToken;
+                    payload['card_token'] = this.stripeToken.id;
                 }
 
                 return payload;
             },
 
-            orderSubmitedSuccessfully(response) {
-
-                if (response.data == null && response.meta && response.meta.redirect) {
-                    window.location.href = response.meta.redirect;
+            orderHandler(response){
+                if(response){
+                    setTimeout(() => {
+                        window.location.href = this.successRedirectUrl;
+                    }, 2000);
                 } else {
                     Toasts.push({
-                        icon: 'happy',
+                        icon: 'sad',
                         themeColor: this.themeColor,
-                        title: 'Success',
-                        message: 'Your order was successfully placed',
-                        timeout: 20000
+                        title: 'Oops! Something went wrong..',
+                        message: 'Something happened on the server and your order has not been placed.' +
+                            'If the issue persists, please contact support using the chat widget at' +
+                            'the bottom of the page.',
+                        timeout: 5000
                     });
 
                     setTimeout(() => {
-                        window.location.href = this.successRedirectUrl;
-                    }, 5000);
+                        this.loading = false;
+                    }, 2000);
                 }
             },
-
-            handleOrderSubmitError(response) {
-                console.log("OrderForm::handleOrderSubmitError response: %s", JSON.stringify(response));
-
-                Toasts.push({
-                    icon: 'sad',
-                    themeColor: this.themeColor,
-                    title: 'Error',
-                    message: 'An error occured while processing the order details',
-                    timeout: 10000
-                });
-
-                if (
-                    response.errors &&
-                    response.errors.detail &&
-                    response.errors.detail.type &&
-                    response.errors.detail.type == 'card_error'
-                ) {
-                    this.backendPaymentError = response.errors;
-                }
-
-                if (response.meta && response.meta.user) {
-                    this.user = response.meta.user;
-                }
-            }
         }
     }
 </script>
+
+<style lang="scss">
+    .form-loading {
+        position:fixed;
+        top:50%;
+        left:50%;
+        z-index:200;
+        transform:translate(-50%, -50%);
+        width:250px;
+        pointer-events:none;
+    }
+    .loading-overlay {
+        content: '';
+        position:fixed;
+        top:0;
+        left:0;
+        bottom:0;
+        right:0;
+        z-index:199;
+        background:rgba(0,0,0,.4);
+        pointer-events:none;
+    }
+</style>

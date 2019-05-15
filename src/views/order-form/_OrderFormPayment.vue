@@ -116,8 +116,8 @@
                                 v-model.lazy="$_billingCountry">
 
                             <option v-for="country in countries"
-                                    :key="country.code"
-                                    :value="country.name">{{ country.name }}</option>
+                                    :key="country"
+                                    :value="country">{{ country }}</option>
                         </select>
 
                         <label for="billingCountry" :class="brand">
@@ -239,6 +239,11 @@
             stripeToken: {
                 type: Object
             },
+
+            countries: {
+                type: Array,
+                default: () => []
+            },
         },
         data() {
             return {
@@ -268,10 +273,6 @@
             }
         },
         computed: {
-            countries() {
-                return Utils.countries();
-            },
-
             provinces() {
                 return Utils.provinces();
             },

@@ -99,8 +99,8 @@
                                 v-model.lazy="$_country">
 
                             <option v-for="country in countries"
-                                    :key="country.code"
-                                    :value="country.name">{{ country.name }}</option>
+                                    :key="country"
+                                    :value="country">{{ country }}</option>
                         </select>
 
                         <label for="shippingCountry" :class="brand">
@@ -215,6 +215,11 @@
                     zip_or_postal_code: null,
                 })
             },
+
+            countries: {
+                type: Array,
+                default: () => []
+            },
         },
         data() {
             return {
@@ -253,10 +258,6 @@
             }
         },
         computed: {
-            countries() {
-                return Utils.countries();
-            },
-
             states() {
                 return Utils.provinces();
             },
