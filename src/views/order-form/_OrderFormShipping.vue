@@ -89,8 +89,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 ph-1 mb-2"
-                     :class="$_country === 'Canada' ? 'sm-6' : ''">
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
                         <select id="shippingCountry"
                                 class="order-form-input"
@@ -119,7 +118,34 @@
                 <div v-if="$_country === 'Canada'"
                      class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
-                        <input id="shippingState"
+                        <select id="shippingState"
+                                class="order-form-input"
+                                :class="{ 'has-error': errors.country.length,
+                                'has-input': $_state != null }"
+                                v-model.lazy="$_state">
+
+                            <option v-for="province in provinces"
+                                    :key="province"
+                                    :value="province">{{ province }}</option>
+                        </select>
+
+                        <label for="shippingState" :class="brand">
+                            Province
+                        </label>
+
+                        <ul class="errors tiny">
+                            <li v-for="(error, i) in errors.state"
+                                :key="'stateError' + i">
+                                {{ error || null }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div v-if="$_country !== 'Canada'"
+                     class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                    <div class="form-group">
+                        <input id="shippingStateText"
                                type="text"
                                name="state"
                                class="order-form-input"
@@ -127,8 +153,8 @@
                                'has-input': this.$_state != null }"
                                v-model.lazy="$_state">
 
-                        <label for="shippingState" :class="brand">
-                            State/Province
+                        <label for="shippingStateText" :class="brand">
+                            State/Region
                         </label>
 
                         <ul class="errors tiny">
@@ -190,7 +216,6 @@
     </div>
 </template>
 <script>
-    import Api from '../../assets/js/services/ecommerce.js';
     import Utils from 'js-helper-functions/modules/utils';
     import Validation from './_validation';
 
@@ -258,7 +283,7 @@
             }
         },
         computed: {
-            states() {
+            provinces() {
                 return Utils.provinces();
             },
 
@@ -355,6 +380,11 @@
                         key: 'country',
                         value: value,
                     });
+
+                    if(value !== 'Canada'){
+                        this.$_state = null;
+                        this.errors.state = [];
+                    }
                 }
             },
 
