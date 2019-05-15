@@ -23,7 +23,11 @@ body.dark-mode {
     color:#ffffff;
   }
 
-  select, input[type='text']:not(#searchInput), input[type='number'] {
+  select,
+  input[type='text']:not(#searchInput),
+  input[type='password'],
+  input[type='email'],
+  input[type='number'] {
     color:#fefefe;
     background-color:#242424;
   }
