@@ -124,4 +124,35 @@ export default {
                 .then(response => response)
                 .catch(ErrorHandler);
     },
+
+    /**
+     * Get the current users payment methods
+     *
+     * @returns {Promise}
+     */
+    getPaymentMethods(user_id){
+        return axios.get(`/ecommerce/user-payment-method/${ user_id }`)
+            .then(response => response)
+            .catch(ErrorHandler);
+    },
+
+    setPaymentMethodAsDefault(payment_method_id){
+        return axios.patch(`/ecommerce/payment-method/set-default`, {
+            id: payment_method_id,
+        })
+            .then(response => response)
+            .catch(ErrorHandler);
+    },
+
+    /**
+     * Updates number of payments
+     *
+     * @param {String|Number} payment_method_id
+     * @returns {Promise}
+     */
+    deletePaymentMethod(payment_method_id) {
+        return axios.delete('/ecommerce/payment-method/' + payment_method_id)
+            .then(response => response)
+            .catch(ErrorHandler);
+    },
 }
