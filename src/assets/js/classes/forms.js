@@ -82,7 +82,10 @@ export default class Forms {
 
         if(element.type === 'checkbox'){
             const hiddenInput = element.parentElement.querySelector('.hidden-input');
-            hiddenInput.value = element.checked ? 1 : 0;
+
+            if(hiddenInput != null){
+                hiddenInput.value = element.checked ? 1 : 0;
+            }
         }
     }
 
