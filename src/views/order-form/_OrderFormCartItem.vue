@@ -22,6 +22,7 @@
                             <input type="number"
                                    v-model="$_itemQuantity"
                                    min="1"
+                                   max="99"
                                    class="no-label text-center"
                                    style="border:none;background:none;">
                         </div>
