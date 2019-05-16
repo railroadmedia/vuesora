@@ -73,7 +73,7 @@ export default {
                 title +
                 '</span>' +
                 '<br>' +
-                '<span class="tiny text-black uppercase">' +
+                '<span class="x-tiny uppercase text-grey-3">' +
                 subtitle +
                 '</span>',
             closeWith: [],
