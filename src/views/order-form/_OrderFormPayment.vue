@@ -1,10 +1,6 @@
 <template>
-    <div class="flex flex-column mv-2">
-        <div class="flex flex-row">
-            <h3 class="heading">Payment Details</h3>
-        </div>
-
-        <div class="flex flex-column bg-white shadow corners-5 mt-2 pv-3 ph-2">
+    <div class="flex flex-column mb-2">
+        <div class="flex flex-column bg-white shadow corners-5 pt-3 ph-2">
             <div class="flex flex-row flex-wrap align-v-center">
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
@@ -142,7 +138,9 @@
 
                             <option v-for="province in provinces"
                                     :key="province"
-                                    :value="province">{{ toCapitalCase(province) }}</option>
+                                    :value="toCapitalCase(province)">
+                                {{ toCapitalCase(province) }}
+                            </option>
                         </select>
 
                         <label for="billingRegion" :class="brand">
@@ -164,32 +162,84 @@
                 <h3 class="title">Hitting submit will redirect you to PayPal to complete your order.</h3>
             </div>
 
-            <div class="flex flex-row reverse flex-wrap">
-                <div class="flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2">
-                    <div v-if="discounts.length">
-                        <div class="body font-bold" v-for="item in discounts" :key="item.id">{{ item.name }}</div>
-                    </div>
-                    <div class="body font-bold" v-if="totals.shipping">Shipping: ${{ totalShipping }}</div>
-                    <div class="body font-bold">Tax: ${{ totalTax }}</div>
-                    <div class="body font-bold"><span class="display">${{ totalDue }}</span> USD</div>
-                    <div class="body font-bold">Due Today</div>
-                </div>
+            <div v-if="isOrder"
+                 class="flex flex-row mb-1">
+                <div class="flex flex-column">
+                    <div class="flex flex-row reverse flex-wrap">
+                        <div class="flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2">
+                            <div v-if="discounts.length">
+                                <div class="body font-bold" v-for="item in discounts" :key="item.id">
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                            <div class="body font-bold" v-if="totals.shipping">Shipping: ${{ totalShipping }}</div>
 
-                <div class="flex flex-column xs-12 sm-6 align-v-bottom ph-1 mb-2">
-                    <button class="btn"
-                            @click.stop.prevent="submitForm">
-                        <span class="text-white bg-success" :class="themeBgClass">
-                            Buy Now
-                        </span>
-                    </button>
+                            <div class="body font-bold">Tax: ${{ totalTax }}</div>
+
+                            <div class="body font-bold"><span class="display">${{ totalDue }}</span> USD</div>
+
+                            <div class="body font-bold">Due Today</div>
+                        </div>
+
+                        <div class="flex flex-column xs-12 sm-6 align-v-bottom ph-1 mb-2">
+                            <button class="btn"
+                                    @click.stop.prevent="submitForm">
+                                <span class="text-white bg-success" :class="themeBgClass">
+                                    Buy Now
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row mb-2">
+                        <div class="flex flex-column md-6 ph-1">
+                            <h5 class="tiny disclaimer">By completing your renewal you agree to the Pianote Terms
+                                Of Service. All payments in US dollars. You
+                                can cancel your subscription at any time by emailing support@pianote.com.</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex flex-row pv-1">
-                <div class="flex flex-column md-6 ph-1">
-                    <h5 class="tiny disclaimer">By completing your renewal you agree to the Pianote Terms
-                                Of Service. All payments in US dollars. You
-                                can cancel your subscription at any time by emailing support@pianote.com.</h5>
+            <div v-if="!isOrder"
+                 class="flex flex-row mb-1">
+                <div class="flex flex-column ph-1">
+                    <div class="flex flex-row form-group align-v-center mb-2">
+                        <span class="toggle-input mr-1">
+                            <input id="subscriptionCheck"
+                                   name="subscription-check"
+                                   v-model="subscriptionCheck"
+                                   type="checkbox">
+
+                            <span class="toggle">
+                                <span class="handle"></span>
+                            </span>
+                        </span>
+
+                        <label for="subscriptionCheck"
+                               class="toggle-label capitalize">
+                            Set as default payment method
+                        </label>
+                    </div>
+                    <div class="flex flex-row flex-wrap align-h-right align-v-center">
+                        <div class="flex flex-column xs-6 sm-4 mb-2 pr-1">
+                            <button class="btn short close-modal"
+                                    @click="cancelForm">
+                                <span class="flat text-grey-4">
+                                    Cancel
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="flex flex-column xs-6 sm-4 mb-2 pl-1">
+                            <button class="btn">
+                                <span class="text-white"
+                                      :class="themeBgClass">
+                                    Submit
+                                </span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -248,6 +298,11 @@
             provinces: {
                 type: Array,
                 default: () => [],
+            },
+
+            isOrder: {
+                type: Boolean,
+                default: () => true,
             }
         },
         data() {
@@ -275,6 +330,7 @@
                         v => !!v || 'State/Province is required'
                     ],
                 },
+                subscriptionCheck: false,
             }
         },
         computed: {
@@ -337,6 +393,20 @@
 
             submitForm() {
                 this.$emit('formSubmit');
+            },
+
+            cancelForm(){
+                this.initStripeElements();
+
+                this.$emit('formCancel');
+
+                setTimeout(() => {
+                    Object.keys(this.errors).forEach(error => {
+                        this.errors[error] = [];
+                    });
+
+                    this.$nextTick(() => this.$forceUpdate());
+                }, 200);
             },
 
             initStripeElements() {

@@ -55,7 +55,8 @@
                 <div class="flex flex-column actions-col text-center">
                     <div class="flex flex-row">
                         <button class="btn short collapse-square"
-                                title="Delete Payment Method">
+                                title="Delete Payment Method"
+                                @click="deletePaymentMethod(paymentMethod.id)">
                             <span class="text-error flat">
                                 <i class="fas fa-trash"></i>
                             </span>
@@ -63,7 +64,8 @@
 
                         <button class="btn short collapse-square"
                                 title="Set As Default"
-                                :disabled="isPrimaryPaymentMethod(paymentMethod)">
+                                :disabled="isPrimaryPaymentMethod(paymentMethod)"
+                                @click="markPaymentMethodAsDefault(paymentMethod.id)">
                             <span class="text-success flat">
                                 <i class="fas fa-check"></i>
                             </span>
@@ -75,7 +77,9 @@
 
         <div class="flex flex-row flex-wrap align-v-center">
             <div class="flex flex-column xs-12 sm-4">
-                <button class="btn">
+                <button class="btn"
+                        data-open-modal="paymentMethodModal"
+                        title="Add New Payment Method">
                     <span class="text-white"
                           :class="themeBgClass">
                         <i class="fas fa-plus mr-1"></i> New Payment Method
@@ -84,19 +88,23 @@
             </div>
         </div>
 
-        <order-form-payment
-                ref="paymentForm"
-                :themeColor="themeColor"
-                :brand="brand"
-                :paymentDetails="editingPaymentMethod"
-                :stripePublishableKey="stripePublishableKey"
-                :totals="{}"
-                :discounts="[]"
-                :stripeToken="stripeToken"
-                :countries="countries"
-                :provinces="provinces"
-                @updatePaymentData="updatePaymentData"
-                @formSubmit="submitForm" />
+        <div id="paymentMethodModal" class="modal">
+            <order-form-payment
+                    ref="paymentForm"
+                    :themeColor="themeColor"
+                    :brand="brand"
+                    :paymentDetails="editingPaymentMethod"
+                    :stripePublishableKey="stripePublishableKey"
+                    :totals="{}"
+                    :discounts="[]"
+                    :stripeToken="stripeToken"
+                    :countries="countries"
+                    :provinces="provinces"
+                    :isOrder="false"
+                    @updatePaymentData="updatePaymentData"
+                    @formSubmit="submitForm"
+                    @formCancel="cancelForm"/>
+        </div>
     </div>
 </template>
 
@@ -104,6 +112,8 @@
     import ThemeClasses from "../../mixins/ThemeClasses";
     import OrderFormPayment from '../../views/order-form/_OrderFormPayment';
     import { DateTime } from 'luxon';
+    import Toasts from '../../assets/js/classes/toasts';
+    import EcommerceService from '../../assets/js/services/ecommerce';
 
     const defaultPaymentMethod = () => ({
         cardToken: null,
@@ -119,7 +129,7 @@
             'order-form-payment': OrderFormPayment,
         },
         props: {
-            paymentMethodsData: {
+            paymentMethods: {
                 type: Object,
                 default: () => ({}),
             },
@@ -142,10 +152,14 @@
                 type: Array,
                 default: () => [],
             },
+
+            userId: {
+                type: String|Number,
+            }
         },
         data(){
             return {
-                selectedPaymentMethod: this.paymentMethodsData.data[0].id || null,
+                paymentMethodsData: this.paymentMethods,
                 editingPaymentMethod: defaultPaymentMethod(),
                 stripeToken: null,
             }
@@ -158,6 +172,10 @@
 
             submitForm(){
 
+            },
+
+            cancelForm(){
+                this.editingPaymentMethod = defaultPaymentMethod();
             },
 
             isPrimaryPaymentMethod(paymentMethod){
@@ -184,6 +202,79 @@
                 );
 
                 return data || { id: 'N/A', attributes: {} };
+            },
+
+            deletePaymentMethod(id){
+                Toasts.confirm({
+                    title: 'Are you sure you want to delete this payment method?',
+                    submitButton: {
+                        text: '<span class="bg-error text-white">Delete</span>',
+                        callback: () => {
+                            EcommerceService.deletePaymentMethod(id)
+                                .then(response => {
+                                    this.handleResponse(response, 'deleted');
+
+                                    if(response){
+                                        EcommerceService.getPaymentMethods(this.userId)
+                                            .then(response => {
+                                                if(response){
+                                                    this.paymentMethodsData = response.data;
+                                                }
+                                            });
+                                    }
+                                });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                    }
+                });
+            },
+
+            markPaymentMethodAsDefault(id){
+                Toasts.confirm({
+                    title: 'Set this payment method as your default?',
+                    subtitle: 'Your current subscriptions and payment plans will be charged to this payment method.',
+                    submitButton: {
+                        text: '<span class="bg-success text-white">Confirm</span>',
+                        callback: () => {
+                            EcommerceService.setPaymentMethodAsDefault(id)
+                                .then(response => {
+                                    this.handleResponse(response, 'set as default');
+
+                                    if(response){
+                                        EcommerceService.getPaymentMethods(this.userId)
+                                            .then(response => {
+                                                if(response){
+                                                    this.paymentMethodsData = response.data;
+                                                }
+                                            });
+                                    }
+                                });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                    }
+                });
+            },
+
+            handleResponse(response, action){
+                if(response){
+                    Toasts.push({
+                        icon: 'happy',
+                        title: 'Success!',
+                        themeColor: this.themeColor,
+                        message: `Payment method has been ${ action }!`
+                    });
+                } else {
+                    Toasts.push({
+                        icon: 'sad',
+                        title: 'Oops, something went wrong!',
+                        themeColor: this.themeColor,
+                        message: `An error happened on the server. Payment method has not been ${ action }!`
+                    });
+                }
             },
         }
     }
