@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-column order-form pv-2">
-        <h3 class="subheading text-center pv-1">
+    <div class="flex flex-column order-form mv-2">
+        <h3 class="subheading text-center mb-3">
             Your Order is Protected by Our Extended 90-Day 100% Money Back Guarantee!
         </h3>
 
@@ -20,14 +20,21 @@
             :logoutUrl="logoutUrl"
             @updateAccountData="updateAccountData" />
 
+        <div class="flex flex-row mb-2">
+            <h3 class="heading color-blue">Shipping Information</h3>
+        </div>
         <order-form-shipping
             ref="shippingForm"
             :brand="brand"
             :shippingData="shippingStateFactory"
             @updateShippingData="updateShippingData"
             :countries="countries"
+            :provinces="provinces"
             v-if="cartRequiresShippingAddress" />
 
+        <div class="flex flex-row mb-2">
+            <h3 class="heading color-blue">Payment Plan</h3>
+        </div>
         <order-form-payment-plan
             :brand="brand"
             :number-of-payments="cartData.number_of_payments"
@@ -35,6 +42,10 @@
             @updateCartData="updateCart"
             v-if="cartData.payment_plan_options.length && !cartContainsSubscription" />
 
+
+        <div class="flex flex-row mb-2">
+            <h3 class="heading">Payment Details</h3>
+        </div>
         <order-form-payment
                 v-if="this.cartData.items.length"
                 ref="paymentForm"
@@ -47,6 +58,7 @@
                 :stripeToken="stripeToken"
                 @updatePaymentData="updatePaymentData"
                 :countries="countries"
+                :provinces="provinces"
                 @formSubmit="submitForm" />
 
         <div class="flex flex-row flex-wrap pv-3 text-center features">
@@ -166,7 +178,12 @@
             countries: {
                 type: Array,
                 default: () => []
-            }
+            },
+
+            provinces: {
+                type: Array,
+                default: () => []
+            },
         },
         data() {
             return {

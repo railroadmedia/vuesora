@@ -1,9 +1,5 @@
 <template>
-    <div class="flex flex-column mv-2">
-        <div class="flex flex-row align-v-center pb-2">
-            <h3 class="heading color-blue">Shipping Information</h3>
-        </div>
-
+    <div class="flex flex-column mb-3">
         <div class="flex flex-column bg-white shadow corners-5 pt-2 ph-2">
             <div class="flex flex-row flex-wrap pv-1">
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
@@ -126,7 +122,9 @@
 
                             <option v-for="province in provinces"
                                     :key="province"
-                                    :value="province">{{ province }}</option>
+                                    :value="toCapitalCase(province)">
+                                {{ toCapitalCase(province) }}
+                            </option>
                         </select>
 
                         <label for="shippingState" :class="brand">
@@ -245,6 +243,11 @@
                 type: Array,
                 default: () => []
             },
+
+            provinces: {
+                type: Array,
+                default: () => []
+            },
         },
         data() {
             return {
@@ -283,9 +286,6 @@
             }
         },
         computed: {
-            provinces() {
-                return Utils.provinces();
-            },
 
             $_first_name: {
                 get() {
@@ -401,6 +401,9 @@
                     });
                 }
             },
+        },
+        methods: {
+            toCapitalCase: (string) => Utils.toCapitalCase(string),
         }
     }
 </script>

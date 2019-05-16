@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column bg-white shadow corners-5 pv-2 mv-2">
+    <div class="flex flex-column bg-white shadow corners-5 pv-2 mb-3">
 
         <order-form-cart-item
             v-for="item in cartItems"

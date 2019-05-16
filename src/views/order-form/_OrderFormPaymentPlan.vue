@@ -1,8 +1,5 @@
 <template>
-    <div class="flex flex-column mv-2">
-        <div class="flex flex-row align-v-center mb-2">
-            <h3 class="heading color-blue">Payment Plan</h3>
-        </div>
+    <div class="flex flex-column mb-3">
         <div class="flex flex-row flex-wrap bg-white shadow corners-5 pt-2 ph-2 align-v-center">
             <div class="flex flex-column ph-1 xs-12 sm-6 mb-2">
                 <div class="form-group">
