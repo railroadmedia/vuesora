@@ -54,6 +54,7 @@
                     <div class="flex flex-row">
                         <button class="btn short collapse-square"
                                 title="Delete Payment Method"
+                                :disabled="isPrimaryPaymentMethod(paymentMethod)"
                                 @click="deletePaymentMethod(paymentMethod.id)">
                             <span class="text-error flat">
                                 <i class="fas fa-trash"></i>
@@ -267,6 +268,11 @@
                                 window.location.href = response.data.redirect;
                             } else {
                                 this.formSuccess = true;
+                                this.getPaymentMethods();
+
+                                setTimeout(() => {
+                                    this.cancelForm();
+                                }, 1000);
                             }
                         } else {
                             this.formSuccess = false;
@@ -286,7 +292,8 @@
             },
 
             cancelForm(){
-                this.editingPaymentMethod = defaultPaymentMethod();
+                window.closeAllModals();
+                this.editingPaymentMethod = this.defaultPaymentMethod();
             },
 
             isPrimaryPaymentMethod(paymentMethod){
@@ -313,6 +320,15 @@
                 );
 
                 return data || { id: 'N/A', attributes: {} };
+            },
+
+            getPaymentMethods(){
+                EcommerceService.getPaymentMethods(this.userId)
+                    .then(response => {
+                        if(response){
+                            this.paymentMethodsData = response.data;
+                        }
+                    })
             },
 
             deletePaymentMethod(id){
