@@ -43,9 +43,7 @@
 
                 <div v-if="paymentMethod.attributes.method_type === 'paypal'"
                      class="flex flex-column body">
-                    {{ getRelatedAttributesByTypeAndId(
-                        paymentMethod.relationships.method.data
-                    ).attributes.payment_gateway_name || 'N/A' }}
+                    PayPal
                 </div>
 
                 <div class="flex flex-column body expiry-col text-center">
@@ -95,16 +93,42 @@
                     :brand="brand"
                     :paymentDetails="editingPaymentMethod"
                     :stripePublishableKey="stripePublishableKey"
-                    :totals="{}"
+                    :totals="totals"
                     :discounts="[]"
                     :stripeToken="stripeToken"
                     :countries="countries"
                     :provinces="provinces"
                     :isOrder="false"
+                    :isActive="isActive"
+                    :hasSubscription="hasSubscription"
                     @updatePaymentData="updatePaymentData"
                     @formSubmit="submitForm"
                     @formCancel="cancelForm"/>
         </div>
+
+        <transition name="grow-fade">
+            <div v-show="loading"
+                 class="form-loading bg-white shadow corners-3 overflow pa-3 text-center"
+                 @click.stop>
+                <loading-animation :themeColor="themeColor" />
+
+                <p class="body mt-3">Loading Please Wait...</p>
+
+                <transition name="grow-fade">
+                    <div v-show="formSuccess"
+                         class="success-message flex flex-column flex-center bg-white pa-3">
+                        <i class="fas fa-check-circle text-success"></i>
+
+                        <h4 class="title mb-2">Success!</h4>
+                        <p class="tiny text-grey-3">
+                            Your order has been processed. Redirecting you to the member's area.
+                        </p>
+                    </div>
+                </transition>
+            </div>
+        </transition>
+
+        <div v-show="loading" class="loading-overlay"></div>
     </div>
 </template>
 
@@ -114,19 +138,14 @@
     import { DateTime } from 'luxon';
     import Toasts from '../../assets/js/classes/toasts';
     import EcommerceService from '../../assets/js/services/ecommerce';
-
-    const defaultPaymentMethod = () => ({
-        cardToken: null,
-        methodType: 'credit_card',
-        billingCountry: null,
-        billingRegion: null,
-    });
+    import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
 
     export default {
         mixins: [ThemeClasses],
         name: 'payment-methods',
         components: {
             'order-form-payment': OrderFormPayment,
+            'loading-animation': LoadingAnimation,
         },
         props: {
             paymentMethods: {
@@ -155,23 +174,115 @@
 
             userId: {
                 type: String|Number,
-            }
+            },
+
+            hasSubscription: {
+                type: Boolean,
+                default: () => true,
+            },
+
+            isActive: {
+                type: Boolean,
+                default: () => true,
+            },
+
+            cart: {
+                type: Object,
+                default: () => ({
+                    totals: {
+                        due: 0,
+                        tax: 0,
+                    }
+                })
+            },
         },
         data(){
             return {
+                loading: false,
+                formSuccess: false,
                 paymentMethodsData: this.paymentMethods,
-                editingPaymentMethod: defaultPaymentMethod(),
+                editingPaymentMethod: this.defaultPaymentMethod(),
+                totals: this.cart.totals,
                 stripeToken: null,
             }
         },
 
         methods: {
+            defaultPaymentMethod(){
+                return {
+                    cardToken: null,
+                    methodType: 'credit_card',
+                    billingCountry: this.cart.billing_address.country,
+                    billingRegion: this.cart.billing_address.state,
+                }
+            },
+
             updatePaymentData({key, value}){
                 this.$set(this.editingPaymentMethod, key, value);
+
+                if(key === 'billingCountry' || key === 'billingRegion'){
+                    EcommerceService.updateAddressesInSession({
+                        billingCountry: this.editingPaymentMethod.billingCountry,
+                        billingState: this.editingPaymentMethod.billingRegion,
+                    })
+                        .then(response => {
+                            if(response){
+                                this.totals = response.data.meta.cart.totals;
+                            }
+                        })
+                }
+
             },
 
             submitForm(){
+                this.loading = true;
 
+                if(this.editingPaymentMethod.methodType === 'paypal'){
+                    this.updatePaymentMethod();
+                } else {
+                    this.$refs.paymentForm.fetchStripeToken()
+                        .then(({token, error}) => {
+                            if(error){
+                                return;
+                            }
+
+                            this.stripeToken = token;
+                            this.updatePaymentMethod();
+                        });
+                }
+            },
+
+            updatePaymentMethod(){
+
+                EcommerceService.updatePaymentMethod({
+                    card_token: this.editingPaymentMethod.methodType === 'credit_card' ? this.stripeToken.id : null,
+                    gateway: this.brand,
+                    method_type: this.editingPaymentMethod.methodType,
+                    billing_country: this.editingPaymentMethod.billingCountry,
+                    billing_region: this.editingPaymentMethod.billingRegion,
+                })
+                    .then(response => {
+                        if(response){
+                            if(response.data.redirect){
+                                window.location.href = response.data.redirect;
+                            } else {
+                                this.formSuccess = true;
+                            }
+                        } else {
+                            this.formSuccess = false;
+
+                            Toasts.push({
+                                icon: 'sad',
+                                title: 'Oops, something went wrong!',
+                                themeColor: this.themeColor,
+                                message: `Payment method has not been created!`
+                            });
+                        }
+
+                        setTimeout(() => {
+                            this.loading = false;
+                        }, 1000);
+                    });
             },
 
             cancelForm(){

@@ -20,30 +20,33 @@
             :logoutUrl="logoutUrl"
             @updateAccountData="updateAccountData" />
 
-        <div class="flex flex-row mb-2">
+        <div v-if="cartRequiresShippingAddress"
+             class="flex flex-row mb-2">
             <h3 class="heading color-blue">Shipping Information</h3>
         </div>
         <order-form-shipping
+            v-if="cartRequiresShippingAddress"
             ref="shippingForm"
             :brand="brand"
             :shippingData="shippingStateFactory"
             @updateShippingData="updateShippingData"
             :countries="countries"
-            :provinces="provinces"
-            v-if="cartRequiresShippingAddress" />
+            :provinces="provinces" />
 
-        <div class="flex flex-row mb-2">
+        <div v-if="cartData.payment_plan_options.length && !cartContainsSubscription"
+             class="flex flex-row mb-2">
             <h3 class="heading color-blue">Payment Plan</h3>
         </div>
         <order-form-payment-plan
+            v-if="cartData.payment_plan_options.length && !cartContainsSubscription"
             :brand="brand"
             :number-of-payments="cartData.number_of_payments"
             :payment-plan-options="cartData.payment_plan_options"
-            @updateCartData="updateCart"
-            v-if="cartData.payment_plan_options.length && !cartContainsSubscription" />
+            @updateCartData="updateCart"/>
 
 
-        <div class="flex flex-row mb-2">
+        <div v-if="this.cartData.items.length"
+             class="flex flex-row mb-2">
             <h3 class="heading">Payment Details</h3>
         </div>
         <order-form-payment
@@ -291,16 +294,20 @@
 
                     this.loading = true;
 
-                    this.$refs.paymentForm.fetchStripeToken()
-                        .then(({token, error}) => {
-                            if(error){
-                                return;
-                            }
+                    if(this.paymentStateFactory.methodType === 'paypal'){
+                        this.submitOrder();
+                    } else {
+                        this.$refs.paymentForm.fetchStripeToken()
+                            .then(({token, error}) => {
+                                if(error){
+                                    return;
+                                }
 
-                            this.stripeToken = token;
+                                this.stripeToken = token;
 
-                            this.submitOrder();
-                        });
+                                this.submitOrder();
+                            });
+                    }
                 }, 250);
             },
 
@@ -350,10 +357,12 @@
 
             orderHandler(response){
                 if(response){
-                    this.formSuccess = true;
+                    if(this.paymentStateFactory.methodType === 'credit-card'){
+                        this.formSuccess = true;
+                    }
 
                     setTimeout(() => {
-                        window.location.href = this.successRedirectUrl;
+                        window.location.href = response.data.meta.redirect;
                     }, 500);
                 } else {
                     this.formSuccess = false;

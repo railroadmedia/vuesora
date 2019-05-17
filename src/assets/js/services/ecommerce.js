@@ -136,6 +136,43 @@ export default {
             .catch(ErrorHandler);
     },
 
+    /**
+     * Update a users payment method
+     *
+     * @param {String} card_token
+     * @param {String} gateway
+     * @param {String} method_type
+     * @param {String} currency
+     * @param {String} billing_country
+     * @param {String} billing_region
+     * @returns {Promise}
+     */
+    updatePaymentMethod({
+        card_token,
+        gateway,
+        method_type,
+        currency = 'USD',
+        billing_country,
+        billing_region,
+    }){
+        return axios.put('/update-payment-method', {
+            card_token,
+            gateway,
+            method_type,
+            currency,
+            billing_country,
+            billing_region,
+        })
+            .then(response => response)
+            .catch(ErrorHandler);
+    },
+
+    /**
+     * Set the a users payment method as default
+     *
+     * @param {String|Number} payment_method_id
+     * @returns {Promise}
+     */
     setPaymentMethodAsDefault(payment_method_id){
         return axios.patch(`/ecommerce/payment-method/set-default`, {
             id: payment_method_id,
