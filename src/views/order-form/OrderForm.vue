@@ -33,12 +33,12 @@
             :countries="countries"
             :provinces="provinces" />
 
-        <div v-if="cartData.payment_plan_options.length && !cartContainsSubscription"
+        <div v-if="canAcceptPaymentPlans"
              class="flex flex-row mb-2">
             <h3 class="heading color-blue">Payment Plan</h3>
         </div>
         <order-form-payment-plan
-            v-if="cartData.payment_plan_options.length && !cartContainsSubscription"
+            v-if="canAcceptPaymentPlans"
             :brand="brand"
             :number-of-payments="cartData.number_of_payments"
             :payment-plan-options="cartData.payment_plan_options"
@@ -225,6 +225,10 @@
             cartRequiresAccountInfo(){
                 return this.cartContainsSubscription && this.user == null;
             },
+
+            canAcceptPaymentPlans(){
+                return this.cartData.payment_plan_options.length && !this.cartContainsSubscription;
+            },
         },
         methods: {
             updateCart(payload){
@@ -324,8 +328,11 @@
                     payment_method_type: this.paymentStateFactory.methodType,
                     billing_country: this.paymentStateFactory.billingCountry,
                     billing_region: this.paymentStateFactory.billingRegion,
-                    payment_plan_number_of_payments: this.cartData.number_of_payments,
                 };
+
+                if(this.canAcceptPaymentPlans){
+                    payload['payment_plan_number_of_payments'] = this.cartData.number_of_payments;
+                }
 
                 if (!this.user) {
                     if (this.cartContainsSubscription) {
