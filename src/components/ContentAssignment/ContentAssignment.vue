@@ -68,7 +68,7 @@
                 <div class="flex flex-row">
                     <div class="flex flex-column grow">
                         <div class="flex flex-column">
-                            <div class="flex flex-row carousel overflow mv pb-3"
+                            <div class="flex flex-row carousel bg-white overflow mv pb-3"
                                  ref="carouselContainer"
                                  v-if="$_totalPages > 0">
 
