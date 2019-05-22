@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row ph-2 pt-2 align-v-center flex-wrap">
+    <div class="flex flex-row ph-2 pt-2 align-v-center flex-wrap-xs-only">
         <div class="flex flex-column ph-2 cart-thumbnail align-center mb-2">
             <div style="max-width:250px;">
                 <img :src="item.thumbnail_url"
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-column xs-12 sm-4 ph-3 pt-1 text-right align-v-center">
+                <div class="flex flex-column xs-12 sm-4 ph-3 pt-1 text-right align-v-top">
                     <h3 v-if="isDiscounted"
                         class="body font-bold dense font-strike text-error">
                         ${{ item.price_before_discounts }}
