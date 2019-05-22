@@ -12,9 +12,10 @@
 }
 
 .mce-tinymce {
-  border-radius:5px!important;
+  border-radius:3px!important;
   overflow:hidden;
   box-shadow: 0 0 5px rgba(0,0,0,0.2)!important;
+  backface-visibility: hidden;
 }
 
 .mce-edit-area {
@@ -62,6 +63,7 @@
 
 .mce-panel {
   box-sizing:border-box!important;
+  background:none!important;
 
   *, *:before, *:after {
     box-sizing: inherit!important;
@@ -104,8 +106,6 @@
 
     & > .mce-container-body, & > .mce-foot {
       padding:$gutterWidth / 2;
-
-
     }
 
     .mce-container-body, .mce-formitem, .mce-form, .mce-foot {

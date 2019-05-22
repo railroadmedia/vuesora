@@ -40,7 +40,36 @@ body.dark-mode {
     background-color:#444444;
   }
 
+  .carousel img {
+    filter:invert(100%);
+  }
+
   .noty_theme__musoraNoty {
     background-color:#242424;
+  }
+
+  .mce-container {
+    border:none!important;
+  }
+
+  .mce-body {
+    background:#444444!important;
+  }
+
+  .mce-toolbar-grp {
+    background-color:#141414!important;
+
+    .mce-btn-group {
+      background-color:#141414!important;
+
+      .mce-btn {
+        background:#444444!important;
+        border-color:#444444!important;
+
+        i {
+          color:#fff!important;
+        }
+      }
+    }
   }
 }

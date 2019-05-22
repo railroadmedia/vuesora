@@ -77,7 +77,7 @@
                     media_alt_source: false,
                     paste_as_text: true,
                     images_upload_url: this.imageUploadEndpoint,
-                    content_style: "body { font-family: 'Open Sans', sans-serif; font-size:16px; font-weight:400; } p { margin:0; } blockquote { border:1px solid #d1d1d1; margin:0 0 0 1em; padding:1em; border-radius:5px; } .quote-heading { background:#e3e8e9; padding:8px 15px; margin:-1em -1em 0 -1em; } .quote-heading strong { font-size:13px; } .quote-heading em { font-size:10px; font-style:italic;text-transform:uppercase;color:#a8a8a8; } span.post-id { display:none; }",
+                    content_style: "body { background-color:#444444; color:#fff; font-family: 'Open Sans', sans-serif; font-size:16px; font-weight:400; } p { margin:0; } blockquote { border:1px solid #d1d1d1; margin:0 0 0 1em; padding:1em; border-radius:5px; } .quote-heading { background:#e3e8e9; padding:8px 15px; margin:-1em -1em 0 -1em; } .quote-heading strong { font-size:13px; } .quote-heading em { font-size:10px; font-style:italic;text-transform:uppercase;color:#a8a8a8; } span.post-id { display:none; }",
                     convert_urls: true,
                     relative_urls: false,
                     // urlconverter_callback: function(url){
