@@ -11,9 +11,10 @@
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column xs-12 sm-8 ph-2">
                     <h3 class="subheading">{{ item.name }}</h3>
-                    <h4 class="body text-grey-4">{{ item.description }}</h4>
+                    <h4 class="body text-grey-4 mb-2">{{ item.description }}</h4>
 
-                    <div class="flex flex-row align-h-left align-v-center pt-2">
+                    <div v-if="item.requires_shipping"
+                         class="flex flex-row align-h-left align-v-center">
                         <div class="flex flex-column flex-auto">
                             <h4 class="body quantity-label dense font-bold">Quantity:</h4>
                         </div>
