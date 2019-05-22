@@ -165,11 +165,6 @@
                 default: '/',
             },
 
-            successRedirectUrl: {
-                type: String,
-                default: '/members',
-            },
-
             stripePublishableKey: {
                 type: String
             },
@@ -304,6 +299,7 @@
                         this.$refs.paymentForm.fetchStripeToken()
                             .then(({token, error}) => {
                                 if(error){
+                                    this.loading = false;
                                     return;
                                 }
 
