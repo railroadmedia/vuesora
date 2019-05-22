@@ -7,6 +7,7 @@
         <order-form-cart
             :themeColor="themeColor"
             :cartItems="cartData.items"
+            :isCartLocked="cartData.locked"
             @updateCartItem="updateCart" />
 
         <order-form-account

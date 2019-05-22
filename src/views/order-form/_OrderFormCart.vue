@@ -6,6 +6,7 @@
             :themeColor="themeColor"
             :key="item.id"
             :item="item"
+            :isCartLocked="isCartLocked"
             @updateCartItem="emitUpdateCartItem"></order-form-cart-item>
 
         <h4 class="pa-3 text-center" v-show="cartItems.length == 0">Cart is empty</h4>
@@ -26,6 +27,11 @@
             cartItems: {
                 type: Array,
                 default: () => []
+            },
+
+            isCartLocked: {
+                type: Boolean,
+                default: () => false,
             },
         },
         mounted() {

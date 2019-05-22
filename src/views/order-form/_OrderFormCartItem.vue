@@ -13,7 +13,7 @@
                     <h3 class="subheading">{{ item.name }}</h3>
                     <h4 class="body text-grey-4 mb-2">{{ item.description }}</h4>
 
-                    <div v-if="item.requires_shipping"
+                    <div v-if="item.requires_shipping && !isCartLocked"
                          class="flex flex-row align-h-left align-v-center">
                         <div class="flex flex-column flex-auto">
                             <h4 class="body quantity-label dense font-bold">Quantity:</h4>
@@ -76,6 +76,11 @@
             item: {
                 type: Object,
             },
+
+            isCartLocked: {
+                type: Boolean,
+                default: () => false,
+            },
         },
         data() {
             return {
@@ -130,13 +135,6 @@
 
             handleResponse(response) {
                 if(response){
-                    Toasts.push({
-                        icon: 'happy',
-                        title: 'Success!',
-                        themeColor: this.themeColor,
-                        message: 'Your cart has been updated!'
-                    });
-
                     this.emitUpdateCartItem(response.data);
                 } else {
                     Toasts.push({
