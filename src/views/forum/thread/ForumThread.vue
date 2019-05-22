@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-row pagination-row align-h-right bb-grey-1-1" v-if="totalPages > 1">
+            <div class="flex flex-row pagination-row align-h-right bg-grey-7 bv-grey-1-1" v-if="totalPages > 1">
                 <pagination :currentPage="currentPage"
                             :totalPages="totalPages"
                             @pageChange="handlePageChange"></pagination>
@@ -72,7 +72,7 @@
                                @deletePost="handlePostDelete"
                                @replyToPost="handleReplyToPost"></forum-thread-post>
 
-            <div class="flex flex-row pagination-row align-h-right bb-grey-1-1" v-if="totalPages > 1">
+            <div class="flex flex-row pagination-row align-h-right bg-grey-7 bb-grey-1-1" v-if="totalPages > 1">
                 <pagination :currentPage="currentPage"
                             :totalPages="totalPages"
                             @pageChange="handlePageChange"></pagination>

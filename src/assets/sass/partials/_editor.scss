@@ -35,7 +35,7 @@
   .mce-btn-group {
     padding:0!important;
     border-radius:5px!important;
-    background:#fff!important;
+    background-color:#fff!important;
     overflow:hidden;
     margin-left:0!important;
     margin-right:$gutterWidth / 2!important;
@@ -63,7 +63,7 @@
 
 .mce-panel {
   box-sizing:border-box!important;
-  background:none!important;
+  //background:none!important;
 
   *, *:before, *:after {
     box-sizing: inherit!important;

@@ -331,13 +331,14 @@
                 }
 
                 if (!this.user) {
-                    if (this.cartContainsSubscription) {
+                    // TODO: Fix this when Caleb implements a flag for has subscription
+                    // if (this.cartContainsSubscription) {
                         payload['account_creation_email'] = this.accountStateFactory.accountEmail;
                         payload['account_creation_password'] = this.accountStateFactory.accountPassword;
                         payload['account_creation_password_confirmation'] = this.accountStateFactory.accountPasswordConfirm;
-                    } else {
-                        payload['billing_email'] = this.accountStateFactory.billingEmail;
-                    }
+                    // } else {
+                    //     payload['billing_email'] = this.accountStateFactory.billingEmail;
+                    // }
                 }
 
                 if (this.cartRequiresShippingAddress) {

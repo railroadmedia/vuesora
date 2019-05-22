@@ -48,6 +48,18 @@ body.dark-mode {
     background-color:#242424;
   }
 
+
+  .forum-post {
+
+    blockquote {
+      border-color:#444444;
+    }
+
+    .quote-heading {
+      background-color:#444444;
+    }
+  }
+
   .mce-container {
     border:none!important;
   }
