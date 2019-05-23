@@ -33,7 +33,7 @@
                         <h6 class="tiny text-white">
                             If the problem persists please contact support, either by clicking the chat widget
                             on the bottom of your screen, or by emailing
-                            <a :href="'mailto:support@ ' + brand + '.com'">support@{{ brand }}.com</a>.
+                            <a :href="'mailto:support@' + brand + '.com'">support@{{ brand }}.com</a>.
                         </h6>
                     </div>
                 </div>
