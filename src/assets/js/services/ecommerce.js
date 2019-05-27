@@ -27,9 +27,7 @@ export default {
      * @returns {Promise}
      */
     submitOrder(payload) {
-        return axios.put('/ecommerce/json/order-form/submit', payload)
-                .then(response => response)
-                .catch(ErrorHandler);
+        return axios.put('/ecommerce/json/order-form/submit', payload);
     },
 
     /**

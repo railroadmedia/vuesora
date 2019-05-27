@@ -123,6 +123,7 @@
     import ThemeClasses from '../../mixins/ThemeClasses';
     import Toasts from '../../assets/js/classes/toasts';
     import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
+    import axios from 'axios';
 
     export default {
         mixins: [ThemeClasses],
@@ -279,7 +280,7 @@
                     if(this.cartRequiresAccountInfo){
                         this.$refs.accountForm.validateForm();
                         if(!this.$refs.accountForm.formValid){
-                            window.scrollTo({top: this.$refs.accountForm.$el.offsetTop, behavior: 'smooth'});
+                            window.scrollTo({top: (this.$refs.accountForm.$el.offsetTop - 100), behavior: 'smooth'});
                             return;
                         }
                     }
@@ -287,7 +288,7 @@
                     if(this.cartRequiresShippingAddress){
                         this.$refs.shippingForm.validateForm();
                         if(!this.$refs.shippingForm.formValid){
-                            window.scrollTo({top: this.$refs.shippingForm.$el.offsetTop, behavior: 'smooth'});
+                            window.scrollTo({top: (this.$refs.shippingForm.$el.offsetTop - 100), behavior: 'smooth'});
                             return;
                         }
                     }
@@ -315,8 +316,9 @@
             submitOrder() {
                 const payload = this.createOrderPayload();
 
-                EcommerceService.submitOrder(payload)
-                    .then(this.orderHandler);
+                axios.put('/ecommerce/json/order-form/submit', payload)
+                    .then(this.orderSuccess)
+                    .catch(this.orderFailure);
             },
 
             createOrderPayload() {
@@ -360,32 +362,30 @@
                 return payload;
             },
 
-            orderHandler(response){
-                if(response){
-                    if(this.paymentStateFactory.methodType === 'credit-card'){
-                        this.formSuccess = true;
-                    }
-
-                    setTimeout(() => {
-                        window.location.href = response.data.meta.redirect;
-                    }, 500);
-                } else {
-                    this.formSuccess = false;
-
-                    Toasts.push({
-                        icon: 'sad',
-                        themeColor: this.themeColor,
-                        title: 'Oops! Something went wrong..',
-                        message: 'Something happened on the server and your order has not been placed.' +
-                            'If the issue persists, please contact support using the chat widget at' +
-                            'the bottom of the page.',
-                        timeout: 5000
-                    });
-
-                    setTimeout(() => {
-                        this.loading = false;
-                    }, 500);
+            orderSuccess(response){
+                if(this.paymentStateFactory.methodType === 'credit_card'){
+                    this.formSuccess = true;
                 }
+
+                setTimeout(() => {
+                    window.location.href = response.data.meta.redirect;
+                }, 500);
+            },
+
+            orderFailure({response}){
+                this.formSuccess = false;
+
+                Toasts.push({
+                    icon: 'sad',
+                    themeColor: this.themeColor,
+                    title: response.data.errors.title,
+                    message: response.data.errors.detail.message,
+                    timeout: 10000
+                });
+
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
             },
         }
     }

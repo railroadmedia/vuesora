@@ -1,7 +1,16 @@
 export default {
-    data(){
-        return {
-            formValid: false,
+    computed: {
+        formValid(){
+            const errorKeys = Object.keys(this.errors);
+            let isValid = true;
+
+            errorKeys.forEach(error => {
+                if(this.errors[error].length){
+                    isValid = false;
+                }
+            });
+
+            return isValid;
         }
     },
 
@@ -14,8 +23,6 @@ export default {
                     errors.push(rule(value));
                 }
             });
-
-            this.formValid = errors.length === 0;
 
             this.errors[controlName] = errors;
         },
