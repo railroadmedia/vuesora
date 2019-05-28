@@ -475,7 +475,7 @@
                 const style = {
                     base: {
                         fontFamily: '"Open Sans", sans-serif',
-                        fontSize: '18px',
+                        fontSize: '16px',
                         fontStyle: 'normal',
                         fontWeight: 300,
                         fontVariant: 'normal',
