@@ -375,14 +375,21 @@
             orderFailure({response}){
                 this.formSuccess = false;
 
-                console.log(response);
+                let title = 'Oops, something went wrong';
+                let message = 'An error happened on the server, please contact support using the ' +
+                    'chat widget at the bottom of your screen';
+
+                if(response.data.errors){
+                    title = response.data.errors.title;
+                    message = response.data.errors.detail.message;
+                }
 
                 Toasts.push({
                     icon: 'sad',
                     themeColor: this.themeColor,
-                    title: response.data.errors.title,
-                    message: response.data.errors.detail.message,
-                    timeout: 10000
+                    title: title,
+                    message: message,
+                    timeout: 7500
                 });
 
                 setTimeout(() => {
