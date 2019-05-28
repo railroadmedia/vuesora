@@ -35,7 +35,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row">
+                    <div class="flex flex-row" v-if="!isCartLocked">
                         <div class="flex flex-column flex-auto">
                             <a class="text-error tiny dense font-bold pointer uppercase"
                                title="Remove Item"
