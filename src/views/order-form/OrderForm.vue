@@ -380,8 +380,8 @@
                     'chat widget at the bottom of your screen';
 
                 if(response.data.errors){
-                    title = response.data.errors.title;
-                    message = response.data.errors.detail.message;
+                    title = response.data.errors[0].title;
+                    message = response.data.errors[0].detail;
                 }
 
                 Toasts.push({
