@@ -213,8 +213,8 @@
                 return {
                     cardToken: null,
                     methodType: 'credit_card',
-                    billingCountry: this.cart.billing_address.country,
-                    billingRegion: this.cart.billing_address.state,
+                    billingCountry: this.cart.billing_address ? this.cart.billing_address.country : null,
+                    billingRegion: this.cart.billing_address ? this.cart.billing_address.state : null,
                 }
             },
 
