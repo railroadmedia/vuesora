@@ -244,7 +244,7 @@
                         brand: ['drumeo', 'guitareo'],
                         value: ['semester-pack-lesson'],
                         icon: 'icon-packs',
-                        active: false,
+                        active: this.brand === 'guitareo',
                     },
                     {
                         key: 'pack-bundle-lesson',
