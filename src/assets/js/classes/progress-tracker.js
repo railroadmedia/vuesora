@@ -29,7 +29,7 @@ export default class ProgressTracker {
      * @param {string|number} totalDuration
      */
     send({
-        endpoint = '/media-playback-tracking/media-playback-session',
+        endpoint = '/railtracker/media-playback-session',
         mediaId,
         watchPosition,
         totalDuration,
