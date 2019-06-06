@@ -17,6 +17,7 @@ export default class LearningPathPartDataMapper extends DataMapper {
         ];
 
         if(this.brand === 'guitareo' || this.brand === 'pianote'){
+            this.list.description = this.getPostDatum('description');
             this.list.column_data = [
                 this.postChildLessonCount
             ];
