@@ -149,6 +149,7 @@
     import ContentService from '../../assets/js/services/content';
     import Utils from '../../assets/js/classes/utils';
     import Toasts from '../../assets/js/classes/toasts';
+    import ProgressTracker from '../../assets/js/classes/progress-tracker';
 
     export default {
         name: 'content-assignment',
@@ -200,6 +201,8 @@
         },
         data(){
             return {
+                progressTracker: null,
+                progressTrackerEventListener: null,
                 currentPage: 1,
                 totalPages: this.pages.length || 0,
                 open: false,
@@ -215,6 +218,75 @@
                 },
                 isRequesting: false,
                 isComplete: this.completed,
+            }
+        },
+        computed: {
+            pageScrollPosition(){
+                return "transform:translateX(-" + (100 * (this.currentPage - 1)) + "%)";
+            },
+
+            completeButtonClasses(){
+                const textColor = 'text-' + this.themeColor;
+                const bgColor = 'bg-' + this.themeColor;
+
+                return this.isComplete ?
+                    'text-white ' + bgColor :
+                    'inverted ' + bgColor + ' ' + textColor;
+            },
+
+            accordionButtonClasses(){
+                return {
+                    'inverted': this.accordionActive,
+                    'text-grey-3': this.accordionActive,
+                    'text-white': !this.accordionActive
+                }
+            },
+
+            accordionButtonIconClasses(){
+                return {
+                    'fa-chevron-up': !this.accordionActive && !this.accordionLoading,
+                    'fa-chevron-down': this.accordionActive && !this.accordionLoading,
+                    'fa-spinner': this.accordionActive && this.accordionLoading,
+                    'fa-spin': this.accordionActive && this.accordionLoading,
+                }
+            },
+
+            $_totalPages(){
+                return this.$_sheet_music_pages ? this.$_sheet_music_pages.length : 0;
+            },
+
+            $_sheet_music_pages(){
+                if(Array.isArray(this.thisAssignment.sheet_music_image_url)){
+                    return this.thisAssignment.sheet_music_image_url;
+                }
+
+                return this.thisAssignment.sheet_music_image_url ? [this.thisAssignment.sheet_music_image_url] : [];
+            },
+
+            $_soundslice_slug(){
+                return this.thisAssignment.soundslice_slug || '';
+            },
+
+            $_description(){
+                return this.thisAssignment.description || '';
+            },
+
+            formattedTimecode(){
+                const duration = Duration.fromMillis((this.timecode * 1000));
+
+                if(this.timecode < 3600){
+                    return duration.toFormat('m:ss');
+                }
+
+                return duration.toFormat('h:mm:ss');
+            },
+
+            imageTypeSpacerClass(){
+                return {
+                    'sm-9': this.thisAssignment.sheet_music_image_type === 'quarter-width',
+                    'sm-6': this.thisAssignment.sheet_music_image_type === 'half-width',
+                    'sm-3': this.thisAssignment.sheet_music_image_type === 'full-width' || this.thisAssignment.sheet_music_image_type == null,
+                };
             }
         },
         methods: {
@@ -242,7 +314,6 @@
             },
 
             openAssignment(){
-
                 if(this.thisAssignment.id === 0){
                     this.accordionLoading = true;
 
@@ -268,13 +339,22 @@
                 this.open = true;
                 document.body.classList.add('no-scroll');
 
+                this.progressTracker = new ProgressTracker();
+
                 document.addEventListener('keyup', this.spacebarToPlayPause);
             },
 
-            closeExercise(){
+            async closeExercise(){
                 this.loading = true;
                 this.open = false;
                 document.body.classList.remove('no-scroll');
+
+                await this.progressTracker.sendAsync({
+                    mediaId: this.id,
+                    mediaType: 'assignment',
+                    mediaCategory: 'soundslice',
+                });
+                this.progressTracker = null;
 
                 document.removeEventListener('keyup', this.spacebarToPlayPause);
             },
@@ -352,81 +432,39 @@
             syncCompleteState(complete){
                 this.isComplete = complete.detail.complete;
                 this.isRequesting = false;
-            }
-        },
-        computed: {
-            pageScrollPosition(){
-                return "transform:translateX(-" + (100 * (this.currentPage - 1)) + "%)";
             },
 
-            completeButtonClasses(){
-                const textColor = 'text-' + this.themeColor;
-                const bgColor = 'bg-' + this.themeColor;
-
-                return this.isComplete ?
-                    'text-white ' + bgColor :
-                    'inverted ' + bgColor + ' ' + textColor;
+            sendProgressTracking(){
+                this.progressTracker.send({
+                    mediaId: this.id,
+                    mediaType: 'assignment',
+                    mediaCategory: 'soundslice',
+                });
             },
 
-            accordionButtonClasses(){
-                return {
-                    'inverted': this.accordionActive,
-                    'text-grey-3': this.accordionActive,
-                    'text-white': !this.accordionActive
+            handlePlay(){
+                this.isPlaying = true;
+
+                this.progressTracker.start();
+
+                if(!this.progressTrackerEventListener){
+                    this.progressTrackerEventListener = true;
+
+                    window.addEventListener('unload', () => this.sendProgressTracking);
                 }
             },
 
-            accordionButtonIconClasses(){
-                return {
-                    'fa-chevron-up': !this.accordionActive && !this.accordionLoading,
-                    'fa-chevron-down': this.accordionActive && !this.accordionLoading,
-                    'fa-spinner': this.accordionActive && this.accordionLoading,
-                    'fa-spin': this.accordionActive && this.accordionLoading,
-                }
-            },
+            handlePause(){
+                this.isPlaying = false;
 
-            $_totalPages(){
-                return this.$_sheet_music_pages ? this.$_sheet_music_pages.length : 0;
-            },
-
-            $_sheet_music_pages(){
-                if(Array.isArray(this.thisAssignment.sheet_music_image_url)){
-                    return this.thisAssignment.sheet_music_image_url;
-                }
-
-                return this.thisAssignment.sheet_music_image_url ? [this.thisAssignment.sheet_music_image_url] : [];
-            },
-
-            $_soundslice_slug(){
-                return this.thisAssignment.soundslice_slug || '';
-            },
-
-            $_description(){
-                return this.thisAssignment.description || '';
-            },
-
-            formattedTimecode(){
-                const duration = Duration.fromMillis((this.timecode * 1000));
-
-                if(this.timecode < 3600){
-                    return duration.toFormat('m:ss');
-                }
-
-                return duration.toFormat('h:mm:ss');
-            },
-
-            imageTypeSpacerClass(){
-                return {
-                    'sm-9': this.thisAssignment.sheet_music_image_type === 'quarter-width',
-                    'sm-6': this.thisAssignment.sheet_music_image_type === 'half-width',
-                    'sm-3': this.thisAssignment.sheet_music_image_type === 'full-width' || this.thisAssignment.sheet_music_image_type == null,
-                };
+                this.progressTracker.stop();
             }
         },
         mounted(){
             if(this.position < 3){
                 this.openAssignment();
             }
+            const vm = this;
 
             window.addEventListener('message', event => {
                 if(event.origin === "https://www.soundslice.com"){
@@ -434,15 +472,14 @@
 
                     switch (cmd.method) {
                         case 'ssPlay':
-                            this.isPlaying = true;
+                            vm.handlePlay();
                             break;
                         case 'ssPause':
-                            this.isPlaying = false;
+                            vm.handlePause();
                             break;
                     }
                 }
             });
-
 
             window.addEventListener('requesting-completion', this.setIsRequesting);
             window.addEventListener('lesson-complete', this.syncCompleteState);
