@@ -67,27 +67,29 @@ export default class ProgressTracker {
      * @returns {Promise}
      */
     sendAsync({
-        endpoint = '/media-playback-tracking/media-playback-session',
+        endpoint = '/railtracker/media-playback-session',
         mediaId,
         mediaType,
         mediaCategory,
         watchPosition,
         totalDuration,
     }){
-        if(this.secondsWatched){
-            return axios.post(endpoint, {
-                seconds_played: this.secondsWatched,
-                media_id: mediaId,
-                media_type: mediaType,
-                media_category: mediaCategory,
-                current_second: watchPosition,
-                media_length_seconds: totalDuration
-            })
-                .then(response => response)
-                .catch(error => {
-                    console.error(error);
-                })
+        if(this.secondsWatched == null){
+            return new Promise.resolve(false);
         }
+
+        return axios.post(endpoint, {
+            seconds_played: this.secondsWatched,
+            media_id: mediaId,
+            media_type: mediaType,
+            media_category: mediaCategory,
+            current_second: watchPosition,
+            media_length_seconds: totalDuration
+        })
+            .then(response => response)
+            .catch(error => {
+                console.error(error);
+            })
     }
 
     /**

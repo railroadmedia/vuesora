@@ -344,16 +344,17 @@
                 document.addEventListener('keyup', this.spacebarToPlayPause);
             },
 
-            async closeExercise(){
+            closeExercise(){
                 this.loading = true;
                 this.open = false;
                 document.body.classList.remove('no-scroll');
 
-                await this.progressTracker.sendAsync({
+                this.progressTracker.sendAsync({
                     mediaId: this.id,
                     mediaType: 'assignment',
                     mediaCategory: 'soundslice',
                 });
+
                 this.progressTracker = null;
 
                 document.removeEventListener('keyup', this.spacebarToPlayPause);
