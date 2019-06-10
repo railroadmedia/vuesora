@@ -31,7 +31,7 @@ export default {
     },
 
     parseTime(time){
-        const _time = Number(time);
+        const _time = Number(time || 0);
         const sections = {
             hours: Math.floor(_time / 3600),
             minutes: Math.floor(_time % 3600 / 60),

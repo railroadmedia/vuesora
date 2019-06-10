@@ -127,7 +127,6 @@ export default {
 
             keyboardEventHandlers: {
                 "Space": () => this.playPause(),
-                "KeyK": () => this.playPause(),
                 "ArrowLeft": () => this.seek(this.currentTime - 10),
                 "ArrowRight": () => this.seek(this.currentTime + 10),
                 "Digit1": () => this.seek(this.totalDuration * .10),
@@ -140,13 +139,17 @@ export default {
                 "Digit8": () => this.seek(this.totalDuration * .80),
                 "Digit9": () => this.seek(this.totalDuration * .90),
                 "Digit0": () => this.seek(0),
-                "KeyF": () => this.fullscreen(),
-                "Escape": () => this.videojsInstance.isFullscreen ? this.fullscreen() : () => {},
                 "Home": () => this.seek(0),
                 "End": () => this.seek(this.totalDuration),
-                "ArrowUp": () => this.changeVolume((this.currentVolume * 100) * 1.05),
-                "ArrowDown": () => this.changeVolume((this.currentVolume * 100) * 0.95),
-                "KeyM": () => this.currentVolume === 0 ? this.changeVolume(75) : this.changeVolume(0),
+                "KeyF": () => this.fullscreen(),
+                "Escape": () => this.videojsInstance.isFullscreen ? this.fullscreen() : () => {},
+                "ArrowUp": () => this.changeVolume({volume: (this.currentVolume * 100) + 5}),
+                "ArrowDown": () => this.changeVolume({volume: (this.currentVolume * 100) - 5}),
+                "KeyM": () => this.currentVolume === 0 ?
+                    this.changeVolume({volume: Number(window.localStorage.getItem('playerVolume') || 75)}) :
+                    this.changeVolume({volume: 0}),
+                "Minus": () => this.setRate({rate: this.currentPlaybackRate - 0.25}),
+                "Equal": () => this.setRate({rate: this.currentPlaybackRate + 0.25}),
             }
         }
     }

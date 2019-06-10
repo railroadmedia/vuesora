@@ -4,6 +4,7 @@
             <div class="flex flex-column volume-rail-wrap">
                 <div class="volume-rail">
                     <div class="volume-fill"
+                         @click.stop
                          :style="volumeOffset"
                          :class="themeBgClass"></div>
 
@@ -12,12 +13,14 @@
                            min="0"
                            max="100"
                            :value="currentVolume"
+                           @click.stop
                            @input="emitVolumeChange">
                 </div>
             </div>
 
             <player-button :themeColor="themeColor"
                            :active="currentVolume === 0"
+                           :title="currentVolume === 0 ? 'Unmute (M)' : 'Mute (M)'"
                            @click.native.stop="emitVolumeChange(0)">
                 <i class="fas" :class="volumeButtonClass"></i>
             </player-button>
@@ -75,7 +78,9 @@
                         this.volumeCache = this.currentVolume;
                     }
 
-                    this.$emit('volumeChange', volume)
+                    this.$emit('volumeChange', {
+                        volume: volume
+                    })
                 }
             }
         }

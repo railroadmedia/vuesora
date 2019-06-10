@@ -5,9 +5,21 @@
          @mousemove="trackMousePosition">
 
         <transition name="grow-fade">
-            <player-loading
-                    v-if="loading && !isPlaying"
-                    :themeColor="themeColor" />
+            <div v-show="loading && !isPlaying"
+                 class="player-overlay"
+                 @click.stop.prevent>
+                <!--<i class="fas fa-spinner fa-spin"></i>-->
+                <loading-animation :themeColor="themeColor "/>
+            </div>
+        </transition>
+
+        <transition name="grow-fade">
+            <div v-show="!loading && !isPlaying"
+                 class="player-overlay no-events">
+                <div class="overlay-play rounded ba-white-3 flex-center shadows">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
         </transition>
 
         <transition name="grow-fade">
@@ -33,6 +45,7 @@
         <video ref="player"
                playsinline
                crossorigin="anonymous"
+               :poster="poster"
                preload="auto">
         </video>
 
@@ -45,6 +58,7 @@
                     <player-button
                             @click.stop.native="seek(currentTime - 10)"
                             :themeColor="themeColor"
+                            title="Rewind 10 Seconds (Left Arrow)"
                             data-cy="rewind-button">
                         <i class="fas fa-undo"></i>
                     </player-button>
@@ -54,6 +68,7 @@
                     <player-button
                             @click.stop.native="seek(currentTime + 10)"
                             :themeColor="themeColor"
+                            title="Forward 10 Seconds (Right Arrow)"
                             data-cy="fast-forward-button">
                         <i class="fas fa-redo"></i>
                     </player-button>
@@ -77,6 +92,7 @@
                     <player-button
                             @click.stop.native="playPause"
                             :themeColor="themeColor"
+                            :title="isPlaying ? 'Pause (Spacebar)' : 'Play (Spacebar)'"
                             data-cy="play-pause-button">
                         <i class="fas"
                            :class="isPlaying ? 'fa-pause' : 'fa-play'"></i>
@@ -98,6 +114,7 @@
                         <player-button
                                 v-if="isChromeCastSupported"
                                 :themeColor="themeColor"
+                                title="Chromecast"
                                 @click.stop.native="enableChromeCast"
                                 :active="this.chromeCast && this.chromeCast.Connected">
                             <i class="fab fa-chromecast"></i>
@@ -108,6 +125,7 @@
                         <player-button
                                 v-if="isAirplaySupported"
                                 :themeColor="themeColor"
+                                title="Apple Airplay"
                                 @click.stop.native="enableAirplay"
                                 :active="isAirplayConnected">
                             <i class="fab fa-apple"></i>
@@ -124,6 +142,7 @@
 
                     <player-button
                             :themeColor="themeColor"
+                            title="Settings"
                             @click.stop.native="toggleSettingsDrawer"
                             :disabled="isChromeCastConnected">
                         <i class="fas fa-cog"></i>
@@ -132,6 +151,7 @@
                     <player-button
                             @click.stop.native="fullscreen"
                             :themeColor="themeColor"
+                            title="Fullscreen (F)"
                             :disabled="isChromeCastConnected">
                         <i class="fas fa-expand"></i>
                     </player-button>
@@ -181,6 +201,7 @@
     import PlayerLoading from './_PlayerLoading.vue';
     import PlayerCaptions from './_PlayerCaptions.vue';
     import EventHandlers from './event-handlers';
+    import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
 
     export default {
         mixins: [ThemeClasses, EventHandlers],
@@ -192,6 +213,7 @@
             'player-settings': PlayerSettings,
             'player-loading': PlayerLoading,
             'player-captions': PlayerCaptions,
+            'loading-animation': LoadingAnimation,
         },
         props: {
             sources: {
@@ -366,7 +388,6 @@
 
             seek(time) {
                 time = time < 0 ? 0 : time;
-                const wasPlaying  = this.isPlaying;
                 this.currentTime = time;
                 this.videojsInstance.pause();
 
@@ -375,9 +396,7 @@
                 } else {
                     this.videojsInstance.currentTime(time);
 
-                    if(wasPlaying){
-                        this.videojsInstance.play();
-                    }
+                    this.videojsInstance.play();
                 }
             },
 
@@ -392,22 +411,21 @@
             },
 
             changeVolume(payload) {
-                this.videojsInstance.volume(payload / 100);
+                this.videojsInstance.volume(payload.volume / 100);
                 this.currentVolume = this.videojsInstance.volume();
 
+                if(payload.volume > 0){
+                    localStorage.setItem('playerVolume', payload.volume);
+                }
+
                 if(this.isChromeCastConnected){
-                    this.chromeCast.volume(payload);
+                    this.chromeCast.volume(payload.volume);
                 }
             },
 
             parseTime: (time) => PlayerUtils.parseTime(time),
 
             trackMousePosition(event) {
-                // This function can be kind of expensive for performance.
-                // This check makes sure it only runs every 100ms
-                if(performance.now() < this.performanceNow + 100) return;
-
-                this.performanceNow = performance.now();
                 this.currentMouseX = PlayerUtils.getTimeRailMouseEventOffsetPercentage(
                     event,
                     this.$refs.player
@@ -416,7 +434,6 @@
 
             setQuality(payload) {
                 const currentTime = this.videojsInstance.currentTime();
-                const wasPlaying = this.isPlaying;
 
                 if (this.hlsInstance != null) {
                     if(payload.index === 'auto'){
@@ -439,15 +456,17 @@
                     this.setDefaultPlaybackQualityWidth(this.playbackQualities[payload.index].width);
                 }
 
-                if (wasPlaying) {
-                    setTimeout(() => {
-                        this.seek(currentTime);
-                    }, 200);
-                }
+                setTimeout(() => {
+                    this.seek(currentTime);
+                }, 200);
             },
 
             setRate(payload) {
-                this.videojsInstance.playbackRate(payload.rate);
+                if(payload.rate >= 0 && payload.rate <= 2){
+                    console.log(payload);
+
+                    this.videojsInstance.playbackRate(payload.rate);
+                }
             },
 
             setDefaultPlaybackQualityWidth(width) {
@@ -592,11 +611,6 @@
                     }, false);
                 });
 
-                // Cause a load event to occur
-                setTimeout(() => {
-                    this.seek(0);
-                }, 100);
-
                 // This fixes captions for Airplay
                 setTimeout(() => {
                     this.enableCaptions({});
@@ -618,6 +632,14 @@
                 this.$refs.container.addEventListener('blur', () => {
                     document.removeEventListener('keydown', this.keyboardControlEventHandler);
                 });
+
+                if(window.localStorage.getItem('playerVolume') != null){
+                    this.changeVolume({
+                        volume: Number(window.localStorage.getItem('playerVolume'))
+                    });
+                }
+
+                this.$refs.container.focus();
             });
 
 

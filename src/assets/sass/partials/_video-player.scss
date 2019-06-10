@@ -266,7 +266,7 @@
   z-index:10;
 }
 
-.loading-wrap {
+.player-overlay {
   position:absolute;
   top:0;
   left:0;
@@ -276,7 +276,32 @@
   @include flexCenter();
 
   svg {
-    height:100px;
-    width:100px;
+    width:85px;
+    height:85px;
+
+    @include medium {
+      width:100px;
+      height:100px;
+    }
+  }
+
+  .overlay-play {
+    width:85px;
+    height:85px;
+    background:rgba(0,0,0,.3);
+
+    @include medium {
+      width:100px;
+      height:100px;
+    }
+
+    i {
+      margin-left:2px;
+      font-size:36px;
+
+      @include medium {
+        font-size:40px;
+      }
+    }
   }
 }

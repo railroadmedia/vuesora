@@ -1,6 +1,7 @@
 <template>
     <div class="flex flex-column player-button">
         <button class="btn collapse-square"
+                :title="title"
                 :class="!disabled ? themeHoverTextClass : ''"
                 :disabled="disabled">
             <span class="flat text-white"
@@ -25,6 +26,9 @@
             disabled: {
                 type: Boolean,
                 default: () => false,
+            },
+            title: {
+                type: String,
             }
         }
     }
