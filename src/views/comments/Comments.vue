@@ -295,10 +295,11 @@
                     })
             },
         },
-        created(){
-            this.getComments(this.requestParams);
-        },
         mounted(){
+            setTimeout(() => {
+                this.getComments(this.requestParams);
+            }, 3000);
+
             // Check the URI Params if 'goToComment' exists
             const uriParams = QueryString.parse(location.search);
             // Run the goToComment method if it does

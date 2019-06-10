@@ -22,6 +22,7 @@
 @import './partials/_accordion.scss';
 @import './partials/_play-alongs.scss';
 @import './partials/_avatars.scss';
+@import './partials/_video-player.scss';
 @import './partials/_cropper.scss';
 @import './partials/_stripe.scss';
 @import './partials/_darkmode.scss';
@@ -54,6 +55,12 @@ body {
   &.no-scroll {
     overflow:hidden;
 
+    #intercom-container {
+      display:none;
+    }
+  }
+
+  &.drawer-open {
     #intercom-container {
       display:none;
     }
@@ -331,7 +338,7 @@ ul {
 .is-dropdown {
   position:relative;
   overflow:visible!important;
-  z-index:11;
+  z-index:50;
 
   &.active {
 

@@ -462,9 +462,12 @@
             }
         },
         mounted(){
-            if(this.position < 3){
-                this.openAssignment();
-            }
+            setTimeout(() => {
+                if(this.position < 3){
+                    this.openAssignment();
+                }
+            }, 3000);
+
             const vm = this;
 
             window.addEventListener('message', event => {

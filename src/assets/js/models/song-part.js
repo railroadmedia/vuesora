@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class SongPartDataMapper extends DataMapper {
+export default class SongPartModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

@@ -36,6 +36,14 @@ export default {
             const type = Utils.getThemeColorByContentType(this.contentType);
 
             return 'text-' + type;
-        }
+        },
+
+        themeHoverBgClass(){
+            return 'hover-bg-' + this.themeColor
+        },
+
+        themeHoverTextClass(){
+            return 'hover-text-' + this.themeColor
+        },
     },
 }

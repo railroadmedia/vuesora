@@ -6,12 +6,6 @@
     "name": "Curtis Conway",
     "email": "curtis@drumeo.com"
   },
-  "license": "MIT",
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/railroadmedia/vuesora.git"
-  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -26,6 +20,7 @@
     "dropzone": "^5.4.0",
     "es6-promise": "^4.2.4",
     "flatpickr": "^4.4.6",
+    "iso-639-1": "^2.0.5",
     "js-helper-functions": "^1.0.22",
     "luxon": "^1.9.0",
     "mediaelement": "^4.2.8",
@@ -50,8 +45,14 @@
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "cypress-vue-unit-test": "^1.11.0",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/railroadmedia/vuesora.git"
   }
 }

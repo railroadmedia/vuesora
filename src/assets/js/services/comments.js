@@ -7,7 +7,7 @@ export default {
     /**
      * Get a list of comments
      *
-     * @param {object} params - the params object to filter comments
+     * @param {Object} params - the params object to filter comments
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
     getComments(params) {
@@ -21,9 +21,9 @@ export default {
     /**
      * Get a comment by ID
      * WARNING: Doesn't actually work like you think, pulls the PAGE of the list where that
-     * specific comment is, kinda dumb but ask the BE why - Curtis, Sept 2018
+     * specific comment is, so you need to find the comment in that array - Curtis, Sept 2018
      *
-     * @param {object} id - the comment id to get
+     * @param {String|Number} id - the comment id to get
      * @returns {Promise} resolved promise with the response.data object, containing the comments array
      */
     getCommentById(id) {
@@ -35,7 +35,7 @@ export default {
     /**
      * Post a comment
      *
-     * @param {object} data - the data object with the content_id and comment properties
+     * @param {Object} data - the data object with the content_id and comment properties
      * @returns {Promise} resolved promise with the response.data object, containing the submit comment
      */
     postComment(data) {
@@ -47,7 +47,7 @@ export default {
     /**
      * Post a reply
      *
-     * @param {object} data - the data object with the parent_id and comment properties
+     * @param {Object} data - the data object with the parent_id and comment properties
      * @returns {Promise} resolved promise with the response.data object, containing the submit reply
      */
     postReply(data) {
@@ -59,7 +59,7 @@ export default {
     /**
      * Like a Comment or Reply
      *
-     * @param {number} id - the comment ID to like
+     * @param {String|Number} id - the comment ID to like
      * @returns {Promise} resolved promise with the response object
      */
     likeComment(id) {
@@ -71,7 +71,7 @@ export default {
     /**
      * Un-Like a Comment or Reply
      *
-     * @param {number} id - the comment ID to unlike
+     * @param {String|Number} id - the comment ID to unlike
      * @returns {Promise} resolved promise with the response object
      */
     unlikeComment(id) {
@@ -83,7 +83,7 @@ export default {
     /**
      * Delete a Comment or Reply
      *
-     * @param {number} id - the comment ID to delete
+     * @param {String|Number} id - the comment ID to delete
      * @returns {Promise} resolved promise with the response.data object
      */
     deleteComment(id) {
@@ -95,9 +95,9 @@ export default {
     /**
      * Get a list of users that have liked a comment
      *
-     * @param {number} id
-     * @param {number} page
-     * @param {number} limit
+     * @param {String|Number} id
+     * @param {String|Number} page
+     * @param {String|Number} limit
      * @returns {Promise} resolved promise with the response.data object
      */
     getCommentLikeUsers({id, page = 1, limit = 10}) {
