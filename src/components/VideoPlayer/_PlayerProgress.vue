@@ -47,7 +47,6 @@
         },
         data(){
             return {
-                toolTipOffset: 0,
                 toolTipInterval: null,
             }
         },
@@ -73,13 +72,8 @@
                 }
             },
 
-            toolTipValue(){
-                return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
-            }
-        },
-        methods: {
-            getToolTipOffset(){
-                let offset = (this.currentMouseX / 100) * this.playerWidth;
+            toolTipOffset() {
+                let offset = this.currentMouseX;
 
                 if (offset < 25) {
                     offset = 25;
@@ -89,13 +83,31 @@
 
                 return {
                     'transform': 'translateX(' + offset + 'px)',
+                    '-webkit-transform': 'translateX(' + offset + 'px)',
+                };
+            },
+
+            toolTipValue(){
+                return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
+            }
+        },
+        methods: {
+            getToolTipOffset(){
+                let offset = this.currentMouseX;
+
+                if (offset < 25) {
+                    offset = 25;
+                } else if (offset > (this.playerWidth - 25)) {
+                    offset = this.playerWidth - 25;
                 }
+
+                this.toolTipOffset = {
+                    'transform': 'translateX(' + offset + 'px)',
+                    '-webkit-transform': 'translateX(' + offset + 'px)',
+                };
             }
         },
         mounted(){
-            this.toolTipInterval = setInterval(() => {
-                this.toolTipOffset = this.getToolTipOffset();
-            }, 100);
         },
         beforeDestroy() {
             clearInterval(this.toolTipInterval);

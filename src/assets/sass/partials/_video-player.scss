@@ -134,7 +134,7 @@
   opacity:0;
   visibility:hidden;
   pointer-events:none;
-  transition:transform .1s ease-in-out;
+  //transition:transform .1s ease-in-out;
 }
 
 .progress-rail, .volume-rail {
@@ -298,10 +298,40 @@
     i {
       margin-left:2px;
       font-size:36px;
+      color:#fff;
 
       @include medium {
         font-size:40px;
       }
     }
+  }
+}
+
+.context-menu {
+  width:200px;
+  z-index:100;
+}
+
+.keyboard-shortcuts {
+  z-index:26;
+  position:absolute;
+  top:$gutterWidth / 2;
+  left:$gutterWidth / 2;
+  width:400px;
+  max-height:calc(100% - #{$gutterWidth});
+  max-width:calc(100% - #{$gutterWidth});
+  overflow-y:auto;
+
+  td {
+    padding:5px;
+  }
+
+  .close-shortcuts {
+    position:absolute;
+    top:0;
+    right:0;
+    height:35px;
+    width:35px;
+    @include flexCenter();
   }
 }

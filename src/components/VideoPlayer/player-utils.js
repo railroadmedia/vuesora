@@ -1,33 +1,44 @@
 export default {
-    getTimeRailMouseEventOffsetPercentage(event, element){
-        const mouseX = event.clientX || (event.touches[0] ? event.touches[0].clientX : event.changedTouches[0].clientX);
+    getElementPosition(el){
+        const positions = {
+            x: 0,
+            y: 0
+        };
 
-        function getPosition(el) {
-            const positions = {
-                x: 0,
-                y: 0
-            };
+        while (el) {
+            if (el.tagName === "BODY") {
+                // deal with browser quirks with body/window/document and page scroll
+                let xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+                let yScroll = el.scrollTop || document.documentElement.scrollTop;
 
-            while (el) {
-                if (el.tagName === "BODY") {
-                    // deal with browser quirks with body/window/document and page scroll
-                    let xScroll = el.scrollLeft || document.documentElement.scrollLeft;
-                    let yScroll = el.scrollTop || document.documentElement.scrollTop;
-
-                    positions['x'] += (el.offsetLeft - xScroll + el.clientLeft);
-                    positions['y'] += (el.offsetTop - yScroll + el.clientTop);
-                } else {
-                    // for all other non-BODY elements
-                    positions['x'] += (el.offsetLeft - el.scrollLeft + el.clientLeft);
-                    positions['y'] += (el.offsetTop - el.scrollTop + el.clientTop);
-                }
-
-                el = el.offsetParent;
+                positions['x'] += (el.offsetLeft - xScroll + el.clientLeft);
+                positions['y'] += (el.offsetTop - yScroll + el.clientTop);
+            } else {
+                // for all other non-BODY elements
+                positions['x'] += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+                positions['y'] += (el.offsetTop - el.scrollTop + el.clientTop);
             }
-            return positions;
+
+            el = el.offsetParent;
         }
 
-        return ((mouseX - getPosition(element).x) /  element.clientWidth * 100);
+        return positions;
+    },
+
+    getMousePosition(event, element){
+        const mouseX = event.clientX || (event.touches[0] ? event.touches[0].clientX : event.changedTouches[0].clientX);
+        const mouseY = event.clientY || (event.touches[0] ? event.touches[0].clientY : event.changedTouches[0].clientY);
+
+        const elementPosition = this.getElementPosition(element);
+
+        return {
+            x: (mouseX - elementPosition.x),
+            y: (mouseY - elementPosition.y),
+        }
+    },
+
+    getTimeRailMouseEventOffsetPercentage(mouseX, element){
+        return (mouseX / element.clientWidth) * 100;
     },
 
     parseTime(time){

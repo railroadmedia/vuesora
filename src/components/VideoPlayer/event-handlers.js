@@ -53,6 +53,8 @@ export default {
                     this.totalDuration = this.videojsInstance.duration();
                     this.currentTime = this.videojsInstance.currentTime();
 
+                    this.isPlaying = true;
+
                     this.$emit('timeupdate', event);
                 },
 

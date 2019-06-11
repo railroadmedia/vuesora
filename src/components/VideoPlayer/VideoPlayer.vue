@@ -2,13 +2,96 @@
     <div class="flex flex-column"
          ref="container"
          data-vjs-player
+         @contextmenu.stop.prevent="toggleContextMenu"
          @mousemove="trackMousePosition">
+
+        <transition name="grow-fade">
+            <div v-show="keyboardShortcuts"
+                 class="keyboard-shortcuts bg-white corners-3 shadow pa-1">
+                <span class="close-shortcuts body text-grey-3 hover-text-black pointer"
+                      @click="keyboardShortcuts = false">
+                    <i class="fas fa-times"></i>
+                </span>
+
+                <table class="dense">
+                    <thead class="body font-bold">
+                        <tr>
+                            <td width="100">Key</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody class="tiny">
+                        <tr>
+                            <td class="font-bold">Spacebar</td>
+                            <td class="text-grey-3">Play/Pause</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Up Arrow</td>
+                            <td class="text-grey-3">Volume up</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Down Arrow</td>
+                            <td class="text-grey-3">Volume down</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Left Arrow</td>
+                            <td class="text-grey-3">Rewind 10 seconds</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Right Arrow</td>
+                            <td class="text-grey-3">Forward 10 seconds</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Numbers 0-9</td>
+                            <td class="text-grey-3">Percentage of the video to seek to (1 = 10% etc..)</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Home</td>
+                            <td class="text-grey-3">Seek to the beginning</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">End</td>
+                            <td class="text-grey-3">Seek to the end</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">F</td>
+                            <td class="text-grey-3">Toggle fullscreen</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">M</td>
+                            <td class="text-grey-3">Mute</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">-</td>
+                            <td class="text-grey-3">Slow down playback rate</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">+</td>
+                            <td class="text-grey-3">Speed up playback rate</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </transition>
+
+        <transition name="grow-fade">
+            <div v-show="contextMenu"
+                 class="context-menu bg-grey-5 hover-bg-grey-4 pointer text-white shadow overflow"
+                 ref="contextMenu"
+                 :style="contextMenuPosition"
+                 @click.stop.prevent>
+                <ul class="list-style-none tiny dense font-bold">
+                    <li class="pa-1" @click="keyboardShortcuts = !keyboardShortcuts">
+                        {{ keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
+                    </li>
+                </ul>
+            </div>
+        </transition>
 
         <transition name="grow-fade">
             <div v-show="loading && !isPlaying"
                  class="player-overlay"
                  @click.stop.prevent>
-                <!--<i class="fas fa-spinner fa-spin"></i>-->
                 <loading-animation :themeColor="themeColor "/>
             </div>
         </transition>
@@ -80,10 +163,10 @@
                             :themeColor="themeColor"
                             :currentProgress="currentProgress"
                             :playerWidth="playerWidth"
-                            :currentMouseX="currentMouseX"
+                            :currentMouseX="currentMousePosition.x"
                             :totalDuration="totalDuration"
                             :mousedown="mousedown"
-                            @mousedown.stop.native="mousedown = true"
+                            @mousedown.stop.native="triggerMouseDown"
                             data-cy="progress-rail" />
                 </div>
 
@@ -128,7 +211,7 @@
                                 title="Apple Airplay"
                                 @click.stop.native="enableAirplay"
                                 :active="isAirplayConnected">
-                            <i class="fab fa-apple"></i>
+                            <i class="icon-airplay"></i>
                         </player-button>
                     </transition>
 
@@ -239,6 +322,8 @@
         data() {
             return {
                 loading: false,
+                contextMenu: false,
+                keyboardShortcuts:  false,
                 videojsInstance: null,
                 playerReady: false,
                 hlsInstance: null,
@@ -258,6 +343,8 @@
                 isAirplaySupported: false,
                 isAirplayConnected: false,
                 performanceNow: 0,
+                currentMousePosition: {x: 0, y: 0},
+                contextMenuPosition: null,
             }
         },
         computed: {
@@ -363,7 +450,7 @@
 
             isMobileDrawerOpen(){
                 return (this.settingsDrawer || this.captionsDrawer) && this.isMobile;
-            }
+            },
         },
         methods: {
             playPause() {
@@ -426,10 +513,7 @@
             parseTime: (time) => PlayerUtils.parseTime(time),
 
             trackMousePosition(event) {
-                this.currentMouseX = PlayerUtils.getTimeRailMouseEventOffsetPercentage(
-                    event,
-                    this.$refs.player
-                );
+                this.currentMousePosition = PlayerUtils.getMousePosition(event, this.$refs.container);
             },
 
             setQuality(payload) {
@@ -463,8 +547,6 @@
 
             setRate(payload) {
                 if(payload.rate >= 0 && payload.rate <= 2){
-                    console.log(payload);
-
                     this.videojsInstance.playbackRate(payload.rate);
                 }
             },
@@ -502,6 +584,8 @@
             closeDrawers() {
                 this.settingsDrawer = false;
                 this.captionsDrawer = false;
+                this.contextMenu = false;
+
                 if (this.isMobile) document.body.classList.remove('drawer-open');
             },
 
@@ -554,6 +638,40 @@
                     this.keyboardEventHandlers[event.code]();
                 }
             },
+
+            triggerMouseDown(event){
+                if(event.button === 0){
+                    this.mousedown = true;
+                }
+            },
+
+            toggleContextMenu(){
+                this.contextMenu = true;
+                this.getContextMenuPosition();
+            },
+
+            getContextMenuPosition(){
+                const playerWidth = this.$refs.player ? this.$refs.player.clientWidth : 0;
+                const playerHeight = this.$refs.player ? this.$refs.player.clientHeight : 0;
+                const menuWidth = this.$refs.contextMenu ? this.$refs.contextMenu.clientWidth : 0;
+                const menuHeight = this.$refs.contextMenu ? this.$refs.contextMenu.clientHeight : 0;
+
+                let x = this.currentMousePosition.x;
+                let y = this.currentMousePosition.y;
+
+                if(x > (playerWidth - menuWidth)){
+                    x = this.currentMousePosition.x - menuWidth;
+                }
+
+                if(y > (playerHeight - menuHeight)){
+                    y = this.currentMousePosition.y - menuHeight;
+                }
+
+                this.contextMenuPosition =  {
+                    'transform': `translate(${x}px, ${y}px)`,
+                    'webkit-transform': `translate(${x}px, ${y}px)`,
+                }
+            }
         },
         mounted() {
             const player = this.$refs.player;
@@ -647,13 +765,16 @@
             document.addEventListener('click', this.closeDrawers);
 
             // Mouse up events
-            document.addEventListener('mouseup', () => {
-                if (this.mousedown) {
-                    const timeToSeekTo = this.totalDuration * (this.currentMouseX / 100);
-                    this.seek(timeToSeekTo);
-                }
+            document.addEventListener('mouseup', event => {
+                if(event.button === 0){
+                    if (this.mousedown) {
+                        const timeToSeekTo = this.totalDuration * (this.currentMouseX / 100);
+                        this.seek(timeToSeekTo);
+                    }
 
-                this.mousedown = false;
+                    this.contextMenu = false;
+                    this.mousedown = false;
+                }
             });
 
 
