@@ -1,0 +1,61 @@
+@import './_variables.scss';
+
+.stripe-element-container {
+  height: 50px;
+  line-height:50px;
+  border-radius: 5px;
+  box-shadow: none;
+  border: 1px solid #d1d1d1;
+  position: relative;
+  padding-top:12px;
+  padding-left:$gutterWidth / 2;
+  padding-right:$gutterWidth / 2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  &.StripeElement--complete,
+  &.StripeElement--focus,
+  &.StripeElement--invalid {
+
+    & ~ label {
+      transform:scale(.7) translateY(-10px);
+      color:$primary;
+
+      @each $key, $value in $brand_colors {
+        &.#{$key} {
+          color: $value;
+        }
+      }
+
+      @each $key, $value in $content_colors {
+        &.#{$key} {
+          color: $value;
+        }
+        &.#{$key}s {
+          color: $value;
+        }
+      }
+    }
+  }
+
+  &.StripeElement--invalid {
+    border-color: #F71B26;
+  }
+}
+
+.stripe-element-container label {
+  position:absolute;
+  left:$gutterWidth / 3;
+  top:0;
+  height:50px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  will-change:transform, color;
+  transition:transform .2s ease-in-out, color .1s ease-in-out;
+  transform-origin:0 0;
+  color:nth(nth($greys, 3), 2);
+  pointer-events:none;
+  font:400 16px/1.5em $defaultSansSerif;
+}

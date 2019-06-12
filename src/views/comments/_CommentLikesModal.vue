@@ -1,24 +1,24 @@
 <template>
-    <div id="likeUsersModal" class="modal small">
-        <div id="likeUsersContainer" class="flex flex-column bg-white corners-3 shadow" style="max-height:500px;">
+    <div :id="customId || 'likeUsersModal'" class="modal small">
+        <div id="likeUsersContainer" ref="likeUsersContainer" class="flex flex-column bg-white corners-3 shadow" style="max-height:500px;">
             <div v-if="loadingLikeUsers"
                  class="flex flex-column pa-3">
                 <h1 class="heading text-center">
                     <i class="fas fa-spinner fa-spin"
-                       :class="'text-' + themeColor"></i>
+                       :class="themeTextClass"></i>
                 </h1>
             </div>
             <div v-else
                  class="flex flex-column">
                 <h1 class="heading align-v-center pa-3">
                     <i class="fas fa-thumbs-up rounded text-white mr-1 big likes-icon"
-                       :class="'bg-' + themeColor"></i>
+                       :class="themeBgClass"></i>
                     {{ totalLikeUsers }} Like{{ totalLikeUsers == 1 ? '' : 's' }}
                 </h1>
 
                 <a v-for="user in likeUsers"
                    :key="user.id"
-                   :href="'/laravel/public/members/profile/' + user.user_id"
+                   :href="baseProfileRoute + user.user_id"
                    class="flex flex-row comment-like-user bt-grey-1-1 no-decoration text-black ph-3 pv-1 align-v-center">
                     <div class="flex flex-row">
                         <div class="flex flex-column avatar-column">
@@ -39,12 +39,19 @@
     </div>
 </template>
 <script>
+    import ThemeClasses from "../../mixins/ThemeClasses";
+
     export default {
+        mixins: [ThemeClasses],
         name: 'comment-likes-modal',
         props: {
-            themeColor: {
+            brand: {
                 type: String,
                 default: () => 'drumeo'
+            },
+            customId: {
+                type: String,
+                default: () => null
             },
             likeUsers: {
                 type: Array,
@@ -63,6 +70,19 @@
             requestingLikeUsers: {
                 type: Boolean,
                 default: () => false
+            },
+        },
+        computed: {
+            baseProfileRoute(){
+                if(this.brand === 'guitareo'){
+                    return '/members/account/';
+                }
+
+                if(this.brand === 'pianote'){
+                    return '/members/profile/';
+                }
+
+                return '/laravel/public/members/profile/';
             }
         },
         methods: {
@@ -74,10 +94,10 @@
                     'team': user.access_level === 'team',
                     'lifetime': user.access_level === 'lifetime'
                 }
-            }
+            },
         },
         mounted(){
-            const likeUsersContainer = document.getElementById('likeUsersContainer');
+            const likeUsersContainer = this.$refs.likeUsersContainer;
 
             likeUsersContainer.addEventListener('scroll', event => {
                 const containerHeight = event.target.clientHeight;
@@ -89,7 +109,8 @@
                     if(isNearBottom && !this.requestingLikeUsers){
                         this.$emit('loadMoreLikeUsers', {
                             id: this.commentId,
-                            totalLikeUsers: this.totalLikeUsers
+                            totalLikeUsers: this.totalLikeUsers,
+                            load_more: true
                         });
                     }
                 }

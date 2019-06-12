@@ -78,6 +78,15 @@ export default class Forms {
         else {
             element.classList.remove('has-input');
         }
+
+
+        if(element.type === 'checkbox'){
+            const hiddenInput = element.parentElement.querySelector('.hidden-input');
+
+            if(hiddenInput != null){
+                hiddenInput.value = element.checked ? 1 : 0;
+            }
+        }
     }
 
     /**

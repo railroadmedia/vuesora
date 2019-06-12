@@ -1,11 +1,11 @@
 <template>
-    <div class="add-event-dropdown">
+    <div class="add-event-dropdown bg-white">
         <div v-if="isSubscription"
              class="flex flex-column bg-white shadow corners-3">
             <a v-for="platform in platforms"
                :href="'https://www.addevent.com/subscribe/' + subscriptionCalendarId + '+' + platform.key"
                target="_blank"
-               class="text-black pointer no-decoration">
+               class="text-black pointer bg-white no-decoration">
 
                 <p class="body pa-1"
                    v-html="platform.value">

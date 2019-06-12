@@ -3,12 +3,12 @@
         <catalogue-list-item
                 v-for="(item, i) in content"
                 :key="'list' + item.id"
-                :$_index="i + 1"
-                :$_item="item"
-                :$_brand="$_brand"
-                :$_active="item.id === active_id"
-                :$_displayUserInteractions="false"
-                :$_noLink="true"
+                :index="i + 1"
+                :item="item"
+                :brand="$_brand"
+                :active="item.id === active_id"
+                :displayUserInteractions="false"
+                :noLink="true"
                 @addToList="addToListEventHandler"
                 @click.native="playSong(item.id)"></catalogue-list-item>
 
@@ -106,8 +106,6 @@
                         })
                         .catch(error => {
                             console.error(error);
-                            Toasts.errorWarning('Oops! Something went wrong trying to pull content for you. ' +
-                                'Refresh the page and try again.');
 
                             this.loading = false;
                         })

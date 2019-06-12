@@ -1,15 +1,15 @@
 <template>
     <div class="flex flex-column ph-1 catalogue-filter">
         <div class="form-group">
-            <select :id="$_filter_name + 'Filter'"
+            <select :id="filter_name + 'Filter'"
                     class="no-label"
                     :class="{'is-clearable': valueInterface}"
                     v-model="valueInterface"
                     :disabled="valueInterface">
                 <option selected disabled :value="null">
-                    {{ $_placeholderLabel }}
+                    {{ placeholderLabel }}
                 </option>
-                <option v-for="filter in $_sortedOptions"
+                <option v-for="filter in sortedOptions"
                         :key="filter.key"
                         :value="filter.value">
                     {{ toTitleCase(filter.key.replace(/-/g, ' ')) }}
@@ -20,37 +20,36 @@
                   class="cancel-filter"
                   @click.stop="cancelFilter">
                 <i class="fas fa-times"
-                   :class="'text-' + $_themeColor"></i>
+                   :class="'text-' + themeColor"></i>
             </span>
 
             <!--<label class="capitalize"-->
-                   <!--:class="$_themeColor"-->
-                   <!--:for="$_filter_name + 'Filter'">-->
-                <!--{{ $_filter_name }}-->
+                   <!--:class="themeColor"-->
+                   <!--:for="filter_name + 'Filter'">-->
+                <!--{{ filter_name }}-->
             <!--</label>-->
         </div>
     </div>
 </template>
 <script>
     import Utils from '../../assets/js/classes/utils';
-    import collection from 'lodash/collection';
 
     export default {
         name: 'catalogue-filter',
         props: {
-            $_filter_name: {
+            filter_name: {
                 type: String,
                 default: () => ''
             },
-            $_item: {
+            item: {
                 type: Array,
                 default: () => []
             },
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => 'drumeo'
             },
-            $_initial_value: {
+            initial_value: {
                 default: () => null
             },
             loading: {
@@ -60,30 +59,30 @@
         },
         data(){
             return {
-                filter_value: this.$_initial_value
+                filter_value: this.initial_value
             }
         },
         computed: {
             valueInterface: {
                 cache: false,
                 get(){
-                    return this.$_initial_value;
+                    return this.initial_value;
                 },
                 set(value){
                     this.filter_value = value;
 
                     this.$emit('filterChange', {
-                        key: this.$_filter_name,
+                        key: this.filter_name,
                         value: this.filter_value
                     });
                 }
             },
 
-            $_sortedOptions(){
-                return this.$_item;
+            sortedOptions(){
+                return this.item;
             },
 
-            $_placeholderLabel(){
+            placeholderLabel(){
                 const label_map = {
                     difficulty: 'Choose a Level...',
                     instructor: 'Choose an Instructor...',
@@ -92,10 +91,12 @@
                     artist: 'Choose an Artist...',
                     style: 'Choose a Style...',
                     bpm: 'Choose a Tempo...',
-                    type: 'Choose a Type...'
+                    type: 'Choose a Type...',
+                    key: 'Choose a Key...',
+                    key_pitch_type: 'Choose a Type...'
                 };
 
-                return label_map[this.$_filter_name];
+                return label_map[this.filter_name];
             }
         },
         methods: {

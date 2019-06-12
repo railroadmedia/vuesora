@@ -60,7 +60,7 @@
                     <div class="flex flex-row align-v-center">
 
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                           :class="replying ? 'text-' + themeColor : 'text-grey-3'"
+                           :class="replying ? themeTextClass : 'text-grey-3'"
                            @click="openReply"
                            dusk="reply-button">
                             <i class="fas fa-reply"></i>
@@ -71,7 +71,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                           :class="isLiked ? 'text-' + themeColor : 'text-grey-3'"
+                           :class="isLiked ? themeTextClass : 'text-grey-3'"
                            @click="likeComment">
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
@@ -85,7 +85,7 @@
                            :data-open-modal="openModalString"
                            @click="openLikes">
                             <i class="fas fa-thumbs-up text-white likes-icon"
-                               :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
+                               :class="like_count > 0 ? themeBgClass : 'bg-grey-2'"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
@@ -112,14 +112,14 @@
                                     @click="postReply"
                                     dusk="submit-reply">
                                 <span class="text-white short"
-                                      :class="'bg-' + themeColor">
+                                      :class="themeBgClass">
                                     Reply
                                 </span>
                             </button>
                         </div>
 
                         <div class="loading-reply flex-center" v-show="loading">
-                            <i class="fas fa-spinner fa-spin" :class="'text-' + themeColor"></i>
+                            <i class="fas fa-spinner fa-spin" :class="themeTextClass"></i>
                             <p class="x-tiny text-grey-3">loading...</p>
                         </div>
                     </div>
@@ -130,15 +130,16 @@
     </div>
 </template>
 <script>
-    import Noty from 'noty';
-    import moment from 'moment';
+    import { DateTime } from 'luxon';
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
-    import TextEditor from '../../components/TextEditor.vue';
+    import TextEditor from '../../components/TextEditor/TextEditor.vue';
     import Toasts from '../../assets/js/classes/toasts';
-    import Requests from '../../assets/js/classes/requests';
+    import CommentService from '../../assets/js/services/comments';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'comment-reply',
         components: {
             'text-editor': TextEditor
@@ -147,10 +148,6 @@
             brand: {
                 type: String,
                 default: () => ''
-            },
-            themeColor: {
-                type: String,
-                default: () => 'recordeo'
             },
             currentUser: {
                 type: Object,
@@ -243,11 +240,13 @@
         computed: {
             avatarClassObject(){
                 return {
-                    'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.user.access_level) !== -1,
+                    'subscriber': ['edge', 'lifetime', 'team', 'guitar', 'piano'].indexOf(this.user.access_level) !== -1,
                     'edge': this.user.access_level === 'edge',
                     'pack': this.user.access_level === 'pack',
                     'team': this.user.access_level === 'team',
-                    'lifetime': this.user.access_level === 'lifetime'
+                    'guitar': this.user.access_level === 'guitar',
+                    'piano': this.user.access_level === 'piano',
+                    'lifetime': this.user.access_level === 'lifetime',
                 }
             },
 
@@ -261,12 +260,16 @@
             },
 
             userExpValue(){
+                if(this.brand === 'guitareo'){
+                    return null;
+                }
+
                 return Utils.parseXpValue(this.user.xp);
             },
 
             userExpRank (){
                 if(this.user.access_level === 'team'){
-                    return 'Drumeo Team';
+                    return this.brand + ' Team';
                 }
 
                 return xpMapper.getNearestValue(this.user.xp);
@@ -281,7 +284,7 @@
             },
 
             dateString(){
-                return moment.utc(this.created_on).local().fromNow();
+                return DateTime.fromSQL(this.created_on, { zone: 'UTC'}).toRelative();
             },
 
             isUsersPost(){
@@ -293,10 +296,6 @@
             },
 
             openModalString(){
-                if(this.brand !== 'drumeo'){
-                    return '';
-                }
-
                 return this.like_count > 0 ? 'likeUsersModal' : '';
             },
         },
@@ -312,6 +311,7 @@
             },
 
             openLikes(){
+
                 if(this.like_count > 0){
                     this.$emit('openLikes', {
                         id: this.id,
@@ -332,7 +332,7 @@
                 if (this.reply.currentValue) {
                     this.loading = true;
 
-                    return Requests.postReply({
+                    return CommentService.postReply({
                         parent_id: this.parentId,
                         comment: this.reply.currentValue
                     })
@@ -342,7 +342,12 @@
                                 this.replyInterface = '';
                                 this.replying = false;
                                 this.$refs.textEditor.currentValue = '';
-                                Toasts.success('Reply successfully posted!');
+                                Toasts.push({
+                                    icon: 'happy',
+                                    title: 'Woohoo!',
+                                    themeColor: this.themeColor,
+                                    message: 'Thanks for your reply!'
+                                });
 
                                 this.$emit('replyPosted', {
                                     data: resolved['results'] || resolved['data'][0]
@@ -355,25 +360,22 @@
             },
 
             deleteComment(){
-                const notification = new Noty({
-                    layout: 'center',
-                    modal: true,
-                    text: 'Are you sure you want to delete this comment?',
-                    theme: 'bootstrap-v4',
-                    closeWith: [],
-                    buttons: [
-                        Noty.button('<span class="bg-error text-white short">Delete</span>', 'btn mr-1', () => {
-                            this.$emit('deleteReply', {
-                                id: this.id
-                            });
+                const vm = this;
 
-                            notification.close();
-                        }),
-                        Noty.button('<span class="bg-dark inverted text-grey-3 short">Cancel</span>', 'btn', () => {
-                            notification.close();
-                        })
-                    ]
-                }).show();
+                Toasts.confirm({
+                    title: 'Are you sure you want to delete this reply?',
+                    submitButton: {
+                        text: '<span class="bg-error text-white">Delete</span>',
+                        callback: () => {
+                            vm.$emit('deleteReply', {
+                                id: vm.id
+                            });
+                        }
+                    },
+                    cancelButton: {
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
+                    }
+                });
             },
         },
         mounted(){

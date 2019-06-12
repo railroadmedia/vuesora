@@ -491,14 +491,39 @@ $numerators: 2 3 6 9 10;
   }
 }
 
-.p-xs-only {
-  @include small {
+// CONDITIONAL PADDING/MARGIN
+@include small {
+  .p-xs-only {
     padding:0!important;
+  }
+  .m-xs-only {
+    margin:0!important;
   }
 }
 
-.m-xs-only {
-  @include small {
+@include medium {
+  .p-sm-down {
+    margin:0!important;
+  }
+  .m-sm-down {
+    margin:0!important;
+  }
+}
+
+@include smallOnly {
+  .p-lg-only {
+    padding:0!important;
+  }
+  .m-lg-only {
+    margin:0!important;
+  }
+}
+
+@include mediumOnly {
+  .p-lg-only {
+    padding:0!important;
+  }
+  .m-lg-only {
     margin:0!important;
   }
 }

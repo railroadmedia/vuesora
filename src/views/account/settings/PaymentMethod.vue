@@ -97,7 +97,7 @@
     </div>
 </template>
 <script>
-    import Requests from '../../../assets/js/classes/requests';
+    import UserService from '../../../assets/js/services/user';
     import Toasts from '../../../assets/js/classes/toasts';
     import Noty from 'noty';
 
@@ -148,7 +148,7 @@
                         // Confirm Button
                         Noty.button('<span class="bg-success text-white short">YES</span>', 'btn mr-1', () => {
 
-                            Requests
+                            UserService
                                 .deletePaymentMethod(this.paymentMethod.id)
                                 .then(this.handleResponse);
 

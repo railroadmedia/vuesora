@@ -12,13 +12,15 @@
 
     blockquote {
       border:1px solid #d1d1d1;
+      border-right:none;
+      border-bottom:none;
       margin:0 0 0 1em;
       padding:1em;
-      border-radius:5px;
+      border-radius:3px 3px 0 0;
     }
 
     .quote-heading {
-      background:#e3e8e9;
+      background:#f3f9ff;
       padding:6px 15px;
       margin:-1em;
 
@@ -78,7 +80,7 @@
 
 .pagination-row {
   padding:6px 0;
-  background-color:#e3e8e9;
+  //background-color:#e3e8e9;
 }
 
 .topic-col {
@@ -116,6 +118,7 @@
   text-align:center;
   line-height:18px;
   margin-right:5px;
+  font-size:10px;
 
   &.big {
     height:40px;

@@ -1,7 +1,6 @@
 @import './_variables.scss';
 
 .content-table-row {
-  background-color:#fff;
   transition:background-color .2s ease-in-out;
 
   &.no-access {
@@ -36,15 +35,6 @@
   }
 
   &:hover:not(.scheduled), &.active {
-    .basic-col, .icon-col {
-      color:#000;
-    }
-
-    .icon-col {
-      i.text-light {
-        color:#000;
-      }
-    }
 
     .thumb-wrap {
       .thumb-img {
@@ -106,13 +96,6 @@
   }
 
   .thumb-img {
-    background-size:cover;
-    background-position:center 16%;
-    background-repeat:no-repeat;
-    background-color:#000;
-    transform:scale(1);
-    transition:transform .2s ease-in-out;
-    will-change:transform;
 
     .logo-image {
       position:absolute;
@@ -180,7 +163,7 @@
         }
 
         &:after {
-          background:lighten($value, 30%);
+          background:lighten($value, 40%);
         }
       }
     }
@@ -193,7 +176,7 @@
         }
 
         &:after {
-          background:lighten($value, 30%);
+          background:lighten($value, 40%);
         }
       }
     }
@@ -201,7 +184,7 @@
     &:before {
       background:lighten($recordeoYellow, 20%);
       transform:scale(0.9) translateY(-50%);
-      margin-top:-15px;
+      margin-top:-10px;
       z-index:-1;
     }
   }
@@ -209,7 +192,7 @@
   &:after {
     background:lighten($recordeoYellow, 30%);
     transform:scale(0.8) translateY(-50%);
-    margin-top:-30px;
+    margin-top:-25px;
     z-index:-2;
   }
 }
@@ -358,6 +341,11 @@
   transform:scale(1);
   transition:transform .2s ease-in-out;
   will-change:transform;
+
+
+  &.no-bg {
+    background-color:transparent;
+  }
 }
 
 .thumb-wrap {
@@ -439,13 +427,6 @@
   transition:color .2s ease-in-out;
 }
 
-.add-to:hover {
-
-  i {
-    color:#000;
-  }
-}
-
 .icon-col {
   flex:0 0 50px;
 
@@ -453,10 +434,6 @@
     font-size:28px;
     transition:color .1s ease-in-out, transform .1s ease-in-out;
     will-change: color, transform;
-
-    &:hover:not(.is-added) {
-      color:#000;
-    }
 
     &.reset {
       font-size:20px;
@@ -561,15 +538,15 @@ $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
 
 .dashboard-new-lessons {
 
-  @include large {
-    .catalogue-card:last-of-type {
-      display:none;
-    }
-  }
-
-  @include smallOnly {
-    .catalogue-card:last-of-type {
-      display:none;
-    }
-  }
+  //@include large {
+  //  .catalogue-card:last-of-type {
+  //    display:none;
+  //  }
+  //}
+  //
+  //@include smallOnly {
+  //  .catalogue-card:last-of-type {
+  //    display:none;
+  //  }
+  //}
 }

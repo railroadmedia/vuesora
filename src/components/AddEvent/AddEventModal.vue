@@ -1,15 +1,15 @@
 <template>
-    <div :id="$_modalId" class="modal small">
+    <div :id="modalId" class="modal small">
         <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible">
             <h1 class="subheading text-center mb-2">Subscribe to Calendar</h1>
 
-            <p class="tiny text-center mb-2">Here you can subscribe to this lesson format's full release calendar using the calendar provider you already use - Apple Calendar, Google Calendar, Outlook and Yahoo Calendar are all supported.</p>
+            <p class="tiny text-center mb-2">Here you can subscribe to {{ toCapitalCase(brand) }}'s Lesson Calendar - Apple Calendar, Google Calendar, Outlook, and Yahoo Calendar are all supported.</p>
 
-            <div class="relative" style="width:100%;" v-show="$_subscriptionCalendarId">
+            <div class="relative" style="width:100%;" v-show="subscriptionCalendarId">
                 <button class="btn mb-1"
                         @click.stop="subscriptionCalendarDropdown = !subscriptionCalendarDropdown">
                         <span class="text-white"
-                              :class="'bg-' + $_themeColor">
+                              :class="themeBgClass">
                             <i class="fas fa-calendar-plus mr-1"></i>
                             Subscribe to calendar
                         </span>
@@ -18,20 +18,24 @@
                 <transition name="grow-fade">
                     <add-event-dropdown v-show="subscriptionCalendarDropdown"
                                         key="subscriptionCalendar"
-                                        :subscriptionCalendarId="$_subscriptionCalendarId"
+                                        :subscriptionCalendarId="subscriptionCalendarId"
                                         :isSubscription="true"></add-event-dropdown>
                 </transition>
             </div>
 
-            <p v-show="$_subscriptionCalendarId"
-               class="x-tiny font-italic text-center mb-2">{{ subscriptionDescription }}</p>
+            <p v-show="subscriptionCalendarId"
+               class="x-tiny font-italic text-center mb-2">Any upcoming releases will automatically show up in this calendar as they are scheduled by the {{ toCapitalCase(brand) }} Team.</p>
 
+            <p v-show="hasSingleEvent"
+               class="tiny text-center mb-2">
+                Or you can subscribe to this event only by clicking the button below.
+            </p>
             <div v-show="hasSingleEvent"
                  class="tiny pointer relative" style="width:100%;">
                 <button class="btn mb-1"
                         @click.stop="singleEventDropdown = !singleEventDropdown">
                         <span class="inverted"
-                              :class="['text-' + $_themeColor, 'bg-' + $_themeColor]">
+                              :class="[themeTextClass, themeBgClass]">
                             <i class="fas fa-calendar-plus mr-1"></i>
                             Subscribe to this event only
                         </span>
@@ -51,32 +55,31 @@
 </template>
 <script>
     import AddEventDropdown from './AddEventDropdown.vue';
+    import UtilsHelpers from 'js-helper-functions/modules/utils';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'add-event-modal',
         components: {
             'add-event-dropdown': AddEventDropdown
         },
         props: {
-            $_modalId: {
+            modalId: {
                 type: String,
                 default: 'addToCalendarModal'
             },
-            $_themeColor: {
+            brand: {
                 type: String,
-                default: () => 'drumeo'
+                default: () => 'Musora'
             },
             singleEvent: {
                 title: null,
                 date: null
             },
-            $_subscriptionCalendarId: {
+            subscriptionCalendarId: {
                 type: String,
                 default: ''
-            },
-            subscriptionDescription: {
-                type: String,
-                default: () => 'Any upcoming releases will automatically show up in this calendar as they are scheduled by the Drumeo Team.'
             },
             singleEventDescription: {
                 type: String,
@@ -91,8 +94,11 @@
         },
         computed: {
             hasSingleEvent(){
-                return this.singleEvent.title != null;
+                return this.singleEvent.title != null && this.singleEvent.title.length > 0;
             }
+        },
+        methods: {
+            toCapitalCase: (string) => UtilsHelpers.toCapitalCase(string),
         },
         watch: {
             singleEventDropdown(val){

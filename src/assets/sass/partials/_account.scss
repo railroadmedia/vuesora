@@ -45,10 +45,18 @@
 
   &:hover, &.active {
     color:#000;
-    border-bottom-color:$drumeoBlue;
+  }
 
-    i {
-      color:$drumeoBlue;
+  @each $key, $value in $brand_colors {
+    &.#{$key} {
+      &:hover, &.active {
+        color:#000;
+        border-bottom-color:$value;
+
+        i {
+          color:$value;
+        }
+      }
     }
   }
 }
@@ -106,6 +114,12 @@
 
   .image-col {
     flex:0 0 200px;
+    max-width:100%;
+  }
+
+  .gear-photo-col {
+    flex:0 0 300px;
+    max-width:300px;
   }
 
   .payment-col {

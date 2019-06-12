@@ -18,8 +18,8 @@
 
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
 
-            <p class="tiny text-recordeo uppercase text-truncate"
-               :class="'text-' + $_item.type">
+            <p class="tiny uppercase text-truncate"
+               :class="themeTextClass">
                 {{ mappedData.color_title }}
             </p>
 
@@ -36,8 +36,12 @@
             </p>
         </div>
 
+        <div class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+            {{ releaseType }}
+        </div>
+
         <div v-for="(item, i) in mappedData.column_data"
-             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down">
+             class="flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down text-center">
             {{ item }}
         </div>
 
@@ -45,9 +49,9 @@
         <div class="flex flex-column icon-col align-v-center hide-xs-only">
 
             <div class="body">
-                <i class="add-to-list fas fa-plus flex-center"
-                   :class="$_is_added ? 'is-added text-' + $_item.type : 'text-grey-2'"
-                   :title="$_is_added ? 'Remove from list' : 'Add to list'"
+                <i class="add-to-list fas fa-plus flex-center pointer"
+                   :class="is_added ? 'is-added ' + themeTextClass : 'text-grey-2'"
+                   :title="is_added ? 'Remove from list' : 'Add to list'"
                    @click.stop.prevent="addToList"></i>
             </div>
         </div>
@@ -63,54 +67,89 @@
     </div>
 </template>
 <script>
-    import DataMapper from '../../assets/js/classes/data-mapper.js';
+    import ContentModel from '../../assets/js/models/_model.js';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
-    import moment from 'moment';
+    import { Content as ContentHelpers }  from 'js-helper-functions';
+    import { DateTime } from 'luxon';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [UserCatalogueEvents],
+        mixins: [UserCatalogueEvents, ThemeClasses],
         name: 'schedule-item',
         props: {
-            $_item: Object,
-            $_timezone: String
+            item: {
+                type: Object
+            },
+            timezone: {
+                type: String,
+            }
+        },
+        data() {
+            return {
+                mappedData: this.getContentModel()
+            }
         },
         computed: {
 
             time_to_display(){
-                // Pull the live start time if it exists, otherwise just get the publish on date
-                if(this.$_item['live_event_start_time_in_timezone']){
-                    return this.$_item['live_event_start_time_in_timezone']['date'];
+                // Pull the live start time with timezoe if it exists
+                if(this.item['live_event_start_time_in_timezone']){
+                    return this.item['live_event_start_time_in_timezone']['date'];
                 }
 
-                return this.$_item['published_on_in_timezone']['date'];
+                // Pull the published on with timezone if it exists
+                if(this.item['published_on_in_timezone']){
+                    return this.item['published_on_in_timezone']['date'];
+                }
+
+                // Just pull the default published on
+                return this.item['published_on'];
             },
 
             month(){
-                return moment(this.time_to_display).format('MMM').toLowerCase();
+                return DateTime.fromSQL(this.time_to_display).toFormat('LLL').toLowerCase();
             },
 
             day(){
-                return moment(this.time_to_display).format('ddd D');
+                return DateTime.fromSQL(this.time_to_display).toFormat('ccc d');
             },
 
             time(){
-                return moment(this.time_to_display).format('h:mm A');
+                return DateTime.fromSQL(this.time_to_display).toFormat('h:mm a');
             },
 
-            mappedData(){
-                return new DataMapper({
-                    content_type: this.$_item.type,
-                    card_type: 'schedule',
-                    post: this.$_item
-                });
-            },
-
-            $_is_added:{
-                cache: false,
-                get(){
-                    return this.$_item.is_added_to_primary_playlist;
+            releaseType(){
+                if(this.item['status'] === 'scheduled'){
+                    return 'Live Broadcast';
                 }
+
+                return 'Lesson Release';
             },
+
+            is_added(){
+                return this.item.is_added_to_primary_playlist;
+            },
+        },
+        methods: {
+
+            getContentModel(){
+                const shows = ContentHelpers.shows();
+                let type = this.contentTypeOverride || this.item.type;
+
+                if(shows.indexOf(type) !== -1){
+                    type = 'show';
+                }
+
+                const model = new ContentModel(type, {
+                    brand: this.brand,
+                    post: this.item
+                });
+
+                return model['schedule'];
+            }
+        },
+        beforeDestroy(){
+            this.mappedData = null;
         }
     }
 </script>

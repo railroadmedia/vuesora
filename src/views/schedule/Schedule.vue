@@ -2,19 +2,21 @@
     <div class="flex flex-column">
         <schedule-item v-for="(item, i) in content"
                        :key="'schedule-item-' + item.id"
-                       :$_item="item"
-                       :$_timezone="$_timezone"
+                       :item="item"
+                       :timezone="timezone"
+                       :themeColor="themeColor"
+                       @addToList="addToListEventHandler"
                        @addEvent="addEventToDropdown"></schedule-item>
 
-        <add-event-modal $_modalId="scheduleAddToCalendarModal"
-                         :$_subscriptionCalendarId="$_subscriptionCalendarId"
+        <add-event-modal modalId="scheduleAddToCalendarModal"
+                         :subscriptionCalendarId="subscriptionCalendarId"
                          :singleEvent="singleEvent"
-                         $_themeColor="drumeo"
+                         :themeColor="themeColor"
                          @modalClose="handleModalClose"></add-event-modal>
     </div>
 </template>
 <script>
-    import Utils from '../../assets/js/classes/utils';
+    import { Content as ContentHelpers }  from 'js-helper-functions';
     import ScheduleItem from './_ScheduleItem.vue'
     import AddEventModal from '../../components/AddEvent/AddEventModal';
     import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
@@ -27,15 +29,19 @@
             'add-event-modal': AddEventModal
         },
         props: {
-            $_content: {
-                type: Array,
-                default: []
+            themeColor: {
+                type: String,
+                default: () => 'drumeo'
             },
-            $_timezone: {
+            preloadedContent: {
+                type: Array,
+                default: () => []
+            },
+            timezone: {
                 type: String,
                 default: 'America/Los_Angeles'
             },
-            $_subscriptionCalendarId: {
+            subscriptionCalendarId: {
                 type: String,
                 default: ''
             }
@@ -45,16 +51,16 @@
                 singleEvent: {
                     title: null,
                     date: null
-                }
+                },
+                content: ContentHelpers.flattenContent(this.preloadedContent, true)
             }
         },
         computed: {
-            content() {
-                return Utils.flattenContent(this.$_content);
-            }
+
         },
         methods: {
             addEventToDropdown(payload){
+
                 this.singleEvent = payload;
             },
 

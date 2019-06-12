@@ -25,6 +25,38 @@
   }
 }
 
+//.content-progress {
+//  position:sticky;
+//  top:60px;
+//  z-index:20;
+//
+//  @include medium {
+//    top:80px;
+//  }
+//}
+
+.lesson-sidebar {
+
+  @include medium {
+    position:sticky;
+    top:60px;
+    z-index:20;
+
+    .content-table {
+      max-height:calc(100vh - 180px);
+      overflow:auto;
+
+      &.has-see-all {
+        max-height:calc(100vh - 230px);
+      }
+    }
+  }
+
+  @include large {
+    top:80px;
+  }
+}
+
 .trophy-progress-bar {
   background-color:rgba(0,0,0,.2);
   height:50px;
@@ -43,7 +75,7 @@
 
   .trophy-progress-cutoff {
     border-radius:55px;
-    height:55px;
+    height:70px;
     margin-top:-10px;
     margin-left:-10px;
     border-width:10px;
@@ -53,14 +85,27 @@
       height:100%;
       width:0;
       border-radius:70px;
+      transition:width .2s ease-in-out;
+      will-change:width;
     }
   }
 
   .trophy {
-    flex:0 0 60px;
+    flex:0 0 auto;
+
+    * {
+      transition:all .2s ease-in-out;
+    }
   }
 }
 
+.next-prev-button-col {
+  flex:0 0 56px;
+
+  @include small {
+    flex: 0 0 225px;
+  }
+}
 
 // Live Video Container
 #liveVideo {
@@ -230,11 +275,6 @@
     max-width:25%;
   }
 
-  @include large {
-    flex:0 0 20%;
-    max-width:20%;
-  }
-
   &:hover {
     .card-media {
       .thumb-img {
@@ -245,6 +285,13 @@
         opacity:1;
         visibility:visible;
       }
+    }
+  }
+
+  &.no-access {
+    .card-media .thumb-hover {
+      opacity:1;
+      visibility:visible;
     }
   }
 
@@ -260,19 +307,11 @@
     transform: translate3d(0, 0, 0);
 
     .thumb-img {
-      background-size:cover;
-      background-position:center 16%;
-      background-repeat:no-repeat;
-      background-color:#000;
       position:absolute;
       top:0;
       left:0;
       bottom:0;
       right:0;
-      transform-origin:50% 50%;
-      transform:scale(1);
-      will-change:transform;
-      transition:transform .2s ease-in-out;
     }
 
     .add-to-list {
@@ -483,5 +522,20 @@
   &.playing {
     .start { display:none; }
     .stop { display:flex; }
+  }
+}
+
+.four-cards-row {
+
+  @include small {
+    .catalogue-card:nth-child(n+4) {
+      display:none;
+    }
+  }
+
+  @include medium {
+    .catalogue-card:nth-child(n+4) {
+      display:flex;
+    }
   }
 }

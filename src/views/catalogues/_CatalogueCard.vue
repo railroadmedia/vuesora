@@ -1,165 +1,99 @@
 <template>
-    <div class="flex flex-column pa-1 catalogue-card">
-        <a :href="$_item.url"
+    <div class="flex flex-column pa-1 catalogue-card"
+         :class="{'no-access': this.noAccess}">
+        <a :href="renderLink ? item.url : false"
            class="no-decoration">
-            <div class="card-media corners-5 mb-1"
+            <div class="card-media active corners-5 mb-1"
                  :class="thumbnailType">
 
                 <div class="thumb-img bg-center"
-                     :style="'background-image:url(' + $_thumbnail + ');'"></div>
+                     :style="'background-image:url(' + mappedData.thumbnail + ');'"
+                     :class="item.type === 'chord-and-scale' ? 'no-bg' : ''"></div>
 
                 <i class="add-to-list fas fa-plus"
-                   v-if="$_item.type !== 'pack-bundle'"
-                   :class="$_is_added ? 'is-added text-' + theme : 'text-white'"
-                   :title="$_is_added ? 'Remove from list' : 'Add to list'"
-                   :data-content-id="$_item.id"
-                   :data-content-type="$_item.type"
+                   v-if="item.type !== 'pack-bundle'"
+                   :class="is_added ? 'is-added ' + themeTextClass : 'text-white'"
+                   :title="is_added ? 'Remove from list' : 'Add to list'"
+                   :data-content-id="item.id"
+                   :data-content-type="item.type"
                    @click.stop.prevent="addToList"></i>
 
-                <h3 class="thumbnail-title tiny font-compressed uppercase"
-                    :class="'text-' + theme">{{ mappedData.color_title }}</h3>
+                <h3 v-if="!isGuitareoChordAndScale"
+                    class="thumbnail-title tiny font-compressed uppercase dense font-bold"
+                    :class="themeTextClass"
+                    v-html="mappedData.color_title">
+                    {{ mappedData.color_title }}
+                </h3>
 
                 <div class="lesson-progress overflow corners-bottom-5">
                     <span class="progress"
-                          :class="'bg-' + theme"
-                          :style="'width:' + $_progress_percent + '%'"></span>
+                          :class="themeBgClass"
+                          :style="'width:' + progress_percent + '%'"></span>
                 </div>
 
-                <span v-if="$_showTrophy" class="bundle-complete flex-center">
+                <span v-if="showTrophy" class="bundle-complete flex-center">
                     <i class="fas fa-trophy"></i>
                 </span>
                 <span v-else class="thumb-hover flex-center">
                     <i class="fas"
-                       :class="$_thumbnailIcon"></i>
-                    <p v-if="$_noAccess"
-                       class="x-tiny text-white font-bold">
-                        {{ $_releaseDate }}
+                       :class="thumbnailIcon"></i>
+                    <p v-if="!isReleased"
+                       class="tiny text-white font-bold">
+                        {{ releaseDate }}
                     </p>
                 </span>
             </div>
 
             <img v-if="mappedData.sheet_music" :src="mappedData.sheet_music">
 
-            <h1 class="tiny text-black mb-1 font-compressed font-bold capitalize">
+            <h1 class="tiny text-black mb-1 font-compressed font-bold capitalize"
+                :class="{'text-center': isGuitareoChordAndScale}">
                 {{ mappedData.black_title }}
             </h1>
 
             <p v-if="mappedData.show_description"
                class="x-tiny font-compressed text-grey-4 mb-1 item-description always-truncate">
-                {{ mappedData.description }}
+                {{ mappedData.description.replace(/<[^>]+>/g, '') }}
             </p>
 
-            <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase">
+            <h4 class="x-tiny font-compressed text-grey-3 font-italic uppercase"
+                :class="{'text-center': isGuitareoChordAndScale}">
                 {{ mappedData.grey_title }}
             </h4>
         </a>
     </div>
 </template>
 <script>
-    import DataMapper from '../../assets/js/classes/data-mapper.js';
-    import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
+    import Mixin from './_mixin';
+    import ContentModel from '../../assets/js/models/_model.js';
+    import { Content as ContentHelpers }  from 'js-helper-functions';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [UserCatalogueEvents],
+        mixins: [Mixin, ThemeClasses],
         name: 'catalogue-card',
-        props: {
-            $_item: {
-                type: Object
-            },
-            $_themeColor: {
-                type: String,
-                default: () => 'drumeo'
-            },
-            $_brand: {
-                type: String,
-                default: () => 'drumeo'
-            },
-            $_userId: {
-                type: String,
-                default: () => ''
-            },
-            $_forceWideThumbs: {
-                type: Boolean,
-                default: () => false
-            },
-            $_contentTypeOverride: {
-                type: String,
-                default: ''
-            },
-            $_lockUnowned: {
-                type: Boolean,
-                default: () => false
-            },
-            $_useThemeColor: {
-                type: Boolean,
-                default: () => false
-            }
-        },
-        data(){
-            return {
-                mapper: null
-            }
-        },
         computed: {
+            mappedData(){
+                return this.contentModel['card'];
+            },
 
-            $_is_added:{
+            is_added:{
                 cache: false,
                 get(){
-                    return this.$_item.is_added_to_primary_playlist;
+                    return this.item.is_added_to_primary_playlist;
                 }
             },
 
-            $_showTrophy(){
-                return this.$_item['type'] === 'pack-bundle' && this.$_item['completed'] === true;
+            showTrophy(){
+                return this.item['type'] === 'pack-bundle' && this.item['completed'] === true;
             },
 
-            $_thumbnail(){
-                return this.$_item['thumbnail_url'] ||
-                    'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg'
-            },
-
-            $_progress_percent(){
-                return this.$_item['progress_percent'];
-            },
-
-            $_thumbnailIcon(){
-                if(this.$_noAccess){
-                    return 'fa-lock';
-                }
-
-                return this.$_item.type === 'course' ? 'fa-arrow-right' : 'fa-play';
-            },
-
-            $_noAccess(){
-                return this.$_lockUnowned && this.$_item.is_owned === false;
-            },
-
-            $_releaseDate(){
-                return moment(this.$_item['published_on']).format('MMM D');
-            },
-
-            theme(){
-                if(this.$_useThemeColor){
-                    return this.$_themeColor
-                }
-
-                return this.$_item.type;
-            },
-
-            mappedData(){
-                return new DataMapper({
-                    content_type: this.$_contentTypeOverride || this.$_item.type,
-                    card_type: 'card',
-                    post: this.$_item
-                });
-            },
-
-            thumbnailType(){
-                return this.$_item['type'] === 'song' && this.$_forceWideThumbs === false ? 'square' : 'widescreen' + ' ' + this.$_item['type'];
+            isGuitareoChordAndScale(){
+                return this.brand === 'guitareo' && this.item.type === 'chord-and-scale';
             }
         },
-        mounted(){
-
+        beforeDestroy(){
+            this.mappedData = null;
         }
     }
 </script>

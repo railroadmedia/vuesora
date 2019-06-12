@@ -8,9 +8,9 @@
             <div class="flex flex-column xs-12 sm-4 md-3 mb-3">
                 <div class="form-group xs-12" style="width:100%;">
                     <select id="commentSort" v-model="sortInterface">
-                        <option value="-created_on">Latest First</option>
-                        <option value="created_on">Oldest First</option>
                         <option value="-like_count">Popular</option>
+                        <option value="-created_on">Latest</option>
+                        <option value="created_on">Oldest</option>
                         <option value="-mine">My Comments</option>
                     </select>
                     <label for="commentSort" :class="themeColor">Sort By</label>
@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="flex flex-row comment-post ph mv-3">
+        <div id="postComment" class="flex flex-row comment-post ph mv-3">
             <div class="flex flex-column avatar-column pr hide-xs-only">
                 <div class="user-avatar smaller" :class="avatarClassObject">
                     <img :src="currentUser.avatar" class="rounded">
@@ -42,7 +42,7 @@
                             @click="postComment"
                             dusk="submit-comment">
                         <span class="text-white short"
-                              :class="'bg-' + themeColor">
+                              :class="themeBgClass">
                             Comment
                         </span>
                     </button>
@@ -50,7 +50,7 @@
 
                 <div class="loading-reply flex-center" v-show="loading">
                     <i class="fas fa-spinner fa-spin"
-                       :class="'text-' + themeColor"></i>
+                       :class="themeTextClass"></i>
                     <p class="x-tiny text-grey-3">loading...</p>
                 </div>
             </div>
@@ -85,6 +85,7 @@
                       @openLikes="addLikeUsersToModal"></comment-post>
 
         <comment-likes-modal :themeColor="themeColor"
+                             :brand="brand"
                              :commentId="currentLikeUsersId"
                              :likeUsers="likeUsers"
                              :totalLikeUsers="totalLikeUsers"
@@ -94,9 +95,8 @@
     </div>
 </template>
 <script>
-    import BrandClasses from '../../mixins/BrandClasses.js';
-    import TextEditor from '../../components/TextEditor.vue';
-    import Requests from '../../assets/js/classes/requests';
+    import TextEditor from '../../components/TextEditor/TextEditor.vue';
+    import CommentService from '../../assets/js/services/comments';
     import CommentPost from './_CommentPost.vue';
     import CommentLikesModal from './_CommentLikesModal.vue';
     import Toasts from '../../assets/js/classes/toasts';
@@ -104,9 +104,11 @@
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import axios from 'axios';
     import * as QueryString from 'query-string';
+    import CommentMixin from './_mixin';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
-        mixins: [BrandClasses],
+        mixins: [ThemeClasses, CommentMixin],
         name: 'comments',
         components: {
             'text-editor': TextEditor,
@@ -115,58 +117,18 @@
             // 'wysiwyg-editor': WYSIWYGEditor,
         },
         props: {
-            content_id: {
+            contentId: {
                 type: String,
                 default: () => ''
-            },
-            brand: {
-                type: String,
-                default: () => ''
-            },
-            user_id: {
-                type: Number,
-                default: () => 0
-            },
-            themeColor: {
-                type: String,
-                default: () => 'recordeo'
-            },
-            profileBaseRoute: {
-                type: String,
-                default: () => '/laravel/public/members/profile/'
-            },
-            hasPublicProfiles: {
-                type: Boolean,
-                default: () => true
-            },
-            currentUser: {
-                type: Object,
-                default: () => {
-                    return {
-                        display_name: '',
-                        id: 0,
-                        isAdmin: false
-                    }
-                }
             }
         },
         data(){
             return {
-                currentPage: 1,
-                totalComments: 0,
-                totalCommentsAndReplies: 0,
                 comments: [],
                 pinnedComment: null,
-                requestingData: false,
-                sortOption: '-created_on',
+                sortOption: '-like_count',
                 comment: '',
                 loading: false,
-                currentLikeUsersId: 0,
-                likeUsers: [],
-                loadingLikeUsers: false,
-                requestingLikeUsers: true,
-                totalLikeUsers: 0,
-                likeUsersPage: 1
             }
         },
         computed: {
@@ -186,7 +148,7 @@
 
             userExpRank (){
                 if(this.currentUser.access_level === 'team'){
-                    return 'Drumeo Team';
+                    return this.brand + ' Team';
                 }
 
                 return xpMapper.getNearestValue(this.currentUser.xp);
@@ -199,6 +161,7 @@
                 set(val){
                     this.sortOption = val;
 
+                    this.currentPage = 1;
                     this.getComments(this.requestParams, true);
                 }
             },
@@ -220,7 +183,7 @@
                 return {
                     page: this.currentPage,
                     limit: 25,
-                    content_id: this.content_id,
+                    content_id: this.contentId,
                     sort: this.sortOption
                 }
             }
@@ -229,7 +192,7 @@
             getComments(params, replace = false){
                 this.requestingData = true;
 
-                Requests.getComments(params)
+                CommentService.getComments(params)
                     .then(resolved => {
                         this.requestingData = false;
 
@@ -245,6 +208,12 @@
                                     (resolved['data'] || resolved['results'])
                                 );
                             }
+
+                            if(this.pinnedComment != null){
+                                this.comments = this.comments.filter(comment =>
+                                    comment.id !== this.pinnedComment.id
+                                );
+                            }
                         }
                     });
             },
@@ -254,7 +223,7 @@
                     .then(response => {
                         return response.data;
                     })
-                    .catch(Requests.handleError);
+                    .catch(CommentService.handleError);
             },
 
             postComment(){
@@ -262,8 +231,8 @@
                 if(!!this.comment.currentValue){
                     this.loading = true;
 
-                    return Requests.postComment({
-                        content_id: this.content_id,
+                    return CommentService.postComment({
+                        content_id: this.contentId,
                         comment: this.comment.currentValue
                     })
                         .then(resolved => {
@@ -272,7 +241,13 @@
 
                                 this.commentInterface = '';
                                 this.$refs.textEditor.currentValue = '';
-                                Toasts.success('Comment successfully posted!');
+
+                                Toasts.push({
+                                    icon: 'happy',
+                                    title: 'Woohoo!',
+                                    themeColor: this.themeColor,
+                                    message: `Your input is what makes ${ Utils.toTitleCase(this.brand) } so great, thanks for commenting.`
+                                });
 
                                 this.comments.splice(0, 0, thisComment);
                             }
@@ -286,83 +261,11 @@
                 this.commentInterface = payload.currentValue;
             },
 
-            handleCommentLike(payload){
-                let index = this.comments.map(comment => comment.id).indexOf(payload.id);
-                let likedPost = payload.isPinned ? this.pinnedComment : this.comments[index];
-
-                if(payload.isLiked){
-                    likedPost.like_count -= 1;
-                    likedPost.is_liked = false;
-
-                    Requests.unlikeComment(payload.id)
-                        .then(response => {});
-                }
-                else {
-                    likedPost.like_count += 1;
-                    likedPost.is_liked = true;
-
-                    Requests.likeComment(payload.id)
-                        .then(response => {});
-                }
-            },
-
-            handleReplyLike(payload){
-                let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
-                let likedPostReplies = payload.isPinned ? this.pinnedComment.replies : this.comments[index].replies;
-                let likedPostReplyIndex = likedPostReplies.map(reply => reply.id).indexOf(payload.id);
-                let likedPostReply = likedPostReplies[likedPostReplyIndex];
-
-
-                if(payload.isLiked){
-                    likedPostReply.like_count -= 1;
-                    likedPostReply.is_liked = false;
-
-                    Requests.unlikeComment(payload.id)
-                        .then(response => {});
-                }
-                else {
-                    likedPostReply.like_count += 1;
-                    likedPostReply.is_liked = true;
-
-                    Requests.likeComment(payload.id)
-                        .then(response => {});
-                }
-            },
-
-            handleCommentDelete(payload){
-
-                Requests.deleteComment(payload.id)
-                    .then(resolved => {
-                        this.comments = this.comments.filter(comment =>
-                            comment.id !== payload.id
-                        );
-
-                        Toasts.success('Comment successfully deleted');
-                    })
-            },
-
-            handleReplyDelete(payload){
-                let index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
-                let deletedPostReplies = this.comments[index].replies;
-                let deletedPostReplyIndex = deletedPostReplies.map(reply => reply.id).indexOf(payload.id);
-                let deletedPostReply = deletedPostReplies[deletedPostReplyIndex];
-
-                Requests.deleteComment(payload.id)
-                    .then(resolved => {
-                        if(resolved){
-                            this.comments[index].replies = this.comments[index].replies.filter(reply =>
-                                reply.id !== payload.id
-                            );
-
-                            Toasts.success('Comment successfully deleted');
-                        }
-                    })
-            },
-
             goToComment(id){
-                Requests.getCommentById(id)
+                CommentService.getCommentById(id)
                     .then(resolved => {
                         if(resolved){
+                            const commentsSection = document.getElementById('postComment');
                             this.pinnedComment = resolved['data'].filter(result =>
                                 result.id === Number(id)
                             )[0];
@@ -374,18 +277,16 @@
                             *
                             * Curtis - Sept 2018
                              */
-                            let pinned;
                             let checkInterval = setInterval(() => {
-                                pinned = document.getElementById('pinnedComment' + id);
 
-                                if(pinned != null){
-                                    let oldComment = document.getElementById('comment' + id);
+                                if(this.pinnedComment != null){
+                                    this.comments = this.comments.filter(comment =>
+                                        comment.id !== this.pinnedComment.id
+                                    );
 
-                                    window.scrollTo(0, (pinned.offsetTop - 100));
-
-                                    if(oldComment){
-                                        oldComment.remove();
-                                    }
+                                    setTimeout(() => {
+                                        window.scrollTo(0, ((commentsSection.offsetTop + commentsSection.clientHeight) - 150));
+                                    }, 200);
 
                                     clearInterval(checkInterval);
                                 }
@@ -393,39 +294,6 @@
                         }
                     })
             },
-
-            addLikeUsersToModal(payload){
-                const isSameComment = payload.id === this.currentLikeUsersId;
-
-                this.likeUsersPage += 1;
-                this.requestingLikeUsers = true;
-                this.totalLikeUsers = payload.totalLikeUsers;
-
-                if(!isSameComment){
-                    this.loadingLikeUsers = true;
-                    this.likeUsersPage = 1;
-                }
-
-                Requests.getCommentLikeUsers({
-                    id: payload.id,
-                    page: this.likeUsersPage
-                })
-                    .then(response => {
-                        if(response){
-                            if(isSameComment){
-                                this.likeUsers = [...this.likeUsers, ...response.data.data];
-                            }
-                            else {
-                                this.likeUsers = response.data.data;
-                            }
-
-                            this.requestingLikeUsers = false;
-                            this.currentLikeUsersId = payload.id;
-                        }
-
-                        this.loadingLikeUsers = false;
-                    });
-            }
         },
         created(){
             this.getComments(this.requestParams);

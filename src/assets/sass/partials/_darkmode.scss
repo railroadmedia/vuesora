@@ -1,0 +1,87 @@
+body.dark-mode {
+  color:#fefefe;
+  background-color:#141414;
+
+  .bg-white:not(.btn):not(span) {
+    background-color:#242424;
+  }
+
+  .text-black {
+    color:#fefefe;
+  }
+
+  .bg-black:not(header):not(#subNav):not(#breadCrumbs) {
+    background-color:#fff;
+
+    &.inverted {
+      background-color:transparent;
+      border-color:#fff;
+    }
+  }
+
+  .hover-text-black:hover {
+    color:#ffffff;
+  }
+
+  select,
+  input[type='text']:not(#searchInput),
+  input[type='password'],
+  input[type='email'],
+  input[type='number'] {
+    color:#fefefe;
+    background-color:#242424;
+  }
+
+  [class*='-grey-1-'] {
+    border-color: #444444;
+  }
+
+  [class*='-grey-7'] {
+    background-color:#444444;
+  }
+
+  .carousel img {
+    filter:invert(100%);
+  }
+
+  .noty_theme__musoraNoty {
+    background-color:#242424;
+  }
+
+
+  .forum-post {
+
+    blockquote {
+      border-color:#444444;
+    }
+
+    .quote-heading {
+      background-color:#444444;
+    }
+  }
+
+  .mce-container {
+    border:none!important;
+  }
+
+  .mce-body {
+    background:#444444!important;
+  }
+
+  .mce-toolbar-grp {
+    background-color:#141414!important;
+
+    .mce-btn-group {
+      background-color:#141414!important;
+
+      .mce-btn {
+        background:#444444!important;
+        border-color:#444444!important;
+
+        i {
+          color:#fff!important;
+        }
+      }
+    }
+  }
+}

@@ -1,34 +1,34 @@
 <template>
     <div class="flex flex-column">
         <catalogue-list-item
-                v-for="(item, i) in $_content"
+                v-for="(item, i) in content"
                 :key="'list' + item.id"
-                :$_index="item.week || i + 1"
-                :$_item="item"
-                :$_brand="$_brand"
-                :$_themeColor="$_themeColor"
-                :class="$_card_grid_classes"
-                :$_overview="$_displayItemsAsOverview"
-                :$_userId="$_userId"
-                :$_displayUserInteractions="$_displayUserInteractions"
-                :$_contentTypeOverride="$_contentTypeOverride"
-                :$_showNumbers="$_showNumbers"
-                :$_noLink="$_lockUnowned && item.is_owned === false"
-                :$_lockUnowned="$_lockUnowned"
-                :$_is_search="$_is_search"
-                :$_forceWideThumbs="$_forceWideThumbs"
-                :$_resetProgress="$_resetProgress"
-                :$_useThemeColor="$_useThemeColor"
-                :$_destroyOnListRemoval="$_destroyOnListRemoval"
-                :$_compactLayout="$_compactLayout"
-                :$_card_type="$_card_type"
+                :index="item.week || i + 1"
+                :item="item"
+                :contentType="item.type"
+                :brand="brand"
+                :themeColor="themeColor"
+                :useThemeColor="useThemeColor"
+                :overview="displayItemsAsOverview"
+                :userId="userId"
+                :displayUserInteractions="displayUserInteractions"
+                :contentTypeOverride="contentTypeOverride"
+                :showNumbers="showNumbers"
+                :noLink="lockUnowned && item.is_owned === false"
+                :lockUnowned="lockUnowned"
+                :is_search="is_search"
+                :forceWideThumbs="forceWideThumbs"
+                :resetProgress="resetProgress"
+                :destroyOnListRemoval="destroyOnListRemoval"
+                :compactLayout="compactLayout"
                 @addToList="emitAddToList"
-                @resetProgress="emitResetProgress"
+                @progressReset="emitResetProgress"
                 @addEvent="addEventToDropdown"></catalogue-list-item>
 
         <add-event-modal :singleEvent="singleEvent"
-                         :$_subscriptionCalendarId="$_subscriptionCalendarId"
-                         :$_themeColor="$_themeColor"
+                         :brand="brand"
+                         :subscriptionCalendarId="subscriptionCalendarId"
+                         :themeColor="themeColor"
                          @modalClose="handleModalClose"></add-event-modal>
     </div>
 </template>
@@ -45,75 +45,71 @@
             'add-event-modal': AddEventModal
         },
         props: {
-            $_content: {
+            content: {
                 type: Array,
                 default: () => []
             },
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => 'drumeo'
             },
-            $_userId: {
+            useThemeColor: {
+                type: Boolean,
+                default: () => true
+            },
+            userId: {
                 type: String,
                 default: () => ''
             },
-            $_brand: {
+            brand: {
                 type: String,
                 default: () => 'drumeo'
             },
-            $_card_type: {
+            card_type: {
                 type: String,
                 default: () => 'list'
             },
-            $_displayItemsAsOverview: {
+            displayItemsAsOverview: {
                 type: Boolean,
                 default: () => false
             },
-            $_displayUserInteractions: {
+            displayUserInteractions: {
                 type: Boolean,
                 default: () => true
             },
-            $_card_grid_classes: {
+            contentTypeOverride: {
                 type: String,
                 default: () => ''
             },
-            $_contentTypeOverride: {
-                type: String,
-                default: () => ''
-            },
-            $_forceWideThumbs: {
+            forceWideThumbs: {
                 type: Boolean,
                 default: () => false
             },
-            $_showNumbers: {
+            showNumbers: {
                 type: Boolean,
                 default: false
             },
-            $_lockUnowned: {
+            lockUnowned: {
                 type: Boolean,
                 default: () => false
             },
-            $_is_search: {
+            is_search: {
                 type: Boolean,
                 default: () => false
             },
-            $_resetProgress: {
+            resetProgress: {
                 type: Boolean,
                 default: () => false
             },
-            $_useThemeColor: {
-                type: Boolean,
-                default: () => true
-            },
-            $_destroyOnListRemoval: {
+            destroyOnListRemoval: {
                 type: Boolean,
                 default: () => false
             },
-            $_compactLayout: {
+            compactLayout: {
                 type: Boolean,
                 default: () => false
             },
-            $_subscriptionCalendarId: {
+            subscriptionCalendarId: {
                 type: String,
                 default: ''
             }
@@ -133,10 +129,12 @@
             },
 
             handleModalClose(){
-                this.addEventToDropdown({
-                    title: '',
-                    date: ''
-                })
+                setTimeout(() => {
+                    this.addEventToDropdown({
+                        title: '',
+                        date: ''
+                    });
+                }, 300);
             }
         },
     }

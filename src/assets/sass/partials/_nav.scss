@@ -21,9 +21,14 @@ body {
   top:0;
   left:0;
   width:100%;
+  padding:0;
 
   @include large {
     height:65px;
+  }
+
+  & > .container {
+    overflow:hidden;
   }
 
   .flex-row {
@@ -31,6 +36,8 @@ body {
   }
 
   .logo {
+    position:relative;
+    z-index:8;
     flex:0 0 125px;
 
     @include medium {
@@ -45,17 +52,96 @@ body {
   }
 
   .header-button {
+    position:relative;
+    z-index:10;
+    background:#000;
     flex:0 0 50px;
     max-width:50px;
+    max-height:49px;
 
     @include large {
       flex:0 0 65px;
       max-width:65px;
+      max-height:64px;
     }
 
     &.live-button {
       flex:0 0 auto;
       max-width:none;
+      z-index:8;
+    }
+  }
+
+  .search-column {
+    flex:0 1 100%;
+    max-width:50px;
+    transition:all .1s;
+    z-index:9;
+    max-height:49px;
+
+    @include large {
+      max-width:65px;
+      max-height:64px;
+    }
+
+    &.active {
+
+      .search-row {
+        transform:translateX(calc(-#{100%} + 50px));
+
+        @include small {
+          transform:translateX(calc(-#{100%} + 50px));
+        }
+
+        @include medium {
+          transform:translateX(calc(-#{$medium} + 115px));
+        }
+
+        @include large {
+          transform:translateX(calc(-#{$large} + 145px));
+        }
+      }
+    }
+
+    .search-row {
+      position:absolute;
+      top:0;
+      left:0;
+      bottom:0;
+      z-index:3;
+      background:#000;
+      transform:translateX(0);
+      transition:transform .2s ease-in-out;
+      will-change:transform;
+      width:calc(100vw - 100px);
+
+      @include small {
+        width:calc(100vw - 50px);
+      }
+
+      @include medium {
+        width:calc(#{$medium} - 65px);
+      }
+
+      @include large {
+        width:calc(#{$large} - 85px);
+      }
+    }
+
+    .search-button {
+      flex:0 0 35px;
+      max-width:35px;
+    }
+  }
+
+  .nav-page-links {
+    transition:all .1s;
+    max-width:100%;
+
+    &.inactive {
+      //flex:0 0 0;
+      max-width:0;
+      overflow:hidden;
     }
   }
 
@@ -103,6 +189,10 @@ body {
     cursor:pointer;
     will-change:background-color;
     transition:background-color .2s ease-in-out;
+    outline:none;
+    position:relative;
+    z-index:10;
+    background-color:#000;
 
     @include medium {
       flex:0 0 50px;
@@ -112,8 +202,18 @@ body {
       flex:0 0 65px;
     }
 
+    &:focus {
+      outline:0;
+    }
+
+    & > * {
+      pointer-events:none;
+    }
+
+    @include rippleDirective();
+
     &.active {
-      background-color:nth($greys, 4);
+      background-color:nth(nth($greys, 5), 2);
 
       i {
         background-color:transparent;
@@ -160,35 +260,6 @@ body {
     }
   }
 
-  .search-column {
-
-    #searchIcon {
-      cursor:pointer;
-    }
-
-    #searchBox {
-
-      @include xSmallOnly {
-        position:fixed;
-        top:40px;
-        left:0;
-        right:0;
-        padding-left:$gutterWidth / 3;
-        padding-right:$gutterWidth / 3;
-        background:#000;
-        transition:max-height .2s ease-in-out;
-        will-change: max-height;
-        max-height:0;
-        overflow:hidden;
-
-        &.active {
-          max-height:50px;
-          border-bottom: 1px solid nth(nth($greys, 5), 2);
-        }
-      }
-    }
-  }
-
   #liveIndicator {
     position:relative;
     z-index:2;
@@ -210,6 +281,22 @@ body {
       animation-duration: 1.5s;
       animation-iteration-count: infinite
     }
+  }
+}
+
+.notification-badge {
+  position:absolute;
+  top:8px;
+  right:8px;
+  height:16px;
+  width:16px;
+  background:$errorRed;
+
+  &.smaller {
+    top:-4px;
+    right:-4px;
+    height:8px;
+    width:8px;
   }
 }
 
@@ -252,7 +339,6 @@ body {
       will-change: color, background-color;
       transition:color .1s ease-in-out, background-color .1s ease-in-out;
       flex:0 0 auto;
-      cursor:pointer;
 
       .parent-button {
         width:100%;
@@ -312,22 +398,21 @@ body {
 }
 
 #subNav {
+  z-index:99;
 
   .subnav-link {
     transition:color .1s ease-in-out, background-color .1s ease-in-out;
     will-change:color, background-color;
-    flex:0 1 25%;
+    flex:0 0 120px;
     box-sizing:border-box;
     border-bottom:2px solid transparent;
     white-space:nowrap;
 
+    @include rippleDirective();
+
     i {
       will-change:color;
       transition:color .1s ease-in-out;
-    }
-
-    @include small {
-      flex:0 1 20%;
     }
 
     &:last-of-type {
@@ -358,8 +443,21 @@ body {
       }
     }
   }
+
+  .pad-sides {
+    padding:0 35px;
+  }
 }
 
+#subNavWrap {
+  z-index:10;
+  overflow-x:auto;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 #publicFooter {
 
@@ -400,13 +498,7 @@ footer {
     }
 
     a {
-      //margin:0 3px;
-      &:first-of-type {
-        margin-right:3px;
-      }
-      &:last-of-type {
-        margin-left:3px;
-      }
+      margin:0 3px;
 
       &.social-media-link {
 
@@ -419,6 +511,38 @@ footer {
       }
     }
   }
+}
+
+.main-section-link {
+  transition: font-weight .2s ease-in-out, color .2s ease-in-out;
+  will-change: font-weight, color;
+  @include rippleDirective();
+
+  &:hover, &.active {
+    font-weight:700;
+    color:#fff;
+  }
+}
+
+.scroll-sub-nav {
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:35px;
+  cursor:pointer;
+  z-index:11;
+  @include flexCenter();
+
+  * {
+    pointer-events:none;
+  }
+}
+
+#scrollSubNavLeft {
+  left:0;
+}
+#scrollSubNavRight {
+  right:0;
 }
 
 #backgroundOverlay {

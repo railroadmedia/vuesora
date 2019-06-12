@@ -1,4 +1,5 @@
 @import './_variables.scss';
+@import './_animations.scss';
 
 a, div {
 
@@ -23,26 +24,10 @@ a, div {
     will-change:background-color;
     transition:background-color .2s ease-in-out;
 
-    &:after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, .5);
-      opacity: 0;
-      border-radius: 100%;
-      transform: scale(1) translate(-50%, -50%);
-      transform-origin: 0 0;
-    }
+    @include rippleDirective();
 
     &.short {
       height:35px;
-    }
-
-    &:focus:not(:active)::after {
-      animation: ripple .5s ease-out;
     }
   }
 }
@@ -57,24 +42,33 @@ button {
     cursor:pointer;
     outline:none;
 
+    &.short > span {
+      height:35px;
+    }
+
     & > span {
       pointer-events:none;
-      @extend a.btn;
+      position:relative;
+      display:flex;
+      flex-direction:row;
+      flex-wrap:nowrap;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      height:50px;
+      cursor:pointer;
+      border-radius:5px;
+      border:none;
+      outline:none;
+      width:100%;
+      text-decoration:none;
+      box-shadow: 0 0 2px rgba(0,0,0,0.2);
+      font:700 16px $secondarySansSerif;
+      text-transform:uppercase;
+      will-change:background-color;
+      transition:background-color .2s ease-in-out;
 
-      &:after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        height: 0;
-        padding-bottom:100%;
-        background: rgba(255, 255, 255, .5);
-        opacity: 0;
-        border-radius: 50%;
-        transform: scale(1) translate(-50%, -50%);
-        transform-origin: 0 0;
-      }
+      @include rippleDirective();
 
       &.short {
         height:35px;
@@ -82,7 +76,7 @@ button {
     }
 
     &:focus:not(:active) > span::after {
-      animation: ripple .5s ease-out;
+      animation: ripple .4s ease-out;
     }
   }
 }
@@ -93,6 +87,10 @@ button {
 
   &.collapse-square {
     max-width:50px;
+
+    &.short {
+      max-width:35px;
+    }
   }
 
   &.collapse-150 {
@@ -167,6 +165,11 @@ button {
     }
   }
 
+  &:disabled {
+    opacity:.2;
+    pointer-events:none;
+  }
+
   &.inverted:hover,
   &.flat:hover,
   &:hover > span.inverted,
@@ -198,20 +201,5 @@ a {
   100% {
     transform:scale(1);
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
-  }
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0) translate(-50%, -50%);
-    opacity: 1;
-  }
-  20% {
-    transform: scale(.2) translate(-50%, -50%);
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.25) translate(-50%, -50%);
   }
 }

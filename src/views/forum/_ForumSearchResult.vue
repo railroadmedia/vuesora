@@ -36,10 +36,10 @@
     </a>
 </template>
 <script>
-    import BrandClasses from '../../mixins/BrandClasses.js'
+    import ThemeClasses from '../../mixins/ThemeClasses'
 
     export default {
-        mixins: [BrandClasses],
+        mixins: [ThemeClasses],
         name: 'forum-search-result',
         props: {
             item: {

@@ -13,11 +13,14 @@
             </div>
 
             <div class="flex flex-column button-col">
-                <a class="btn bg-recordeo short text-white"
-                   @click.stop="markAllAsRead">
-                    <i class="fas fa-eye mr-1"></i>
-                    Mark All As Read
-                </a>
+                <button class="btn"
+                        @click.stop="markAllAsRead"
+                        :disabled="!hasUnreadNotifications">
+                    <span class="text-white short" :class="themeBgClass">
+                        <i class="fas fa-eye mr-1"></i>
+                        Mark All As Read
+                    </span>
+                </button>
             </div>
         </div>
 
@@ -44,10 +47,12 @@
 <script>
     import NotificationsTableRow from './_NotificationsTableRow.vue';
     import Pagination from '../../components/Pagination.vue';
-    import Requests from '../../assets/js/classes/requests';
+    import UserService from '../../assets/js/services/user';
     import * as QueryString from 'query-string';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'notifications-table',
         components: {
             "notifications-table-row": NotificationsTableRow,
@@ -71,19 +76,21 @@
                 default: () => ''
             },
             notificationCount: {
-                type: Number,
+                type: Number|String,
                 default: () => 1
             }
         },
         data(){
             return {
-                notificationsArray: this.notifications
+                notificationsArray: this.notifications,
+                markingAllAsRead: false
             }
         },
         computed: {
             totalPages() {
                 return Math.ceil(this.notificationCount / 20);
             },
+
             currentPage() {
                 const urlParams = QueryString.parse(location.search);
 
@@ -92,39 +99,50 @@
                 }
 
                 return 1;
+            },
+
+            hasUnreadNotifications(){
+                return this.notifications.filter(notification =>
+                    notification.isRead === false
+                ).length > 0;
             }
         },
         methods: {
             markAllAsRead() {
-                // Mark all of the rows as read
-                const notificationRows = document.querySelectorAll('.content-table-row');
-                Array.from(notificationRows).forEach(row => {
-                    if (!row.classList.contains('is-read')) {
-                        row.classList.add('is-read');
-                    }
-                });
+                if(!this.markingAllAsRead){
+                    this.markingAllAsRead = true;
 
-                // Send request to server
-                Requests.markAllNotificationsAsRead()
-                    .then(resolved => {
-                    });
+                    // Send request to server
+                    UserService.markAllNotificationsAsRead()
+                        .then(resolved => {
+
+                            if(resolved){
+                                this.notifications.forEach(notification => {
+                                    this.$set(notification, 'isRead', true);
+                                })
+                            }
+                            this.markingAllAsRead = false;
+                        });
+                }
             },
 
             markAsRead(payload) {
                 let index = this.notifications.map(notification => notification.id).indexOf(payload.id);
 
                 if(payload.isRead){
-                    Requests.markNotificationAsUnRead(payload.id)
-                        .then(resolved => {
-                        });
+                    if(payload.canCancel){
+                        UserService.markNotificationAsUnRead(payload.id)
+                            .then(resolved => resolved);
+                    }
                 }
                 else {
-                    Requests.markNotificationAsRead(payload.id)
-                        .then(resolved => {
-                        });
+                    UserService.markNotificationAsRead(payload.id)
+                        .then(resolved => resolved);
                 }
 
-                this.notificationsArray[index].isRead = !this.notificationsArray[index].isRead;
+                if(payload.canCancel){
+                    this.notificationsArray[index].isRead = !this.notificationsArray[index].isRead;
+                }
             },
 
             handlePageChange(payload) {

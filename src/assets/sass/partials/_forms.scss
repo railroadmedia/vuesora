@@ -22,9 +22,7 @@
     transform-origin:0 0;
     color:nth(nth($greys, 3), 2);
     pointer-events:none;
-
-    // Pull in font sizes from the .body class
-    @extend .body;
+    font:400 16px/1.5em $defaultSansSerif;
 
     @include medium {
       left:$gutterWidth / 2;
@@ -33,15 +31,14 @@
 
   .toggle-label {
     flex-grow:1;
-
+    font:400 12px/1.5em $defaultSansSerif;
     @extend .noselect;
-    @extend .body;
   }
 
   .errors {
     list-style-type:none;
     color:$errorRed;
-    padding-left:$gutterWidth / 2;
+    padding-left:0;
   }
 
   &.file-input {
@@ -69,6 +66,7 @@
 
 input[type='text'],
 input[type='email'],
+input[type='number'],
 input[type='password'],
 input[type='date'],
 select,
@@ -76,20 +74,23 @@ textarea {
   height:50px;
   border-radius:5px;
   background:#fff;
+  color:#000;
   box-shadow:none;
   border:1px solid $lightGray;
   outline:none;
   width:100%;
   padding-top:12px;
-
-  // Pull in font sizes from the .body class
-  @extend .body;
+  font:400 16px/1.5em $defaultSansSerif;
 
   // Pull in padding styles from the .ph class
   @extend .ph;
 
   &:focus {
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
+
+    &.text-white {
+      color:#fff;
+    }
   }
 
   &:focus,
@@ -407,4 +408,29 @@ textarea {
     padding:0;
     margin-top:0;
   }
+}
+
+#questionInput.text-white {
+  color:#fff;
+}
+.send-button-col {
+  flex:0 0 50px;
+
+  @include small {
+    flex:0 0 175px;
+  }
+}
+.avatar-col {
+  flex:0 0 50px;
+}
+.email-loading {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:rgba(255,255,255,.8);
+  @include flexCenter();
+  font-size:32px;
+  z-index:10;
 }

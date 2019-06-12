@@ -287,7 +287,7 @@
     </div>
 </template>
 <script>
-    import Requests from '../../../assets/js/classes/requests';
+    import UserService from '../../../assets/js/services/user';
     import Toasts from '../../../assets/js/classes/toasts';
 
     export default {
@@ -511,7 +511,7 @@
 
                     } else {
 
-                        Requests
+                        UserService
                             .getPaypalAgreementUrl()
                             .then((response) => {
                                 if (response.url) {
@@ -540,7 +540,7 @@
                     set_default: this.defaultPaymentMethod
                 };
 
-                Requests
+                UserService
                     .updatePaymentMethod(id, payload)
                     .then((response) => {
 
@@ -594,7 +594,7 @@
 
                 this.$emit('showLoading', {});
 
-                Requests
+                UserService
                     .createPaymentMethod(payload)
                     .then(this.handleCreatePaymentMethodResponse);
             },

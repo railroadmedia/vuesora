@@ -1,24 +1,32 @@
 <template>
-    <div class="flex flex-row flex-wrap">
-        <div class="flex flex-column xs-12 sm-8 pa-1">
-            <div class="form-group">
-                <input type="text"
-                       id="catalogueSearch"
-                       name="search"
-                       autocomplete="off"
-                       placeholder="Search..."
-                       class="no-label"
-                       v-model.lazy="searchTermInterface">
+    <div class="flex flex-column">
+        <div class="flex flex-row flex-wrap">
+            <div class="flex flex-column xs-12 pa-1"
+                 :class="included_types.length ? 'sm-8' : ''">
+                <div class="form-group">
+                    <input type="text"
+                           id="catalogueSearch"
+                           name="search"
+                           autocomplete="off"
+                           placeholder="Search..."
+                           class="no-label"
+                           v-model.lazy="searchTermInterface">
+                </div>
+            </div>
+
+            <div class="flex flex-column xs-12 sm-4 pv-1" v-if="included_types.length">
+                <catalogue-filter filter_name="type"
+                                  :item="parsedTypes"
+                                  :themeColor="themeColor"
+                                  :loading="loading"
+                                  :initial_value="selected_types"
+                                  @filterChange="changeFilter"></catalogue-filter>
             </div>
         </div>
-
-        <div class="flex flex-column xs-12 sm-4 pv-1">
-            <catalogue-filter $_filter_name="type"
-                              :$_item="parsedTypes"
-                              :$_themeColor="$_themeColor"
-                              :loading="loading"
-                              :$_initial_value="$_selected_types"
-                              @filterChange="changeFilter"></catalogue-filter>
+        <div class="flex flex-row ph-1 pb-1">
+            <p class="tiny text-grey-3 font-italic">
+                Displaying <span v-if="total_results > 0">{{ currentResults }} of</span> {{ total_results }} results.
+            </p>
         </div>
     </div>
 </template>
@@ -31,7 +39,7 @@
             'catalogue-filter': CatalogueFilter
         },
         props: {
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => ''
             },
@@ -39,23 +47,35 @@
                 type: Boolean,
                 default: () => false
             },
-            $_included_types: {
+            included_types: {
                 type: Array,
                 default: () => []
             },
-            $_selected_types: {
+            selected_types: {
                 type: String,
                 default: () => null
             },
-            $_search_term: {
+            search_term: {
                 type: String,
                 default: () => undefined
+            },
+            current_page: {
+                type: String|Number,
+                default: () => 1
+            },
+            limit: {
+                type: String|Number,
+                default: () => 20
+            },
+            total_results: {
+                type: String|Number,
+                default: () => 0
             }
         },
         computed: {
             searchTermInterface: {
                 get(){
-                    return this.$_search_term;
+                    return this.search_term;
                 },
                 set(value){
                     if(value){
@@ -65,10 +85,19 @@
                     }
                 }
             },
+
+            currentResults(){
+                return (1 + ((this.current_page * this.limit) - this.limit)) + '-' + this.displayedLimit;
+            },
+
+            displayedLimit(){
+                return this.limit > this.total_results ? this.total_results : this.limit;
+            },
+
             parsedTypes(){
                 let parsedArray = [];
 
-                this.$_included_types.forEach(type => {
+                this.included_types.forEach(type => {
                     parsedArray.push({
                         key: type,
                         value: type

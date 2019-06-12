@@ -1,18 +1,19 @@
 <template>
     <div class="flex flex-row"
-         :class="$_noWrap ? 'overflow' : 'flex-wrap'">
+         :class="noWrap ? 'overflow' : 'flex-wrap'">
         <catalogue-card
-                v-for="(item, i) in $_content"
+                v-for="(item, i) in content"
                 :key="'grid' + item.id"
-                :$_item="item"
-                :$_brand="$_brand"
-                :$_themeColor="$_themeColor"
-                :class="$_card_grid_classes"
-                :$_userId="$_userId"
-                :$_lockUnowned="$_lockUnowned"
-                :$_forceWideThumbs="$_forceWideThumbs"
-                :$_contentTypeOverride="$_contentTypeOverride"
-                :$_useThemeColor="$_useThemeColor"
+                :item="item"
+                :contentType="item.type"
+                :brand="brand"
+                :themeColor="themeColor"
+                :useThemeColor="useThemeColor"
+                :class="card_grid_classes"
+                :userId="userId"
+                :lockUnowned="lockUnowned"
+                :forceWideThumbs="forceWideThumbs"
+                :contentTypeOverride="contentTypeOverride"
                 @addToList="emitAddToList"></catalogue-card>
     </div>
 </template>
@@ -27,45 +28,45 @@
             'catalogue-card': CatalogueCard
         },
         props: {
-            $_content: {
+            content: {
                 type: Array,
                 default: () => []
             },
-            $_themeColor: {
+            themeColor: {
                 type: String,
                 default: () => 'drumeo'
             },
-            $_userId: {
-                type: String,
-                default: () => ''
-            },
-            $_brand: {
-                type: String,
-                default: () => 'drumeo'
-            },
-            $_card_grid_classes: {
-                type: String,
-                default: () => ''
-            },
-            $_noWrap: {
-                type: Boolean,
-                default: () => false
-            },
-            $_forceWideThumbs: {
-                type: Boolean,
-                default: () => false
-            },
-            $_contentTypeOverride: {
-                type: String,
-                default: () => ''
-            },
-            $_lockUnowned: {
-                type: Boolean,
-                default: () => false
-            },
-            $_useThemeColor: {
+            useThemeColor: {
                 type: Boolean,
                 default: () => true
+            },
+            userId: {
+                type: String,
+                default: () => ''
+            },
+            brand: {
+                type: String,
+                default: () => 'drumeo'
+            },
+            card_grid_classes: {
+                type: String,
+                default: () => ''
+            },
+            noWrap: {
+                type: Boolean,
+                default: () => false
+            },
+            forceWideThumbs: {
+                type: Boolean,
+                default: () => false
+            },
+            contentTypeOverride: {
+                type: String,
+                default: () => ''
+            },
+            lockUnowned: {
+                type: Boolean,
+                default: () => false
             }
         }
     }

@@ -1,18 +1,18 @@
 <template>
-    <div class="flex flex-column bg-white shadow corners-3 content-table">
-        <div class="flex flex-row flex-wrap ph-3 pt-3 align-v-center">
+    <div class="flex flex-column bg-white shadow corners-3 grow content-table">
+        <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column mb-3 align-v-center">
                 <div class="flex flex-row">
                     <a href="/members/forums"
                        class="no-decoration text-black mr-3"
-                       :class="{ 'bb-recordeo-2': !isFollowedSection }">
+                       :class="!isFollowedSection ? 'bb-' + themeColor + '-1' : ''">
                         <h1 class="heading pointer">
                             All Forums
                         </h1>
                     </a>
                     <a href="/members/forums?followed=true"
                        class="no-decoration text-black"
-                       :class="{ 'bb-recordeo-2': isFollowedSection, 'hide': searching }">
+                       :class="[isFollowedSection ? 'bb-' + themeColor + '-1' : '', {'hide': searching}]">
                         <h1 class="heading pointer">
                             Followed
                         </h1>
@@ -20,26 +20,37 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-row flex-wrap ph-3 align-v-center">
-            <div class="flex flex-column mb-3 search-box">
-                <div class="form-group">
-                    <input id="threadSearch"
-                           type="text"
-                           v-model.lazy="searchInterface">
-                    <label for="threadSearch" class="recordeo">Search</label>
+        <div class="flex flex-row flex-wrap ph-1 align-v-center">
+            <div class="flex flex-column mb-2 search-box">
+                <div class="flex flex-row">
+                    <div class="flex flex-column form-group pr-1">
+                        <input id="threadSearch"
+                               type="text"
+                               ref="searchInput"
+                               v-model.lazy="searchInterface">
+                        <label for="threadSearch" :class="themeColor">Search</label>
 
-                    <span id="clearSearch" v-if="searching"
-                          class="body pointer"
-                          @click="clearSearch">
-                        <i class="fas fa-times"></i>
-                    </span>
+                        <span id="clearSearch" v-if="searching"
+                              class="body pointer"
+                              @click="clearSearch">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </div>
+                    <div class="flex flex-column search-icon-col">
+                        <button class="btn collapse-square" @click="$refs.searchInput.blur()">
+                            <span class="bg-white text-black flat">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </button>
+                    </div>
                 </div>
+
                 <p v-if="searching"
                    class="tiny font-italic text-grey-4">
                     Showing results for <span class="font-bold text-black">"{{ searchInterface }}"</span> in All Forums.
                 </p>
             </div>
-            <div v-if="!searching"
+            <div v-if="!searching && brand !== 'pianote'"
                  class="flex flex-column mb-3 form-group topic-col">
 
                 <div class="form-group xs-12" style="width:100%;">
@@ -48,7 +59,7 @@
                                 :key="option.label"
                                 :value="option.value">{{ option.label }}</option>
                     </select>
-                    <label for="commentSort" :class="brand">Select a Topic</label>
+                    <label for="commentSort" :class="themeColor">Select a Topic</label>
                 </div>
             </div>
         </div>
@@ -56,18 +67,21 @@
         <forum-threads-table-item v-for="thread in pinnedThreads"
                                   :key="'pinned' + thread.id"
                                   :thread="thread"
+                                  :themeColor="themeColor"
                                   :brand="brand"
                                   v-if="!searching"></forum-threads-table-item>
 
         <forum-threads-table-item v-for="thread in threadsArray"
                                   :key="thread.id"
                                   :thread="thread"
+                                  :themeColor="themeColor"
                                   :brand="brand"
                                   v-if="!searching"></forum-threads-table-item>
 
         <forum-search-result v-for="item in searchResults"
                                 :key="item.id"
                                 :item="item"
+                                :themeColor="themeColor"
                                 :brand="brand"
                                 :term="searchInterface"
                                 v-if="searching"></forum-search-result>
@@ -75,7 +89,8 @@
         <div v-if="searching && searchResults.length === 0" class="flex flex-row content-table-row">
             <div class="flex flex-column pv-3 align-center">
                 <i v-if="loading"
-                   class="fas fa-spin fa-circle-notch text-recordeo"
+                   class="fas fa-spin fa-circle-notch"
+                   :class="themeTextClass"
                    style="font-size:32px;"></i>
                 <p v-else class="body font-italic">
                     No results were found matching that query, please try again.
@@ -103,10 +118,12 @@
     import ForumSearchResult from './_ForumSearchResult.vue';
     import Pagination from '../../components/Pagination.vue';
     import ClearableFilter from '../../components/ClearableFilter.vue';
-    import Requests from '../../assets/js/classes/requests';
+    import ForumService from '../../assets/js/services/forums';
     import * as QueryString from 'query-string';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'forum-threads-table',
         components: {
             'forum-threads-table-item': ForumThreadsTableItem,
@@ -128,7 +145,7 @@
                 default: () => 'recordeo'
             },
             threadCount: {
-                type: Number,
+                type: Number|String,
                 default: () => 0
             }
         },
@@ -257,7 +274,7 @@
             getSearchResults() {
                 this.loading = true;
 
-                Requests.getForumSearchResults(
+                ForumService.getForumSearchResults(
                         this.searchTerm,
                         null,
                         this.searchResultsPage,
@@ -271,7 +288,7 @@
             },
 
             getThreads() {
-                return Requests.getForumThreads()
+                return ForumService.getForumThreads()
                     .then(data => {
                         this.threadsArray = data;
                     });
@@ -354,5 +371,9 @@
         width: 50px;
         height: 50px;
         font-size: 20px;
+    }
+
+    .search-icon-col {
+        flex:0 0 50px;
     }
 </style>

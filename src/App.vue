@@ -8,6 +8,7 @@
              :class="{ 'active': menuActive }"
              class="shadow">
             <img class="logo" src="https://s3.amazonaws.com/musora-center/logos/vuesora.svg">
+            <p class="body dense font-bold text-secondary text-center">v{{ currentVersion }}</p>
             <hr>
 
             <nav-item routerLink="/"
@@ -26,7 +27,12 @@
                 Form Inputs
             </nav-item>
 
-            <h4 class="body font-bold">Vue Components</h4>
+            <h4 class="body font-bold">Components</h4>
+            <nav-item>
+                Modal
+            </nav-item>
+
+            <h4 class="body font-bold">Super Components</h4>
             <nav-item routerLink="/docs/media-element">
                 Media Element
             </nav-item>
@@ -50,6 +56,7 @@
 <script>
     import NavButton from './components/NavButton.vue';
     import NavItem from './components/NavItem.vue';
+    import {version} from '../package.json';
 
     export default {
         name: 'app',
@@ -65,6 +72,9 @@
         computed: {
             currentRoute(){
                 return this.$route.fullPath
+            },
+            currentVersion(){
+                return version;
             }
         },
         methods: {

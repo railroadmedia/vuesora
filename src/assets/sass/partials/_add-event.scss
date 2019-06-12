@@ -12,13 +12,12 @@
   z-index:10;
 
   .addeventatc, a {
-    background:#fff;
     transition:background .1s ease-in-out;
     will-change:background;
     outline:none;
 
     &:hover {
-      background:#f2f2f2;
+      background-color:#f2f2f2;
     }
 
     p {

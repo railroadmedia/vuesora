@@ -68,7 +68,7 @@
                 <div class="flex flex-column mb-1">
                     <div class="flex flex-row align-v-center">
                         <p class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                           :class="replying ? 'text-' + themeColor : 'text-grey-3'"
+                           :class="replying ? themeTextClass : 'text-grey-3'"
                            @click="replyToComment"
                            dusk="reply-button">
                             <i class="fas fa-reply"></i>
@@ -79,7 +79,7 @@
 
                         <p v-if="!isUsersPost"
                            class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                           :class="is_liked ? 'text-' + themeColor : 'text-grey-3'"
+                           :class="is_liked ? themeTextClass : 'text-grey-3'"
                            @click="likeComment"
                            dusk="like-button">
                             <i class="fas fa-thumbs-up"></i>
@@ -94,14 +94,16 @@
                            :data-open-modal="openModalString"
                            @click="openLikes">
                             <i class="fas fa-thumbs-up text-white likes-icon"
-                               :class="like_count > 0 ? ('bg-' + themeColor) : 'bg-grey-2'"></i> {{ like_count }}
+                               :class="like_count > 0 ? themeBgClass : 'bg-grey-2'"></i> {{ like_count }}
                         </p>
                     </div>
                 </div>
             </div>
 
-            <transition name="slide-fade">
-                <div class="flex flex-row comment-post mv-2" v-if="replying">
+            <transition name="slide-fade"
+                        enter-active-class="slide-fade-enter-active"
+                        leave-active-class="">
+                <div class="flex flex-row comment-post mv-2" v-show="replying">
                     <div class="flex flex-column avatar-column pr hide-xs-only">
                         <img :src="currentUser.avatar" class="rounded">
                     </div>
@@ -121,24 +123,27 @@
                                     @click="postReply"
                                     dusk="submit-reply">
                                 <span class="text-white short"
-                                      :class="'bg-' + themeColor">
+                                      :class="themeBgClass">
                                     Reply
                                 </span>
                             </button>
                         </div>
 
                         <div class="loading-reply flex-center" v-show="loading">
-                            <i class="fas fa-spinner fa-spin" :class="'text-' + themeColor"></i>
+                            <i class="fas fa-spinner fa-spin" :class="themeTextClass"></i>
                             <p class="x-tiny text-grey-3">loading...</p>
                         </div>
                     </div>
                 </div>
             </transition>
 
-            <transition-group name="slide-fade" tag="div">
+            <transition-group name="slide-fade"
+                              enter-active-class="slide-fade-enter-active"
+                              leave-active-class=""
+                              tag="div">
                 <comment-reply v-for="(reply, i) in replies"
                                v-if="i < 2 || showAllReplies"
-                               :key="i"
+                               :key="reply.id"
                                v-bind="reply"
                                :id="reply.id"
                                :brand="brand"
@@ -164,14 +169,16 @@
 </template>
 <script>
     import Toasts from '../../assets/js/classes/toasts';
-    import Requests from '../../assets/js/classes/requests';
-    import TextEditor from '../../components/TextEditor.vue';
+    import CommentService from '../../assets/js/services/comments';
+    import TextEditor from '../../components/TextEditor/TextEditor.vue';
     import CommentReply from './_CommentReply.vue';
     import xpMapper from '../../assets/js/classes/xp-mapper';
     import Utils from '../../assets/js/classes/utils';
-    import moment from 'moment';
+    import { DateTime } from 'luxon';
+    import ThemeClasses from "../../mixins/ThemeClasses";
 
     export default {
+        mixins: [ThemeClasses],
         name: 'comment-post',
         components: {
             'text-editor': TextEditor,
@@ -181,10 +188,6 @@
             brand: {
                 type: String,
                 default: () => ''
-            },
-            themeColor: {
-                type: String,
-                default: () => 'recordeo'
             },
             currentUser: {
                 type: Object,
@@ -273,21 +276,27 @@
         computed: {
             avatarClassObject() {
                 return {
-                    'subscriber': ['edge', 'lifetime', 'team'].indexOf(this.user.access_level) !== -1,
+                    'subscriber': ['edge', 'lifetime', 'team', 'guitar', 'piano'].indexOf(this.user.access_level) !== -1,
                     'edge': this.user.access_level === 'edge',
                     'pack': this.user.access_level === 'pack',
                     'team': this.user.access_level === 'team',
+                    'guitar': this.user.access_level === 'guitar',
+                    'piano': this.user.access_level === 'piano',
                     'lifetime': this.user.access_level === 'lifetime'
                 }
             },
 
             userExpValue() {
+                if(this.brand === 'guitareo'){
+                    return null;
+                }
+
                 return Utils.parseXpValue(this.user.xp);
             },
 
             userExpRank() {
                 if(this.user.access_level === 'team'){
-                    return 'Drumeo Team';
+                    return  this.brand + ' Team';
                 }
 
                 return xpMapper.getNearestValue(this.user.xp);
@@ -325,7 +334,7 @@
             },
 
             dateString() {
-                return moment.utc(this.created_on).local().fromNow();
+                return DateTime.fromSQL(this.created_on, { zone: 'UTC'}).toRelative();
             },
 
             isUsersPost() {
@@ -337,10 +346,6 @@
             },
 
             openModalString(){
-                if(this.brand !== 'drumeo'){
-                    return '';
-                }
-
                 return this.like_count > 0 ? 'likeUsersModal' : '';
             }
         },
@@ -356,7 +361,7 @@
                 if (this.reply.currentValue) {
                     this.loading = true;
 
-                    return Requests.postReply({
+                    return CommentService.postReply({
                         parent_id: this.id,
                         comment: this.reply.currentValue
                     })
@@ -367,7 +372,12 @@
                                 this.replyInterface = '';
                                 this.replying = false;
                                 this.$refs.textEditor.currentValue = '';
-                                Toasts.success('Reply successfully posted!');
+                                Toasts.push({
+                                    icon: 'happy',
+                                    title: 'Woohoo!',
+                                    themeColor: this.themeColor,
+                                    message: 'Thanks for your reply!'
+                                });
 
                                 this.replyPosted({data: thisComment});
                             }
@@ -399,9 +409,9 @@
                 const vm = this;
 
                 Toasts.confirm({
-                    text: 'Are you sure you want to delete this comment?',
+                    title: 'Are you sure you want to delete this comment?',
                     submitButton: {
-                        text: '<span class="bg-error text-white short">Delete</span>',
+                        text: '<span class="bg-error text-white">Delete</span>',
                         callback: () => {
                             vm.$emit('deleteComment', {
                                 id: vm.id
@@ -409,7 +419,7 @@
                         }
                     },
                     cancelButton: {
-                        text: '<span class="bg-dark inverted text-grey-3 short">Cancel</span>'
+                        text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
                     }
                 });
             },
@@ -452,8 +462,6 @@
                 setTimeout(() => {
                     commentId.blur();
                 }, 50);
-
-                Toasts.success('Comment Url Copied to Clipboard!')
             }
         },
         mounted(){
