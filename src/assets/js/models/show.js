@@ -11,7 +11,7 @@ export default class ShowDataMapper extends DataMapper {
 
         this.list.column_data = [
             DataMapper.mapDifficulty(this.post),
-            this.postDuration,
+            this.getPostDuration(),
             this.postPublisedOn
         ];
 
