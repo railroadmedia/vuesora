@@ -129,4 +129,4 @@ _Alternatively, you can choose to omit the `{ amount }` to give it a responsive 
 
 ## Typography
 
-For the sake of consistency, Vuesora has 4 standards for font sizes. Resize your browser to sample how they respond.
+For the sake of consistency, Vuesora has 5 standards for font sizes. Resize your browser to sample how they respond.
