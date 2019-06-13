@@ -34,14 +34,14 @@ up 100% of the viewports width.
 </div>
 ```
 
-Flex containers can then be created using the `.flex` class, this will create a container with the display: flex; 
+Flex containers can then be created using the `.flex` class, this will create a container with the `display: flex;` 
 property with the grow and shrink properties set to 1, and the flex basis at auto (including all children). 
 To control the flex direction either use the `.flex-row` or `.flex-column` classes.
 
 - `.flex-row` will make it's child content flow along the X-Axis
 - `.flex-column` will make it's child content flow along the Y-Axis
 - This means that the child containers will take up the amount of space specified in the flex-basis property 
-(on the axis of the parents' flex-direction), which is by default - auto
+(on the axis of the parents' flex-direction).
 
 ```html
 <div class="container">
@@ -58,6 +58,8 @@ To control the flex direction either use the `.flex-row` or `.flex-column` class
 
 In order to specify the `flex-basis` property we use the grid modifier classes, prepended by the breakpoint acronym, 
 and appended by the numerator (between 1 and 12), it looks something like this `.{ acronym }-{ numerator }`. 
+
+
 For example: the modifier class `.sm-10` specifies that the container will take up 10 out of 12 units or 83.33%, 
 starting at the small breakpoint. Keep in mind that flex containers with a modifier class will have the `flex-grow` and 
 `flex-shrink` properties set to 0. (This way they will always be the width/height specified in the modifier.)
