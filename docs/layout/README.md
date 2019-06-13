@@ -129,4 +129,48 @@ _Alternatively, you can choose to omit the `{ amount }` to give it a responsive 
 
 ## Typography
 
-For the sake of consistency, Vuesora has 5 standards for font sizes. Resize your browser to sample how they respond.
+### Fonts
+
+Vuesora's default fonts are as follows:
+
+| Font Style               | Font Name    
+|--------------------------|--------------
+| Sans-Serif               | Open Sans, Roboto Condensed    
+| Serif                    | Bree Serif, Times New Roman     
+| Monospace                | Courier New  
+
+### Font Sizes
+
+For the sake of consistency, Vuesora has 7 standards for font sizes. Font sizes are responsive.
+
+| Name            | class          | weight | xs     | md     | lg
+|-----------------|----------------|--------|--------|--------|-------
+| Display         | `.display`     | 700    | 32px   | 36px   | 40px
+| Heading         | `.heading`     | 700    | 24px   | 28px   | 32px
+| Subheading      | `.subheading`  | 600    | 20px   | 22px   | 24px
+| Title           | `.title`       | 600    | 18px   | 18px   | 20px
+| Body            | `.body`        | 400    | 16px   | 16px   | 16px
+| Tiny            | `.tiny`        | 400    | 13px   | 13px   | 13px
+| X-Tiny          | `.x-tiny`      | 400    | 10px   | 10px   | 10px
+
+### Helper Classes
+
+**You can also customize all Typography with various helper classes:**
+
+| Helper Class             | Description  
+|--------------------------|--------------
+| `.font-compressed`       | Line Height: 1.25em   
+| `.font-light`            | Font Weight: 300   
+| `.font-regular`          | Font Weight: 400   
+| `.font-bold`             | Font Weight: 700
+| `.font-underline`        | Underline
+| `.font-strike`           | Strikethrough
+| `.font-bold`             | Bold
+| `.font-italic`           | Italics
+| `.dense`                 | Roboto Condensed
+| `.uppercase`             | All characters capitalized
+| `.capitalize`            | First letter of every word capitalized
+| `.text-left`             | Left Align
+| `.text-right`            | Right Align
+| `.text-center`           | Center Align
+
