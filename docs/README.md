@@ -20,15 +20,15 @@ them into our projects code. Follow the steps below to set up your local develop
 ### Symlinking Vuesora
 
 Creating a symlink in NPM is as simple as hoisting the NPM package as a global package, and linking it in the project
-that uses it as a dependency. You can achieve that with the following commands.
+that uses it as a dependency. You can achieve that with the following steps:
 
-`cd /app/vuesora`
+1. `cd /app/vuesora`
 
-`npm link` - Wait for the command to finish
+2. `npm link`
 
-`cd /app/pianote`
+3. `cd /app/pianote`
 
-`npm link vuesora`
+4. `npm link vuesora`
 
 Alternatively, you can chain everything in one command.
 
@@ -50,29 +50,32 @@ Railenvironment Docker Container.**
 
 ---
 
-To publish the package run the following NPM commands:
+To publish the package:
 
-`npm version patch` - If your Railenvironment Docker Container has your git information, this should make a 
+1. `npm version patch` - If your Railenvironment Docker Container has your git information, this should make a 
 commit with a version tag
 
-Push the Vuesora repository and the subsequent tag that was created
+2. Push the Vuesora repository and the subsequent tag that was created
 
-`npm publish`
+3. `npm publish`
 
-Move into application directory
+4. Move into application directory
 
-`npm install --save vuesora` - This will update the applications package.json with the newest version of Vuesora
+5. `npm install --save vuesora` - This will update the applications package.json with the newest version of Vuesora
 
-`npm run prod` - You are now ready to deploy
+6. `npm run prod` - You are now ready to deploy
 
 ### Symlinking Bladesora
 
-If you are trying to build out views for an application and you get a laravel error saying a bladesora view cannot 
-be found, you likely don't have the most recent version installed. Since that version changes constantly, for 
-local development it's best to set up a symbolic link between the projects. Creating a symbolic link with a PHP package
-should be done with the Railenvironment CLI
+Bladesora is a library of shared blade templates for Musora applications. They are static components
+without any javascript logic. Bladesora helps keeps the applications DRY by keeping the same directives
+used across all applications in a central repository. Creating a symbolic link with a PHP package should be done 
+with the Railenvironment CLI
 
 `r symlink bladesora pianote`
+
+_Note that at the time of writing this. Bladesora is still an integral part of the application logic, but there are 
+plans to deprecate it in the future._
 
 ### Publishing Bladesora
 
