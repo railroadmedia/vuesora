@@ -1,4 +1,4 @@
-# Layout & Style
+# Layout & Styles
 
 ## Grid System
 
@@ -10,11 +10,11 @@ The modifier classes represent a fraction of the pages width over 12.
 
 | Breakpoint      | Acronym | Type                      | Range
 |-----------------|---------|---------------------------|-------
-| Extra Small     | xs      | small to large handset    | < 640px
-| Small           | sm      | small to medium tablet    | 641px - 1025px
-| Medium          | md      | large tablet to laptop    | 1026px - 1240px
-| Large           | lg      | desktop                   | 1241px - 1940px
-| Extra Large     | xl      | Hi-Res and Ultrawide      | > 1940px
+| Extra Small     | `xs`    | Small to large handset    | < 640px
+| Small           | `sm`    | Small to medium tablet    | 641px - 1025px
+| Medium          | `md`    | Large tablet to laptop    | 1026px - 1240px
+| Large           | `lg`    | Desktop (1080p)           | 1241px - 1940px
+| Extra Large     | `xl`    | Hi-res and ultrawide      | > 1940px
 
 ### Usage
 
@@ -145,7 +145,7 @@ Vuesora's default fonts are as follows:
 
 For the sake of consistency, Vuesora has 7 standards for font sizes. Font sizes are responsive.
 
-| Name            | class          | weight | xs     | md     | lg
+| Name            | Class          | Weight | xs     | md     | lg
 |-----------------|----------------|--------|--------|--------|-------
 | Display         | `.display`     | 700    | 32px   | 36px   | 40px
 | Heading         | `.heading`     | 700    | 24px   | 28px   | 32px
@@ -167,7 +167,6 @@ For the sake of consistency, Vuesora has 7 standards for font sizes. Font sizes 
 | `.font-bold`             | Font Weight: 700
 | `.font-underline`        | Underline
 | `.font-strike`           | Strikethrough
-| `.font-bold`             | Bold
 | `.font-italic`           | Italics
 | `.dense`                 | Roboto Condensed
 | `.uppercase`             | All characters capitalized

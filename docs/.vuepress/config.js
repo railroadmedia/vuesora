@@ -9,13 +9,14 @@ module.exports = {
     themeConfig: {
         logo: '/logo.png',
         displayAllHeaders: true,
+        repo: 'railroadmedia/vuesora',
         nav: [
             {
-                text: 'Project Setup',
+                text: 'Usage Guide',
                 link: '/'
             },
             {
-                text: 'Layout & Style',
+                text: 'Layout & Styles',
                 link: '/layout/'
             },
             {

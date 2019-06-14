@@ -23,7 +23,7 @@ Aswell as the guide lines listed below:
 ### Component Structure
 
 All components should follow the same property structure. Try to tell a top down story with your component, in the 
-order ithappens.
+order it happens.
 
 All properties should ideally be in the order displayed:
 
@@ -74,6 +74,6 @@ props: {
 }
 ```
 
-## CSS
+## CSS/SASS
 
 _Coming Soon_
