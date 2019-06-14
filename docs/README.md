@@ -109,11 +109,24 @@ Your applications assets directory should look something like:
 
 #### Javascript
 
-```javascript
-// Classes/Services
-import ContentService from 'vuesora/src/assets/js/services/content';
+Vuesora has 2 styles of Javascript modules. 
 
-// IIFEs
+1. Classes and Services are referenced by a constant:
+
+```javascript
+import ContentService from 'vuesora/src/assets/js/services/content';
+import VideoTracker from 'vuesora/src/assets/js/classes/video-tracker';
+
+const content = await ContentService.getContentById('1234');
+const videoTracker = new VideoTracker();
+```
+
+2. Functions that are exported as IIFE's _(Immediately Invoked Function Expression)_, with the intention to invoke 
+immediately at runtime:
+
+_Note that in a world of modules, IIFEs should almost never have to be used, these are slowly being faded out._
+
+```javascript
 import 'vuesora/src/assets/js/functions/navigation';
 ```
 
@@ -237,7 +250,6 @@ Extend the layout in any of your views:
 @section('content')
     <!-- ... -->
 @endsection
-
 ```
 
 ## Advanced Workflows
