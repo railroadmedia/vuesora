@@ -38,6 +38,9 @@ Alternatively, you can bind a keyboard shortcut to run this external tool.
 Find ESLint Fix (or whatever you named your external tool configuration) under External Tools. 
 Now you can bind a key to run ESLint fix just like you would with any of the built-in features.
 
+_**Note that at the time of writing this the majority of the repository does not follow these rules.
+Take the time to auto-format files that are setting the linter off like crazy.**_
+
 ## Vue
 
 It is recommended that all developers follow the official [Vue Style Guide](https://vuejs.org/v2/style-guide/).
@@ -47,6 +50,9 @@ It is recommended that all developers follow the official [Vue Style Guide](http
 Just like Javascript, Vuesora uses a custom ESLint config. It's based off of [eslint-plugin-vue](https://github.com/vuejs/eslint-plugin-vue)
 
 The steps above will already set everything up for you.
+
+_**Note that at the time of writing this the majority of the repository does not follow these rules.
+Take the time to auto-format files that are setting the linter off like crazy.**_
 
 ## CSS/SASS
 

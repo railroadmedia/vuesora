@@ -1,116 +1,122 @@
 <template>
-    <div class="player-progress"
-         @click.stop
-         @drag.prevent.stop
-         @dragstart.prevent.stop
-         @dragenter.prevent.stop>
-        <div class="progress-tooltip tiny text-white"
-             :style="toolTipOffset">
+    <div
+        class="player-progress"
+        @click.stop
+        @drag.prevent.stop
+        @dragstart.prevent.stop
+        @dragenter.prevent.stop
+    >
+        <div
+            class="progress-tooltip tiny text-white"
+            :style="toolTipOffset"
+        >
             {{ toolTipValue }}
         </div>
 
         <div class="progress-rail">
-            <div class="progress-fill"
-                 :class="themeBgClass"
-                 :style="progressTransforms"></div>
+            <div
+                class="progress-fill"
+                :class="themeBgClass"
+                :style="progressTransforms"
+            ></div>
         </div>
     </div>
 </template>
 <script>
-    import PlayerUtils from './player-utils';
-    import ThemeClasses from "../../mixins/ThemeClasses";
+import PlayerUtils from './player-utils';
+import ThemeClasses from '../../mixins/ThemeClasses';
 
-    export default {
-        mixins: [ThemeClasses],
-        name: 'player-progress',
-        props: {
-            currentProgress: {
-                type: Number,
-                default: () => 0
-            },
-            playerWidth: {
-                type: Number,
-                default: () => 0
-            },
-            currentMouseX: {
-                type: Number,
-                default: () => 0
-            },
-            mousedown: {
-                type: Boolean,
-                default: () => false
-            },
-            totalDuration: {
-                type: Number,
-                default: () => 0
-            }
+export default {
+    name: 'PlayerProgress',
+    mixins: [ThemeClasses],
+    props: {
+        currentProgress: {
+            type: Number,
+            default: () => 0,
         },
-        data(){
+        playerWidth: {
+            type: Number,
+            default: () => 0,
+        },
+        currentMouseX: {
+            type: Number,
+            default: () => 0,
+        },
+        mousedown: {
+            type: Boolean,
+            default: () => false,
+        },
+        totalDuration: {
+            type: Number,
+            default: () => 0,
+        },
+    },
+    data() {
+        return {
+            toolTipInterval: null,
+        };
+    },
+    computed: {
+        progressTransforms() {
+            if (this.mousedown) {
+                return {
+                    transform: `translateX(-${100 - this.currentMouseX}%)`,
+                    '-webkit-transform': `translateX(-${100 - this.currentMouseX}%)`,
+                };
+            }
+
             return {
-                toolTipInterval: null,
-            }
+                transform: `translateX(-${100 - this.currentProgress}%)`,
+                '-webkit-transform': `translateX(-${100 - this.currentProgress}%)`,
+            };
         },
-        computed: {
-            progressTransforms(){
-                if(this.mousedown){
-                    return {
-                        'transform': 'translateX(-' + (100 - this.currentMouseX) + '%)',
-                        '-webkit-transform': 'translateX(-' + (100 - this.currentMouseX) + '%)',
-                    }
-                }
 
-                return {
-                    'transform': 'translateX(-' + (100 - this.currentProgress) + '%)',
-                    '-webkit-transform': 'translateX(-' + (100 - this.currentProgress) + '%)',
-                }
+        currentOffsetLeft: {
+            cache: false,
+            get() {
+                return document.querySelector('[data-vjs-player]').parentElement.offsetLeft;
             },
+        },
 
-            currentOffsetLeft: {
-                cache: false,
-                get(){
-                    return document.querySelector('[data-vjs-player]').parentElement.offsetLeft;
-                }
-            },
+        toolTipOffset() {
+            let offset = this.currentMouseX;
 
-            toolTipOffset() {
-                let offset = this.currentMouseX;
-
-                if (offset < 25) {
-                    offset = 25;
-                } else if (offset > (this.playerWidth - 25)) {
-                    offset = this.playerWidth - 25;
-                }
-
-                return {
-                    'transform': 'translateX(' + offset + 'px)',
-                    '-webkit-transform': 'translateX(' + offset + 'px)',
-                };
-            },
-
-            toolTipValue(){
-                return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
+            if (offset < 25) {
+                offset = 25;
+            } else if (offset > (this.playerWidth - 25)) {
+                offset = this.playerWidth - 25;
             }
+
+            return {
+                transform: `translateX(${offset}px)`,
+                '-webkit-transform': `translateX(${offset}px)`,
+            };
         },
-        methods: {
-            getToolTipOffset(){
-                let offset = this.currentMouseX;
 
-                if (offset < 25) {
-                    offset = 25;
-                } else if (offset > (this.playerWidth - 25)) {
-                    offset = this.playerWidth - 25;
-                }
+        toolTipValue() {
+            return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
+        },
+    },
+    mounted() {
+    },
+    beforeDestroy() {
+        clearInterval(this.toolTipInterval);
+    },
+    methods: {
+        getToolTipOffset() {
+            let offset = this.currentMouseX;
 
-                this.toolTipOffset = {
-                    'transform': 'translateX(' + offset + 'px)',
-                    '-webkit-transform': 'translateX(' + offset + 'px)',
-                };
+            if (offset < 25) {
+                offset = 25;
+            } else if (offset > (this.playerWidth - 25)) {
+                offset = this.playerWidth - 25;
             }
+
+            this.toolTipOffset = {
+                transform: `translateX(${offset}px)`,
+                '-webkit-transform': `translateX(${offset}px)`,
+            };
         },
-        mounted(){
-        },
-        beforeDestroy() {
-            clearInterval(this.toolTipInterval);
-        }
-    }
+    },
+};
 </script>

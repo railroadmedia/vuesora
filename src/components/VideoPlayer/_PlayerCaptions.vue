@@ -4,16 +4,20 @@
             <div class="flex flex-row">
                 <div class="flex flex-column">
                     <ul class="list-style-none body text-right dense font-bold">
-                        <li v-for="caption in captionOptions"
+                        <li
+                            v-for="caption in captionOptions"
                             :key="caption.language"
                             class="pa-1 hover-bg-grey-4 pointer relative"
                             :class="[{ 'selected-caption': isSelected(caption) }, isSelected(caption) ? themeTextClass : '']"
-                            @click="selectCaptionHandler(caption)">
+                            @click="selectCaptionHandler(caption)"
+                        >
                             {{ caption.label }}
                         </li>
-                        <li class="pa-1 hover-bg-grey-4 pointer relative"
-                            :class="noCaptions ? [this.themeTextClass, 'selected-caption'] : ''"
-                            @click="selectCaptionHandler({})">
+                        <li
+                            class="pa-1 hover-bg-grey-4 pointer relative"
+                            :class="noCaptions ? [themeTextClass, 'selected-caption'] : ''"
+                            @click="selectCaptionHandler({})"
+                        >
                             Off
                         </li>
                     </ul>
@@ -24,42 +28,42 @@
 </template>
 
 <script>
-    import ThemeClasses from "../../mixins/ThemeClasses";
+import ThemeClasses from '../../mixins/ThemeClasses';
 
-    export default {
-        mixins: [ThemeClasses],
-        name: 'player-captions',
-        props: {
-            themeColor: {
-                type: String,
-                default: () => 'drumeo',
-            },
-
-            captionOptions: {
-                type: Array,
-                default: () => []
-            },
-
-            currentCaptions: {
-                type: String,
-                default: () => null
-            }
+export default {
+    name: 'PlayerCaptions',
+    mixins: [ThemeClasses],
+    props: {
+        themeColor: {
+            type: String,
+            default: () => 'drumeo',
         },
 
-        computed: {
-            noCaptions(){
-                return this.currentCaptions === null;
-            }
+        captionOptions: {
+            type: Array,
+            default: () => [],
         },
 
-        methods: {
-            isSelected(caption){
-                return caption.language === this.currentCaptions;
-            },
+        currentCaptions: {
+            type: String,
+            default: () => null,
+        },
+    },
 
-            selectCaptionHandler(caption){
-                this.$emit('captionsSelected', caption);
-            },
-        }
-    }
+    computed: {
+        noCaptions() {
+            return this.currentCaptions === null;
+        },
+    },
+
+    methods: {
+        isSelected(caption) {
+            return caption.language === this.currentCaptions;
+        },
+
+        selectCaptionHandler(caption) {
+            this.$emit('captionsSelected', caption);
+        },
+    },
+};
 </script>
