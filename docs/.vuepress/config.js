@@ -1,8 +1,6 @@
-const {version} = require('../../package.json');
-
 module.exports = {
-    title: `Vuesora v${version}`,
-    dest: 'dist',
+    title: 'Vuesora',
+    base: '/vuesora/',
     description: 'A custom front-end framework and Vue component library for the Musora member\'s area',
     head: [
         ['link', { rel: 'icon', href: '/logo.png' }]
@@ -10,15 +8,21 @@ module.exports = {
     evergreen: true,
     themeConfig: {
         logo: '/logo.png',
+        displayAllHeaders: true,
+        repo: 'railroadmedia/vuesora',
         nav: [
             {
-                text: 'Project Setup',
+                text: 'Usage Guide',
                 link: '/'
             },
             {
-                text: 'Layout & Style',
+                text: 'Layout & Styles',
                 link: '/layout/'
-            }
+            },
+            {
+                text: 'Style Guide',
+                link: '/style-guide/'
+            },
         ],
         sidebar: 'auto',
         lastUpdated: 'Last Updated',
