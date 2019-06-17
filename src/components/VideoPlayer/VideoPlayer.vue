@@ -21,10 +21,12 @@
                 <table class="dense">
                     <thead class="body font-bold">
                         <tr>
-                            <td width="100">
+                            <td>
                                 Key
                             </td>
-                            <td>Action</td>
+                            <td>
+                                Action
+                            </td>
                         </tr>
                     </thead>
                     <tbody class="tiny">
@@ -276,7 +278,7 @@
                             v-if="isChromeCastSupported"
                             :theme-color="themeColor"
                             title="Chromecast"
-                            :active="this.chromeCast && this.chromeCast.Connected"
+                            :active="chromeCast && chromeCast.Connected"
                             @click.stop.native="enableChromeCast"
                         >
                             <i class="fab fa-chromecast"></i>
@@ -665,7 +667,7 @@ export default {
             });
         }
 
-        this.$refs.player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', (event) => {
+        this.$refs.player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
             this.isAirplayConnected = !this.isAirplayConnected;
         });
     },
