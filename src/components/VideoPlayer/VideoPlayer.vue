@@ -505,7 +505,7 @@ export default {
                 const tracks = this.videojsInstance ? this.videojsInstance.remoteTextTracks() : [];
                 const tracksMap = [];
 
-                for (let i = 0; i < tracks.length; i++) {
+                for (let i = 0; i < tracks.length; i += 1) {
                     if (tracks[i].kind === 'captions') {
                         tracksMap.push({
                             language: tracks[i].language,
@@ -810,7 +810,7 @@ export default {
             const tracks = this.videojsInstance.remoteTextTracks();
             let foundCaptions;
 
-            for (let i = 0; i < tracks.length; i++) {
+            for (let i = 0; i < tracks.length; i += 1) {
                 if (tracks[i].kind === 'captions' && tracks[i].language === payload.language) {
                     tracks[i].mode = 'showing';
                     foundCaptions = tracks[i].language;
