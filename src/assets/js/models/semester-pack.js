@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class SemesterPackDataMapper extends DataMapper {
+export default class SemesterPackContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

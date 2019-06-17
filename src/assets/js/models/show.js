@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class ShowDataMapper extends DataMapper {
+export default class ShowContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
@@ -10,7 +10,7 @@ export default class ShowDataMapper extends DataMapper {
         this.card.color_title = this.postInstructor;
 
         this.list.column_data = [
-            DataMapper.mapDifficulty(this.post),
+            ContentModel.mapDifficulty(this.post),
             this.getPostDuration(),
             this.postPublisedOn
         ];

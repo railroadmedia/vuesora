@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class PackBundleLessonDataMapper extends DataMapper {
+export default class PackBundleLessonContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
