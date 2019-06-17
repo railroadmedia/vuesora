@@ -1,9 +1,12 @@
 {
-  "extends": "airbnb-base",
+  "extends": ["plugin:vue/recommended", "airbnb-base"],
   "env": {
     "browser": true
   },
   "rules": {
-    "indent": ["error", 4]
+    "indent": ["error", 4],
+    "vue/html-indent": ["error", 4],
+    "no-underscore-dangle": "off",
+    "vue/html-self-closing": "off"
   }
 }

@@ -40,62 +40,13 @@ Now you can bind a key to run ESLint fix just like you would with any of the bui
 
 ## Vue
 
-It is recommended that all developers follow the official [Vue Style Guide](https://vuejs.org/v2/style-guide/). 
-Aswell as the guide lines listed below:
+It is recommended that all developers follow the official [Vue Style Guide](https://vuejs.org/v2/style-guide/).
 
-### Component Structure
+### ESLint Configuration
 
-All components should follow the same property structure. Try to tell a top down story with your component, in the 
-order it happens.
+Just like Javascript, Vuesora uses a custom ESLint config. It's based off of [eslint-plugin-vue](https://github.com/vuejs/eslint-plugin-vue)
 
-All properties should ideally be in the order displayed:
-
-```javascript
-export default {
-    mixins,
-    name,
-    beforeCreate() {},
-    created() {},
-    components: {},
-    props: {},
-    data() {},
-    computed: {},
-    watchers: {},
-    methods: {},
-    beforeMount() {},
-    mounted() {},
-    beforeDestroy() {},
-}
-```
-
-### Component Names
-
-All component names must be **kebab-case**
-
-```javascript
-export default {
-    name: 'sample-component',
-    // ...
-}
-```
-```html
-<sample-component>
-    ...
-</sample-component>
-```
-
-### Prop Definitions
-
-Always define props with a type and a default if you can.
-
-```javascript
-props: {
-    sampleProp: {
-        type: String,
-        default: () => 'sample prop'
-    }
-}
-```
+The steps above will already set everything up for you.
 
 ## CSS/SASS
 
