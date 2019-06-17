@@ -1,6 +1,6 @@
 import ContentModel from './_default';
 
-export default class LearningPathPartModel extends ContentModel {
+export default class LearningPathPartContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

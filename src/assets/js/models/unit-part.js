@@ -1,6 +1,6 @@
 import ContentModel from './_default';
 
-export default class UnitPartModel extends ContentModel {
+export default class UnitPartContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

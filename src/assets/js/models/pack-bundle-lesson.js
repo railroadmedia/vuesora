@@ -1,6 +1,6 @@
 import ContentModel from './_default';
 
-export default class PackBundleLessonModel extends ContentModel {
+export default class PackBundleLessonContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

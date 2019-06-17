@@ -1,6 +1,6 @@
 import ContentModel from './_default';
 
-export default class CoursePartModel extends ContentModel {
+export default class CoursePartContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
@@ -16,7 +16,7 @@ export default class CoursePartModel extends ContentModel {
             this.card.color_title = this.getTypeWithIcon();
 
             this.list.column_data = [
-                this.getPostDuration()
+                this.postDuration
             ];
         }
     }

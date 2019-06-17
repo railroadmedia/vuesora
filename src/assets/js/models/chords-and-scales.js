@@ -1,6 +1,6 @@
 import ContentModel from './_default';
 
-export default class ChordsAndScalesModel extends ContentModel {
+export default class ChordsAndScalesContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
@@ -10,7 +10,7 @@ export default class ChordsAndScalesModel extends ContentModel {
         this.card.color_title = this.postType;
         this.card.grey_title = this.post['chord_or_scale'];
 
-        this.list.show_numbers = true;
+        this.list.show_numbers = true,
         this.list.column_data = [
             this.getPostDuration(),
             this.postPublisedOn,

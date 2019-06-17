@@ -1,6 +1,6 @@
 import ContentModel from './_default';
 
-export default class StudentFocusModel extends ContentModel {
+export default class StudentFocusContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

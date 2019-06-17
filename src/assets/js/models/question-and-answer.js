@@ -1,6 +1,6 @@
 import ContentModel from './_default';
 
-export default class QnaModel extends ContentModel {
+export default class QnaContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

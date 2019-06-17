@@ -1,6 +1,6 @@
 import ContentModel from './_default';
 
-export default class RudimentModel extends ContentModel {
+export default class RudimentContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
