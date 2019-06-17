@@ -6,11 +6,17 @@
     "name": "Curtis Conway",
     "email": "curtis@drumeo.com"
   },
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/railroadmedia/vuesora.git"
+  },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs; chmod 777 -R ./"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^1.0.6",
@@ -46,13 +52,12 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "cypress-vue-unit-test": "^1.11.0",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.21"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/railroadmedia/vuesora.git"
+    "vue-template-compiler": "^2.5.21",
+    "vuepress": "^1.0.1"
   }
 }
