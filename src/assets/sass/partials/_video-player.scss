@@ -137,18 +137,29 @@
   //transition:transform .1s ease-in-out;
 }
 
-.progress-rail, .volume-rail {
+.progress-rail,
+.volume-rail {
   width:100%;
   height:3px;
   background:#e4e4e4;
   transition:height .1s ease-in-out;
   border-radius:3px;
+  position:relative;
   overflow:hidden;
 }
 
-.progress-fill, .volume-fill {
+.progress-fill,
+.volume-fill,
+.buffer-fill {
   width:100%;
   height:105%;
+}
+
+.buffer-fill {
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:.6;
 }
 
 .progress-fill {

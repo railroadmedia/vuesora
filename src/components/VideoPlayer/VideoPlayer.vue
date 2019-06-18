@@ -200,7 +200,6 @@
             playsinline
             crossorigin="anonymous"
             :poster="poster"
-            preload="auto"
         ></video>
 
         <div
@@ -240,6 +239,7 @@
                         :player-width="playerWidth"
                         :current-mouse-x="currentMousePosition.x"
                         :total-duration="totalDuration"
+                        :buffered-percent="bufferedPercent"
                         :mousedown="mousedown"
                         data-cy="progress-rail"
                         @mousedown.stop.native="triggerMouseDown"
@@ -520,6 +520,13 @@ export default {
             },
         },
 
+        bufferedPercent: {
+            cache: false,
+            get() {
+                return this.videojsInstance ? this.videojsInstance.bufferedPercent() : 0;
+            },
+        },
+
         canPlayPause() {
             if (!this.isPlaying) {
                 return true;
@@ -631,7 +638,9 @@ export default {
         document.addEventListener('mouseup', (event) => {
             if (event.button === 0) {
                 if (this.mousedown) {
-                    const timeToSeekTo = this.totalDuration * (this.currentMouseX / 100);
+                    const timeToSeekTo = this.totalDuration * (
+                        this.currentMousePosition.x / this.playerWidth
+                    );
                     this.seek(timeToSeekTo);
                 }
 
@@ -697,6 +706,8 @@ export default {
             const _time = time < 0 ? 0 : time;
             this.currentTime = _time;
             this.videojsInstance.pause();
+
+            console.log(this.videojsInstance.bufferedPercent());
 
             if (this.isChromeCastConnected) {
                 this.chromeCast.seek(_time);

@@ -19,6 +19,10 @@
                 :class="themeBgClass"
                 :style="progressTransforms"
             ></div>
+            <div
+                class="buffer-fill bg-grey-3"
+                :style="bufferTransforms"
+            ></div>
         </div>
     </div>
 </template>
@@ -50,6 +54,10 @@ export default {
             type: Number,
             default: () => 0,
         },
+        bufferedPercent: {
+            type: Number,
+            default: () => 0,
+        },
     },
     data() {
         return {
@@ -60,14 +68,21 @@ export default {
         progressTransforms() {
             if (this.mousedown) {
                 return {
-                    transform: `translateX(-${100 - this.currentMouseX}%)`,
-                    '-webkit-transform': `translateX(-${100 - this.currentMouseX}%)`,
+                    transform: `translateX(-${(100 - (this.currentMouseX / this.playerWidth) * 100)}%)`,
+                    '-webkit-transform': `translateX(-${100 - ((this.currentMouseX / this.playerWidth) * 100)}%)`,
                 };
             }
 
             return {
                 transform: `translateX(-${100 - this.currentProgress}%)`,
                 '-webkit-transform': `translateX(-${100 - this.currentProgress}%)`,
+            };
+        },
+
+        bufferTransforms() {
+            return {
+                transform: `translateX(-${100 - (this.bufferedPercent * 100)}%)`,
+                '-webkit-transform': `translateX(-${100 - (this.bufferedPercent * 100)}%)`,
             };
         },
 
@@ -95,27 +110,6 @@ export default {
 
         toolTipValue() {
             return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
-        },
-    },
-    mounted() {
-    },
-    beforeDestroy() {
-        clearInterval(this.toolTipInterval);
-    },
-    methods: {
-        getToolTipOffset() {
-            let offset = this.currentMouseX;
-
-            if (offset < 25) {
-                offset = 25;
-            } else if (offset > (this.playerWidth - 25)) {
-                offset = this.playerWidth - 25;
-            }
-
-            this.toolTipOffset = {
-                transform: `translateX(${offset}px)`,
-                '-webkit-transform': `translateX(${offset}px)`,
-            };
         },
     },
 };
