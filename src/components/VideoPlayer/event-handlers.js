@@ -60,6 +60,11 @@ export default {
 
                 error: (event) => {
                     console.log(event);
+
+                    if (event.code === 4) {
+                        this.noSourcesError = true;
+                        this.loading = false;
+                    }
                 },
 
                 useractive: () => {

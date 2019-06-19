@@ -325,8 +325,7 @@
   width:200px;
   z-index:100;
 }
-
-.keyboard-shortcuts {
+.keyboard-shortcuts, .player-error {
   z-index:26;
   position:absolute;
   top:$gutterWidth / 2;
@@ -349,3 +348,8 @@
     @include flexCenter();
   }
 }
+
+.player-error {
+  width:auto;
+}
+
