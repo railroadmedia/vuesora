@@ -7,128 +7,10 @@
         @mousemove="trackMousePosition"
     >
         <transition name="grow-fade">
-            <div
+            <PlayerShortcuts
                 v-show="keyboardShortcuts"
-                class="keyboard-shortcuts bg-white corners-3 shadow pa-1"
-            >
-                <span
-                    class="close-shortcuts body text-grey-3 hover-text-black pointer"
-                    @click="keyboardShortcuts = false"
-                >
-                    <i class="fas fa-times"></i>
-                </span>
-
-                <table class="dense">
-                    <thead class="body font-bold">
-                        <tr>
-                            <td>
-                                Key
-                            </td>
-                            <td>
-                                Action
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody class="tiny">
-                        <tr>
-                            <td class="font-bold">
-                                Spacebar
-                            </td>
-                            <td class="text-grey-3">
-                                Play/Pause
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                Up Arrow
-                            </td>
-                            <td class="text-grey-3">
-                                Volume up
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                Down Arrow
-                            </td>
-                            <td class="text-grey-3">
-                                Volume down
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                Left Arrow
-                            </td>
-                            <td class="text-grey-3">
-                                Rewind 10 seconds
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                Right Arrow
-                            </td>
-                            <td class="text-grey-3">
-                                Forward 10 seconds
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                Numbers 0-9
-                            </td>
-                            <td class="text-grey-3">
-                                Percentage of the video to seek to (1 = 10% etc..)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                Home
-                            </td>
-                            <td class="text-grey-3">
-                                Seek to the beginning
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                End
-                            </td>
-                            <td class="text-grey-3">
-                                Seek to the end
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                F
-                            </td>
-                            <td class="text-grey-3">
-                                Toggle fullscreen
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                M
-                            </td>
-                            <td class="text-grey-3">
-                                Mute
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                -
-                            </td>
-                            <td class="text-grey-3">
-                                Slow down playback rate
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">
-                                +
-                            </td>
-                            <td class="text-grey-3">
-                                Speed up playback rate
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                @close="keyboardShortcuts = false"
+            />
         </transition>
 
         <transition name="grow-fade">
@@ -156,7 +38,7 @@
                 class="player-overlay"
                 @click.stop.prevent
             >
-                <loading-animation :theme-color="themeColor " />
+                <LoadingAnimation :theme-color="themeColor " />
             </div>
         </transition>
 
@@ -210,36 +92,37 @@
             <div class="controls flex flex-column noselect">
                 <!--  TOP ROW  -->
                 <div class="flex flex-row">
-                    <player-button
+                    <PlayerButton
                         :theme-color="themeColor"
                         title="Rewind 10 Seconds (Left Arrow)"
                         data-cy="rewind-button"
                         @click.stop.native="seek(currentTime - 10)"
                     >
                         <i class="fas fa-undo"></i>
-                    </player-button>
+                    </PlayerButton>
 
                     <div class="flex flex-column spacer"></div>
 
-                    <player-button
+                    <PlayerButton
                         :theme-color="themeColor"
                         title="Forward 10 Seconds (Right Arrow)"
                         data-cy="fast-forward-button"
                         @click.stop.native="seek(currentTime + 10)"
                     >
                         <i class="fas fa-redo"></i>
-                    </player-button>
+                    </PlayerButton>
                 </div>
 
                 <!--  MIDDLE ROW  -->
                 <div class="flex flex-row">
-                    <player-progress
+                    <PlayerProgress
                         :theme-color="themeColor"
                         :current-progress="currentProgress"
                         :player-width="playerWidth"
                         :current-mouse-x="currentMousePosition.x"
                         :total-duration="totalDuration"
                         :buffered-percent="bufferedPercent"
+                        :buffered-time-ranges="parsedTimeRanges"
                         :mousedown="mousedown"
                         data-cy="progress-rail"
                         @mousedown.stop.native="triggerMouseDown"
@@ -248,7 +131,7 @@
 
                 <!--  BOTTOM ROW  -->
                 <div class="flex flex-row">
-                    <player-button
+                    <PlayerButton
                         :theme-color="themeColor"
                         :title="isPlaying ? 'Pause (Spacebar)' : 'Play (Spacebar)'"
                         data-cy="play-pause-button"
@@ -258,7 +141,7 @@
                             class="fas"
                             :class="isPlaying ? 'fa-pause' : 'fa-play'"
                         ></i>
-                    </player-button>
+                    </PlayerButton>
 
                     <div class="flex flex-column text-white body align-v-center noselect flex-auto">
                         {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
@@ -266,7 +149,7 @@
 
                     <div class="flex flex-column spacer"></div>
 
-                    <player-volume
+                    <PlayerVolume
                         v-if="!isMobile"
                         :theme-color="themeColor"
                         :current-volume="currentVolume"
@@ -274,7 +157,7 @@
                     />
 
                     <transition name="grow-fade">
-                        <player-button
+                        <PlayerButton
                             v-if="isChromeCastSupported"
                             :theme-color="themeColor"
                             title="Chromecast"
@@ -282,11 +165,11 @@
                             @click.stop.native="enableChromeCast"
                         >
                             <i class="fab fa-chromecast"></i>
-                        </player-button>
+                        </PlayerButton>
                     </transition>
 
                     <transition name="grow-fade">
-                        <player-button
+                        <PlayerButton
                             v-if="isAirplaySupported"
                             :theme-color="themeColor"
                             title="Apple Airplay"
@@ -294,35 +177,35 @@
                             @click.stop.native="enableAirplay"
                         >
                             <i class="icon-airplay"></i>
-                        </player-button>
+                        </PlayerButton>
                     </transition>
 
-                    <player-button
+                    <PlayerButton
                         v-if="captions.length > 0"
                         :theme-color="themeColor"
                         :active="currentCaptions != null"
                         @click.stop.native="toggleCaptionsDrawer"
                     >
                         <i class="fas fa-closed-captioning"></i>
-                    </player-button>
+                    </PlayerButton>
 
-                    <player-button
+                    <PlayerButton
                         :theme-color="themeColor"
                         title="Settings"
                         :disabled="isChromeCastConnected"
                         @click.stop.native="toggleSettingsDrawer"
                     >
                         <i class="fas fa-cog"></i>
-                    </player-button>
+                    </PlayerButton>
 
-                    <player-button
+                    <PlayerButton
                         :theme-color="themeColor"
                         title="Fullscreen (F)"
                         :disabled="isChromeCastConnected"
                         @click.stop.native="fullscreen"
                     >
                         <i class="fas fa-expand"></i>
-                    </player-button>
+                    </PlayerButton>
                 </div>
             </div>
         </div>
@@ -334,7 +217,7 @@
         ></div>
 
         <transition :name="isMobile ? 'show-from-bottom' : 'grow-fade'">
-            <player-settings
+            <PlayerSettings
                 v-show="settingsDrawer"
                 :drawer="settingsDrawer"
                 :theme-color="themeColor"
@@ -349,7 +232,7 @@
         </transition>
 
         <transition :name="isMobile ? 'show-from-bottom' : 'grow-fade'">
-            <player-captions
+            <PlayerCaptions
                 v-show="captionsDrawer"
                 :theme-color="themeColor"
                 :caption-options="captionOptions"
@@ -373,16 +256,18 @@ import PlayerSettings from './_PlayerSettings.vue';
 import PlayerCaptions from './_PlayerCaptions.vue';
 import EventHandlers from './event-handlers';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
+import PlayerShortcuts from './_PlayerShortcuts.vue';
 
 export default {
     name: 'VideoPlayer',
     components: {
-        'player-button': PlayerButton,
-        'player-progress': PlayerProgress,
-        'player-volume': PlayerVolume,
-        'player-settings': PlayerSettings,
-        'player-captions': PlayerCaptions,
-        'loading-animation': LoadingAnimation,
+        PlayerButton,
+        PlayerProgress,
+        PlayerVolume,
+        PlayerSettings,
+        PlayerCaptions,
+        LoadingAnimation,
+        PlayerShortcuts,
     },
     mixins: [ThemeClasses, EventHandlers],
     props: {
@@ -524,6 +409,31 @@ export default {
             cache: false,
             get() {
                 return this.videojsInstance ? this.videojsInstance.bufferedPercent() : 0;
+            },
+        },
+
+        bufferedTimeRanges: {
+            cache: false,
+            get() {
+                return this.videojsInstance ? this.videojsInstance.buffered() : null;
+            },
+        },
+
+        parsedTimeRanges: {
+            cache: false,
+            get() {
+                const ranges = [];
+
+                if (this.bufferedTimeRanges != null && this.bufferedTimeRanges.length > 0) {
+                    for (let i = 0; i < this.bufferedTimeRanges.length; i += 1) {
+                        ranges.push({
+                            start: Math.floor(this.bufferedTimeRanges.start(i)),
+                            end: this.bufferedTimeRanges.end(i),
+                        });
+                    }
+                }
+
+                return ranges;
             },
         },
 
@@ -706,8 +616,6 @@ export default {
             const _time = time < 0 ? 0 : time;
             this.currentTime = _time;
             this.videojsInstance.pause();
-
-            console.log(this.videojsInstance.bufferedPercent());
 
             if (this.isChromeCastConnected) {
                 this.chromeCast.seek(_time);

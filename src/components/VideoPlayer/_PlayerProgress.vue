@@ -20,8 +20,10 @@
                 :style="progressTransforms"
             ></div>
             <div
+                v-for="(range, i) in bufferedTimeRanges"
+                :key="`range-${i}`"
                 class="buffer-fill bg-grey-3"
-                :style="bufferTransforms"
+                :style="getTimeRangePosition(range)"
             ></div>
         </div>
     </div>
@@ -57,6 +59,10 @@ export default {
         bufferedPercent: {
             type: Number,
             default: () => 0,
+        },
+        bufferedTimeRanges: {
+            type: Array,
+            default: () => [],
         },
     },
     data() {
@@ -110,6 +116,17 @@ export default {
 
         toolTipValue() {
             return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
+        },
+    },
+    methods: {
+        getTimeRangePosition(range) {
+            const time = this.playerWidth / this.totalDuration;
+
+            return {
+                transform: `translateX(${range.start * time}px)`,
+                '-webkit-transform': `translateX(${range.start * time}px)`,
+                width: `${(range.end * time) - (range.start * time)}px`,
+            };
         },
     },
 };
