@@ -715,7 +715,7 @@ export default {
         },
 
         setRate(payload) {
-            if (payload.rate >= 0 && payload.rate <= 2) {
+            if (payload.rate > 0.25 && payload.rate <= 2) {
                 this.videojsInstance.playbackRate(payload.rate);
             }
         },
