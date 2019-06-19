@@ -133,11 +133,13 @@
                     <PlayerProgress
                         :theme-color="themeColor"
                         :current-progress="currentProgress"
+                        :current-time="currentTime"
                         :player-width="playerWidth"
                         :current-mouse-x="currentMousePosition.x"
                         :total-duration="totalDuration"
                         :buffered-percent="bufferedPercent"
                         :buffered-time-ranges="parsedTimeRanges"
+                        :chapters="chapters"
                         :mousedown="mousedown"
                         data-cy="progress-rail"
                         @mousedown.stop.native="triggerMouseDown"
@@ -304,6 +306,11 @@ export default {
         poster: {
             type: String,
             default: () => null,
+        },
+
+        chapters: {
+            type: Array,
+            default: () => [],
         },
     },
     data() {
@@ -575,6 +582,20 @@ export default {
             }
         });
 
+        // Add Event Listeners to chapter marker links
+        const chapterMarkerLinks = document.querySelectorAll('[data-jump-to-time]');
+        Array.from(chapterMarkerLinks).forEach((marker) => {
+            marker.addEventListener('click', (event) => {
+                const link = event.target;
+
+                this.seek(link.dataset.jumpToTime);
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                });
+            });
+        });
 
         // Initialize the ChromeCast plugin and it's event handlers
         this.chromeCast = new ChromeCastPlugin();

@@ -19,12 +19,21 @@
                 :class="themeBgClass"
                 :style="progressTransforms"
             ></div>
+
             <div
                 v-for="(range, i) in bufferedTimeRanges"
                 :key="`range-${i}`"
                 class="buffer-fill bg-grey-3"
                 :style="getTimeRangePosition(range)"
             ></div>
+
+            <span
+                v-for="(chapter, i) in chapters"
+                :key="`chapter-${i}`"
+                class="chapter-marker"
+                :class="chapter.chapter_timecode > currentTime ? themeBgClass : 'bg-white'"
+                :style="getChapterPosition(chapter)"
+            ></span>
         </div>
     </div>
 </template>
@@ -40,27 +49,43 @@ export default {
             type: Number,
             default: () => 0,
         },
+
+        currentTime: {
+            type: Number,
+            default: () => 0,
+        },
+
         playerWidth: {
             type: Number,
             default: () => 0,
         },
+
         currentMouseX: {
             type: Number,
             default: () => 0,
         },
+
         mousedown: {
             type: Boolean,
             default: () => false,
         },
+
         totalDuration: {
             type: Number,
             default: () => 0,
         },
+
         bufferedPercent: {
             type: Number,
             default: () => 0,
         },
+
         bufferedTimeRanges: {
+            type: Array,
+            default: () => [],
+        },
+
+        chapters: {
             type: Array,
             default: () => [],
         },
@@ -126,6 +151,15 @@ export default {
                 transform: `translateX(${range.start * time}px)`,
                 '-webkit-transform': `translateX(${range.start * time}px)`,
                 width: `${(range.end * time) - (range.start * time)}px`,
+            };
+        },
+
+        getChapterPosition(chapter) {
+            const time = (this.playerWidth - 14) / this.totalDuration;
+
+            return {
+                transform: `translateX(${chapter.chapter_timecode * time}px)`,
+                '-webkit-transform': `translateX(${chapter.chapter_timecode * time}px)`,
             };
         },
     },

@@ -156,13 +156,19 @@
   z-index:2;
 }
 
-.buffer-fill {
+.buffer-fill, .chapter-marker {
   position:absolute;
   top:0;
   left:0;
   opacity:.6;
   height: 105%;
   z-index:1;
+}
+
+.chapter-marker {
+  width:3px;
+  opacity:1;
+  z-index:3;
 }
 
 .progress-fill {
@@ -261,7 +267,7 @@
 }
 
 .settings-mobile-overlay {
-  z-index:19;
+  z-index:27;
   position:fixed;
   top:0;
   left:0;
@@ -325,6 +331,7 @@
   width:200px;
   z-index:100;
 }
+
 .keyboard-shortcuts, .player-error {
   z-index:26;
   position:absolute;
