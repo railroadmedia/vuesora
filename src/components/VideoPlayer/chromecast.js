@@ -1,7 +1,7 @@
 export default class ChromeCastPlugin {
-    constructor(scope, receiver){
-        this.Scope = (scope) ? scope : 'tab_and_origin_scoped';
-        this.Receiver = (receiver) ? receiver : 'CC1AD845';
+    constructor(scope, receiver) {
+        this.Scope = (scope) || 'tab_and_origin_scoped';
+        this.Receiver = (receiver) || 'CC1AD845';
         this.Events = [];
         this.Available = false;
         this.Connected = false;
@@ -23,76 +23,76 @@ export default class ChromeCastPlugin {
         };
         this.Media = this.Template;
 
-        ChromeCastPlugin.loadChromeCastAPI().then(isAvailable => {
-            if(isAvailable){
+        ChromeCastPlugin.loadChromeCastAPI().then((isAvailable) => {
+            if (isAvailable) {
                 this.Init();
             }
-        })
+        });
     }
 
     // Define object methods
     on(event, callback) {
-        this.Events[event] = callback
+        this.Events[event] = callback;
     }
-    
+
     cast(media, callback) {
         if (!media.content) {
             if (callback) {
-                callback('No media content specified.')
+                callback('No media content specified.');
             }
-            return this.TriggerEvent('error', 'No media content specified.')
+            return this.TriggerEvent('error', 'No media content specified.');
         }
-        for (let key in media) {
+        for (const key in media) {
             if (media.hasOwnProperty(key)) {
-                this.Media[key] = media[key]
+                this.Media[key] = media[key];
             }
         }
         cast.framework.CastContext.getInstance().requestSession().then(() => {
             if (callback) {
-                callback(null)
+                callback(null);
             }
         }, (e) => {
             if (callback) {
-                callback(e)
+                callback(e);
             }
 
-            this.TriggerEvent('error', 'ChromeCastPlugin.cast(): ' + e)
-        })
+            this.TriggerEvent('error', `ChromeCastPlugin.cast(): ${e}`);
+        });
     }
-    
+
     seek(time) {
         if (!this.Connected || !this.Player.canSeek) {
-            return this.TriggerEvent('error', '.seek(): Not connected or can\'t seek')
+            return this.TriggerEvent('error', '.seek(): Not connected or can\'t seek');
         }
         this.Player.currentTime = time;
-        this.Controller.seek()
+        this.Controller.seek();
     }
-    
+
     volume(percentage) {
         if (!this.Connected || !this.Player.canControlVolume) {
-            return this.TriggerEvent('error', '.volume(): Not connected or can\'t control volume')
+            return this.TriggerEvent('error', '.volume(): Not connected or can\'t control volume');
         }
         this.Player.volumeLevel = percentage / 100;
-        this.Controller.setVolumeLevel()
+        this.Controller.setVolumeLevel();
     }
 
     playOrPause() {
         if (!this.Connected || !this.Player.canPause) {
-            return this.TriggerEvent('error', '.playOrPause(): Not connected or can\'t pause or play')
+            return this.TriggerEvent('error', '.playOrPause(): Not connected or can\'t pause or play');
         }
         this.Controller.playOrPause();
     }
 
     muteOrUnmute() {
         if (!this.Connected || !this.Player.canControlVolume) {
-            return this.TriggerEvent('error', '.muteOrUnmute(): Not connected or can\'t control volume')
+            return this.TriggerEvent('error', '.muteOrUnmute(): Not connected or can\'t control volume');
         }
         this.Controller.muteOrUnmute();
     }
 
     changeSubtitle(index) {
         if (!this.Connected) {
-            return this.TriggerEvent('error', '.changeSubtitle(): Not connected')
+            return this.TriggerEvent('error', '.changeSubtitle(): Not connected');
         }
         const activeTrackIds = index !== null ? [index] : [];
 
@@ -101,7 +101,7 @@ export default class ChromeCastPlugin {
         for (let i = 0; i < this.Media.subtitles.length; i++) {
             this.Media.subtitles[i].active = false;
 
-            if(index != null){
+            if (index != null) {
                 this.Media.subtitles[i].active = i === index;
             }
         }
@@ -109,15 +109,15 @@ export default class ChromeCastPlugin {
 
     disconnect() {
         cast.framework.CastContext.getInstance().endCurrentSession();
-    };
+    }
 
     // Call event function
     TriggerEvent(event, args) {
         if (typeof this.Events[event] !== 'undefined') {
             if (typeof args !== 'undefined') {
-                return this.Events[event](args)
+                return this.Events[event](args);
             }
-            this.Events[event]()
+            this.Events[event]();
         }
     }
 
@@ -125,13 +125,13 @@ export default class ChromeCastPlugin {
     Init() {
         cast.framework.CastContext.getInstance().setOptions({
             receiverApplicationId: this.Receiver,
-            autoJoinPolicy: this.Scope
+            autoJoinPolicy: this.Scope,
         });
         this.Player = new cast.framework.RemotePlayer();
         this.Controller = new cast.framework.RemotePlayerController(this.Player);
         // Controller events
         this.Controller.addEventListener('isConnectedChanged', () => {
-            this.IsConnectedChanged()
+            this.IsConnectedChanged();
         });
         this.Controller.addEventListener('currentTimeChanged', () => {
             this.Media.time = this.Player.currentTime;
@@ -172,12 +172,12 @@ export default class ChromeCastPlugin {
                 this.Media.state = 'DISCONNECTED';
                 this.TriggerEvent('disconnect');
             }
-            this.TriggerEvent('state', this.Media.state)
+            this.TriggerEvent('state', this.Media.state);
         });
 
         this.Available = true;
 
-        this.TriggerEvent('available')
+        this.TriggerEvent('available');
     }
 
     IsConnectedChanged() {
@@ -185,7 +185,7 @@ export default class ChromeCastPlugin {
         setTimeout(() => {
             if (!this.Player.isConnected) {
                 this.Connected = false;
-                return
+                return;
             }
             this.Connected = true;
             this.TriggerEvent('connected');
@@ -200,7 +200,7 @@ export default class ChromeCastPlugin {
                     duration: this.Player.duration,
                     volume: this.Player.volumeLevel,
                     muted: this.Player.isMuted,
-                    state: this.Player.playerState
+                    state: this.Player.playerState,
                 };
 
                 // Format loaded subtitles
@@ -210,13 +210,13 @@ export default class ChromeCastPlugin {
                             active: false,
                             label: this.Player.mediaInfo.tracks[i].name,
                             srclang: this.Player.mediaInfo.tracks[i].language,
-                            src: this.Player.mediaInfo.tracks[i].trackContentId
-                        })
+                            src: this.Player.mediaInfo.tracks[i].trackContentId,
+                        });
                     }
                 }
 
                 // Update the active subtitle
-                let activeTrackId = cast.framework.CastContext.getInstance().b.getSessionObj().media[0].activeTrackIds[0]
+                const activeTrackId = cast.framework.CastContext.getInstance().b.getSessionObj().media[0].activeTrackIds[0];
                 if (activeTrackId && typeof this.Media.subtitles[activeTrackId] !== 'undefined') {
                     this.Media.subtitles[activeTrackId].active = true;
                 }
@@ -225,8 +225,8 @@ export default class ChromeCastPlugin {
             } else {
                 this.Session = cast.framework.CastContext.getInstance().getCurrentSession();
                 if (this.Session && this.Media.content) {
-                    let mediaInfo = new chrome.cast.media.MediaInfo(this.Media.content);
-                    //mediaInfo.contentType = 'video/mp4' ??
+                    const mediaInfo = new chrome.cast.media.MediaInfo(this.Media.content);
+                    // mediaInfo.contentType = 'video/mp4' ??
                     mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
                     // The sexy subtitle support function <3
                     if (this.Media.subtitles.length > 0) {
@@ -237,9 +237,9 @@ export default class ChromeCastPlugin {
                         mediaInfo.textTrackStyle.fontScale = '1.1';
                         mediaInfo.textTrackStyle.edgeColor = '#00000099';
                         mediaInfo.textTrackStyle.edgeType = chrome.cast.media.TextTrackEdgeType.DROP_SHADOW;
-                        let tracks = [];
+                        const tracks = [];
                         for (let i = 0; i < this.Media.subtitles.length; i++) {
-                            let track = new chrome.cast.media.Track(i, chrome.cast.media.TrackType.TEXT);
+                            const track = new chrome.cast.media.Track(i, chrome.cast.media.TrackType.TEXT);
                             track.trackContentId = this.Media.subtitles[i].src;
                             track.trackContentType = 'text/vtt';
                             track.subtype = chrome.cast.media.TextTrackType.CAPTIONS;
@@ -247,55 +247,54 @@ export default class ChromeCastPlugin {
                             track.language = this.Media.subtitles[i].srclang;
                             tracks.push(track);
                         }
-                        mediaInfo.tracks = tracks
+                        mediaInfo.tracks = tracks;
                     }
                     if (this.Media.poster) {
                         mediaInfo.metadata.images = [{
-                            'url': this.Media.poster
-                        }]
+                            url: this.Media.poster,
+                        }];
                     }
                     if (this.Media.title) {
-                        mediaInfo.metadata.title = this.Media.title
+                        mediaInfo.metadata.title = this.Media.title;
                     }
                     if (this.Media.description) {
-                        mediaInfo.metadata.subtitle = this.Media.description
+                        mediaInfo.metadata.subtitle = this.Media.description;
                     }
-                    let request = new chrome.cast.media.LoadRequest(mediaInfo);
+                    const request = new chrome.cast.media.LoadRequest(mediaInfo);
                     request.currentTime = this.Media.time;
                     request.autoplay = !this.Media.paused;
                     if (this.Media.subtitles.length > 0) {
                         for (let i = 0; i < this.Media.subtitles.length; i++) {
-                            if (typeof this.Media.subtitles[i].active != 'undefined' && this.Media.subtitles[i].active) {
-                                request.activeTrackIds = [i]
+                            if (typeof this.Media.subtitles[i].active !== 'undefined' && this.Media.subtitles[i].active) {
+                                request.activeTrackIds = [i];
                             }
                         }
                     }
                     this.Session.loadMedia(request).then(() => {
-                        this.TriggerEvent('media', this.Media)
+                        this.TriggerEvent('media', this.Media);
                     }, (e) => {
-                        this.TriggerEvent('error', 'ChromeCastPlugin.cast():', e)
-                    })
+                        this.TriggerEvent('error', 'ChromeCastPlugin.cast():', e);
+                    });
                 }
             }
-        }, 0)
+        }, 0);
     }
 
-    static loadChromeCastAPI(){
-
-        return new Promise(resolve => {
-            if(!document.getElementById('chromeCastAPI')){
+    static loadChromeCastAPI() {
+        return new Promise((resolve) => {
+            if (!document.getElementById('chromeCastAPI')) {
                 const script = document.createElement('script');
 
                 script.setAttribute('id', 'chromeCastAPI');
                 script.setAttribute(
                     'src',
-                    'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1'
+                    'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1',
                 );
 
                 document.body.appendChild(script);
             }
 
-            window['__onGCastApiAvailable'] = (isAvailable) => {
+            window.__onGCastApiAvailable = (isAvailable) => {
                 resolve(isAvailable);
             };
         });
