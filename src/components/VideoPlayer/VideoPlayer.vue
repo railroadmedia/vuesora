@@ -5,6 +5,7 @@
         data-vjs-player
         @contextmenu.stop.prevent="toggleContextMenu"
         @mousemove="trackMousePosition"
+        @keydown.stop.prevent="keyboardControlEventHandler"
     >
         <transition name="grow-fade">
             <PlayerShortcuts
@@ -104,7 +105,10 @@
             class="controls-wrap"
             @click.stop="playPauseViaControlWrap"
         >
-            <div class="controls flex flex-column noselect">
+            <div
+                class="controls flex flex-column noselect"
+                @click.stop.prevent
+            >
                 <!--  TOP ROW  -->
                 <div class="flex flex-row">
                     <PlayerButton
@@ -542,16 +546,6 @@ export default {
 
             Object.keys(this.videoJsEventHandlers).forEach((event) => {
                 this.videojsInstance.on(event, this.videoJsEventHandlers[event]);
-            });
-
-            // Add Keyboard Events on video focus
-            this.$refs.container.addEventListener('focus', () => {
-                document.addEventListener('keydown', this.keyboardControlEventHandler);
-            });
-
-            // Remove keyboard events on video blur
-            this.$refs.container.addEventListener('blur', () => {
-                document.removeEventListener('keydown', this.keyboardControlEventHandler);
             });
 
             if (window.localStorage.getItem('playerVolume') != null) {
