@@ -1,5 +1,5 @@
-import {DateTime, Duration} from "luxon";
-import {Content as ContentHelpers} from 'js-helper-functions';
+import { DateTime, Duration } from 'luxon';
+import { Content as ContentHelpers } from 'js-helper-functions';
 
 export default class ContentModel {
     constructor({ brand = 'drumeo', post }) {
