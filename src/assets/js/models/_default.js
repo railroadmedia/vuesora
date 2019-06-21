@@ -39,9 +39,9 @@ export default class ContentModel {
     }
 
     getPostField(key) {
-        const field = this.post.fields.find(field => field.key === key);
+        const postField = this.post.fields.find(field => field.key === key);
 
-        return field ? field.value : 'TBD';
+        return postField ? postField.value : 'TBD';
     }
 
     getPostDatum(key) {
@@ -99,7 +99,7 @@ export default class ContentModel {
     }
 
     get postChildLessonCount() {
-        return this.post.lesson_count ? this.post.lesson_count + ' Lessons' : 'TBD';
+        return this.post.lesson_count ? `${this.post.lesson_count} Lessons` : 'TBD';
     }
 
     getPostThumbnail() {
