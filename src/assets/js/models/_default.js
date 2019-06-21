@@ -71,9 +71,9 @@ export default class ContentModel {
                 duration = videoLength.value;
             }
 
-            return Math.round(
-                Duration.fromMillis((duration * 1000)).as('minutes')
-            ) + ' mins';
+            const parsedDuration = Math.round(Duration.fromMillis((duration * 1000)).as('minutes'));
+
+            return `${parsedDuration} mins`;
         }
 
         return 'TBD';
@@ -95,7 +95,7 @@ export default class ContentModel {
     }
 
     get episodeNumber() {
-        return this.post.sort ? 'Episode #' + this.post.sort : 'TBD';
+        return this.post.sort ? `Episode # ${this.post.sort}` : 'TBD';
     }
 
     get postChildLessonCount() {
@@ -106,7 +106,7 @@ export default class ContentModel {
         const defaults = {
             drumeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg',
             pianote: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg',
-            guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg'
+            guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg',
         };
         let thumb = this.getPostDatum('thumbnail_url');
 

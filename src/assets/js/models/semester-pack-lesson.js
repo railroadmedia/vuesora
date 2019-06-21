@@ -11,7 +11,7 @@ export default class SemesterPackLessonContentModel extends ContentModel {
 
         this.list.color_title = null;
         this.list.column_data = [
-            this.getPostDuration()
+            this.getPostDuration(),
         ];
     }
 }
