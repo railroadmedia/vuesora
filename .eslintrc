@@ -9,6 +9,7 @@
     "no-underscore-dangle": "off",
     "vue/html-self-closing": "off",
     "consistent-return": "off",
-    "max-len": ["warn", 120]
+    "max-len": ["warn", 120],
+    "no-trailing-spaces": "off"
   }
 }
