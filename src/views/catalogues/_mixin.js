@@ -101,20 +101,7 @@ export default {
         },
 
         progress_percent(){
-            if(this.item.type === 'course' ||
-                this.item.type === 'pack' ||
-                this.item.type === 'pack-bundle' ||
-                this.item.type === 'semester-pack' ||
-                this.item.type === 'learning-path'){
-
-                return this.item['progress_percent'];
-            }
-
-            if(this.item.video != null){
-                return (Number(this.item['last_watch_position_in_seconds']) / Number(this.item.video.length_in_seconds)) * 100;
-            }
-
-            return 0;
+            return this.item['progress_percent'];
         },
 
         noAccess(){
