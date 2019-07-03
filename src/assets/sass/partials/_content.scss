@@ -35,27 +35,27 @@
 //  }
 //}
 
-.lesson-sidebar {
-
-  @include medium {
-    position:sticky;
-    top:60px;
-    z-index:20;
-
-    .content-table {
-      max-height:calc(100vh - 180px);
-      overflow:auto;
-
-      &.has-see-all {
-        max-height:calc(100vh - 230px);
-      }
-    }
-  }
-
-  @include large {
-    top:80px;
-  }
-}
+//.lesson-sidebar {
+//
+//  @include medium {
+//    position:sticky;
+//    top:60px;
+//    z-index:20;
+//
+//    .content-table {
+//      max-height:calc(100vh - 180px);
+//      overflow:auto;
+//
+//      &.has-see-all {
+//        max-height:calc(100vh - 230px);
+//      }
+//    }
+//  }
+//
+//  @include large {
+//    top:80px;
+//  }
+//}
 
 .trophy-progress-bar {
   background-color:rgba(0,0,0,.2);
