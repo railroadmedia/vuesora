@@ -472,7 +472,7 @@ export default {
             return this.userActive;
         },
 
-        isMobile: () => PlayerUtils.isMobile().any,
+        isMobile: () => PlayerUtils.isMobile().any || window.matchMedia('(max-width: 640px)'),
 
         isSafari: () => PlayerUtils.isSafari(),
 
@@ -482,7 +482,9 @@ export default {
     },
     mounted() {
         const { player } = this.$refs;
+        const { container } = this.$refs;
         const source = [];
+        this.loading = true;
 
         // Add HLS manifest URL
         if (this.hlsManifestUrl != null) {
@@ -501,13 +503,12 @@ export default {
             });
         }
 
-        this.loading = true;
-
         // Initialize Player
         this.videojsInstance = videojs(player, {
             controls: false,
             children: [],
             responsive: false,
+            preload: 'auto',
             inactivityTimeout: 5000,
             nativeAudioTracks: false,
             nativeVideoTracks: false,
@@ -520,6 +521,7 @@ export default {
             },
         });
 
+        // Add the sources to the player instance
         this.videojsInstance.src(source);
 
         // On Player Ready
@@ -541,6 +543,10 @@ export default {
                 this.enableCaptions({});
             }, 2000);
 
+            if (this.isSafari) {
+                this.videojsInstance.load();
+            }
+
             this.playerReady = true;
             this.$emit('playerReady');
 
@@ -554,7 +560,7 @@ export default {
                 });
             }
 
-            this.$refs.container.focus();
+            container.focus();
         });
 
 
@@ -562,19 +568,7 @@ export default {
         document.addEventListener('click', this.closeDrawers);
 
         // Mouse up events
-        document.addEventListener('mouseup', (event) => {
-            if (event.button === 0) {
-                if (this.mousedown) {
-                    const timeToSeekTo = this.totalDuration * (
-                        this.currentMousePosition.x / this.playerWidth
-                    );
-                    this.seek(timeToSeekTo);
-                }
-
-                this.contextMenu = false;
-                this.mousedown = false;
-            }
-        });
+        document.addEventListener('mouseup', this.mouseUpEventHandler);
 
         // Add Event Listeners to chapter marker links
         const chapterMarkerLinks = document.querySelectorAll('[data-jump-to-time]');
@@ -610,19 +604,20 @@ export default {
 
         // Initialize Apple Airplay and create an event listener for playback change
         if (window.WebKitPlaybackTargetAvailabilityEvent) {
-            this.$refs.player.addEventListener('webkitplaybacktargetavailabilitychanged', (event) => {
+            player.addEventListener('webkitplaybacktargetavailabilitychanged', (event) => {
                 if (event.availability === 'available') {
                     this.isAirplaySupported = true;
                 }
             });
         }
 
-        this.$refs.player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
+        player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
             this.isAirplayConnected = !this.isAirplayConnected;
         });
     },
     beforeDestroy() {
         document.removeEventListener('click', this.closeDrawers);
+        document.removeEventListener('mouseup', this.mouseUpEventHandler);
     },
     methods: {
         playPause() {
@@ -725,7 +720,8 @@ export default {
         },
 
         getDefaultPlaybackQualityIndex() {
-            const widthToCheck = window.localStorage.getItem('vuesoraDefaultVideoQuality') || document.documentElement.clientWidth;
+            const widthToCheck = window.localStorage.getItem('vuesoraDefaultVideoQuality')
+                || document.documentElement.clientWidth;
             const qualityIndexes = this.playbackQualities.map((quality, index) => {
                 if (quality.width >= widthToCheck) {
                     return index;
@@ -840,6 +836,22 @@ export default {
                 transform: `translate(${x}px, ${y}px)`,
                 'webkit-transform': `translate(${x}px, ${y}px)`,
             };
+        },
+
+        mouseUpEventHandler(event) {
+            if (event.button !== 0) {
+                return false;
+            }
+
+            if (this.mousedown) {
+                const timeToSeekTo = this.totalDuration * (
+                    this.currentMousePosition.x / this.playerWidth
+                );
+                this.seek(timeToSeekTo);
+            }
+
+            this.contextMenu = false;
+            this.mousedown = false;
         },
     },
 };
