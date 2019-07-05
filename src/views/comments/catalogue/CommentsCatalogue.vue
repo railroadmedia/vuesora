@@ -260,6 +260,13 @@
                         icon: 'icon-course',
                         active: true,
                     },
+                    {
+                        key: 'entertainment',
+                        brand: ['guitareo'],
+                        value: ['entertainment'],
+                        icon: 'icon-shows',
+                        active: true,
+                    }
                 ]
             }
         },
