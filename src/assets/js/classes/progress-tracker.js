@@ -31,6 +31,7 @@ export default class ProgressTracker {
      * @param {string} mediaCategory - (vimeo/youtube or soundslice)
      * @param {string|number} watchPosition - Current watch position of the media
      * @param {string|number} totalDuration
+     * @param {string} sessionToken - used to validate the current user
      */
     send({
         endpoint = '/railtracker/media-playback-session',
@@ -39,6 +40,7 @@ export default class ProgressTracker {
         mediaCategory,
         watchPosition,
         totalDuration,
+        sessionToken,
     }) {
         const data = new FormData();
 
@@ -46,6 +48,7 @@ export default class ProgressTracker {
         data.append('media_id', mediaId);
         data.append('media_type', mediaType);
         data.append('media_category', mediaCategory);
+        data.append('session_id', sessionToken);
 
         if (watchPosition && totalDuration) {
             data.append('current_second', watchPosition);
@@ -64,6 +67,7 @@ export default class ProgressTracker {
      * @param {string} mediaCategory - (vimeo/youtube or soundslice)
      * @param {string|number} watchPosition - Current watch position of the media
      * @param {string|number} totalDuration
+     * @param {string} sessionToken - used to validate the current user
      * @returns {Promise}
      */
     sendAsync({
@@ -73,6 +77,7 @@ export default class ProgressTracker {
         mediaCategory,
         watchPosition,
         totalDuration,
+        sessionToken,
     }) {
         if (this.secondsWatched == null) {
             return new Promise.resolve(false);
@@ -85,6 +90,7 @@ export default class ProgressTracker {
             media_category: mediaCategory,
             current_second: watchPosition,
             media_length_seconds: totalDuration,
+            session_id: sessionToken,
         })
             .then(response => response)
             .catch((error) => {
