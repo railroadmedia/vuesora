@@ -49,6 +49,8 @@
   }
 
   video {
+    background-color:#000;
+
     &::cue {
       font: 400 20px/1em $defaultSansSerif;
       background:none;
@@ -274,6 +276,10 @@
   width:100%;
   height:100%;
   background:rgba(0,0,0,.4);
+
+  @include medium {
+    display:none!important;
+  }
 }
 
 .cast-dialog {
