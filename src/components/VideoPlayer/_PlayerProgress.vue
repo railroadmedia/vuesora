@@ -99,8 +99,8 @@ export default {
         progressTransforms() {
             if (this.mousedown) {
                 return {
-                    transform: `translateX(-${(100 - (this.currentMouseX / this.playerWidth) * 100)}%)`,
-                    '-webkit-transform': `translateX(-${100 - ((this.currentMouseX / this.playerWidth) * 100)}%)`,
+                    transform: `translateX(-${(100 - (this.currentMouseX / (this.playerWidth - 14)) * 100)}%)`,
+                    '-webkit-transform': `translateX(-${100 - ((this.currentMouseX / (this.playerWidth - 14)) * 100)}%)`,
                 };
             }
 
@@ -140,12 +140,12 @@ export default {
         },
 
         toolTipValue() {
-            return PlayerUtils.parseTime((this.currentMouseX / 100) * this.totalDuration);
+            return PlayerUtils.parseTime((this.currentMouseX / (this.playerWidth - 14)) * this.totalDuration);
         },
     },
     methods: {
         getTimeRangePosition(range) {
-            const time = this.playerWidth / this.totalDuration;
+            const time = (this.playerWidth - 14) / this.totalDuration;
 
             return {
                 transform: `translateX(${range.start * time}px)`,
