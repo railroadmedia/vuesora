@@ -16,7 +16,7 @@
 
         <transition name="grow-fade">
             <div
-                v-show="sources.length === 0"
+                v-if="sources.length === 0"
                 class="player-error bg-error text-white corners-3 shadow pa-1"
             >
                 <p class="body font-bold mb-2">
@@ -483,11 +483,12 @@ export default {
     mounted() {
         const { player } = this.$refs;
         const { container } = this.$refs;
+        const supportsMSE = typeof MediaSource === 'function';
         const source = [];
         this.loading = true;
 
         // Add HLS manifest URL
-        if (this.hlsManifestUrl != null) {
+        if (supportsMSE) {
             source.push({
                 src: this.hlsManifestUrl,
                 type: 'application/x-mpegURL',
@@ -526,7 +527,9 @@ export default {
 
         // On Player Ready
         this.videojsInstance.on('ready', () => {
-            this.hlsInstance = this.videojsInstance.tech({ IWillNotUseThisInPlugins: true }).hls;
+            if (supportsMSE) {
+                this.hlsInstance = this.videojsInstance.tech({IWillNotUseThisInPlugins: true}).hls;
+            }
 
             this.captions.forEach((caption) => {
                 this.videojsInstance.addRemoteTextTrack({
