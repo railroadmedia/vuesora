@@ -1,4 +1,5 @@
 import axios from 'axios';
+const endpointPrefix = process.env.ENDPOINT_PREFIX || '';
 
 export default class ProgressTracker {
     constructor() {
@@ -34,7 +35,7 @@ export default class ProgressTracker {
      * @param {string} sessionToken - used to validate the current user
      */
     send({
-        endpoint = '/railtracker/media-playback-session',
+        endpoint = `${endpointPrefix}/railtracker/media-playback-session`,
         mediaId,
         mediaType,
         mediaCategory,
@@ -71,7 +72,7 @@ export default class ProgressTracker {
      * @returns {Promise}
      */
     sendAsync({
-        endpoint = '/railtracker/media-playback-session',
+        endpoint = `${endpointPrefix}/railtracker/media-playback-session`,
         mediaId,
         mediaType,
         mediaCategory,
