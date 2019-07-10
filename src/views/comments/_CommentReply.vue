@@ -284,7 +284,7 @@
             },
 
             dateString(){
-                return DateTime.fromSQL(this.created_on, { zone: 'UTC'}).toRelative();
+                return DateTime.fromSQL(this.created_on, { zone: 'UTC'}).minus({seconds: 1}).toRelative();
             },
 
             isUsersPost(){
