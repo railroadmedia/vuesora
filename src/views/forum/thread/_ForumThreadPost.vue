@@ -10,9 +10,9 @@
                 </a>
             </div>
 
-            <p v-if="userExpValue"
+            <p v-if="showUserExp"
                class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-            <p v-if="userExpValue && this.post.access_level !== 'admin'"
+            <p v-if="showUserExp"
                class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
         </div>
         <div class="flex flex-column ph">
@@ -202,6 +202,10 @@
             profileRoute() {
                 return this.profileBaseRoute + this.post.authorId
             },
+
+            showUserExp(){
+                return this.userExpValue != null && (['team', 'pack', 'admin'].indexOf(this.post.access_level) === -1);
+            }
         },
         methods: {
             replyToPost(){
