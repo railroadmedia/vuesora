@@ -174,4 +174,5 @@ For the sake of consistency, Vuesora has 7 standards for font sizes. Font sizes 
 | `.text-left`             | Left Align
 | `.text-right`            | Right Align
 | `.text-center`           | Center Align
+| `.break-words`           | Break words that extend wider than the parent container
 
