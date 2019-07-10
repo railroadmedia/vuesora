@@ -14,9 +14,9 @@
             <img v-if="!hasPublicProfiles"
                  :src="user['fields.profile_picture_image_url']" class="rounded">
 
-            <p v-if="userExpValue"
+            <p v-if="showUserExp"
                class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-            <p v-if="userExpValue && this.user.access_level !== 'team'"
+            <p v-if="showUserExp"
                class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
         </div>
         <div class="flex flex-column grow">
@@ -334,7 +334,7 @@
             },
 
             dateString() {
-                return DateTime.fromSQL(this.created_on, { zone: 'UTC'}).toRelative();
+                return DateTime.fromSQL(this.created_on, { zone: 'UTC'}).minus({seconds: 1}).toRelative();
             },
 
             isUsersPost() {
@@ -347,6 +347,10 @@
 
             openModalString(){
                 return this.like_count > 0 ? 'likeUsersModal' : '';
+            },
+
+            showUserExp(){
+                return this.userExpValue != null && (['team', 'pack'].indexOf(this.user.access_level) === -1);
             }
         },
         methods: {

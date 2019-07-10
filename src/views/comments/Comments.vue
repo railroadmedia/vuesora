@@ -24,9 +24,9 @@
                     <img :src="currentUser.avatar" class="rounded">
                 </div>
 
-                <p v-if="userExpValue"
+                <p v-if="showUserExp"
                    class="x-tiny dense font-bold uppercase text-center mt-1">{{ userExpRank }}</p>
-                <p v-if="userExpValue && this.currentUser.access_level !== 'team'"
+                <p v-if="showUserExp"
                    class="x-tiny dense text-center font-compressed">{{ userExpValue }} XP</p>
             </div>
 
@@ -186,6 +186,10 @@
                     content_id: this.contentId,
                     sort: this.sortOption
                 }
+            },
+
+            showUserExp(){
+                return this.userExpValue != null && (['team', 'pack'].indexOf(this.currentUser.access_level) === -1);
             }
         },
         methods: {
