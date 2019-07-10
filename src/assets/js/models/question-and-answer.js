@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class QnaDataMapper extends DataMapper {
+export default class QnaContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

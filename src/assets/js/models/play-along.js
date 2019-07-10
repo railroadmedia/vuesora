@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class PlayAlongDataMapper extends DataMapper {
+export default class PlayAlongContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,
@@ -16,12 +16,12 @@ export default class PlayAlongDataMapper extends DataMapper {
 
         if(this.brand === 'guitareo'){
             this.card.color_title = this.getTypeWithIcon();
-            this.card.grey_title = this.postInstructor + ', ' + DataMapper.mapDifficulty(this.post);
+            this.card.grey_title = this.postInstructor + ', ' + ContentModel.mapDifficulty(this.post);
 
             this.list.color_title = null;
             this.list.column_data = [
                 this.postInstructor,
-                DataMapper.mapDifficulty(this.post),
+                ContentModel.mapDifficulty(this.post),
                 this.postChildLessonCount,
                 this.postPublisedOn,
             ]

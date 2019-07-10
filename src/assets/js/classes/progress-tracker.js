@@ -1,7 +1,8 @@
 import axios from 'axios';
+const endpointPrefix = process.env.ENDPOINT_PREFIX || '';
 
 export default class ProgressTracker {
-    constructor(){
+    constructor() {
         this.tickInterval = 0;
         this.secondsWatched = 0;
     }
@@ -10,7 +11,7 @@ export default class ProgressTracker {
      * Start the timer
      *
      */
-    start(){
+    start() {
         this.tickInterval = this.progressInterval();
     }
 
@@ -18,7 +19,7 @@ export default class ProgressTracker {
      * Stop the timer
      *
      */
-    stop(){
+    stop() {
         clearInterval(this.tickInterval);
     }
 
@@ -29,25 +30,28 @@ export default class ProgressTracker {
      * @param {string|number} mediaId - The Media ID you wish to track progress for
      * @param {string} mediaType - Type type of media (video/assignment)
      * @param {string} mediaCategory - (vimeo/youtube or soundslice)
-     * @param {string|number} watchPosition - Current watch position of the media you are tracking progress
+     * @param {string|number} watchPosition - Current watch position of the media
      * @param {string|number} totalDuration
+     * @param {string} sessionToken - used to validate the current user
      */
     send({
-        endpoint = '/railtracker/media-playback-session',
+        endpoint = `${endpointPrefix}/railtracker/media-playback-session`,
         mediaId,
         mediaType,
         mediaCategory,
         watchPosition,
         totalDuration,
-    }){
+        sessionToken,
+    }) {
         const data = new FormData();
 
         data.append('seconds_played', this.secondsWatched);
         data.append('media_id', mediaId);
         data.append('media_type', mediaType);
         data.append('media_category', mediaCategory);
+        data.append('session_id', sessionToken);
 
-        if(watchPosition && totalDuration){
+        if (watchPosition && totalDuration) {
             data.append('current_second', watchPosition);
             data.append('media_length_seconds', totalDuration);
         }
@@ -62,19 +66,21 @@ export default class ProgressTracker {
      * @param {string|number} mediaId - The Media ID you wish to track progress for
      * @param {string} mediaType - Type type of media (video/assignment)
      * @param {string} mediaCategory - (vimeo/youtube or soundslice)
-     * @param {string|number} watchPosition - Current watch position of the media you are tracking progress
+     * @param {string|number} watchPosition - Current watch position of the media
      * @param {string|number} totalDuration
+     * @param {string} sessionToken - used to validate the current user
      * @returns {Promise}
      */
     sendAsync({
-        endpoint = '/railtracker/media-playback-session',
+        endpoint = `${endpointPrefix}/railtracker/media-playback-session`,
         mediaId,
         mediaType,
         mediaCategory,
         watchPosition,
         totalDuration,
-    }){
-        if(this.secondsWatched == null){
+        sessionToken,
+    }) {
+        if (this.secondsWatched == null) {
             return new Promise.resolve(false);
         }
 
@@ -84,22 +90,23 @@ export default class ProgressTracker {
             media_type: mediaType,
             media_category: mediaCategory,
             current_second: watchPosition,
-            media_length_seconds: totalDuration
+            media_length_seconds: totalDuration,
+            session_id: sessionToken,
         })
             .then(response => response)
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
-            })
+            });
     }
 
     /**
      * Interval that increments the secondsWatched property every second
      *
      */
-    progressInterval(){
+    progressInterval() {
         // TODO: should probably use performance.now() to get millisecond precision
 
-        return setInterval( () => {
+        return setInterval(() => {
             this.secondsWatched++;
         }, 1000);
     }

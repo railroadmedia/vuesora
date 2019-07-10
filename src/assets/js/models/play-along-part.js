@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class PlayAlongPartDataMapper extends DataMapper {
+export default class PlayAlongPartContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

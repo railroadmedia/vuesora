@@ -1,11 +1,9 @@
 <template>
     <div class="flex flex-row ph-2 pt-2 align-v-center flex-wrap-xs-only">
-        <div class="flex flex-column ph-2 cart-thumbnail align-center mb-2">
-            <div style="max-width:250px;">
-                <img :src="item.thumbnail_url"
-                     class="rounded"
-                     alt="product image">
-            </div>
+        <div class="flex flex-column cart-thumbnail align-center mb-2">
+
+            <div class="thumbnail rounded bg-center"
+                 :style="`background-image:url(${item.thumbnail_url});`"></div>
         </div>
         <div class="flex flex-column mb-2">
             <div class="flex flex-row flex-wrap">
@@ -165,6 +163,11 @@
         @include small {
             flex:0 0 200px;
             max-width:200px;
+        }
+
+        .thumbnail {
+            height:180px;
+            width:180px;
         }
     }
     .quantity-column {

@@ -1,6 +1,6 @@
-import DataMapper from './_default';
+import ContentModel from './_default';
 
-export default class RudimentDataMapper extends DataMapper {
+export default class RudimentContentModel extends ContentModel {
     constructor({brand = 'drumeo', post}){
         super({
             brand,

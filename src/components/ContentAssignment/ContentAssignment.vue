@@ -129,9 +129,11 @@
                         </div>
                     </div>
                     <div class="flex flex-row grow">
-                        <iframe id="ssEmbed"
-                                :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
-                                @load="loading = false"></iframe>
+                        <div class="flex flex-column relative">
+                            <iframe id="ssEmbed"
+                                    :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'" frameBorder="0" allowfullscreen
+                                    @load="loading = false"></iframe>
+                        </div>
                     </div>
                 </div>
 
@@ -542,6 +544,9 @@
     #ssEmbed {
         width:100%;
         height:100%;
+        position:absolute;
+        top:0;
+        left:0;
     }
 
     .carousel {
