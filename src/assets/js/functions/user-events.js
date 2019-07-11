@@ -10,62 +10,62 @@ export default (function () {
         let clickTimeout = false;
         let isRequesting = false;
 
-        window.addEventListener('vue-requesting-completion', event => {
+        window.addEventListener('vue-requesting-completion', (event) => {
             isRequesting = true;
         });
 
-        window.addEventListener('vue-request-complete', event => {
+        window.addEventListener('vue-request-complete', (event) => {
             isRequesting = false;
         });
 
         if (markAsCompleteButtons.length) {
-            Array.from(markAsCompleteButtons).forEach(button => {
+            Array.from(markAsCompleteButtons).forEach((button) => {
                 button.addEventListener('click', markAsComplete);
             });
         }
 
         if (addToListButtons.length) {
-            Array.from(addToListButtons).forEach(button => {
+            Array.from(addToListButtons).forEach((button) => {
                 button.addEventListener('click', addToList);
             });
         }
 
         if (resetProgressButtons.length) {
-            Array.from(resetProgressButtons).forEach(button => {
+            Array.from(resetProgressButtons).forEach((button) => {
                 button.addEventListener('click', progressReset);
             });
         }
 
         function progressReset(event) {
             const element = event.target;
-            const contentType = Utils.toTitleCase(element.dataset['contentType'] || 'content');
-            const contentId = element.dataset['contentId'];
-            const brand = element.dataset['brand'] || 'drumeo';
+            const contentType = Utils.toTitleCase(element.dataset.contentType || 'content');
+            const contentId = element.dataset.contentId;
+            const brand = element.dataset.brand || 'drumeo';
             const icon = element.querySelector('.fas');
 
-            if(!clickTimeout) {
+            if (!clickTimeout) {
                 Toasts.confirm({
                     title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
                     submitButton: {
-                        text: '<span class="bg-' + brand + ' text-white short">YES</span>',
+                        text: `<span class="bg-${brand} text-white short">YES</span>`,
                         callback: () => {
                             icon.classList.remove('fa-redo-alt', 'fa-flip-horizontal');
                             icon.classList.add('fa-spin', 'fa-spinner');
 
                             ContentService.resetContentProgress(contentId)
-                                .then(resolved => {
+                                .then((resolved) => {
                                     if (resolved) {
                                         Toasts.push({
                                             icon: 'happy',
                                             title: 'REMOVED!',
                                             themeColor: brand,
-                                            message: 'Your progress has been reset.'
+                                            message: 'Your progress has been reset.',
                                         });
 
-                                        if(document.querySelector('.trophy-progress')){
+                                        if (document.querySelector('.trophy-progress')) {
                                             document.querySelector('.trophy-progress').style.width = 0;
                                         }
-                                        Array.from(resetProgressButtons).forEach(button => {
+                                        Array.from(resetProgressButtons).forEach((button) => {
                                             button.parentElement.classList.add('hide');
                                         });
                                     }
@@ -75,11 +75,11 @@ export default (function () {
 
                                     window.location.reload();
                                 });
-                        }
+                        },
                     },
                     cancelButton: {
                         text: '<span class="bg-grey-3 inverted text-grey-3 short">NO</span>',
-                    }
+                    },
                 });
             }
 
@@ -88,13 +88,13 @@ export default (function () {
 
         function addToList(event) {
             const element = event.target;
-            const contentId = element.dataset['contentId'];
+            const contentId = element.dataset.contentId;
             const is_added = element.classList.contains('added');
 
 
-            if(!clickTimeout) {
+            if (!clickTimeout) {
                 ContentService.addOrRemoveContentFromList(contentId, is_added)
-                    .then(response => {
+                    .then((response) => {
                         if (response) {
                             if (is_added) {
                                 element.classList.add('add-request-complete');
@@ -118,31 +118,31 @@ export default (function () {
 
         function markAsComplete(event) {
             const element = event.target;
-            const contentId = element.dataset['contentId'];
+            const contentId = element.dataset.contentId;
             const isRemoving = element.classList.contains('is-complete');
-            const brand = element.dataset['brand'] || 'drumeo';
+            const brand = element.dataset.brand || 'drumeo';
 
             Utils.triggerEvent(window, 'requesting-completion');
 
-            if(!clickTimeout && !isRequesting) {
+            if (!clickTimeout && !isRequesting) {
                 if (isRemoving) {
                     Toasts.confirm({
                         title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
                         submitButton: {
-                            text: '<span class="bg-' + brand + ' text-white">Reset</span>',
+                            text: `<span class="bg-${brand} text-white">Reset</span>`,
                             callback: () => {
                                 element.classList.remove('is-complete');
 
                                 handleCompleteEvent(isRemoving);
 
                                 ContentService.resetContentProgress(contentId)
-                                    .then(resolved => {
+                                    .then((resolved) => {
                                         if (resolved) {
                                             Toasts.push({
                                                 icon: 'happy',
                                                 title: 'READY TO START AGAIN?',
                                                 themeColor: brand,
-                                                message: 'The lesson has been removed from your list.'
+                                                message: 'Your progress has been reset.',
                                             });
 
                                             element.classList.add('remove-request-complete');
@@ -150,24 +150,21 @@ export default (function () {
 
                                         isRequesting = false;
                                     });
-                            }
+                            },
                         },
                         cancelButton: {
-                            text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>'
-                        }
+                            text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>',
+                        },
                     });
-
-
                 } else {
                     element.classList.add('is-complete');
 
                     handleCompleteEvent(isRemoving);
 
                     ContentService.markContentAsComplete(contentId)
-                        .then(resolved => {
+                        .then((resolved) => {
                             if (resolved) {
                                 element.classList.add('add-request-complete');
-
                             }
 
                             isRequesting = false;
@@ -182,7 +179,7 @@ export default (function () {
             const numberOfAssignments = document.querySelectorAll('.assignment-component').length;
             const progressContainer = document.querySelector('.trophy-progress-bar');
 
-            if(progressContainer){
+            if (progressContainer) {
                 const completeButton = document.querySelector('.completeButton');
                 const progressBar = document.querySelector('.trophy-progress');
                 const currentProgress = progressBar ? progressBar.style.width.replace(/%/g, '') : 0;
@@ -195,8 +192,8 @@ export default (function () {
                     newProgress = Math.ceil(Number(currentProgress) - Number(progressDifference));
                 }
 
-                if(progressBar){
-                    progressBar.style.width = newProgress + '%';
+                if (progressBar) {
+                    progressBar.style.width = `${newProgress}%`;
                 }
 
                 if (newProgress >= 100) {
@@ -213,7 +210,7 @@ export default (function () {
             const progressContainer = document.querySelector('.trophy-progress-bar');
             const progressBar = document.querySelector('.trophy-progress');
 
-            Utils.triggerEvent(window, 'lesson-complete', {complete: !removing});
+            Utils.triggerEvent(window, 'lesson-complete', { complete: !removing });
 
             if (progressBar) {
                 progressBar.style.width = removing ? '0%' : '100%';
@@ -224,11 +221,11 @@ export default (function () {
             }
         }
 
-        function setClickTimeout(){
+        function setClickTimeout() {
             clickTimeout = true;
             setTimeout(() => {
                 clickTimeout = false;
             }, 200);
         }
     });
-})();
+}());
