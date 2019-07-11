@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column bb-light-1 assignment-component">
+    <div class="flex flex-column bb-light-1">
         <div class="flex flex-row align-v-center flex-wrap pa-2">
             <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
