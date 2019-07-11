@@ -27,7 +27,7 @@
   }
 
   video::-webkit-media-text-track-container {
-    transform:translateY(-60px);
+    transform:translateY(-75px);
   }
 }
 
@@ -37,7 +37,7 @@
   }
 
   video::-webkit-media-text-track-container {
-    transform:translateY(0);
+    transform:translateY(-15px);
   }
 }
 
@@ -52,9 +52,11 @@
     background-color:#000;
 
     &::cue {
-      font: 400 20px/1em $defaultSansSerif;
-      background:none;
-      text-shadow: 1px 1px 2px #000;
+      font: 700 20px/1em $defaultSansSerif;
+      background:rgba(0,0,0,.6);
+      padding:10px;
+      border-radius:3px;
+      text-shadow: 1px 1px 3px #000;
       color:#fff;
 
       @include medium {
@@ -63,6 +65,7 @@
     }
 
     &::-webkit-media-text-track-container {
+      z-index:30;
       transition: transform .2s ease-in-out;
     }
   }
@@ -86,7 +89,7 @@
   bottom:0;
   left:0;
   right:0;
-  z-index:15;
+  z-index:26;
   height:100%;
 }
 

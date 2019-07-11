@@ -15,18 +15,7 @@
         </transition>
 
         <transition name="grow-fade">
-            <div
-                v-if="sources.length === 0"
-                class="player-error bg-error text-white corners-3 shadow pa-1"
-            >
-                <p class="body font-bold mb-2">
-                    No compatible source was found for this video.
-                </p>
-                <p class="tiny">
-                    If the issue persists, please contact support using the chat
-                    widget on the bottom right of your screen.
-                </p>
-            </div>
+            <PlayerError v-if="sources.length === 0" />
         </transition>
 
         <transition name="grow-fade">
@@ -61,7 +50,7 @@
         <transition name="grow-fade">
             <div
                 v-show="!loading && !isPlaying"
-                class="player-overlay no-events"
+                class="player-overlay"
             >
                 <div class="overlay-play rounded ba-white-3 flex-center shadows">
                     <i class="fas fa-play"></i>
@@ -96,6 +85,7 @@
         <video
             ref="player"
             playsinline
+            preload="metadata"
             crossorigin="anonymous"
             :poster="poster"
         ></video>
@@ -278,6 +268,7 @@ import PlayerCaptions from './_PlayerCaptions.vue';
 import EventHandlers from './event-handlers';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
 import PlayerShortcuts from './_PlayerShortcuts.vue';
+import PlayerError from './_PlayerError.vue';
 
 export default {
     name: 'VideoPlayer',
@@ -289,6 +280,7 @@ export default {
         PlayerCaptions,
         LoadingAnimation,
         PlayerShortcuts,
+        PlayerError,
     },
     mixins: [ThemeClasses, EventHandlers],
     props: {
@@ -492,7 +484,9 @@ export default {
             source.push({
                 src: this.hlsManifestUrl,
                 type: 'application/x-mpegURL',
-                overrideNative: !this.isSafari,
+                overrideNative: true,
+                handleManifestRedirects: true,
+                enableLowInitialPlaylist: true,
             });
         }
 
@@ -509,16 +503,20 @@ export default {
             controls: false,
             children: [],
             responsive: false,
-            preload: 'auto',
+            preload: 'metadata',
             inactivityTimeout: 5000,
             nativeAudioTracks: false,
             nativeVideoTracks: false,
             textTrackSettings: false,
             html5: {
                 hls: {
-                    overrideNative: false,
+                    overrideNative: true,
+                    handleManifestRedirects: true,
+                    enableLowInitialPlaylist: true,
                 },
                 nativeTextTracks: true,
+                nativeAudioTracks: false,
+                nativeVideoTracks: false,
             },
         });
 
@@ -526,7 +524,7 @@ export default {
         this.videojsInstance.src(source);
 
         // On Player Ready
-        this.videojsInstance.on('ready', () => {
+        this.videojsInstance.ready(() => {
             if (supportsMSE) {
                 this.hlsInstance = this.videojsInstance.tech({IWillNotUseThisInPlugins: true}).hls;
             }

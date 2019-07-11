@@ -16,6 +16,13 @@ export default {
                     }, 500);
                 },
 
+                loadedmetadata: (event) => {
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.$emit('loadedmetadata', event);
+                    }, 500);
+                },
+
                 durationchange: (event) => {
                     this.totalDuration = this.videojsInstance.duration();
 
@@ -65,6 +72,10 @@ export default {
                         this.noSourcesError = true;
                         this.loading = false;
                     }
+                },
+
+                stalled: (event) => {
+                    console.log(event);
                 },
 
                 useractive: () => {
