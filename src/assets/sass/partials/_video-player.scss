@@ -41,10 +41,10 @@
   }
 }
 
-[data-vjs-player] {
+.video-player {
   //overflow:hidden;
 
-  &.vjs-user-active {
+  &.user-active {
     @include playerActive();
   }
 
@@ -70,17 +70,7 @@
     }
   }
 
-  &.vjs-user-inactive {
-    @include playerInactive();
-
-    &.vjs-has-started {
-      @include playerActive();
-
-      &.vjs-playing {
-        @include playerInactive();
-      }
-    }
-  }
+  @include playerInactive();
 }
 
 .controls-wrap {

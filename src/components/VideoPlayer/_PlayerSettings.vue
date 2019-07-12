@@ -3,7 +3,7 @@
         <div class="flex flex-column">
             <div
                 class="flex flex-row pa hover-bg-grey-4 bb-grey-4-1 pointer noselect"
-                :class="currentSourceIndex === -1 ? 'bg-grey-4' : ''"
+                :class="playbackQualities.length === 1 ? 'bg-grey-4' : ''"
                 @click.stop="openQualities"
             >
                 <div class="flex flex-column">
@@ -28,18 +28,18 @@
                 <div class="flex flex-column">
                     <ul class="list-style-none tiny text-right dense font-bold">
                         <li
-                            v-for="(quality, i) in playbackQualities"
+                            v-for="quality in playbackQualities"
                             :key="quality.label"
                             class="pa-1 hover-bg-grey-4 pointer"
-                            :class="[i === currentSourceIndex && !isAutoQuality ? themeTextClass : '']"
-                            @click="setQuality(i)"
+                            :class="quality.active && !isAbrEnabled ? themeTextClass : ''"
+                            @click="setQuality(quality)"
                         >
                             {{ quality.label }}
                         </li>
 
                         <li
                             class="pa-1 hover-bg-grey-4 pointer"
-                            :class="[isAutoQuality ? themeTextClass : '']"
+                            :class="[isAbrEnabled ? themeTextClass : '']"
                             @click="setQuality('auto')"
                         >
                             Auto
@@ -119,6 +119,11 @@ export default {
             default: () => [],
         },
 
+        isAbrEnabled: {
+            type: Boolean,
+            default: () => false,
+        },
+
         drawer: {
             type: Boolean,
             default: () => false,
@@ -133,11 +138,13 @@ export default {
     },
     computed: {
         currentSourceLabel() {
-            if (this.currentSourceIndex >= 0 && !this.isAutoQuality) {
-                return this.playbackQualities[this.currentSourceIndex].label;
+            if (this.isAbrEnabled) {
+                return 'Auto';
             }
 
-            return 'Auto';
+            const currentQuality = this.playbackQualities.find(quality => quality.active === true);
+
+            return currentQuality ? currentQuality.label : 'Auto';
         },
 
         isAutoQuality() {
@@ -162,9 +169,11 @@ export default {
     },
     methods: {
         openQualities() {
-            if (this.currentSourceIndex >= 0) {
-                this.qualitiesDropdown = true;
+            if (this.playbackQualities.length <= 1) {
+                return;
             }
+
+            this.qualitiesDropdown = true;
             this.ratesDropdown = false;
         },
 
@@ -173,8 +182,8 @@ export default {
             this.ratesDropdown = true;
         },
 
-        setQuality(index) {
-            this.$emit('setQuality', { index });
+        setQuality(id) {
+            this.$emit('setQuality', id);
         },
 
         setRate(rate) {

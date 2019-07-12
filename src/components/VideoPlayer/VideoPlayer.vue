@@ -1,8 +1,8 @@
 <template>
     <div
         ref="container"
-        class="flex flex-column"
-        data-vjs-player
+        class="flex flex-column video-player"
+        :class="{'user-active': userActive || !isPlaying}"
         @contextmenu.stop.prevent="toggleContextMenu"
         @mousemove="trackMousePosition"
         @keydown.stop.prevent="keyboardControlEventHandler"
@@ -14,9 +14,9 @@
             />
         </transition>
 
-        <transition name="grow-fade">
-            <PlayerError v-if="sources.length === 0" />
-        </transition>
+<!--        <transition name="grow-fade">-->
+<!--            <PlayerError v-if="sources.length === 0" />-->
+<!--        </transition>-->
 
         <transition name="grow-fade">
             <div
@@ -71,12 +71,12 @@
         <transition name="grow-fade">
             <div
                 v-show="isChromeCastConnected"
-                class="cast-dialog flex flex-center pa-3 text-center"
+                class="cast-dialog flex flex-center pa-3 text-center text-white"
             >
                 <span style="font-size:72px;">
                     <i class="fab fa-chromecast"></i>
                 </span>
-                <h1 class="subheading text-white">
+                <h1 class="subheading">
                     Video is playing on another device
                 </h1>
             </div>
@@ -85,7 +85,7 @@
         <video
             ref="player"
             playsinline
-            preload="metadata"
+            preload="auto"
             crossorigin="anonymous"
             :poster="poster"
         ></video>
@@ -215,7 +215,10 @@
                         :disabled="isChromeCastConnected"
                         @click.stop.native="fullscreen"
                     >
-                        <i class="fas fa-expand"></i>
+                        <i
+                            class="fas"
+                            :class="isFullscreen ? 'fa-compress' : 'fa-expand'"
+                        ></i>
                     </PlayerButton>
                 </div>
             </div>
@@ -237,6 +240,7 @@
                 :current-source-index="currentSourceIndex"
                 :current-playback-rate="currentPlaybackRate"
                 :playback-qualities="playbackQualities"
+                :is-abr-enabled="isAbrEnabled"
                 @setQuality="setQuality"
                 @setRate="setRate"
             />
@@ -254,9 +258,12 @@
     </div>
 </template>
 <script>
-import videojs from 'video.js';
-import 'videojs-contrib-quality-levels';
+// import videojs from 'video.js';
+// import 'videojs-contrib-quality-levels';
+import * as muxjs from 'mux.js';
+import shaka from 'shaka-player';
 import ISO6391 from '../../../node_modules/iso-639-1';
+import Utils from 'js-helper-functions/modules/utils';
 import PlayerUtils from './player-utils';
 import ChromeCastPlugin from './chromecast';
 import ThemeClasses from '../../mixins/ThemeClasses';
@@ -312,12 +319,16 @@ export default {
     data() {
         return {
             loading: false,
+            isFullscreen: false,
             contextMenu: false,
             keyboardShortcuts: false,
             videojsInstance: null,
+            shakaPlayer: null,
+            mediaElement: null,
             playerReady: false,
             hlsInstance: null,
             userActive: true,
+            userActiveTimeout: null,
             isPlaying: false,
             currentTime: 0,
             totalDuration: 0,
@@ -346,25 +357,32 @@ export default {
             },
         },
 
+        isAbrEnabled: {
+            cache: false,
+            get(){
+                if (this.shakaPlayer == null) {
+                    return false;
+                }
+
+                const config = this.shakaPlayer.getConfiguration();
+
+                return config.abr ? config.abr.enabled : false;
+            },
+        },
+
         playbackQualities: {
             cache: false,
             get() {
-                if (this.hlsInstance != null && this.videojsInstance.qualityLevels().levels_) {
-                    return this.videojsInstance.qualityLevels().levels_.map(source => ({
-                        label: PlayerUtils.getQualityLabelByHeight(source.height),
-                        source: source.id,
-                        width: source.width,
-                        height: source.height,
-                        enabled: source.enabled,
-                    }));
+                if (this.shakaPlayer == null) {
+                    return [];
                 }
 
-                return this.sources.map(source => ({
+                const qualities = this.shakaPlayer.getVariantTracks().map(source => ({
+                    ...source,
                     label: PlayerUtils.getQualityLabelByHeight(source.height),
-                    source: source.file,
-                    width: source.width,
-                    height: source.height,
                 }));
+
+                return Utils.dynamicSort(qualities, 'height');
             },
         },
 
@@ -377,11 +395,7 @@ export default {
         currentSource: {
             cache: false,
             get() {
-                if (this.hlsInstance != null && this.hlsInstance.playlists.media_) {
-                    return this.hlsInstance.playlists.media_.resolvedUri;
-                }
-
-                return this.videojsInstance ? this.videojsInstance.src() : '';
+                return this.mediaElement ? this.mediaElement.currentSrc : '';
             },
         },
 
@@ -401,7 +415,7 @@ export default {
         currentPlaybackRate: {
             cache: false,
             get() {
-                return this.videojsInstance ? this.videojsInstance.playbackRate() : 1;
+                return this.mediaElement ? this.mediaElement.playbackRate : 1;
             },
         },
 
@@ -464,7 +478,7 @@ export default {
             return this.userActive;
         },
 
-        isMobile: () => PlayerUtils.isMobile().any || window.matchMedia('(max-width: 640px)'),
+        isMobile: () => PlayerUtils.isMobile().any || window.matchMedia('(max-width: 640px)') === true,
 
         isSafari: () => PlayerUtils.isSafari(),
 
@@ -472,97 +486,120 @@ export default {
             return (this.settingsDrawer || this.captionsDrawer) && this.isMobile;
         },
     },
-    mounted() {
+    async mounted() {
         const { player } = this.$refs;
         const { container } = this.$refs;
         const supportsMSE = typeof MediaSource === 'function';
-        const source = [];
         this.loading = true;
 
-        // Add HLS manifest URL
-        if (supportsMSE) {
-            source.push({
-                src: this.hlsManifestUrl,
-                type: 'application/x-mpegURL',
-                overrideNative: true,
-                handleManifestRedirects: true,
-                enableLowInitialPlaylist: true,
-            });
+        if (muxjs != null && supportsMSE) {
+            window.muxjs = muxjs;
         }
 
-        // Add MP4 Sources
-        if (this.sources.length > 0) {
-            source.push({
-                src: this.sources[this.getDefaultPlaybackQualityIndex()].file,
-                type: 'video/mp4',
+        shaka.polyfill.installAll();
+
+        if (shaka.Player.isBrowserSupported()) {
+            this.shakaPlayer = new shaka.Player(player);
+
+            Object.keys(this.eventHandlers).forEach((event) => {
+                this.shakaPlayer.addEventListener(event, this.eventHandlers[event]);
             });
+
+            this.mediaElement = player;
+
+            this.shakaPlayer.load(this.hlsManifestUrl)
+                .then(() => {
+                    this.mediaElement = this.shakaPlayer.getMediaElement();
+                    // HAVE TO MANUALLY TRIGGER A LOAD EVENT ON SAFARI, BREAKS CHROME THOUGH
+                    // if (this.isSafari) {
+                    console.log('hello?');
+
+                    // this.mediaElement.src = this.hlsManifestUrl;
+                    // setTimeout(() => {
+                    //     this.$refs.player.load();
+                    // }, 10000);
+                    // }
+
+                    // ENABLE MEDIA ELEMENT EVENT HANDLERS
+                    Object.keys(this.mediaElementEventHandlers).forEach((event) => {
+                        this.mediaElement.addEventListener(
+                            event,
+                            this.mediaElementEventHandlers[event],
+                        );
+                    });
+
+                    // SET THE VOLUME FROM LOCALSTORAGE
+                    if (window.localStorage.getItem('playerVolume') != null) {
+                        this.changeVolume({
+                            volume: Number(window.localStorage.getItem('playerVolume')),
+                        });
+                    }
+
+                    // USER ACTIVE AND INACTIVE EVENTS
+                    container.addEventListener('mousemove', () => {
+                        Utils.triggerEvent(this.mediaElement, 'useractive');
+
+                        clearTimeout(this.userActiveTimeout);
+                        this.userActiveTimeout = setTimeout(() => {
+                            Utils.triggerEvent(this.mediaElement, 'userinactive');
+                        }, 3000);
+                    });
+
+                    // FULLSCREEN EVENT
+                    document.addEventListener('fullscreenchange', () => {
+                        this.isFullscreen = document.fullscreenElement != null;
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            console.log('hello?');
+
+            this.mediaElement = this.$refs.player;
+
+            this.mediaElement.play();
         }
 
-        // Initialize Player
-        this.videojsInstance = videojs(player, {
-            controls: false,
-            children: [],
-            responsive: false,
-            preload: 'metadata',
-            inactivityTimeout: 5000,
-            nativeAudioTracks: false,
-            nativeVideoTracks: false,
-            textTrackSettings: false,
-            html5: {
-                hls: {
-                    overrideNative: true,
-                    handleManifestRedirects: true,
-                    enableLowInitialPlaylist: true,
-                },
-                nativeTextTracks: true,
-                nativeAudioTracks: false,
-                nativeVideoTracks: false,
-            },
-        });
 
         // Add the sources to the player instance
-        this.videojsInstance.src(source);
+        // this.videojsInstance.src(source);
 
         // On Player Ready
-        this.videojsInstance.ready(() => {
-            if (supportsMSE) {
-                this.hlsInstance = this.videojsInstance.tech({IWillNotUseThisInPlugins: true}).hls;
-            }
-
-            this.captions.forEach((caption) => {
-                this.videojsInstance.addRemoteTextTrack({
-                    kind: 'captions',
-                    label: ISO6391.getNativeName(caption.language),
-                    mode: 'disabled',
-                    language: caption.language,
-                    src: caption.url,
-                }, false);
-            });
-
-            // This fixes captions for Airplay
-            setTimeout(() => {
-                this.enableCaptions({});
-            }, 2000);
-
-            if (this.isSafari) {
-                this.videojsInstance.load();
-            }
-
-            this.playerReady = true;
-            this.$emit('playerReady');
-
-            Object.keys(this.videoJsEventHandlers).forEach((event) => {
-                this.videojsInstance.on(event, this.videoJsEventHandlers[event]);
-            });
-
-            if (window.localStorage.getItem('playerVolume') != null) {
-                this.changeVolume({
-                    volume: Number(window.localStorage.getItem('playerVolume')),
-                });
-            }
-
-            container.focus();
-        });
+        // this.videojsInstance.ready(() => {
+        //     if (supportsMSE) {
+        //         this.hlsInstance = this.videojsInstance.tech({IWillNotUseThisInPlugins: true}).hls;
+        //     }
+        //
+        //     this.captions.forEach((caption) => {
+        //         this.videojsInstance.addRemoteTextTrack({
+        //             kind: 'captions',
+        //             label: ISO6391.getNativeName(caption.language),
+        //             mode: 'disabled',
+        //             language: caption.language,
+        //             src: caption.url,
+        //         }, false);
+        //     });
+        //
+        //     // This fixes captions for Airplay
+        //     setTimeout(() => {
+        //         this.enableCaptions({});
+        //     }, 2000);
+        //
+        //     if (this.isSafari) {
+        //         this.videojsInstance.load();
+        //     }
+        //
+        //     this.playerReady = true;
+        //     this.$emit('playerReady');
+        //
+        //     Object.keys(this.videoJsEventHandlers).forEach((event) => {
+        //         this.videojsInstance.on(event, this.videoJsEventHandlers[event]);
+        //     });
+        //
+        //
+        //     container.focus();
+        // });
 
 
         // Close drawers on any document click
@@ -625,9 +662,9 @@ export default {
             if (this.chromeCast && this.chromeCast.Connected) {
                 this.chromeCast.playOrPause();
             } else if (this.isPlaying) {
-                this.videojsInstance.pause();
+                this.mediaElement.pause();
             } else {
-                this.videojsInstance.play();
+                this.mediaElement.play();
             }
         },
 
@@ -642,30 +679,28 @@ export default {
         seek(time) {
             const _time = time < 0 ? 0 : time;
             this.currentTime = _time;
-            this.videojsInstance.pause();
+            this.mediaElement.pause();
 
             if (this.isChromeCastConnected) {
                 this.chromeCast.seek(_time);
             } else {
-                this.videojsInstance.currentTime(_time);
+                this.mediaElement.currentTime = _time;
 
-                this.videojsInstance.play();
+                this.mediaElement.play();
             }
         },
 
         fullscreen() {
-            if (this.videojsInstance.isFullscreen()) {
-                this.videojsInstance.exitFullscreen();
-                this.videojsInstance.isFullscreen(false);
+            if (this.isFullscreen) {
+                document.exitFullscreen();
             } else {
-                this.videojsInstance.requestFullscreen();
-                this.videojsInstance.isFullscreen(true);
+                this.$refs.container.requestFullscreen();
             }
         },
 
         changeVolume(payload) {
-            this.videojsInstance.volume(payload.volume / 100);
-            this.currentVolume = this.videojsInstance.volume();
+            this.mediaElement.volume = payload.volume / 100;
+            this.currentVolume = this.mediaElement.volume;
 
             if (payload.volume > 0) {
                 localStorage.setItem('playerVolume', payload.volume);
@@ -683,26 +718,22 @@ export default {
         },
 
         setQuality(payload) {
-            const currentTime = this.videojsInstance.currentTime();
+            const { currentTime } = this.mediaElement;
 
-            if (this.hlsInstance != null) {
-                if (payload.index === 'auto') {
-                    this.videojsInstance.qualityLevels().levels_.forEach((quality) => {
-                        quality.enabled = true;
-                    });
-                } else {
-                    this.videojsInstance.qualityLevels().levels_.forEach((quality, index) => {
-                        quality.enabled = index === payload.index;
-                    });
-
-                    this.videojsInstance.qualityLevels().selectedIndex_ = payload.index;
-                    this.videojsInstance.qualityLevels().trigger({
-                        type: 'change', selectedIndex: payload.index,
-                    });
-                }
+            if (payload === 'auto') {
+                this.shakaPlayer.configure({
+                    abr: {
+                        enabled: true,
+                    },
+                });
             } else {
-                this.videojsInstance.src(this.sources[payload.index].file);
-                this.setDefaultPlaybackQualityWidth(this.playbackQualities[payload.index].width);
+                this.shakaPlayer.configure({
+                    abr: {
+                        enabled: false,
+                    },
+                });
+
+                this.shakaPlayer.selectVariantTrack(payload, true);
             }
 
             setTimeout(() => {
@@ -712,7 +743,7 @@ export default {
 
         setRate(payload) {
             if (payload.rate > 0.25 && payload.rate <= 2) {
-                this.videojsInstance.playbackRate(payload.rate);
+                this.mediaElement.playbackRate = payload.rate;
             }
         },
 
@@ -776,7 +807,7 @@ export default {
 
         enableChromeCast() {
             this.chromeCast.cast({
-                content: this.currentSource,
+                content: this.hlsManifestUrl,
                 poster: this.poster,
                 title: 'Test Title',
                 description: 'Test Description',
@@ -797,6 +828,8 @@ export default {
         },
 
         keyboardControlEventHandler(event) {
+            console.log(event);
+
             if (this.keyboardEventHandlers[event.code]) {
                 event.stopPropagation();
                 event.preventDefault();

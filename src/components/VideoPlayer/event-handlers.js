@@ -1,7 +1,7 @@
 export default {
     data() {
         return {
-            videoJsEventHandlers: {
+            eventHandlers: {
                 canplaythrough: (event) => {
                     setTimeout(() => {
                         this.loading = false;
@@ -9,13 +9,30 @@ export default {
                     }, 500);
                 },
 
-                loadeddata: (event) => {
-                    setTimeout(() => {
-                        this.loading = false;
-                        this.$emit('loadeddata', event);
-                    }, 500);
+                loading: (event) => {
+                    this.loading = true;
+
+                    console.log(event);
                 },
 
+                onstatechange: (event) => {
+                    console.log(event);
+
+                    if (event.state === 'load') {
+                        this.loading = false;
+                    }
+                },
+
+                error: (event) => {
+                    console.error(event);
+                },
+
+                buffering: (event) => {
+                    this.loading = event.buffering;
+                },
+            },
+
+            mediaElementEventHandlers: {
                 loadedmetadata: (event) => {
                     setTimeout(() => {
                         this.loading = false;
@@ -24,7 +41,7 @@ export default {
                 },
 
                 durationchange: (event) => {
-                    this.totalDuration = this.videojsInstance.duration();
+                    this.totalDuration = this.mediaElement.duration;
 
                     this.$emit('durationchange', event);
                 },
@@ -57,8 +74,8 @@ export default {
                 },
 
                 timeupdate: (event) => {
-                    this.totalDuration = this.videojsInstance.duration();
-                    this.currentTime = this.videojsInstance.currentTime();
+                    this.totalDuration = this.mediaElement.duration;
+                    this.currentTime = this.mediaElement.currentTime;
 
                     this.isPlaying = true;
 
@@ -67,11 +84,6 @@ export default {
 
                 error: (event) => {
                     console.log(event);
-
-                    if (event.code === 4) {
-                        this.noSourcesError = true;
-                        this.loading = false;
-                    }
                 },
 
                 stalled: (event) => {
@@ -79,7 +91,9 @@ export default {
                 },
 
                 useractive: () => {
-                    this.userActive = true;
+                    setTimeout(() => {
+                        this.userActive = true;
+                    }, 200);
                 },
 
                 userinactive: () => {
@@ -105,16 +119,18 @@ export default {
                     this.isPlaying = true;
                     this.isChromeCastConnected = true;
 
-                    this.videojsInstance.pause();
-                    if (this.videojsInstance.isFullscreen()) {
-                        this.videojsInstance.exitFullscreen();
-                        this.videojsInstance.isFullscreen(false);
-                    }
+                    this.mediaElement.pause();
+                    // if (this.videojsInstance.isFullscreen()) {
+                    //     this.videojsInstance.exitFullscreen();
+                    //     this.videojsInstance.isFullscreen(false);
+                    // }
 
-                    const currentCaptions = this.captions.filter(caption => caption.language === this.currentCaptions);
-                    if (currentCaptions.length) {
-                        this.enableCaptions(currentCaptions[0]);
-                    }
+                    // const currentCaptions = this.captions.filter(caption => caption.language === this.currentCaptions);
+                    // if (currentCaptions.length) {
+                    //     this.enableCaptions(currentCaptions[0]);
+                    // }
+
+                    console.log(event);
 
                     if (this.currentTime) {
                         this.seek(this.currentTime);
