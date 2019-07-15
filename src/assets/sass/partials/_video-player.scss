@@ -240,10 +240,6 @@
       max-width:175px;
     }
   }
-
-  .selected-setting {
-    flex:0 0 60px;
-  }
 }
 
 .selected-caption:before {
@@ -327,8 +323,8 @@
   z-index:100;
 }
 
-.keyboard-shortcuts, .player-error {
-  z-index:26;
+.player-dialog, .player-error {
+  z-index:27;
   position:absolute;
   top:$gutterWidth / 2;
   left:$gutterWidth / 2;

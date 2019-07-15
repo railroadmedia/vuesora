@@ -3,7 +3,7 @@
         <div class="flex flex-column">
             <div
                 class="flex flex-row pa hover-bg-grey-4 bb-grey-4-1 pointer noselect"
-                :class="playbackQualities.length === 1 ? 'bg-grey-4' : ''"
+                :class="isSingleSource ? 'bg-grey-4' : ''"
                 @click.stop="openQualities"
             >
                 <div class="flex flex-column">
@@ -11,9 +11,9 @@
                         Quality:
                     </p>
                 </div>
-                <div class="flex flex-column selected-setting">
+                <div class="flex flex-column align-v-center">
                     <p
-                        class="body dense font-bold text-right"
+                        class="tiny dense font-bold text-right"
                         :class="themeTextClass"
                     >
                         {{ currentSourceLabel }}
@@ -57,9 +57,9 @@
                         Playback Rate:
                     </p>
                 </div>
-                <div class="flex flex-column selected-setting">
+                <div class="flex flex-column">
                     <p
-                        class="body dense font-bold text-right"
+                        class="tiny dense font-bold text-right"
                         :class="themeTextClass"
                     >
                         {{ currentPlaybackRate }}x
@@ -71,10 +71,11 @@
                 v-show="ratesDropdown"
                 class="flex flex-row bt-grey-4-1"
             >
-                <div class="flex flex-column">
+                <div class="flex flex-column align-v-center">
                     <ul class="list-style-none tiny text-right dense font-bold">
                         <li
                             v-for="rate in playbackRates"
+                            :key="`playbackRate-${rate}`"
                             class="pa-1 hover-bg-grey-4 pointer"
                             :class="rate === currentPlaybackRate ? themeTextClass : ''"
                             @click="setRate(rate)"
@@ -102,11 +103,6 @@ export default {
         currentSource: {
             type: String,
             default: () => '',
-        },
-
-        currentSourceIndex: {
-            type: Number,
-            default: null,
         },
 
         currentPlaybackRate: {
@@ -138,19 +134,25 @@ export default {
     },
     computed: {
         currentSourceLabel() {
+            const currentQuality = this.playbackQualities.find(quality => quality.active === true);
+
             if (this.isAbrEnabled) {
+                if (!this.isSingleSource) {
+                    return currentQuality ? `Auto (${currentQuality.label})` : 'Auto';
+                }
+
                 return 'Auto';
             }
 
-            const currentQuality = this.playbackQualities.find(quality => quality.active === true);
+            if (currentQuality) {
+                return currentQuality.label;
+            }
 
-            return currentQuality ? currentQuality.label : 'Auto';
+            return 'Auto';
         },
 
-        isAutoQuality() {
-            const enabledQualities = this.playbackQualities.map(quality => quality.enabled);
-
-            return enabledQualities.indexOf(false) === -1;
+        isSingleSource(){
+            return this.playbackQualities.length <= 1;
         },
     },
     watch: {
@@ -169,7 +171,7 @@ export default {
     },
     methods: {
         openQualities() {
-            if (this.playbackQualities.length <= 1) {
+            if (this.isSingleSource) {
                 return;
             }
 

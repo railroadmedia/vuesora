@@ -1,9 +1,9 @@
 <template>
     <div
-        class="keyboard-shortcuts bg-white corners-3 shadow pa-1"
+        class="player-dialog bg-grey-5 text-white corners-3 shadow pa-1"
     >
         <span
-            class="close-shortcuts body text-grey-3 hover-text-black pointer"
+            class="close-shortcuts body text-grey-3 hover-text-white pointer"
             @click="close"
         >
             <i class="fas fa-times"></i>

@@ -7,31 +7,47 @@
         @mousemove="trackMousePosition"
         @keydown.stop.prevent="keyboardControlEventHandler"
     >
+
         <transition name="grow-fade">
-            <PlayerShortcuts
-                v-show="keyboardShortcuts"
-                @close="keyboardShortcuts = false"
+            <PlayerStats
+                v-if="playerStats"
+                v-show="dialogs.stats"
+                :player-stats="playerStats"
+                @close="closeAllDialogs"
             />
         </transition>
 
-<!--        <transition name="grow-fade">-->
-<!--            <PlayerError v-if="sources.length === 0" />-->
-<!--        </transition>-->
+        <transition name="grow-fade">
+            <PlayerShortcuts
+                v-show="dialogs.keyboardShortcuts"
+                @close="closeAllDialogs"
+            />
+        </transition>
+
+        <transition name="grow-fade">
+            <PlayerError v-if="playerError" />
+        </transition>
 
         <transition name="grow-fade">
             <div
                 v-show="contextMenu"
                 ref="contextMenu"
-                class="context-menu bg-grey-5 hover-bg-grey-4 pointer text-white shadow overflow"
+                class="context-menu bg-grey-5 pointer text-white shadow overflow"
                 :style="contextMenuPosition"
                 @click.stop.prevent
             >
                 <ul class="list-style-none tiny dense font-bold">
                     <li
-                        class="pa-1"
-                        @click="keyboardShortcuts = !keyboardShortcuts"
+                        class="pa-1 hover-bg-grey-4"
+                        @click="openDialog('keyboardShortcuts')"
                     >
-                        {{ keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
+                        {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
+                    </li>
+                    <li
+                        class="pa-1 hover-bg-grey-4"
+                        @click="openDialog('stats')"
+                    >
+                        {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats
                     </li>
                 </ul>
             </div>
@@ -194,7 +210,7 @@
                     <PlayerButton
                         v-if="captions.length > 0"
                         :theme-color="themeColor"
-                        :active="currentCaptions != null"
+                        :active="isCaptionsEnabled"
                         @click.stop.native="toggleCaptionsDrawer"
                     >
                         <i class="fas fa-closed-captioning"></i>
@@ -235,9 +251,7 @@
                 v-show="settingsDrawer"
                 :drawer="settingsDrawer"
                 :theme-color="themeColor"
-                :videojs-instance="videojsInstance"
                 :current-source="currentSource"
-                :current-source-index="currentSourceIndex"
                 :current-playback-rate="currentPlaybackRate"
                 :playback-qualities="playbackQualities"
                 :is-abr-enabled="isAbrEnabled"
@@ -250,6 +264,7 @@
             <PlayerCaptions
                 v-show="captionsDrawer"
                 :theme-color="themeColor"
+                :is-captions-enabled="isCaptionsEnabled"
                 :caption-options="captionOptions"
                 :current-captions="currentCaptions"
                 @captionsSelected="enableCaptions"
@@ -258,12 +273,10 @@
     </div>
 </template>
 <script>
-// import videojs from 'video.js';
-// import 'videojs-contrib-quality-levels';
 import * as muxjs from 'mux.js';
 import shaka from 'shaka-player';
-import ISO6391 from '../../../node_modules/iso-639-1';
 import Utils from 'js-helper-functions/modules/utils';
+import ISO6391 from '../../../node_modules/iso-639-1';
 import PlayerUtils from './player-utils';
 import ChromeCastPlugin from './chromecast';
 import ThemeClasses from '../../mixins/ThemeClasses';
@@ -276,6 +289,7 @@ import EventHandlers from './event-handlers';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
 import PlayerShortcuts from './_PlayerShortcuts.vue';
 import PlayerError from './_PlayerError.vue';
+import PlayerStats from './_PlayerStats.vue';
 
 export default {
     name: 'VideoPlayer',
@@ -288,6 +302,7 @@ export default {
         LoadingAnimation,
         PlayerShortcuts,
         PlayerError,
+        PlayerStats,
     },
     mixins: [ThemeClasses, EventHandlers],
     props: {
@@ -319,14 +334,12 @@ export default {
     data() {
         return {
             loading: false,
+            playerError: false,
             isFullscreen: false,
             contextMenu: false,
-            keyboardShortcuts: false,
-            videojsInstance: null,
             shakaPlayer: null,
             mediaElement: null,
             playerReady: false,
-            hlsInstance: null,
             userActive: true,
             userActiveTimeout: null,
             isPlaying: false,
@@ -346,7 +359,10 @@ export default {
             performanceNow: 0,
             currentMousePosition: { x: 0, y: 0 },
             contextMenuPosition: null,
-            noSourcesError: null,
+            dialogs: {
+                stats: false,
+                keyboardShortcuts: false,
+            },
         };
     },
     computed: {
@@ -364,9 +380,9 @@ export default {
                     return false;
                 }
 
-                const config = this.shakaPlayer.getConfiguration();
+                const { abr } = this.shakaPlayer.getConfiguration();
 
-                return config.abr ? config.abr.enabled : false;
+                return abr ? abr.enabled : false;
             },
         },
 
@@ -399,19 +415,6 @@ export default {
             },
         },
 
-        currentSourceIndex: {
-            cache: false,
-            get() {
-                if (this.hlsInstance) {
-                    return this.videojsInstance.qualityLevels().selectedIndex;
-                }
-
-                return this.playbackQualities
-                    .map(quality => quality.source)
-                    .indexOf(this.currentSource);
-            },
-        },
-
         currentPlaybackRate: {
             cache: false,
             get() {
@@ -422,19 +425,11 @@ export default {
         captionOptions: {
             cache: false,
             get() {
-                const tracks = this.videojsInstance ? this.videojsInstance.remoteTextTracks() : [];
-                const tracksMap = [];
-
-                for (let i = 0; i < tracks.length; i += 1) {
-                    if (tracks[i].kind === 'captions') {
-                        tracksMap.push({
-                            language: tracks[i].language,
-                            label: ISO6391.getNativeName(tracks[i].language),
-                        });
-                    }
+                if (this.shakaPlayer) {
+                    return this.shakaPlayer.getTextTracks().filter(track => track.kind === 'subtitle');
                 }
 
-                return tracksMap;
+                return [];
             },
         },
 
@@ -478,6 +473,24 @@ export default {
             return this.userActive;
         },
 
+        isCaptionsEnabled() {
+            if (this.shakaPlayer) {
+                return this.shakaPlayer.isTextTrackVisible();
+            }
+
+            return false;
+        },
+
+        playerStats: {
+            get() {
+                if (this.shakaPlayer) {
+                    return this.shakaPlayer.getStats();
+                }
+
+                return null;
+            },
+        },
+
         isMobile: () => PlayerUtils.isMobile().any || window.matchMedia('(max-width: 640px)') === true,
 
         isSafari: () => PlayerUtils.isSafari(),
@@ -486,54 +499,65 @@ export default {
             return (this.settingsDrawer || this.captionsDrawer) && this.isMobile;
         },
     },
-    async mounted() {
+    mounted() {
         const { player } = this.$refs;
         const { container } = this.$refs;
         const supportsMSE = typeof MediaSource === 'function';
         this.loading = true;
 
-        if (muxjs != null && supportsMSE) {
+        /*
+        * Mux.js is required to mux TS streams into Mp4 on the fly, Shakaplayer requires the
+        * window.muxjs object to exist is order to accomplish this.
+        *
+        * Curtis, July 2019
+        */
+        if (window.muxjs == null && supportsMSE) {
             window.muxjs = muxjs;
         }
 
         shaka.polyfill.installAll();
 
         if (shaka.Player.isBrowserSupported()) {
-            this.shakaPlayer = new shaka.Player(player);
+            this.shakaPlayer = new shaka.Player();
 
             Object.keys(this.eventHandlers).forEach((event) => {
                 this.shakaPlayer.addEventListener(event, this.eventHandlers[event]);
             });
 
-            this.mediaElement = player;
-
-            this.shakaPlayer.load(this.hlsManifestUrl)
+            // this.mediaElement = player;
+            this.shakaPlayer.attach(player)
                 .then(() => {
                     this.mediaElement = this.shakaPlayer.getMediaElement();
-                    // HAVE TO MANUALLY TRIGGER A LOAD EVENT ON SAFARI, BREAKS CHROME THOUGH
-                    // if (this.isSafari) {
-                    console.log('hello?');
 
-                    // this.mediaElement.src = this.hlsManifestUrl;
-                    // setTimeout(() => {
-                    //     this.$refs.player.load();
-                    // }, 10000);
-                    // }
+                    return this.loadSource();
+                })
+                .then(() => {
+                    /*
+                    * Safari leaves the readyState at 2, and manually triggering a load
+                    * gives us our intended behavior, on Chrome the readyState is 0 and manually
+                    * triggering a load breaks the playback.
+                    *
+                    * Curtis, July 2019
+                    */
+                    if (this.mediaElement.readyState === 2) {
+                        this.$refs.player.load();
+                    }
 
-                    // ENABLE MEDIA ELEMENT EVENT HANDLERS
-                    Object.keys(this.mediaElementEventHandlers).forEach((event) => {
-                        this.mediaElement.addEventListener(
-                            event,
-                            this.mediaElementEventHandlers[event],
+                    this.attachMediaElementEventHandlers();
+
+                    this.getDefaultVolume();
+
+                    // Add captions to the player
+                    this.captions.forEach((caption) => {
+                        this.shakaPlayer.addTextTrack(
+                            caption.url,
+                            caption.language,
+                            caption.type,
+                            'text/vtt',
+                            null,
+                            ISO6391.getNativeName(caption.language),
                         );
                     });
-
-                    // SET THE VOLUME FROM LOCALSTORAGE
-                    if (window.localStorage.getItem('playerVolume') != null) {
-                        this.changeVolume({
-                            volume: Number(window.localStorage.getItem('playerVolume')),
-                        });
-                    }
 
                     // USER ACTIVE AND INACTIVE EVENTS
                     container.addEventListener('mousemove', () => {
@@ -551,56 +575,13 @@ export default {
                     });
                 })
                 .catch((error) => {
-                    console.log(error);
+                    if (error.code === 4000) {
+                        this.playerError = true;
+                    }
                 });
         } else {
-            console.log('hello?');
-
-            this.mediaElement = this.$refs.player;
-
-            this.mediaElement.play();
+            this.playerError = true;
         }
-
-
-        // Add the sources to the player instance
-        // this.videojsInstance.src(source);
-
-        // On Player Ready
-        // this.videojsInstance.ready(() => {
-        //     if (supportsMSE) {
-        //         this.hlsInstance = this.videojsInstance.tech({IWillNotUseThisInPlugins: true}).hls;
-        //     }
-        //
-        //     this.captions.forEach((caption) => {
-        //         this.videojsInstance.addRemoteTextTrack({
-        //             kind: 'captions',
-        //             label: ISO6391.getNativeName(caption.language),
-        //             mode: 'disabled',
-        //             language: caption.language,
-        //             src: caption.url,
-        //         }, false);
-        //     });
-        //
-        //     // This fixes captions for Airplay
-        //     setTimeout(() => {
-        //         this.enableCaptions({});
-        //     }, 2000);
-        //
-        //     if (this.isSafari) {
-        //         this.videojsInstance.load();
-        //     }
-        //
-        //     this.playerReady = true;
-        //     this.$emit('playerReady');
-        //
-        //     Object.keys(this.videoJsEventHandlers).forEach((event) => {
-        //         this.videojsInstance.on(event, this.videoJsEventHandlers[event]);
-        //     });
-        //
-        //
-        //     container.focus();
-        // });
-
 
         // Close drawers on any document click
         document.addEventListener('click', this.closeDrawers);
@@ -658,6 +639,44 @@ export default {
         document.removeEventListener('mouseup', this.mouseUpEventHandler);
     },
     methods: {
+        loadSource() {
+            const supportsMSE = typeof MediaSource === 'function';
+
+            return new Promise((resolve) => {
+                if (supportsMSE) {
+                    this.shakaPlayer.load(
+                        this.hlsManifestUrl,
+                        0,
+                        'application/x-mpegURL',
+                    )
+                        .then(() => {
+                            resolve();
+                        });
+                } else {
+                    this.mediaElement.src = this.hlsManifestUrl;
+
+                    resolve();
+                }
+            });
+        },
+
+        attachMediaElementEventHandlers() {
+            Object.keys(this.mediaElementEventHandlers).forEach((event) => {
+                this.mediaElement.addEventListener(
+                    event,
+                    this.mediaElementEventHandlers[event],
+                );
+            });
+        },
+
+        getDefaultVolume() {
+            if (window.localStorage.getItem('playerVolume') != null) {
+                this.changeVolume({
+                    volume: Number(window.localStorage.getItem('playerVolume')),
+                });
+            }
+        },
+
         playPause() {
             if (this.chromeCast && this.chromeCast.Connected) {
                 this.chromeCast.playOrPause();
@@ -787,21 +806,12 @@ export default {
         },
 
         enableCaptions(payload) {
-            const tracks = this.videojsInstance.remoteTextTracks();
-            let foundCaptions;
+            this.shakaPlayer.selectTextTrack(payload);
 
-            for (let i = 0; i < tracks.length; i += 1) {
-                if (tracks[i].kind === 'captions' && tracks[i].language === payload.language) {
-                    tracks[i].mode = 'showing';
-                    foundCaptions = tracks[i].language;
-                } else {
-                    tracks[i].mode = 'disabled';
-                }
-            }
-            this.currentCaptions = foundCaptions || null;
+            this.shakaPlayer.setTextTrackVisibility(payload != null);
 
             if (this.isChromeCastConnected) {
-                this.chromeCast.changeSubtitle(foundCaptions ? 0 : null);
+                this.chromeCast.changeSubtitle(payload ? 0 : null);
             }
         },
 
@@ -886,6 +896,21 @@ export default {
 
             this.contextMenu = false;
             this.mousedown = false;
+        },
+
+        openDialog(dialog) {
+            const alreadyOpen = this.dialogs[dialog] === true;
+            this.closeAllDialogs();
+
+            if (!alreadyOpen) {
+                this.dialogs[dialog] = true;
+            }
+        },
+
+        closeAllDialogs() {
+            Object.keys(this.dialogs).forEach((dialog) => {
+                this.dialogs[dialog] = false;
+            });
         },
     },
 };

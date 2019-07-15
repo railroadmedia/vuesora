@@ -9,15 +9,11 @@ export default {
                     }, 500);
                 },
 
-                loading: (event) => {
+                loading: () => {
                     this.loading = true;
-
-                    console.log(event);
                 },
 
                 onstatechange: (event) => {
-                    console.log(event);
-
                     if (event.state === 'load') {
                         this.loading = false;
                     }
@@ -83,11 +79,7 @@ export default {
                 },
 
                 error: (event) => {
-                    console.log(event);
-                },
-
-                stalled: (event) => {
-                    console.log(event);
+                    console.error(event);
                 },
 
                 useractive: () => {
@@ -120,17 +112,6 @@ export default {
                     this.isChromeCastConnected = true;
 
                     this.mediaElement.pause();
-                    // if (this.videojsInstance.isFullscreen()) {
-                    //     this.videojsInstance.exitFullscreen();
-                    //     this.videojsInstance.isFullscreen(false);
-                    // }
-
-                    // const currentCaptions = this.captions.filter(caption => caption.language === this.currentCaptions);
-                    // if (currentCaptions.length) {
-                    //     this.enableCaptions(currentCaptions[0]);
-                    // }
-
-                    console.log(event);
 
                     if (this.currentTime) {
                         this.seek(this.currentTime);

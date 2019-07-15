@@ -15,8 +15,8 @@
                         </li>
                         <li
                             class="pa-1 hover-bg-grey-4 pointer relative"
-                            :class="noCaptions ? [themeTextClass, 'selected-caption'] : ''"
-                            @click="selectCaptionHandler({})"
+                            :class="!isCaptionsEnabled ? [themeTextClass, 'selected-caption'] : ''"
+                            @click="selectCaptionHandler(null)"
                         >
                             Off
                         </li>
@@ -48,6 +48,11 @@ export default {
             type: String,
             default: () => null,
         },
+
+        isCaptionsEnabled: {
+            type: Boolean,
+            default: () => null,
+        },
     },
 
     computed: {
@@ -58,7 +63,7 @@ export default {
 
     methods: {
         isSelected(caption) {
-            return caption.language === this.currentCaptions;
+            return caption.active === true && this.isCaptionsEnabled;
         },
 
         selectCaptionHandler(caption) {
