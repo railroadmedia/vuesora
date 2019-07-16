@@ -14,13 +14,6 @@
   }
 }
 
-.vjs_video_3-dimensions {
-  height:auto;
-  width:auto;
-  outline:none;
-  //overflow:hidden;
-}
-
 @mixin playerActive(){
   .controls {
     transform:translateY(0);
@@ -42,7 +35,11 @@
 }
 
 .video-player {
-  //overflow:hidden;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
 
   &.user-active {
     @include playerActive();
