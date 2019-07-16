@@ -21,6 +21,12 @@ export default {
 
                 error: (event) => {
                     console.error(event);
+
+                    console.log('this one?');
+
+                    if (event.category === 4) {
+                        this.playerError = true;
+                    }
                 },
 
                 buffering: (event) => {
@@ -80,6 +86,8 @@ export default {
 
                 error: (event) => {
                     console.error(event);
+
+                    console.log('this one?');
                 },
 
                 useractive: () => {
