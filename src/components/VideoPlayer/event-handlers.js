@@ -22,8 +22,6 @@ export default {
                 error: (event) => {
                     console.error(event);
 
-                    console.log('this one?');
-
                     if (event.category === 4) {
                         this.playerError = true;
                     }
@@ -49,7 +47,6 @@ export default {
                 },
 
                 waiting: (event) => {
-                    this.loading = true;
                     this.isPlaying = false;
 
                     this.$emit('waiting', event);
