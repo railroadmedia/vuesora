@@ -57,7 +57,7 @@
                         Playback Rate:
                     </p>
                 </div>
-                <div class="flex flex-column">
+                <div class="flex flex-column align-v-center">
                     <p
                         class="tiny dense font-bold text-right"
                         :class="themeTextClass"
