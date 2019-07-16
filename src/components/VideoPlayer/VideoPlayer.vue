@@ -1,276 +1,293 @@
 <template>
-    <div class="widescreen">
-        <div
-            ref="container"
-            class="flex flex-column video-player"
-            :class="{'user-active': userActive || !isPlaying}"
-            @contextmenu.stop.prevent="toggleContextMenu"
-            @mousemove="trackMousePosition"
-            @keydown.stop.prevent="keyboardControlEventHandler"
-        >
-            <transition name="grow-fade">
-                <PlayerStats
-                    v-if="playerStats"
-                    v-show="dialogs.stats"
-                    :player-stats="playerStats"
-                    @close="closeAllDialogs"
-                />
-            </transition>
-
-            <transition name="grow-fade">
-                <PlayerShortcuts
-                    v-show="dialogs.keyboardShortcuts"
-                    @close="closeAllDialogs"
-                />
-            </transition>
-
-            <transition name="grow-fade">
-                <PlayerError v-if="playerError" />
-            </transition>
-
-            <transition name="grow-fade">
-                <div
-                    v-show="contextMenu"
-                    ref="contextMenu"
-                    class="context-menu bg-grey-5 pointer text-white shadow overflow"
-                    :style="contextMenuPosition"
-                    @click.stop.prevent
-                >
-                    <ul class="list-style-none tiny dense font-bold">
-                        <li
-                            v-if="!isMobile"
-                            class="pa-1 hover-bg-grey-4"
-                            @click="openDialog('keyboardShortcuts')"
-                        >
-                            {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
-                        </li>
-                        <li
-                            class="pa-1 hover-bg-grey-4"
-                            @click="openDialog('stats')"
-                        >
-                            {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats
-                        </li>
-                    </ul>
-                </div>
-            </transition>
-
-            <transition name="grow-fade">
-                <div
-                    v-show="loading && !isPlaying"
-                    class="player-overlay"
-                    @click.stop.prevent
-                >
-                    <LoadingAnimation :theme-color="themeColor " />
-                </div>
-            </transition>
-
-            <transition name="grow-fade">
-                <div
-                    v-show="!loading && !isPlaying"
-                    class="player-overlay"
-                >
-                    <div class="overlay-play rounded ba-white-3 flex-center shadows">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-            </transition>
-
-            <transition name="grow-fade">
-                <span
-                    v-show="currentPlaybackRate !== 1"
-                    class="speed-indicator subheading pa-2 text-center text-white"
-                >
-                    {{ currentPlaybackRate }}x
-                    <i class="fas fa-hourglass"></i>
-                </span>
-            </transition>
-
-            <transition name="grow-fade">
-                <div
-                    v-show="isChromeCastConnected"
-                    class="cast-dialog flex flex-center pa-3 text-center text-white"
-                >
-                    <span style="font-size:72px;">
-                        <i class="fab fa-chromecast"></i>
-                    </span>
-                    <h1 class="subheading">
-                        Video is playing on another device
-                    </h1>
-                </div>
-            </transition>
-
-            <video
-                ref="player"
-                playsinline
-                preload="auto"
-                crossorigin="anonymous"
-                :poster="poster"
-            ></video>
-
+    <div class="video-wrap" :class="{'picture-in-picture': isPipEnabled}">
+        <div class="widescreen">
             <div
-                ref="controls"
-                class="controls-wrap"
-                @click.stop="playPauseViaControlWrap"
+                ref="container"
+                class="flex flex-column video-player"
+                :class="{'user-active': userActive || !isPlaying}"
+                @contextmenu.stop.prevent="toggleContextMenu"
+                @mousemove="trackMousePosition"
+                @touchmove="trackMousePosition"
+                @keydown.stop.prevent="keyboardControlEventHandler"
             >
+                <transition name="grow-fade">
+                    <PlayerStats
+                        v-if="playerStats"
+                        v-show="dialogs.stats"
+                        :player-stats="playerStats"
+                        @close="closeAllDialogs"
+                    />
+                </transition>
+
+                <transition name="grow-fade">
+                    <PlayerShortcuts
+                        v-show="dialogs.keyboardShortcuts"
+                        @close="closeAllDialogs"
+                    />
+                </transition>
+
+                <transition name="grow-fade">
+                    <PlayerError v-if="playerError" />
+                </transition>
+
+                <transition name="grow-fade">
+                    <div
+                        v-show="contextMenu"
+                        ref="contextMenu"
+                        class="context-menu bg-grey-5 pointer text-white shadow overflow"
+                        :style="contextMenuPosition"
+                        @click.stop.prevent
+                    >
+                        <ul class="list-style-none tiny dense font-bold">
+                            <li
+                                v-if="!isMobile"
+                                class="pa-1 hover-bg-grey-4"
+                                @click="openDialog('keyboardShortcuts')"
+                            >
+                                {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
+                            </li>
+                            <li
+                                class="pa-1 hover-bg-grey-4"
+                                @click="openDialog('stats')"
+                            >
+                                {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats
+                            </li>
+                            <li
+                                v-if="!isMobile"
+                                class="pa-1 hover-bg-grey-4"
+                                @click="isPipEnabled = !isPipEnabled"
+                            >
+                                {{ isPipEnabled ? 'Disable' : 'Enable' }} Picture in Picture
+                            </li>
+                        </ul>
+                    </div>
+                </transition>
+
+                <transition name="grow-fade">
+                    <div
+                        v-show="isPipEnabled"
+                        class="close-pip"
+                        @click.stop.prevent
+                    >
+                        <PlayerButton
+                            :theme-color="themeColor"
+                            title="Disable PIP"
+                            @click.stop.native="isPipEnabled = false"
+                        >
+                            <i class="fas fa-times"></i>
+                        </PlayerButton>
+                    </div>
+                </transition>
+
+                <transition name="grow-fade">
+                    <div
+                        v-show="loading && !isPlaying"
+                        class="player-overlay"
+                        @click.stop.prevent
+                    >
+                        <LoadingAnimation :theme-color="themeColor " />
+                    </div>
+                </transition>
+
+                <transition name="grow-fade">
+                    <div
+                        v-show="!loading && !isPlaying"
+                        class="player-overlay"
+                    >
+                        <div class="overlay-play rounded ba-white-3 flex-center shadows">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                </transition>
+
+                <transition name="grow-fade">
+                    <div
+                        v-show="isChromeCastConnected"
+                        class="cast-dialog flex flex-center pa-3 text-center text-white"
+                    >
+                        <span style="font-size:72px;">
+                            <i class="fab fa-chromecast"></i>
+                        </span>
+                        <h1 class="subheading">
+                            Video is playing on another device
+                        </h1>
+                    </div>
+                </transition>
+
+                <video
+                    ref="player"
+                    playsinline
+                    preload="auto"
+                    crossorigin="anonymous"
+                    :poster="poster"
+                ></video>
+
                 <div
-                    class="controls flex flex-column noselect"
-                    @click.stop.prevent
+                    ref="controls"
+                    class="controls-wrap"
+                    @click.stop="playPauseViaControlWrap"
                 >
-                    <!--  TOP ROW  -->
-                    <div class="flex flex-row">
-                        <PlayerButton
-                            :theme-color="themeColor"
-                            title="Rewind 10 Seconds (Left Arrow)"
-                            data-cy="rewind-button"
-                            @click.stop.native="seek(currentTime - 10)"
-                        >
-                            <i class="fas fa-undo"></i>
-                        </PlayerButton>
+                    <div
+                        class="controls flex flex-column noselect"
+                        @click.stop.prevent
+                    >
+                        <!--  TOP ROW  -->
+                        <div class="flex flex-row">
+                            <PlayerButton
+                                :theme-color="themeColor"
+                                title="Rewind 10 Seconds (Left Arrow)"
+                                data-cy="rewind-button"
+                                @click.stop.native="seek(currentTime - 10)"
+                            >
+                                <i class="fas fa-undo"></i>
+                            </PlayerButton>
 
-                        <div class="flex flex-column spacer"></div>
+                            <div class="flex flex-column spacer"></div>
 
-                        <PlayerButton
-                            :theme-color="themeColor"
-                            title="Forward 10 Seconds (Right Arrow)"
-                            data-cy="fast-forward-button"
-                            @click.stop.native="seek(currentTime + 10)"
-                        >
-                            <i class="fas fa-redo"></i>
-                        </PlayerButton>
-                    </div>
-
-                    <!--  MIDDLE ROW  -->
-                    <div class="flex flex-row">
-                        <PlayerProgress
-                            :theme-color="themeColor"
-                            :current-progress="currentProgress"
-                            :current-time="currentTime"
-                            :player-width="playerWidth"
-                            :current-mouse-x="currentMousePosition.x"
-                            :total-duration="totalDuration"
-                            :buffered-percent="bufferedPercent"
-                            :buffered-time-ranges="parsedTimeRanges"
-                            :chapters="chapters"
-                            :mousedown="mousedown"
-                            data-cy="progress-rail"
-                            @mousedown.stop.native="triggerMouseDown"
-                        />
-                    </div>
-
-                    <!--  BOTTOM ROW  -->
-                    <div class="flex flex-row">
-                        <PlayerButton
-                            :theme-color="themeColor"
-                            :title="isPlaying ? 'Pause (Spacebar)' : 'Play (Spacebar)'"
-                            data-cy="play-pause-button"
-                            @click.stop.native="playPause"
-                        >
-                            <i
-                                class="fas"
-                                :class="isPlaying ? 'fa-pause' : 'fa-play'"
-                            ></i>
-                        </PlayerButton>
-
-                        <div class="flex flex-column text-white body align-v-center noselect flex-auto">
-                            {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
+                            <PlayerButton
+                                :theme-color="themeColor"
+                                title="Forward 10 Seconds (Right Arrow)"
+                                data-cy="fast-forward-button"
+                                @click.stop.native="seek(currentTime + 10)"
+                            >
+                                <i class="fas fa-redo"></i>
+                            </PlayerButton>
                         </div>
 
-                        <div class="flex flex-column spacer"></div>
-
-                        <PlayerVolume
-                            v-if="!isMobile"
-                            :theme-color="themeColor"
-                            :current-volume="currentVolume"
-                            @volumeChange="changeVolume"
-                        />
-
-                        <transition name="grow-fade">
-                            <PlayerButton
-                                v-if="isChromeCastSupported"
+                        <!--  MIDDLE ROW  -->
+                        <div class="flex flex-row">
+                            <PlayerProgress
                                 :theme-color="themeColor"
-                                title="Chromecast"
-                                :active="chromeCast && chromeCast.Connected"
-                                @click.stop.native="enableChromeCast"
-                            >
-                                <i class="fab fa-chromecast"></i>
-                            </PlayerButton>
-                        </transition>
+                                :current-progress="currentProgress"
+                                :current-time="currentTime"
+                                :player-width="playerWidth"
+                                :current-mouse-x="currentMousePosition.x"
+                                :total-duration="totalDuration"
+                                :buffered-percent="bufferedPercent"
+                                :buffered-time-ranges="parsedTimeRanges"
+                                :chapters="chapters"
+                                :mousedown="mousedown"
+                                data-cy="progress-rail"
+                                @mousedown.stop.native="triggerMouseDown"
+                                @touchstart.stop.native="triggerMouseDown"
+                            />
+                        </div>
 
-                        <transition name="grow-fade">
+                        <!--  BOTTOM ROW  -->
+                        <div class="flex flex-row">
                             <PlayerButton
-                                v-if="isAirplaySupported"
                                 :theme-color="themeColor"
-                                title="Apple Airplay"
-                                :active="isAirplayConnected"
-                                @click.stop.native="enableAirplay"
+                                :title="isPlaying ? 'Pause (Spacebar)' : 'Play (Spacebar)'"
+                                data-cy="play-pause-button"
+                                @click.stop.native="playPause"
                             >
-                                <i class="icon-airplay"></i>
+                                <i
+                                    class="fas"
+                                    :class="isPlaying ? 'fa-pause' : 'fa-play'"
+                                ></i>
                             </PlayerButton>
-                        </transition>
 
-                        <PlayerButton
-                            v-if="captions.length > 0"
-                            :theme-color="themeColor"
-                            :active="isCaptionsEnabled"
-                            @click.stop.native="toggleCaptionsDrawer"
-                        >
-                            <i class="fas fa-closed-captioning"></i>
-                        </PlayerButton>
+                            <div class="flex flex-column text-white body align-v-center noselect flex-auto">
+                                {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
+                            </div>
 
-                        <PlayerButton
-                            :theme-color="themeColor"
-                            title="Settings"
-                            :disabled="isChromeCastConnected"
-                            @click.stop.native="toggleSettingsDrawer"
-                        >
-                            <i class="fas fa-cog"></i>
-                        </PlayerButton>
+                            <div class="flex flex-column spacer"></div>
 
-                        <PlayerButton
-                            :theme-color="themeColor"
-                            title="Fullscreen (F)"
-                            :disabled="isChromeCastConnected"
-                            @click.stop.native="fullscreen"
-                        >
-                            <i
-                                class="fas"
-                                :class="isFullscreen ? 'fa-compress' : 'fa-expand'"
-                            ></i>
-                        </PlayerButton>
+                            <PlayerVolume
+                                v-if="!isMobile"
+                                :theme-color="themeColor"
+                                :current-volume="currentVolume"
+                                @volumeChange="changeVolume"
+                            />
+
+                            <transition name="grow-fade">
+                                <PlayerButton
+                                    v-if="isChromeCastSupported"
+                                    :theme-color="themeColor"
+                                    title="Chromecast"
+                                    :active="chromeCast && chromeCast.Connected"
+                                    @click.stop.native="enableChromeCast"
+                                >
+                                    <i class="fab fa-chromecast"></i>
+                                </PlayerButton>
+                            </transition>
+
+                            <transition name="grow-fade">
+                                <PlayerButton
+                                    v-if="isAirplaySupported"
+                                    :theme-color="themeColor"
+                                    title="Apple Airplay"
+                                    :active="isAirplayConnected"
+                                    @click.stop.native="enableAirplay"
+                                >
+                                    <i class="icon-airplay"></i>
+                                </PlayerButton>
+                            </transition>
+
+                            <PlayerButton
+                                v-if="captions.length > 0"
+                                :theme-color="themeColor"
+                                :active="isCaptionsEnabled"
+                                @click.stop.native="toggleCaptionsDrawer"
+                            >
+                                <i class="fas fa-closed-captioning"></i>
+                            </PlayerButton>
+
+                            <PlayerButton
+                                :theme-color="themeColor"
+                                title="Settings"
+                                :disabled="isChromeCastConnected"
+                                @click.stop.native="toggleSettingsDrawer"
+                            >
+                                <i class="fas fa-cog"></i>
+                            </PlayerButton>
+
+                            <PlayerButton
+                                :theme-color="themeColor"
+                                title="Fullscreen (F)"
+                                :disabled="isChromeCastConnected"
+                                @click.stop.native="fullscreen"
+                            >
+                                <i
+                                    class="fas"
+                                    :class="isFullscreen ? 'fa-compress' : 'fa-expand'"
+                                ></i>
+                            </PlayerButton>
+                        </div>
                     </div>
                 </div>
+
+                <div
+                    v-show="isMobileDrawerOpen"
+                    class="settings-mobile-overlay"
+                    @click="settingsDrawer = false"
+                ></div>
+
+                <transition :name="drawersShouldOpenFromBottom ? 'show-from-bottom' : 'grow-fade'">
+                    <PlayerSettings
+                        v-show="settingsDrawer"
+                        :drawer="settingsDrawer"
+                        :theme-color="themeColor"
+                        :current-source="currentSource"
+                        :current-playback-rate="currentPlaybackRate"
+                        :playback-qualities="playbackQualities"
+                        :is-abr-enabled="isAbrEnabled"
+                        @setQuality="setQuality"
+                        @setRate="setRate"
+                    />
+                </transition>
+
+                <transition :name="drawersShouldOpenFromBottom ? 'show-from-bottom' : 'grow-fade'">
+                    <PlayerCaptions
+                        v-show="captionsDrawer"
+                        :theme-color="themeColor"
+                        :is-captions-enabled="isCaptionsEnabled"
+                        :caption-options="captionOptions"
+                        :current-captions="currentCaptions"
+                        @captionsSelected="enableCaptions"
+                    />
+                </transition>
             </div>
-
-            <div
-                v-show="isMobileDrawerOpen"
-                class="settings-mobile-overlay"
-                @click="settingsDrawer = false"
-            ></div>
-
-            <transition :name="isMobileViewport ? 'show-from-bottom' : 'grow-fade'">
-                <PlayerSettings
-                    v-show="settingsDrawer"
-                    :drawer="settingsDrawer"
-                    :theme-color="themeColor"
-                    :current-source="currentSource"
-                    :current-playback-rate="currentPlaybackRate"
-                    :playback-qualities="playbackQualities"
-                    :is-abr-enabled="isAbrEnabled"
-                    @setQuality="setQuality"
-                    @setRate="setRate"
-                />
-            </transition>
-
-            <transition :name="isMobileViewport ? 'show-from-bottom' : 'grow-fade'">
-                <PlayerCaptions
-                    v-show="captionsDrawer"
-                    :theme-color="themeColor"
-                    :is-captions-enabled="isCaptionsEnabled"
-                    :caption-options="captionOptions"
-                    :current-captions="currentCaptions"
-                    @captionsSelected="enableCaptions"
-                />
-            </transition>
         </div>
     </div>
 </template>
@@ -362,6 +379,7 @@ export default {
             performanceNow: 0,
             currentMousePosition: { x: 0, y: 0 },
             contextMenuPosition: null,
+            isPipEnabled: false,
             dialogs: {
                 stats: false,
                 keyboardShortcuts: false,
@@ -501,7 +519,11 @@ export default {
         isSafari: () => PlayerUtils.isSafari(),
 
         isMobileDrawerOpen() {
-            return (this.settingsDrawer || this.captionsDrawer) && this.isMobileViewport;
+            return (this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom;
+        },
+
+        drawersShouldOpenFromBottom() {
+            return this.isMobileViewport || this.isPipEnabled;
         },
     },
     mounted() {
@@ -572,16 +594,6 @@ export default {
                         );
                     });
 
-                    // USER ACTIVE AND INACTIVE EVENTS
-                    container.addEventListener('mousemove', () => {
-                        Utils.triggerEvent(this.mediaElement, 'useractive');
-
-                        clearTimeout(this.userActiveTimeout);
-                        this.userActiveTimeout = setTimeout(() => {
-                            Utils.triggerEvent(this.mediaElement, 'userinactive');
-                        }, 3000);
-                    });
-
                     // FULLSCREEN EVENT
                     document.addEventListener('fullscreenchange', () => {
                         this.isFullscreen = document.fullscreenElement != null;
@@ -600,7 +612,9 @@ export default {
         document.addEventListener('click', this.closeDrawers);
 
         // Mouse up events
-        document.addEventListener('mouseup', this.mouseUpEventHandler);
+        ['touchend', 'mouseup'].forEach((event) => {
+            document.addEventListener(event, this.mouseUpEventHandler);
+        });
 
         // Add Event Listeners to chapter marker links
         const chapterMarkerLinks = document.querySelectorAll('[data-jump-to-time]');
@@ -756,6 +770,15 @@ export default {
 
         trackMousePosition(event) {
             this.currentMousePosition = PlayerUtils.getMousePosition(event, this.$refs.container);
+
+            if (this.mediaElement) {
+                Utils.triggerEvent(this.mediaElement, 'useractive');
+
+                clearTimeout(this.userActiveTimeout);
+                this.userActiveTimeout = setTimeout(() => {
+                    Utils.triggerEvent(this.mediaElement, 'userinactive');
+                }, 3000);
+            }
         },
 
         setQuality(payload) {
@@ -808,15 +831,27 @@ export default {
         toggleSettingsDrawer() {
             this.captionsDrawer = false;
             this.settingsDrawer = !this.settingsDrawer;
-            if (this.isMobileViewport && this.settingsDrawer) document.body.classList.add('drawer-open');
-            if (this.isMobileViewport && !this.settingsDrawer) document.body.classList.remove('drawer-open');
+
+            if (this.drawersShouldOpenFromBottom && this.settingsDrawer) {
+                document.body.classList.add('drawer-open');
+            }
+
+            if (this.drawersShouldOpenFromBottom && !this.settingsDrawer) {
+                document.body.classList.remove('drawer-open');
+            }
         },
 
         toggleCaptionsDrawer() {
             this.captionsDrawer = !this.captionsDrawer;
             this.settingsDrawer = false;
-            if (this.isMobileViewport && this.captionsDrawer) document.body.classList.add('drawer-open');
-            if (this.isMobileViewport && !this.captionsDrawer) document.body.classList.remove('drawer-open');
+
+            if (this.drawersShouldOpenFromBottom && this.captionsDrawer) {
+                document.body.classList.add('drawer-open');
+            }
+
+            if (this.drawersShouldOpenFromBottom && !this.captionsDrawer) {
+                document.body.classList.remove('drawer-open');
+            }
         },
 
         closeDrawers() {
@@ -869,7 +904,7 @@ export default {
         },
 
         triggerMouseDown(event) {
-            if (event.button === 0) {
+            if (event.button !== 2) {
                 this.mousedown = true;
             }
         },
@@ -903,19 +938,17 @@ export default {
         },
 
         mouseUpEventHandler(event) {
-            if (event.button !== 0) {
-                return false;
-            }
+            if (event.button !== 2) {
+                if (this.mousedown) {
+                    const timeToSeekTo = this.totalDuration * (
+                        this.currentMousePosition.x / this.playerWidth
+                    );
+                    this.seek(timeToSeekTo);
+                }
 
-            if (this.mousedown) {
-                const timeToSeekTo = this.totalDuration * (
-                    this.currentMousePosition.x / this.playerWidth
-                );
-                this.seek(timeToSeekTo);
+                this.contextMenu = false;
+                this.mousedown = false;
             }
-
-            this.contextMenu = false;
-            this.mousedown = false;
         },
 
         openDialog(dialog) {
