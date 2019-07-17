@@ -15,12 +15,14 @@
 }
 
 .video-wrap {
+  z-index:1;
 
   &.picture-in-picture {
     position:fixed;
     top:90px;
     right:30px;
     width:480px;
+    max-width:100%;
     z-index:95;
 
     .settings-drawer {
@@ -186,10 +188,6 @@
   z-index:3;
 }
 
-.volume-rail {
-  height:6px;
-}
-
 .volume {
   height:100%;
   flex:0 0 125px;
@@ -211,9 +209,22 @@
 .volume-rail  {
   width:75px;
   z-index:2;
-  overflow:hidden;
+  height:4px;
+  overflow:visible;
   position:relative;
   cursor:pointer;
+}
+
+.volume-fill:after {
+  content: '';
+  position:absolute;
+  height:12px;
+  width:12px;
+  border-radius:50%;
+  right:-1px;
+  top:50%;
+  transform:translateY(-50%);
+  background-color:inherit;
 }
 
 .player-button {

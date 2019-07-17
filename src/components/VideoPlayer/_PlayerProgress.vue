@@ -75,11 +75,6 @@ export default {
             default: () => 0,
         },
 
-        bufferedPercent: {
-            type: Number,
-            default: () => 0,
-        },
-
         bufferedTimeRanges: {
             type: Array,
             default: () => [],
@@ -98,22 +93,20 @@ export default {
     computed: {
         progressTransforms() {
             if (this.mousedown) {
+                const offset = PlayerUtils.getTimeRailMouseEventOffsetPercentage(
+                    this.currentMouseX,
+                    this.playerWidth,
+                );
+
                 return {
-                    transform: `translateX(-${(100 - (this.currentMouseX / (this.playerWidth - 14)) * 100)}%)`,
-                    '-webkit-transform': `translateX(-${100 - ((this.currentMouseX / (this.playerWidth - 14)) * 100)}%)`,
+                    transform: `translateX(-${100 - (offset * 100)}%)`,
+                    '-webkit-transform': `translateX(-${100 - (offset * 100)}%)`,
                 };
             }
 
             return {
                 transform: `translateX(-${100 - this.currentProgress}%)`,
                 '-webkit-transform': `translateX(-${100 - this.currentProgress}%)`,
-            };
-        },
-
-        bufferTransforms() {
-            return {
-                transform: `translateX(-${100 - (this.bufferedPercent * 100)}%)`,
-                '-webkit-transform': `translateX(-${100 - (this.bufferedPercent * 100)}%)`,
             };
         },
 
@@ -140,7 +133,12 @@ export default {
         },
 
         toolTipValue() {
-            return PlayerUtils.parseTime((this.currentMouseX / (this.playerWidth - 14)) * this.totalDuration);
+            const offsetPercentage = PlayerUtils.getTimeRailMouseEventOffsetPercentage(
+                this.currentMouseX,
+                this.playerWidth,
+            );
+
+            return PlayerUtils.parseTime(offsetPercentage * this.totalDuration);
         },
     },
     methods: {

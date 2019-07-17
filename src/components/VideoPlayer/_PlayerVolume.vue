@@ -60,7 +60,7 @@ export default {
     computed: {
         volumeOffset() {
             return {
-                transform: `translateX(-${100 - (this.currentVolume * 100)}%)`,
+                width: `${(this.currentVolume * 100)}%`,
             };
         },
 

@@ -1,5 +1,9 @@
 <template>
-    <div class="video-wrap" :class="{'picture-in-picture': isPipEnabled}">
+    <div
+        ref="videoWrap"
+        class="video-wrap"
+        :class="{'picture-in-picture': isPipEnabled}"
+    >
         <div class="widescreen">
             <div
                 ref="container"
@@ -55,7 +59,7 @@
                             <li
                                 v-if="!isMobile"
                                 class="pa-1 hover-bg-grey-4"
-                                @click="isPipEnabled = !isPipEnabled"
+                                @click="togglePip"
                             >
                                 {{ isPipEnabled ? 'Disable' : 'Enable' }} Picture in Picture
                             </li>
@@ -163,8 +167,7 @@
                                 :player-width="playerWidth"
                                 :current-mouse-x="currentMousePosition.x"
                                 :total-duration="totalDuration"
-                                :buffered-percent="bufferedPercent"
-                                :buffered-time-ranges="parsedTimeRanges"
+                                :buffered-time-ranges="bufferedTimeRanges"
                                 :chapters="chapters"
                                 :mousedown="mousedown"
                                 data-cy="progress-rail"
@@ -296,7 +299,6 @@ import * as muxjs from 'mux.js';
 import shaka from 'shaka-player';
 import Utils from 'js-helper-functions/modules/utils';
 import Screenfull from 'screenfull';
-import ISO6391 from '../../../node_modules/iso-639-1';
 import PlayerUtils from './player-utils';
 import ChromeCastPlugin from './chromecast';
 import ThemeClasses from '../../mixins/ThemeClasses';
@@ -454,35 +456,14 @@ export default {
             },
         },
 
-        bufferedPercent: {
-            cache: false,
-            get() {
-                return this.videojsInstance ? this.videojsInstance.bufferedPercent() : 0;
-            },
-        },
-
         bufferedTimeRanges: {
             cache: false,
             get() {
-                return this.videojsInstance ? this.videojsInstance.buffered() : null;
-            },
-        },
-
-        parsedTimeRanges: {
-            cache: false,
-            get() {
-                const ranges = [];
-
-                if (this.bufferedTimeRanges != null && this.bufferedTimeRanges.length > 0) {
-                    for (let i = 0; i < this.bufferedTimeRanges.length; i += 1) {
-                        ranges.push({
-                            start: Math.floor(this.bufferedTimeRanges.start(i)),
-                            end: this.bufferedTimeRanges.end(i),
-                        });
-                    }
+                if (this.shakaPlayer != null) {
+                    return this.shakaPlayer.getBufferedInfo().video;
                 }
 
-                return ranges;
+                return [];
             },
         },
 
@@ -562,6 +543,10 @@ export default {
                                 maxHeight: window.screen.height,
                             },
                         },
+                        streaming: {
+                            bufferingGoal: 150,
+                            ignoreTextStreamFailures: true,
+                        },
                     });
 
                     return this.loadSource();
@@ -581,18 +566,6 @@ export default {
                     this.attachMediaElementEventHandlers();
 
                     this.getDefaultVolume();
-
-                    // Add captions to the player
-                    this.captions.forEach((caption) => {
-                        this.shakaPlayer.addTextTrack(
-                            caption.url,
-                            caption.language,
-                            caption.type,
-                            'text/vtt',
-                            null,
-                            ISO6391.getNativeName(caption.language),
-                        );
-                    });
 
                     // FULLSCREEN EVENT
                     document.addEventListener('fullscreenchange', () => {
@@ -680,6 +653,8 @@ export default {
                             resolve();
                         })
                         .catch((error) => {
+                            console.log(error);
+                            console.log(error.data[0]);
                             if (error.category === 4) {
                                 this.playerError = true;
                             }
@@ -941,7 +916,10 @@ export default {
             if (event.button !== 2) {
                 if (this.mousedown) {
                     const timeToSeekTo = this.totalDuration * (
-                        this.currentMousePosition.x / this.playerWidth
+                        PlayerUtils.getTimeRailMouseEventOffsetPercentage(
+                            this.currentMousePosition.x,
+                            this.playerWidth,
+                        )
                     );
                     this.seek(timeToSeekTo);
                 }
@@ -958,6 +936,23 @@ export default {
             if (!alreadyOpen) {
                 this.dialogs[dialog] = true;
             }
+        },
+
+        togglePip() {
+            const { videoWrap } = this.$refs;
+            this.isPipEnabled = !this.isPipEnabled;
+
+            /*
+            * Safari has a bug that doesn't trigger a repaint when the player
+            * is put into PIP. The following hack will manually trigger the repaint
+            * allowing the new styles to propagate.
+            *
+            * Curtis - July 2019
+            * */
+            videoWrap.style.display = 'none';
+            setTimeout(() => {
+                videoWrap.style.display = '';
+            }, 50);
         },
 
         closeAllDialogs() {

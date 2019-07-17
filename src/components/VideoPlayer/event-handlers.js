@@ -48,12 +48,14 @@ export default {
 
                 waiting: (event) => {
                     this.isPlaying = false;
+                    this.loading = true;
 
                     this.$emit('waiting', event);
                 },
 
                 pause: (event) => {
                     this.isPlaying = false;
+                    this.loading = false;
 
                     this.$emit('pause', event);
                 },
@@ -77,6 +79,7 @@ export default {
                     this.currentTime = this.mediaElement.currentTime;
 
                     this.isPlaying = true;
+                    this.loading = false;
 
                     this.$emit('timeupdate', event);
                 },
