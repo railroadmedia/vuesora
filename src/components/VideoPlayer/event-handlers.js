@@ -57,14 +57,20 @@ export default {
                     this.isPlaying = false;
                     this.loading = false;
 
-                    this.$emit('pause', event);
+                    this.$emit('pause', {
+                        ...event,
+                        contentId: this.contentId,
+                    });
                 },
 
                 play: (event) => {
                     this.isPlaying = true;
                     this.loading = false;
 
-                    this.$emit('playing', event);
+                    this.$emit('play', {
+                        ...event,
+                        contentId: this.contentId,
+                    });
                 },
 
                 playing: (event) => {
@@ -77,9 +83,6 @@ export default {
                 timeupdate: (event) => {
                     this.totalDuration = this.mediaElement.duration;
                     this.currentTime = this.mediaElement.currentTime;
-
-                    this.isPlaying = true;
-                    this.loading = false;
 
                     this.$emit('timeupdate', event);
                 },

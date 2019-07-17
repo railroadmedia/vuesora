@@ -44,6 +44,10 @@
     transform:translateY(0);
   }
 
+  .top-controls {
+    transform:translateY(0);
+  }
+
   video::-webkit-media-text-track-container {
     transform:translateY(-75px);
   }
@@ -111,6 +115,7 @@
   position:absolute;
   width:100%;
   bottom:0;
+  z-index:26;
 
   button {
     span {
@@ -118,6 +123,17 @@
       transition:color .1s ease-in-out;
     }
   }
+}
+
+.top-controls {
+  position:absolute;
+  transition: transform .1s ease-in-out;
+  top:0;
+  right:0;
+  width:100%;
+  height:50px;
+  z-index:27;
+  transform:translateY(-50px);
 }
 
 .player-progress {
@@ -318,19 +334,24 @@
     }
   }
 
+  //&.big-play-button {
+  //  z-index:30;
+  //  pointer-events:none;
+  //}
+
   .overlay-play {
-    width:85px;
-    height:85px;
+    width:60px;
+    height:60px;
     background:rgba(0,0,0,.3);
 
     @include medium {
-      width:100px;
-      height:100px;
+      width:85px;
+      height:85px;
     }
 
     i {
       margin-left:2px;
-      font-size:36px;
+      font-size:28px;
       color:#fff;
 
       @include medium {
