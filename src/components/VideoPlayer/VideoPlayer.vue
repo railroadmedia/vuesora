@@ -32,7 +32,10 @@
                     </transition>
 
                     <transition name="grow-fade">
-                        <PlayerError v-if="playerError" />
+                        <PlayerError
+                            v-if="playerError"
+                            :error-code="playerErrorCode"
+                        />
                     </transition>
 
                     <transition name="grow-fade">
@@ -413,6 +416,7 @@ export default {
         return {
             loading: false,
             playerError: false,
+            playerErrorCode: null,
             isFullscreen: false,
             contextMenu: false,
             shakaPlayer: null,
@@ -617,6 +621,7 @@ export default {
                     if (this.mediaElement.readyState === 2) {
                         this.$refs.player.load();
                     }
+
                     this.attachMediaElementEventHandlers();
 
                     this.getDefaultVolume();
@@ -627,8 +632,9 @@ export default {
                     });
                 })
                 .catch((error) => {
-                    if (error.category === 4) {
+                    if (error.severity === 2) {
                         this.playerError = true;
+                        this.playerErrorCode = error.code;
                     }
                 });
         } else {
@@ -709,8 +715,9 @@ export default {
                             resolve();
                         })
                         .catch((error) => {
-                            if (error.category === 4) {
+                            if (error.severity === 2) {
                                 this.playerError = true;
+                                this.playerErrorCode = error.code;
                             }
                         });
                 } else {

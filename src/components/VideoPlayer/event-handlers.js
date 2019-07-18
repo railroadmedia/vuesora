@@ -22,8 +22,9 @@ export default {
                 error: (event) => {
                     console.error(event);
 
-                    if (event.category === 4) {
+                    if (event.severity === 2) {
                         this.playerError = true;
+                        this.playerErrorCode = event.code;
                     }
                 },
 
