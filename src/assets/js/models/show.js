@@ -12,7 +12,7 @@ export default class ShowContentModel extends ContentModel {
         this.list.column_data = [
             ContentModel.mapDifficulty(this.post),
             this.getPostDuration(),
-            this.postPublisedOn
+            this.postPublisedOn,
         ];
 
         if(this.brand === 'pianote'){
@@ -22,5 +22,7 @@ export default class ShowContentModel extends ContentModel {
         if(this.brand === 'guitareo'){
             this.card.color_title = this.getTypeWithIcon().replace(/recording/, 'archives');
         }
+
+        console.log('wtf m9?');
     }
 }
