@@ -1,5 +1,5 @@
-import {DateTime, Duration} from "luxon";
-import {Content as ContentHelpers} from 'js-helper-functions';
+import { DateTime, Duration } from 'luxon';
+import { Content as ContentHelpers } from 'js-helper-functions';
 
 export default class ContentModel {
     constructor({ brand = 'drumeo', post }) {
@@ -71,9 +71,9 @@ export default class ContentModel {
                 duration = videoLength.value;
             }
 
-            return Math.round(
-                Duration.fromMillis((duration * 1000)).as('minutes')
-            ) + ' mins';
+            return `${Math.round(
+                Duration.fromMillis((duration * 1000)).as('minutes'),
+            )} mins`;
         }
 
         return 'TBD';
@@ -95,18 +95,18 @@ export default class ContentModel {
     }
 
     get episodeNumber() {
-        return this.post.sort ? 'Episode #' + this.post.sort : 'TBD';
+        return this.post.sort ? `Episode #${this.post.sort}` : 'TBD';
     }
 
     get postChildLessonCount() {
-        return this.post.lesson_count ? this.post.lesson_count + ' Lessons' : 'TBD';
+        return this.post.lesson_count ? `${this.post.lesson_count} Lessons` : 'TBD';
     }
 
     getPostThumbnail() {
         const defaults = {
             drumeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg',
             pianote: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg',
-            guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg'
+            guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg',
         };
         let thumb = this.getPostDatum('thumbnail_url');
 

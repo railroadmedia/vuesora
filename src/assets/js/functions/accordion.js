@@ -1,6 +1,6 @@
-export default (function(){
+export default (function () {
     document.addEventListener('DOMContentLoaded', () => {
-        document.body.addEventListener('click', event => {
+        document.body.addEventListener('click', (event) => {
             const thisTrigger = event.target;
             const thisAccordion = thisTrigger.parentElement;
 
@@ -12,9 +12,9 @@ export default (function(){
                     thisContent.removeAttribute('style');
                 } else {
                     thisAccordion.classList.add('active');
-                    thisContent.style.maxHeight = thisContent.scrollHeight + 'px';
+                    thisContent.style.maxHeight = `${thisContent.scrollHeight}px`;
                 }
             }
         });
     });
-})();
+}());

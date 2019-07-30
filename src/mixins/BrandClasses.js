@@ -2,16 +2,16 @@ export default {
     props: {
         brand: {
             type: String,
-            default: () => 'recordeo'
-        }
+            default: () => 'recordeo',
+        },
     },
     computed: {
-        brandBgClass(){
-            return 'bg-' + this.brand
+        brandBgClass() {
+            return `bg-${this.brand}`;
         },
 
-        brandTextClass(){
-            return 'text-' + this.brand
-        }
-    }
-}
+        brandTextClass() {
+            return `text-${this.brand}`;
+        },
+    },
+};

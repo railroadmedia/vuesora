@@ -11,9 +11,8 @@ export default {
      * @returns {Promise}
      */
     checkEmail(email) {
-
         return axios.post('/order/check-email-exists', {
-            email
+            email,
         })
             .then(response => response)
             .catch(ErrorHandler);
@@ -40,9 +39,9 @@ export default {
      */
     updateCartItemQuantity({
         productSku,
-        quantity
+        quantity,
     }) {
-        return axios.patch(`/ecommerce/json/update-product-quantity/${ productSku }/${ quantity }`)
+        return axios.patch(`/ecommerce/json/update-product-quantity/${productSku}/${quantity}`)
             .then(response => response)
             .catch(ErrorHandler);
     },
@@ -54,10 +53,10 @@ export default {
      *
      * @returns {Promise}
      */
-    removeCartItem({productSku}) {
-        return axios.delete(`/ecommerce/json/remove-from-cart/${ productSku }`)
-                .then(response => response)
-                .catch(ErrorHandler);
+    removeCartItem({ productSku }) {
+        return axios.delete(`/ecommerce/json/remove-from-cart/${productSku}`)
+            .then(response => response)
+            .catch(ErrorHandler);
     },
 
     /**
@@ -90,9 +89,8 @@ export default {
         shippingCity,
         shippingState,
         shippingCountry,
-        shippingZip
+        shippingZip,
     }) {
-
         return axios.put('/ecommerce/session/address', {
             'shipping-address-line-1': shippingAddressLine1,
             'shipping-address-line-2': shippingAddressLine2,
@@ -107,8 +105,8 @@ export default {
             'billing-zip-or-postal-code': billingZip,
             'billing-email': billingEmail,
         })
-        .then(response => response)
-        .catch(ErrorHandler);
+            .then(response => response)
+            .catch(ErrorHandler);
     },
 
     /**
@@ -118,9 +116,9 @@ export default {
      * @returns {Promise}
      */
     updateNumberOfPayments(numberOfPayments) {
-        return axios.put('/ecommerce/json/update-number-of-payments/' + numberOfPayments)
-                .then(response => response)
-                .catch(ErrorHandler);
+        return axios.put(`/ecommerce/json/update-number-of-payments/${numberOfPayments}`)
+            .then(response => response)
+            .catch(ErrorHandler);
     },
 
     /**
@@ -128,8 +126,8 @@ export default {
      *
      * @returns {Promise}
      */
-    getPaymentMethods(user_id){
-        return axios.get(`/ecommerce/user-payment-method/${ user_id }`)
+    getPaymentMethods(user_id) {
+        return axios.get(`/ecommerce/user-payment-method/${user_id}`)
             .then(response => response)
             .catch(ErrorHandler);
     },
@@ -152,7 +150,7 @@ export default {
         currency = 'USD',
         billing_country,
         billing_region,
-    }){
+    }) {
         return axios.put('/update-payment-method', {
             card_token,
             gateway,
@@ -171,8 +169,8 @@ export default {
      * @param {String|Number} payment_method_id
      * @returns {Promise}
      */
-    setPaymentMethodAsDefault(payment_method_id){
-        return axios.patch(`/ecommerce/payment-method/set-default`, {
+    setPaymentMethodAsDefault(payment_method_id) {
+        return axios.patch('/ecommerce/payment-method/set-default', {
             id: payment_method_id,
         })
             .then(response => response)
@@ -186,8 +184,8 @@ export default {
      * @returns {Promise}
      */
     deletePaymentMethod(payment_method_id) {
-        return axios.delete('/ecommerce/payment-method/' + payment_method_id)
+        return axios.delete(`/ecommerce/payment-method/${payment_method_id}`)
             .then(response => response)
             .catch(ErrorHandler);
     },
-}
+};

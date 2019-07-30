@@ -1,6 +1,6 @@
 import smoothscroll from 'smoothscroll-polyfill';
 
-export default (function(){
+export default (function () {
     smoothscroll.polyfill();
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -16,82 +16,80 @@ export default (function(){
         const scrollSubNavLeft = document.getElementById('scrollSubNavLeft');
 
         let currentSubNavScrollPosition = 0;
-        let backgroundOverlay = document.getElementById('backgroundOverlay');
-        let openItems = localStorage.getItem('open_items') ? JSON.parse(localStorage.getItem('open_items')) : [];
+        const backgroundOverlay = document.getElementById('backgroundOverlay');
+        const openItems = localStorage.getItem('open_items') ? JSON.parse(localStorage.getItem('open_items')) : [];
 
-        openItems.forEach(item => {
-            let button = document.querySelector('.page-link.parent[data-remain-open="' + item + '"] > .parent-button');
-            if(button != null){
+        openItems.forEach((item) => {
+            const button = document.querySelector(`.page-link.parent[data-remain-open="${item}"] > .parent-button`);
+            if (button != null) {
                 const childLinks = button.parentElement.querySelector('.child-links');
 
                 button.classList.add('active');
-                childLinks.style['max-height'] = childLinks.scrollHeight + 'px';
+                childLinks.style['max-height'] = `${childLinks.scrollHeight}px`;
             }
         });
 
-        document.body.addEventListener('click', event => {
+        document.body.addEventListener('click', (event) => {
             const element = event.target;
 
-            if(element.getAttribute('id') === 'menuButton'){
+            if (element.getAttribute('id') === 'menuButton') {
 
             }
         });
 
-        if(menuButton){
+        if (menuButton) {
             menuButton.addEventListener('click', toggleSideBar);
             backgroundOverlay.addEventListener('click', closeEverything);
-            navSideBar.addEventListener('click', event => {
+            navSideBar.addEventListener('click', (event) => {
                 event.stopPropagation();
             });
         }
 
-        if(searchButtons.length){
-            Array.from(searchButtons).forEach(button => {
+        if (searchButtons.length) {
+            Array.from(searchButtons).forEach((button) => {
                 button.addEventListener('click', toggleSearchBar);
-            })
+            });
         }
 
-        if(parentLinks.length){
-            Array.from(parentLinks).forEach(link => {
+        if (parentLinks.length) {
+            Array.from(parentLinks).forEach((link) => {
                 link.addEventListener('click', toggleChildLinks);
             });
         }
 
-        function toggleSideBar(event){
+        function toggleSideBar(event) {
             event.stopPropagation();
 
-            if(navSideBar.classList.contains('active')){
+            if (navSideBar.classList.contains('active')) {
                 menuButton.classList.remove('active');
                 navSideBar.classList.remove('active');
                 backgroundOverlay.classList.remove('active');
-            }
-            else {
+            } else {
                 menuButton.classList.add('active');
                 navSideBar.classList.add('active');
                 backgroundOverlay.classList.add('active');
             }
         }
 
-        function toggleSearchBar(event){
+        function toggleSearchBar(event) {
             event.stopPropagation();
 
-            if(searchBox){
+            if (searchBox) {
                 searchBox.classList.toggle('active');
                 // pageLinksContainer.classList.toggle('inactive');
 
-                if(searchBox.classList.contains('active')){
+                if (searchBox.classList.contains('active')) {
                     searchInput.focus();
-                }
-                else {
+                } else {
                     searchInput.blur();
                 }
             }
         }
 
-        function closeEverything(event){
+        function closeEverything(event) {
             event.stopPropagation();
 
-            if(searchBox){
+            if (searchBox) {
                 searchBox.classList.remove('active');
                 // pageLinksContainer.classList.remove('inactive');
             }
@@ -101,145 +99,140 @@ export default (function(){
             backgroundOverlay.classList.remove('active');
         }
 
-        function toggleChildLinks(event){
+        function toggleChildLinks(event) {
             event.stopPropagation();
             const buttonClicked = event.target.parentElement;
             const childLinks = buttonClicked.querySelector('.child-links');
 
-            saveToLocalStorage(buttonClicked.dataset['remainOpen']);
+            saveToLocalStorage(buttonClicked.dataset.remainOpen);
 
             event.target.classList.toggle('active');
 
-            if(event.target.classList.contains('active')){
-                childLinks.style['max-height'] = childLinks.scrollHeight + 'px';
-            }
-            else {
+            if (event.target.classList.contains('active')) {
+                childLinks.style['max-height'] = `${childLinks.scrollHeight}px`;
+            } else {
                 childLinks.removeAttribute('style');
             }
         }
 
-        function saveToLocalStorage(value){
-            let valueExists = openItems.indexOf(value);
+        function saveToLocalStorage(value) {
+            const valueExists = openItems.indexOf(value);
 
-            if(valueExists !== -1){
+            if (valueExists !== -1) {
                 openItems.splice(valueExists, 1);
-            }
-            else {
+            } else {
                 openItems.push(value);
             }
 
             try {
                 localStorage.setItem('open_items', JSON.stringify(openItems));
-            } catch(e){
+            } catch (e) {
                 console.warn('Local storage not available in this browser');
             }
         }
 
-        if(subNavWrap){
+        if (subNavWrap) {
             subNavWrap.addEventListener('scroll', showOrHideButtons);
         }
 
         // Scroll the subnav
-        function scrollSubNav(backwards = false){
+        function scrollSubNav(backwards = false) {
             const amountToScroll = subNavWrap.clientWidth;
             const positionToScrollTo = backwards ? currentSubNavScrollPosition - amountToScroll : currentSubNavScrollPosition + amountToScroll;
 
             subNavWrap.scrollTo({
                 top: 0,
                 left: positionToScrollTo,
-                behavior: 'smooth'
+                behavior: 'smooth',
             });
         }
 
         // Show or hide the left or right buttons depending on the scroll position
-        function showOrHideButtons(){
+        function showOrHideButtons() {
             const maximumScrollAmount = getMaximumScrollAmount();
 
             currentSubNavScrollPosition = subNavWrap.scrollLeft;
 
-            if(currentSubNavScrollPosition <= 0){
+            if (currentSubNavScrollPosition <= 0) {
                 currentSubNavScrollPosition = 0;
                 scrollSubNavLeft.classList.add('hide');
-            }
-            else {
+            } else {
                 scrollSubNavLeft.classList.remove('hide');
             }
 
-            if(currentSubNavScrollPosition >= maximumScrollAmount){
+            if (currentSubNavScrollPosition >= maximumScrollAmount) {
                 currentSubNavScrollPosition = maximumScrollAmount;
                 scrollSubNavRight.classList.add('hide');
-            }
-            else {
+            } else {
                 scrollSubNavRight.classList.remove('hide');
             }
         }
 
         // Get the maximum amount the subnav can scroll
-        function getMaximumScrollAmount(){
+        function getMaximumScrollAmount() {
             const amountToScroll = subNavWrap.clientWidth;
             const subNavLinks = document.querySelectorAll('.subnav-link');
             let maximumScrollAmount = 0;
 
-            for(let i = 0; i < subNavLinks.length; i++){
+            for (let i = 0; i < subNavLinks.length; i++) {
                 maximumScrollAmount += subNavLinks[i].clientWidth;
             }
 
             return maximumScrollAmount - amountToScroll;
         }
 
-        function centerSubNavItems(){
+        function centerSubNavItems() {
             subNavWrap.classList.add('align-h-center');
             scrollSubNavRight.classList.add('hide');
             scrollSubNavLeft.classList.add('hide');
         }
 
-        function init(){
+        function init() {
             const subNavLinks = document.querySelectorAll('.subnav-link');
-            const activeSubNavLink = Array.from(subNavLinks).filter(link => {
-                if(link.classList.contains('active')){
+            const activeSubNavLink = Array.from(subNavLinks).filter((link) => {
+                if (link.classList.contains('active')) {
                     return link;
                 }
             });
 
-            if(getMaximumScrollAmount() > 0){
+            if (getMaximumScrollAmount() > 0) {
                 subNavWrap.classList.remove('align-h-center');
 
-                if(activeSubNavLink.length){
+                if (activeSubNavLink.length) {
                     currentSubNavScrollPosition = activeSubNavLink[0].offsetLeft;
 
                     subNavWrap.scrollTo({
                         top: 0,
-                        left: currentSubNavScrollPosition - 35
+                        left: currentSubNavScrollPosition - 35,
                     });
                 }
 
                 showOrHideButtons();
-            }
-            else {
+            } else {
                 centerSubNavItems();
             }
         }
 
-        document.body.addEventListener('click', event => {
+        document.body.addEventListener('click', (event) => {
             const element = event.target;
 
-            if(element.getAttribute('id') === 'scrollSubNavLeft'){
+            if (element.getAttribute('id') === 'scrollSubNavLeft') {
                 scrollSubNav(true);
             }
 
-            if(element.getAttribute('id') === 'scrollSubNavRight'){
+            if (element.getAttribute('id') === 'scrollSubNavRight') {
                 scrollSubNav();
             }
         });
 
-        if(subNavWrap){
-            (function(){
+        if (subNavWrap) {
+            (function () {
                 init();
-            })();
+            }());
 
-            window.addEventListener('resize', function(){
+            window.addEventListener('resize', () => {
                 init();
-            })
+            });
         }
     });
-})();
+}());

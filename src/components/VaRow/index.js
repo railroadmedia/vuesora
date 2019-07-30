@@ -1,5 +1,5 @@
 import vaComponent from './VaRow.vue';
 
-export default Vue => {
+export default (Vue) => {
     Vue.component(vaComponent.name, vaComponent);
-}
+};

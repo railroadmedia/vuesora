@@ -2,10 +2,10 @@ import Vue from 'vue';
 import ImageCropper from './ImageCropper';
 
 export default {
-    install(Vue, options){
+    install(Vue, options) {
         Vue.component(
             ImageCropper.name,
-            ImageCropper
-        )
-    }
-}
+            ImageCropper,
+        );
+    },
+};

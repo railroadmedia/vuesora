@@ -1,10 +1,10 @@
 import ContentModel from './_default';
 
 export default class RecordingContentModel extends ContentModel {
-    constructor({brand = 'drumeo', post}){
+    constructor({ brand = 'drumeo', post }) {
         super({
             brand,
-            post
+            post,
         });
 
         this.card.color_title = this.postInstructor;
@@ -13,11 +13,11 @@ export default class RecordingContentModel extends ContentModel {
         this.list.column_data = [
             ContentModel.mapDifficulty(this.post),
             this.getPostDuration(),
-            this.postPublisedOn
+            this.postPublisedOn,
         ];
 
-        if(this.brand === 'guitareo'){
-            this.card.color_title = this.getTypeWithIcon()
+        if (this.brand === 'guitareo') {
+            this.card.color_title = this.getTypeWithIcon();
         }
     }
 }

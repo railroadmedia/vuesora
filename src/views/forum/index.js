@@ -2,10 +2,10 @@ import Vue from 'vue';
 import ForumThreadsTable from './ForumThreadsTable';
 
 export default {
-    install(Vue, options){
+    install(Vue, options) {
         Vue.component(
             ForumThreadsTable.name,
-            ForumThreadsTable
-        )
-    }
-}
+            ForumThreadsTable,
+        );
+    },
+};

@@ -2,10 +2,10 @@ import Vue from 'vue';
 import Schedule from './Schedule';
 
 export default {
-    install(Vue, options){
+    install(Vue, options) {
         Vue.component(
             Schedule.name,
-            Schedule
-        )
-    }
-}
+            Schedule,
+        );
+    },
+};

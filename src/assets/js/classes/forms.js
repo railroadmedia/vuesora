@@ -23,7 +23,7 @@ export default class Forms {
     static addInputEventListeners() {
         const inputs = document.querySelectorAll('input, textarea, select');
 
-        Array.from(inputs).forEach(input => {
+        Array.from(inputs).forEach((input) => {
             input.addEventListener('change', Forms.handleInputChange);
 
             // Add the has-input class if the input came pre filled out
@@ -96,7 +96,7 @@ export default class Forms {
     static initializeFlatpickrInputs() {
         const flatpickrInputs = document.querySelectorAll('.flatpickr');
 
-        Array.from(flatpickrInputs).forEach(input => {
+        Array.from(flatpickrInputs).forEach((input) => {
             // Check for the class .enable-time to enable the time input
             const enableTime = input.classList.contains('enable-time');
             let dateFormat = 'Y-m-d';

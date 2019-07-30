@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const endpointPrefix = process.env.ENDPOINT_PREFIX || '';
 
 export default class ProgressTracker {

@@ -1,10 +1,10 @@
 import ContentModel from './_default';
 
 export default class UnitPartContentModel extends ContentModel {
-    constructor({brand = 'drumeo', post}){
+    constructor({ brand = 'drumeo', post }) {
         super({
             brand,
-            post
+            post,
         });
 
         this.card.color_title = this.postInstructor;
