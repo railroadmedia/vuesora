@@ -1,11 +1,15 @@
 <template>
-    <a :href="linkedContent.url"
+    <a
+:href="linkedContent.url"
        class="content-table-row flex flex-row bt-grey-1-1 pa-1 relative no-decoration"
        :class="{'is-read': isRead}"
-       @click="markAsRead(false)">
+       @click="markAsRead(false)"
+>
         <div class="flex flex-column avatar-col align-v-center">
-            <div class="thumb-img square rounded bg-center"
-                 :style="'background-image:url(' + userAvatar + ');'"></div>
+            <div
+class="thumb-img square rounded bg-center"
+                 :style="'background-image:url(' + userAvatar + ');'"
+></div>
         </div>
 
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
@@ -24,8 +28,11 @@
         </div>
 
         <div class="flex flex-column icon-col align-v-center">
-            <div class="body" title="Mark as Read"
-                 @click.stop.prevent="markAsRead(true)">
+            <div
+class="body"
+title="Mark as Read"
+                 @click.stop.prevent="markAsRead(true)"
+>
                 <i class="far fa-eye flex-center text-grey-2 rounded read-icon"></i>
             </div>
         </div>
@@ -38,42 +45,40 @@
     </a>
 </template>
 <script>
-    export default {
-        name: 'notificatons-table-row',
-        props: {
-            createdOn: {
-                type: String,
-                default: () => ''
-            },
-            id: {
-                type: Number,
-                default: () => 0
-            },
-            isRead: {
-                type: Boolean,
-                default: () => false
-            },
-            userAvatar: {
-                type: String,
-                default: () => ''
-            },
-            userName: '',
-            linkedContent: {
-                type: Object,
-                default: () => {
-                    return {
+export default {
+    name: 'NotificatonsTableRow',
+    props: {
+        createdOn: {
+            type: String,
+            default: () => '',
+        },
+        id: {
+            type: Number,
+            default: () => 0,
+        },
+        isRead: {
+            type: Boolean,
+            default: () => false,
+        },
+        userAvatar: {
+            type: String,
+            default: () => '',
+        },
+        userName: ,
+        linkedContent: {
+            type: Object,
+            default: () => ({
                         title: '',
                         url: ''
-                    }
-                }
-            },
-            notificationType: {
-                type: String,
-                default: () => ''
-            }
+                    })
         },
-        computed: {
-            notificationTypeString(){
+        notificationType: {
+            type: String,
+            default: () => '',
+        },
+    },
+    computed: {
+        notificationTypeString(){
                 switch(this.notificationType){
                     case 'comment-reply':
                         return 'replied to your comment on:';
@@ -88,22 +93,22 @@
                     case 'forum-like':
                         if (this.userName == '1') {
                             return 'person liked your post in:';
-                        } else {
+                        } 
                             return 'people liked your post in:';
-                        }
+                        
                     case 'thread-reply':
                         return 'replied to a thread you follow:';
                 }
             }
+    },
+    methods: {
+        markAsRead(canCancel = true) {
+            this.$emit('notificationRead', {
+                id: this.id,
+                isRead: this.isRead,
+                canCancel: canCancel,
+            });
         },
-        methods: {
-            markAsRead(canCancel = true){
-                this.$emit('notificationRead', {
-                    id: this.id,
-                    isRead: this.isRead,
-                    canCancel: canCancel
-                });
-            }
-        }
-    }
+    },
+};
 </script>

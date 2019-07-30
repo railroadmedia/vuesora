@@ -4,10 +4,15 @@
             <slot></slot>
         </router-link>
 
-        <div class="sub-nav-items" v-if="currentRoute === routerLink && subNavItems.length">
-            <a v-for="(item, i) in subNavItems"
-               :key="i"
-               @click="emitScrollEvent(item)">
+        <div
+            v-if="currentRoute === routerLink && subNavItems.length"
+            class="sub-nav-items"
+        >
+            <a
+                v-for="(item, i) in subNavItems"
+                :key="i"
+                @click="emitScrollEvent(item)"
+            >
                 {{ item }}
             </a>
         </div>
@@ -15,34 +20,34 @@
 </template>
 
 <script>
-    export default {
-        name: 'nav-item',
-        props: {
-            routerLink: {
-                type: String,
-                default: () => ''
-            },
-
-            subNavItems: {
-                type: Array,
-                default: () => []
-            }
+export default {
+    name: 'NavItem',
+    props: {
+        routerLink: {
+            type: String,
+            default: () => '',
         },
-        computed: {
-            currentRoute(){
-                return this.$route.fullPath
-            }
-        },
-        methods: {
-            emitScrollEvent(item, e){
-                let elementToScrollTo = item.toLowerCase().replace(/ /g, '-');
 
-                this.$root.$emit('scrollTo', {
-                    element: elementToScrollTo
-                });
-            }
-        }
-    }
+        subNavItems: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    computed: {
+        currentRoute() {
+            return this.$route.fullPath;
+        },
+    },
+    methods: {
+        emitScrollEvent(item, e) {
+            const elementToScrollTo = item.toLowerCase().replace(/ /g, '-');
+
+            this.$root.$emit('scrollTo', {
+                element: elementToScrollTo,
+            });
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>

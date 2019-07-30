@@ -1,60 +1,67 @@
 <template>
-    <div id="loadingDialog" :class="{ 'hide': !show }">
+    <div
+        id="loadingDialog"
+        :class="{ 'hide': !show }"
+    >
         <div class="dialog-container flex flex-column pa-3 align-center bg-white corners-3 shadow">
             <i class="fas fa-spinner fa-spin text-recordeo"></i>
 
-            <h2 class="tiny font-italic text-recordeo">Please Wait</h2>
-            <h2 class="title text-black">Processing Your Request</h2>
+            <h2 class="tiny font-italic text-recordeo">
+                Please Wait
+            </h2>
+            <h2 class="title text-black">
+                Processing Your Request
+            </h2>
         </div>
     </div>
 </template>
 <script>
-    export default {
-        name: 'loading-dialog',
-        props: {
-            show: {
-                type: Boolean,
-                default: false
-            }
+export default {
+    name: 'LoadingDialog',
+    props: {
+        show: {
+            type: Boolean,
+            default: false,
         },
-        data() {
-            return {
-                inputs: []
-            }
-        },
-        methods: {
-            tearUp() {
-                Array.from(this.inputs).forEach(input => {
-                    input.classList.add('disabled-button');
-                });
-            },
-            tearDown() {
-                Array.from(this.inputs).forEach(input => {
-                    input.classList.remove('disabled-button');
-                });
-            }
-        },
-        mounted() {
-            this.inputs = document.querySelectorAll('button');
-
-            if (this.show) {
+    },
+    data() {
+        return {
+            inputs: [],
+        };
+    },
+    watch: {
+        show(newVal, oldVal) {
+            if (newVal) {
                 this.tearUp();
+            } else {
+                this.tearDown();
             }
         },
-        destroyed() {
-            this.tearDown();
-            this.inputs = [];
-        },
-        watch: {
-            show: function(newVal, oldVal) {
-                if (newVal) {
-                    this.tearUp();
-                } else {
-                    this.tearDown();
-                }
-            }
+    },
+    mounted() {
+        this.inputs = document.querySelectorAll('button');
+
+        if (this.show) {
+            this.tearUp();
         }
-    }
+    },
+    destroyed() {
+        this.tearDown();
+        this.inputs = [];
+    },
+    methods: {
+        tearUp() {
+            Array.from(this.inputs).forEach((input) => {
+                input.classList.add('disabled-button');
+            });
+        },
+        tearDown() {
+            Array.from(this.inputs).forEach((input) => {
+                input.classList.remove('disabled-button');
+            });
+        },
+    },
+};
 </script
 <style>
     #loadingDialog {

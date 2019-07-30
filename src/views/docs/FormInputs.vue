@@ -1,27 +1,47 @@
 <template>
     <div class="container narrow pt-3">
-        <h1 class="heading text-center">Form Inputs</h1>
-        <p class="body font-light mb-3 text-center">Everything you need to create beautiful forms.</p>
+        <h1 class="heading text-center">
+            Form Inputs
+        </h1>
+        <p class="body font-light mb-3 text-center">
+            Everything you need to create beautiful forms.
+        </p>
 
         <div class="flex flex-column bg-white shadow corners-3 pa mb-4">
-            <p class="body">All form inputs must be wrapped inside of a <span class="keyword">.form-group</span> element and all labels must come <strong>AFTER</strong> the input</p>
+            <p class="body">
+                All form inputs must be wrapped inside of a <span class="keyword">.form-group</span> element and all labels must come <strong>AFTER</strong> the input
+            </p>
         </div>
 
-        <div id="text-input" class="flex flex-column bg-white shadow corners-3 pa mb-4">
-            <h2 class="subheading text-secondary">Text Input</h2>
+        <div
+            id="text-input"
+            class="flex flex-column bg-white shadow corners-3 pa mb-4"
+        >
+            <h2 class="subheading text-secondary">
+                Text Input
+            </h2>
 
             <div class="flex flex-row align-center">
                 <div class="flex flex-column xs-12 sm-8 md-6">
                     <div class="form-group mb">
-                        <input id="textTest" type="text">
+                        <input
+                            id="textTest"
+                            type="text"
+                        >
                         <label for="textTest">Text Input</label>
                     </div>
                     <div class="form-group mb">
-                        <input id="emailTest" type="email">
+                        <input
+                            id="emailTest"
+                            type="email"
+                        >
                         <label for="emailTest">Email Input</label>
                     </div>
                     <div class="form-group">
-                        <input id="passwordTest" type="email">
+                        <input
+                            id="passwordTest"
+                            type="email"
+                        >
                         <label for="passwordTest">Password Input</label>
                     </div>
                 </div>
@@ -31,27 +51,27 @@
 </template>
 
 <script>
-    import Forms from "../../assets/js/classes/forms";
+import Forms from '../../assets/js/classes/forms';
 
-    export default {
-        name: "form-inputs",
-        props: {
+export default {
+    name: 'FormInputs',
+    props: {
 
-        },
-        data() {
-            return {
+    },
+    data() {
+        return {
 
-            }
-        },
-        methods: {
-        },
-        mounted() {
-            Forms.addInputEventListeners();
-        },
-        beforeDestory() {
-            Forms.removeInputEventListeners();
-        }
-    };
+        };
+    },
+    mounted() {
+        Forms.addInputEventListeners();
+    },
+    methods: {
+    },
+    beforeDestory() {
+        Forms.removeInputEventListeners();
+    },
+};
 </script>
 
 <style lang="scss">

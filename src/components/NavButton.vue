@@ -5,9 +5,9 @@
 </template>
 
 <script>
-    export default {
-        name: 'nav-button'
-    }
+export default {
+    name: 'NavButton',
+};
 </script>
 
 <style lang="scss" scoped>

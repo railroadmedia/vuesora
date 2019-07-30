@@ -3,10 +3,6 @@
   "env": {
     "browser": true
   },
-  "plugins": [
-    "import",
-    "vue"
-  ],
   "rules": {
     "indent": ["error", 4],
     "vue/html-indent": ["error", 4],
@@ -15,5 +11,8 @@
     "consistent-return": "off",
     "max-len": ["warn", 120],
     "no-trailing-spaces": "off"
-  }
+  },
+  "plugins": [
+    "vue"
+  ]
 }
