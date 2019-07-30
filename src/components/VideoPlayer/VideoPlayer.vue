@@ -308,8 +308,11 @@
             </div>
         </div>
 
-        <div v-if="isPipEnabled"
-             class="widescreen bg-black"></div>
+        <div
+            v-if="isPipEnabled"
+            class="widescreen bg-black"
+        ></div>
+
         <VideoSocialButtons
             :theme-color="themeColor"
             :is-liked="isLiked"
@@ -521,7 +524,7 @@ export default {
             cache: false,
             get() {
                 if (this.shakaPlayer != null) {
-                    return this.shakaPlayer.getBufferedInfo().video;
+                    return this.shakaPlayer.getBufferedInfo().total;
                 }
 
                 return [];
@@ -556,7 +559,12 @@ export default {
 
         isMobile: () => PlayerUtils.isMobile().any,
 
-        isMobileViewport: () => window.matchMedia('(min-width: 1024px)').matches === false,
+        isMobileViewport: {
+            cache: false,
+            get() {
+                return window.matchMedia('(min-width: 1024px)').matches === false;
+            },
+        },
 
         isSafari: () => PlayerUtils.isSafari(),
 
@@ -564,8 +572,11 @@ export default {
             return (this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom;
         },
 
-        drawersShouldOpenFromBottom() {
-            return this.isMobileViewport || this.isPipEnabled;
+        drawersShouldOpenFromBottom: {
+            cache: false,
+            get() {
+                return this.isMobileViewport || this.isPipEnabled;
+            },
         },
     },
     mounted() {
@@ -584,7 +595,7 @@ export default {
 
         shaka.polyfill.installAll();
 
-        if (shaka.Player.isBrowserSupported()) {
+        if (!shaka.Player.isBrowserSupported()) {
             this.shakaPlayer = new shaka.Player();
 
             Object.keys(this.eventHandlers).forEach((event) => {
@@ -639,6 +650,7 @@ export default {
                 });
         } else {
             this.playerError = true;
+            this.playerErrorCode = 'Browser Not Supported';
         }
 
         // Close drawers on any document click
@@ -796,9 +808,7 @@ export default {
             this.mediaElement.volume = payload.volume / 100;
             this.currentVolume = this.mediaElement.volume;
 
-            if (payload.volume > 0) {
-                localStorage.setItem('playerVolume', payload.volume);
-            }
+            localStorage.setItem('playerVolume', payload.volume);
 
             if (this.isChromeCastConnected) {
                 this.chromeCast.volume(payload.volume);

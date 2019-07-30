@@ -20,11 +20,9 @@ export default {
                 },
 
                 error: (event) => {
-                    console.error(event);
-
-                    if (event.severity === 2) {
+                    if (event.severity === 2 || event.detail.severity === 2) {
                         this.playerError = true;
-                        this.playerErrorCode = event.code;
+                        this.playerErrorCode = event.code || event.detail.code;
                     }
                 },
 
@@ -75,8 +73,10 @@ export default {
                 },
 
                 playing: (event) => {
-                    this.isPlaying = true;
-                    this.loading = false;
+                    setTimeout(() => {
+                        this.isPlaying = true;
+                        this.loading = false;
+                    }, 100);
 
                     this.$emit('playing', event);
                 },
@@ -90,8 +90,6 @@ export default {
 
                 error: (event) => {
                     console.error(event);
-
-                    console.log('this one?');
                 },
 
                 useractive: () => {
