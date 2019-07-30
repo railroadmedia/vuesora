@@ -414,6 +414,16 @@ export default {
             type: [Number, String],
             default: () => null,
         },
+
+        videoId: {
+            type: [Number, String],
+            default: () => null,
+        },
+
+        progressState: {
+            type: String,
+            default: () => 'unstarted',
+        },
     },
     data() {
         return {
@@ -595,7 +605,7 @@ export default {
 
         shaka.polyfill.installAll();
 
-        if (!shaka.Player.isBrowserSupported()) {
+        if (shaka.Player.isBrowserSupported()) {
             this.shakaPlayer = new shaka.Player();
 
             Object.keys(this.eventHandlers).forEach((event) => {

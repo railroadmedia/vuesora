@@ -69,6 +69,7 @@ export default {
                     this.$emit('play', {
                         ...event,
                         contentId: this.contentId,
+                        progressState: this.progressState,
                     });
                 },
 
