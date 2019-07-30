@@ -572,7 +572,7 @@ export default {
         isMobileViewport: {
             cache: false,
             get() {
-                return window.matchMedia('(min-width: 1024px)').matches === false;
+                return window.matchMedia('(min-width: 641px)').matches === false;
             },
         },
 
