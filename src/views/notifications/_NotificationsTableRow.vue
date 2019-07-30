@@ -1,15 +1,15 @@
 <template>
     <a
-:href="linkedContent.url"
-       class="content-table-row flex flex-row bt-grey-1-1 pa-1 relative no-decoration"
-       :class="{'is-read': isRead}"
-       @click="markAsRead(false)"
->
+        :href="linkedContent.url"
+        class="content-table-row flex flex-row bt-grey-1-1 pa-1 relative no-decoration"
+        :class="{'is-read': isRead}"
+        @click="markAsRead(false)"
+    >
         <div class="flex flex-column avatar-col align-v-center">
             <div
-class="thumb-img square rounded bg-center"
-                 :style="'background-image:url(' + userAvatar + ');'"
-></div>
+                class="thumb-img square rounded bg-center"
+                :style="'background-image:url(' + userAvatar + ');'"
+            ></div>
         </div>
 
         <div class="flex flex-column align-v-center ph-1 title-column overflow">
@@ -29,10 +29,10 @@ class="thumb-img square rounded bg-center"
 
         <div class="flex flex-column icon-col align-v-center">
             <div
-class="body"
-title="Mark as Read"
-                 @click.stop.prevent="markAsRead(true)"
->
+                class="body"
+                title="Mark as Read"
+                @click.stop.prevent="markAsRead(true)"
+            >
                 <i class="far fa-eye flex-center text-grey-2 rounded read-icon"></i>
             </div>
         </div>
@@ -64,13 +64,16 @@ export default {
             type: String,
             default: () => '',
         },
-        userName: ,
+        userName: {
+            type: String,
+            default: () => '',
+        },
         linkedContent: {
             type: Object,
             default: () => ({
-                        title: '',
-                        url: ''
-                    })
+                title: '',
+                url: '',
+            }),
         },
         notificationType: {
             type: String,
@@ -78,35 +81,35 @@ export default {
         },
     },
     computed: {
-        notificationTypeString(){
-                switch(this.notificationType){
-                    case 'comment-reply':
-                        return 'replied to your comment on:';
-                    case 'comment-like':
-                        if (this.userName == '1') {
-                            return 'person liked your comment on:';
-                        } else {
-                            return 'people liked your comment on:';
-                        }
-                    case 'forum-reply':
-                        return 'replied to your post in:';
-                    case 'forum-like':
-                        if (this.userName == '1') {
-                            return 'person liked your post in:';
-                        } 
-                            return 'people liked your post in:';
+        notificationTypeString() {
+            switch (this.notificationType) {
+            case 'comment-reply':
+                return 'replied to your comment on:';
+            case 'comment-like':
+                if (this.userName == '1') {
+                    return 'person liked your comment on:';
+                } 
+                return 'people liked your comment on:';
                         
-                    case 'thread-reply':
-                        return 'replied to a thread you follow:';
-                }
+            case 'forum-reply':
+                return 'replied to your post in:';
+            case 'forum-like':
+                if (this.userName == '1') {
+                    return 'person liked your post in:';
+                } 
+                return 'people liked your post in:';
+                        
+            case 'thread-reply':
+                return 'replied to a thread you follow:';
             }
+        },
     },
     methods: {
         markAsRead(canCancel = true) {
             this.$emit('notificationRead', {
                 id: this.id,
                 isRead: this.isRead,
-                canCancel: canCancel,
+                canCancel,
             });
         },
     },
