@@ -7,7 +7,7 @@ if git diff-index --quiet HEAD --; then
     git commit -am "New build";
 
     # Create a new patch version
-    npm run patch;
+    npm version patch;
     PACKAGE_VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')
 
     echo 'Creating Tag and Commit for Vuesora Version: ' $PACKAGE_VERSION
