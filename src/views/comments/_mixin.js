@@ -31,7 +31,7 @@ export default {
         },
 
         userXp: {
-            type: String | Number,
+            type: [String, Number],
         },
 
         userAccessLevel: {
@@ -77,14 +77,12 @@ export default {
                 likedPost.like_count -= 1;
                 likedPost.is_liked = false;
 
-                CommentService.unlikeComment(payload.id)
-                    .then((response) => {});
+                CommentService.unlikeComment(payload.id);
             } else {
                 likedPost.like_count += 1;
                 likedPost.is_liked = true;
 
-                CommentService.likeComment(payload.id)
-                    .then((response) => {});
+                CommentService.likeComment(payload.id);
             }
         },
 
@@ -94,26 +92,36 @@ export default {
             const likedPostReplyIndex = likedPostReplies.map(reply => reply.id).indexOf(payload.id);
             const likedPostReply = likedPostReplies[likedPostReplyIndex];
 
+            console.log(likedPostReplies);
 
             if (payload.isLiked) {
                 likedPostReply.like_count -= 1;
                 likedPostReply.is_liked = false;
 
-                CommentService.unlikeComment(payload.id)
-                    .then((response) => {});
+                CommentService.unlikeComment(payload.id);
             } else {
                 likedPostReply.like_count += 1;
                 likedPostReply.is_liked = true;
 
-                CommentService.likeComment(payload.id)
-                    .then((response) => {});
+                CommentService.likeComment(payload.id);
             }
         },
 
         handleCommentDelete(payload) {
             CommentService.deleteComment(payload.id)
-                .then((resolved) => {
-                    this.comments = this.comments.filter(comment => comment.id !== payload.id);
+                .then(() => {
+                    if (payload.pinned) {
+                        // If the comment was pinned remove it and also remove the url param
+                        window.history.replaceState(
+                            {},
+                            document.title,
+                            window.location.href.split('?')[0],
+                        );
+
+                        this.pinnedComment = null;
+                    } else {
+                        this.comments = this.comments.filter(comment => comment.id !== payload.id);
+                    }
 
                     Toasts.push({
                         icon: 'happy',
@@ -126,14 +134,12 @@ export default {
 
         handleReplyDelete(payload) {
             const index = this.comments.map(comment => comment.id).indexOf(payload.parent_id);
-            const deletedPostReplies = this.comments[index].replies;
-            const deletedPostReplyIndex = deletedPostReplies.map(reply => reply.id).indexOf(payload.id);
-            const deletedPostReply = deletedPostReplies[deletedPostReplyIndex];
 
             CommentService.deleteComment(payload.id)
                 .then((resolved) => {
                     if (resolved) {
-                        this.comments[index].replies = this.comments[index].replies.filter(reply => reply.id !== payload.id);
+                        this.comments[index].replies = this.comments[index].replies
+                            .filter(reply => reply.id !== payload.id);
 
                         Toasts.push({
                             icon: 'happy',

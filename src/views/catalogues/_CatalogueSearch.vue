@@ -3,7 +3,7 @@
         <div class="flex flex-row flex-wrap">
             <div
                 class="flex flex-column xs-12 pa-1"
-                :class="included_types.length ? 'sm-8' : ''"
+                :class="includedTypes.length ? 'sm-8' : ''"
             >
                 <div class="form-group">
                     <input
@@ -19,22 +19,22 @@
             </div>
 
             <div
-                v-if="included_types.length"
+                v-if="includedTypes.length"
                 class="flex flex-column xs-12 sm-4 pv-1"
             >
                 <catalogue-filter
-                    filter_name="type"
+                    filter-name="type"
                     :item="parsedTypes"
                     :theme-color="themeColor"
                     :loading="loading"
-                    :initial_value="selected_types"
+                    :initial-value="selectedTypes"
                     @filterChange="changeFilter"
                 ></catalogue-filter>
             </div>
         </div>
         <div class="flex flex-row ph-1 pb-1">
             <p class="tiny text-grey-3 font-italic">
-                Displaying <span v-if="total_results > 0">{{ currentResults }} of</span> {{ total_results }} results.
+                Displaying <span v-if="totalResults > 0">{{ currentResults }} of</span> {{ totalResults }} results.
             </p>
         </div>
     </div>
@@ -69,22 +69,22 @@ export default {
             default: () => undefined,
         },
         currentPage: {
-            type: String | Number,
+            type: [String, Number],
             default: () => 1,
         },
         limit: {
-            type: String | Number,
+            type: [String, Number],
             default: () => 20,
         },
         totalResults: {
-            type: String | Number,
+            type: [String, Number],
             default: () => 0,
         },
     },
     computed: {
         searchTermInterface: {
             get() {
-                return this.search_term;
+                return this.searchTerm;
             },
             set(value) {
                 if (value) {
@@ -96,17 +96,17 @@ export default {
         },
 
         currentResults() {
-            return `${1 + ((this.current_page * this.limit) - this.limit)}-${this.displayedLimit}`;
+            return `${1 + ((this.currentPage * this.limit) - this.limit)}-${this.displayedLimit}`;
         },
 
         displayedLimit() {
-            return this.limit > this.total_results ? this.total_results : this.limit;
+            return this.limit > this.totalResults ? this.totalResults : this.limit;
         },
 
         parsedTypes() {
             const parsedArray = [];
 
-            this.included_types.forEach((type) => {
+            this.includedTypes.forEach((type) => {
                 parsedArray.push({
                     key: type,
                     value: type,

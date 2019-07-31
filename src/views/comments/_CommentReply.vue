@@ -12,14 +12,14 @@
                     class="no-decoration"
                 >
                     <img
-                        :src="user['fields.profile_picture_image_url']"
+                        :src="comment.user['fields.profile_picture_image_url']"
                         class="rounded"
                     >
                 </a>
             </div>
             <img
                 v-if="!hasPublicProfiles"
-                :src="user['fields.profile_picture_image_url']"
+                :src="comment.user['fields.profile_picture_image_url']"
                 class="rounded"
             >
 
@@ -46,13 +46,13 @@
                             target="_blank"
                             class="text-black no-decoration"
                         >
-                            {{ user.display_name }}
+                            {{ comment.user.display_name }}
                         </a>
                         <span
                             v-else
                             class="text-black no-decoration"
                         >
-                            {{ user.display_name }}
+                            {{ comment.user.display_name }}
                         </span>
 
                         <span class="x-tiny text-grey-3 font-bold font-italic uppercase ml-1">
@@ -79,9 +79,9 @@
             <div class="flex flex-row body mb-1">
                 <div
                     class="flex flex-column post-body grow"
-                    v-html="comment"
+                    v-html="comment.comment"
                 >
-                    {{ comment }}
+                    {{ comment.comment }}
                 </div>
             </div>
 
@@ -104,12 +104,12 @@
                         <p
                             v-if="!isUsersPost"
                             class="tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect"
-                            :class="isLiked ? themeTextClass : 'text-grey-3'"
+                            :class="comment.is_liked ? themeTextClass : 'text-grey-3'"
                             @click="likeComment"
                         >
                             <i class="fas fa-thumbs-up"></i>
                             <span class="hide-xs-only">
-                                {{ isLiked ? 'Liked' : 'Like' }}
+                                {{ comment.is_liked ? 'Liked' : 'Like' }}
                             </span>
                         </p>
 
@@ -122,8 +122,8 @@
                         >
                             <i
                                 class="fas fa-thumbs-up text-white likes-icon"
-                                :class="like_count > 0 ? themeBgClass : 'bg-grey-2'"
-                            ></i> {{ like_count }}
+                                :class="comment.like_count > 0 ? themeBgClass : 'bg-grey-2'"
+                            ></i> {{ comment.like_count }}
                         </p>
                     </div>
                 </div>
@@ -218,12 +218,8 @@ export default {
                 avatar: '',
             }),
         },
-        id: {
-            type: Number,
-            default: () => 0,
-        },
         parentId: {
-            type: String | Number,
+            type: [String, Number],
             default: () => null,
         },
         profileBaseRoute: {
@@ -231,54 +227,18 @@ export default {
             default: '/laravel/public/members/profile/',
         },
         comment: {
-            type: String,
-            default: () => '',
+            type: Object,
+            default: () => ({
+                user: {},
+            }),
         },
         contentId: {
             type: Number,
             default: () => 0,
         },
-        createdOn: {
-            type: String,
-            default: () => '',
-        },
-        displayName: {
-            type: String,
-            default: () => '',
-        },
-        isLiked: {
-            type: Boolean,
-            default: () => false,
-        },
-        likeCount: {
-            type: Number,
-            default: () => 0,
-        },
-        likeUsers: {
-            type: Array,
-            default: () => [],
-        },
-        replies: {
-            type: Array,
-            default: () => [],
-        },
         pinned: {
             type: Boolean,
             default: () => false,
-        },
-        userId: {
-            type: Number,
-            default: () => 0,
-        },
-        user: {
-            type: Object,
-            default: () => ({
-                'fields.profile_picture_image_url': '',
-                id: 0,
-                display_name: '',
-                xp: 1234,
-                access_level: 'edge',
-            }),
         },
         hasPublicProfiles: {
             type: Boolean,
@@ -287,7 +247,7 @@ export default {
     },
     data() {
         return {
-            isLiked: this.is_liked,
+            isLiked: this.comment.is_liked,
             reply: '',
             replying: false,
             loading: false,
@@ -296,13 +256,14 @@ export default {
     computed: {
         avatarClassObject() {
             return {
-                subscriber: ['edge', 'lifetime', 'team', 'guitar', 'piano'].indexOf(this.user.access_level) !== -1,
-                edge: this.user.access_level === 'edge',
-                pack: this.user.access_level === 'pack',
-                team: this.user.access_level === 'team',
-                guitar: this.user.access_level === 'guitar',
-                piano: this.user.access_level === 'piano',
-                lifetime: this.user.access_level === 'lifetime',
+                subscriber: ['edge', 'lifetime', 'team', 'guitar', 'piano']
+                    .indexOf(this.comment.user.access_level) !== -1,
+                edge: this.comment.user.access_level === 'edge',
+                pack: this.comment.user.access_level === 'pack',
+                team: this.comment.user.access_level === 'team',
+                guitar: this.comment.user.access_level === 'guitar',
+                piano: this.comment.user.access_level === 'piano',
+                lifetime: this.comment.user.access_level === 'lifetime',
             };
         },
 
@@ -320,31 +281,31 @@ export default {
                 return null;
             }
 
-            return Utils.parseXpValue(this.user.xp);
+            return Utils.parseXpValue(this.comment.user.xp);
         },
 
         userExpRank() {
-            if (this.user.access_level === 'team') {
+            if (this.comment.user.access_level === 'team') {
                 return `${this.brand} Team`;
             }
 
-            return xpMapper.getNearestValue(this.user.xp);
+            return xpMapper.getNearestValue(this.comment.user.xp);
         },
 
         profileRoute() {
-            return this.profileBaseRoute + this.user_id;
+            return this.profileBaseRoute + this.comment.user.id;
         },
 
         commentUrl() {
-            return `${window.location}?goToComment=${this.id}`;
+            return `${window.location}?goToComment=${this.comment.id}`;
         },
 
         dateString() {
-            return DateTime.fromSQL(this.created_on, { zone: 'UTC' }).minus({ seconds: 1 }).toRelative();
+            return DateTime.fromSQL(this.comment.created_on, { zone: 'UTC' }).minus({ seconds: 1 }).toRelative();
         },
 
         isUsersPost() {
-            return String(this.currentUser.id) === String(this.user_id);
+            return String(this.currentUser.id) === String(this.comment.user_id);
         },
 
         isCurrentUserAdmin() {
@@ -352,16 +313,16 @@ export default {
         },
 
         openModalString() {
-            return this.like_count > 0 ? 'likeUsersModal' : '';
+            return this.comment.like_count > 0 ? 'likeUsersModal' : '';
         },
 
         showUserExp() {
-            return this.userExpValue != null && (['team', 'pack'].indexOf(this.user.access_level) === -1);
+            return this.userExpValue != null && (['team', 'pack'].indexOf(this.comment.user.access_level) === -1);
         },
     },
     mounted() {
         this.$root.$on('replyOpened', (payload) => {
-            if (this.id !== payload.id) {
+            if (this.comment.id !== payload.id) {
                 this.replying = false;
             }
         });
@@ -371,17 +332,17 @@ export default {
             this.isLiked = !this.isLiked;
 
             this.$emit('likeReply', {
-                id: this.id,
-                isLiked: this.is_liked,
+                id: this.comment.id,
+                isLiked: this.comment.is_liked,
                 isPinned: this.pinned,
             });
         },
 
         openLikes() {
-            if (this.like_count > 0) {
+            if (this.likeCount > 0) {
                 this.$emit('openLikes', {
-                    id: this.id,
-                    totalLikeUsers: this.like_count,
+                    id: this.comment.id,
+                    totalLikeUsers: this.comment.like_count,
                     busToRoot: true,
                 });
             }
@@ -390,7 +351,7 @@ export default {
         openReply() {
             this.replying = !this.replying;
             this.$root.$emit('replyOpened', {
-                id: this.id,
+                id: this.comment.id,
             });
         },
 
@@ -425,15 +386,13 @@ export default {
         },
 
         deleteComment() {
-            const vm = this;
-
             Toasts.confirm({
                 title: 'Are you sure you want to delete this reply?',
                 submitButton: {
                     text: '<span class="bg-error text-white">Delete</span>',
                     callback: () => {
-                        vm.$emit('deleteReply', {
-                            id: vm.id,
+                        this.$emit('deleteReply', {
+                            id: this.comment.id,
                         });
                     },
                 },

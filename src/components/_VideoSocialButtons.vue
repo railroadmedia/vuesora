@@ -147,7 +147,7 @@ export default {
             default: () => null,
         },
         userId: {
-            type: String | Number,
+            type: [String, Number],
             default: () => null,
         },
     },

@@ -10,7 +10,8 @@
     "vue/html-self-closing": "off",
     "consistent-return": "off",
     "max-len": ["warn", 120],
-    "no-trailing-spaces": "off"
+    "no-trailing-spaces": "off",
+    "camelcase": "off"
   },
   "plugins": [
     "vue"

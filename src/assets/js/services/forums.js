@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
 
-const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
+const endpointPrefix = process.env.endpointPrefix || '';
 
 export default {
 
@@ -41,7 +41,7 @@ export default {
      * @returns {Promise} - resolved promise with the response.data object
      */
     getForumThreads() {
-        return axios.get(`${endpoint_prefix}/members/forums/threads-json`)
+        return axios.get(`${endpointPrefix}/members/forums/threads-json`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -52,7 +52,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     getForumThreadPosts() {
-        return axios.get(`${endpoint_prefix}/members/forums/post-json`)
+        return axios.get(`${endpointPrefix}/members/forums/post-json`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -82,7 +82,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     likeForumPost(id) {
-        return axios.put(`${endpoint_prefix}/forums/post/like/${id}`)
+        return axios.put(`${endpointPrefix}/forums/post/like/${id}`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -94,7 +94,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     unlikeForumPost(id) {
-        return axios.delete(`${endpoint_prefix}/forums/post/unlike/${id}`)
+        return axios.delete(`${endpointPrefix}/forums/post/unlike/${id}`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -112,7 +112,7 @@ export default {
 
         return axios({
             method,
-            url: endpoint_prefix + url + id,
+            url: endpointPrefix + url + id,
         })
             .then(response => response.data)
             .catch(ErrorHandler);
@@ -126,7 +126,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     pinForumsThread(id, pinned) {
-        return axios.patch(`${endpoint_prefix}/forums/thread/update/${id}`, {
+        return axios.patch(`${endpointPrefix}/forums/thread/update/${id}`, {
             pinned,
         })
             .then(response => response.data)
@@ -141,7 +141,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     lockForumsThread(id, locked) {
-        return axios.patch(`${endpoint_prefix}/forums/thread/update/${id}`, {
+        return axios.patch(`${endpointPrefix}/forums/thread/update/${id}`, {
             locked,
         })
             .then(response => response.data)
@@ -155,7 +155,7 @@ export default {
      * @returns {Promise} resolved promise with the response object
      */
     deleteForumsPost(id) {
-        return axios.delete(`${endpoint_prefix}/forums/post/delete/${id}`)
+        return axios.delete(`${endpointPrefix}/forums/post/delete/${id}`)
             .then(response => response)
             .catch(ErrorHandler);
     },

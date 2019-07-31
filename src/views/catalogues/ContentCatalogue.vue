@@ -3,11 +3,11 @@
         <catalogue-search
             v-if="searchBar"
             :theme-color="themeColor"
-            :included_types="includedTypes"
-            :selected_types="selected_types"
-            :search_term="search_term"
+            :included-types="includedTypes"
+            :selected-types="selected_types"
+            :search-term="search_term"
             :current_page="page"
-            :total_results="total_results"
+            :total-results="total_results"
             @typeChange="handleTypeChange"
             @searchChange="handleSearch"
         ></catalogue-search>
@@ -16,7 +16,7 @@
         <catalogue-playlist-tabs
             v-if="isPlaylists"
             :theme-color="themeColor"
-            :included_types="includedTypes"
+            :included-types="includedTypes"
         ></catalogue-playlist-tabs>
 
 
@@ -24,8 +24,8 @@
             v-if="filterableValues.length"
             :filters="filters"
             :filterable-values="filterableValues"
-            :required_user_states="required_user_states"
-            :filter_params="filter_params"
+            :required-user-states="required_user_states"
+            :filter-params="filter_params"
             :loading="loading"
             :theme-color="themeColor"
             @filterChange="handleFilterChange"
@@ -127,8 +127,7 @@ import GridCatalogue from './GridCatalogue.vue';
 import ListCatalogue from './ListCatalogue.vue';
 import CatalogueFilters from './_CatalogueFilters.vue';
 import CatalogueSearch from './_CatalogueSearch.vue';
-import CataloguePlaylistTabs from './_CataloguePlaylistTabs';
-import CatalogueTabFilters from './_CatalogueTabFilters.vue';
+import CataloguePlaylistTabs from './_CataloguePlaylistTabs.vue';
 import Toasts from '../../assets/js/classes/toasts';
 import Pagination from '../../components/Pagination.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
@@ -141,7 +140,6 @@ export default {
         'list-catalogue': ListCatalogue,
         pagination: Pagination,
         'catalogue-filters': CatalogueFilters,
-        'catalogue-tab-filters': CatalogueTabFilters,
         'catalogue-search': CatalogueSearch,
         'catalogue-playlist-tabs': CataloguePlaylistTabs,
     },
@@ -161,6 +159,7 @@ export default {
         },
         preLoadedContent: {
             type: Object,
+            default: () => ({}),
         },
         limit: {
             type: String,
@@ -263,7 +262,8 @@ export default {
             default: () => false,
         },
         initialPage: {
-            default: null,
+            type: [Number, String],
+            default: () => null,
         },
         useThemeColor: {
             type: Boolean,
@@ -282,7 +282,7 @@ export default {
             default: '',
         },
         totalResults: {
-            type: String | Number,
+            type: [String, Number],
             default: () => 0,
         },
         catalogueName: {
@@ -294,7 +294,8 @@ export default {
         return {
             page: this.initialPage || 1,
             content: this.preLoadedContent ? this.preLoadedContent.data : [],
-            filters: this.preLoadedContent ? ContentHelpers.flattenFilters(this.preLoadedContent.meta.filterOptions || []) : {},
+            filters: this.preLoadedContent
+                ? ContentHelpers.flattenFilters(this.preLoadedContent.meta.filterOptions || []) : {},
             total_results: this.totalResults || 0,
             total_pages: this.preLoadedContent ? Math.ceil(this.preLoadedContent.meta.totalResults / this.limit) : 0,
             catalogue_type: this.catalogueType,
@@ -323,18 +324,18 @@ export default {
     computed: {
 
         required_fields() {
-            const filter_keys = Object.keys(this.filter_params);
-            const included_fields = [];
+            const filterKeys = Object.keys(this.filter_params);
+            const includedFields = [];
 
-            filter_keys.forEach((filter) => {
+            filterKeys.forEach((filter) => {
                 if (this.filter_params[filter] != null) {
-                    included_fields.push(
+                    includedFields.push(
                         `${filter},${this.filter_params[filter]}`,
                     );
                 }
             });
 
-            return included_fields;
+            return includedFields;
         },
 
         selectedTypes() {

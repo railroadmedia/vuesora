@@ -116,6 +116,10 @@ export default {
             type: String,
             default: '',
         },
+        is_search: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {

@@ -8,6 +8,7 @@ export default {
     props: {
         item: {
             type: Object,
+            default: () => ({}),
         },
 
         brand: {
@@ -46,6 +47,7 @@ export default {
         },
 
         index: {
+            type: [Number, String],
             default: () => '',
         },
 

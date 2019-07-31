@@ -148,11 +148,11 @@ export default {
             default: () => [],
         },
         contentId: {
-            type: String | Number,
+            type: [String, Number],
             default: () => null,
         },
         userId: {
-            type: String | Number,
+            type: [String, Number],
             default: () => null,
         },
         progressState: {
@@ -160,15 +160,15 @@ export default {
             default: () => null,
         },
         currentSecond: {
-            type: String | Number,
+            type: [String, Number],
             default: () => 0,
         },
         videoId: {
-            type: String | Number,
+            type: [String, Number],
             default: () => null,
         },
         videoLength: {
-            type: String | Number,
+            type: [String, Number],
             default: () => null,
         },
     },

@@ -110,7 +110,7 @@
 
         <comment-post
             v-if="pinnedComment != null"
-            v-bind="pinnedComment"
+            :comment="pinnedComment"
             :brand="brand"
             :current-user="currentUser"
             :pinned="true"
@@ -127,7 +127,7 @@
         <comment-post
             v-for="(comment, i) in comments"
             :key="i"
-            v-bind="comment"
+            :comment="comment"
             :brand="brand"
             :current-user="currentUser"
             :theme-color="themeColor"
@@ -255,9 +255,11 @@ export default {
     },
     mounted() {
         // Check the URI Params if 'goToComment' exists
-        const uriParams = QueryString.parse(location.search);
+        const uriParams = QueryString.parse(window.location.search);
         // Run the goToComment method if it does
         if (Object.keys(uriParams).indexOf('goToComment') !== -1) {
+            console.log(uriParams.goToComment);
+
             this.goToComment(uriParams.goToComment);
         }
 
@@ -346,7 +348,9 @@ export default {
                 .then((resolved) => {
                     if (resolved) {
                         const commentsSection = document.getElementById('postComment');
-                        this.pinnedComment = resolved.data.filter(result => result.id === Number(id))[0];
+                        this.pinnedComment = resolved.data.find(result => result.id == id);
+
+                        console.log(resolved);
 
                         /*
                             * Check intermittently for the DOM Element, it could possibly take a couple

@@ -207,10 +207,12 @@ export default {
 
         stripePublishableKey: {
             type: String,
+            default: () => '',
         },
 
         brand: {
             type: String,
+            default: () => 'pianote',
         },
 
         countries: {

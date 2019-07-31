@@ -1,24 +1,23 @@
 <template>
     <div class="flex flex-row flex-wrap pb">
         <catalogue-filter
-            v-for="item in filterableValues"
-            v-if="item !== 'progress'"
+            v-for="item in filterableValues.filter(item => item !== 'progress')"
             :key="item.key"
-            :filter_name="item"
+            :filter-name="item"
             :item="filters[item]"
             :theme-color="themeColor"
             :loading="loading"
-            :initial_value="filter_params[item]"
+            :initial-value="filterParams[item]"
             @filterChange="handleFilterChange"
         ></catalogue-filter>
 
         <catalogue-filter
             v-if="hasProgressFilter"
-            filter_name="progress"
+            filter-name="progress"
             :item="progress_options"
             :theme-color="themeColor"
             :loading="loading"
-            :initial_value="user_state"
+            :initial-value="user_state"
             @filterChange="handleProgressChange"
         ></catalogue-filter>
     </div>
@@ -38,6 +37,7 @@ export default {
         },
         filters: {
             type: Object,
+            default: () => ({}),
         },
         filterableValues: {
             type: Array,
@@ -77,7 +77,7 @@ export default {
     },
     computed: {
         user_state() {
-            return this.required_user_states.length ? this.required_user_states[0] : null;
+            return this.requiredUserStates.length ? this.requiredUserStates[0] : null;
         },
 
         hasProgressFilter() {

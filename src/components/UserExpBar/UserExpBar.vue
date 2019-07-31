@@ -48,7 +48,7 @@ export default {
             default: () => 'drumeo',
         },
         xp: {
-            type: String | Number,
+            type: [String, Number],
             default: () => 0,
         },
     },

@@ -159,7 +159,7 @@
                             Success!
                         </h4>
                         <p class="tiny text-grey-3">
-                            Your order has been processed. Redirecting you to the member's area.
+                            Your payment method has been successfully changed!
                         </p>
                     </div>
                 </transition>
@@ -214,7 +214,7 @@ export default {
         },
 
         userId: {
-            type: String | Number,
+            type: [String, Number],
         },
 
         hasSubscription: {
@@ -445,6 +445,37 @@ export default {
 
 <style lang="scss">
     @import '../../assets/sass/partials/_variables.scss';
+
+    .form-loading {
+        position:fixed;
+        top:50%;
+        left:50%;
+        z-index:200;
+        transform:translate(-50%, -50%);
+        width:250px;
+
+        i {
+            font-size:72px;
+        }
+
+        .success-message {
+            position:absolute;
+            top:0;
+            left:0;
+            bottom:0;
+            right:0;
+        }
+    }
+    .loading-overlay {
+        content: '';
+        position:fixed;
+        top:0;
+        left:0;
+        bottom:0;
+        right:0;
+        z-index:199;
+        background:rgba(0,0,0,.4);
+    }
 
     .radio-col {
         flex:0 0 30px;

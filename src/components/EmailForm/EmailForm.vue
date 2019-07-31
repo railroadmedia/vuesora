@@ -19,7 +19,7 @@
                         v-model="valueInterface"
                         type="text"
                         class="borderless text-white"
-                        :class="{ 'has-input': this.value.length }"
+                        :class="{ 'has-input': value.length }"
                     >
                     <label
                         for="questionInput"
@@ -56,7 +56,7 @@
                 <textarea
                     id="questionBox"
                     v-model="valueInterface"
-                    :class="{ 'has-input': this.value.length }"
+                    :class="{ 'has-input': value.length }"
                 ></textarea>
                 <label
                     for="questionBox"

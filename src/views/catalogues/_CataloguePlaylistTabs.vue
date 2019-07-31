@@ -54,11 +54,11 @@
         <div class="flex flex-column xs-12 sm-4 pv-1 align-v-center">
             <div class="flex flex-row">
                 <catalogue-filter
-                    filter_name="type"
+                    filter-name="type"
                     :item="parsedTypes"
                     :theme-color="themeColor"
                     :loading="loading"
-                    :initial_value="selected_types"
+                    :initial-value="selected_types"
                     @filterChange="changeFilter"
                 ></catalogue-filter>
             </div>
@@ -110,16 +110,10 @@ export default {
             },
         },
         parsedTypes() {
-            const parsedArray = [];
-
-            this.included_types.forEach((type) => {
-                parsedArray.push({
-                    key: type,
-                    value: type,
-                });
-            });
-
-            return parsedArray;
+            return this.includedTypes.map(type => ({
+                key: type,
+                value: type,
+            }));
         },
     },
     mounted() {
@@ -129,7 +123,7 @@ export default {
 
         keys.forEach((key) => {
             if (key === 'type') {
-                if (this.included_types.indexOf(query_object[key]) !== -1) {
+                if (this.includedTypes.indexOf(query_object[key]) !== -1) {
                     this.selected_types = query_object[key];
                 }
             }

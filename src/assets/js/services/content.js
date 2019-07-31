@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
 
-const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
+const endpointPrefix = process.env.endpointPrefix || '';
 
 export default {
 
@@ -11,7 +11,7 @@ export default {
      * @returns {Promise} - resolved promise with the response object
      */
     getContentById(id) {
-        return axios.get(`${endpoint_prefix}/railcontent/content/${id}`)
+        return axios.get(`${endpointPrefix}/railcontent/content/${id}`)
             .then(response => response)
             .catch(ErrorHandler);
     },
@@ -23,7 +23,7 @@ export default {
      * @returns {Promise} - resolved promise with the response object
      */
     getContentByIds(ids) {
-        return axios.get(`${endpoint_prefix}/railcontent/content/get-by-ids`, {
+        return axios.get(`${endpointPrefix}/railcontent/content/get-by-ids`, {
             params: {
                 ids,
             },
@@ -38,7 +38,7 @@ export default {
      * @returns {Promise} - resolved promise with the response object
      */
     getContentLikeUsers({ id, page = 1 }) {
-        return axios.get(`${endpoint_prefix}/railcontent/content-like/${id}`, {
+        return axios.get(`${endpointPrefix}/railcontent/content-like/${id}`, {
             params: {
                 page,
                 limit: 10,
@@ -58,7 +58,7 @@ export default {
      */
     likeContentById({ is_liked, content_id, user_id }) {
         return axios({
-            url: `${endpoint_prefix}/railcontent/content-like`,
+            url: `${endpointPrefix}/railcontent/content-like`,
             method: is_liked ? 'put' : 'delete',
             data: {
                 content_id,
@@ -74,7 +74,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markContentAsComplete(contentId) {
-        return axios.put(`${endpoint_prefix}/railcontent/complete`, {
+        return axios.put(`${endpointPrefix}/railcontent/complete`, {
             content_id: contentId,
         })
             .then(response => response.data)
@@ -88,7 +88,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markContentAsStarted(contentId) {
-        return axios.put(`${endpoint_prefix}/railcontent/start`, {
+        return axios.put(`${endpointPrefix}/railcontent/start`, {
             content_id: contentId,
         })
             .then(response => response.data)
@@ -104,7 +104,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     resetContentProgress(contentId) {
-        return axios.put(`${endpoint_prefix}/railcontent/reset`, {
+        return axios.put(`${endpointPrefix}/railcontent/reset`, {
             content_id: contentId,
         })
             .then(response => response.data)
@@ -120,8 +120,8 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     addOrRemoveContentFromList(content_id, is_added) {
-        const delete_endpoint = `${endpoint_prefix}/members-area/event-json-api/remove-from-primary-playlist-list`;
-        const put_endpoint = `${endpoint_prefix}/members-area/event-json-api/add-to-primary-playlist-list`;
+        const delete_endpoint = `${endpointPrefix}/members-area/event-json-api/remove-from-primary-playlist-list`;
+        const put_endpoint = `${endpointPrefix}/members-area/event-json-api/add-to-primary-playlist-list`;
 
         return axios.post(is_added ? delete_endpoint : put_endpoint, {
             content_id,
@@ -140,7 +140,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markLearningPathAsStarted(content_id) {
-        return axios.post(`${endpoint_prefix}/members/start-learning-path/${content_id}`)
+        return axios.post(`${endpointPrefix}/members/start-learning-path/${content_id}`)
             .then(response => response)
             .catch(ErrorHandler);
     },

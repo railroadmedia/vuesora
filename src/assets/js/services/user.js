@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
 
-const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
+const endpointPrefix = process.env.endpointPrefix || '';
 
 export default {
     /**
@@ -112,7 +112,7 @@ export default {
             },
         };
 
-        return axios.post(endpoint_prefix + endpoint, formData, config)
+        return axios.post(endpointPrefix + endpoint, formData, config)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -143,7 +143,7 @@ export default {
         recipient,
         endpoint,
     }) {
-        return axios.post(endpoint_prefix + endpoint, {
+        return axios.post(endpointPrefix + endpoint, {
             type,
             subject,
             lines,
@@ -164,7 +164,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markNotificationAsRead(id) {
-        return axios.post(`${endpoint_prefix}/members/notifications/mark-read/${id}`)
+        return axios.post(`${endpointPrefix}/members/notifications/mark-read/${id}`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -176,7 +176,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markNotificationAsUnRead(id) {
-        return axios.post(`${endpoint_prefix}/members/notifications/mark-unread/${id}`)
+        return axios.post(`${endpointPrefix}/members/notifications/mark-unread/${id}`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -187,7 +187,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markAllNotificationsAsRead() {
-        return axios.post(`${endpoint_prefix}/members/notifications/mark-all-read`)
+        return axios.post(`${endpointPrefix}/members/notifications/mark-all-read`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },

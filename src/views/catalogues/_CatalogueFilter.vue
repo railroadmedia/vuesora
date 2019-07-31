@@ -2,7 +2,7 @@
     <div class="flex flex-column ph-1 catalogue-filter">
         <div class="form-group">
             <select
-                :id="filter_name + 'Filter'"
+                :id="filterName + 'Filter'"
                 v-model="valueInterface"
                 class="no-label"
                 :class="{'is-clearable': valueInterface}"
@@ -37,8 +37,8 @@
 
             <!--<label class="capitalize"-->
             <!--:class="themeColor"-->
-            <!--:for="filter_name + 'Filter'">-->
-            <!--{{ filter_name }}-->
+            <!--:for="filterName + 'Filter'">-->
+            <!--{{ filterName }}-->
             <!--</label>-->
         </div>
     </div>
@@ -62,6 +62,7 @@ export default {
             default: () => 'drumeo',
         },
         initialValue: {
+            type: [String, Number],
             default: () => null,
         },
         loading: {
@@ -71,20 +72,20 @@ export default {
     },
     data() {
         return {
-            filter_value: this.initial_value,
+            filter_value: this.initialValue,
         };
     },
     computed: {
         valueInterface: {
             cache: false,
             get() {
-                return this.initial_value;
+                return this.initialValue;
             },
             set(value) {
                 this.filter_value = value;
 
                 this.$emit('filterChange', {
-                    key: this.filter_name,
+                    key: this.filterName,
                     value: this.filter_value,
                 });
             },
@@ -95,7 +96,7 @@ export default {
         },
 
         placeholderLabel() {
-            const label_map = {
+            const labelMap = {
                 difficulty: 'Choose a Level...',
                 instructor: 'Choose an Instructor...',
                 topic: 'Choose a Topic...',
@@ -108,7 +109,7 @@ export default {
                 key_pitch_type: 'Choose a Type...',
             };
 
-            return label_map[this.filter_name];
+            return labelMap[this.filterName];
         },
     },
     methods: {

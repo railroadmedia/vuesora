@@ -170,7 +170,7 @@
                     >
                         <div class="flex flex-column">
                             <comment-post
-                                v-bind="comment"
+                                :comment="comment"
                                 :brand="brand"
                                 :current-user="currentUser"
                                 :theme-color="themeColor"
@@ -268,7 +268,12 @@ export default {
                 {
                     key: 'show',
                     brand: ['drumeo'],
-                    value: ['gear-guides', 'challenges', 'boot-camps', 'quick-tips', 'podcasts', 'on-the-road', 'behind-the-scenes', 'study-the-greats', 'live', 'solos', 'performances', 'exploring-beats', 'sonor-drums', 'paiste-cymbals', '25-days-of-christmas', 'rhythms-from-another-planet'],
+                    value: [
+                        'gear-guides', 'challenges', 'boot-camps', 'quick-tips',
+                        'podcasts', 'on-the-road', 'behind-the-scenes', 'study-the-greats',
+                        'live', 'solos', 'performances', 'exploring-beats', 'sonor-drums',
+                        'paiste-cymbals', '25-days-of-christmas', 'rhythms-from-another-planet',
+                    ],
                     icon: 'icon-shows',
                     active: true,
                 },
@@ -309,7 +314,7 @@ export default {
                 },
                 {
                     key: 'pack-bundle-lesson',
-                    brand: ['drumeo', 'guitareo'],
+                    brand: ['drumeo', 'guitareo', 'pianote'],
                     value: ['pack-bundle-lesson'],
                     icon: 'icon-packs',
                     active: true,
