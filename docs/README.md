@@ -24,19 +24,18 @@ that uses it as a dependency. You can achieve that with the following steps:
 
 1. `cd /app/vuesora`
 
-2. `npm link`
+2. `./symlink.sh`
 
-3. `cd /app/pianote`
+This command will prompt you to select an application to symlink Vuesora with, simply select the one you wish to
+develop for and wait.
 
-4. `npm link vuesora`
-
-Alternatively, you can chain everything in one command.
-
-`cd /app/vuesora; npm link; cd /app/pianote; npm link vuesora; npm run watch`
+What this will do is start up a watch process on Vuesora, aswell as the app you are developing for. This means
+that whenever a file is changed in either Vuesora, or the app you are developing for, Webpack will create a
+new bundle for you.
 
 ### Publishing Vuesora
 
-Publishing Vuesora is fairly simple: update the version, push the repo, publish the package, and update your 
+Publishing Vuesora is fairly simple: create a new build, update the version, push the repo, publish the package, and update your 
 applications package.json.
 
 **Before you can publish Vuesora you need to add your npm and git credentials to your 

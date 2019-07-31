@@ -19,7 +19,7 @@ You can create a script to automatically format your code to the ESlint Configur
 
 **Settings -> Tools -> External Tools -> Create New**
 
-![ESLint Autoformat](https://dmmior4id2ysr.cloudfront.net/docs/eslint-config.jpg)
+![ESLint Autoformat](https://dmmior4id2ysr.cloudfront.net/docs/eslint-autoformat.jpg)
 
 ## CSS/SASS
 
