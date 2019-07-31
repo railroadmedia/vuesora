@@ -2,173 +2,173 @@
     <div class="flex flex-row flex-wrap align-v-center">
         <div class="flex flex-column xs-12 sm-8 pv-3">
             <div class="flex flex-row flex-wrap filter-tabs ph align-v-center">
-                <div class="heading-tab pointer mr-3 flex flex-auto"
-                     @click="changeTab('added')">
-                    <h3 class="heading flex-auto hover-text-black"
-                        :class="selected_tab === 'added' ? ('text-black bb-' + themeColor + '-2') : 'text-grey-3 font-regular'">
+                <div
+                    class="heading-tab pointer mr-3 flex flex-auto"
+                    @click="changeTab('added')"
+                >
+                    <h3
+                        class="heading flex-auto hover-text-black"
+                        :class="selected_tab === 'added' ? ('text-black bb-' + themeColor + '-2') : 'text-grey-3 font-regular'"
+                    >
                         Added
                     </h3>
                 </div>
 
-                <div class="heading-tab pointer mr-3 flex flex-auto"
-                     @click="changeTab('started')">
-                    <h3 class="heading flex-auto hover-text-black"
-                        :class="selected_tab === 'started' ? ('text-black bb-' + themeColor + '-2') : 'text-grey-3 font-regular'">
+                <div
+                    class="heading-tab pointer mr-3 flex flex-auto"
+                    @click="changeTab('started')"
+                >
+                    <h3
+                        class="heading flex-auto hover-text-black"
+                        :class="selected_tab === 'started' ? ('text-black bb-' + themeColor + '-2') : 'text-grey-3 font-regular'"
+                    >
                         In Progress
                     </h3>
                 </div>
 
-                <div class="heading-tab pointer mr-3 flex flex-auto"
-                     @click="changeTab('completed')">
-                    <h3 class="heading flex-auto hover-text-black"
-                        :class="selected_tab === 'completed' ? ('text-black bb-' + themeColor + '-2') : 'text-grey-3 font-regular'">
+                <div
+                    class="heading-tab pointer mr-3 flex flex-auto"
+                    @click="changeTab('completed')"
+                >
+                    <h3
+                        class="heading flex-auto hover-text-black"
+                        :class="selected_tab === 'completed' ? ('text-black bb-' + themeColor + '-2') : 'text-grey-3 font-regular'"
+                    >
                         Complete
                     </h3>
                 </div>
 
 
-
                 <!--<h2 class="heading mh pointer"-->
-                    <!--:class="selected_tab === 'added' ? 'text-black bb-' + themeColor + '-2' : 'text-grey-2'"-->
-                    <!--@click="changeTab('added')">Added</h2>-->
+                <!--:class="selected_tab === 'added' ? 'text-black bb-' + themeColor + '-2' : 'text-grey-2'"-->
+                <!--@click="changeTab('added')">Added</h2>-->
                 <!--<h2 class="heading mh pointer"-->
-                    <!--:class="selected_tab === 'started' ? 'text-black bb-' + themeColor + '-2' : 'text-grey-2'"-->
-                    <!--@click="changeTab('started')">In Progress</h2>-->
+                <!--:class="selected_tab === 'started' ? 'text-black bb-' + themeColor + '-2' : 'text-grey-2'"-->
+                <!--@click="changeTab('started')">In Progress</h2>-->
                 <!--<h2 class="heading mh pointer"-->
-                    <!--:class="selected_tab === 'completed' ? 'text-black bb-' + themeColor + '-2' : 'text-grey-2'"-->
-                    <!--@click="changeTab('completed')">Completed</h2>-->
+                <!--:class="selected_tab === 'completed' ? 'text-black bb-' + themeColor + '-2' : 'text-grey-2'"-->
+                <!--@click="changeTab('completed')">Completed</h2>-->
             </div>
         </div>
 
         <div class="flex flex-column xs-12 sm-4 pv-1 align-v-center">
             <div class="flex flex-row">
-                <catalogue-filter filter_name="type"
-                                  :item="parsedTypes"
-                                  :themeColor="themeColor"
-                                  :loading="loading"
-                                  :initial_value="selected_types"
-                                  @filterChange="changeFilter"></catalogue-filter>
+                <catalogue-filter
+                    filter-name="type"
+                    :item="parsedTypes"
+                    :theme-color="themeColor"
+                    :loading="loading"
+                    :initial-value="selected_types"
+                    @filterChange="changeFilter"
+                ></catalogue-filter>
             </div>
         </div>
     </div>
 </template>
 <script>
-    import CatalogueFilter from './_CatalogueFilter.vue';
-    import * as QueryString from 'query-string';
+import * as QueryString from 'query-string';
+import CatalogueFilter from './_CatalogueFilter.vue';
 
-    export default {
-        name: 'catalogue-playlist-tabs',
-        components: {
-            'catalogue-filter': CatalogueFilter
+export default {
+    name: 'CataloguePlaylistTabs',
+    components: {
+        'catalogue-filter': CatalogueFilter,
+    },
+    props: {
+        themeColor: {
+            type: String,
+            default: () => '',
         },
-        props: {
-            themeColor: {
-                type: String,
-                default: () => ''
-            },
-            loading: {
-                type: Boolean,
-                default: () => false
-            },
-            included_types: {
-                type: Array,
-                default: () => []
-            },
-            search_term: {
-                type: String,
-                default: () => undefined
-            }
+        loading: {
+            type: Boolean,
+            default: () => false,
         },
-        data(){
-            return {
-                selected_types: null,
-                selected_tab: 'added'
-            }
+        includedTypes: {
+            type: Array,
+            default: () => [],
         },
-        computed: {
-            searchTermInterface: {
-                get(){
-                    return this.search_term;
-                },
-                set(value){
-                    this.$emit('searchChange', {
-                        term: value
-                    })
-                }
+        searchTerm: {
+            type: String,
+            default: () => undefined,
+        },
+    },
+    data() {
+        return {
+            selected_types: null,
+            selected_tab: 'added',
+        };
+    },
+    computed: {
+        searchTermInterface: {
+            get() {
+                return this.search_term;
             },
-            parsedTypes(){
-                let parsedArray = [];
-
-                this.included_types.forEach(type => {
-                    parsedArray.push({
-                        key: type,
-                        value: type
-                    });
+            set(value) {
+                this.$emit('searchChange', {
+                    term: value,
                 });
+            },
+        },
+        parsedTypes() {
+            return this.includedTypes.map(type => ({
+                key: type,
+                value: type,
+            }));
+        },
+    },
+    mounted() {
+        const params = window.location.search;
+        const query_object = QueryString.parse(params, { arrayFormat: 'bracket' });
+        const keys = Object.keys(query_object);
 
-                return parsedArray;
+        keys.forEach((key) => {
+            if (key === 'type') {
+                if (this.includedTypes.indexOf(query_object[key]) !== -1) {
+                    this.selected_types = query_object[key];
+                }
             }
-        },
-        methods: {
-            changeFilter(item){
-                const params = window.location.search;
-                const query_object = QueryString.parse(params, {arrayFormat: 'bracket'});
 
-                console.log(item.value);
-
-                if(item.value){
-                    query_object['type'] = item.value;
-                }
-                else {
-                    if(query_object['type']){
-                        delete query_object['type'];
-                    }
+            if (key === 'state') {
+                if (query_object[key] === 'started') {
+                    this.selected_tab = 'started';
                 }
 
-                window.location.href = location.protocol + '//' + location.host +
-                    location.pathname + '?' + QueryString.stringify(query_object);
-            },
-
-            changeTab(tab){
-                const params = window.location.search;
-                const query_object = QueryString.parse(params, {arrayFormat: 'bracket'});
-
-                if(tab !== 'added'){
-                    query_object['state'] = tab;
+                if (query_object[key] === 'completed') {
+                    this.selected_tab = 'completed';
                 }
-                else {
-                    if(query_object['state']){
-                        delete query_object['state'];
-                    }
-                }
-
-                window.location.href = location.protocol + '//' + location.host +
-                    location.pathname + '?' + QueryString.stringify(query_object);
-            },
-        },
-        mounted(){
+            }
+        });
+    },
+    methods: {
+        changeFilter(item) {
             const params = window.location.search;
-            const query_object = QueryString.parse(params, {arrayFormat: 'bracket'});
-            const keys = Object.keys(query_object);
+            const query_object = QueryString.parse(params, { arrayFormat: 'bracket' });
 
-            keys.forEach(key => {
+            console.log(item.value);
 
-                if (key === 'type') {
-                    if(this.included_types.indexOf(query_object[key]) !== -1){
-                        this.selected_types = query_object[key];
-                    }
-                }
+            if (item.value) {
+                query_object.type = item.value;
+            } else if (query_object.type) {
+                delete query_object.type;
+            }
 
-                if(key === 'state'){
-                    if(query_object[key] === 'started'){
-                        this.selected_tab = 'started';
-                    }
+            window.location.href = `${location.protocol}//${location.host 
+            }${location.pathname}?${QueryString.stringify(query_object)}`;
+        },
 
-                    if(query_object[key] === 'completed'){
-                        this.selected_tab = 'completed';
-                    }
-                }
-            });
-        }
-    }
+        changeTab(tab) {
+            const params = window.location.search;
+            const query_object = QueryString.parse(params, { arrayFormat: 'bracket' });
+
+            if (tab !== 'added') {
+                query_object.state = tab;
+            } else if (query_object.state) {
+                delete query_object.state;
+            }
+
+            window.location.href = `${location.protocol}//${location.host 
+            }${location.pathname}?${QueryString.stringify(query_object)}`;
+        },
+    },
+};
 </script>

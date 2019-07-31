@@ -1,10 +1,10 @@
 import ContentModel from './_default';
 
 export default class RudimentContentModel extends ContentModel {
-    constructor({brand = 'drumeo', post}){
+    constructor({ brand = 'drumeo', post }) {
         super({
             brand,
-            post
+            post,
         });
 
         this.card.sheet_music = this.getPostDatum('sheet_music_thumbnail_url');

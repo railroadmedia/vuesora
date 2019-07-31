@@ -13,7 +13,13 @@ If you are using the PHPStorm or WebStorm IDEs, you can turn on the ESLint code 
 
 **Settings -> Languages & Frameworks -> Javascript -> Code Quality Tools -> ESLint -> Automatic ESLint Configuration**
 
-![ESLint Config](/eslint-config.jpg)
+![ESLint Config]($withBase('/eslint-config.jpg'))
+
+You can create a script to automatically format your code to the ESlint Configuration.
+
+**Settings -> Tools -> External Tools -> Create New**
+
+![ESLint Autoformat]($withBase('/eslint-autoformat.jpg'))
 
 ## Vue
 

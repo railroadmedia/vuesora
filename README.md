@@ -6,3 +6,6 @@ Vue Component library for Musora members area pages.
 
 ## DOCS
 https://railroadmedia.github.io/vuesora/
+
+## Run Documentation Locally
+`npm run docs:dev`

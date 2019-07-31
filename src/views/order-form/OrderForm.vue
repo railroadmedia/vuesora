@@ -5,70 +5,89 @@
         </h3>
 
         <order-form-cart
-            :themeColor="themeColor"
-            :cartItems="cartData.items"
-            :isCartLocked="cartData.locked"
-            @updateCartItem="updateCart" />
+            :theme-color="themeColor"
+            :cart-items="cartData.items"
+            :is-cart-locked="cartData.locked"
+            @updateCartItem="updateCart"
+        />
 
         <order-form-account
             ref="accountForm"
-            :themeColor="themeColor"
+            :theme-color="themeColor"
             :brand="brand"
-            :currentUser="user"
-            :accountDetails="accountStateFactory"
-            :requiresAccountInfo="cartContainsSubscription"
-            :loginUrl="loginUrl"
-            :logoutUrl="logoutUrl"
-            @updateAccountData="updateAccountData" />
+            :current-user="user"
+            :account-details="accountStateFactory"
+            :requires-account-info="cartContainsSubscription"
+            :login-url="loginUrl"
+            :logout-url="logoutUrl"
+            @updateAccountData="updateAccountData"
+        />
 
-        <div v-if="cartRequiresShippingAddress"
-             class="flex flex-row mb-2">
-            <h3 class="heading color-blue">Shipping Information</h3>
+        <div
+            v-if="cartRequiresShippingAddress"
+            class="flex flex-row mb-2"
+        >
+            <h3 class="heading color-blue">
+                Shipping Information
+            </h3>
         </div>
         <order-form-shipping
             v-if="cartRequiresShippingAddress"
             ref="shippingForm"
             :brand="brand"
-            :shippingData="shippingStateFactory"
-            @updateShippingData="updateShippingData"
+            :shipping-data="shippingStateFactory"
             :countries="countries"
-            :provinces="provinces" />
+            :provinces="provinces"
+            @updateShippingData="updateShippingData"
+        />
 
-        <div v-if="canAcceptPaymentPlans"
-             class="flex flex-row mb-2">
-            <h3 class="heading color-blue">Payment Plan</h3>
+        <div
+            v-if="canAcceptPaymentPlans"
+            class="flex flex-row mb-2"
+        >
+            <h3 class="heading color-blue">
+                Payment Plan
+            </h3>
         </div>
         <order-form-payment-plan
             v-if="canAcceptPaymentPlans"
             :brand="brand"
             :number-of-payments="cartData.number_of_payments"
             :payment-plan-options="cartData.payment_plan_options"
-            @updateCartData="updateCart"/>
+            @updateCartData="updateCart"
+        />
 
 
-        <div v-if="this.cartData.items.length"
-             class="flex flex-row mb-2">
-            <h3 class="heading">Payment Details</h3>
+        <div
+            v-if="this.cartData.items.length"
+            class="flex flex-row mb-2"
+        >
+            <h3 class="heading">
+                Payment Details
+            </h3>
         </div>
         <order-form-payment
-                v-if="this.cartData.items.length"
-                ref="paymentForm"
-                :themeColor="themeColor"
-                :brand="brand"
-                :paymentDetails="paymentStateFactory"
-                :stripePublishableKey="stripePublishableKey"
-                :totals="cartData.totals"
-                :discounts="cartData.discounts"
-                :stripeToken="stripeToken"
-                @updatePaymentData="updatePaymentData"
-                :countries="countries"
-                :provinces="provinces"
-                @formSubmit="submitForm" />
+            v-if="this.cartData.items.length"
+            ref="paymentForm"
+            :theme-color="themeColor"
+            :brand="brand"
+            :payment-details="paymentStateFactory"
+            :stripe-publishable-key="stripePublishableKey"
+            :totals="cartData.totals"
+            :discounts="cartData.discounts"
+            :stripe-token="stripeToken"
+            :countries="countries"
+            :provinces="provinces"
+            @updatePaymentData="updatePaymentData"
+            @formSubmit="submitForm"
+        />
 
         <div class="flex flex-row flex-wrap pv-3 text-center features">
             <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
                 <i class="fa fa-phone text-grey-3 mb-2"></i>
-                <p class="body font-bold">We're always here to help</p>
+                <p class="body font-bold">
+                    We're always here to help
+                </p>
                 <p class="body text-grey-4">
                     Call 1-800-439-8921 or email
                     <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>
@@ -77,31 +96,47 @@
 
             <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
                 <i class="fa fa-lock text-grey-3 mb-2"></i>
-                <p class="body font-bold">Your Information is Secure</p>
-                <p class="body text-grey-4">This page is securely encrypted with world-class SSL protection.</p>
+                <p class="body font-bold">
+                    Your Information is Secure
+                </p>
+                <p class="body text-grey-4">
+                    This page is securely encrypted with world-class SSL protection.
+                </p>
             </div>
 
             <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
                 <i class="fa fa-check-circle text-grey-3 mb-2"></i>
-                <p class="body font-bold">100% Money Back Guarantee</p>
-                <p class="body text-grey-4">Order risk-free with our 90-day, 100% money back guarantee.</p>
+                <p class="body font-bold">
+                    100% Money Back Guarantee
+                </p>
+                <p class="body text-grey-4">
+                    Order risk-free with our 90-day, 100% money back guarantee.
+                </p>
             </div>
         </div>
 
         <transition name="grow-fade">
-            <div v-show="loading"
-                 class="form-loading bg-white shadow corners-3 overflow pa-3 text-center"
-                 @click.stop>
-                <loading-animation :themeColor="themeColor" />
+            <div
+                v-show="loading"
+                class="form-loading bg-white shadow corners-3 overflow pa-3 text-center"
+                @click.stop
+            >
+                <loading-animation :theme-color="themeColor" />
 
-                <p class="body mt-3">Loading Please Wait...</p>
+                <p class="body mt-3">
+                    Loading Please Wait...
+                </p>
 
                 <transition name="grow-fade">
-                    <div v-show="formSuccess"
-                         class="success-message flex flex-column flex-center bg-white pa-3">
+                    <div
+                        v-show="formSuccess"
+                        class="success-message flex flex-column flex-center bg-white pa-3"
+                    >
                         <i class="fas fa-check-circle text-success"></i>
 
-                        <h4 class="title mb-2">Success!</h4>
+                        <h4 class="title mb-2">
+                            Success!
+                        </h4>
                         <p class="tiny text-grey-3">
                             Your order has been processed. Redirecting you to the member's area.
                         </p>
@@ -110,294 +145,299 @@
             </div>
         </transition>
 
-        <div v-show="loading" class="loading-overlay"></div>
+        <div
+            v-show="loading"
+            class="loading-overlay"
+        ></div>
     </div>
 </template>
 <script>
-    import EcommerceService from '../../assets/js/services/ecommerce.js';
-    import OrderFormAccount from './_OrderFormAccount.vue';
-    import OrderFormCart from './_OrderFormCart.vue';
-    import OrderFormPayment from './_OrderFormPayment.vue';
-    import OrderFormPaymentPlan from './_OrderFormPaymentPlan.vue';
-    import OrderFormShipping from './_OrderFormShipping.vue';
-    import ThemeClasses from '../../mixins/ThemeClasses';
-    import Toasts from '../../assets/js/classes/toasts';
-    import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
-    import axios from 'axios';
+import axios from 'axios';
+import EcommerceService from '../../assets/js/services/ecommerce.js';
+import OrderFormAccount from './_OrderFormAccount.vue';
+import OrderFormCart from './_OrderFormCart.vue';
+import OrderFormPayment from './_OrderFormPayment.vue';
+import OrderFormPaymentPlan from './_OrderFormPaymentPlan.vue';
+import OrderFormShipping from './_OrderFormShipping.vue';
+import ThemeClasses from '../../mixins/ThemeClasses';
+import Toasts from '../../assets/js/classes/toasts';
+import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
 
-    export default {
-        mixins: [ThemeClasses],
-        name: 'order-form',
-        components: {
-            'order-form-account': OrderFormAccount,
-            'order-form-cart': OrderFormCart,
-            'order-form-shipping': OrderFormShipping,
-            'order-form-payment': OrderFormPayment,
-            'order-form-payment-plan': OrderFormPaymentPlan,
-            'loading-animation': LoadingAnimation,
+export default {
+    name: 'OrderForm',
+    components: {
+        'order-form-account': OrderFormAccount,
+        'order-form-cart': OrderFormCart,
+        'order-form-shipping': OrderFormShipping,
+        'order-form-payment': OrderFormPayment,
+        'order-form-payment-plan': OrderFormPaymentPlan,
+        'loading-animation': LoadingAnimation,
+    },
+    mixins: [ThemeClasses],
+    props: {
+        billingAddress: {
+            type: Object,
+            default: () => null,
         },
-        props: {
-            billingAddress: {
-                type: Object,
-                default: () => null
-            },
 
-            shippingAddress: {
-                type: Object,
-                default: () => null
-            },
-
-            cart: {
-                type: Object,
-                default: () => ({})
-            },
-
-            user: {
-                type: Object,
-                default: () => null
-            },
-
-            loginUrl: {
-                type: String,
-                default: '/login',
-            },
-
-            logoutUrl: {
-                type: String,
-                default: '/',
-            },
-
-            stripePublishableKey: {
-                type: String
-            },
-
-            brand: {
-                type: String
-            },
-
-            countries: {
-                type: Array,
-                default: () => []
-            },
-
-            provinces: {
-                type: Array,
-                default: () => []
-            },
+        shippingAddress: {
+            type: Object,
+            default: () => null,
         },
-        data() {
-            return {
-                loading: false,
-                cartData: this.cart,
-                requiresAccount: false,
-                numberOfPayments: 1,
-                paymentPlanOptions: [],
-                accountStateFactory: {
-                    billingEmail: null,
-                    accountEmail: null,
-                    accountPassword: null,
-                    accountPasswordConfirm: null,
-                },
-                shippingStateFactory: this.shippingAddress,
-                paymentStateFactory: {
-                    cardToken: null,
-                    methodType: 'credit_card',
-                    billingCountry: this.billingAddress.country,
-                    billingRegion: this.billingAddress.state,
-                },
-                stripeToken: null,
-                submitTimeout: null,
-                formSuccess: false,
+
+        cart: {
+            type: Object,
+            default: () => ({}),
+        },
+
+        user: {
+            type: Object,
+            default: () => null,
+        },
+
+        loginUrl: {
+            type: String,
+            default: '/login',
+        },
+
+        logoutUrl: {
+            type: String,
+            default: '/',
+        },
+
+        stripePublishableKey: {
+            type: String,
+            default: () => '',
+        },
+
+        brand: {
+            type: String,
+            default: () => 'pianote',
+        },
+
+        countries: {
+            type: Array,
+            default: () => [],
+        },
+
+        provinces: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    data() {
+        return {
+            loading: false,
+            cartData: this.cart,
+            requiresAccount: false,
+            numberOfPayments: 1,
+            paymentPlanOptions: [],
+            accountStateFactory: {
+                billingEmail: null,
+                accountEmail: null,
+                accountPassword: null,
+                accountPasswordConfirm: null,
+            },
+            shippingStateFactory: this.shippingAddress,
+            paymentStateFactory: {
+                cardToken: null,
+                methodType: 'credit_card',
+                billingCountry: this.billingAddress.country,
+                billingRegion: this.billingAddress.state,
+            },
+            stripeToken: null,
+            submitTimeout: null,
+            formSuccess: false,
+        };
+    },
+    computed: {
+        cartContainsSubscription() {
+            return this.cartData.items.filter(item => !!item.subscription_interval_type).length > 0;
+        },
+
+        cartRequiresShippingAddress() {
+            return this.cartData.items.filter(item => item.requires_shipping === true).length > 0;
+        },
+
+        cartRequiresAccountInfo() {
+            return this.cartContainsSubscription && this.user == null;
+        },
+
+        canAcceptPaymentPlans() {
+            return this.cartData.payment_plan_options.length && !this.cartContainsSubscription;
+        },
+    },
+    methods: {
+        updateCart(payload) {
+            this.cartData = payload.meta.cart;
+        },
+
+        updateAccountData({ key, value }) {
+            this.$set(this.accountStateFactory, key, value);
+
+            if (key === 'billingEmail') {
+                this.updateAddressesInSession();
             }
         },
-        computed: {
-            cartContainsSubscription(){
-                return this.cartData.items.filter(item => !!item.subscription_interval_type).length > 0;
-            },
 
-            cartRequiresShippingAddress(){
-                return this.cartData.items.filter(item => item.requires_shipping === true).length > 0;
-            },
-
-            cartRequiresAccountInfo(){
-                return this.cartContainsSubscription && this.user == null;
-            },
-
-            canAcceptPaymentPlans(){
-                return this.cartData.payment_plan_options.length && !this.cartContainsSubscription;
-            },
+        updateShippingData({ key, value }) {
+            this.$set(this.shippingStateFactory, key, value);
+            this.updateAddressesInSession();
         },
-        methods: {
-            updateCart(payload){
-                this.cartData = payload.meta.cart;
-            },
 
-            updateAccountData({key, value}) {
-                this.$set(this.accountStateFactory, key, value);
-
-                if(key === 'billingEmail'){
-                    this.updateAddressesInSession();
-                }
-            },
-
-            updateShippingData({key, value}) {
-                this.$set(this.shippingStateFactory, key, value);
-                this.updateAddressesInSession();
-            },
-
-            updatePaymentData({key, value}) {
-                this.$set(this.paymentStateFactory, key, value);
-                this.updateAddressesInSession();
-            },
+        updatePaymentData({ key, value }) {
+            this.$set(this.paymentStateFactory, key, value);
+            this.updateAddressesInSession();
+        },
             
-            updateAddressesInSession(){
-                EcommerceService.updateAddressesInSession({
-                    shippingAddressLine1: this.shippingStateFactory.street_line_one,
-                    shippingAddressLine2: this.shippingStateFactory.street_line_two,
-                    shippingCity: this.shippingStateFactory.city,
-                    shippingCountry: this.shippingStateFactory.country,
-                    shippingFirstName: this.shippingStateFactory.first_name,
-                    shippingLastName: this.shippingStateFactory.last_name,
-                    shippingState: this.shippingStateFactory.state,
-                    shippingZip: this.shippingStateFactory.zip_or_postal_code,
-                    billingCountry: this.paymentStateFactory.billingCountry,
-                    billingState: this.paymentStateFactory.billingRegion,
-                    billingEmail: this.accountStateFactory.billingEmail,
-                })
-                    .then(response => {
-                        if(response){
-                            this.updateCart(response.data);
-                        }
-                    })
-            },
-
-            submitForm(){
-                clearTimeout(this.submitTimeout);
-
-                // Wait a quarter of a second before submitting the form, just to prevent double
-                // clicks etc from producing unintended interactions.
-                this.submitTimeout = setTimeout(() => {
-                    if(this.cartRequiresAccountInfo){
-                        this.$refs.accountForm.validateForm();
-                        if(!this.$refs.accountForm.formValid){
-                            window.scrollTo({top: (this.$refs.accountForm.$el.offsetTop - 100), behavior: 'smooth'});
-                            return;
-                        }
+        updateAddressesInSession() {
+            EcommerceService.updateAddressesInSession({
+                shippingAddressLine1: this.shippingStateFactory.street_line_one,
+                shippingAddressLine2: this.shippingStateFactory.street_line_two,
+                shippingCity: this.shippingStateFactory.city,
+                shippingCountry: this.shippingStateFactory.country,
+                shippingFirstName: this.shippingStateFactory.first_name,
+                shippingLastName: this.shippingStateFactory.last_name,
+                shippingState: this.shippingStateFactory.state,
+                shippingZip: this.shippingStateFactory.zip_or_postal_code,
+                billingCountry: this.paymentStateFactory.billingCountry,
+                billingState: this.paymentStateFactory.billingRegion,
+                billingEmail: this.accountStateFactory.billingEmail,
+            })
+                .then((response) => {
+                    if (response) {
+                        this.updateCart(response.data);
                     }
+                });
+        },
 
-                    if(this.cartRequiresShippingAddress){
-                        this.$refs.shippingForm.validateForm();
-                        if(!this.$refs.shippingForm.formValid){
-                            window.scrollTo({top: (this.$refs.shippingForm.$el.offsetTop - 100), behavior: 'smooth'});
-                            return;
-                        }
+        submitForm() {
+            clearTimeout(this.submitTimeout);
+
+            // Wait a quarter of a second before submitting the form, just to prevent double
+            // clicks etc from producing unintended interactions.
+            this.submitTimeout = setTimeout(() => {
+                if (this.cartRequiresAccountInfo) {
+                    this.$refs.accountForm.validateForm();
+                    if (!this.$refs.accountForm.formValid) {
+                        window.scrollTo({ top: (this.$refs.accountForm.$el.offsetTop - 100), behavior: 'smooth' });
+                        return;
                     }
-
-                    this.loading = true;
-
-                    if(this.paymentStateFactory.methodType === 'paypal'){
-                        this.submitOrder();
-                    } else {
-                        this.$refs.paymentForm.fetchStripeToken()
-                            .then(({token, error}) => {
-                                if(error){
-                                    this.loading = false;
-                                    return;
-                                }
-
-                                this.stripeToken = token;
-
-                                this.submitOrder();
-                            });
-                    }
-                }, 250);
-            },
-
-            submitOrder() {
-                const payload = this.createOrderPayload();
-
-                axios.put('/ecommerce/json/order-form/submit', payload)
-                    .then(this.orderSuccess)
-                    .catch(this.orderFailure);
-            },
-
-            createOrderPayload() {
-                let payload = {
-                    gateway: this.brand,
-                    payment_method_type: this.paymentStateFactory.methodType,
-                    billing_country: this.paymentStateFactory.billingCountry,
-                    billing_region: this.paymentStateFactory.billingRegion,
-                };
-
-                if(this.canAcceptPaymentPlans){
-                    payload['payment_plan_number_of_payments'] = this.cartData.number_of_payments;
-                }
-
-                if (!this.user) {
-                    // TODO: Fix this when Caleb implements a flag for has subscription
-                    // if (this.cartContainsSubscription) {
-                        payload['account_creation_email'] = this.accountStateFactory.accountEmail;
-                        payload['account_creation_password'] = this.accountStateFactory.accountPassword;
-                        payload['account_creation_password_confirmation'] = this.accountStateFactory.accountPasswordConfirm;
-                    // } else {
-                    //     payload['billing_email'] = this.accountStateFactory.billingEmail;
-                    // }
                 }
 
                 if (this.cartRequiresShippingAddress) {
-                    payload['shipping_first_name'] = this.shippingStateFactory.first_name;
-                    payload['shipping_last_name'] = this.shippingStateFactory.last_name;
-                    payload['shipping_address_line_1'] = this.shippingStateFactory.street_line_one;
-                    payload['shipping_address_line_2'] = this.shippingStateFactory.street_line_two;
-                    payload['shipping_zip_or_postal_code'] = this.shippingStateFactory.zip_or_postal_code;
-                    payload['shipping_city'] = this.shippingStateFactory.city;
-                    payload['shipping_region'] = this.shippingStateFactory.state;
-                    payload['shipping_country'] = this.shippingStateFactory.country;
+                    this.$refs.shippingForm.validateForm();
+                    if (!this.$refs.shippingForm.formValid) {
+                        window.scrollTo({ top: (this.$refs.shippingForm.$el.offsetTop - 100), behavior: 'smooth' });
+                        return;
+                    }
                 }
 
-                if (this.paymentStateFactory.methodType === 'credit_card') {
-                    payload['card_token'] = this.stripeToken.id;
+                this.loading = true;
+
+                if (this.paymentStateFactory.methodType === 'paypal') {
+                    this.submitOrder();
+                } else {
+                    this.$refs.paymentForm.fetchStripeToken()
+                        .then(({ token, error }) => {
+                            if (error) {
+                                this.loading = false;
+                                return;
+                            }
+
+                            this.stripeToken = token;
+
+                            this.submitOrder();
+                        });
                 }
+            }, 250);
+        },
 
-                return payload;
-            },
+        submitOrder() {
+            const payload = this.createOrderPayload();
 
-            orderSuccess(response){
-                if(this.paymentStateFactory.methodType === 'credit_card'){
-                    this.formSuccess = true;
-                }
+            axios.put('/ecommerce/json/order-form/submit', payload)
+                .then(this.orderSuccess)
+                .catch(this.orderFailure);
+        },
 
-                setTimeout(() => {
-                    window.location.href = response.data.meta.redirect;
-                }, 500);
-            },
+        createOrderPayload() {
+            const payload = {
+                gateway: this.brand,
+                payment_method_type: this.paymentStateFactory.methodType,
+                billing_country: this.paymentStateFactory.billingCountry,
+                billing_region: this.paymentStateFactory.billingRegion,
+            };
 
-            orderFailure({response}){
-                this.formSuccess = false;
+            if (this.canAcceptPaymentPlans) {
+                payload.payment_plan_number_of_payments = this.cartData.number_of_payments;
+            }
 
-                let title = 'Oops, something went wrong';
-                let message = 'An error happened on the server, please contact support using the ' +
-                    'chat widget at the bottom of your screen';
+            if (!this.user) {
+                // TODO: Fix this when Caleb implements a flag for has subscription
+                // if (this.cartContainsSubscription) {
+                payload.account_creation_email = this.accountStateFactory.accountEmail;
+                payload.account_creation_password = this.accountStateFactory.accountPassword;
+                payload.account_creation_password_confirmation = this.accountStateFactory.accountPasswordConfirm;
+                // } else {
+                //     payload['billing_email'] = this.accountStateFactory.billingEmail;
+                // }
+            }
 
-                if(response.data.errors){
-                    title = response.data.errors[0].title;
-                    message = response.data.errors[0].detail;
-                }
+            if (this.cartRequiresShippingAddress) {
+                payload.shipping_first_name = this.shippingStateFactory.first_name;
+                payload.shipping_last_name = this.shippingStateFactory.last_name;
+                payload.shipping_address_line_1 = this.shippingStateFactory.street_line_one;
+                payload.shipping_address_line_2 = this.shippingStateFactory.street_line_two;
+                payload.shipping_zip_or_postal_code = this.shippingStateFactory.zip_or_postal_code;
+                payload.shipping_city = this.shippingStateFactory.city;
+                payload.shipping_region = this.shippingStateFactory.state;
+                payload.shipping_country = this.shippingStateFactory.country;
+            }
 
-                Toasts.push({
-                    icon: 'sad',
-                    themeColor: this.themeColor,
-                    title: title,
-                    message: message,
-                    timeout: 7500
-                });
+            if (this.paymentStateFactory.methodType === 'credit_card') {
+                payload.card_token = this.stripeToken.id;
+            }
 
-                setTimeout(() => {
-                    this.loading = false;
-                }, 500);
-            },
-        }
-    }
+            return payload;
+        },
+
+        orderSuccess(response) {
+            if (this.paymentStateFactory.methodType === 'credit_card') {
+                this.formSuccess = true;
+            }
+
+            setTimeout(() => {
+                window.location.href = response.data.meta.redirect;
+            }, 500);
+        },
+
+        orderFailure({ response }) {
+            this.formSuccess = false;
+
+            let title = 'Oops, something went wrong';
+            let message = 'An error happened on the server, please contact support using the '
+                    + 'chat widget at the bottom of your screen';
+
+            if (response.data.errors) {
+                title = response.data.errors[0].title;
+                message = response.data.errors[0].detail;
+            }
+
+            Toasts.push({
+                icon: 'sad',
+                themeColor: this.themeColor,
+                title,
+                message,
+                timeout: 7500,
+            });
+
+            setTimeout(() => {
+                this.loading = false;
+            }, 500);
+        },
+    },
+};
 </script>
 
 <style lang="scss">

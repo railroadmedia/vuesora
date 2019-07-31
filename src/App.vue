@@ -1,88 +1,106 @@
 <template>
     <div id="app">
         <nav-button
-                @click.native="menuActive = !menuActive"
-                :class="{ 'active': menuActive }" />
+            :class="{ 'active': menuActive }"
+            @click.native="menuActive = !menuActive"
+        />
 
-        <div id="nav"
-             :class="{ 'active': menuActive }"
-             class="shadow">
-            <img class="logo" src="https://s3.amazonaws.com/musora-center/logos/vuesora.svg">
-            <p class="body dense font-bold text-secondary text-center">v{{ currentVersion }}</p>
+        <div
+            id="nav"
+            :class="{ 'active': menuActive }"
+            class="shadow"
+        >
+            <img
+                class="logo"
+                src="https://s3.amazonaws.com/musora-center/logos/vuesora.svg"
+            >
+            <p class="body dense font-bold text-secondary text-center">
+                v{{ currentVersion }}
+            </p>
             <hr>
 
-            <nav-item routerLink="/"
-                      :currentRoute="currentRoute">
+            <nav-item
+                router-link="/"
+                :current-route="currentRoute"
+            >
                 Home
             </nav-item>
 
-            <nav-item routerLink="/application-layout"
-                      :currentRoute="currentRoute"
-                      :subNavItems="['Grid System', 'Spacing', 'Typography']">
+            <nav-item
+                router-link="/application-layout"
+                :current-route="currentRoute"
+                :sub-nav-items="['Grid System', 'Spacing', 'Typography']"
+            >
                 Application Layout
             </nav-item>
 
-            <h4 class="body font-bold">CSS</h4>
-            <nav-item routerLink="/docs/form-inputs">
+            <h4 class="body font-bold">
+                CSS
+            </h4>
+            <nav-item router-link="/docs/form-inputs">
                 Form Inputs
             </nav-item>
 
-            <h4 class="body font-bold">Components</h4>
+            <h4 class="body font-bold">
+                Components
+            </h4>
             <nav-item>
                 Modal
             </nav-item>
 
-            <h4 class="body font-bold">Super Components</h4>
-            <nav-item routerLink="/docs/media-element">
+            <h4 class="body font-bold">
+                Super Components
+            </h4>
+            <nav-item router-link="/docs/media-element">
                 Media Element
             </nav-item>
-            <nav-item routerLink="/docs/text-editor">
+            <nav-item router-link="/docs/text-editor">
                 Text Editor
             </nav-item>
-            <nav-item routerLink="/docs/pagination">
+            <nav-item router-link="/docs/pagination">
                 Pagination
             </nav-item>
-            <nav-item routerLink="/docs/image-cropper">
+            <nav-item router-link="/docs/image-cropper">
                 Image Cropper
             </nav-item>
         </div>
 
         <div id="view">
-            <router-view/>
+            <router-view />
         </div>
     </div>
 </template>
 
 <script>
-    import NavButton from './components/NavButton.vue';
-    import NavItem from './components/NavItem.vue';
-    import {version} from '../package.json';
+import NavButton from './components/NavButton.vue';
+import NavItem from './components/NavItem.vue';
+import { version } from '../package.json';
 
-    export default {
-        name: 'app',
-        components: {
-            'nav-button': NavButton,
-            'nav-item': NavItem,
+export default {
+    name: 'App',
+    components: {
+        'nav-button': NavButton,
+        'nav-item': NavItem,
+    },
+    data() {
+        return {
+            menuActive: false,
+        };
+    },
+    computed: {
+        currentRoute() {
+            return this.$route.fullPath;
         },
-        data() {
-            return {
-                menuActive: false
-            }
+        currentVersion() {
+            return version;
         },
-        computed: {
-            currentRoute(){
-                return this.$route.fullPath
-            },
-            currentVersion(){
-                return version;
-            }
+    },
+    methods: {
+        consoleSomething() {
+            console.log('hello?');
         },
-        methods: {
-            consoleSomething(){
-                console.log('hello?');
-            }
-        }
-    }
+    },
+};
 </script>
 
 <style lang="scss">

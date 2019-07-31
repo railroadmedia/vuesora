@@ -1,5 +1,5 @@
-import Toasts from "../classes/toasts";
+import Toasts from '../classes/toasts';
 
-export default function(error){
+export default function (error) {
     console.error(error);
 }

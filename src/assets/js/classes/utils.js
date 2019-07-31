@@ -21,10 +21,10 @@ export default {
      * @param {array} content_posts - the results array returned from the endpoint
      * @returns {array} - The new array of flattened objects
      */
-    flattenContent(content_posts){
-        let flattened_posts = [];
+    flattenContent(content_posts) {
+        const flattened_posts = [];
 
-        content_posts.forEach(post => {
+        content_posts.forEach((post) => {
             this.flattenContentObjectFields(post, flattened_posts);
         });
 
@@ -38,14 +38,14 @@ export default {
      * @param flattened - the flattened copy of the object to map the fields to
      * @returns {array} - The new array of flattened objects
      */
-    flattenContentObjectFields(post, flattened){
-        let this_post = post;
+    flattenContentObjectFields(post, flattened) {
+        const this_post = post;
 
-        post['fields'].forEach(field => {
+        post.fields.forEach((field) => {
             this.createOrPushArray(field.key, field.value, this_post);
         });
 
-        post['data'].forEach(data => {
+        post.data.forEach((data) => {
             this.createOrPushArray(data.key, data.value, this_post);
         });
 
@@ -60,40 +60,38 @@ export default {
      * @param value - the value that gets appended to the target
      * @param target - the target key you wish to create a value at or push to
      */
-    createOrPushArray(key, value, target){
-        let this_value = value;
+    createOrPushArray(key, value, target) {
+        const this_value = value;
 
         // If the value is an object that means we are looking at linked content as a field,
         // So we need to keep running this method to flatten that object aswell
-        if(typeof value === 'object' && value !== null){
-            value['fields'].forEach(field => {
+        if (typeof value === 'object' && value !== null) {
+            value.fields.forEach((field) => {
                 this.createOrPushArray(field.key, field.value, this_value);
             });
 
-            value['data'].forEach(data => {
+            value.data.forEach((data) => {
                 this.createOrPushArray(data.key, data.value, this_value);
             });
         }
 
         // If the target key doesn't exist then we just append the value,
         // Otherwise we need to create an array and push new items into it
-        if(target[key] == null){
+        if (target[key] == null) {
             target[key] = this_value;
-        }
-        else {
+        } else {
             // If the target is already an array then we need to combine the arrays,
             // Otherwise we create an array and merge the two values
-            if(Array.isArray(target[key])){
+            if (Array.isArray(target[key])) {
                 target[key] = [
                     ...target[key],
-                    this_value
-                ]
-            }
-            else {
+                    this_value,
+                ];
+            } else {
                 target[key] = [
                     target[key],
-                    this_value
-                ]
+                    this_value,
+                ];
             }
         }
     },
@@ -105,9 +103,9 @@ export default {
      * @param {object} filter_options - the filter_options object returned by railcontent
      * @returns {Object} - The new flattened object
      */
-    flattenFilters(filter_options){
-        let keys = Object.keys(filter_options);
-        let filter_map = {
+    flattenFilters(filter_options) {
+        const keys = Object.keys(filter_options);
+        const filter_map = {
             artist: [],
             bpm: [],
             difficulty: [],
@@ -115,40 +113,35 @@ export default {
             style: [],
             topic: [],
             key: [],
-            key_pitch_type: []
+            key_pitch_type: [],
         };
 
-        keys.forEach(key => {
-
+        keys.forEach((key) => {
             // Instructors need to have the name as the label but their id as the value,
             // So it makes sense to map every array as a key/value pair
-            if(key === 'instructor'){
-                let instructor_array = this.flattenContent(filter_options[key]);
+            if (key === 'instructor') {
+                const instructor_array = this.flattenContent(filter_options[key]);
 
-                instructor_array.forEach(filter => {
-
+                instructor_array.forEach((filter) => {
                     filter_map[key].push({
-                        key: filter['name'],
-                        value: filter['id']
+                        key: filter.name,
+                        value: filter.id,
                     });
-                })
-            }
-            else {
-                for(let i = 0; i < filter_options[key].length; i++){
+                });
+            } else {
+                for (let i = 0; i < filter_options[key].length; i++) {
                     // Some of the legacy data can give us duplicate keys,
                     // Since we can't avoid this we gotta check whether or not
                     // We've added the key already
-                    let map_exists = filter_map[key] != null;
+                    const map_exists = filter_map[key] != null;
                     let value_exists;
-                    if(map_exists){
-                        value_exists = filter_map[key].filter(map =>
-                            map.value === filter_options[key][i]
-                        ).length > 0;
+                    if (map_exists) {
+                        value_exists = filter_map[key].filter(map => map.value === filter_options[key][i]).length > 0;
 
-                        if(!value_exists){
+                        if (!value_exists) {
                             filter_map[key].push({
                                 key: filter_options[key][i],
-                                value: filter_options[key][i]
+                                value: filter_options[key][i],
                             });
                         }
                     }
@@ -164,7 +157,7 @@ export default {
      *
      * @returns {array}
      */
-    topLevelContentTypes(){
+    topLevelContentTypes() {
         return [
             {
                 type: 'course',
@@ -346,7 +339,7 @@ export default {
                 icon: 'wc',
                 brands: ['drumeo', 'pianote', 'guitareo', 'recordeo'],
             },
-        ]
+        ];
     },
 
     getParentContentType(childType) {
@@ -356,7 +349,7 @@ export default {
             'play-along-part': 'play-along',
             'pack-bundle': 'pack',
             'pack-bundle-lesson': 'pack-bundle',
-            'semester-pack-lesson': 'semester-pack'
+            'semester-pack-lesson': 'semester-pack',
         }[childType];
     },
 
@@ -366,10 +359,8 @@ export default {
      * @param {string} brand
      * @returns {array}
      */
-    getBrandSpecificTopLevelContentTypes(brand){
-        return this.topLevelContentTypes().filter(type =>
-            type.type !== 'assignment' && type.brands.indexOf(brand) !== -1
-        );
+    getBrandSpecificTopLevelContentTypes(brand) {
+        return this.topLevelContentTypes().filter(type => type.type !== 'assignment' && type.brands.indexOf(brand) !== -1);
     },
 
     /**
@@ -378,15 +369,13 @@ export default {
      * @param {string} type
      * @returns {string} - the icon class name
      */
-    getContentTypeIcon(type){
+    getContentTypeIcon(type) {
         type = type
             .replace(/-part/g, '') // Remove the -part
             .replace(/-bundle/g, '') // Remove the -bundle
-            .replace(/-lesson/g, '');  // Remove -lesson
+            .replace(/-lesson/g, ''); // Remove -lesson
 
-        const contentType = this.topLevelContentTypes().filter(content =>
-            content.type === type
-        );
+        const contentType = this.topLevelContentTypes().filter(content => content.type === type);
 
         return contentType[0] ? contentType[0].icon : undefined;
     },
@@ -396,7 +385,7 @@ export default {
      *
      * @returns {array}
      */
-    shows(){
+    shows() {
         return [
             'recording',
             'gear-guides',
@@ -415,7 +404,7 @@ export default {
             'paiste-cymbals',
             '25-days-of-christmas',
             'rhythms-from-another-planet',
-            'namm-2019'
+            'namm-2019',
         ];
     },
 
@@ -425,7 +414,7 @@ export default {
      * @param {string} phrase
      * @returns {String} - The new capitalized string
      */
-    toTitleCase(phrase){
+    toTitleCase(phrase) {
         return phrase
             .toLowerCase()
             .split(' ')
@@ -442,13 +431,13 @@ export default {
     dynamicSort(property) {
         let sortOrder = 1;
 
-        if (property[0] === "-") {
+        if (property[0] === '-') {
             sortOrder = -1;
             property = property.substr(1);
         }
 
         return function (a, b) {
-            let result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+            const result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
             return result * sortOrder;
         };
     },
@@ -460,7 +449,7 @@ export default {
      * @returns {Boolean} - The new sorted object
      */
     isMobileDevice() {
-        return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+        return (typeof window.orientation !== 'undefined') || (navigator.userAgent.indexOf('IEMobile') !== -1);
     },
 
     /**
@@ -468,12 +457,12 @@ export default {
      *
      * @returns {String} - the parsed value
      */
-    parseXpValue(xp){
-        if(xp >= 100000 && xp < 1000000){
-            return Math.round(xp / 1000) + 'K';
+    parseXpValue(xp) {
+        if (xp >= 100000 && xp < 1000000) {
+            return `${Math.round(xp / 1000)}K`;
         }
-        else if(xp >= 1000000){
-            return Math.round(xp / 1000000).toFixed(1) + 'M';
+        if (xp >= 1000000) {
+            return `${Math.round(xp / 1000000).toFixed(1)}M`;
         }
 
         return xp;
@@ -484,8 +473,8 @@ export default {
      *
      * @returns {string} - A numeric string with commas
      */
-    formatNumbersWithCommas(value){
-        return Number(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    formatNumbersWithCommas(value) {
+        return Number(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
 
     /**
@@ -493,15 +482,15 @@ export default {
      *
      * @returns {String|Number}
      */
-    getScrollBarWidth(){
+    getScrollBarWidth() {
         if (typeof document === 'undefined') {
-            return 0
+            return 0;
         }
 
         const body = document.body;
         const box = document.createElement('div');
 
-        let boxStyle = box.style;
+        const boxStyle = box.style;
         let width;
 
         boxStyle.position = 'absolute';
@@ -516,5 +505,5 @@ export default {
         body.removeChild(box);
 
         return width;
-    }
-}
+    },
+};

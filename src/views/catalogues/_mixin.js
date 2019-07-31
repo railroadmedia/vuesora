@@ -1,146 +1,148 @@
 import { DateTime } from 'luxon';
+import { Content as ContentHelpers } from 'js-helper-functions';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
-import { Content as ContentHelpers }  from 'js-helper-functions';
 import ContentModel from '../../assets/js/models/_model.js';
 
 export default {
     mixins: [UserCatalogueEvents],
     props: {
         item: {
-            type: Object
+            type: Object,
+            default: () => ({}),
         },
 
         brand: {
             type: String,
-            default: () => 'drumeo'
+            default: () => 'drumeo',
         },
 
         userId: {
             type: String,
-            default: () => ''
+            default: () => '',
         },
 
         contentTypeOverride: {
             type: String,
-            default: ''
+            default: '',
         },
 
         forceWideThumbs: {
             type: Boolean,
-            default: () => false
+            default: () => false,
         },
 
         lockUnowned: {
             type: Boolean,
-            default: () => false
+            default: () => false,
         },
 
         resetProgress: {
             type: Boolean,
-            default: () => false
+            default: () => false,
         },
 
         overview: {
             type: Boolean,
-            default: () => false
+            default: () => false,
         },
 
         index: {
-            default: () => ''
+            type: [Number, String],
+            default: () => '',
         },
 
         active: {
             type: Boolean,
-            default: () => false
+            default: () => false,
         },
 
         displayUserInteractions: {
             type: Boolean,
-            default: () => true
+            default: () => true,
         },
 
         showNumbers: {
             type: Boolean,
-            default: () => false
+            default: () => false,
         },
 
         noLink: {
             type: Boolean,
-            default: () => false
+            default: () => false,
         },
 
         is_search: {
             type: Boolean,
-            default: false
+            default: false,
         },
 
         destroyOnListRemoval: {
             type: Boolean,
-            default: () => false
+            default: () => false,
         },
 
         compactLayout: {
             type: Boolean,
-            default: () => false
-        }
+            default: () => false,
+        },
     },
 
-    data(){
+    data() {
         return {
-            contentModel: this.getContentModel()
-        }
+            contentModel: this.getContentModel(),
+        };
     },
 
     computed: {
 
-        is_added:{
+        is_added: {
             cache: false,
-            get(){
+            get() {
                 return this.item.is_added_to_primary_playlist;
-            }
+            },
         },
 
-        progress_percent(){
-            return this.item['progress_percent'];
+        progress_percent() {
+            return this.item.progress_percent;
         },
 
-        noAccess(){
+        noAccess() {
             return (this.lockUnowned && this.item.is_owned === false) || (this.lockUnowned && !this.isReleased);
         },
 
-        datePublshedOn(){
-            return DateTime.fromSQL(this.item['published_on'], {zone: "UTC"}).toFormat('x');
+        datePublshedOn() {
+            return DateTime.fromSQL(this.item.published_on, { zone: 'UTC' }).toFormat('x');
         },
 
-        dateNow(){
+        dateNow() {
             return Date.now();
         },
 
-        isReleased(){
+        isReleased() {
             return this.dateNow > this.datePublshedOn;
         },
 
-        releaseDate(){
-            return DateTime.fromSQL(this.item['published_on']).toFormat('LLL d/yy');
+        releaseDate() {
+            return DateTime.fromSQL(this.item.published_on).toFormat('LLL d/yy');
         },
 
-        completedIcon(){
-            return this.item['type'] === 'course' ? 'fa-trophy' : 'fa-check-circle';
+        completedIcon() {
+            return this.item.type === 'course' ? 'fa-trophy' : 'fa-check-circle';
         },
 
-        thumbnailIcon(){
+        thumbnailIcon() {
             const contentWithHierarchy = {
-                'drumeo': ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
-                'guitareo': ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
-                'pianote': ['course', 'learning-path', 'pack', 'chord-and-scale']
+                drumeo: ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
+                guitareo: ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
+                pianote: ['course', 'learning-path', 'pack', 'chord-and-scale'],
             };
 
-            if(this.noAccess){
-                if(this.lockUnowned && this.item.is_owned === false){
+            if (this.noAccess) {
+                if (this.lockUnowned && this.item.is_owned === false) {
                     return 'fa-lock';
                 }
 
-                if(!this.isReleased){
+                if (!this.isReleased) {
                     return 'fa-clock';
                 }
             }
@@ -148,42 +150,41 @@ export default {
             return contentWithHierarchy[this.brand].indexOf(this.item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
         },
 
-        renderLink(){
-            if(this.noLink){
+        renderLink() {
+            if (this.noLink) {
                 return false;
             }
 
             return !this.noAccess;
         },
 
-        thumbnailType(){
-            if(this.forceWideThumbs){
+        thumbnailType() {
+            if (this.forceWideThumbs) {
                 return 'widescreen';
             }
-            else {
-                return {
-                    'drumeo': ['song'],
-                    'guitareo': ['song', 'chord-and-scale'],
-                    'pianote': ['song']
-                }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
-            }
+            
+            return {
+                drumeo: ['song'],
+                guitareo: ['song', 'chord-and-scale'],
+                pianote: ['song'],
+            }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
         },
     },
 
     methods: {
 
-        getContentModel(){
+        getContentModel() {
             const shows = ContentHelpers.shows();
             let type = this.contentTypeOverride || this.item.type;
 
-            if(shows.indexOf(type) !== -1){
+            if (shows.indexOf(type) !== -1) {
                 type = 'show';
             }
 
             return new ContentModel(type, {
                 brand: this.brand,
-                post: this.item
+                post: this.item,
             });
-        }
-    }
-}
+        },
+    },
+};
