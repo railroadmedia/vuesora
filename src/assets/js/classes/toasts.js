@@ -22,23 +22,23 @@ export default {
         title,
         message,
         themeColor = 'drumeo',
-        timeout = 5000
-    }){
+        timeout = 5000,
+    }) {
         return new Noty({
             type: 'alert',
             theme: 'musoraNoty',
             text:
-                '<div class="flex flex-column icon-column face-icon">' +
-                '<div class="icon-wrap square ' + icon + '"></div>' +
-                '</div>' +
-                '<div class="flex flex-column ph-1">' +
-                '<h6 class="tiny uppercase font-bold text-' + themeColor + '">' + title + '</h6>' +
-                '<h5 class="tiny font-compressed">' + message + '</h5>' +
-                '</div>' +
-                '<div class="flex flex-column icon-column flex-center subheading">' +
-                '<i class="fas fa-times"></i>' +
-                '</div>',
-            timeout: timeout,
+                `${'<div class="flex flex-column icon-column face-icon">'
+                + '<div class="icon-wrap square '}${icon}"></div>`
+                + '</div>'
+                + '<div class="flex flex-column ph-1">'
+                + `<h6 class="tiny uppercase font-bold text-${themeColor}">${title}</h6>`
+                + `<h5 class="tiny font-compressed">${message}</h5>`
+                + '</div>'
+                + '<div class="flex flex-column icon-column flex-center subheading">'
+                + '<i class="fas fa-times"></i>'
+                + '</div>',
+            timeout,
             layout: 'topLeft',
         }).show();
     },
@@ -58,52 +58,52 @@ export default {
         subtitle = 'This cannot be undone',
         submitButton = {
             text: '<span class="bg-success text-white">YES</span>',
-            callback: null
+            callback: null,
         },
         cancelButton = {
             text: '<span class="bg-dark inverted text-grey-3">NO</span>',
-            callback: null
-        }
-    }){
+            callback: null,
+        },
+    }) {
         window.confirmationBox = new Noty({
             layout: 'center',
             modal: true,
             theme: 'musoraNoty dialog',
-            text: '<span class="title text-center font-bold text-black">' +
-                title +
-                '</span>' +
-                '<br>' +
-                '<span class="x-tiny uppercase text-grey-3">' +
-                subtitle +
-                '</span>',
+            text: `<span class="title text-center font-bold text-black">${ 
+                title 
+            }</span>`
+                + '<br>'
+                + `<span class="x-tiny uppercase text-grey-3">${ 
+                    subtitle 
+                }</span>`,
             closeWith: [],
             buttons: [
                 Noty.button(
                     submitButton.text, 'btn mr-1', () => {
-                        if(submitButton.callback != null) {
+                        if (submitButton.callback != null) {
                             submitButton.callback();
                         }
 
                         window.confirmationBox.close();
-                    }
+                    },
                 ),
                 Noty.button(
                     cancelButton.text, 'btn', () => {
-                        if(cancelButton.callback != null){
+                        if (cancelButton.callback != null) {
                             cancelButton.callback();
                         }
 
                         window.confirmationBox.close();
-                    }
-                )
-            ]
+                    },
+                ),
+            ],
         }).show();
 
         // Instantiate a click handler to close the modal when the user clicks the overlay
-        if(window.closeConfirmation == null){
+        if (window.closeConfirmation == null) {
             window.closeConfirmation = true;
-            document.body.addEventListener('click', event => {
-                if(event.target.classList.contains('noty_modal')){
+            document.body.addEventListener('click', (event) => {
+                if (event.target.classList.contains('noty_modal')) {
                     window.confirmationBox.close();
                 }
             });
@@ -111,4 +111,4 @@ export default {
 
         return window.confirmationBox;
     },
-}
+};

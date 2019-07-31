@@ -4,46 +4,38 @@ export default {
     props: {
         contentType: {
             type: String,
-            default: () => 'drumeo'
+            default: () => 'drumeo',
         },
 
         themeColor: {
             type: String,
-            default: () => 'drumeo'
+            default: () => 'drumeo',
         },
 
         useThemeColor: {
             type: Boolean,
-            default: () => true
+            default: () => true,
         },
     },
     computed: {
-        themeBgClass(){
-            if(this.useThemeColor){
-                return 'bg-' + this.themeColor
+        themeBgClass() {
+            if (this.useThemeColor) {
+                return `bg-${this.themeColor}`;
             }
 
             const type = Utils.getThemeColorByContentType(this.contentType);
 
-            return 'bg-' + type;
+            return `bg-${type}`;
         },
 
-        themeTextClass(){
-            if(this.useThemeColor) {
-                return 'text-' + this.themeColor
+        themeTextClass() {
+            if (this.useThemeColor) {
+                return `text-${this.themeColor}`;
             }
 
             const type = Utils.getThemeColorByContentType(this.contentType);
 
-            return 'text-' + type;
-        },
-
-        themeHoverBgClass(){
-            return 'hover-bg-' + this.themeColor
-        },
-
-        themeHoverTextClass(){
-            return 'hover-text-' + this.themeColor
+            return `text-${type}`;
         },
     },
-}
+};

@@ -2,10 +2,10 @@ import Vue from 'vue';
 import NotificationsTable from './NotificationsTable';
 
 export default {
-    install(Vue, options){
+    install(Vue, options) {
         Vue.component(
             NotificationsTable.name,
-            NotificationsTable
-        )
-    }
-}
+            NotificationsTable,
+        );
+    },
+};

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
-const endpoint_prefix = process.env.ENDPOINT_PREFIX || '';
+
+const endpointPrefix = process.env.endpointPrefix || '';
 
 export default {
     /**
@@ -11,11 +12,10 @@ export default {
      * @returns {Promise} - resolved promise with the response object
      */
     setUserAttributes(id, attributes = {}) {
-
-        return axios.patch('/usora/json-api/user/update/' + id, {
+        return axios.patch(`/usora/json-api/user/update/${id}`, {
             data: {
-                attributes: attributes
-            }
+                attributes,
+            },
         })
             .then(response => response)
             .catch(ErrorHandler.push);
@@ -27,8 +27,7 @@ export default {
      * @returns {Promise} - resolved promise with the response.data object
      */
     setDefaultPaymentMethod(paypalPaymentMethodId) {
-
-        return axios.patch('/payment-method/set-default', {id: paypalPaymentMethodId})
+        return axios.patch('/payment-method/set-default', { id: paypalPaymentMethodId })
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -39,7 +38,6 @@ export default {
      * @returns {Promise} - resolved promise with the response.data object
      */
     getPaymentMethods() {
-
         return axios.get('/members/account/settings/payment-methods')
             .then(response => response.data)
             .catch(ErrorHandler);
@@ -51,7 +49,6 @@ export default {
      * @returns {Promise} - resolved promise with the response.data object
      */
     getPaypalAgreementUrl() {
-
         return axios.get('/payment-method/paypal-url')
             .then(response => response.data)
             .catch(ErrorHandler);
@@ -65,8 +62,7 @@ export default {
      * @returns {Promise} - resolved promise with the response.data object
      */
     updatePaymentMethod(id, payload) {
-
-        return axios.patch('/payment-method/' + id, payload)
+        return axios.patch(`/payment-method/${id}`, payload)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -78,8 +74,7 @@ export default {
      * @returns {Promise} - resolved promise with the response.data object
      */
     deletePaymentMethod(id) {
-
-        return axios.delete('/payment-method/' + id)
+        return axios.delete(`/payment-method/${id}`)
             .then(response => response)
             .catch(ErrorHandler);
     },
@@ -91,15 +86,13 @@ export default {
      * @returns {Promise} - resolved promise with the response.data object
      */
     createPaymentMethod(payload) {
-
         return axios.put('/payment-method', payload)
             .then(response => response.data)
-            .catch(error => {
+            .catch((error) => {
                 if (error.response && error.response.status == 422) {
                     return error.response.data;
-                } else {
-                    ErrorHandler(error);
-                }
+                } 
+                ErrorHandler(error);
             });
     },
 
@@ -115,11 +108,11 @@ export default {
             headers: {
                 'content-type': 'multipart/form-data',
                 processData: false,
-                contentType: false
-            }
+                contentType: false,
+            },
         };
 
-        return axios.post(endpoint_prefix + endpoint, formData, config)
+        return axios.post(endpointPrefix + endpoint, formData, config)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -148,17 +141,17 @@ export default {
         brand,
         logo,
         recipient,
-        endpoint
+        endpoint,
     }) {
-        return axios.post(endpoint_prefix + endpoint, {
-            type: type,
-            subject: subject,
-            lines: lines,
-            callToAction: callToAction,
-            alert: alert,
-            brand: brand,
-            logo: logo,
-            recipient: recipient,
+        return axios.post(endpointPrefix + endpoint, {
+            type,
+            subject,
+            lines,
+            callToAction,
+            alert,
+            brand,
+            logo,
+            recipient,
         })
             .then(response => response.data)
             .catch(ErrorHandler);
@@ -171,7 +164,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markNotificationAsRead(id) {
-        return axios.post(endpoint_prefix + '/members/notifications/mark-read/' + id)
+        return axios.post(`${endpointPrefix}/members/notifications/mark-read/${id}`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -183,7 +176,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markNotificationAsUnRead(id) {
-        return axios.post(endpoint_prefix + '/members/notifications/mark-unread/' + id)
+        return axios.post(`${endpointPrefix}/members/notifications/mark-unread/${id}`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },
@@ -194,8 +187,8 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     markAllNotificationsAsRead() {
-        return axios.post(endpoint_prefix + '/members/notifications/mark-all-read')
+        return axios.post(`${endpointPrefix}/members/notifications/mark-all-read`)
             .then(response => response.data)
             .catch(ErrorHandler);
-    }
-}
+    },
+};

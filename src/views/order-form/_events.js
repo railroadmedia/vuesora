@@ -1,8 +1,8 @@
 export default {
     methods: {
-        emitUpdateCartItem(payload){
+        emitUpdateCartItem(payload) {
             this.$emit('updateCartItem', payload);
         },
 
-    }
-}
+    },
+};

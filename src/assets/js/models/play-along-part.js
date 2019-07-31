@@ -1,10 +1,10 @@
 import ContentModel from './_default';
 
 export default class PlayAlongPartContentModel extends ContentModel {
-    constructor({brand = 'drumeo', post}){
+    constructor({ brand = 'drumeo', post }) {
         super({
             brand,
-            post
+            post,
         });
 
         this.list.column_data = [

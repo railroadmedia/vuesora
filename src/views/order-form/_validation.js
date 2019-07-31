@@ -1,25 +1,25 @@
 export default {
     computed: {
-        formValid(){
+        formValid() {
             const errorKeys = Object.keys(this.errors);
             let isValid = true;
 
-            errorKeys.forEach(error => {
-                if(this.errors[error].length){
+            errorKeys.forEach((error) => {
+                if (this.errors[error].length) {
                     isValid = false;
                 }
             });
 
             return isValid;
-        }
+        },
     },
 
     methods: {
         validateInput(controlName, value) {
             const errors = [];
 
-            this.rules[controlName].forEach(rule => {
-                if(rule(value) !== true){
+            this.rules[controlName].forEach((rule) => {
+                if (rule(value) !== true) {
                     errors.push(rule(value));
                 }
             });
@@ -28,11 +28,11 @@ export default {
         },
 
         validateForm() {
-            Object.keys(this.rules).forEach(key => {
-                const formKey = `$_${ key }`;
+            Object.keys(this.rules).forEach((key) => {
+                const formKey = `$_${key}`;
 
                 this.validateInput(key, this[formKey]);
             });
         },
     },
-}
+};

@@ -1,0 +1,6 @@
+/src/assets/js/third-party/**
+/public/**
+/node_modules/**
+/docs/**
+/tests/**
+/test/**

@@ -1,10 +1,10 @@
 import ContentModel from './_default';
 
 export default class QnaContentModel extends ContentModel {
-    constructor({brand = 'drumeo', post}){
+    constructor({ brand = 'drumeo', post }) {
         super({
             brand,
-            post
+            post,
         });
 
         this.card.grey_title = this.getPostDuration();
@@ -13,7 +13,7 @@ export default class QnaContentModel extends ContentModel {
             this.getPostDuration(),
         ];
 
-        if(this.brand === 'pianote'){
+        if (this.brand === 'pianote') {
             this.card.color_title = this.getTypeWithIcon();
         }
     }

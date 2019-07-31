@@ -1,10 +1,10 @@
 import ContentModel from './_default';
 
 export default class UnitContentModel extends ContentModel {
-    constructor({brand = 'drumeo', post}){
+    constructor({ brand = 'drumeo', post }) {
         super({
             brand,
-            post
+            post,
         });
 
         this.card.color_title = this.postInstructor;
@@ -13,7 +13,7 @@ export default class UnitContentModel extends ContentModel {
         this.list.column_data = [
             ContentModel.mapDifficulty(this.post),
             this.postChildLessonCount,
-            this.postPublisedOn
+            this.postPublisedOn,
         ];
     }
 }

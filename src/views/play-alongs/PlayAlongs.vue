@@ -1,121 +1,121 @@
 <template>
     <div class="flex flex-column grow">
         <catalogue-list-item
-                v-for="(item, i) in content"
-                :key="'list' + item.id"
-                :index="i + 1"
-                :item="item"
-                :brand="$_brand"
-                :active="item.id === active_id"
-                :displayUserInteractions="false"
-                :noLink="true"
-                @addToList="addToListEventHandler"
-                @click.native="playSong(item.id)"></catalogue-list-item>
+            v-for="(item, i) in content"
+            :key="'list' + item.id"
+            :index="i + 1"
+            :item="item"
+            :brand="$_brand"
+            :active="item.id === active_id"
+            :display-user-interactions="false"
+            :no-link="true"
+            @addToList="addToListEventHandler"
+            @click.native="playSong(item.id)"
+        ></catalogue-list-item>
 
-        <play-alongs-player v-if="active_id"
-                            :$_active_item="$_active_item"></play-alongs-player>
+        <play-alongs-player
+            v-if="active_id"
+            :$_active_item="$_active_item"
+        ></play-alongs-player>
     </div>
 </template>
 <script>
-    import CatalogueListItem from '../catalogues/_CatalogueListItem';
-    import Utils from '../../assets/js/classes/utils';
-    import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
-    import PlayAlongsPlayer from './PlayAlongsPlayer';
+import CatalogueListItem from '../catalogues/_CatalogueListItem';
+import Utils from '../../assets/js/classes/utils';
+import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
+import PlayAlongsPlayer from './PlayAlongsPlayer';
 
-    export default {
-        mixins: [UserCatalogueEvents],
-        name: 'play-alongs',
-        components: {
-            'catalogue-list-item': CatalogueListItem,
-            'play-alongs-player': PlayAlongsPlayer
+export default {
+    name: 'PlayAlongs',
+    components: {
+        'catalogue-list-item': CatalogueListItem,
+        'play-alongs-player': PlayAlongsPlayer,
+    },
+    mixins: [UserCatalogueEvents],
+    props: {
+        brand: {
+            type: String,
+            default: () => 'drumeo',
         },
-        data(){
-            return {
-                content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.data) : [],
-                loading: false,
-                page: 1,
-                active_id: null
-            }
+
+        preLoadedContent: {
+            type: Object,
         },
-        props: {
-            $_brand: {
-                type: String,
-                default: () => 'drumeo'
-            },
 
-            $_preLoadedContent: {
-                type: Object
-            },
-
-            $_limit: {
-                type: Number,
-                default: 10
-            },
-
-            $_contentEndpoint: {
-                type: String,
-                default: () => '/railcontent/content'
-            },
+        limit: {
+            type: Number,
+            default: 10,
         },
-        computed: {
 
-            $_active_item(){
-                return this.content.filter(item =>
-                    item.id === this.active_id
-                )[0];
-            },
+        contentEndpoint: {
+            type: String,
+            default: () => '/railcontent/content',
         },
-        methods: {
+    },
+    data() {
+        return {
+            content: this.$_preLoadedContent ? Utils.flattenContent(this.$_preLoadedContent.data) : [],
+            loading: false,
+            page: 1,
+            active_id: null,
+        };
+    },
+    computed: {
 
-            playSong(id){
-                this.active_id = id;
+        $_active_item() {
+            return this.content.filter(item => item.id === this.active_id)[0];
+        },
+    },
+    mounted() {
+        if (!this.$_preLoadedContent && !this.$_preLoadedContent.results.length) {
+            this.getContent();
+        }
+    },
+    methods: {
 
-                this.$emit('songUpdate');
-            },
+        playSong(id) {
+            this.active_id = id;
 
-            getContent(replace = true){
-                if(!this.loading){
-                    this.loading = true;
+            this.$emit('songUpdate');
+        },
 
-                    axios.get(this.$_contentEndpoint, {
-                        params: {
-                            page: this.page,
-                            brand: this.$_brand,
-                            limit: this.$_limit,
-                            'included_types[]': ['play-along']
-                        }
-                    })
-                        .then(response => {
-                            if(response){
-                                // If infinite scroll is enabled:
-                                // Just add it to the array, don't replace it
-                                if(!replace){
-                                    this.content = [
-                                        ...this.content,
-                                        ...Utils.flattenContent(response.data.data)
-                                    ]
-                                }
-                                else {
-                                    this.content = Utils.flattenContent(response.data.data);
-                                }
+        getContent(replace = true) {
+            if (!this.loading) {
+                this.loading = true;
 
-                                this.page = Number(response.data.meta.page);
+                axios.get(this.$_contentEndpoint, {
+                    params: {
+                        page: this.page,
+                        brand: this.$_brand,
+                        limit: this.$_limit,
+                        'included_types[]': ['play-along'],
+                    },
+                })
+                    .then((response) => {
+                        if (response) {
+                            // If infinite scroll is enabled:
+                            // Just add it to the array, don't replace it
+                            if (!replace) {
+                                this.content = [
+                                    ...this.content,
+                                    ...Utils.flattenContent(response.data.data),
+                                ];
+                            } else {
+                                this.content = Utils.flattenContent(response.data.data);
                             }
 
-                            this.loading = false;
-                        })
-                        .catch(error => {
-                            console.error(error);
+                            this.page = Number(response.data.meta.page);
+                        }
 
-                            this.loading = false;
-                        })
-                }
-            },
-        },
-        mounted(){
-            if(!this.$_preLoadedContent && !this.$_preLoadedContent.results.length){
-                this.getContent();
+                        this.loading = false;
+                    })
+                    .catch((error) => {
+                        console.error(error);
+
+                        this.loading = false;
+                    });
             }
-        }
-    }
+        },
+    },
+};
 </script>

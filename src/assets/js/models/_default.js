@@ -95,7 +95,7 @@ export default class ContentModel {
     }
 
     get episodeNumber() {
-        return this.post.sort ? `Episode # ${this.post.sort}` : 'TBD';
+        return this.post.sort ? `Episode #${this.post.sort}` : 'TBD';
     }
 
     get postChildLessonCount() {

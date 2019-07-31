@@ -1,16 +1,16 @@
-export default (function(){
+export default (function () {
     document.addEventListener('DOMContentLoaded', () => {
         const dropdownActivators = document.querySelectorAll('.is-dropdown');
 
         if (dropdownActivators.length) {
-            Array.from(dropdownActivators).forEach(element => {
+            Array.from(dropdownActivators).forEach((element) => {
                 element.addEventListener('click', triggerDropdown);
 
                 // Dont Allow events on child elements (ie. the dropdown content) to propagate
-                Array.from(element.children).forEach(childElement => {
-                    childElement.addEventListener('click', event => {
+                Array.from(element.children).forEach((childElement) => {
+                    childElement.addEventListener('click', (event) => {
                         event.stopPropagation();
-                    })
+                    });
                 });
             });
 
@@ -27,9 +27,9 @@ export default (function(){
         }
 
         function closeAllDropdowns() {
-            Array.from(dropdownActivators).forEach(element => {
+            Array.from(dropdownActivators).forEach((element) => {
                 element.classList.replace('active', 'inverted');
             });
         }
     });
-})();
+}());

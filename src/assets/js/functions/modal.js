@@ -1,13 +1,12 @@
 import Utils from '../classes/utils';
 
-export default (function(){
+export default (function () {
     document.addEventListener('DOMContentLoaded', () => {
         const topBar = document.getElementById('nav');
         const closeEvent = new CustomEvent('modalClose');
 
-        document.body.addEventListener('click', event => {
-
-            if (event.target.dataset['openModal'] != null) {
+        document.body.addEventListener('click', (event) => {
+            if (event.target.dataset.openModal != null) {
                 openModal(event);
             }
 
@@ -18,7 +17,7 @@ export default (function(){
 
         function openModal(event) {
             const buttonClicked = event.target;
-            const modalId = buttonClicked.dataset['openModal'];
+            const modalId = buttonClicked.dataset.openModal;
             const modalToOpen = document.getElementById(modalId);
 
             closeModal();
@@ -32,7 +31,7 @@ export default (function(){
                 document.documentElement.classList.add('no-scroll');
                 modalToOpen.classList.add('active');
             } else {
-                console.error('Modal Error - Could not find modal with the ID: "' + modalId + '"');
+                console.error(`Modal Error - Could not find modal with the ID: "${modalId}"`);
             }
         }
 
@@ -54,7 +53,7 @@ export default (function(){
             }
 
             // Remove the active class from all Modals (easier than finding the specific one open)
-            Array.from(modalDialogs).forEach(dialog => {
+            Array.from(modalDialogs).forEach((dialog) => {
                 dialog.classList.remove('active');
             });
 
@@ -84,10 +83,10 @@ export default (function(){
             const bodyHeight = document.body.clientHeight;
             const clientHeight = document.documentElement.clientHeight;
 
-            if(bodyHeight > clientHeight){
-                document.body.style.paddingRight = Utils.getScrollBarWidth() + 'px';
-                topBar.style.paddingRight = Utils.getScrollBarWidth() + 'px';
+            if (bodyHeight > clientHeight) {
+                document.body.style.paddingRight = `${Utils.getScrollBarWidth()}px`;
+                topBar.style.paddingRight = `${Utils.getScrollBarWidth()}px`;
             }
-        }
+        };
     });
-})();
+}());

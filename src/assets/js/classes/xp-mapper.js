@@ -21,7 +21,7 @@ export default {
             4000000: 'Legends: Colaiuta',
             5000000: 'Legends: Gadd',
             7500000: 'Legends: Porcaro',
-            10000000: 'Legends: Rich'
+            10000000: 'Legends: Rich',
         },
         pianote: {
             0: 'Casual',
@@ -43,8 +43,8 @@ export default {
             4000000: 'Legend VII',
             5000000: 'Legend VIII',
             7500000: 'Legend IX',
-            10000000: 'Legend X'
-        }
+            10000000: 'Legend X',
+        },
     },
 
     /**
@@ -55,13 +55,12 @@ export default {
      * @param {number} offset - how many indexes after the matched index to return
      * @returns {number|string} - the number for the specific key
      */
-    getNearestKey(xp, brand = 'drumeo', offset = 0){
+    getNearestKey(xp, brand = 'drumeo', offset = 0) {
         const mapKeys = Object.keys(this.mapObject[brand]);
 
-        for(let i = 0; i < mapKeys.length; i++){
-
+        for (let i = 0; i < mapKeys.length; i++) {
             // Over 10 million or between any of the keys
-            if(mapKeys[i] >= 10000000 || (Number(xp) >= Number(mapKeys[i]) && Number(xp) < Number(mapKeys[i + 1]))){
+            if (mapKeys[i] >= 10000000 || (Number(xp) >= Number(mapKeys[i]) && Number(xp) < Number(mapKeys[i + 1]))) {
                 return mapKeys[i + offset];
             }
         }
@@ -77,7 +76,7 @@ export default {
      * @param {number} offset - how many indexes after the matched index to return
      * @returns {string} - the value for the rank associated to that key/xp
      */
-    getNearestValue(xp, brand = 'drumeo', offset = 0){
-        return(this.mapObject[brand][this.getNearestKey(xp, brand, offset)]);
-    }
-}
+    getNearestValue(xp, brand = 'drumeo', offset = 0) {
+        return (this.mapObject[brand][this.getNearestKey(xp, brand, offset)]);
+    },
+};
