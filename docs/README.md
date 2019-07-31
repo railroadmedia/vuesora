@@ -15,7 +15,16 @@ styled components - Vuesora allows views to be built with minimal specific CSS.
 ## Local Development Environment
 
 Since Vuesora is a series of modules on NPM, we need to install the modules, import them into our project, and bundle
-them into our projects code. Follow the steps below to set up your local development environment.             
+them into our projects code. Follow the steps below to set up your local development environment.
+
+There a few npm scripts available for local development in Vuesora:          
+
+- `test:e2e` - Run all End to End Tests
+- `test:unit` - Run all Unit Tests
+- `docs:dev` - Build the docs for local development with a url at localhost
+- `docs:build` - Build the docs for production under the docs directory
+- `lib:watch` - Watch the library for changes and create a new build on every change
+- `lib:build` - Build the library for production
               
 ### Symlinking Vuesora
 
@@ -33,10 +42,11 @@ What this will do is start up a watch process on Vuesora, aswell as the app you 
 that whenever a file is changed in either Vuesora, or the app you are developing for, Webpack will create a
 new bundle for you.
 
-### Publishing Vuesora
+Keep in mind that this workflow should be reserved for **LOCAL DEVELOPMENT ONLY**. If you wish to deploy your
+changes to production you need to build the app for production and create a new version, you can view how to do 
+that below.
 
-Publishing Vuesora is fairly simple: create a new build, update the version, push the repo, publish the package, and update your 
-applications package.json.
+### Publishing Vuesora
 
 **Before you can publish Vuesora you need to add your npm and git credentials to your 
 Railenvironment Docker Container.**
@@ -49,20 +59,17 @@ Railenvironment Docker Container.**
 
 ---
 
-To publish the package:
+To publish the package, just run the bash script: 
 
-1. `npm version patch` - If your Railenvironment Docker Container has your git information, this should make a 
-commit with a version tag
+`./publish.sh`
 
-2. Push the Vuesora repository and the subsequent tag that was created
-
-3. `npm publish`
-
-4. Move into application directory
-
-5. `npm install --save vuesora` - This will update the applications package.json with the newest version of Vuesora
-
-6. `npm run prod` - You are now ready to deploy
+This command will do several things:
+- Build the library
+- Commit the new build
+- Create a new version tag
+- Commit and push the version tag
+- Commit and push the repository
+- Publish the new version
 
 ### Symlinking Bladesora
 
@@ -106,11 +113,25 @@ Your applications assets directory should look something like:
 
 ### Importing Modules
 
+Vuesora itself just exports a Vue component library, exposed as a plugin.
+
+#### Vue
+
+```javascript
+import Vuesora from 'vuesora';
+
+Vue.use(Vuesora);
+
+new Vue({
+    el: '#app',
+});
+```
+
 #### Javascript
 
-Vuesora has 2 styles of Javascript modules. 
+Vuesora's files also have 2 styles of Javascript modules. 
 
-1. Classes and Services are referenced by a constant:
+1. Classes and Services that are referenced by a constant:
 
 ```javascript
 import ContentService from 'vuesora/src/assets/js/services/content';
@@ -127,22 +148,6 @@ _Note that in a world of modules, IIFEs should almost never have to be used, the
 
 ```javascript
 import 'vuesora/src/assets/js/functions/navigation';
-```
-
-#### Vue
-
-```javascript
-import EmailForm from 'vuesora/src/components/EmailForm';
-import UserExpBar from 'vuesora/src/components/UserExpBar';
-import ContentCatalogue from 'vuesora/src/views/catalogues';
-
-Vue.use(EmailForm);
-Vue.use(UserExpBar);
-Vue.use(ContentCatalogue);
-
-new Vue({
-    el: '#app',
-});
 ```
 
 #### Sass
@@ -250,109 +255,3 @@ Extend the layout in any of your views:
     <!-- ... -->
 @endsection
 ```
-
-## Advanced Workflows
-
-### Code Splitting
-
-Musora applications are not Single Page Applications, so code splitting has to work a little differently
-than the traditional approach.
-
-In the above examples the application assumes you only want a single entry and a single output. However,
-With the amount of transpilation and polyfills needed for Vuesora, bundles can quickly scale to
-unmaintanable sizes.
-
-It is recommended to split your bundles up into the different main features that make up the application.
-For example, the following sample assumes you want to incorporate a `lesson-page.js` bundle into your
-application, let's say the `lesson-page.js` bundle contains the heavyweight javascript needed
-for the video player. 
-
-
-```
-└─ resources
-   └─ assets
-      ├─ js
-      |   ├─ app.js
-      |   └─ lesson-page.js
-      └─ sass
-          └─ app.scss
-```
-
-Your `lesson-page.js` bundle should look something like the following. What this does is import the Single File
-Components from Vuesora, which are exported as a Vue plugin. You then use the plugin with the current Vue instance.
-
-
-This structure allows you to import and export all Vuesora components _À la carte_.
-
-```javascript
-import Comments from 'vuesora/src/views/comments';
-import ContentAssignment from 'vuesora/src/components/ContentAssignment';
-import MediaElement from 'vuesora/src/components/MediaElement';
-
-Vue.use(Comments);
-Vue.use(ContentAssignment);
-Vue.use(MediaElement);
-```
-
-In your `webpack.mix.js` file you need to include the new bundle. The following line will take
-your `lesson-page.js` bundle in the `/resources/assets` directory and minify it in the `/public/assets`
-directory
-
-```javascript
-mix.js('resources/assets/members/js/lesson-page.js', 'public/assets/members/js');
-```
-
-In your global layout file, you need to include another section to inject components:
-
-```html
-<html>
-<head>
-    <!-- Include bundled css assets -->
-    <link rel="stylesheet" href="{{ mix('assets/members/css/app.css') }}">
-    
-    @yield('styles')
-</head>
-<body>
-    @yield('content')
-    
-    <!-- Include bundled js assets -->
-    <script src="{{ mix('assets/members/js/manifest.js') }}"></script>
-    <script src="{{ mix('assets/members/js/vendor.js') }}"></script>
-    @yield('inject-components')
-    <script src="{{ mix('assets/members/js/app.js') }}"></script>
-    
-    @yield('scripts')
-</body>
-</html>
-```
-
-We don't want to cache/download that code on every single view, since it's only needed in a
-specific section of the app. So lastly, in your `lesson-page.js` view. You want to use the `inject-components` 
-section to inject that `lesson-page.js` bundle you created in the earlier step.
-
-```html
-@extends('members.layout')
-
-@section('styles')
-    <!-- ... -->
-@endsection
-
-@section('inject-components')
-    <script src="{{ mix('assets/members/js/lesson-page.js') }}"></script>
-@endsection
-
-@section('scripts')
-    <!-- ... -->
-@endsection
-
-@section('content')
-    <!-- ... -->
-@endsection
-
-```
-
-Now your Video Player javascript is only included on the view that requires it, and users can experience
-faster startups, and a more performant application outside of that view. 
-
-It's still a manageable bundle size aswell, so you can leverage the browser or Cloudflare cache, for an even 
-more performant experience.
