@@ -190,4 +190,19 @@ export default {
 
         return result;
     },
+
+    parseTimeRangesAsArray(timeRanges) {
+        const ranges = [];
+
+        if (timeRanges.length) {
+            for (let i = 0; i < timeRanges.length; i += 1) {
+                ranges.push({
+                    start: timeRanges.start(i),
+                    end: timeRanges.end(i),
+                });
+            }
+        }
+
+        return ranges;
+    },
 };

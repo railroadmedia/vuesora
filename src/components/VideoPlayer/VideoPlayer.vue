@@ -534,7 +534,16 @@ export default {
             cache: false,
             get() {
                 if (this.shakaPlayer != null) {
-                    return this.shakaPlayer.getBufferedInfo().total;
+                    const supportsMSE = typeof MediaSource === 'function';
+                    if (supportsMSE) {
+                        return this.shakaPlayer.getBufferedInfo().total;
+                    }
+
+                    if (this.mediaElement) {
+                        return PlayerUtils.parseTimeRangesAsArray(this.mediaElement.buffered);
+                    }
+
+                    return [];
                 }
 
                 return [];
@@ -604,6 +613,7 @@ export default {
         }
 
         shaka.polyfill.installAll();
+
 
         if (shaka.Player.isBrowserSupported()) {
             this.shakaPlayer = new shaka.Player();
