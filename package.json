@@ -19,7 +19,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs; chmod 777 -R ./",
     "lib:watch": "vue-cli-service build --watch --target lib --name vuesora --mode dev ./src/index.js",
-    "lib:build": "vue-cli-service build --target lib --name vuesora ./src/index.js"
+    "lib:build": "vue-cli-service build --target lib --name vuesora ./src/index.js; chmod 777 -R ./"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^1.0.6",
