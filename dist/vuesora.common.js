@@ -110,12 +110,14 @@ var enumKeys = __webpack_require__("47ee");
 var isArray = __webpack_require__("9003");
 var anObject = __webpack_require__("e4ae");
 var isObject = __webpack_require__("f772");
+var toObject = __webpack_require__("241e");
 var toIObject = __webpack_require__("36c3");
 var toPrimitive = __webpack_require__("1bc3");
 var createDesc = __webpack_require__("aebd");
 var _create = __webpack_require__("a159");
 var gOPNExt = __webpack_require__("0395");
 var $GOPD = __webpack_require__("bf0b");
+var $GOPS = __webpack_require__("9aa9");
 var $DP = __webpack_require__("d9f6");
 var $keys = __webpack_require__("c3a1");
 var gOPD = $GOPD.f;
@@ -132,7 +134,7 @@ var SymbolRegistry = shared('symbol-registry');
 var AllSymbols = shared('symbols');
 var OPSymbols = shared('op-symbols');
 var ObjectProto = Object[PROTOTYPE];
-var USE_NATIVE = typeof $Symbol == 'function';
+var USE_NATIVE = typeof $Symbol == 'function' && !!$GOPS.f;
 var QObject = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
@@ -242,7 +244,7 @@ if (!USE_NATIVE) {
   $DP.f = $defineProperty;
   __webpack_require__("6abf").f = gOPNExt.f = $getOwnPropertyNames;
   __webpack_require__("355d").f = $propertyIsEnumerable;
-  __webpack_require__("9aa9").f = $getOwnPropertySymbols;
+  $GOPS.f = $getOwnPropertySymbols;
 
   if (DESCRIPTORS && !__webpack_require__("b8e3")) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
@@ -291,6 +293,16 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
   getOwnPropertyNames: $getOwnPropertyNames,
   // 19.1.2.8 Object.getOwnPropertySymbols(O)
   getOwnPropertySymbols: $getOwnPropertySymbols
+});
+
+// Chrome 38 and 39 `Object.getOwnPropertySymbols` fails on primitives
+// https://bugs.chromium.org/p/v8/issues/detail?id=3443
+var FAILS_ON_PRIMITIVES = $fails(function () { $GOPS.f(1); });
+
+$export($export.S + $export.F * FAILS_ON_PRIMITIVES, 'Object', {
+  getOwnPropertySymbols: function getOwnPropertySymbols(it) {
+    return $GOPS.f(toObject(it));
+  }
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
@@ -498,19 +510,9 @@ module.exports.f = function getOwnPropertyNames(it) {
  * @license  MIT
  */
 
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
 }
 
 
@@ -635,13 +637,6 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-
-/***/ }),
-
-/***/ "0a0d":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("e829");
 
 /***/ }),
 
@@ -822,18 +817,6 @@ module.exports = function (index, length) {
 var cof = __webpack_require__("2d95");
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
-};
-
-
-/***/ }),
-
-/***/ "1173":
-/***/ (function(module, exports) {
-
-module.exports = function (it, Constructor, name, forbiddenField) {
-  if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
-    throw TypeError(name + ': incorrect invocation!');
-  } return it;
 };
 
 
@@ -1310,6 +1293,26 @@ function normalizeObject(obj, normalizer, nonUnitKeys) {
 
   return normalized;
 }
+function formatOffset(offset, format) {
+  var hours = Math.trunc(offset / 60),
+      minutes = Math.abs(offset % 60),
+      sign = hours >= 0 ? "+" : "-",
+      base = "" + sign + Math.abs(hours);
+
+  switch (format) {
+    case "short":
+      return "" + sign + padStart(Math.abs(hours), 2) + ":" + padStart(minutes, 2);
+
+    case "narrow":
+      return minutes > 0 ? base + ":" + minutes : base;
+
+    case "techie":
+      return "" + sign + padStart(Math.abs(hours), 2) + padStart(minutes, 2);
+
+    default:
+      throw new RangeError("Value format " + format + " is out of range for property format");
+  }
+}
 function timeObject(obj) {
   return pick(obj, ["hour", "minute", "second", "millisecond"]);
 }
@@ -1701,6 +1704,19 @@ function () {
     throw new ZoneIsAbstractError();
   }
   /**
+   * Returns the offset's value as a string
+   * @abstract
+   * @param {number} ts - Epoch milliseconds for which to get the offset
+   * @param {string} format - What style of offset to return.
+   *                          Accepts 'narrow', 'short', or 'techie'. Returning '+6', '+06:00', or '+0600' respectively
+   * @return {string}
+   */
+  ;
+
+  _proto.formatOffset = function formatOffset(ts, format) {
+    throw new ZoneIsAbstractError();
+  }
+  /**
    * Return the offset in minutes for this zone at the specified timestamp.
    * @abstract
    * @param {number} ts - Epoch milliseconds for which to compute the offset
@@ -1794,6 +1810,12 @@ function (_Zone) {
     var format = _ref.format,
         locale = _ref.locale;
     return parseZoneInfo(ts, format, locale);
+  }
+  /** @override **/
+  ;
+
+  _proto.formatOffset = function formatOffset$1(ts, format) {
+    return formatOffset(this.offset(ts), format);
   }
   /** @override **/
   ;
@@ -1954,12 +1976,12 @@ function (_Zone) {
    * @example IANAZone.isValidSpecifier("America/New_York") //=> true
    * @example IANAZone.isValidSpecifier("Fantasia/Castle") //=> true
    * @example IANAZone.isValidSpecifier("Sport~~blorp") //=> false
-   * @return {true}
+   * @return {boolean}
    */
   ;
 
   IANAZone.isValidSpecifier = function isValidSpecifier(s) {
-    return s && s.match(matchingRegex);
+    return !!(s && s.match(matchingRegex));
   }
   /**
    * Returns whether the provided string identifies a real zone
@@ -2019,6 +2041,12 @@ function (_Zone) {
     var format = _ref.format,
         locale = _ref.locale;
     return parseZoneInfo(ts, format, locale, this.name);
+  }
+  /** @override **/
+  ;
+
+  _proto.formatOffset = function formatOffset$1(ts, format) {
+    return formatOffset(this.offset(ts), format);
   }
   /** @override **/
   ;
@@ -2086,19 +2114,10 @@ function (_Zone) {
 }(Zone);
 
 var singleton$1 = null;
-
-function hoursMinutesOffset(z) {
-  var hours = Math.trunc(z.fixed / 60),
-      minutes = Math.abs(z.fixed % 60),
-      sign = hours > 0 ? "+" : "-",
-      base = sign + Math.abs(hours);
-  return minutes > 0 ? base + ":" + padStart(minutes, 2) : base;
-}
 /**
  * A zone with a fixed offset (i.e. no DST)
  * @implements {Zone}
  */
-
 
 var FixedOffsetZone =
 /*#__PURE__*/
@@ -2172,6 +2191,12 @@ function (_Zone) {
   /** @override **/
   ;
 
+  _proto.formatOffset = function formatOffset$1(ts, format) {
+    return formatOffset(this.fixed, format);
+  }
+  /** @override **/
+  ;
+
   /** @override **/
   _proto.offset = function offset() {
     return this.fixed;
@@ -2195,7 +2220,7 @@ function (_Zone) {
   }, {
     key: "name",
     get: function get() {
-      return this.fixed === 0 ? "UTC" : "UTC" + hoursMinutesOffset(this);
+      return this.fixed === 0 ? "UTC" : "UTC" + formatOffset(this.fixed, "narrow");
     }
   }, {
     key: "universal",
@@ -2239,6 +2264,12 @@ function (_Zone) {
   /** @override **/
   _proto.offsetName = function offsetName() {
     return null;
+  }
+  /** @override **/
+  ;
+
+  _proto.formatOffset = function formatOffset() {
+    return "";
   }
   /** @override **/
   ;
@@ -2656,24 +2687,7 @@ function () {
         return "Z";
       }
 
-      var hours = Math.trunc(dt.offset / 60),
-          minutes = Math.abs(dt.offset % 60),
-          sign = hours >= 0 ? "+" : "-",
-          base = "" + sign + Math.abs(hours);
-
-      switch (opts.format) {
-        case "short":
-          return "" + sign + _this.num(Math.abs(hours), 2) + ":" + _this.num(minutes, 2);
-
-        case "narrow":
-          return minutes > 0 ? base + ":" + minutes : base;
-
-        case "techie":
-          return "" + sign + _this.num(Math.abs(hours), 2) + _this.num(minutes, 2);
-
-        default:
-          throw new RangeError("Value format " + opts.format + " is out of range for property format");
-      }
+      return dt.isValid ? dt.zone.formatOffset(dt.ts, opts.format) : "";
     },
         meridiem = function meridiem() {
       return knownEnglish ? meridiemForDateTime(dt) : string({
@@ -2776,11 +2790,17 @@ function () {
 
         case "ZZZZ":
           // like EST
-          return dt.offsetNameShort;
+          return dt.zone.offsetName(dt.ts, {
+            format: "short",
+            locale: _this.loc.locale
+          });
 
         case "ZZZZZ":
           // like Eastern Standard Time
-          return dt.offsetNameLong;
+          return dt.zone.offsetName(dt.ts, {
+            format: "long",
+            locale: _this.loc.locale
+          });
         // zone
 
         case "z":
@@ -3456,7 +3476,7 @@ function () {
     }));
   };
 
-  _proto4.months = function months$$1(length, format, defaultOK) {
+  _proto4.months = function months$1(length, format, defaultOK) {
     var _this = this;
 
     if (format === void 0) {
@@ -3486,7 +3506,7 @@ function () {
     });
   };
 
-  _proto4.weekdays = function weekdays$$1(length, format, defaultOK) {
+  _proto4.weekdays = function weekdays$1(length, format, defaultOK) {
     var _this2 = this;
 
     if (format === void 0) {
@@ -3518,7 +3538,7 @@ function () {
     });
   };
 
-  _proto4.meridiems = function meridiems$$1(defaultOK) {
+  _proto4.meridiems = function meridiems$1(defaultOK) {
     var _this3 = this;
 
     if (defaultOK === void 0) {
@@ -3544,7 +3564,7 @@ function () {
     });
   };
 
-  _proto4.eras = function eras$$1(length, defaultOK) {
+  _proto4.eras = function eras$1(length, defaultOK) {
     var _this4 = this;
 
     if (defaultOK === void 0) {
@@ -3753,17 +3773,17 @@ function extractIANAZone(match, cursor) {
 } // ISO duration parsing
 
 
-var isoDuration = /^P(?:(?:(-?\d{1,9})Y)?(?:(-?\d{1,9})M)?(?:(-?\d{1,9})D)?(?:T(?:(-?\d{1,9})H)?(?:(-?\d{1,9})M)?(?:(-?\d{1,9})(?:[.,](-?\d{1,9}))?S)?)?|(-?\d{1,9})W)$/;
+var isoDuration = /^P(?:(?:(-?\d{1,9})Y)?(?:(-?\d{1,9})M)?(?:(-?\d{1,9})W)?(?:(-?\d{1,9})D)?(?:T(?:(-?\d{1,9})H)?(?:(-?\d{1,9})M)?(?:(-?\d{1,9})(?:[.,](-?\d{1,9}))?S)?)?)$/;
 
 function extractISODuration(match) {
   var yearStr = match[1],
       monthStr = match[2],
-      dayStr = match[3],
-      hourStr = match[4],
-      minuteStr = match[5],
-      secondStr = match[6],
-      millisecondsStr = match[7],
-      weekStr = match[8];
+      weekStr = match[3],
+      dayStr = match[4],
+      hourStr = match[5],
+      minuteStr = match[6],
+      secondStr = match[7],
+      millisecondsStr = match[8];
   return [{
     years: parseInteger(yearStr),
     months: parseInteger(monthStr),
@@ -3870,13 +3890,21 @@ function extractASCII(match) {
       result = fromStrings(weekdayStr, yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr);
   return [result, FixedOffsetZone.utcInstance];
 }
+
+var isoYmdWithTimeExtensionRegex = combineRegexes(isoYmdRegex, isoTimeExtensionRegex);
+var isoWeekWithTimeExtensionRegex = combineRegexes(isoWeekRegex, isoTimeExtensionRegex);
+var isoOrdinalWithTimeExtensionRegex = combineRegexes(isoOrdinalRegex, isoTimeExtensionRegex);
+var isoTimeCombinedRegex = combineRegexes(isoTimeRegex);
+var extractISOYmdTimeAndOffset = combineExtractors(extractISOYmd, extractISOTime, extractISOOffset);
+var extractISOWeekTimeAndOffset = combineExtractors(extractISOWeekData, extractISOTime, extractISOOffset);
+var extractISOOrdinalDataAndTime = combineExtractors(extractISOOrdinalData, extractISOTime);
+var extractISOTimeAndOffset = combineExtractors(extractISOTime, extractISOOffset);
 /**
  * @private
  */
 
-
 function parseISODate(s) {
-  return parse(s, [combineRegexes(isoYmdRegex, isoTimeExtensionRegex), combineExtractors(extractISOYmd, extractISOTime, extractISOOffset)], [combineRegexes(isoWeekRegex, isoTimeExtensionRegex), combineExtractors(extractISOWeekData, extractISOTime, extractISOOffset)], [combineRegexes(isoOrdinalRegex, isoTimeExtensionRegex), combineExtractors(extractISOOrdinalData, extractISOTime)], [combineRegexes(isoTimeRegex), combineExtractors(extractISOTime, extractISOOffset)]);
+  return parse(s, [isoYmdWithTimeExtensionRegex, extractISOYmdTimeAndOffset], [isoWeekWithTimeExtensionRegex, extractISOWeekTimeAndOffset], [isoOrdinalWithTimeExtensionRegex, extractISOOrdinalDataAndTime], [isoTimeCombinedRegex, extractISOTimeAndOffset]);
 }
 function parseRFC2822Date(s) {
   return parse(preprocessRFC2822(s), [rfc2822, extractRFC2822]);
@@ -3887,8 +3915,12 @@ function parseHTTPDate(s) {
 function parseISODuration(s) {
   return parse(s, [isoDuration, extractISODuration]);
 }
+var sqlYmdWithTimeExtensionRegex = combineRegexes(sqlYmdRegex, sqlTimeExtensionRegex);
+var sqlTimeCombinedRegex = combineRegexes(sqlTimeRegex);
+var extractISOYmdTimeOffsetAndIANAZone = combineExtractors(extractISOYmd, extractISOTime, extractISOOffset, extractIANAZone);
+var extractISOTimeOffsetAndIANAZone = combineExtractors(extractISOTime, extractISOOffset, extractIANAZone);
 function parseSQL(s) {
-  return parse(s, [combineRegexes(sqlYmdRegex, sqlTimeExtensionRegex), combineExtractors(extractISOYmd, extractISOTime, extractISOOffset, extractIANAZone)], [combineRegexes(sqlTimeRegex), combineExtractors(extractISOTime, extractISOOffset, extractIANAZone)]);
+  return parse(s, [sqlYmdWithTimeExtensionRegex, extractISOYmdTimeOffsetAndIANAZone], [sqlTimeCombinedRegex, extractISOTimeOffsetAndIANAZone]);
 }
 
 var Invalid =
@@ -4137,11 +4169,12 @@ function () {
 
   Duration.fromObject = function fromObject(obj) {
     if (obj == null || typeof obj !== "object") {
-      throw new InvalidArgumentError("Duration.fromObject: argument expected to be an object, got " + typeof obj);
+      throw new InvalidArgumentError("Duration.fromObject: argument expected to be an object, got " + (obj === null ? "null" : typeof obj));
     }
 
     return new Duration({
-      values: normalizeObject(obj, Duration.normalizeUnit, ["locale", "numberingSystem", "conversionAccuracy"]),
+      values: normalizeObject(obj, Duration.normalizeUnit, ["locale", "numberingSystem", "conversionAccuracy", "zone" // a bit of debt; it's super inconvenient internally not to be able to blindly pass this
+      ]),
       loc: Locale.fromObject(obj),
       conversionAccuracy: obj.conversionAccuracy
     });
@@ -5454,7 +5487,7 @@ function () {
   ;
 
   Info.isValidIANAZone = function isValidIANAZone(zone) {
-    return !!IANAZone.isValidSpecifier(zone) && IANAZone.isValidZone(zone);
+    return IANAZone.isValidSpecifier(zone) && IANAZone.isValidZone(zone);
   }
   /**
    * Converts the input into a {@link Zone} instance.
@@ -5472,7 +5505,7 @@ function () {
    */
   ;
 
-  Info.normalizeZone = function normalizeZone$$1(input) {
+  Info.normalizeZone = function normalizeZone$1(input) {
     return normalizeZone(input, Settings.defaultZone);
   }
   /**
@@ -5760,6 +5793,91 @@ function _diff (earlier, later, units, opts) {
   }
 }
 
+var numberingSystems = {
+  arab: "[\u0660-\u0669]",
+  arabext: "[\u06F0-\u06F9]",
+  bali: "[\u1B50-\u1B59]",
+  beng: "[\u09E6-\u09EF]",
+  deva: "[\u0966-\u096F]",
+  fullwide: "[\uFF10-\uFF19]",
+  gujr: "[\u0AE6-\u0AEF]",
+  hanidec: "[〇|一|二|三|四|五|六|七|八|九]",
+  khmr: "[\u17E0-\u17E9]",
+  knda: "[\u0CE6-\u0CEF]",
+  laoo: "[\u0ED0-\u0ED9]",
+  limb: "[\u1946-\u194F]",
+  mlym: "[\u0D66-\u0D6F]",
+  mong: "[\u1810-\u1819]",
+  mymr: "[\u1040-\u1049]",
+  orya: "[\u0B66-\u0B6F]",
+  tamldec: "[\u0BE6-\u0BEF]",
+  telu: "[\u0C66-\u0C6F]",
+  thai: "[\u0E50-\u0E59]",
+  tibt: "[\u0F20-\u0F29]",
+  latn: "\\d"
+};
+var numberingSystemsUTF16 = {
+  arab: [1632, 1641],
+  arabext: [1776, 1785],
+  bali: [6992, 7001],
+  beng: [2534, 2543],
+  deva: [2406, 2415],
+  fullwide: [65296, 65303],
+  gujr: [2790, 2799],
+  khmr: [6112, 6121],
+  knda: [3302, 3311],
+  laoo: [3792, 3801],
+  limb: [6470, 6479],
+  mlym: [3430, 3439],
+  mong: [6160, 6169],
+  mymr: [4160, 4169],
+  orya: [2918, 2927],
+  tamldec: [3046, 3055],
+  telu: [3174, 3183],
+  thai: [3664, 3673],
+  tibt: [3872, 3881]
+}; // eslint-disable-next-line
+
+var hanidecChars = numberingSystems.hanidec.replace(/[\[|\]]/g, "").split("");
+function parseDigits(str) {
+  var value = parseInt(str, 10);
+
+  if (isNaN(value)) {
+    value = "";
+
+    for (var i = 0; i < str.length; i++) {
+      var code = str.charCodeAt(i);
+
+      if (str[i].search(numberingSystems.hanidec) !== -1) {
+        value += hanidecChars.indexOf(str[i]);
+      } else {
+        for (var key in numberingSystemsUTF16) {
+          var _numberingSystemsUTF = numberingSystemsUTF16[key],
+              min = _numberingSystemsUTF[0],
+              max = _numberingSystemsUTF[1];
+
+          if (code >= min && code <= max) {
+            value += code - min;
+          }
+        }
+      }
+    }
+
+    return parseInt(value, 10);
+  } else {
+    return value;
+  }
+}
+function digitRegex(_ref, append) {
+  var numberingSystem = _ref.numberingSystem;
+
+  if (append === void 0) {
+    append = "";
+  }
+
+  return new RegExp("" + numberingSystems[numberingSystem || "latn"] + append);
+}
+
 var MISSING_FTP = "missing Intl.DateTimeFormat.formatToParts support";
 
 function intUnit(regex, post) {
@@ -5773,7 +5891,7 @@ function intUnit(regex, post) {
     regex: regex,
     deser: function deser(_ref) {
       var s = _ref[0];
-      return post(parseInt(s, 10));
+      return post(parseDigits(s));
     }
   };
 }
@@ -5831,13 +5949,17 @@ function escapeToken(value) {
 }
 
 function unitForToken(token, loc) {
-  var one = /\d/,
-      two = /\d{2}/,
-      three = /\d{3}/,
-      four = /\d{4}/,
-      oneOrTwo = /\d{1,2}/,
-      oneToThree = /\d{1,3}/,
-      twoToFour = /\d{2,4}/,
+  var one = digitRegex(loc),
+      two = digitRegex(loc, "{2}"),
+      three = digitRegex(loc, "{3}"),
+      four = digitRegex(loc, "{4}"),
+      six = digitRegex(loc, "{6}"),
+      oneOrTwo = digitRegex(loc, "{1,2}"),
+      oneToThree = digitRegex(loc, "{1,3}"),
+      oneToSix = digitRegex(loc, "{1,6}"),
+      oneToNine = digitRegex(loc, "{1,9}"),
+      twoToFour = digitRegex(loc, "{2,4}"),
+      fourToSix = digitRegex(loc, "{4,6}"),
       literal = function literal(t) {
     return {
       regex: RegExp(escapeToken(t.val)),
@@ -5863,7 +5985,7 @@ function unitForToken(token, loc) {
       // years
 
       case "y":
-        return intUnit(/\d{1,6}/);
+        return intUnit(oneToSix);
 
       case "yy":
         return intUnit(twoToFour, untruncateYear);
@@ -5872,10 +5994,10 @@ function unitForToken(token, loc) {
         return intUnit(four);
 
       case "yyyyy":
-        return intUnit(/\d{4,6}/);
+        return intUnit(fourToSix);
 
       case "yyyyyy":
-        return intUnit(/\d{6}/);
+        return intUnit(six);
       // months
 
       case "M":
@@ -5885,10 +6007,10 @@ function unitForToken(token, loc) {
         return intUnit(two);
 
       case "MMM":
-        return oneOf(loc.months("short", false, false), 1);
+        return oneOf(loc.months("short", true, false), 1);
 
       case "MMMM":
-        return oneOf(loc.months("long", false, false), 1);
+        return oneOf(loc.months("long", true, false), 1);
 
       case "L":
         return intUnit(oneOrTwo);
@@ -5897,10 +6019,10 @@ function unitForToken(token, loc) {
         return intUnit(two);
 
       case "LLL":
-        return oneOf(loc.months("short", true, false), 1);
+        return oneOf(loc.months("short", false, false), 1);
 
       case "LLLL":
-        return oneOf(loc.months("long", true, false), 1);
+        return oneOf(loc.months("long", false, false), 1);
       // dates
 
       case "d":
@@ -5948,7 +6070,7 @@ function unitForToken(token, loc) {
         return intUnit(three);
 
       case "u":
-        return simple(/\d{1,9}/);
+        return simple(oneToNine);
       // meridiem
 
       case "a":
@@ -5988,10 +6110,10 @@ function unitForToken(token, loc) {
 
       case "Z":
       case "ZZ":
-        return offset(/([+-]\d{1,2})(?::(\d{2}))?/, 2);
+        return offset(new RegExp("([+-]" + oneOrTwo.source + ")(?::(" + two.source + "))?"), 2);
 
       case "ZZZ":
-        return offset(/([+-]\d{1,2})(\d{2})?/, 2);
+        return offset(new RegExp("([+-]" + oneOrTwo.source + ")(" + two.source + ")?"), 2);
       // we don't support ZZZZ (PST) or ZZZZZ (Pacific Standard Time) in parsing
       // because we don't have any way to figure out what they are
 
@@ -6823,9 +6945,21 @@ function () {
       options = {};
     }
 
+    var ts = isDate(date) ? date.valueOf() : NaN;
+
+    if (Number.isNaN(ts)) {
+      return DateTime.invalid("invalid input");
+    }
+
+    var zoneToUse = normalizeZone(options.zone, Settings.defaultZone);
+
+    if (!zoneToUse.isValid) {
+      return DateTime.invalid(unsupportedZone(zoneToUse));
+    }
+
     return new DateTime({
-      ts: isDate(date) ? date.valueOf() : NaN,
-      zone: normalizeZone(options.zone, Settings.defaultZone),
+      ts: ts,
+      zone: zoneToUse,
       loc: Locale.fromObject(options)
     });
   }
@@ -7099,8 +7233,8 @@ function () {
     return parseDataToDateTime(vals, parsedZone, opts, "HTTP", opts);
   }
   /**
-   * Create a DateTime from an input string and format string
-   * Defaults to en-US if no locale has been specified, regardless of the system's locale
+   * Create a DateTime from an input string and format string.
+   * Defaults to en-US if no locale has been specified, regardless of the system's locale.
    * @see https://moment.github.io/luxon/docs/manual/parsing.html#table-of-tokens
    * @param {string} text - the string to parse
    * @param {string} fmt - the format the string is expected to be in (see the link below for the formats)
@@ -7329,8 +7463,17 @@ function () {
     } else if (!zone.isValid) {
       return DateTime.invalid(unsupportedZone(zone));
     } else {
-      var newTS = keepLocalTime || keepCalendarTime // keepCalendarTime is the deprecated name for keepLocalTime
-      ? this.ts + (this.o - zone.offset(this.ts)) * 60 * 1000 : this.ts;
+      var newTS = this.ts;
+
+      if (keepLocalTime || keepCalendarTime) {
+        var offsetGuess = this.o - zone.offset(this.ts);
+        var asObj = this.toObject();
+
+        var _objToTS3 = objToTS(asObj, offsetGuess, zone);
+
+        newTS = _objToTS3[0];
+      }
+
       return clone$1(this, {
         ts: newTS,
         zone: zone
@@ -7404,9 +7547,9 @@ function () {
       }
     }
 
-    var _objToTS3 = objToTS(mixed, this.o, this.zone),
-        ts = _objToTS3[0],
-        o = _objToTS3[1];
+    var _objToTS4 = objToTS(mixed, this.o, this.zone),
+        ts = _objToTS4[0],
+        o = _objToTS4[1];
 
     return clone$1(this, {
       ts: ts,
@@ -7448,7 +7591,7 @@ function () {
   }
   /**
    * "Set" this DateTime to the beginning of a unit of time.
-   * @param {string} unit - The unit to go to the beginning of. Can be 'year', 'month', 'day', 'hour', 'minute', 'second', or 'millisecond'.
+   * @param {string} unit - The unit to go to the beginning of. Can be 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', or 'millisecond'.
    * @example DateTime.local(2014, 3, 3).startOf('month').toISODate(); //=> '2014-03-01'
    * @example DateTime.local(2014, 3, 3).startOf('year').toISODate(); //=> '2014-01-01'
    * @example DateTime.local(2014, 3, 3, 5, 30).startOf('day').toISOTime(); //=> '00:00.000-05:00'
@@ -7625,7 +7768,13 @@ function () {
   ;
 
   _proto.toISODate = function toISODate() {
-    return toTechFormat(this, "yyyy-MM-dd");
+    var format = "yyyy-MM-dd";
+
+    if (this.year > 9999) {
+      format = "+" + format;
+    }
+
+    return toTechFormat(this, format);
   }
   /**
    * Returns an ISO 8601-compliant string representation of this DateTime's week date
@@ -8692,14 +8841,14 @@ function friendlyDateTime(dateTimeish) {
 
 exports.DateTime = DateTime;
 exports.Duration = Duration;
-exports.Interval = Interval;
-exports.Info = Info;
-exports.Zone = Zone;
 exports.FixedOffsetZone = FixedOffsetZone;
 exports.IANAZone = IANAZone;
+exports.Info = Info;
+exports.Interval = Interval;
 exports.InvalidZone = InvalidZone;
 exports.LocalZone = LocalZone;
 exports.Settings = Settings;
+exports.Zone = Zone;
 //# sourceMappingURL=luxon.js.map
 
 
@@ -8768,6 +8917,97 @@ __webpack_require__("30f1")(String, 'String', function (iterated) {
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
+
+
+/***/ }),
+
+/***/ "1991":
+/***/ (function(module, exports, __webpack_require__) {
+
+var ctx = __webpack_require__("9b43");
+var invoke = __webpack_require__("31f4");
+var html = __webpack_require__("fab2");
+var cel = __webpack_require__("230e");
+var global = __webpack_require__("7726");
+var process = global.process;
+var setTask = global.setImmediate;
+var clearTask = global.clearImmediate;
+var MessageChannel = global.MessageChannel;
+var Dispatch = global.Dispatch;
+var counter = 0;
+var queue = {};
+var ONREADYSTATECHANGE = 'onreadystatechange';
+var defer, channel, port;
+var run = function () {
+  var id = +this;
+  // eslint-disable-next-line no-prototype-builtins
+  if (queue.hasOwnProperty(id)) {
+    var fn = queue[id];
+    delete queue[id];
+    fn();
+  }
+};
+var listener = function (event) {
+  run.call(event.data);
+};
+// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
+if (!setTask || !clearTask) {
+  setTask = function setImmediate(fn) {
+    var args = [];
+    var i = 1;
+    while (arguments.length > i) args.push(arguments[i++]);
+    queue[++counter] = function () {
+      // eslint-disable-next-line no-new-func
+      invoke(typeof fn == 'function' ? fn : Function(fn), args);
+    };
+    defer(counter);
+    return counter;
+  };
+  clearTask = function clearImmediate(id) {
+    delete queue[id];
+  };
+  // Node.js 0.8-
+  if (__webpack_require__("2d95")(process) == 'process') {
+    defer = function (id) {
+      process.nextTick(ctx(run, id, 1));
+    };
+  // Sphere (JS game engine) Dispatch API
+  } else if (Dispatch && Dispatch.now) {
+    defer = function (id) {
+      Dispatch.now(ctx(run, id, 1));
+    };
+  // Browsers with MessageChannel, includes WebWorkers
+  } else if (MessageChannel) {
+    channel = new MessageChannel();
+    port = channel.port2;
+    channel.port1.onmessage = listener;
+    defer = ctx(port.postMessage, port, 1);
+  // Browsers with postMessage, skip WebWorkers
+  // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
+  } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts) {
+    defer = function (id) {
+      global.postMessage(id + '', '*');
+    };
+    global.addEventListener('message', listener, false);
+  // IE8-
+  } else if (ONREADYSTATECHANGE in cel('script')) {
+    defer = function (id) {
+      html.appendChild(cel('script'))[ONREADYSTATECHANGE] = function () {
+        html.removeChild(this);
+        run.call(id);
+      };
+    };
+  // Rest old browsers
+  } else {
+    defer = function (id) {
+      setTimeout(ctx(run, id, 1), 0);
+    };
+  }
+}
+module.exports = {
+  set: setTask,
+  clear: clearTask
+};
 
 
 /***/ }),
@@ -8865,6 +9105,25 @@ var getTinymce = function () {
 
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("c8ba")))
+
+/***/ }),
+
+/***/ "1fa8":
+/***/ (function(module, exports, __webpack_require__) {
+
+// call something on iterator step with safe closing on error
+var anObject = __webpack_require__("cb7c");
+module.exports = function (iterator, fn, value, entries) {
+  try {
+    return entries ? fn(anObject(value)[0], value[1]) : fn(value);
+  // 7.4.6 IteratorClose(iterator, completion)
+  } catch (e) {
+    var ret = iterator['return'];
+    if (ret !== undefined) anObject(ret.call(iterator));
+    throw e;
+  }
+};
+
 
 /***/ }),
 
@@ -9228,301 +9487,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("4362")))
-
-/***/ }),
-
-/***/ "24c5":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var LIBRARY = __webpack_require__("b8e3");
-var global = __webpack_require__("e53d");
-var ctx = __webpack_require__("d864");
-var classof = __webpack_require__("40c3");
-var $export = __webpack_require__("63b6");
-var isObject = __webpack_require__("f772");
-var aFunction = __webpack_require__("79aa");
-var anInstance = __webpack_require__("1173");
-var forOf = __webpack_require__("a22a");
-var speciesConstructor = __webpack_require__("f201");
-var task = __webpack_require__("4178").set;
-var microtask = __webpack_require__("aba2")();
-var newPromiseCapabilityModule = __webpack_require__("656e");
-var perform = __webpack_require__("4439");
-var userAgent = __webpack_require__("bc13");
-var promiseResolve = __webpack_require__("cd78");
-var PROMISE = 'Promise';
-var TypeError = global.TypeError;
-var process = global.process;
-var versions = process && process.versions;
-var v8 = versions && versions.v8 || '';
-var $Promise = global[PROMISE];
-var isNode = classof(process) == 'process';
-var empty = function () { /* empty */ };
-var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
-var newPromiseCapability = newGenericPromiseCapability = newPromiseCapabilityModule.f;
-
-var USE_NATIVE = !!function () {
-  try {
-    // correct subclassing with @@species support
-    var promise = $Promise.resolve(1);
-    var FakePromise = (promise.constructor = {})[__webpack_require__("5168")('species')] = function (exec) {
-      exec(empty, empty);
-    };
-    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode || typeof PromiseRejectionEvent == 'function')
-      && promise.then(empty) instanceof FakePromise
-      // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
-      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
-      // we can't detect it synchronously, so just check versions
-      && v8.indexOf('6.6') !== 0
-      && userAgent.indexOf('Chrome/66') === -1;
-  } catch (e) { /* empty */ }
-}();
-
-// helpers
-var isThenable = function (it) {
-  var then;
-  return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
-};
-var notify = function (promise, isReject) {
-  if (promise._n) return;
-  promise._n = true;
-  var chain = promise._c;
-  microtask(function () {
-    var value = promise._v;
-    var ok = promise._s == 1;
-    var i = 0;
-    var run = function (reaction) {
-      var handler = ok ? reaction.ok : reaction.fail;
-      var resolve = reaction.resolve;
-      var reject = reaction.reject;
-      var domain = reaction.domain;
-      var result, then, exited;
-      try {
-        if (handler) {
-          if (!ok) {
-            if (promise._h == 2) onHandleUnhandled(promise);
-            promise._h = 1;
-          }
-          if (handler === true) result = value;
-          else {
-            if (domain) domain.enter();
-            result = handler(value); // may throw
-            if (domain) {
-              domain.exit();
-              exited = true;
-            }
-          }
-          if (result === reaction.promise) {
-            reject(TypeError('Promise-chain cycle'));
-          } else if (then = isThenable(result)) {
-            then.call(result, resolve, reject);
-          } else resolve(result);
-        } else reject(value);
-      } catch (e) {
-        if (domain && !exited) domain.exit();
-        reject(e);
-      }
-    };
-    while (chain.length > i) run(chain[i++]); // variable length - can't use forEach
-    promise._c = [];
-    promise._n = false;
-    if (isReject && !promise._h) onUnhandled(promise);
-  });
-};
-var onUnhandled = function (promise) {
-  task.call(global, function () {
-    var value = promise._v;
-    var unhandled = isUnhandled(promise);
-    var result, handler, console;
-    if (unhandled) {
-      result = perform(function () {
-        if (isNode) {
-          process.emit('unhandledRejection', value, promise);
-        } else if (handler = global.onunhandledrejection) {
-          handler({ promise: promise, reason: value });
-        } else if ((console = global.console) && console.error) {
-          console.error('Unhandled promise rejection', value);
-        }
-      });
-      // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
-      promise._h = isNode || isUnhandled(promise) ? 2 : 1;
-    } promise._a = undefined;
-    if (unhandled && result.e) throw result.v;
-  });
-};
-var isUnhandled = function (promise) {
-  return promise._h !== 1 && (promise._a || promise._c).length === 0;
-};
-var onHandleUnhandled = function (promise) {
-  task.call(global, function () {
-    var handler;
-    if (isNode) {
-      process.emit('rejectionHandled', promise);
-    } else if (handler = global.onrejectionhandled) {
-      handler({ promise: promise, reason: promise._v });
-    }
-  });
-};
-var $reject = function (value) {
-  var promise = this;
-  if (promise._d) return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  promise._v = value;
-  promise._s = 2;
-  if (!promise._a) promise._a = promise._c.slice();
-  notify(promise, true);
-};
-var $resolve = function (value) {
-  var promise = this;
-  var then;
-  if (promise._d) return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  try {
-    if (promise === value) throw TypeError("Promise can't be resolved itself");
-    if (then = isThenable(value)) {
-      microtask(function () {
-        var wrapper = { _w: promise, _d: false }; // wrap
-        try {
-          then.call(value, ctx($resolve, wrapper, 1), ctx($reject, wrapper, 1));
-        } catch (e) {
-          $reject.call(wrapper, e);
-        }
-      });
-    } else {
-      promise._v = value;
-      promise._s = 1;
-      notify(promise, false);
-    }
-  } catch (e) {
-    $reject.call({ _w: promise, _d: false }, e); // wrap
-  }
-};
-
-// constructor polyfill
-if (!USE_NATIVE) {
-  // 25.4.3.1 Promise(executor)
-  $Promise = function Promise(executor) {
-    anInstance(this, $Promise, PROMISE, '_h');
-    aFunction(executor);
-    Internal.call(this);
-    try {
-      executor(ctx($resolve, this, 1), ctx($reject, this, 1));
-    } catch (err) {
-      $reject.call(this, err);
-    }
-  };
-  // eslint-disable-next-line no-unused-vars
-  Internal = function Promise(executor) {
-    this._c = [];             // <- awaiting reactions
-    this._a = undefined;      // <- checked in isUnhandled reactions
-    this._s = 0;              // <- state
-    this._d = false;          // <- done
-    this._v = undefined;      // <- value
-    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
-    this._n = false;          // <- notify
-  };
-  Internal.prototype = __webpack_require__("5c95")($Promise.prototype, {
-    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
-    then: function then(onFulfilled, onRejected) {
-      var reaction = newPromiseCapability(speciesConstructor(this, $Promise));
-      reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
-      reaction.fail = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode ? process.domain : undefined;
-      this._c.push(reaction);
-      if (this._a) this._a.push(reaction);
-      if (this._s) notify(this, false);
-      return reaction.promise;
-    },
-    // 25.4.5.1 Promise.prototype.catch(onRejected)
-    'catch': function (onRejected) {
-      return this.then(undefined, onRejected);
-    }
-  });
-  OwnPromiseCapability = function () {
-    var promise = new Internal();
-    this.promise = promise;
-    this.resolve = ctx($resolve, promise, 1);
-    this.reject = ctx($reject, promise, 1);
-  };
-  newPromiseCapabilityModule.f = newPromiseCapability = function (C) {
-    return C === $Promise || C === Wrapper
-      ? new OwnPromiseCapability(C)
-      : newGenericPromiseCapability(C);
-  };
-}
-
-$export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__webpack_require__("45f2")($Promise, PROMISE);
-__webpack_require__("4c95")(PROMISE);
-Wrapper = __webpack_require__("584a")[PROMISE];
-
-// statics
-$export($export.S + $export.F * !USE_NATIVE, PROMISE, {
-  // 25.4.4.5 Promise.reject(r)
-  reject: function reject(r) {
-    var capability = newPromiseCapability(this);
-    var $$reject = capability.reject;
-    $$reject(r);
-    return capability.promise;
-  }
-});
-$export($export.S + $export.F * (LIBRARY || !USE_NATIVE), PROMISE, {
-  // 25.4.4.6 Promise.resolve(x)
-  resolve: function resolve(x) {
-    return promiseResolve(LIBRARY && this === Wrapper ? $Promise : this, x);
-  }
-});
-$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__("4ee1")(function (iter) {
-  $Promise.all(iter)['catch'](empty);
-})), PROMISE, {
-  // 25.4.4.1 Promise.all(iterable)
-  all: function all(iterable) {
-    var C = this;
-    var capability = newPromiseCapability(C);
-    var resolve = capability.resolve;
-    var reject = capability.reject;
-    var result = perform(function () {
-      var values = [];
-      var index = 0;
-      var remaining = 1;
-      forOf(iterable, false, function (promise) {
-        var $index = index++;
-        var alreadyCalled = false;
-        values.push(undefined);
-        remaining++;
-        C.resolve(promise).then(function (value) {
-          if (alreadyCalled) return;
-          alreadyCalled = true;
-          values[$index] = value;
-          --remaining || resolve(values);
-        }, reject);
-      });
-      --remaining || resolve(values);
-    });
-    if (result.e) reject(result.v);
-    return capability.promise;
-  },
-  // 25.4.4.4 Promise.race(iterable)
-  race: function race(iterable) {
-    var C = this;
-    var capability = newPromiseCapability(C);
-    var reject = capability.reject;
-    var result = perform(function () {
-      forOf(iterable, false, function (promise) {
-        C.resolve(promise).then(capability.resolve, reject);
-      });
-    });
-    if (result.e) reject(result.v);
-    return capability.promise;
-  }
-});
-
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("f28c")))
 
 /***/ }),
 
@@ -9905,40 +9870,6 @@ module.exports = function (method, arg) {
 
 /***/ }),
 
-/***/ "2f37":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.3.3.1 / 15.9.4.4 Date.now()
-var $export = __webpack_require__("63b6");
-
-$export($export.S, 'Date', { now: function () { return new Date().getTime(); } });
-
-
-/***/ }),
-
-/***/ "3024":
-/***/ (function(module, exports) {
-
-// fast apply, http://jsperf.lnkit.com/fast-apply/5
-module.exports = function (fn, args, that) {
-  var un = that === undefined;
-  switch (args.length) {
-    case 0: return un ? fn()
-                      : fn.call(that);
-    case 1: return un ? fn(args[0])
-                      : fn.call(that, args[0]);
-    case 2: return un ? fn(args[0], args[1])
-                      : fn.call(that, args[0], args[1]);
-    case 3: return un ? fn(args[0], args[1], args[2])
-                      : fn.call(that, args[0], args[1], args[2]);
-    case 4: return un ? fn(args[0], args[1], args[2], args[3])
-                      : fn.call(that, args[0], args[1], args[2], args[3]);
-  } return fn.apply(that, args);
-};
-
-
-/***/ }),
-
 /***/ "30b5":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10085,6 +10016,29 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
     } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
+};
+
+
+/***/ }),
+
+/***/ "31f4":
+/***/ (function(module, exports) {
+
+// fast apply, http://jsperf.lnkit.com/fast-apply/5
+module.exports = function (fn, args, that) {
+  var un = that === undefined;
+  switch (args.length) {
+    case 0: return un ? fn()
+                      : fn.call(that);
+    case 1: return un ? fn(args[0])
+                      : fn.call(that, args[0]);
+    case 2: return un ? fn(args[0], args[1])
+                      : fn.call(that, args[0], args[1]);
+    case 3: return un ? fn(args[0], args[1], args[2])
+                      : fn.call(that, args[0], args[1], args[2]);
+    case 4: return un ? fn(args[0], args[1], args[2], args[3])
+                      : fn.call(that, args[0], args[1], args[2], args[3]);
+  } return fn.apply(that, args);
 };
 
 
@@ -10463,34 +10417,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "3c11":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// https://github.com/tc39/proposal-promise-finally
-
-var $export = __webpack_require__("63b6");
-var core = __webpack_require__("584a");
-var global = __webpack_require__("e53d");
-var speciesConstructor = __webpack_require__("f201");
-var promiseResolve = __webpack_require__("cd78");
-
-$export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
-  var C = speciesConstructor(this, core.Promise || global.Promise);
-  var isFunction = typeof onFinally == 'function';
-  return this.then(
-    isFunction ? function (x) {
-      return promiseResolve(C, onFinally()).then(function () { return x; });
-    } : onFinally,
-    isFunction ? function (e) {
-      return promiseResolve(C, onFinally()).then(function () { throw e; });
-    } : onFinally
-  );
-} });
-
-
-/***/ }),
-
 /***/ "40c3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10521,97 +10447,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "4178":
-/***/ (function(module, exports, __webpack_require__) {
-
-var ctx = __webpack_require__("d864");
-var invoke = __webpack_require__("3024");
-var html = __webpack_require__("32fc");
-var cel = __webpack_require__("1ec9");
-var global = __webpack_require__("e53d");
-var process = global.process;
-var setTask = global.setImmediate;
-var clearTask = global.clearImmediate;
-var MessageChannel = global.MessageChannel;
-var Dispatch = global.Dispatch;
-var counter = 0;
-var queue = {};
-var ONREADYSTATECHANGE = 'onreadystatechange';
-var defer, channel, port;
-var run = function () {
-  var id = +this;
-  // eslint-disable-next-line no-prototype-builtins
-  if (queue.hasOwnProperty(id)) {
-    var fn = queue[id];
-    delete queue[id];
-    fn();
-  }
-};
-var listener = function (event) {
-  run.call(event.data);
-};
-// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
-if (!setTask || !clearTask) {
-  setTask = function setImmediate(fn) {
-    var args = [];
-    var i = 1;
-    while (arguments.length > i) args.push(arguments[i++]);
-    queue[++counter] = function () {
-      // eslint-disable-next-line no-new-func
-      invoke(typeof fn == 'function' ? fn : Function(fn), args);
-    };
-    defer(counter);
-    return counter;
-  };
-  clearTask = function clearImmediate(id) {
-    delete queue[id];
-  };
-  // Node.js 0.8-
-  if (__webpack_require__("6b4c")(process) == 'process') {
-    defer = function (id) {
-      process.nextTick(ctx(run, id, 1));
-    };
-  // Sphere (JS game engine) Dispatch API
-  } else if (Dispatch && Dispatch.now) {
-    defer = function (id) {
-      Dispatch.now(ctx(run, id, 1));
-    };
-  // Browsers with MessageChannel, includes WebWorkers
-  } else if (MessageChannel) {
-    channel = new MessageChannel();
-    port = channel.port2;
-    channel.port1.onmessage = listener;
-    defer = ctx(port.postMessage, port, 1);
-  // Browsers with postMessage, skip WebWorkers
-  // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-  } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts) {
-    defer = function (id) {
-      global.postMessage(id + '', '*');
-    };
-    global.addEventListener('message', listener, false);
-  // IE8-
-  } else if (ONREADYSTATECHANGE in cel('script')) {
-    defer = function (id) {
-      html.appendChild(cel('script'))[ONREADYSTATECHANGE] = function () {
-        html.removeChild(this);
-        run.call(id);
-      };
-    };
-  // Rest old browsers
-  } else {
-    defer = function (id) {
-      setTimeout(ctx(run, id, 1), 0);
-    };
-  }
-}
-module.exports = {
-  set: setTask,
-  clear: clearTask
-};
-
-
-/***/ }),
-
 /***/ "41a0":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10633,77 +10468,6 @@ module.exports = function (Constructor, NAME, next) {
 
 /***/ }),
 
-/***/ "4362":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports.nextTick = function nextTick(fn) {
-	setTimeout(fn, 0);
-};
-
-exports.platform = exports.arch = 
-exports.execPath = exports.title = 'browser';
-exports.pid = 1;
-exports.browser = true;
-exports.env = {};
-exports.argv = [];
-
-exports.binding = function (name) {
-	throw new Error('No such module. (Possibly not yet loaded)')
-};
-
-(function () {
-    var cwd = '/';
-    var path;
-    exports.cwd = function () { return cwd };
-    exports.chdir = function (dir) {
-        if (!path) path = __webpack_require__("df7c");
-        cwd = path.resolve(dir, cwd);
-    };
-})();
-
-exports.exit = exports.kill = 
-exports.umask = exports.dlopen = 
-exports.uptime = exports.memoryUsage = 
-exports.uvCounters = function() {};
-exports.features = {};
-
-
-/***/ }),
-
-/***/ "43fc":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/tc39/proposal-promise-try
-var $export = __webpack_require__("63b6");
-var newPromiseCapability = __webpack_require__("656e");
-var perform = __webpack_require__("4439");
-
-$export($export.S, 'Promise', { 'try': function (callbackfn) {
-  var promiseCapability = newPromiseCapability.f(this);
-  var result = perform(callbackfn);
-  (result.e ? promiseCapability.reject : promiseCapability.resolve)(result.v);
-  return promiseCapability.promise;
-} });
-
-
-/***/ }),
-
-/***/ "4439":
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return { e: false, v: exec() };
-  } catch (e) {
-    return { e: true, v: e };
-  }
-};
-
-
-/***/ }),
-
 /***/ "454f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10712,6 +10476,22 @@ var $Object = __webpack_require__("584a").Object;
 module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
+
+
+/***/ }),
+
+/***/ "456d":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.14 Object.keys(O)
+var toObject = __webpack_require__("4bf8");
+var $keys = __webpack_require__("0d58");
+
+__webpack_require__("5eda")('keys', function () {
+  return function keys(it) {
+    return $keys(toObject(it));
+  };
+});
 
 
 /***/ }),
@@ -11110,6 +10890,38 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
+/***/ "4a59":
+/***/ (function(module, exports, __webpack_require__) {
+
+var ctx = __webpack_require__("9b43");
+var call = __webpack_require__("1fa8");
+var isArrayIter = __webpack_require__("33a4");
+var anObject = __webpack_require__("cb7c");
+var toLength = __webpack_require__("9def");
+var getIterFn = __webpack_require__("27ee");
+var BREAK = {};
+var RETURN = {};
+var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
+  var iterFn = ITERATOR ? function () { return iterable; } : getIterFn(iterable);
+  var f = ctx(fn, that, entries ? 2 : 1);
+  var index = 0;
+  var length, step, iterator, result;
+  if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
+  // fast case for arrays with default iterator
+  if (isArrayIter(iterFn)) for (length = toLength(iterable.length); length > index; index++) {
+    result = entries ? f(anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
+    if (result === BREAK || result === RETURN) return result;
+  } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
+    result = call(iterator, f, step.value, entries);
+    if (result === BREAK || result === RETURN) return result;
+  }
+};
+exports.BREAK = BREAK;
+exports.RETURN = RETURN;
+
+
+/***/ }),
+
 /***/ "4aa6":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11141,28 +10953,6 @@ if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = __webpack_require__("499e").default
 var update = add("6076bb28", content, true, {"sourceMap":false,"shadowMode":false});
-
-/***/ }),
-
-/***/ "4c95":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var global = __webpack_require__("e53d");
-var core = __webpack_require__("584a");
-var dP = __webpack_require__("d9f6");
-var DESCRIPTORS = __webpack_require__("8e60");
-var SPECIES = __webpack_require__("5168")('species');
-
-module.exports = function (KEY) {
-  var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
-  if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
-    configurable: true,
-    get: function () { return this; }
-  });
-};
-
 
 /***/ }),
 
@@ -11473,6 +11263,300 @@ module.exports = __webpack_require__("95d5");
 
 /***/ }),
 
+/***/ "551c":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var LIBRARY = __webpack_require__("2d00");
+var global = __webpack_require__("7726");
+var ctx = __webpack_require__("9b43");
+var classof = __webpack_require__("23c6");
+var $export = __webpack_require__("5ca1");
+var isObject = __webpack_require__("d3f4");
+var aFunction = __webpack_require__("d8e8");
+var anInstance = __webpack_require__("f605");
+var forOf = __webpack_require__("4a59");
+var speciesConstructor = __webpack_require__("ebd6");
+var task = __webpack_require__("1991").set;
+var microtask = __webpack_require__("8079")();
+var newPromiseCapabilityModule = __webpack_require__("a5b8");
+var perform = __webpack_require__("9c80");
+var userAgent = __webpack_require__("a25f");
+var promiseResolve = __webpack_require__("bcaa");
+var PROMISE = 'Promise';
+var TypeError = global.TypeError;
+var process = global.process;
+var versions = process && process.versions;
+var v8 = versions && versions.v8 || '';
+var $Promise = global[PROMISE];
+var isNode = classof(process) == 'process';
+var empty = function () { /* empty */ };
+var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
+var newPromiseCapability = newGenericPromiseCapability = newPromiseCapabilityModule.f;
+
+var USE_NATIVE = !!function () {
+  try {
+    // correct subclassing with @@species support
+    var promise = $Promise.resolve(1);
+    var FakePromise = (promise.constructor = {})[__webpack_require__("2b4c")('species')] = function (exec) {
+      exec(empty, empty);
+    };
+    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
+    return (isNode || typeof PromiseRejectionEvent == 'function')
+      && promise.then(empty) instanceof FakePromise
+      // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
+      // we can't detect it synchronously, so just check versions
+      && v8.indexOf('6.6') !== 0
+      && userAgent.indexOf('Chrome/66') === -1;
+  } catch (e) { /* empty */ }
+}();
+
+// helpers
+var isThenable = function (it) {
+  var then;
+  return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
+};
+var notify = function (promise, isReject) {
+  if (promise._n) return;
+  promise._n = true;
+  var chain = promise._c;
+  microtask(function () {
+    var value = promise._v;
+    var ok = promise._s == 1;
+    var i = 0;
+    var run = function (reaction) {
+      var handler = ok ? reaction.ok : reaction.fail;
+      var resolve = reaction.resolve;
+      var reject = reaction.reject;
+      var domain = reaction.domain;
+      var result, then, exited;
+      try {
+        if (handler) {
+          if (!ok) {
+            if (promise._h == 2) onHandleUnhandled(promise);
+            promise._h = 1;
+          }
+          if (handler === true) result = value;
+          else {
+            if (domain) domain.enter();
+            result = handler(value); // may throw
+            if (domain) {
+              domain.exit();
+              exited = true;
+            }
+          }
+          if (result === reaction.promise) {
+            reject(TypeError('Promise-chain cycle'));
+          } else if (then = isThenable(result)) {
+            then.call(result, resolve, reject);
+          } else resolve(result);
+        } else reject(value);
+      } catch (e) {
+        if (domain && !exited) domain.exit();
+        reject(e);
+      }
+    };
+    while (chain.length > i) run(chain[i++]); // variable length - can't use forEach
+    promise._c = [];
+    promise._n = false;
+    if (isReject && !promise._h) onUnhandled(promise);
+  });
+};
+var onUnhandled = function (promise) {
+  task.call(global, function () {
+    var value = promise._v;
+    var unhandled = isUnhandled(promise);
+    var result, handler, console;
+    if (unhandled) {
+      result = perform(function () {
+        if (isNode) {
+          process.emit('unhandledRejection', value, promise);
+        } else if (handler = global.onunhandledrejection) {
+          handler({ promise: promise, reason: value });
+        } else if ((console = global.console) && console.error) {
+          console.error('Unhandled promise rejection', value);
+        }
+      });
+      // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
+      promise._h = isNode || isUnhandled(promise) ? 2 : 1;
+    } promise._a = undefined;
+    if (unhandled && result.e) throw result.v;
+  });
+};
+var isUnhandled = function (promise) {
+  return promise._h !== 1 && (promise._a || promise._c).length === 0;
+};
+var onHandleUnhandled = function (promise) {
+  task.call(global, function () {
+    var handler;
+    if (isNode) {
+      process.emit('rejectionHandled', promise);
+    } else if (handler = global.onrejectionhandled) {
+      handler({ promise: promise, reason: promise._v });
+    }
+  });
+};
+var $reject = function (value) {
+  var promise = this;
+  if (promise._d) return;
+  promise._d = true;
+  promise = promise._w || promise; // unwrap
+  promise._v = value;
+  promise._s = 2;
+  if (!promise._a) promise._a = promise._c.slice();
+  notify(promise, true);
+};
+var $resolve = function (value) {
+  var promise = this;
+  var then;
+  if (promise._d) return;
+  promise._d = true;
+  promise = promise._w || promise; // unwrap
+  try {
+    if (promise === value) throw TypeError("Promise can't be resolved itself");
+    if (then = isThenable(value)) {
+      microtask(function () {
+        var wrapper = { _w: promise, _d: false }; // wrap
+        try {
+          then.call(value, ctx($resolve, wrapper, 1), ctx($reject, wrapper, 1));
+        } catch (e) {
+          $reject.call(wrapper, e);
+        }
+      });
+    } else {
+      promise._v = value;
+      promise._s = 1;
+      notify(promise, false);
+    }
+  } catch (e) {
+    $reject.call({ _w: promise, _d: false }, e); // wrap
+  }
+};
+
+// constructor polyfill
+if (!USE_NATIVE) {
+  // 25.4.3.1 Promise(executor)
+  $Promise = function Promise(executor) {
+    anInstance(this, $Promise, PROMISE, '_h');
+    aFunction(executor);
+    Internal.call(this);
+    try {
+      executor(ctx($resolve, this, 1), ctx($reject, this, 1));
+    } catch (err) {
+      $reject.call(this, err);
+    }
+  };
+  // eslint-disable-next-line no-unused-vars
+  Internal = function Promise(executor) {
+    this._c = [];             // <- awaiting reactions
+    this._a = undefined;      // <- checked in isUnhandled reactions
+    this._s = 0;              // <- state
+    this._d = false;          // <- done
+    this._v = undefined;      // <- value
+    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
+    this._n = false;          // <- notify
+  };
+  Internal.prototype = __webpack_require__("dcbc")($Promise.prototype, {
+    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
+    then: function then(onFulfilled, onRejected) {
+      var reaction = newPromiseCapability(speciesConstructor(this, $Promise));
+      reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
+      reaction.fail = typeof onRejected == 'function' && onRejected;
+      reaction.domain = isNode ? process.domain : undefined;
+      this._c.push(reaction);
+      if (this._a) this._a.push(reaction);
+      if (this._s) notify(this, false);
+      return reaction.promise;
+    },
+    // 25.4.5.1 Promise.prototype.catch(onRejected)
+    'catch': function (onRejected) {
+      return this.then(undefined, onRejected);
+    }
+  });
+  OwnPromiseCapability = function () {
+    var promise = new Internal();
+    this.promise = promise;
+    this.resolve = ctx($resolve, promise, 1);
+    this.reject = ctx($reject, promise, 1);
+  };
+  newPromiseCapabilityModule.f = newPromiseCapability = function (C) {
+    return C === $Promise || C === Wrapper
+      ? new OwnPromiseCapability(C)
+      : newGenericPromiseCapability(C);
+  };
+}
+
+$export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
+__webpack_require__("7f20")($Promise, PROMISE);
+__webpack_require__("7a56")(PROMISE);
+Wrapper = __webpack_require__("8378")[PROMISE];
+
+// statics
+$export($export.S + $export.F * !USE_NATIVE, PROMISE, {
+  // 25.4.4.5 Promise.reject(r)
+  reject: function reject(r) {
+    var capability = newPromiseCapability(this);
+    var $$reject = capability.reject;
+    $$reject(r);
+    return capability.promise;
+  }
+});
+$export($export.S + $export.F * (LIBRARY || !USE_NATIVE), PROMISE, {
+  // 25.4.4.6 Promise.resolve(x)
+  resolve: function resolve(x) {
+    return promiseResolve(LIBRARY && this === Wrapper ? $Promise : this, x);
+  }
+});
+$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__("5cc5")(function (iter) {
+  $Promise.all(iter)['catch'](empty);
+})), PROMISE, {
+  // 25.4.4.1 Promise.all(iterable)
+  all: function all(iterable) {
+    var C = this;
+    var capability = newPromiseCapability(C);
+    var resolve = capability.resolve;
+    var reject = capability.reject;
+    var result = perform(function () {
+      var values = [];
+      var index = 0;
+      var remaining = 1;
+      forOf(iterable, false, function (promise) {
+        var $index = index++;
+        var alreadyCalled = false;
+        values.push(undefined);
+        remaining++;
+        C.resolve(promise).then(function (value) {
+          if (alreadyCalled) return;
+          alreadyCalled = true;
+          values[$index] = value;
+          --remaining || resolve(values);
+        }, reject);
+      });
+      --remaining || resolve(values);
+    });
+    if (result.e) reject(result.v);
+    return capability.promise;
+  },
+  // 25.4.4.4 Promise.race(iterable)
+  race: function race(iterable) {
+    var C = this;
+    var capability = newPromiseCapability(C);
+    var reject = capability.reject;
+    var result = perform(function () {
+      forOf(iterable, false, function (promise) {
+        C.resolve(promise).then(capability.resolve, reject);
+      });
+    });
+    if (result.e) reject(result.v);
+    return capability.promise;
+  }
+});
+
+
+/***/ }),
+
 /***/ "5537":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11538,7 +11622,7 @@ $export($export.P + $export.F * (fails(function () {
 /***/ "584a":
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.5' };
+var core = module.exports = { version: '2.6.9' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -11569,20 +11653,6 @@ module.exports = function (IS_INCLUDES) {
       if (O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
-};
-
-
-/***/ }),
-
-/***/ "5c95":
-/***/ (function(module, exports, __webpack_require__) {
-
-var hide = __webpack_require__("35e8");
-module.exports = function (target, src, safe) {
-  for (var key in src) {
-    if (safe && target[key]) target[key] = src[key];
-    else hide(target, key, src[key]);
-  } return target;
 };
 
 
@@ -11698,6 +11768,23 @@ module.exports = function (that, target, C) {
 /* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_lib_loader_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "5eda":
+/***/ (function(module, exports, __webpack_require__) {
+
+// most Object methods by ES6 should accept primitives
+var $export = __webpack_require__("5ca1");
+var core = __webpack_require__("8378");
+var fails = __webpack_require__("79e5");
+module.exports = function (KEY, exec) {
+  var fn = (core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
+};
+
 
 /***/ }),
 
@@ -11875,32 +11962,6 @@ module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.c
 
 /***/ }),
 
-/***/ "656e":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 25.4.1.5 NewPromiseCapability(C)
-var aFunction = __webpack_require__("79aa");
-
-function PromiseCapability(C) {
-  var resolve, reject;
-  this.promise = new C(function ($$resolve, $$reject) {
-    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
-    resolve = $$resolve;
-    reject = $$reject;
-  });
-  this.resolve = aFunction(resolve);
-  this.reject = aFunction(reject);
-}
-
-module.exports.f = function (C) {
-  return new PromiseCapability(C);
-};
-
-
-/***/ }),
-
 /***/ "6718":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11933,20 +11994,6 @@ var defined = __webpack_require__("be13");
 module.exports = function (it) {
   return IObject(defined(it));
 };
-
-
-/***/ }),
-
-/***/ "696e":
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__("c207");
-__webpack_require__("1654");
-__webpack_require__("6c1c");
-__webpack_require__("24c5");
-__webpack_require__("3c11");
-__webpack_require__("43fc");
-module.exports = __webpack_require__("584a").Promise;
 
 
 /***/ }),
@@ -12141,7 +12188,7 @@ function encoderForArrayFormat(options) {
 
 		case 'comma':
 			return key => (result, value, index) => {
-				if (!value) {
+				if (value === null || value === undefined || value.length === 0) {
 					return result;
 				}
 
@@ -12256,7 +12303,17 @@ function keysSorter(input) {
 	return input;
 }
 
+function removeHash(input) {
+	const hashStart = input.indexOf('#');
+	if (hashStart !== -1) {
+		input = input.slice(0, hashStart);
+	}
+
+	return input;
+}
+
 function extract(input) {
+	input = removeHash(input);
 	const queryStart = input.indexOf('?');
 	if (queryStart === -1) {
 		return '';
@@ -12268,7 +12325,9 @@ function extract(input) {
 function parse(input, options) {
 	options = Object.assign({
 		decode: true,
-		arrayFormat: 'none'
+		sort: true,
+		arrayFormat: 'none',
+		parseNumbers: false
 	}, options);
 
 	const formatter = parserForArrayFormat(options);
@@ -12293,10 +12352,18 @@ function parse(input, options) {
 		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
 		value = value === undefined ? null : decode(value, options);
 
+		if (options.parseNumbers && !Number.isNaN(Number(value))) {
+			value = Number(value);
+		}
+
 		formatter(decode(key, options), value, ret);
 	}
 
-	return Object.keys(ret).sort().reduce((result, key) => {
+	if (options.sort === false) {
+		return ret;
+	}
+
+	return (options.sort === true ? Object.keys(ret).sort() : Object.keys(ret).sort(options.sort)).reduce((result, key) => {
 		const value = ret[key];
 		if (Boolean(value) && typeof value === 'object' && !Array.isArray(value)) {
 			// Sort object keys, not values
@@ -12352,13 +12419,8 @@ exports.stringify = (object, options) => {
 };
 
 exports.parseUrl = (input, options) => {
-	const hashStart = input.indexOf('#');
-	if (hashStart !== -1) {
-		input = input.slice(0, hashStart);
-	}
-
 	return {
-		url: input.split('?')[0] || '',
+		url: removeHash(input).split('?')[0] || '',
 		query: parse(extract(input), options)
 	};
 };
@@ -15561,13 +15623,6 @@ module.exports = !__webpack_require__("8e60") && !__webpack_require__("294c")(fu
   return Object.defineProperty(__webpack_require__("1ec9")('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-
-/***/ }),
-
-/***/ "795b":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("696e");
 
 /***/ }),
 
@@ -19316,6 +19371,82 @@ NAME in FProto || __webpack_require__("9e1e") && dP(FProto, NAME, {
 
 /***/ }),
 
+/***/ "8079":
+/***/ (function(module, exports, __webpack_require__) {
+
+var global = __webpack_require__("7726");
+var macrotask = __webpack_require__("1991").set;
+var Observer = global.MutationObserver || global.WebKitMutationObserver;
+var process = global.process;
+var Promise = global.Promise;
+var isNode = __webpack_require__("2d95")(process) == 'process';
+
+module.exports = function () {
+  var head, last, notify;
+
+  var flush = function () {
+    var parent, fn;
+    if (isNode && (parent = process.domain)) parent.exit();
+    while (head) {
+      fn = head.fn;
+      head = head.next;
+      try {
+        fn();
+      } catch (e) {
+        if (head) notify();
+        else last = undefined;
+        throw e;
+      }
+    } last = undefined;
+    if (parent) parent.enter();
+  };
+
+  // Node.js
+  if (isNode) {
+    notify = function () {
+      process.nextTick(flush);
+    };
+  // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
+  } else if (Observer && !(global.navigator && global.navigator.standalone)) {
+    var toggle = true;
+    var node = document.createTextNode('');
+    new Observer(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
+    notify = function () {
+      node.data = toggle = !toggle;
+    };
+  // environments with maybe non-completely correct, but existent Promise
+  } else if (Promise && Promise.resolve) {
+    // Promise.resolve without an argument throws an error in LG WebOS 2
+    var promise = Promise.resolve(undefined);
+    notify = function () {
+      promise.then(flush);
+    };
+  // for other environments - macrotask based on:
+  // - setImmediate
+  // - MessageChannel
+  // - window.postMessag
+  // - onreadystatechange
+  // - setTimeout
+  } else {
+    notify = function () {
+      // strange IE + webpack dev server bug - use .call(global)
+      macrotask.call(global, flush);
+    };
+  }
+
+  return function (fn) {
+    var task = { fn: fn, next: undefined };
+    if (last) last.next = task;
+    if (!head) {
+      head = task;
+      notify();
+    } last = task;
+  };
+};
+
+
+/***/ }),
+
 /***/ "8113":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19334,7 +19465,7 @@ var update = add("79856026", content, true, {"sourceMap":false,"shadowMode":fals
 /***/ "8378":
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.5' };
+var core = module.exports = { version: '2.6.9' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -19661,6 +19792,20 @@ module.exports = function (key) {
 
 /***/ }),
 
+/***/ "9c80":
+/***/ (function(module, exports) {
+
+module.exports = function (exec) {
+  try {
+    return { e: false, v: exec() };
+  } catch (e) {
+    return { e: true, v: e };
+  }
+};
+
+
+/***/ }),
+
 /***/ "9def":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19681,50 +19826,6 @@ module.exports = function (it) {
 module.exports = !__webpack_require__("79e5")(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
-
-
-/***/ }),
-
-/***/ "9fa6":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
-
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-function E() {
-  this.message = 'String contains an invalid character';
-}
-E.prototype = new Error;
-E.prototype.code = 5;
-E.prototype.name = 'InvalidCharacterError';
-
-function btoa(input) {
-  var str = String(input);
-  var output = '';
-  for (
-    // initialize result and counter
-    var block, charCode, idx = 0, map = chars;
-    // if the next str index does not exist:
-    //   change the mapping table to "="
-    //   check if d has no fractional digits
-    str.charAt(idx | 0) || (map = '=', idx % 1);
-    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
-    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
-  ) {
-    charCode = str.charCodeAt(idx += 3 / 4);
-    if (charCode > 0xFF) {
-      throw new E();
-    }
-    block = block << 8 | charCode;
-  }
-  return output;
-}
-
-module.exports = btoa;
 
 
 /***/ }),
@@ -19777,46 +19878,13 @@ module.exports = Object.create || function create(O, Properties) {
 
 /***/ }),
 
-/***/ "a21f":
+/***/ "a25f":
 /***/ (function(module, exports, __webpack_require__) {
 
-var core = __webpack_require__("584a");
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
+var global = __webpack_require__("7726");
+var navigator = global.navigator;
 
-
-/***/ }),
-
-/***/ "a22a":
-/***/ (function(module, exports, __webpack_require__) {
-
-var ctx = __webpack_require__("d864");
-var call = __webpack_require__("b0dc");
-var isArrayIter = __webpack_require__("3702");
-var anObject = __webpack_require__("e4ae");
-var toLength = __webpack_require__("b447");
-var getIterFn = __webpack_require__("7cd6");
-var BREAK = {};
-var RETURN = {};
-var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
-  var iterFn = ITERATOR ? function () { return iterable; } : getIterFn(iterable);
-  var f = ctx(fn, that, entries ? 2 : 1);
-  var index = 0;
-  var length, step, iterator, result;
-  if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
-  // fast case for arrays with default iterator
-  if (isArrayIter(iterFn)) for (length = toLength(iterable.length); length > index; index++) {
-    result = entries ? f(anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
-    if (result === BREAK || result === RETURN) return result;
-  } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
-    result = call(iterator, f, step.value, entries);
-    if (result === BREAK || result === RETURN) return result;
-  }
-};
-exports.BREAK = BREAK;
-exports.RETURN = RETURN;
+module.exports = navigator && navigator.userAgent || '';
 
 
 /***/ }),
@@ -19954,6 +20022,32 @@ module.exports = __webpack_require__("8aae");
 
 /***/ }),
 
+/***/ "a5b8":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 25.4.1.5 NewPromiseCapability(C)
+var aFunction = __webpack_require__("d8e8");
+
+function PromiseCapability(C) {
+  var resolve, reject;
+  this.promise = new C(function ($$resolve, $$reject) {
+    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
+    resolve = $$resolve;
+    reject = $$reject;
+  });
+  this.resolve = aFunction(resolve);
+  this.reject = aFunction(reject);
+}
+
+module.exports.f = function (C) {
+  return new PromiseCapability(C);
+};
+
+
+/***/ }),
+
 /***/ "a745":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20008,82 +20102,6 @@ var MATCH = __webpack_require__("2b4c")('match');
 module.exports = function (it) {
   var isRegExp;
   return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : cof(it) == 'RegExp');
-};
-
-
-/***/ }),
-
-/***/ "aba2":
-/***/ (function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__("e53d");
-var macrotask = __webpack_require__("4178").set;
-var Observer = global.MutationObserver || global.WebKitMutationObserver;
-var process = global.process;
-var Promise = global.Promise;
-var isNode = __webpack_require__("6b4c")(process) == 'process';
-
-module.exports = function () {
-  var head, last, notify;
-
-  var flush = function () {
-    var parent, fn;
-    if (isNode && (parent = process.domain)) parent.exit();
-    while (head) {
-      fn = head.fn;
-      head = head.next;
-      try {
-        fn();
-      } catch (e) {
-        if (head) notify();
-        else last = undefined;
-        throw e;
-      }
-    } last = undefined;
-    if (parent) parent.enter();
-  };
-
-  // Node.js
-  if (isNode) {
-    notify = function () {
-      process.nextTick(flush);
-    };
-  // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
-  } else if (Observer && !(global.navigator && global.navigator.standalone)) {
-    var toggle = true;
-    var node = document.createTextNode('');
-    new Observer(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
-    notify = function () {
-      node.data = toggle = !toggle;
-    };
-  // environments with maybe non-completely correct, but existent Promise
-  } else if (Promise && Promise.resolve) {
-    // Promise.resolve without an argument throws an error in LG WebOS 2
-    var promise = Promise.resolve(undefined);
-    notify = function () {
-      promise.then(flush);
-    };
-  // for other environments - macrotask based on:
-  // - setImmediate
-  // - MessageChannel
-  // - window.postMessag
-  // - onreadystatechange
-  // - setTimeout
-  } else {
-    notify = function () {
-      // strange IE + webpack dev server bug - use .call(global)
-      macrotask.call(global, flush);
-    };
-  }
-
-  return function (fn) {
-    var task = { fn: fn, next: undefined };
-    if (last) last.next = task;
-    if (!head) {
-      head = task;
-      notify();
-    } last = task;
-  };
 };
 
 
@@ -20230,7 +20248,6 @@ var buildURL = __webpack_require__("30b5");
 var parseHeaders = __webpack_require__("c345");
 var isURLSameOrigin = __webpack_require__("3934");
 var createError = __webpack_require__("2d83");
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__("9fa6");
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -20242,22 +20259,6 @@ module.exports = function xhrAdapter(config) {
     }
 
     var request = new XMLHttpRequest();
-    var loadEvent = 'onreadystatechange';
-    var xDomain = false;
-
-    // For IE 8/9 CORS support
-    // Only supports POST and GET calls and doesn't returns the response headers.
-    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
-    if ( true &&
-        typeof window !== 'undefined' &&
-        window.XDomainRequest && !('withCredentials' in request) &&
-        !isURLSameOrigin(config.url)) {
-      request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
-      request.onprogress = function handleProgress() {};
-      request.ontimeout = function handleTimeout() {};
-    }
 
     // HTTP basic authentication
     if (config.auth) {
@@ -20272,8 +20273,8 @@ module.exports = function xhrAdapter(config) {
     request.timeout = config.timeout;
 
     // Listen for ready state
-    request[loadEvent] = function handleLoad() {
-      if (!request || (request.readyState !== 4 && !xDomain)) {
+    request.onreadystatechange = function handleLoad() {
+      if (!request || request.readyState !== 4) {
         return;
       }
 
@@ -20290,9 +20291,8 @@ module.exports = function xhrAdapter(config) {
       var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
       var response = {
         data: responseData,
-        // IE sends 1223 instead of 204 (https://github.com/axios/axios/issues/201)
-        status: request.status === 1223 ? 204 : request.status,
-        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        status: request.status,
+        statusText: request.statusText,
         headers: responseHeaders,
         config: config,
         request: request
@@ -24019,21 +24019,29 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
 
 /***/ }),
 
-/***/ "bc13":
-/***/ (function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__("e53d");
-var navigator = global.navigator;
-
-module.exports = navigator && navigator.userAgent || '';
-
-
-/***/ }),
-
 /***/ "bc3a":
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("cee4");
+
+/***/ }),
+
+/***/ "bcaa":
+/***/ (function(module, exports, __webpack_require__) {
+
+var anObject = __webpack_require__("cb7c");
+var isObject = __webpack_require__("d3f4");
+var newPromiseCapability = __webpack_require__("a5b8");
+
+module.exports = function (C, x) {
+  anObject(C);
+  if (isObject(x) && x.constructor === C) return x;
+  var promiseCapability = newPromiseCapability.f(C);
+  var resolve = promiseCapability.resolve;
+  resolve(x);
+  return promiseCapability.promise;
+};
+
 
 /***/ }),
 
@@ -24809,25 +24817,6 @@ module.exports = function (original, length) {
 
 /***/ }),
 
-/***/ "cd78":
-/***/ (function(module, exports, __webpack_require__) {
-
-var anObject = __webpack_require__("e4ae");
-var isObject = __webpack_require__("f772");
-var newPromiseCapability = __webpack_require__("656e");
-
-module.exports = function (C, x) {
-  anObject(C);
-  if (isObject(x) && x.constructor === C) return x;
-  var promiseCapability = newPromiseCapability.f(C);
-  var resolve = promiseCapability.resolve;
-  resolve(x);
-  return promiseCapability.promise;
-};
-
-
-/***/ }),
-
 /***/ "ce10":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25106,238 +25095,6 @@ module.exports = function (target, src, safe) {
 
 /***/ }),
 
-/***/ "df7c":
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
-  }
-
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
-  }
-
-  return root + dir;
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPath(path)[3];
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("4362")))
-
-/***/ }),
-
 /***/ "e11e":
 /***/ (function(module, exports) {
 
@@ -25460,15 +25217,6 @@ module.exports = function (object, names) {
   }
   return result;
 };
-
-
-/***/ }),
-
-/***/ "e829":
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__("2f37");
-module.exports = __webpack_require__("584a").Date.now;
 
 
 /***/ }),
@@ -26400,22 +26148,6 @@ var update = add("1840f900", content, true, {"sourceMap":false,"shadowMode":fals
 
 /***/ }),
 
-/***/ "f201":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
-var anObject = __webpack_require__("e4ae");
-var aFunction = __webpack_require__("79aa");
-var SPECIES = __webpack_require__("5168")('species');
-module.exports = function (O, D) {
-  var C = anObject(O).constructor;
-  var S;
-  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
-};
-
-
-/***/ }),
-
 /***/ "f234":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26518,6 +26250,197 @@ module.exports = function (encodedURI) {
 
 /***/ }),
 
+/***/ "f28c":
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+
 /***/ "f32c":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26554,13 +26477,6 @@ module.exports = (string, separator) => {
 __webpack_require__("1af6");
 module.exports = __webpack_require__("584a").Array.isArray;
 
-
-/***/ }),
-
-/***/ "f499":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("a21f");
 
 /***/ }),
 
@@ -26768,14 +26684,16 @@ if (typeof window !== 'undefined') {
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/keys.js
-var object_keys = __webpack_require__("a4bb");
-var keys_default = /*#__PURE__*/__webpack_require__.n(object_keys);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.iterator.js
+var es6_array_iterator = __webpack_require__("cadf");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.object.keys.js
+var es6_object_keys = __webpack_require__("456d");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("ac6a");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/EmailForm/EmailForm.vue?vue&type=template&id=6242032c&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/EmailForm/EmailForm.vue?vue&type=template&id=6242032c&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row"},[(_vm.lessonPage)?_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"flex flex-column avatar-col hide-xs-only"},[_c('div',{staticClass:"square"},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.userAvatar}})])]),_c('div',{staticClass:"flex flex-column input-col ph"},[_c('div',{staticClass:"form-group"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],staticClass:"borderless text-white",class:{ 'has-input': _vm.value.length },attrs:{"id":"questionInput","type":"text"},domProps:{"value":(_vm.valueInterface)},on:{"input":function($event){if($event.target.composing){ return; }_vm.valueInterface=$event.target.value}}}),_c('label',{class:_vm.themeColor,attrs:{"for":"questionInput"}},[_vm._v(_vm._s(_vm.inputLabel))])])]),_c('div',{staticClass:"flex flex-column send-button-col"},[_c('a',{staticClass:"btn text-white",class:_vm.themeBgClass,on:{"click":_vm.submitForm}},[_c('i',{staticClass:"fas fa-envelope"}),_c('span',{staticClass:"hide-xs-only ml-1"},[_vm._v("Send Question")])])])]):_vm._e(),(!_vm.lessonPage)?_c('div',{staticClass:"flex flex-column relative"},[(_vm.loading)?_c('div',{staticClass:"email-loading",class:_vm.themeTextClass},[_c('i',{staticClass:"fas fa-spinner fa-spin"}),_c('p',{staticClass:"x-tiny font-italic"},[_vm._v("\n                Loading Please Wait...\n            ")])]):_vm._e(),_c('div',{staticClass:"form-group mb textarea"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],class:{ 'has-input': _vm.value.length },attrs:{"id":"questionBox"},domProps:{"value":(_vm.valueInterface)},on:{"input":function($event){if($event.target.composing){ return; }_vm.valueInterface=$event.target.value}}}),_c('label',{class:_vm.themeColor,attrs:{"for":"questionBox"}},[_vm._v(_vm._s(_vm.inputLabel))])]),_c('div',{staticClass:"form-group"},[_c('button',{staticClass:"btn",on:{"click":_vm.submitForm}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("\n                    Submit\n                ")])])])]):_vm._e()])}
 var staticRenderFns = []
 
@@ -26786,103 +26704,7 @@ var staticRenderFns = []
 var axios = __webpack_require__("bc3a");
 var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
-// EXTERNAL MODULE: ./node_modules/noty/lib/noty.js
-var noty = __webpack_require__("7329");
-var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
-
-// CONCATENATED MODULE: ./src/assets/js/classes/toasts.js
-/**
- * Toasts
- * Static methods for handling all success/error/dialog notifications.
- */
-
-/* harmony default export */ var toasts = ({
-  /**
-   * Display a notification
-   *
-   * @param {string} icon - the icon to use ('happy', 'doh', 'astonished', 'mad', 'sad', 'xp')
-   * @param {string} title - the colored title to display
-   * @param {string} message - the bolded black message
-   * @param {string} themeColor - the vuesora theme color for the title
-   * @param {number|boolean} timeout - duration in milliseconds before it disappears (false to remove)
-   * @returns {Object} - Noty object to render the notification
-   */
-  push: function push(_ref) {
-    var icon = _ref.icon,
-        title = _ref.title,
-        message = _ref.message,
-        _ref$themeColor = _ref.themeColor,
-        themeColor = _ref$themeColor === void 0 ? 'drumeo' : _ref$themeColor,
-        _ref$timeout = _ref.timeout,
-        timeout = _ref$timeout === void 0 ? 5000 : _ref$timeout;
-    return new noty_default.a({
-      type: 'alert',
-      theme: 'musoraNoty',
-      text: "".concat('<div class="flex flex-column icon-column face-icon">' + '<div class="icon-wrap square ').concat(icon, "\"></div>") + '</div>' + '<div class="flex flex-column ph-1">' + "<h6 class=\"tiny uppercase font-bold text-".concat(themeColor, "\">").concat(title, "</h6>") + "<h5 class=\"tiny font-compressed\">".concat(message, "</h5>") + '</div>' + '<div class="flex flex-column icon-column flex-center subheading">' + '<i class="fas fa-times"></i>' + '</div>',
-      timeout: timeout,
-      layout: 'topLeft'
-    }).show();
-  },
-
-  /**
-   * Display a confirmation dialog
-   *
-   * @param {string} title - the text to display in the confirmation box
-   * @param {string} subtitle - the smaller text to display below the title
-   * @param themeColor
-   * @param {object} submitButton - object with a text and callback property
-   * @param {object} cancelButton - object with a text and callback property
-   * @returns {Object} - Noty object to render the dialog
-   */
-  confirm: function confirm(_ref2) {
-    var title = _ref2.title,
-        _ref2$subtitle = _ref2.subtitle,
-        subtitle = _ref2$subtitle === void 0 ? 'This cannot be undone' : _ref2$subtitle,
-        _ref2$submitButton = _ref2.submitButton,
-        submitButton = _ref2$submitButton === void 0 ? {
-      text: '<span class="bg-success text-white">YES</span>',
-      callback: null
-    } : _ref2$submitButton,
-        _ref2$cancelButton = _ref2.cancelButton,
-        cancelButton = _ref2$cancelButton === void 0 ? {
-      text: '<span class="bg-dark inverted text-grey-3">NO</span>',
-      callback: null
-    } : _ref2$cancelButton;
-    window.confirmationBox = new noty_default.a({
-      layout: 'center',
-      modal: true,
-      theme: 'musoraNoty dialog',
-      text: "<span class=\"title text-center font-bold text-black\">".concat(title, "</span>") + '<br>' + "<span class=\"x-tiny uppercase text-grey-3\">".concat(subtitle, "</span>"),
-      closeWith: [],
-      buttons: [noty_default.a.button(submitButton.text, 'btn mr-1', function () {
-        if (submitButton.callback != null) {
-          submitButton.callback();
-        }
-
-        window.confirmationBox.close();
-      }), noty_default.a.button(cancelButton.text, 'btn', function () {
-        if (cancelButton.callback != null) {
-          cancelButton.callback();
-        }
-
-        window.confirmationBox.close();
-      })]
-    }).show(); // Instantiate a click handler to close the modal when the user clicks the overlay
-
-    if (window.closeConfirmation == null) {
-      window.closeConfirmation = true;
-      document.body.addEventListener('click', function (event) {
-        if (event.target.classList.contains('noty_modal')) {
-          window.confirmationBox.close();
-        }
-      });
-    }
-
-    return window.confirmationBox;
-  }
-});
 // CONCATENATED MODULE: ./src/assets/js/services/_error-handler.js
-
 /* harmony default export */ var _error_handler = (function (error) {
   console.error(error);
 });
@@ -26894,8 +26716,8 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
   /**
    * Set a specific users details
    *
-   * @param {number|string} id
-   * @param {object} attributes
+   * @param {Number|String} id
+   * @param {Object} attributes
    * @returns {Promise} - resolved promise with the response object
    */
   setUserAttributes: function setUserAttributes(id) {
@@ -26947,8 +26769,8 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
   /**
    * Update a credit card payment method
    *
-   * @param {number} id - the id of payment method to delete
-   * @param {object} payload - the data object with the payment method details
+   * @param {String|Number} id - the id of payment method to delete
+   * @param {Object} payload - the data object with the payment method details
    * @returns {Promise} - resolved promise with the response.data object
    */
   updatePaymentMethod: function updatePaymentMethod(id, payload) {
@@ -26960,7 +26782,7 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
   /**
    * Delete a payment method
    *
-   * @param {number} id - the id of payment method to delete
+   * @param {String|Number} id - the id of payment method to delete
    * @returns {Promise} - resolved promise with the response.data object
    */
   deletePaymentMethod: function deletePaymentMethod(id) {
@@ -26972,7 +26794,7 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
   /**
    * Crates a new payment method
    *
-   * @param {object} payload - the data object with the payment method details
+   * @param {Object} payload - the data object with the payment method details
    * @returns {Promise} - resolved promise with the response.data object
    */
   createPaymentMethod: function createPaymentMethod(payload) {
@@ -26990,7 +26812,7 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
   /**
    * Upload a resource to S3 and get a CDN url back
    *
-   * @param {string} endpoint - the url endpoint to send the request to
+   * @param {String} endpoint - the url endpoint to send the request to
    * @param {Object} formData - the formData object to send with the request
    * @returns {Promise} resolved promise with the response.data object, containing the cdn url
    */
@@ -27010,16 +26832,16 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
   /**
    * Send an Email
    *
-   * @param {string} type - the type of email to send (action or alert)
-   * @param {string} subject
-   * @param {array} lines - array of lines to display in the email, new index = new line break
-   * @param {object} callToAction - CTA with 2 keys, text and url
-   * @param {string} alert
-   * @param {string} brand
-   * @param {string} logo
-   * @param {string} view - The laravel dot notated blade template to use
-   * @param {string} recipient
-   * @param {string} endpoint
+   * @param {String} type - the type of email to send (action or alert)
+   * @param {String} subject
+   * @param {Array} lines - array of lines to display in the email, new index = new line break
+   * @param {Object} callToAction - CTA with 2 keys, text and url
+   * @param {String} alert
+   * @param {String} brand
+   * @param {String} logo
+   * @param {String} view - The laravel dot notated blade template to use
+   * @param {String} recipient
+   * @param {String} endpoint
    * @returns {Promise} resolved promise with the response.data object
    */
   sendEmail: function sendEmail(_ref) {
@@ -27049,7 +26871,7 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
   /**
    * Mark a specific notification as read
    *
-   * @param {number} id - notification id
+   * @param {Number} id - notification id
    * @returns {Promise} resolved promise with the response.data object
    */
   markNotificationAsRead: function markNotificationAsRead(id) {
@@ -27061,7 +26883,7 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
   /**
    * Mark a specific notification as unread
    *
-   * @param {number} id - notification id
+   * @param {Number} id - notification id
    * @returns {Promise} resolved promise with the response.data object
    */
   markNotificationAsUnRead: function markNotificationAsUnRead(id) {
@@ -27079,6 +26901,101 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
     return axios_default.a.post("".concat(user_endpointPrefix, "/members/notifications/mark-all-read")).then(function (response) {
       return response.data;
     }).catch(_error_handler);
+  }
+});
+// EXTERNAL MODULE: ./node_modules/noty/lib/noty.js
+var noty = __webpack_require__("7329");
+var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
+
+// CONCATENATED MODULE: ./src/assets/js/classes/toasts.js
+/**
+ * Toasts
+ * Methods for handling all success/error/dialog notifications with nicely styled prompts and dialogs.
+ */
+
+/* harmony default export */ var toasts = ({
+  /**
+   * Display a notification
+   *
+   * @param {String} icon - the icon to use ('happy', 'doh', 'astonished', 'mad', 'sad', 'xp')
+   * @param {String} title - the colored title to display
+   * @param {String} message - the bolded black message
+   * @param {String} themeColor - the vuesora theme color for the title
+   * @param {Number|Boolean} timeout - duration in milliseconds before it disappears (false to remove)
+   * @returns {Object} - Noty object to render the notification
+   */
+  push: function push(_ref) {
+    var icon = _ref.icon,
+        title = _ref.title,
+        message = _ref.message,
+        _ref$themeColor = _ref.themeColor,
+        themeColor = _ref$themeColor === void 0 ? 'drumeo' : _ref$themeColor,
+        _ref$timeout = _ref.timeout,
+        timeout = _ref$timeout === void 0 ? 5000 : _ref$timeout;
+    return new noty_default.a({
+      type: 'alert',
+      theme: 'musoraNoty',
+      text: "".concat('<div class="flex flex-column icon-column face-icon">' + '<div class="icon-wrap square ').concat(icon, "\"></div>") + '</div>' + '<div class="flex flex-column ph-1">' + "<h6 class=\"tiny uppercase font-bold text-".concat(themeColor, "\">").concat(title, "</h6>") + "<h5 class=\"tiny font-compressed\">".concat(message, "</h5>") + '</div>' + '<div class="flex flex-column icon-column flex-center subheading">' + '<i class="fas fa-times"></i>' + '</div>',
+      timeout: timeout,
+      layout: 'topLeft'
+    }).show();
+  },
+
+  /**
+   * Display a confirmation dialog
+   *
+   * @param {String} title - the text to display in the confirmation box
+   * @param {String} subtitle - the smaller text to display below the title
+   * @param {String} themeColor - the vuesora theme color for the title
+   * @param {Object} submitButton - object with a text and callback property
+   * @param {Object} cancelButton - object with a text and callback property
+   * @returns {Object} - Noty object to render the dialog
+   */
+  confirm: function confirm(_ref2) {
+    var title = _ref2.title,
+        _ref2$subtitle = _ref2.subtitle,
+        subtitle = _ref2$subtitle === void 0 ? 'This cannot be undone' : _ref2$subtitle,
+        _ref2$submitButton = _ref2.submitButton,
+        submitButton = _ref2$submitButton === void 0 ? {
+      text: '<span class="bg-success text-white">YES</span>',
+      callback: null
+    } : _ref2$submitButton,
+        _ref2$cancelButton = _ref2.cancelButton,
+        cancelButton = _ref2$cancelButton === void 0 ? {
+      text: '<span class="bg-dark inverted text-grey-3">NO</span>',
+      callback: null
+    } : _ref2$cancelButton;
+    window.confirmationBox = new noty_default.a({
+      layout: 'center',
+      modal: true,
+      theme: 'musoraNoty dialog',
+      text: "<span class=\"title text-center font-bold text-black\">".concat(title, "</span>") + '<br>' + "<span class=\"x-tiny uppercase text-grey-3\">".concat(subtitle, "</span>"),
+      closeWith: [],
+      buttons: [noty_default.a.button(submitButton.text, 'btn mr-1', function () {
+        if (submitButton.callback != null) {
+          submitButton.callback();
+        }
+
+        window.confirmationBox.close();
+      }), noty_default.a.button(cancelButton.text, 'btn', function () {
+        if (cancelButton.callback != null) {
+          cancelButton.callback();
+        }
+
+        window.confirmationBox.close();
+      })]
+    }).show(); // Instantiate a click handler to close the modal when the user clicks the overlay
+
+    if (window.closeConfirmation == null) {
+      window.closeConfirmation = true;
+      document.body.addEventListener('click', function (event) {
+        if (event.target.classList.contains('noty_modal')) {
+          window.confirmationBox.close();
+        }
+      });
+    }
+
+    return window.confirmationBox;
   }
 });
 // CONCATENATED MODULE: ./node_modules/js-helper-functions/modules/content.js
@@ -28096,6 +28013,22 @@ var user_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).endpo
 
       var type = utils.getThemeColorByContentType(this.contentType);
       return "text-".concat(type);
+    },
+    themeHoverBgClass: function themeHoverBgClass() {
+      if (this.useThemeColor) {
+        return "hover-bg-".concat(this.themeColor);
+      }
+
+      var type = utils.getThemeColorByContentType(this.contentType);
+      return "hover-bg-".concat(type);
+    },
+    themeHoverTextClass: function themeHoverTextClass() {
+      if (this.useThemeColor) {
+        return "hover-text-".concat(this.themeColor);
+      }
+
+      var type = utils.getThemeColorByContentType(this.contentType);
+      return "hover-text-".concat(type);
     }
   }
 });
@@ -28447,7 +28380,7 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var EmailForm = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/UserExpBar/UserExpBar.vue?vue&type=template&id=0f624650&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/UserExpBar/UserExpBar.vue?vue&type=template&id=0f624650&
 var UserExpBarvue_type_template_id_0f624650_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"exp-wrap"},[_c('div',{staticClass:"exp flex flex-column align-v-center align-h-right",class:_vm.themeBgClass,style:('width:' + _vm.xpPercentage + '%;')},[_c('p',{staticClass:"body dense font-bold ph-2 nowrap",class:_vm.expBarClassObject},[_vm._v("\n                    "+_vm._s(_vm.formattedXp)+" XP\n                ")])])])]),_c('div',{staticClass:"flex flex-row ph mt-1"},[_c('p',{staticClass:"body dense text-center nowrap font-compressed uppercase"},[_c('strong',[_vm._v(_vm._s(_vm.userExpRank))]),_c('br'),_vm._v(_vm._s(_vm.userExpRankAmount)+" XP\n        ")]),_c('span',{staticClass:"flex flex-column grow"}),_c('p',{staticClass:"body dense text-center nowrap font-compressed uppercase"},[_c('strong',[_vm._v(_vm._s(_vm.nextUserExpRank))]),_c('br'),_vm._v(_vm._s(_vm.nextUserExpRankAmount)+" XP\n        ")])])])}
 var UserExpBarvue_type_template_id_0f624650_staticRenderFns = []
 
@@ -28458,6 +28391,8 @@ var UserExpBarvue_type_template_id_0f624650_staticRenderFns = []
 var es6_number_constructor = __webpack_require__("c5f6");
 
 // CONCATENATED MODULE: ./src/assets/js/classes/xp-mapper.js
+
+
 
 
 /* harmony default export */ var xp_mapper = ({
@@ -28519,8 +28454,7 @@ var es6_number_constructor = __webpack_require__("c5f6");
   getNearestKey: function getNearestKey(xp) {
     var brand = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'drumeo';
     var offset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-
-    var mapKeys = keys_default()(this.mapObject[brand]);
+    var mapKeys = Object.keys(this.mapObject[brand]);
 
     for (var i = 0; i < mapKeys.length; i++) {
       // Over 10 million or between any of the keys
@@ -28719,7 +28653,7 @@ function typeof_typeof(obj) {
     } else {
       // If the target is already an array then we need to combine the arrays,
       // Otherwise we create an array and merge the two values
-      if (is_array_default()(target[key])) {
+      if (Array.isArray(target[key])) {
         target[key] = [].concat(_toConsumableArray(target[key]), [this_value]);
       } else {
         target[key] = [target[key], this_value];
@@ -28736,8 +28670,7 @@ function typeof_typeof(obj) {
   flattenFilters: function flattenFilters(filter_options) {
     var _this4 = this;
 
-    var keys = keys_default()(filter_options);
-
+    var keys = Object.keys(filter_options);
     var filter_map = {
       artist: [],
       bpm: [],
@@ -29216,7 +29149,7 @@ var UserExpBar_component = normalizeComponent(
 )
 
 /* harmony default export */ var UserExpBar = (UserExpBar_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ContentCatalogue.vue?vue&type=template&id=19cf1de4&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ContentCatalogue.vue?vue&type=template&id=19cf1de4&
 var ContentCataloguevue_type_template_id_19cf1de4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column grow align-v-center"},[(_vm.searchBar)?_c('catalogue-search',{attrs:{"theme-color":_vm.themeColor,"included-types":_vm.includedTypes,"selected-types":_vm.selected_types,"search-term":_vm.search_term,"current_page":_vm.page,"total-results":_vm.total_results},on:{"typeChange":_vm.handleTypeChange,"searchChange":_vm.handleSearch}}):_vm._e(),(_vm.isPlaylists)?_c('catalogue-playlist-tabs',{attrs:{"theme-color":_vm.themeColor,"included-types":_vm.includedTypes}}):_vm._e(),(_vm.filterableValues.length)?_c('catalogue-filters',{attrs:{"filters":_vm.filters,"filterable-values":_vm.filterableValues,"required-user-states":_vm.required_user_states,"filter-params":_vm.filter_params,"loading":_vm.loading,"theme-color":_vm.themeColor},on:{"filterChange":_vm.handleFilterChange,"progressChange":_vm.handleProgressChange}}):_vm._e(),(_vm.content.length === 0 && _vm.noResultsMessage.length > 0)?_c('div',{staticClass:"flex flex-row ph pv-3 align-v-center"},[_c('div',{staticClass:"flex flex-column icon-col face-icon mr-1"},[_c('div',{staticClass:"icon-wrap square",class:_vm.noResultsIcon})]),_c('div',{staticClass:"flex flex-column"},[_c('h4',{staticClass:"body",domProps:{"innerHTML":_vm._s(_vm.noResultsMessageWithProgress)}},[_vm._v("\n                "+_vm._s(_vm.noResultsMessageWithProgress)+"\n            ")])])]):_vm._e(),(_vm.catalogue_type === 'grid')?_c('grid-catalogue',{attrs:{"content":_vm.content,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"no-wrap":_vm.noWrapGrid,"user-id":_vm.userId,"lock-unowned":_vm.lockUnowned,"force-wide-thumbs":_vm.forceWideThumbs,"content-type-override":_vm.contentTypeOverride},on:{"addToList":_vm.addToListEventHandler}}):_vm._e(),(_vm.catalogue_type === 'list')?_c('list-catalogue',{attrs:{"content":_vm.content,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"card_type":_vm.catalogueType,"user-id":_vm.userId,"display-items-as-overview":_vm.displayItemsAsOverview,"display-user-interactions":_vm.displayUserInteractions,"content-type-override":_vm.contentTypeOverride,"lock-unowned":_vm.lockUnowned,"show-numbers":_vm.showNumbers,"is_search":_vm.searchBar || _vm.isPlaylists,"reset-progress":_vm.resetProgress,"force-wide-thumbs":_vm.forceWideThumbs,"destroy-on-list-removal":_vm.destroyOnListRemoval,"compact-layout":_vm.compactLayout,"subscription-calendar-id":_vm.subscriptionCalendarId},on:{"addToList":_vm.addToListEventHandler,"progressReset":_vm.resetProgressEventHandler}}):_vm._e(),(_vm.paginate && _vm.total_pages > 1 && !_vm.infiniteScroll)?_c('div',{staticClass:"flex flex-row bg-light pagination-row align-h-right"},[_c('pagination',{attrs:{"current-page":Number(_vm.page),"total-pages":_vm.total_pages},on:{"pageChange":_vm.handlePageChange}})],1):_vm._e(),_c('transition',{attrs:{"name":"show-from-bottom"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading && _vm.showLoadingAnimation),expression:"loading && showLoadingAnimation"}],staticClass:"flex flex-row align-center",attrs:{"id":"loadingDialog"}},[_c('div',{staticClass:"loading-spinner corners-5 shadow pa flex-center",class:_vm.themeBgClass},[_c('i',{staticClass:"fas fa-spinner fa-spin text-white"}),_c('p',{staticClass:"x-tiny text-white"},[_vm._v("\n                    Loading Please Wait...\n                ")])])])])],1)}
 var ContentCataloguevue_type_template_id_19cf1de4_staticRenderFns = []
 
@@ -29230,6 +29163,10 @@ var get_own_property_descriptor_default = /*#__PURE__*/__webpack_require__.n(get
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/get-own-property-symbols.js
 var get_own_property_symbols = __webpack_require__("e265");
 var get_own_property_symbols_default = /*#__PURE__*/__webpack_require__.n(get_own_property_symbols);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/keys.js
+var object_keys = __webpack_require__("a4bb");
+var keys_default = /*#__PURE__*/__webpack_require__.n(object_keys);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js
 var define_property = __webpack_require__("85f2");
@@ -29275,10 +29212,6 @@ function _objectSpread(target) {
 
   return target;
 }
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/json/stringify.js
-var stringify = __webpack_require__("f499");
-var stringify_default = /*#__PURE__*/__webpack_require__.n(stringify);
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.search.js
 var es6_regexp_search = __webpack_require__("386d");
 
@@ -29290,23 +29223,19 @@ var query_string = __webpack_require__("72bf");
 
 
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/GridCatalogue.vue?vue&type=template&id=6b3aad1c&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/GridCatalogue.vue?vue&type=template&id=6b3aad1c&
 var GridCataloguevue_type_template_id_6b3aad1c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row",class:_vm.noWrap ? 'overflow' : 'flex-wrap'},_vm._l((_vm.content),function(item,i){return _c('catalogue-card',{key:'grid' + item.id,attrs:{"item":item,"content-type":item.type,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"user-id":_vm.userId,"lock-unowned":_vm.lockUnowned,"force-wide-thumbs":_vm.forceWideThumbs,"content-type-override":_vm.contentTypeOverride},on:{"addToList":_vm.emitAddToList}})}),1)}
 var GridCataloguevue_type_template_id_6b3aad1c_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/catalogues/GridCatalogue.vue?vue&type=template&id=6b3aad1c&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueCard.vue?vue&type=template&id=6735b9d6&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueCard.vue?vue&type=template&id=6735b9d6&
 var _CatalogueCardvue_type_template_id_6735b9d6_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column pa-1 catalogue-card",class:{'no-access': this.noAccess}},[_c('a',{staticClass:"no-decoration",attrs:{"href":_vm.renderLink ? _vm.item.url : false}},[_c('div',{staticClass:"card-media active corners-5 mb-1",class:_vm.thumbnailType},[_c('div',{staticClass:"thumb-img bg-center",class:_vm.item.type === 'chord-and-scale' ? 'no-bg' : '',style:('background-image:url(' + _vm.mappedData.thumbnail + ');')}),(_vm.item.type !== 'pack-bundle')?_c('i',{staticClass:"add-to-list fas fa-plus",class:_vm.is_added ? 'is-added ' + _vm.themeTextClass : 'text-white',attrs:{"title":_vm.is_added ? 'Remove from list' : 'Add to list',"data-content-id":_vm.item.id,"data-content-type":_vm.item.type},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.addToList($event)}}}):_vm._e(),(!_vm.isGuitareoChordAndScale)?_c('h3',{staticClass:"thumbnail-title tiny font-compressed uppercase dense font-bold",class:_vm.themeTextClass,domProps:{"innerHTML":_vm._s(_vm.mappedData.color_title)}},[_vm._v("\n                "+_vm._s(_vm.mappedData.color_title)+"\n            ")]):_vm._e(),_c('div',{staticClass:"lesson-progress overflow corners-bottom-5"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),(_vm.showTrophy)?_c('span',{staticClass:"bundle-complete flex-center"},[_c('i',{staticClass:"fas fa-trophy"})]):_c('span',{staticClass:"thumb-hover flex-center"},[_c('i',{staticClass:"fas",class:_vm.thumbnailIcon}),(!_vm.isReleased)?_c('p',{staticClass:"tiny text-white font-bold"},[_vm._v("\n                    "+_vm._s(_vm.releaseDate)+"\n                ")]):_vm._e()])]),(_vm.mappedData.sheet_music)?_c('img',{attrs:{"src":_vm.mappedData.sheet_music}}):_vm._e(),_c('h1',{staticClass:"tiny text-black mb-1 font-compressed font-bold capitalize",class:{'text-center': _vm.isGuitareoChordAndScale}},[_vm._v("\n            "+_vm._s(_vm.mappedData.black_title)+"\n        ")]),(_vm.mappedData.show_description)?_c('p',{staticClass:"x-tiny font-compressed text-grey-4 mb-1 item-description always-truncate"},[_vm._v("\n            "+_vm._s(_vm.mappedData.description.replace(/<[^>]+>/g, ''))+"\n        ")]):_vm._e(),_c('h4',{staticClass:"x-tiny font-compressed text-grey-3 font-italic uppercase",class:{'text-center': _vm.isGuitareoChordAndScale}},[_vm._v("\n            "+_vm._s(_vm.mappedData.grey_title)+"\n        ")])])])}
 var _CatalogueCardvue_type_template_id_6735b9d6_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/catalogues/_CatalogueCard.vue?vue&type=template&id=6735b9d6&
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/date/now.js
-var now = __webpack_require__("0a0d");
-var now_default = /*#__PURE__*/__webpack_require__.n(now);
 
 // EXTERNAL MODULE: ./node_modules/luxon/build/cjs-browser/luxon.js
 var luxon = __webpack_require__("1315");
@@ -29386,7 +29315,7 @@ var content_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).en
   /**
    * Flag a piece of content as "complete"
    *
-   * @param {string|number} contentId - the content ID
+   * @param {String|Number} contentId - the content ID
    * @returns {Promise} resolved promise with the response.data object
    */
   markContentAsComplete: function markContentAsComplete(contentId) {
@@ -29400,7 +29329,7 @@ var content_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).en
   /**
    * Flag a piece of content as "started"
    *
-   * @param {number} contentId - the content ID
+   * @param {String|Number} contentId - the content ID
    * @returns {Promise} resolved promise with the response.data object
    */
   markContentAsStarted: function markContentAsStarted(contentId) {
@@ -29416,7 +29345,7 @@ var content_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).en
   /**
    * Reset your progress for a piece of content
    *
-   * @param {number} contentId - the content ID
+   * @param {String|Number} contentId - the content ID
    * @returns {Promise} resolved promise with the response.data object
    */
   resetContentProgress: function resetContentProgress(contentId) {
@@ -29430,7 +29359,7 @@ var content_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).en
   /**
    * Add or Remove content from your list
    *
-   * @param content_id {string}
+   * @param content_id {String|Number}
    * @param is_added {boolean}
    *
    * @returns {Promise} resolved promise with the response.data object
@@ -29450,7 +29379,7 @@ var content_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).en
    * Mark a learning path as started (this changes the users current active learning path for
    * progress tracking)
    *
-   * @param content_id {string}
+   * @param content_id {String|Number}
    *
    * @returns {Promise} resolved promise with the response.data object
    */
@@ -29725,10 +29654,10 @@ function () {
   _createClass(ContentModel, [{
     key: "getPostField",
     value: function getPostField(key) {
-      var field = this.post.fields.find(function (field) {
+      var postField = this.post.fields.find(function (field) {
         return field.key === key;
       });
-      return field ? field.value : 'TBD';
+      return postField ? postField.value : 'TBD';
     }
   }, {
     key: "getPostDatum",
@@ -29755,7 +29684,8 @@ function () {
           duration = videoLength.value;
         }
 
-        return "".concat(Math.round(luxon["Duration"].fromMillis(duration * 1000).as('minutes')), " mins");
+        var parsedDuration = Math.round(luxon["Duration"].fromMillis(duration * 1000).as('minutes'));
+        return "".concat(parsedDuration, " mins");
       }
 
       return 'TBD';
@@ -30848,7 +30778,6 @@ var _model_ContentTypeModel = function ContentTypeModel(type, _ref) {
 
 
 
-
 /* harmony default export */ var _mixin = ({
   mixins: [UserCatalogueEvents],
   props: {
@@ -30969,7 +30898,7 @@ var _model_ContentTypeModel = function ContentTypeModel(type, _ref) {
       }).toFormat('x');
     },
     dateNow: function dateNow() {
-      return now_default()();
+      return Date.now();
     },
     isReleased: function isReleased() {
       return this.dateNow > this.datePublshedOn;
@@ -31292,14 +31221,14 @@ var GridCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var GridCatalogue = (GridCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ListCatalogue.vue?vue&type=template&id=825ce0a2&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ListCatalogue.vue?vue&type=template&id=825ce0a2&
 var ListCataloguevue_type_template_id_825ce0a2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_vm._l((_vm.content),function(item,i){return _c('catalogue-list-item',{key:'list' + item.id,attrs:{"index":item.week || i + 1,"item":item,"content-type":item.type,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"overview":_vm.displayItemsAsOverview,"user-id":_vm.userId,"display-user-interactions":_vm.displayUserInteractions,"content-type-override":_vm.contentTypeOverride,"show-numbers":_vm.showNumbers,"no-link":_vm.lockUnowned && item.is_owned === false,"lock-unowned":_vm.lockUnowned,"is_search":_vm.is_search,"force-wide-thumbs":_vm.forceWideThumbs,"reset-progress":_vm.resetProgress,"destroy-on-list-removal":_vm.destroyOnListRemoval,"compact-layout":_vm.compactLayout},on:{"addToList":_vm.emitAddToList,"progressReset":_vm.emitResetProgress,"addEvent":_vm.addEventToDropdown}})}),_c('add-event-modal',{attrs:{"single-event":_vm.singleEvent,"brand":_vm.brand,"subscription-calendar-id":_vm.subscriptionCalendarId,"theme-color":_vm.themeColor},on:{"modalClose":_vm.handleModalClose}})],2)}
 var ListCataloguevue_type_template_id_825ce0a2_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/catalogues/ListCatalogue.vue?vue&type=template&id=825ce0a2&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueListItem.vue?vue&type=template&id=506f7b29&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueListItem.vue?vue&type=template&id=506f7b29&
 var _CatalogueListItemvue_type_template_id_506f7b29_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"flex flex-row bt-grey-1-1 no-decoration pa-1 relative bg-white text-grey-3 hover-text-black",class:_vm.class_object,attrs:{"href":_vm.renderLink ? _vm.item.url : false}},[(_vm.showNumbers)?_c('div',{staticClass:"flex flex-column align-center number-col title text-black hide-sm-down"},[_vm._v("\n        "+_vm._s(_vm.lesson_number)+"\n    ")]):_vm._e(),(!_vm.showStudentReviewThumbsAsAvatar)?_c('div',{staticClass:"flex flex-column align-v-center",class:[_vm.thumbnailColumnClass, _vm.themeColor]},[_c('div',{staticClass:"thumb-wrap corners-3"},[_c('div',{staticClass:"thumb-img corners-3",class:_vm.thumbnailType,style:('background-image:url( ' + _vm.mappedData.thumbnail + ' );')},[_c('div',{staticClass:"lesson-progress overflow"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),_c('span',{staticClass:"thumb-hover flex-center"},[_c('i',{staticClass:"fas",class:_vm.thumbnailIcon}),(!_vm.isReleased)?_c('p',{staticClass:"text-white font-bold",class:this.overview ? 'tiny' : 'x-tiny'},[_vm._v("\n                        "+_vm._s(_vm.releaseDate)+"\n                    ")]):_vm._e()])])])]):_vm._e(),(_vm.showStudentReviewThumbsAsAvatar)?_c('div',{staticClass:"flex flex-column align-v-center avatar-col"},[_c('div',{staticClass:"thumb-wrap rounded",staticStyle:{"border-radius":"50%"}},[_c('div',{staticClass:"thumb-img corners-3 square rounded",style:('background-image:url( ' + _vm.thumbnail + ' );')},[_c('span',{staticClass:"thumb-hover rounded flex-center",staticStyle:{"border-radius":"50%"}},[_c('i',{staticClass:"fas",class:_vm.thumbnailIcon}),(!_vm.isReleased)?_c('p',{staticClass:"x-tiny text-white font-bold"},[_vm._v("\n                        "+_vm._s(_vm.releaseDate)+"\n                    ")]):_vm._e()])])])]):_vm._e(),_c('div',{staticClass:"flex flex-column align-v-center ph-1 title-column overflow"},[(_vm.brand !== 'guitareo')?_c('p',{staticClass:"tiny font-compressed uppercase text-truncate",class:_vm.themeTextClass},[_vm._v("\n            "+_vm._s(_vm.mappedData.color_title)+"\n        ")]):_vm._e(),_c('p',{staticClass:"tiny font-compressed text-black font-bold item-title"},[_vm._v("\n            "+_vm._s(_vm.mappedData.black_title)+"\n        ")]),(_vm.overview && _vm.mappedData.description)?_c('p',{staticClass:"tiny text-black",domProps:{"innerHTML":_vm._s(_vm.mappedData.description)}},[_vm._v("\n            "+_vm._s(_vm.mappedData.description)+"\n        ")]):_vm._e(),(!_vm.is_search)?_c('p',{staticClass:"x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up"},_vm._l((_vm.mappedData.column_data),function(item,i){return _c('span',[(i > 0)?_c('span',{staticClass:"bullet"},[_vm._v("-")]):_vm._e(),_vm._v("\n\n                "+_vm._s(item)+"\n            ")])}),0):_vm._e()]),(_vm.mappedData.sheet_music && !_vm.is_search)?_c('div',{staticClass:"flex flex-column sheet-music-col ph-1 hide-xs-only"},[_c('img',{attrs:{"src":_vm.mappedData.sheet_music}})]):_vm._e(),_vm._l((_vm.mappedData.column_data),function(item,i){return (!_vm.is_search)?_c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-center font-italic x-tiny font-compressed hide-sm-down"},[_vm._v("\n        "+_vm._s(item)+"\n    ")]):_vm._e()}),(_vm.is_search)?_c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-center font-italic x-tiny hide-sm-down"},[_vm._v("\n        "+_vm._s(_vm.item.type.replace('bundle-', '').replace(/-/g, ' '))+"\n    ")]):_vm._e(),(_vm.displayUserInteractions && _vm.item.type !== 'learning-path')?_c('div',{staticClass:"flex flex-column icon-col align-v-center",class:_vm.is_search ? '' : 'hide-xs-only'},[(_vm.resetProgress)?_c('div',{staticClass:"body"},[_c('i',{staticClass:"fas fa-undo flex-center text-grey-2 hover-text-black reset",attrs:{"title":"Reset Progress"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.progressReset($event)}}})]):_c('div',{staticClass:"body"},[_c('i',{staticClass:"add-to-list fas fa-plus flex-center hover-text-black",class:_vm.is_added ? 'is-added ' + _vm.themeTextClass : 'text-grey-2',attrs:{"title":_vm.is_added ? 'Remove from list' : 'Add to list'},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.addToList($event)}}})])]):_vm._e(),(_vm.is_search && _vm.item.type === 'learning-path')?_c('div',{staticClass:"flex flex-column icon-col align-v-center"}):_vm._e(),_c('div',{staticClass:"flex flex-column icon-col align-v-center",class:_vm.is_search || _vm.overview ? 'hide-xs-only' : ''},[(_vm.noAccess)?_c('div',{staticClass:"body text-grey-2 hover-text-black",attrs:{"title":"Add to Calendar","data-open-modal":"addToCalendarModal"},on:{"click":_vm.addEvent}},[_c('i',{staticClass:"fas flex-center rounded",class:_vm.isReleased ? 'fa-lock' : 'fa-calendar-plus'})]):_c('div',{staticClass:"body"},[(_vm.item.started || _vm.item.completed)?_c('i',{staticClass:"fas flex-center rounded hover-text-black",class:[_vm.item.completed ? _vm.completedIcon : 'fa-adjust', _vm.themeTextClass]}):_c('i',{staticClass:"fas flex-center text-grey-2 rounded hover-text-black",class:['course', 'learning-path', 'pack', 'pack-bundle'].indexOf(_vm.item.type) !== -1 ?
                     'fa-arrow-circle-right' : 'fa-play-circle'})])])],2)}
 var _CatalogueListItemvue_type_template_id_506f7b29_staticRenderFns = []
@@ -31602,14 +31531,14 @@ var _CatalogueListItem_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CatalogueListItem = (_CatalogueListItem_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddEvent/AddEventModal.vue?vue&type=template&id=2a961845&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddEvent/AddEventModal.vue?vue&type=template&id=2a961845&
 var AddEventModalvue_type_template_id_2a961845_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modal small",attrs:{"id":_vm.modalId}},[_c('div',{staticClass:"flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible"},[_c('h1',{staticClass:"subheading text-center mb-2"},[_vm._v("\n            Subscribe to Calendar\n        ")]),_c('p',{staticClass:"tiny text-center mb-2"},[_vm._v("\n            Here you can subscribe to "+_vm._s(_vm.toCapitalCase(_vm.brand))+"'s Lesson Calendar - Apple Calendar, Google Calendar, Outlook, and Yahoo Calendar are all supported.\n        ")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.subscriptionCalendarId),expression:"subscriptionCalendarId"}],staticClass:"relative",staticStyle:{"width":"100%"}},[_c('button',{staticClass:"btn mb-1",on:{"click":function($event){$event.stopPropagation();_vm.subscriptionCalendarDropdown = !_vm.subscriptionCalendarDropdown}}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_c('i',{staticClass:"fas fa-calendar-plus mr-1"}),_vm._v("\n                    Subscribe to calendar\n                ")])]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('add-event-dropdown',{directives:[{name:"show",rawName:"v-show",value:(_vm.subscriptionCalendarDropdown),expression:"subscriptionCalendarDropdown"}],key:"subscriptionCalendar",attrs:{"subscription-calendar-id":_vm.subscriptionCalendarId,"is-subscription":true}})],1)],1),_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.subscriptionCalendarId),expression:"subscriptionCalendarId"}],staticClass:"x-tiny font-italic text-center mb-2"},[_vm._v("\n            Any upcoming releases will automatically show up in this calendar as they are scheduled by the "+_vm._s(_vm.toCapitalCase(_vm.brand))+" Team.\n        ")]),_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasSingleEvent),expression:"hasSingleEvent"}],staticClass:"tiny text-center mb-2"},[_vm._v("\n            Or you can subscribe to this event only by clicking the button below.\n        ")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasSingleEvent),expression:"hasSingleEvent"}],staticClass:"tiny pointer relative",staticStyle:{"width":"100%"}},[_c('button',{staticClass:"btn mb-1",on:{"click":function($event){$event.stopPropagation();_vm.singleEventDropdown = !_vm.singleEventDropdown}}},[_c('span',{staticClass:"inverted",class:[_vm.themeTextClass, _vm.themeBgClass]},[_c('i',{staticClass:"fas fa-calendar-plus mr-1"}),_vm._v("\n                    Subscribe to this event only\n                ")])]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('add-event-dropdown',{directives:[{name:"show",rawName:"v-show",value:(_vm.singleEventDropdown),expression:"singleEventDropdown"}],key:"singleEvent",attrs:{"single-event":_vm.singleEvent}})],1)],1),_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasSingleEvent),expression:"hasSingleEvent"}],staticClass:"x-tiny font-italic text-center mb-2"},[_vm._v("\n            "+_vm._s(_vm.singleEventDescription)+"\n        ")])])])}
 var AddEventModalvue_type_template_id_2a961845_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/components/AddEvent/AddEventModal.vue?vue&type=template&id=2a961845&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddEvent/AddEventDropdown.vue?vue&type=template&id=26d8524b&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddEvent/AddEventDropdown.vue?vue&type=template&id=26d8524b&
 var AddEventDropdownvue_type_template_id_26d8524b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"add-event-dropdown bg-white"},[(_vm.isSubscription)?_c('div',{staticClass:"flex flex-column bg-white shadow corners-3"},_vm._l((_vm.platforms),function(platform){return _c('a',{staticClass:"text-black pointer bg-white no-decoration",attrs:{"href":'https://www.addevent.com/subscribe/' + _vm.subscriptionCalendarId + '+' + platform.key,"target":"_blank"}},[_c('p',{staticClass:"body pa-1",domProps:{"innerHTML":_vm._s(platform.value)}},[_vm._v("\n                "+_vm._s(platform.value)+"\n            ")])])}),0):_c('div',{staticClass:"flex flex-column bg-white shadow corners-3"},_vm._l((_vm.platforms),function(platform){return _c('div',{key:platform.key,staticClass:"addeventatc pointer",attrs:{"data-styling":"none","data-direct":platform.key}},[_c('p',{staticClass:"body pa-1",domProps:{"innerHTML":_vm._s(platform.value)}},[_vm._v("\n                "+_vm._s(platform.value)+"\n            ")]),_c('span',{staticClass:"start"},[_vm._v(_vm._s(_vm.$_event_date))]),_c('span',{staticClass:"timezone"},[_vm._v("UTC")]),_c('span',{staticClass:"title"},[_vm._v(_vm._s(_vm.$_event_title))])])}),0)])}
 var AddEventDropdownvue_type_template_id_26d8524b_staticRenderFns = []
 
@@ -32129,14 +32058,14 @@ var ListCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var ListCatalogue = (ListCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=7196706c&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=7196706c&
 var _CatalogueFiltersvue_type_template_id_7196706c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row flex-wrap pb"},[_vm._l((_vm.filterableValues.filter(function (item) { return item !== 'progress'; })),function(item){return _c('catalogue-filter',{key:item.key,attrs:{"filter-name":item,"item":_vm.filters[item],"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.filterParams[item]},on:{"filterChange":_vm.handleFilterChange}})}),(_vm.hasProgressFilter)?_c('catalogue-filter',{attrs:{"filter-name":"progress","item":_vm.progress_options,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.user_state},on:{"filterChange":_vm.handleProgressChange}}):_vm._e()],2)}
 var _CatalogueFiltersvue_type_template_id_7196706c_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=7196706c&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilter.vue?vue&type=template&id=35c22ef3&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilter.vue?vue&type=template&id=35c22ef3&
 var _CatalogueFiltervue_type_template_id_35c22ef3_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column ph-1 catalogue-filter"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],staticClass:"no-label",class:{'is-clearable': _vm.valueInterface},attrs:{"id":_vm.filterName + 'Filter',"disabled":_vm.valueInterface},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.valueInterface=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"selected":"","disabled":""},domProps:{"value":null}},[_vm._v("\n                "+_vm._s(_vm.placeholderLabel)+"\n            ")]),_vm._l((_vm.sortedOptions),function(filter){return _c('option',{key:filter.key,domProps:{"value":filter.value}},[_vm._v("\n                "+_vm._s(_vm.toTitleCase(filter.key.replace(/-/g, ' ')))+"\n            ")])})],2),(_vm.valueInterface)?_c('span',{staticClass:"cancel-filter",on:{"click":function($event){$event.stopPropagation();return _vm.cancelFilter($event)}}},[_c('i',{staticClass:"fas fa-times",class:'text-' + _vm.themeColor})]):_vm._e()])])}
 var _CatalogueFiltervue_type_template_id_35c22ef3_staticRenderFns = []
 
@@ -32426,7 +32355,7 @@ var _CatalogueFilters_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CatalogueFilters = (_CatalogueFilters_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueSearch.vue?vue&type=template&id=1ec6c5b2&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueSearch.vue?vue&type=template&id=1ec6c5b2&
 var _CatalogueSearchvue_type_template_id_1ec6c5b2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 pa-1",class:_vm.includedTypes.length ? 'sm-8' : ''},[_c('div',{staticClass:"form-group"},[_c('input',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.searchTermInterface),expression:"searchTermInterface",modifiers:{"lazy":true}}],staticClass:"no-label",attrs:{"id":"catalogueSearch","type":"text","name":"search","autocomplete":"off","placeholder":"Search..."},domProps:{"value":(_vm.searchTermInterface)},on:{"change":function($event){_vm.searchTermInterface=$event.target.value}}})])]),(_vm.includedTypes.length)?_c('div',{staticClass:"flex flex-column xs-12 sm-4 pv-1"},[_c('catalogue-filter',{attrs:{"filter-name":"type","item":_vm.parsedTypes,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.selectedTypes},on:{"filterChange":_vm.changeFilter}})],1):_vm._e()]),_c('div',{staticClass:"flex flex-row ph-1 pb-1"},[_c('p',{staticClass:"tiny text-grey-3 font-italic"},[_vm._v("\n            Displaying "),(_vm.totalResults > 0)?_c('span',[_vm._v(_vm._s(_vm.currentResults)+" of")]):_vm._e(),_vm._v(" "+_vm._s(_vm.totalResults)+" results.\n        ")])])])}
 var _CatalogueSearchvue_type_template_id_1ec6c5b2_staticRenderFns = []
 
@@ -32594,7 +32523,7 @@ var _CatalogueSearch_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CatalogueSearch = (_CatalogueSearch_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CataloguePlaylistTabs.vue?vue&type=template&id=2603b2f3&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CataloguePlaylistTabs.vue?vue&type=template&id=2603b2f3&
 var _CataloguePlaylistTabsvue_type_template_id_2603b2f3_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row flex-wrap align-v-center"},[_c('div',{staticClass:"flex flex-column xs-12 sm-8 pv-3"},[_c('div',{staticClass:"flex flex-row flex-wrap filter-tabs ph align-v-center"},[_c('div',{staticClass:"heading-tab pointer mr-3 flex flex-auto",on:{"click":function($event){return _vm.changeTab('added')}}},[_c('h3',{staticClass:"heading flex-auto hover-text-black",class:_vm.selected_tab === 'added' ? ('text-black bb-' + _vm.themeColor + '-2') : 'text-grey-3 font-regular'},[_vm._v("\n                    Added\n                ")])]),_c('div',{staticClass:"heading-tab pointer mr-3 flex flex-auto",on:{"click":function($event){return _vm.changeTab('started')}}},[_c('h3',{staticClass:"heading flex-auto hover-text-black",class:_vm.selected_tab === 'started' ? ('text-black bb-' + _vm.themeColor + '-2') : 'text-grey-3 font-regular'},[_vm._v("\n                    In Progress\n                ")])]),_c('div',{staticClass:"heading-tab pointer mr-3 flex flex-auto",on:{"click":function($event){return _vm.changeTab('completed')}}},[_c('h3',{staticClass:"heading flex-auto hover-text-black",class:_vm.selected_tab === 'completed' ? ('text-black bb-' + _vm.themeColor + '-2') : 'text-grey-3 font-regular'},[_vm._v("\n                    Complete\n                ")])])])]),_c('div',{staticClass:"flex flex-column xs-12 sm-4 pv-1 align-v-center"},[_c('div',{staticClass:"flex flex-row"},[_c('catalogue-filter',{attrs:{"filter-name":"type","item":_vm.parsedTypes,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.selected_types},on:{"filterChange":_vm.changeFilter}})],1)])])}
 var _CataloguePlaylistTabsvue_type_template_id_2603b2f3_staticRenderFns = []
 
@@ -32602,6 +32531,7 @@ var _CataloguePlaylistTabsvue_type_template_id_2603b2f3_staticRenderFns = []
 // CONCATENATED MODULE: ./src/views/catalogues/_CataloguePlaylistTabs.vue?vue&type=template&id=2603b2f3&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CataloguePlaylistTabs.vue?vue&type=script&lang=js&
+
 
 
 
@@ -32738,9 +32668,7 @@ var _CataloguePlaylistTabsvue_type_template_id_2603b2f3_staticRenderFns = []
     var query_object = query_string["parse"](params, {
       arrayFormat: 'bracket'
     });
-
-    var keys = keys_default()(query_object);
-
+    var keys = Object.keys(query_object);
     keys.forEach(function (key) {
       if (key === 'type') {
         if (_this.includedTypes.indexOf(query_object[key]) !== -1) {
@@ -32813,7 +32741,7 @@ var _CataloguePlaylistTabs_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CataloguePlaylistTabs = (_CataloguePlaylistTabs_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=0e4179f0&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=0e4179f0&
 var Paginationvue_type_template_id_0e4179f0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row pagination align-center"},[(_vm.currentPage > 1)?_c('div',{staticClass:"tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 hide-xs-only",on:{"click":function($event){return _vm.goToPage(_vm.currentPage - 1)}}},[_c('i',{staticClass:"fal fa-chevron-left"})]):_vm._e(),(_vm.currentPage > 2)?_c('div',{staticClass:"tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3",on:{"click":function($event){return _vm.goToPage(1)}}},[_vm._v("\n        1\n    ")]):_vm._e(),(_vm.currentPage > 3)?_c('div',{staticClass:"tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 filler font-light"},[_vm._v("\n        ...\n    ")]):_vm._e(),_vm._l((_vm.totalPages),function(i){return (i < (_vm.currentPage + 2) && i > (_vm.currentPage - 2))?_c('div',{staticClass:"tiny corners-3 page-button flex-center shadow noselect",class:_vm.currentPage === i ? 'bg-x-dark text-white active' : 'bg-white text-grey-3',on:{"click":function($event){return _vm.goToPage(i)}}},[_vm._v("\n        "+_vm._s(i)+"\n    ")]):_vm._e()}),(_vm.currentPage < _vm.totalPages - 2)?_c('div',{staticClass:"tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 filler font-light"},[_vm._v("\n        ...\n    ")]):_vm._e(),(_vm.currentPage < _vm.totalPages - 1)?_c('div',{staticClass:"tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3",on:{"click":function($event){return _vm.goToPage(_vm.totalPages)}}},[_vm._v("\n        "+_vm._s(_vm.totalPages)+"\n    ")]):_vm._e(),(_vm.currentPage < _vm.totalPages)?_c('div',{staticClass:"tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 hide-xs-only",on:{"click":function($event){return _vm.goToPage(_vm.currentPage + 1)}}},[_c('i',{staticClass:"fal fa-chevron-right"})]):_vm._e()],2)}
 var Paginationvue_type_template_id_0e4179f0_staticRenderFns = []
 
@@ -32932,7 +32860,6 @@ var Pagination_component = normalizeComponent(
 
 /* harmony default export */ var Pagination = (Pagination_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ContentCatalogue.vue?vue&type=script&lang=js&
-
 
 
 
@@ -33335,8 +33262,7 @@ var Pagination_component = normalizeComponent(
     required_fields: function required_fields() {
       var _this = this;
 
-      var filterKeys = keys_default()(this.filter_params);
-
+      var filterKeys = Object.keys(this.filter_params);
       var includedFields = [];
       filterKeys.forEach(function (filter) {
         if (_this.filter_params[filter] != null) {
@@ -33413,13 +33339,11 @@ var Pagination_component = normalizeComponent(
       var query_object = query_string["parse"](params, {
         arrayFormat: 'bracket'
       });
-
-      var keys = keys_default()(query_object);
-
+      var keys = Object.keys(query_object);
       keys.forEach(function (key) {
         if (key === 'required_user_states') {
           // query-string is weird and parses arrays with 1 value as a string
-          if (!is_array_default()(query_object[key])) {
+          if (!Array.isArray(query_object[key])) {
             _this2.required_user_states = [query_object[key]];
           } else {
             query_object[key].forEach(function (param) {
@@ -33427,7 +33351,7 @@ var Pagination_component = normalizeComponent(
             });
           }
         } else if (key === 'required_fields') {
-          if (!is_array_default()(query_object[key])) {
+          if (!Array.isArray(query_object[key])) {
             var this_val = query_object[key].split(',');
             _this2.filter_params[this_val[0]] = this_val[1];
           } else {
@@ -33437,7 +33361,7 @@ var Pagination_component = normalizeComponent(
             });
           }
         } else if (key === 'included_types' && _this2.searchBar) {
-          if (!is_array_default()(query_object[key])) {
+          if (!Array.isArray(query_object[key])) {
             var _this_val = query_object[key].split(',');
 
             _this2.selected_types[_this_val[0]] = _this_val[1];
@@ -33454,7 +33378,7 @@ var Pagination_component = normalizeComponent(
       });
     },
     setUrlParams: function setUrlParams() {
-      var params = JSON.parse(stringify_default()(this.request_params));
+      var params = JSON.parse(JSON.stringify(this.request_params));
 
       if (!this.searchBar) {
         if (params.included_types) {
@@ -33643,14 +33567,14 @@ var ContentCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var ContentCatalogue = (ContentCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/schedule/Schedule.vue?vue&type=template&id=70073600&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/schedule/Schedule.vue?vue&type=template&id=70073600&
 var Schedulevue_type_template_id_70073600_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_vm._l((_vm.content),function(item,i){return _c('schedule-item',{key:'schedule-item-' + item.id,attrs:{"item":item,"timezone":_vm.timezone,"theme-color":_vm.themeColor},on:{"addToList":_vm.addToListEventHandler,"addEvent":_vm.addEventToDropdown}})}),_c('add-event-modal',{attrs:{"modal-id":"scheduleAddToCalendarModal","subscription-calendar-id":_vm.subscriptionCalendarId,"single-event":_vm.singleEvent,"theme-color":_vm.themeColor},on:{"modalClose":_vm.handleModalClose}})],2)}
 var Schedulevue_type_template_id_70073600_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/schedule/Schedule.vue?vue&type=template&id=70073600&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/schedule/_ScheduleItem.vue?vue&type=template&id=45ac62bd&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/schedule/_ScheduleItem.vue?vue&type=template&id=45ac62bd&
 var _ScheduleItemvue_type_template_id_45ac62bd_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row content-table-row scheduled bt-grey-1-1 pa-1",class:_vm.month},[_c('div',{staticClass:"month-col body text-white bg-grey-2"},[_vm._v("\n        "+_vm._s(_vm.month)+"\n    ")]),_c('div',{staticClass:"flex flex-column align-v-center thumbnail-col"},[_c('div',{staticClass:"thumb-wrap corners-3 bg-black"},[_c('div',{staticClass:"thumb-img corners-3 widescreen text-center"},[_c('div',{staticClass:"release-day"},[_c('p',{staticClass:"tiny text-white font-bold"},[_vm._v("\n                        "+_vm._s(_vm.day)+"\n                    ")]),_c('p',{staticClass:"tiny text-white"},[_vm._v("\n                        "+_vm._s(_vm.time)+"\n                    ")])])])])]),_c('div',{staticClass:"flex flex-column align-v-center ph-1 title-column overflow"},[_c('p',{staticClass:"tiny uppercase text-truncate",class:_vm.themeTextClass},[_vm._v("\n            "+_vm._s(_vm.mappedData.color_title)+"\n        ")]),_c('p',{staticClass:"tiny text-black font-bold item-title"},[_vm._v("\n            "+_vm._s(_vm.mappedData.black_title)+"\n        ")]),_c('p',{staticClass:"x-tiny text-grey-3 text-truncate font-italic uppercase hide-md-up"},_vm._l((_vm.mappedData.column_data),function(item,i){return _c('span',[(i > 0)?_c('span',{staticClass:"bullet"},[_vm._v("-")]):_vm._e(),_vm._v("\n\n                "+_vm._s(item)+"\n            ")])}),0)]),_c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down"},[_vm._v("\n        "+_vm._s(_vm.releaseType)+"\n    ")]),_vm._l((_vm.mappedData.column_data),function(item,i){return _c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down text-center"},[_vm._v("\n        "+_vm._s(item)+"\n    ")])}),_c('div',{staticClass:"flex flex-column icon-col align-v-center hide-xs-only"},[_c('div',{staticClass:"body"},[_c('i',{staticClass:"add-to-list fas fa-plus flex-center pointer",class:_vm.is_added ? 'is-added ' + _vm.themeTextClass : 'text-grey-2',attrs:{"title":_vm.is_added ? 'Remove from list' : 'Add to list'},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.addToList($event)}}})])]),_c('div',{staticClass:"flex flex-column icon-col align-v-center",staticStyle:{"position":"relative"}},[_c('div',{staticClass:"body pointer add-to",attrs:{"title":"Add to Calendar","data-open-modal":"scheduleAddToCalendarModal"},on:{"click":_vm.addEvent}},[_c('i',{staticClass:"fas fa-calendar-plus flex-center text-grey-2 rounded"})])])],2)}
 var _ScheduleItemvue_type_template_id_45ac62bd_staticRenderFns = []
 
@@ -33955,14 +33879,14 @@ var Schedule_component = normalizeComponent(
 )
 
 /* harmony default export */ var Schedule = (Schedule_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/notifications/NotificationsTable.vue?vue&type=template&id=43f36d46&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/notifications/NotificationsTable.vue?vue&type=template&id=43f36d46&
 var NotificationsTablevue_type_template_id_43f36d46_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column bg-white corners-3 shadow"},[_c('div',{staticClass:"flex flex-row pa-3 align-v-center flex-wrap"},[_vm._m(0),_c('div',{staticClass:"flex flex-column button-col"},[_c('a',{staticClass:"btn bg-dark inverted short text-grey-3",attrs:{"href":_vm.settingsUrl}},[_c('i',{staticClass:"fas fa-cog mr-1"}),_vm._v("\n                My Settings\n            ")])]),_c('div',{staticClass:"flex flex-column button-col"},[_c('button',{staticClass:"btn",attrs:{"disabled":!_vm.hasUnreadNotifications},on:{"click":function($event){$event.stopPropagation();return _vm.markAllAsRead($event)}}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_c('i',{staticClass:"fas fa-eye mr-1"}),_vm._v("\n                    Mark All As Read\n                ")])])])]),_c('div',{staticClass:"flex flex-row pa-3"},[(_vm.notifications.length === 0)?_c('p',{staticClass:"tiny text-grey-3 font-italic"},[_vm._v("\n            You do not appear to have any notifications at this time.\n        ")]):_vm._e()]),_vm._l((_vm.notificationsArray),function(item,i){return _c('notifications-table-row',_vm._b({key:item.id,on:{"notificationRead":_vm.markAsRead}},'notifications-table-row',item,false))}),(_vm.totalPages > 1)?_c('div',{staticClass:"flex flex-row bg-light pagination-row align-h-right"},[_c('pagination',{attrs:{"current-page":_vm.currentPage,"total-pages":_vm.totalPages},on:{"pageChange":_vm.handlePageChange}})],1):_vm._e()],2)}
 var NotificationsTablevue_type_template_id_43f36d46_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('h1',{staticClass:"heading"},[_vm._v("\n                Notifications\n            ")])])}]
 
 
 // CONCATENATED MODULE: ./src/views/notifications/NotificationsTable.vue?vue&type=template&id=43f36d46&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/notifications/_NotificationsTableRow.vue?vue&type=template&id=4c452c8a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/notifications/_NotificationsTableRow.vue?vue&type=template&id=4c452c8a&
 var _NotificationsTableRowvue_type_template_id_4c452c8a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"content-table-row flex flex-row bt-grey-1-1 pa-1 relative no-decoration",class:{'is-read': _vm.isRead},attrs:{"href":_vm.linkedContent.url},on:{"click":function($event){return _vm.markAsRead(false)}}},[_c('div',{staticClass:"flex flex-column avatar-col align-v-center"},[_c('div',{staticClass:"thumb-img square rounded bg-center",style:('background-image:url(' + _vm.userAvatar + ');')})]),_c('div',{staticClass:"flex flex-column align-v-center ph-1 title-column overflow"},[_c('p',{staticClass:"tiny text-black item-title"},[_c('span',{staticClass:"font-bold"},[_vm._v(_vm._s(_vm.userName))]),_vm._v("\n\n            "+_vm._s(_vm.notificationTypeString)+"\n\n            "),_c('span',{staticClass:"font-bold"},[_vm._v(_vm._s(_vm.linkedContent.title))])]),_c('p',{staticClass:"tiny text-grey-3 uppercase font-italic"},[_vm._v("\n            "+_vm._s(_vm.createdOn)+"\n        ")])]),_c('div',{staticClass:"flex flex-column icon-col align-v-center"},[_c('div',{staticClass:"body",attrs:{"title":"Mark as Read"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.markAsRead(true)}}},[_c('i',{staticClass:"far fa-eye flex-center text-grey-2 rounded read-icon"})])]),_vm._m(0)])}
 var _NotificationsTableRowvue_type_template_id_4c452c8a_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column icon-col align-v-center"},[_c('div',{staticClass:"body"},[_c('i',{staticClass:"fas fa-arrow-circle-right flex-center text-grey-2 rounded"})])])}]
 
@@ -34332,7 +34256,7 @@ var NotificationsTable_component = normalizeComponent(
 )
 
 /* harmony default export */ var NotificationsTable = (NotificationsTable_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/catalogue/CommentsCatalogue.vue?vue&type=template&id=1925e6fc&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/catalogue/CommentsCatalogue.vue?vue&type=template&id=1925e6fc&
 var CommentsCataloguevue_type_template_id_1925e6fc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column bg-white shadow corners-3"},[_c('div',{staticClass:"flex flex-row pa-2 align-v-center bb-grey-1-1"},[_c('h1',{staticClass:"heading grow"},[_vm._v("\n            Comments\n        ")]),_c('button',{staticClass:"btn collapse-square",on:{"click":function($event){_vm.filters = !_vm.filters}}},[_c('span',{class:[_vm.themeBgClass, _vm.filters ? 'text-white' : 'inverted ' + _vm.themeTextClass]},[_c('i',{staticClass:"fas fa-filter"})])])]),_c('transition',{attrs:{"name":"slide-fade"}},[(_vm.filters)?_c('div',{staticClass:"flex flex-row pa-2 bb-grey-1-1"},[_c('div',{staticClass:"flex flex-column"},[_vm._l((_vm.availableTypes),function(contentType){return _c('div',{staticClass:"flex flex-row form-group align-v-center mb-1"},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{attrs:{"id":contentType.key,"name":contentType.key,"v-model":contentType.active,"type":"checkbox"},domProps:{"checked":contentType.active},on:{"change":_vm.handleFilter}}),_c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])]),_c('label',{staticClass:"toggle-label capitalize",attrs:{"for":contentType.key}},[_vm._v("\n                        "+_vm._s(contentType.key.replace(/-/g, ' '))+"\n                    ")])])}),_c('div',{staticClass:"flex flex-row form-group align-v-center mb-1"},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{attrs:{"id":"noRepliedTo","name":"noRepliedTo","v-model":_vm.noRepliedTo,"type":"checkbox"},domProps:{"checked":_vm.noRepliedTo},on:{"change":_vm.removeCommentsWithReplies}}),_c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])]),_c('label',{staticClass:"toggle-label capitalize",attrs:{"for":_vm.noRepliedTo}},[_vm._v("\n                        Dont show comments we've replied to\n                    ")])])],2)]):_vm._e()]),_vm._m(0),_vm._m(1),_vm._l((_vm.comments),function(comment){return (!_vm.loading)?_c('div',{staticClass:"comment-item flex flex-row bb-grey-1-1 pointer hover-bg-grey-7",class:[_vm.openCommentId === comment.id ? 'bg-grey-7' : '', _vm.lastReplyIsByTeam(comment) && _vm.noRepliedTo ? 'replied' : ''],on:{"click":function($event){return _vm.openCommentThread(comment)}}},[_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"comment-data flex flex-row align-v-top pa-2"},[_c('div',{staticClass:"flex flex-column user-name ph-1"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"rounded overflow avatar mr-1 hide-xs-only"},[_c('img',{attrs:{"src":comment.user['fields.profile_picture_image_url']}})]),_c('h6',{staticClass:"tiny font-bold"},[_vm._v("\n                            "+_vm._s(comment.user.display_name)+"\n                        ")])])]),_c('div',{staticClass:"flex flex-column comment-body tiny ph-1",domProps:{"innerHTML":_vm._s(comment.comment)}},[_vm._v("\n                    "+_vm._s(comment.comment)+"\n                ")]),_c('div',{staticClass:"flex flex-column lesson-title hide-xs-only ph-1"},[(comment.content)?_c('h6',{staticClass:"tiny font-bold"},[_vm._v("\n                        "+_vm._s(comment.content.title)+"\n                    ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column lesson-type hide-xs-only ph-1 align-center"},[(comment.content)?_c('i',{class:[_vm.getContentTypeIcon(comment.content.type), _vm.themeTextClass]}):_vm._e(),(comment.content)?_c('h6',{staticClass:"tiny capitalize text-center"},[_vm._v("\n                        "+_vm._s(comment.content.type.replace(/-/g, ' '))+"\n                    ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column replied-to body ph-1 align-center"},[_c('i',{staticClass:"fas",class:_vm.repliedToClasses(comment)})])]),_c('transition',{attrs:{"name":"slide-fade","enter-active-class":"slide-fade-enter-active"}},[(_vm.openCommentId === comment.id)?_c('div',{staticClass:"flex flex-row pa-2 ba-grey-1-1 bg-white corners-3 active-comment"},[_c('div',{staticClass:"flex flex-column"},[_c('comment-post',{attrs:{"comment":comment,"brand":_vm.brand,"current-user":_vm.currentUser,"theme-color":_vm.themeColor,"profile-base-route":_vm.profileBaseRoute,"has-public-profiles":_vm.hasPublicProfiles},on:{"likeComment":_vm.handleCommentLike,"likeReply":_vm.handleReplyLike,"deleteComment":_vm.handleCommentDelete,"deleteReply":_vm.handleReplyDelete,"openLikes":_vm.addLikeUsersToModal}}),_c('a',{staticClass:"btn flat",class:_vm.themeTextClass,attrs:{"href":comment.content.url + '?goToComment=' + comment.id,"target":"_blank"}},[_vm._v("\n                            Go to Lesson\n                        ")])],1)]):_vm._e()])],1)]):_vm._e()}),_c('comment-likes-modal',{attrs:{"theme-color":_vm.themeColor,"comment-id":_vm.currentLikeUsersId,"like-users":_vm.likeUsers,"total-like-users":_vm.totalLikeUsers,"loading-like-users":_vm.loadingLikeUsers,"requesting-like-users":_vm.requestingLikeUsers},on:{"loadMoreLikeUsers":_vm.addLikeUsersToModal}}),_c('div',{staticClass:"flex flex-row pa-3 align-center"},[_c('button',{staticClass:"button btn collapse-250",on:{"click":_vm.loadMore}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[(_vm.loading || _vm.requestingData)?_c('i',{staticClass:"fas fa-spin fa-spinner mr-1"}):_vm._e(),_vm._v("\n                "+_vm._s(_vm.loading || _vm.requestingData ? 'Loading...' : 'Load More')+"\n            ")])])])],2)}
 var CommentsCataloguevue_type_template_id_1925e6fc_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row bb-grey-1-1 pa-2 tiny align-v-center"},[_c('p',{staticClass:"tiny dense mr-3"},[_c('i',{staticClass:"fas fa-check-square text-success mr-1"}),_vm._v(" Replied to (no response)\n        ")]),_c('p',{staticClass:"tiny dense mr-3"},[_c('i',{staticClass:"fas fa-check-square text-warning mr-1"}),_vm._v(" Replied to (has response)\n        ")]),_c('p',{staticClass:"tiny dense mr-3"},[_c('i',{staticClass:"fas fa-times-square text-error mr-1"}),_vm._v(" Not replied to\n        ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row pa-2 bg-grey-7 bb-grey-1-1 comment-data"},[_c('div',{staticClass:"flex flex-column user-name tiny dense font-bold ph-1"},[_vm._v("\n            User\n        ")]),_c('div',{staticClass:"flex flex-column comment-body tiny dense font-bold ph-1"},[_vm._v("\n            Comment Body\n        ")]),_c('div',{staticClass:"flex flex-column lesson-title tiny dense font-bold hide-xs-only ph-1"},[_vm._v("\n            Title\n        ")]),_c('div',{staticClass:"flex flex-column lesson-type tiny dense font-bold hide-xs-only ph-1 text-center"},[_vm._v("\n            Type\n        ")]),_c('div',{staticClass:"flex flex-column replied-to tiny dense font-bold ph-1 text-center"},[_vm._v("\n            Replied\n        ")])])}]
 
@@ -34347,7 +34271,7 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
   /**
    * Get a list of comments
    *
-   * @param {object} params - the params object to filter comments
+   * @param {Object} params - the params object to filter comments
    * @returns {Promise} resolved promise with the response.data object, containing the comments array
    */
   getComments: function getComments(params) {
@@ -34361,9 +34285,9 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
   /**
    * Get a comment by ID
    * WARNING: Doesn't actually work like you think, pulls the PAGE of the list where that
-   * specific comment is, kinda dumb but ask the BE why - Curtis, Sept 2018
+   * specific comment is, so you need to find the comment in that array - Curtis, Sept 2018
    *
-   * @param {object} id - the comment id to get
+   * @param {String|Number} id - the comment id to get
    * @returns {Promise} resolved promise with the response.data object, containing the comments array
    */
   getCommentById: function getCommentById(id) {
@@ -34375,7 +34299,7 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
   /**
    * Post a comment
    *
-   * @param {object} data - the data object with the content_id and comment properties
+   * @param {Object} data - the data object with the content_id and comment properties
    * @returns {Promise} resolved promise with the response.data object, containing the submit comment
    */
   postComment: function postComment(data) {
@@ -34387,7 +34311,7 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
   /**
    * Post a reply
    *
-   * @param {object} data - the data object with the parent_id and comment properties
+   * @param {Object} data - the data object with the parent_id and comment properties
    * @returns {Promise} resolved promise with the response.data object, containing the submit reply
    */
   postReply: function postReply(data) {
@@ -34399,7 +34323,7 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
   /**
    * Like a Comment or Reply
    *
-   * @param {number} id - the comment ID to like
+   * @param {String|Number} id - the comment ID to like
    * @returns {Promise} resolved promise with the response object
    */
   likeComment: function likeComment(id) {
@@ -34411,7 +34335,7 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
   /**
    * Un-Like a Comment or Reply
    *
-   * @param {number} id - the comment ID to unlike
+   * @param {String|Number} id - the comment ID to unlike
    * @returns {Promise} resolved promise with the response object
    */
   unlikeComment: function unlikeComment(id) {
@@ -34423,7 +34347,7 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
   /**
    * Delete a Comment or Reply
    *
-   * @param {number} id - the comment ID to delete
+   * @param {String|Number} id - the comment ID to delete
    * @returns {Promise} resolved promise with the response.data object
    */
   deleteComment: function deleteComment(id) {
@@ -34435,9 +34359,9 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
   /**
    * Get a list of users that have liked a comment
    *
-   * @param {number} id
-   * @param {number} page
-   * @param {number} limit
+   * @param {String|Number} id
+   * @param {String|Number} page
+   * @param {String|Number} limit
    * @returns {Promise} resolved promise with the response.data object
    */
   getCommentLikeUsers: function getCommentLikeUsers(_ref) {
@@ -34456,14 +34380,14 @@ var comments_endpointPrefix = Object({"NODE_ENV":"production","BASE_URL":"/"}).e
     }).catch(_error_handler);
   }
 });
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentPost.vue?vue&type=template&id=40745ea0&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentPost.vue?vue&type=template&id=40745ea0&
 var _CommentPostvue_type_template_id_40745ea0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row comment-post pa mb-1",class:{'pinned': _vm.pinned},attrs:{"id":_vm.domID}},[_c('div',{staticClass:"flex flex-column avatar-column pr"},[(_vm.hasPublicProfiles)?_c('div',{staticClass:"user-avatar smaller",class:[_vm.avatarClassObject, _vm.brand]},[_c('a',{staticClass:"no-decoration",attrs:{"href":_vm.profileRoute,"target":"_blank"}},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.comment.user['fields.profile_picture_image_url']}})])]):_vm._e(),(!_vm.hasPublicProfiles)?_c('img',{staticClass:"rounded",attrs:{"src":_vm.comment.user['fields.profile_picture_image_url']}}):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"x-tiny dense font-bold uppercase text-center mt-1"},[_vm._v("\n            "+_vm._s(_vm.userExpRank)+"\n        ")]):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"x-tiny dense text-center font-compressed"},[_vm._v("\n            "+_vm._s(_vm.userExpValue)+" XP\n        ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column grow"},[_c('div',{staticClass:"flex flex-row mb-1 comment-meta"},[_c('div',{staticClass:"flex flex-column grow mr-1"},[_c('h2',{staticClass:"body font-bold"},[(_vm.hasPublicProfiles)?_c('a',{staticClass:"text-black no-decoration",attrs:{"href":_vm.profileRoute,"target":"_blank"}},[_vm._v("\n                        "+_vm._s(_vm.comment.user.display_name)+"\n                    ")]):_c('span',{staticClass:"text-black no-decoration"},[_vm._v("\n                        "+_vm._s(_vm.comment.user.display_name)+"\n                    ")]),_c('span',{staticClass:"x-tiny text-grey-3 font-bold font-italic uppercase ml-1"},[_vm._v("\n                        "+_vm._s(_vm.dateString)+"\n                    ")])])]),_c('div',{staticClass:"flex flex-column align-h-right align-v-center flex-auto"},[_c('div',{staticClass:"flex flex-row"},[((_vm.isUsersPost || _vm.isCurrentUserAdmin))?_c('span',{staticClass:"tiny no-decoration text-grey-3 pointer mr-1"},[_c('i',{staticClass:"fas fa-trash",on:{"click":_vm.deleteComment}})]):_vm._e()])])]),_c('div',{staticClass:"flex flex-row body mb-1"},[_c('div',{staticClass:"flex flex-column post-body grow",domProps:{"innerHTML":_vm._s(_vm.comment.comment)}},[_vm._v("\n                "+_vm._s(_vm.comment.comment)+"\n            ")])]),_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column mb-1"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('p',{staticClass:"tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect",class:_vm.replying ? _vm.themeTextClass : 'text-grey-3',attrs:{"dusk":"reply-button"},on:{"click":_vm.replyToComment}},[_c('i',{staticClass:"fas fa-reply"}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.replying ? 'Replying' : 'Reply')+"\n                        ")])]),(!_vm.isUsersPost)?_c('p',{staticClass:"tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect",class:_vm.comment.is_liked ? _vm.themeTextClass : 'text-grey-3',attrs:{"dusk":"like-button"},on:{"click":_vm.likeComment}},[_c('i',{staticClass:"fas fa-thumbs-up"}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.comment.is_liked ? 'Liked' : 'Like')+"\n                        ")])]):_vm._e(),_c('span',{staticClass:"grow"}),_c('p',{staticClass:"x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect",attrs:{"data-open-modal":_vm.openModalString},on:{"click":_vm.openLikes}},[_c('i',{staticClass:"fas fa-thumbs-up text-white likes-icon",class:_vm.comment.like_count > 0 ? _vm.themeBgClass : 'bg-grey-2'}),_vm._v(" "+_vm._s(_vm.comment.like_count)+"\n                    ")])])])]),_c('transition',{attrs:{"name":"slide-fade","enter-active-class":"slide-fade-enter-active","leave-active-class":""}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.replying),expression:"replying"}],staticClass:"flex flex-row comment-post mv-2"},[_c('div',{staticClass:"flex flex-column avatar-column pr hide-xs-only"},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.currentUser.avatar}})]),_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row"},[_c('text-editor',{ref:"textEditor",attrs:{"toolbar":"bold italic underline | bullist numlist | link","height":150},model:{value:(_vm.replyInterface),callback:function ($$v) {_vm.replyInterface=$$v},expression:"replyInterface"}})],1),_c('div',{staticClass:"flex flex-row align-h-right mv-1"},[_c('a',{staticClass:"btn flat text-black collapse-150 short mr-1",on:{"click":_vm.cancelReply}},[_vm._v("\n                            Cancel\n                        ")]),_c('button',{staticClass:"btn collapse-150",attrs:{"disabled":_vm.loading,"dusk":"submit-reply"},on:{"click":_vm.postReply}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_vm._v("\n                                Reply\n                            ")])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading-reply flex-center"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:_vm.themeTextClass}),_c('p',{staticClass:"x-tiny text-grey-3"},[_vm._v("\n                            loading...\n                        ")])])])])]),_c('transition-group',{attrs:{"name":"slide-fade","enter-active-class":"slide-fade-enter-active","leave-active-class":"","tag":"div"}},_vm._l((_vm.repliesToShow),function(replyComment){return _c('comment-reply',{key:replyComment.id,attrs:{"comment":replyComment,"brand":_vm.brand,"parent-id":_vm.comment.id,"current-user":_vm.currentUser,"theme-color":_vm.themeColor,"profile-base-route":_vm.profileBaseRoute,"has-public-profiles":_vm.hasPublicProfiles},on:{"likeReply":_vm.likeReply,"deleteReply":_vm.deleteReply,"openLikes":_vm.openLikes,"replyPosted":_vm.replyPosted}})}),1),(_vm.comment.replies.length > 2)?_c('div',{staticClass:"flex flex-row align-center"},[_c('a',{staticClass:"btn btn-tiny flat text-grey-3 collapse-150",on:{"click":function($event){_vm.showAllReplies = !_vm.showAllReplies}}},[_vm._v("\n                "+_vm._s(_vm.showAllReplies ? 'Hide Replies' : 'Show All Replies')+"\n            ")])]):_vm._e()],1)])}
 var _CommentPostvue_type_template_id_40745ea0_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/comments/_CommentPost.vue?vue&type=template&id=40745ea0&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TextEditor/TextEditor.vue?vue&type=template&id=0738e90d&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TextEditor/TextEditor.vue?vue&type=template&id=0738e90d&
 var TextEditorvue_type_template_id_0738e90d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.contentInterface),expression:"contentInterface"}],attrs:{"type":"hidden","name":_vm.fieldKey},domProps:{"value":(_vm.contentInterface)},on:{"input":function($event){if($event.target.composing){ return; }_vm.contentInterface=$event.target.value}}}),_c('tinymce-editor',{attrs:{"api-key":"g84168rl7b45du7fji2nive374o541mhtmzogyolgqng97xc","init":_vm.initObject},on:{"input":_vm.handleInput},model:{value:(_vm.contentInterface),callback:function ($$v) {_vm.contentInterface=$$v},expression:"contentInterface"}})],1)}
 var TextEditorvue_type_template_id_0738e90d_staticRenderFns = []
 
@@ -34910,7 +34834,7 @@ var TextEditor_component = normalizeComponent(
 )
 
 /* harmony default export */ var TextEditor = (TextEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentReply.vue?vue&type=template&id=beb21184&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentReply.vue?vue&type=template&id=beb21184&
 var _CommentReplyvue_type_template_id_beb21184_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row comment-post pl pv mv-1"},[_c('div',{staticClass:"flex flex-column avatar-column pr"},[(_vm.hasPublicProfiles)?_c('div',{staticClass:"user-avatar smaller",class:[_vm.avatarClassObject, _vm.brand]},[_c('a',{staticClass:"no-decoration",attrs:{"href":_vm.profileRoute,"target":"_blank"}},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.comment.user['fields.profile_picture_image_url']}})])]):_vm._e(),(!_vm.hasPublicProfiles)?_c('img',{staticClass:"rounded",attrs:{"src":_vm.comment.user['fields.profile_picture_image_url']}}):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"x-tiny dense font-bold uppercase text-center mt-1"},[_vm._v("\n            "+_vm._s(_vm.userExpRank)+"\n        ")]):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"x-tiny dense text-center font-compressed"},[_vm._v("\n            "+_vm._s(_vm.userExpValue)+" XP\n        ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column grow"},[_c('div',{staticClass:"flex flex-row align-v-center mb-1 comment-meta"},[_c('div',{staticClass:"flex flex-column grow mr-1"},[_c('h2',{staticClass:"body font-bold"},[(_vm.hasPublicProfiles)?_c('a',{staticClass:"text-black no-decoration",attrs:{"href":_vm.profileRoute,"target":"_blank"}},[_vm._v("\n                        "+_vm._s(_vm.comment.user.display_name)+"\n                    ")]):_c('span',{staticClass:"text-black no-decoration"},[_vm._v("\n                        "+_vm._s(_vm.comment.user.display_name)+"\n                    ")]),_c('span',{staticClass:"x-tiny text-grey-3 font-bold font-italic uppercase ml-1"},[_vm._v("\n                        "+_vm._s(_vm.dateString)+"\n                    ")])])]),_c('div',{staticClass:"flex flex-column align-h-right align-v-center flex-auto"},[_c('div',{staticClass:"flex flex-row"},[((_vm.isUsersPost || _vm.isCurrentUserAdmin))?_c('span',{staticClass:"tiny no-decoration text-grey-3 pointer mr-1"},[_c('i',{staticClass:"fas fa-trash",on:{"click":_vm.deleteComment}})]):_vm._e()])])]),_c('div',{staticClass:"flex flex-row body mb-1"},[_c('div',{staticClass:"flex flex-column post-body grow",domProps:{"innerHTML":_vm._s(_vm.comment.comment)}},[_vm._v("\n                "+_vm._s(_vm.comment.comment)+"\n            ")])]),_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column mb-1"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('p',{staticClass:"tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect",class:_vm.replying ? _vm.themeTextClass : 'text-grey-3',attrs:{"dusk":"reply-button"},on:{"click":_vm.openReply}},[_c('i',{staticClass:"fas fa-reply"}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.replying ? 'Replying' : 'Reply')+"\n                        ")])]),(!_vm.isUsersPost)?_c('p',{staticClass:"tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect",class:_vm.comment.is_liked ? _vm.themeTextClass : 'text-grey-3',on:{"click":_vm.likeComment}},[_c('i',{staticClass:"fas fa-thumbs-up"}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.comment.is_liked ? 'Liked' : 'Like')+"\n                        ")])]):_vm._e(),_c('span',{staticClass:"grow"}),_c('p',{staticClass:"x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect",attrs:{"data-open-modal":_vm.openModalString},on:{"click":_vm.openLikes}},[_c('i',{staticClass:"fas fa-thumbs-up text-white likes-icon",class:_vm.comment.like_count > 0 ? _vm.themeBgClass : 'bg-grey-2'}),_vm._v(" "+_vm._s(_vm.comment.like_count)+"\n                    ")])])])]),_c('transition',{attrs:{"name":"slide-fade"}},[(_vm.replying)?_c('div',{staticClass:"flex flex-row comment-post mv-2"},[_c('div',{staticClass:"flex flex-column avatar-column pr hide-xs-only"},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.currentUser.avatar}})]),_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row"},[_c('text-editor',{ref:"textEditor",attrs:{"toolbar":"bold italic underline | bullist numlist | link","height":150},model:{value:(_vm.replyInterface),callback:function ($$v) {_vm.replyInterface=$$v},expression:"replyInterface"}})],1),_c('div',{staticClass:"flex flex-row align-h-right mv-1"},[_c('a',{staticClass:"btn flat text-black collapse-150 short mr-1",on:{"click":function($event){_vm.replying = false}}},[_vm._v("\n                            Cancel\n                        ")]),_c('button',{staticClass:"btn collapse-150",attrs:{"disabled":_vm.loading,"dusk":"submit-reply"},on:{"click":_vm.postReply}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_vm._v("\n                                Reply\n                            ")])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading-reply flex-center"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:_vm.themeTextClass}),_c('p',{staticClass:"x-tiny text-grey-3"},[_vm._v("\n                            loading...\n                        ")])])])]):_vm._e()])],1)])}
 var _CommentReplyvue_type_template_id_beb21184_staticRenderFns = []
 
@@ -35875,7 +35799,7 @@ var _CommentPost_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CommentPost = (_CommentPost_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentLikesModal.vue?vue&type=template&id=ae074b6e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentLikesModal.vue?vue&type=template&id=ae074b6e&
 var _CommentLikesModalvue_type_template_id_ae074b6e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modal small",attrs:{"id":_vm.customId || 'likeUsersModal'}},[_c('div',{ref:"likeUsersContainer",staticClass:"flex flex-column bg-white corners-3 shadow",staticStyle:{"max-height":"500px"},attrs:{"id":"likeUsersContainer"}},[(_vm.loadingLikeUsers)?_c('div',{staticClass:"flex flex-column pa-3"},[_c('h1',{staticClass:"heading text-center"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:_vm.themeTextClass})])]):_c('div',{staticClass:"flex flex-column"},[_c('h1',{staticClass:"heading align-v-center pa-3"},[_c('i',{staticClass:"fas fa-thumbs-up rounded text-white mr-1 big likes-icon",class:_vm.themeBgClass}),_vm._v("\n                "+_vm._s(_vm.totalLikeUsers)+" Like"+_vm._s(_vm.totalLikeUsers == 1 ? '' : 's')+"\n            ")]),_vm._l((_vm.likeUsers),function(user){return _c('a',{key:user.id,staticClass:"flex flex-row comment-like-user bt-grey-1-1 no-decoration text-black ph-3 pv-1 align-v-center",attrs:{"href":_vm.baseProfileRoute + user.user_id}},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"flex flex-column avatar-column"},[_c('div',{staticClass:"user-avatar smaller",class:_vm.getUserAvatarClassObject(user)},[_c('img',{staticClass:"rounded",attrs:{"src":user.avatar_url}})])]),_c('div',{staticClass:"flex flex-column pl-2 align-v-center text-truncate"},[_c('p',{staticClass:"body font-bold text-truncate"},[_vm._v("\n                            "+_vm._s(user.display_name)+"\n                        ")])])])])})],2)])])}
 var _CommentLikesModalvue_type_template_id_ae074b6e_staticRenderFns = []
 
@@ -36732,7 +36656,7 @@ var CommentsCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var CommentsCatalogue = (CommentsCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ImageCropper/ImageCropper.vue?vue&type=template&id=187c4a3a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ImageCropper/ImageCropper.vue?vue&type=template&id=187c4a3a&
 var ImageCroppervue_type_template_id_187c4a3a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"image-processor bg-white"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.hasFileToCrop),expression:"!hasFileToCrop"}],ref:"uploader",staticClass:"image-uploader ba-light-1 corners-3 bg-white widescreen"},[_c('div',{staticClass:"uploader-content"},[(_vm.dropZoneError)?_c('p',{staticClass:"body mb-5 text-error"},[_vm._v("\n                "+_vm._s(_vm.dropZoneError)+"\n            ")]):_vm._e(),_vm._m(0),_vm._m(1),_vm._m(2)])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasFileToCrop),expression:"hasFileToCrop"}],staticClass:"image-cropper bg-white"},[_c('div',{staticClass:"widescreen overflow"},[_c('canvas',{ref:"cropper",attrs:{"id":"imgToCrop"}})]),_c('div',{staticClass:"cropper-controls pv-1 bg-grey-2 flex flex-row align-center"},[_c('a',{staticClass:"btn normal bg-dark inverted text-grey-3 short mh-1",on:{"click":_vm.resetCrop}},[_vm._v("\n                Cancel\n            ")]),_c('div',{staticClass:"flex flex-column"}),_c('a',{staticClass:"btn bg-x-dark text-white short mh-1",on:{"click":_vm.zoomOut}},[_c('i',{staticClass:"far fa-search-minus"})]),_c('a',{staticClass:"btn bg-x-dark text-white short mh-1",on:{"click":_vm.zoomIn}},[_c('i',{staticClass:"far fa-search-plus"})]),_c('a',{staticClass:"btn bg-x-dark text-white short mh-1",on:{"click":_vm.rotate}},[_c('i',{staticClass:"fas fa-redo-alt"})]),_c('div',{staticClass:"flex flex-column"}),_c('a',{staticClass:"btn normal text-white short mh-1",class:_vm.themeBgClass,on:{"click":_vm.cropImage}},[_vm._v("\n                Crop\n            ")])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.croppedImage),expression:"croppedImage"}],staticClass:"image-preview bg-white"},[_c('div',{staticClass:"widescreen bg-white"},[_c('img',{staticClass:"shadow",class:_vm.aspectRatio === 1 ? 'rounded' : '',attrs:{"src":_vm.croppedImage}}),(_vm.loading)?_c('span',{staticClass:"loading-element tiny font-italic",class:_vm.themeTextClass},[_c('i',{staticClass:"fas fa-spinner fa-spin"}),_vm._v("\n                    Loading please wait...\n                ")]):_vm._e()]),_c('div',{staticClass:"pa-1 flex flex-row bg-white"},[_c('button',{staticClass:"btn collapse-150 mr-1",attrs:{"disabled":_vm.loading},on:{"click":_vm.cancelCrop}},[_vm._m(3)]),_c('div',{staticClass:"flex flex-column"}),_c('button',{staticClass:"btn collapse-150",attrs:{"disabled":_vm.loading},on:{"click":_vm.uploadImage}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_vm._v("\n                        Save\n                    ")])])])])]),_c('span',{staticClass:"dz-hidden-input"})])}
 var ImageCroppervue_type_template_id_187c4a3a_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"choose btn bg-black text-black inverted collapse-250"},[_c('i',{staticClass:"fas fa-upload mr-1"}),_vm._v("\n                Choose a Photo\n            ")])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"drop btn bg-black text-white collapse-250"},[_c('i',{staticClass:"fas fa-upload mr-1"}),_vm._v("\n                Drop to Upload\n            ")])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p',{staticClass:"tiny font-italic text-grey-3 mt-2"},[_vm._v("\n                Max file size: "),_c('strong',[_vm._v("5MB")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"text-black flat short"},[_c('i',{staticClass:"fas fa-chevron-left mr-1"}),_vm._v(" Back\n                    ")])}]
 
@@ -36751,8 +36675,6 @@ var dropzone = __webpack_require__("79e3");
 var dropzone_default = /*#__PURE__*/__webpack_require__.n(dropzone);
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ImageCropper/ImageCropper.vue?vue&type=script&lang=js&
-
-
 
 
 
@@ -37003,7 +36925,7 @@ var dropzone_default = /*#__PURE__*/__webpack_require__.n(dropzone);
     // Should hopefully give support to Edge and IOS Safari
 
     if (!HTMLCanvasElement.prototype.toBlob) {
-      define_property_default()(HTMLCanvasElement.prototype, 'toBlob', {
+      Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
         value: function value(callback, type, quality) {
           var canvas = this;
           setTimeout(function () {
@@ -37076,7 +36998,7 @@ var dropzone_default = /*#__PURE__*/__webpack_require__.n(dropzone);
       var _this3 = this;
 
       var formData = new FormData();
-      var newFileName = "".concat(this.userId, "_").concat(now_default()(), ".png");
+      var newFileName = "".concat(this.userId, "_").concat(Date.now(), ".png");
       formData.append('file', this.imageBlob, newFileName);
       formData.append('target', newFileName);
       formData.append('_method', 'PUT');
@@ -37123,7 +37045,7 @@ var ImageCropper_component = normalizeComponent(
 )
 
 /* harmony default export */ var ImageCropper = (ImageCropper_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=af48d8d2&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=af48d8d2&
 var PaymentMethodsvue_type_template_id_af48d8d2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column grow"},[_vm._m(0),_c('ul',{staticClass:"body list-style-none mb-3"},[_vm._m(1),_vm._l((_vm.paymentMethodsData.data),function(paymentMethod,i){return _c('li',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column default-col text-center body hide-xs-only"},[(_vm.isPrimaryPaymentMethod(paymentMethod))?_c('i',{staticClass:"fas fa-check"}):_vm._e()]),(paymentMethod.attributes.method_type === 'credit_card')?_c('div',{staticClass:"flex flex-column body"},[_vm._v("\n                "+_vm._s(_vm.getRelatedAttributesByTypeAndId(
                     paymentMethod.relationships.method.data
                 ).attributes.company_name || 'N/A')+"\n                -\n                "+_vm._s(_vm.getRelatedAttributesByTypeAndId(
@@ -37134,7 +37056,7 @@ var PaymentMethodsvue_type_template_id_af48d8d2_staticRenderFns = [function () {
 
 // CONCATENATED MODULE: ./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=af48d8d2&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/order-form/_OrderFormPayment.vue?vue&type=template&id=3692d6da&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/order-form/_OrderFormPayment.vue?vue&type=template&id=3692d6da&
 var _OrderFormPaymentvue_type_template_id_3692d6da_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column mb-2"},[_c('div',{staticClass:"flex flex-column bg-white shadow corners-5 pt-3 ph-2"},[_c('div',{staticClass:"flex flex-row flex-wrap align-v-center"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_paymentMethod),expression:"$_paymentMethod",modifiers:{"lazy":true}}],staticClass:"order-form-input",attrs:{"id":"paymentMethodType"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_paymentMethod=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":"credit_card"}},[_vm._v("\n                            Credit Card\n                        ")]),_c('option',{attrs:{"value":"paypal"}},[_vm._v("\n                            PayPal\n                        ")])]),_c('label',{class:_vm.brand,attrs:{"for":"paymentMethodType"}},[_vm._v("\n                        Payment Method Type\n                    ")])])]),_vm._m(0)]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.$_paymentMethod === 'credit_card'),expression:"$_paymentMethod === 'credit_card'"}],staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-number"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                        Card Number\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardNumber),function(error,i){return _c('li',{key:'cardNumberError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6"},[_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-expiry"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                                Expiry (MM / YY)\n                            ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardExpiry),function(error,i){return _c('li',{key:'cardExpiryError' + i},[_vm._v("\n                                    "+_vm._s(error || null)+"\n                                ")])}),0)])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-cvc"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                                CVC\n                            ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardCvc),function(error,i){return _c('li',{key:'cardCvcError' + i},[_vm._v("\n                                    "+_vm._s(error || null)+"\n                                ")])}),0)])])])])]),_c('div',{staticClass:"flex flex-row flex-wrap mb-2"},[_c('div',{staticClass:"flex flex-column xs-12 ph-1 mb-2",class:_vm.$_billingCountry === 'Canada' ? 'sm-6' : ''},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_billingCountry),expression:"$_billingCountry",modifiers:{"lazy":true}}],class:{ invalid: _vm.errors.billingCountry, 'has-input': _vm.$_billingCountry != null },attrs:{"id":"billingCountry"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_billingCountry=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},_vm._l((_vm.countries),function(country){return _c('option',{key:country,domProps:{"value":country}},[_vm._v("\n                            "+_vm._s(country)+"\n                        ")])}),0),_c('label',{class:_vm.brand,attrs:{"for":"billingCountry"}},[_vm._v("\n                        Country\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.billingCountry),function(error,i){return _c('li',{key:'billingCountryError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]),(_vm.$_billingCountry === 'Canada')?_c('div',{staticClass:"flex flex-column xs-12 ph-1 sm-6"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_billingRegion),expression:"$_billingRegion",modifiers:{"lazy":true}}],class:{ invalid: _vm.errors.billingRegion, 'has-input': _vm.$_billingRegion != null },attrs:{"id":"billingRegion","disabled":_vm.$_billingCountry !== 'Canada'},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_billingRegion=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},_vm._l((_vm.provinces),function(province){return _c('option',{key:province,domProps:{"value":_vm.toCapitalCase(province)}},[_vm._v("\n                            "+_vm._s(_vm.toCapitalCase(province))+"\n                        ")])}),0),_c('label',{class:_vm.brand,attrs:{"for":"billingRegion"}},[_vm._v("\n                        State/Province\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.billingRegion),function(error,i){return _c('li',{key:'billingRegionError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]):_vm._e()]),(_vm.$_paymentMethod === 'paypal')?_c('div',{staticClass:"flex flex-row pa-1"},[_c('h3',{staticClass:"tiny text-grey-3 font-italic"},[_vm._v("\n                * Submitting this form will redirect you to PayPal to complete your order.\n            ")])]):_vm._e(),(_vm.isOrder)?_c('div',{staticClass:"flex flex-row mb-1"},[_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row reverse flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2"},[(_vm.discounts.length)?_c('div',_vm._l((_vm.discounts),function(item){return _c('div',{key:item.id,staticClass:"body font-bold"},[_vm._v("\n                                "+_vm._s(item.name)+"\n                            ")])}),0):_vm._e(),(_vm.totals.shipping)?_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Shipping: $"+_vm._s(_vm.totalShipping)+"\n                        ")]):_vm._e(),_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Tax: $"+_vm._s(_vm.totalTax)+"\n                        ")]),_c('div',{staticClass:"body font-bold"},[_c('span',{staticClass:"display"},[_vm._v("$"+_vm._s(_vm.totalDue))]),_vm._v(" USD\n                        ")]),_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Due Today\n                        ")])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6 align-v-bottom ph-1 mb-2"},[_c('button',{staticClass:"btn",on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.submitForm($event)}}},[_c('span',{staticClass:"text-white bg-success",class:_vm.themeBgClass},[_vm._v("\n                                Buy Now\n                            ")])])])]),_vm._m(1)])]):_vm._e(),(!_vm.isOrder)?_c('div',{staticClass:"flex flex-row mb-1"},[_c('div',{staticClass:"flex flex-column ph-1"},[(_vm.hasSubscription)?_c('div',{staticClass:"flex flex-row mb-2"},[_vm._m(2)]):_vm._e(),(_vm.hasSubscription && !_vm.isActive)?_c('div',{staticClass:"flex flex-row flex-wrap"},[_vm._m(3),_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2"},[(_vm.totals.shipping)?_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Shipping: $"+_vm._s(_vm.totalShipping)+"\n                        ")]):_vm._e(),_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Tax: $"+_vm._s(_vm.totalTax)+"\n                        ")]),_c('div',{staticClass:"body font-bold"},[_c('span',{staticClass:"display"},[_vm._v("$"+_vm._s(_vm.totalDue))]),_vm._v(" USD\n                        ")]),_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Due Today\n                        ")])])]):_vm._e(),_c('div',{staticClass:"flex flex-row flex-wrap align-h-right align-v-center"},[_c('div',{staticClass:"flex flex-column xs-6 sm-4 mb-2 pr-1"},[_c('button',{staticClass:"btn short close-modal",on:{"click":_vm.cancelForm}},[_c('span',{staticClass:"flat text-grey-4"},[_vm._v("\n                                Cancel\n                            ")])])]),_c('div',{staticClass:"flex flex-column xs-6 sm-4 mb-2 pl-1"},[_c('button',{staticClass:"btn",on:{"click":_vm.submitForm}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("\n                                Submit\n                            ")])])])])])]):_vm._e()])])}
 var _OrderFormPaymentvue_type_template_id_3692d6da_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column xs-12 sm-6 mb-2 overflow"},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-visa cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-mastercard cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-amex cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-paypal cc-icon"})])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row mb-2"},[_c('div',{staticClass:"flex flex-column md-6 ph-1"},[_c('h5',{staticClass:"tiny disclaimer"},[_vm._v("\n                            By completing your renewal you agree to the Pianote Terms\n                            Of Service. All payments in US dollars. You\n                            can cancel your subscription at any time by emailing support@pianote.com.\n                        ")])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('p',{staticClass:"tiny font-italic text-grey-3"},[_vm._v("\n                            * Submitting this form will create a new default payment method for you.\n                            Your current subscription will be billed to this payment method when it's due.\n                        ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column xs-12 sm-6 mb-2"},[_c('p',{staticClass:"tiny font-italic text-grey-3"},[_vm._v("\n                            * Payment for inactive subscriptions is due today.\n                        ")])])}]
 
@@ -37144,13 +37066,13 @@ var _OrderFormPaymentvue_type_template_id_3692d6da_staticRenderFns = [function (
 // CONCATENATED MODULE: ./src/views/order-form/_validation.js
 
 
+
 /* harmony default export */ var _validation = ({
   computed: {
     formValid: function formValid() {
       var _this = this;
 
-      var errorKeys = keys_default()(this.errors);
-
+      var errorKeys = Object.keys(this.errors);
       var isValid = true;
       errorKeys.forEach(function (error) {
         if (_this.errors[error].length) {
@@ -37173,7 +37095,7 @@ var _OrderFormPaymentvue_type_template_id_3692d6da_staticRenderFns = [function (
     validateForm: function validateForm() {
       var _this2 = this;
 
-      keys_default()(this.rules).forEach(function (key) {
+      Object.keys(this.rules).forEach(function (key) {
         var formKey = "$_".concat(key);
 
         _this2.validateInput(key, _this2[formKey]);
@@ -37182,6 +37104,7 @@ var _OrderFormPaymentvue_type_template_id_3692d6da_staticRenderFns = [function (
   }
 });
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/order-form/_OrderFormPayment.vue?vue&type=script&lang=js&
+
 
 
 
@@ -37748,7 +37671,7 @@ var _OrderFormPaymentvue_type_template_id_3692d6da_staticRenderFns = [function (
       this.initStripeElements();
       this.$emit('formCancel');
       setTimeout(function () {
-        keys_default()(_this.errors).forEach(function (error) {
+        Object.keys(_this.errors).forEach(function (error) {
           _this.errors[error] = [];
         });
 
@@ -38029,7 +37952,7 @@ var _OrderFormPayment_component = normalizeComponent(
     }).catch(_error_handler);
   }
 });
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LoadingAnimation/LoadingAnimation.vue?vue&type=template&id=51d78ea2&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LoadingAnimation/LoadingAnimation.vue?vue&type=template&id=51d78ea2&
 var LoadingAnimationvue_type_template_id_51d78ea2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('svg',{attrs:{"id":"L7","version":"1.1","xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","x":"0px","y":"0px","viewBox":"0 0 100 100","enable-background":"new 0 0 100 100","xml:space":"preserve"}},[_c('path',{attrs:{"fill":_vm.colorCode,"d":"M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3\n      c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z","transform":"rotate(98.6504 50 50)"}},[_c('animateTransform',{attrs:{"attributeName":"transform","attributeType":"XML","type":"rotate","dur":"2s","from":"0 50 50","to":"360 50 50","repeatCount":"indefinite"}})],1),_c('path',{attrs:{"fill":_vm.colorCode,"d":"M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7\n      c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z","transform":"rotate(-197.301 50 50)"}},[_c('animateTransform',{attrs:{"attributeName":"transform","attributeType":"XML","type":"rotate","dur":"1s","from":"0 50 50","to":"-360 50 50","repeatCount":"indefinite"}})],1),_c('path',{attrs:{"fill":_vm.colorCode,"d":"M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5\n      L82,35.7z","transform":"rotate(98.6504 50 50)"}},[_c('animateTransform',{attrs:{"attributeName":"transform","attributeType":"XML","type":"rotate","dur":"2s","from":"0 50 50","to":"360 50 50","repeatCount":"indefinite"}})],1)])}
 var LoadingAnimationvue_type_template_id_51d78ea2_staticRenderFns = []
 
@@ -38635,7 +38558,7 @@ var PaymentMethods_component = normalizeComponent(
 )
 
 /* harmony default export */ var PaymentMethods = (PaymentMethods_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/Comments.vue?vue&type=template&id=3a45a770&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/Comments.vue?vue&type=template&id=3a45a770&
 var Commentsvue_type_template_id_3a45a770_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column grow",attrs:{"id":"commentsSection"}},[_c('div',{staticClass:"flex flex-row flex-wrap ph pt-3 align-v-center"},[_c('div',{staticClass:"flex flex-column xs-12 sm-9 mb-3"},[_c('h1',{staticClass:"heading"},[_vm._v("\n                "+_vm._s(_vm.totalComments)+" Comments\n            ")])]),_c('div',{staticClass:"flex flex-column xs-12 sm-4 md-3 mb-3"},[_c('div',{staticClass:"form-group xs-12",staticStyle:{"width":"100%"}},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.sortInterface),expression:"sortInterface"}],attrs:{"id":"commentSort"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.sortInterface=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":"-like_count"}},[_vm._v("\n                        Popular\n                    ")]),_c('option',{attrs:{"value":"-created_on"}},[_vm._v("\n                        Latest\n                    ")]),_c('option',{attrs:{"value":"created_on"}},[_vm._v("\n                        Oldest\n                    ")]),_c('option',{attrs:{"value":"-mine"}},[_vm._v("\n                        My Comments\n                    ")])]),_c('label',{class:_vm.themeColor,attrs:{"for":"commentSort"}},[_vm._v("Sort By")])])])]),_c('div',{staticClass:"flex flex-row comment-post ph mv-3",attrs:{"id":"postComment"}},[_c('div',{staticClass:"flex flex-column avatar-column pr hide-xs-only"},[_c('div',{staticClass:"user-avatar smaller",class:_vm.avatarClassObject},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.currentUser.avatar}})]),(_vm.showUserExp)?_c('p',{staticClass:"x-tiny dense font-bold uppercase text-center mt-1"},[_vm._v("\n                "+_vm._s(_vm.userExpRank)+"\n            ")]):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"x-tiny dense text-center font-compressed"},[_vm._v("\n                "+_vm._s(_vm.userExpValue)+" XP\n            ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column"},[_c('text-editor',{ref:"textEditor",attrs:{"toolbar":"bold italic underline | bullist numlist | link","height":150},model:{value:(_vm.commentInterface),callback:function ($$v) {_vm.commentInterface=$$v},expression:"commentInterface"}}),_c('div',{staticClass:"flex flex-row align-h-right mv-1"},[_c('button',{staticClass:"btn collapse-150",attrs:{"disabled":_vm.loading,"dusk":"submit-comment"},on:{"click":_vm.postComment}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_vm._v("\n                        Comment\n                    ")])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading-reply flex-center"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:_vm.themeTextClass}),_c('p',{staticClass:"x-tiny text-grey-3"},[_vm._v("\n                    loading...\n                ")])])],1)]),(_vm.pinnedComment != null)?_c('comment-post',{attrs:{"comment":_vm.pinnedComment,"brand":_vm.brand,"current-user":_vm.currentUser,"pinned":true,"theme-color":_vm.themeColor,"profile-base-route":_vm.profileBaseRoute,"has-public-profiles":_vm.hasPublicProfiles},on:{"likeComment":_vm.handleCommentLike,"likeReply":_vm.handleReplyLike,"deleteComment":_vm.handleCommentDelete,"deleteReply":_vm.handleReplyDelete,"openLikes":_vm.addLikeUsersToModal}}):_vm._e(),_vm._l((_vm.comments),function(comment,i){return _c('comment-post',{key:i,attrs:{"comment":comment,"brand":_vm.brand,"current-user":_vm.currentUser,"theme-color":_vm.themeColor,"profile-base-route":_vm.profileBaseRoute,"has-public-profiles":_vm.hasPublicProfiles},on:{"likeComment":_vm.handleCommentLike,"likeReply":_vm.handleReplyLike,"deleteComment":_vm.handleCommentDelete,"deleteReply":_vm.handleReplyDelete,"openLikes":_vm.addLikeUsersToModal}})}),_c('comment-likes-modal',{attrs:{"theme-color":_vm.themeColor,"brand":_vm.brand,"comment-id":_vm.currentLikeUsersId,"like-users":_vm.likeUsers,"total-like-users":_vm.totalLikeUsers,"loading-like-users":_vm.loadingLikeUsers,"requesting-like-users":_vm.requestingLikeUsers},on:{"loadMoreLikeUsers":_vm.addLikeUsersToModal}})],2)}
 var Commentsvue_type_template_id_3a45a770_staticRenderFns = []
 
@@ -38643,6 +38566,8 @@ var Commentsvue_type_template_id_3a45a770_staticRenderFns = []
 // CONCATENATED MODULE: ./src/views/comments/Comments.vue?vue&type=template&id=3a45a770&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/Comments.vue?vue&type=script&lang=js&
+
+
 
 
 
@@ -38899,7 +38824,7 @@ var Commentsvue_type_template_id_3a45a770_staticRenderFns = []
     // Check the URI Params if 'goToComment' exists
     var uriParams = query_string["parse"](window.location.search); // Run the goToComment method if it does
 
-    if (keys_default()(uriParams).indexOf('goToComment') !== -1) {
+    if (Object.keys(uriParams).indexOf('goToComment') !== -1) {
       console.log(uriParams.goToComment);
       this.goToComment(uriParams.goToComment);
     }
@@ -39034,16 +38959,15 @@ var Comments_component = normalizeComponent(
 )
 
 /* harmony default export */ var Comments = (Comments_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"5fb64063-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContentAssignment/ContentAssignment.vue?vue&type=template&id=70fa27c7&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17c5c576-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContentAssignment/ContentAssignment.vue?vue&type=template&id=70fa27c7&
 var ContentAssignmentvue_type_template_id_70fa27c7_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column bb-light-1"},[_c('div',{staticClass:"flex flex-row align-v-center flex-wrap pa-2"},[_c('div',{staticClass:"flex flex-column xs-12 md-8"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column arrow-column hide-xs-only"},[_c('button',{staticClass:"btn collapse-square",on:{"click":_vm.openAssignment}},[_c('span',{staticClass:"bg-grey-3",class:_vm.accordionButtonClasses},[_c('i',{staticClass:"fas",class:_vm.accordionButtonIconClasses})])])]),_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column pointer",on:{"click":_vm.openAssignment}},[_c('h3',{staticClass:"title noselect"},[_vm._v("\n                                "+_vm._s(_vm.title)+"\n                            ")])]),(_vm.timecode != 0)?_c('div',{staticClass:"flex flex-column flex-auto"},[_c('a',{staticClass:"flex flex-column flex-auto tiny font-bold font-underline hide-xs-only ph-2",class:'text-' + _vm.themeColor,attrs:{"data-jump-to-time":_vm.timecode}},[_vm._v("\n                                "+_vm._s(_vm.formattedTimecode)+"\n                            ")])]):_vm._e()])]),_c('div',{staticClass:"flex flex-column flex-auto body ph-2 hide-sm-up pointer",on:{"click":_vm.openAssignment}},[_c('i',{staticClass:"fas",class:_vm.accordionButtonIconClasses})])])]),_c('div',{staticClass:"flex flex-column xs-12 md-4 complete-column"},[_c('div',{staticClass:"flex flex-row"},[(_vm.soundsliceSlug)?_c('button',{staticClass:"btn collapse-100 mr-1",on:{"click":_vm.openExercise}},[_vm._m(0)]):_vm._e(),_c('button',{staticClass:"btn collapse-100",attrs:{"disabled":_vm.isRequesting},on:{"click":function($event){$event.stopPropagation();return _vm.markAsComplete($event)}}},[_c('span',{class:_vm.completeButtonClasses},[_c('i',{staticClass:"fas fa-check mr-1"}),_vm._v("\n                        "+_vm._s(_vm.isComplete ? 'Completed' : 'Complete')+"\n                    ")])])])])]),_c('transition',{attrs:{"name":"slide-down-fade"}},[(_vm.accordionActive && _vm.thisAssignment != null)?_c('div',{directives:[{name:"show",rawName:"v-show",value:(!this.accordionLoading),expression:"!this.accordionLoading"}],staticClass:"flex flex-column pa-2"},[_c('div',{staticClass:"flex flex-row mb-3"},[_c('div',{staticClass:"body",domProps:{"innerHTML":_vm._s(_vm.$_description)}},[_vm._v("\n                    "+_vm._s(_vm.$_description)+"\n                ")])]),_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"flex flex-column grow"},[_c('div',{staticClass:"flex flex-column"},[(_vm.$_totalPages > 0)?_c('div',{ref:"carouselContainer",staticClass:"flex flex-row carousel bg-white overflow mv pb-3"},[_vm._l((_vm.$_sheet_music_pages),function(page,i){return _c('div',{key:'page' + (i + 1),staticClass:"flex flex-column xs-12 grow page",style:(_vm.pageScrollPosition)},[_c('img',{attrs:{"src":page}})])}),(_vm.currentPage > 1)?_c('div',{staticClass:"side-button prev flex-center",on:{"click":function($event){return _vm.scrollToPage(_vm.currentPage - 1)}}},[_c('i',{staticClass:"fas fa-chevron-left"})]):_vm._e(),(_vm.currentPage < _vm.$_totalPages)?_c('div',{staticClass:"side-button next flex-center",on:{"click":function($event){return _vm.scrollToPage(_vm.currentPage + 1)}}},[_c('i',{staticClass:"fas fa-chevron-right"})]):_vm._e(),(_vm.$_totalPages > 1)?_c('div',{staticClass:"page-buttons"},_vm._l((_vm.pages),function(page,i){return _c('div',{key:'pageButton' + (i + 1),staticClass:"page-button mh-1 rounded bg-black",class:_vm.currentPageClass(i + 1),on:{"click":function($event){return _vm.scrollToPage(i + 1)}}})}),0):_vm._e()],2):_vm._e(),(_vm.timecode != 0)?_c('div',{staticClass:"flex flex-row hide-sm-up"},[_c('a',{staticClass:"tiny font-bold font-underline",class:'text-' + _vm.themeColor,attrs:{"data-jump-to-time":_vm.timecode}},[_vm._v("\n                                "+_vm._s(_vm.formattedTimecode)+"\n                            ")])]):_vm._e()])]),_c('div',{staticClass:"flex flex-column pa-2 sm-3 hide-xs-only",class:_vm.imageTypeSpacerClass})])]):_vm._e()]),_c('transition',{attrs:{"name":"show-from-bottom"}},[(_vm.open)?_c('div',{staticClass:"bg-white",attrs:{"id":"practiceOverlay"}},[_c('div',{staticClass:"flex flex-column embed-column"},[_c('div',{staticClass:"flex flex-row align-v-center flex-auto bb-grey-4-1 bg-grey-5 ph"},[_c('div',{staticClass:"flex flex-column"},[_c('h2',{staticClass:"title text-white text-truncate-2-lines"},[_vm._v("\n                            "+_vm._s(_vm.title)+"\n                        ")])]),_c('div',{staticClass:"flex flex-column close-exercise uppercase text-white align-v-center pv-1 pointer flex-auto",on:{"click":_vm.closeExercise}},[_c('div',{staticClass:"flex flex-row tiny align-v-center"},[_vm._v("\n                            Close "),_c('i',{staticClass:"fas fa-times ml-1"})])])]),_c('div',{staticClass:"flex flex-row grow"},[_c('div',{staticClass:"flex flex-column relative"},[_c('iframe',{attrs:{"id":"ssEmbed","src":'https://www.soundslice.com/scores/' + _vm.soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0',"frameBorder":"0","allowfullscreen":""},on:{"load":function($event){_vm.loading = false}}})])])]),(_vm.loading)?_c('div',{staticClass:"loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:'text-' + _vm.themeColor})]):_vm._e()]):_vm._e()])],1)}
 var ContentAssignmentvue_type_template_id_70fa27c7_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"text-white bg-grey-3 inverted text-grey-3"},[_c('i',{staticClass:"fas fa-play mr-1"}),_vm._v(" Practice\n                    ")])}]
 
 
 // CONCATENATED MODULE: ./src/components/ContentAssignment/ContentAssignment.vue?vue&type=template&id=70fa27c7&
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/promise.js
-var promise = __webpack_require__("795b");
-var promise_default = /*#__PURE__*/__webpack_require__.n(promise);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.promise.js
+var es6_promise = __webpack_require__("551c");
 
 // CONCATENATED MODULE: ./src/assets/js/classes/progress-tracker.js
 
@@ -39145,7 +39069,7 @@ function () {
           sessionToken = _ref2.sessionToken;
 
       if (this.secondsWatched == null) {
-        return new promise_default.a.resolve(false);
+        return new Promise.resolve(false);
       }
 
       return axios_default.a.post(endpoint, {
@@ -39184,7 +39108,6 @@ function () {
 
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContentAssignment/ContentAssignment.vue?vue&type=script&lang=js&
-
 
 //
 //
@@ -39519,7 +39442,7 @@ function () {
       return this.$_sheet_music_pages ? this.$_sheet_music_pages.length : 0;
     },
     $_sheet_music_pages: function $_sheet_music_pages() {
-      if (is_array_default()(this.thisAssignment.sheet_music_image_url)) {
+      if (Array.isArray(this.thisAssignment.sheet_music_image_url)) {
         return this.thisAssignment.sheet_music_image_url;
       }
 
@@ -39778,9 +39701,10 @@ var Components = {
 
 
 
+
 /* harmony default export */ var src = ({
   install: function install(Vue, options) {
-    keys_default()(components).forEach(function (name) {
+    Object.keys(components).forEach(function (name) {
       Vue.component(name, components[name]);
     });
   }
