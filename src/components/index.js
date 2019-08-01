@@ -7,6 +7,7 @@ import CommentsCatalogue from '../views/comments/catalogue/CommentsCatalogue.vue
 import ImageCropper from './ImageCropper/ImageCropper.vue';
 import PaymentMethods from '../views/payment-methods/PaymentMethods.vue';
 import Comments from '../views/comments/Comments.vue';
+import ContentAssignment from './ContentAssignment/ContentAssignment.vue';
 
 const Components = {
     EmailForm,
@@ -18,6 +19,7 @@ const Components = {
     ImageCropper,
     PaymentMethods,
     Comments,
+    ContentAssignment,
 };
 
 export default Components;
