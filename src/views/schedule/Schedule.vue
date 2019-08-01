@@ -22,7 +22,7 @@
 <script>
 import { Content as ContentHelpers } from 'js-helper-functions';
 import ScheduleItem from './_ScheduleItem.vue';
-import AddEventModal from '../../components/AddEvent/AddEventModal';
+import AddEventModal from '../../components/AddEvent/AddEventModal.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 
 export default {

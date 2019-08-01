@@ -11,7 +11,6 @@
             :brand="brand"
             :theme-color="themeColor"
             :use-theme-color="useThemeColor"
-            :class="card_grid_classes"
             :user-id="userId"
             :lock-unowned="lockUnowned"
             :force-wide-thumbs="forceWideThumbs"
@@ -50,10 +49,6 @@ export default {
         brand: {
             type: String,
             default: () => 'drumeo',
-        },
-        cardGridClasses: {
-            type: String,
-            default: () => '',
         },
         noWrap: {
             type: Boolean,
