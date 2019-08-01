@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const endpointPrefix = process.env.endpointPrefix || '';
-
 export default class ProgressTracker {
-    constructor() {
+    constructor(endpointPrefix) {
         this.tickInterval = 0;
         this.secondsWatched = 0;
+
+        this.endpointPrefix = endpointPrefix || '';
     }
 
     /**
@@ -36,7 +36,7 @@ export default class ProgressTracker {
      * @param {string} sessionToken - used to validate the current user
      */
     send({
-        endpoint = `${endpointPrefix}/railtracker/media-playback-session`,
+        endpoint = `${this.endpointPrefix}/railtracker/media-playback-session`,
         mediaId,
         mediaType,
         mediaCategory,
@@ -73,7 +73,7 @@ export default class ProgressTracker {
      * @returns {Promise}
      */
     sendAsync({
-        endpoint = `${endpointPrefix}/railtracker/media-playback-session`,
+        endpoint = `${this.endpointPrefix}/railtracker/media-playback-session`,
         mediaId,
         mediaType,
         mediaCategory,
