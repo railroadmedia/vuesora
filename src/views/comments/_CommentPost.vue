@@ -352,7 +352,7 @@ export default {
         },
 
         profileRoute() {
-            return this.profileBaseRoute + this.user_id;
+            return this.profileBaseRoute + this.comment.user_id;
         },
 
         isLiked() {

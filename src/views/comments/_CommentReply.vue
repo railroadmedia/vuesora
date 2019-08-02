@@ -293,7 +293,7 @@ export default {
         },
 
         profileRoute() {
-            return this.profileBaseRoute + this.comment.user.id;
+            return this.profileBaseRoute + this.comment.user_id;
         },
 
         commentUrl() {
