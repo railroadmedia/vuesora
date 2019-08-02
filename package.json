@@ -1,6 +1,6 @@
 {
   "name": "vuesora",
-  "version": "0.11.5",
+  "version": "0.11.6",
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
@@ -35,12 +35,6 @@
     "mediaelement-plugins": "^2.5.0",
     "moment-timezone": "^0.5.21",
     "node-sass": "^4.12.0",
-
-
-
-
-
-     
     "normalize.css": "^8.0.0",
     "noty": "^3.2.0-beta",
     "query-string": "^6.1.0",
