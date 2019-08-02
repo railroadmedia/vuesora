@@ -11,8 +11,6 @@ export default {
      * @returns {Promise} - resolved promise with the response object
      */
     getContentById(id) {
-        console.log(endpointPrefix);
-
         return axios.get(`${endpointPrefix}/railcontent/content/${id}`)
             .then(response => response)
             .catch(ErrorHandler);
