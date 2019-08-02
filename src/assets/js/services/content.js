@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
 
-const endpointPrefix = process.env.endpointPrefix || '';
+const endpointPrefix = window.ENDPOINT_PREFIX || '';
 
 export default {
 
@@ -11,6 +11,8 @@ export default {
      * @returns {Promise} - resolved promise with the response object
      */
     getContentById(id) {
+        console.log(endpointPrefix);
+
         return axios.get(`${endpointPrefix}/railcontent/content/${id}`)
             .then(response => response)
             .catch(ErrorHandler);
