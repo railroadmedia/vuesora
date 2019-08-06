@@ -364,7 +364,7 @@ export default {
         },
 
         dateString() {
-            return DateTime.fromSQL(this.created_on, { zone: 'UTC' }).minus({ seconds: 1 }).toRelative();
+            return DateTime.fromSQL(this.comment.created_on, { zone: 'UTC' }).minus({ seconds: 1 }).toRelative();
         },
 
         isUsersPost() {
