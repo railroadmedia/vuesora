@@ -112,15 +112,15 @@
         >
             <div class="flex flex-column">
                 <div class="comment-data flex flex-row align-v-top pa-2">
-                    <div class="flex flex-column user-name ph-1">
-                        <div class="flex flex-row align-v-center">
-                            <div class="rounded overflow avatar mr-1 hide-xs-only">
-                                <img :src="comment.user['fields.profile_picture_image_url']">
-                            </div>
-                            <h6 class="tiny font-bold">
-                                {{ comment.user.display_name }}
-                            </h6>
+                    <div class="flex flex-column align-center user-name ph-1">
+<!--                        <div class="flex flex-row align-v-center">-->
+                        <div class="rounded overflow avatar mb-1 hide-xs-only">
+                            <img :src="comment.user['fields.profile_picture_image_url']">
                         </div>
+                        <h6 class="tiny font-bold">
+                            {{ comment.user.display_name }}
+                        </h6>
+<!--                        </div>-->
                     </div>
 
                     <div
