@@ -39,7 +39,7 @@
         <div class="flex flex-column grow">
             <div class="flex flex-row align-v-center mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
-                    <h2 class="body font-bold">
+                    <h2 class="body font-bold break-words">
                         <a
                             v-if="hasPublicProfiles"
                             :href="profileRoute"
