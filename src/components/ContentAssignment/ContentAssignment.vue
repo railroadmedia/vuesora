@@ -187,7 +187,7 @@
                         <div class="flex flex-column relative">
                             <iframe
                                 id="ssEmbed"
-                                :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&enable_mixer=0'"
+                                :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0'"
                                 frameBorder="0"
                                 allowfullscreen
                                 @load="loading = false"

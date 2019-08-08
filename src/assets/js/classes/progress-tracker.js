@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 export default class ProgressTracker {
-    constructor(endpointPrefix) {
+    constructor() {
         this.tickInterval = 0;
         this.secondsWatched = 0;
 
-        this.endpointPrefix = endpointPrefix || '';
+        this.endpointPrefix = window.ENDPOINT_PREFIX || '';
     }
 
     /**

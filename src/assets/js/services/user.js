@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
 
-const endpointPrefix = process.env.endpointPrefix || '';
+const endpointPrefix = window.ENDPOINT_PREFIX || '';
 
 export default {
     /**
