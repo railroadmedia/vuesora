@@ -13,7 +13,6 @@
                     @contextmenu.stop.prevent="toggleContextMenu"
                     @mousemove="trackMousePosition"
                     @touchmove="trackMousePosition"
-                    @keydown.stop.prevent="keyboardControlEventHandler"
                 >
                     <transition name="grow-fade">
                         <PlayerStats
@@ -478,6 +477,7 @@ export default {
             contextMenuPosition: null,
             isPipEnabled: false,
             isExperimentalPictureInPictureEnabled: false,
+            isKeyboardControlsEnabled: false,
             dialogs: {
                 stats: false,
                 keyboardShortcuts: false,
@@ -683,6 +683,12 @@ export default {
                     document.addEventListener('fullscreenchange', () => {
                         this.isFullscreen = document.fullscreenElement != null;
                     });
+
+                    this.enableKeyboardControls();
+
+                    setTimeout(() => {
+                        this.mediaElement.focus();
+                    }, 100);
                 })
                 .catch((error) => {
                     if (error.severity === 2) {
@@ -1101,6 +1107,31 @@ export default {
                         .catch((error) => {
                             reject(error);
                         });
+                }
+            });
+        },
+
+        enableKeyboardControls() {
+            document.addEventListener('keydown', this.keyboardControlEventHandler);
+            this.isKeyboardControlsEnabled = true;
+
+            document.addEventListener('focusin', (event) => {
+                const isVideoPlayerElement = event.path.filter((el) => {
+                    if (typeof el.matches !== 'undefined' && el.matches('#lessonVideoWrap')) {
+                        return el;
+                    }
+                }).length > 0;
+
+                if (!isVideoPlayerElement) {
+                    document.removeEventListener('keydown', this.keyboardControlEventHandler);
+                    this.isKeyboardControlsEnabled = false;
+                }
+            });
+
+            document.addEventListener('focusout', () => {
+                if (!this.isKeyboardControlsEnabled) {
+                    document.addEventListener('keydown', this.keyboardControlEventHandler);
+                    this.isKeyboardControlsEnabled = true;
                 }
             });
         },
