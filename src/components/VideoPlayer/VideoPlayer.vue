@@ -129,8 +129,8 @@
                         <transition name="grow-fade">
                             <div
                                 v-show="!loading && !isPlaying"
-                                class="player-overlay big-play-button"
-                                @click.stop="playPause"
+                                class="player-overlay big-play-button pointer"
+                                @click.stop="playPauseViaControlWrap"
                             >
                                 <div class="overlay-play rounded ba-white-3 flex-center shadows">
                                     <i class="fas fa-play"></i>
@@ -313,6 +313,22 @@
             class="widescreen bg-black"
         ></div>
 
+        <div class="flex flex-row bg-black text-white pa-1 align-center flex-wrap">
+            <p class="tiny">
+                You are currently viewing our new video player beta!
+            </p>
+
+            <button class="btn collapse-150"
+                    @click="stopTesting">
+                <span
+                    class="flat short"
+                    :class="themeTextClass"
+                >
+                    Stop Testing
+                </span>
+            </button>
+        </div>
+
         <VideoSocialButtons
             :theme-color="themeColor"
             :is-liked="isLiked"
@@ -327,6 +343,7 @@
 <script>
 import * as muxjs from 'mux.js';
 import shaka from 'shaka-player';
+import axios from 'axios';
 import Utils from 'js-helper-functions/modules/utils';
 import Screenfull from 'screenfull';
 import PlayerUtils from './player-utils';
@@ -423,6 +440,11 @@ export default {
         progressState: {
             type: String,
             default: () => 'unstarted',
+        },
+
+        castTitle: {
+            type: String,
+            default: () => '',
         },
     },
     data() {
@@ -603,7 +625,7 @@ export default {
         const supportsMSE = typeof MediaSource === 'function';
 
         /*
-        * Mux.js is required to mux TS streams into Mp4 on the fly, Shakaplayer requires the
+        * Mux.js is required to mux TS streams into Mp4 on the fly, Shaka requires the
         * window.muxjs object to exist is order to accomplish this.
         *
         * Curtis, July 2019
@@ -682,18 +704,17 @@ export default {
         });
 
         // Add Event Listeners to chapter marker links
-        const chapterMarkerLinks = document.querySelectorAll('[data-jump-to-time]');
-        Array.from(chapterMarkerLinks).forEach((marker) => {
-            marker.addEventListener('click', (event) => {
-                const link = event.target;
+        document.addEventListener('click', (event) => {
+            const element = event.target;
 
-                this.seek(link.dataset.jumpToTime);
+            if (element.matches('[data-jump-to-time]')) {
+                this.seek(element.dataset.jumpToTime);
 
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth',
                 });
-            });
+            }
         });
 
         // Initialize the ChromeCast plugin and it's event handlers
@@ -789,7 +810,10 @@ export default {
         },
 
         playPauseViaControlWrap() {
-            if (!this.canPlayPause) {
+            if (this.settingsDrawer || this.captionsDrawer || !this.canPlayPause) {
+                this.settingsDrawer = false;
+                this.captionsDrawer = false;
+
                 return;
             }
 
@@ -898,6 +922,10 @@ export default {
         },
 
         toggleSettingsDrawer() {
+            if (this.isChromeCastConnected) {
+                return false;
+            }
+
             this.captionsDrawer = false;
             this.settingsDrawer = !this.settingsDrawer;
 
@@ -932,12 +960,14 @@ export default {
         },
 
         enableCaptions(payload) {
-            this.shakaPlayer.selectTextTrack(payload);
-
             this.shakaPlayer.setTextTrackVisibility(payload != null);
 
-            if (this.isChromeCastConnected) {
-                this.chromeCast.changeSubtitle(payload ? 0 : null);
+            if (payload != null) {
+                if (this.isChromeCastConnected) {
+                    this.chromeCast.changeSubtitle(payload ? 0 : null);
+                } else {
+                    this.shakaPlayer.selectTextTrack(payload);
+                }
             }
         },
 
@@ -945,8 +975,7 @@ export default {
             this.chromeCast.cast({
                 content: this.hlsManifestUrl,
                 poster: this.poster,
-                title: 'Test Title',
-                description: 'Test Description',
+                title: this.castTitle,
                 subtitles: this.captions.map(caption => ({
                     active: false,
                     srclang: caption.language,
@@ -1080,6 +1109,14 @@ export default {
             Object.keys(this.dialogs).forEach((dialog) => {
                 this.dialogs[dialog] = false;
             });
+        },
+
+        stopTesting() {
+            axios.post('/laravel/public/video-player-beta/opt-out')
+                .then(() => {
+                    document.cookie = 'enableHlsPlayer=;path=/;expires=0;';
+                    window.location.reload();
+                });
         },
     },
 };
