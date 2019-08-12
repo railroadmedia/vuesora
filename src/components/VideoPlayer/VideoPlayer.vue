@@ -664,6 +664,9 @@ export default {
                     return this.loadSource();
                 })
                 .then(() => {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const timeToSeekTo = urlParams.get('time') || this.currentSecond;
+
                     /*
                     * Safari leaves the readyState at 2, and manually triggering a load
                     * gives us our intended behavior, on Chrome the readyState is 0 and manually
@@ -672,12 +675,20 @@ export default {
                     * Curtis, July 2019
                     */
                     if (this.mediaElement.readyState === 2) {
-                        this.$refs.player.load();
+                        if (timeToSeekTo !== this.currentTime) {
+                            setTimeout(() => {
+                                this.seek(timeToSeekTo, false);
+                            }, 100);
+                        } else {
+                            this.$refs.player.load();
+                        }
                     }
 
                     this.attachMediaElementEventHandlers();
 
                     this.getDefaultVolume();
+
+                    console.log(this.currentTime);
 
                     // FULLSCREEN EVENT
                     document.addEventListener('fullscreenchange', () => {
@@ -781,9 +792,12 @@ export default {
                         });
                 } else {
                     this.mediaElement.src = this.hlsManifestUrl;
-                    this.seek(timeToSeekTo, false);
 
-                    resolve();
+                    setTimeout(() => {
+                        this.seek(timeToSeekTo, false);
+
+                        resolve();
+                    }, 100);
                 }
             });
         },
