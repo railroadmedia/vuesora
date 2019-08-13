@@ -6,6 +6,6 @@ export default (function () {
 
     window.disableExperimentalVuesoraDarkMode = function () {
         document.body.classList.remove('dark-mode');
-        document.cookie = 'darkmode=;path=/;expires=0;';
+        document.cookie = 'darkmode=false;path=/;expires=0;';
     };
 }());

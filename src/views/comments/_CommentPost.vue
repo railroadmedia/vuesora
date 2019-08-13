@@ -43,7 +43,7 @@
         <div class="flex flex-column grow">
             <div class="flex flex-row mb-1 comment-meta">
                 <div class="flex flex-column grow mr-1">
-                    <h2 class="body font-bold">
+                    <h2 class="body font-bold break-words">
                         <a
                             v-if="hasPublicProfiles"
                             :href="profileRoute"
@@ -352,7 +352,7 @@ export default {
         },
 
         profileRoute() {
-            return this.profileBaseRoute + this.user_id;
+            return this.profileBaseRoute + this.comment.user_id;
         },
 
         isLiked() {
@@ -364,7 +364,7 @@ export default {
         },
 
         dateString() {
-            return DateTime.fromSQL(this.created_on, { zone: 'UTC' }).minus({ seconds: 1 }).toRelative();
+            return DateTime.fromSQL(this.comment.created_on, { zone: 'UTC' }).minus({ seconds: 1 }).toRelative();
         },
 
         isUsersPost() {

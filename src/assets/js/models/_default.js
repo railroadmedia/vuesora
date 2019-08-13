@@ -39,9 +39,9 @@ export default class ContentModel {
     }
 
     getPostField(key) {
-        const field = this.post.fields.find(field => field.key === key);
+        const postField = this.post.fields.find(field => field.key === key);
 
-        return field ? field.value : 'TBD';
+        return postField ? postField.value : 'TBD';
     }
 
     getPostDatum(key) {
@@ -71,9 +71,9 @@ export default class ContentModel {
                 duration = videoLength.value;
             }
 
-            return `${Math.round(
-                Duration.fromMillis((duration * 1000)).as('minutes'),
-            )} mins`;
+            const parsedDuration = Math.round(Duration.fromMillis((duration * 1000)).as('minutes'));
+
+            return `${parsedDuration} mins`;
         }
 
         return 'TBD';

@@ -231,7 +231,7 @@ export default {
 
             if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
                 const editable = timecode.contentEditable;
-                const readOnly = timecode.readOnly;
+                const { readOnly } = timecode;
                 const range = document.createRange();
                 const selection = window.getSelection();
 

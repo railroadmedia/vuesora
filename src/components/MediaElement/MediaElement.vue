@@ -59,6 +59,24 @@
             </div>
         </div>
 
+        <div class="flex flex-row bg-black text-white pa-1 align-center flex-wrap">
+            <p class="tiny">
+                We're testing out a brand new custom video player!
+            </p>
+
+            <button
+                class="btn collapse-150"
+                @click="startTesting"
+            >
+                <span
+                    class="flat short"
+                    :class="`text-${themeColor}`"
+                >
+                    Try It Out
+                </span>
+            </button>
+        </div>
+
         <video-social-buttons
             v-if="elementId === 'lessonPlayer'"
             :theme-color="themeColor"
@@ -92,6 +110,7 @@ import * as QueryString from 'query-string';
 import Utils from '../../assets/js/classes/utils';
 import Toasts from '../../assets/js/classes/toasts';
 import VideoSocialButtons from '../_VideoSocialButtons';
+import axios from 'axios';
 
 export default {
     name: 'VideoMediaElement',
@@ -492,6 +511,14 @@ export default {
                     });
                 }
             });
+        },
+
+        startTesting() {
+            axios.post('/laravel/public/video-player-beta/opt-in')
+                .then(() => {
+                    document.cookie = 'enableHlsPlayer=true;path=/;max-age=31536000;';
+                    window.location.reload();
+                });
         },
     },
 };

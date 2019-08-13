@@ -6,19 +6,35 @@
 // https://docs.cypress.io/api/plugins/preprocessors-api.html#Examples
 
 /* eslint-disable import/no-extraneous-dependencies, global-require, arrow-body-style */
-// const webpack = require('@cypress/webpack-preprocessor')
+const webpack = require('@cypress/webpack-preprocessor');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const webpackOptions = {
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+    ]
+  },
+  plugins: [
+    new VueLoaderPlugin()
+  ]
+};
+
+const options =  {
+  webpackOptions,
+  watchOptions: {}
+};
 
 module.exports = (on, config) => {
-  // on('file:preprocessor', webpack({
-  //  webpackOptions: require('@vue/cli-service/webpack.config'),
-  //  watchOptions: {}
-  // }))
+  on('file:preprocessor', webpack(options));
 
   return Object.assign({}, config, {
     fixturesFolder: 'tests/e2e/fixtures',
-    integrationFolder: 'tests/e2e/specs',
+    integrationFolder: 'tests/cypress',
     screenshotsFolder: 'tests/e2e/screenshots',
     videosFolder: 'tests/e2e/videos',
     supportFile: 'tests/e2e/support/index.js'
-  })
-}
+  });
+};

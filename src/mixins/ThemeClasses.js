@@ -37,5 +37,25 @@ export default {
 
             return `text-${type}`;
         },
+
+        themeHoverBgClass() {
+            if (this.useThemeColor) {
+                return `hover-bg-${this.themeColor}`;
+            }
+
+            const type = Utils.getThemeColorByContentType(this.contentType);
+
+            return `hover-bg-${type}`;
+        },
+
+        themeHoverTextClass() {
+            if (this.useThemeColor) {
+                return `hover-text-${this.themeColor}`;
+            }
+
+            const type = Utils.getThemeColorByContentType(this.contentType);
+
+            return `hover-text-${type}`;
+        },
     },
 };

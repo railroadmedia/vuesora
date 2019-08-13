@@ -1,6 +1,6 @@
 /**
  * Toasts
- * Static methods for handling all success/error/dialog notifications.
+ * Methods for handling all success/error/dialog notifications with nicely styled prompts and dialogs.
  */
 
 import Noty from 'noty';
@@ -10,11 +10,11 @@ export default {
     /**
      * Display a notification
      *
-     * @param {string} icon - the icon to use ('happy', 'doh', 'astonished', 'mad', 'sad', 'xp')
-     * @param {string} title - the colored title to display
-     * @param {string} message - the bolded black message
-     * @param {string} themeColor - the vuesora theme color for the title
-     * @param {number|boolean} timeout - duration in milliseconds before it disappears (false to remove)
+     * @param {String} icon - the icon to use ('happy', 'doh', 'astonished', 'mad', 'sad', 'xp')
+     * @param {String} title - the colored title to display
+     * @param {String} message - the bolded black message
+     * @param {String} themeColor - the vuesora theme color for the title
+     * @param {Number|Boolean} timeout - duration in milliseconds before it disappears (false to remove)
      * @returns {Object} - Noty object to render the notification
      */
     push({
@@ -46,11 +46,11 @@ export default {
     /**
      * Display a confirmation dialog
      *
-     * @param {string} title - the text to display in the confirmation box
-     * @param {string} subtitle - the smaller text to display below the title
-     * @param themeColor
-     * @param {object} submitButton - object with a text and callback property
-     * @param {object} cancelButton - object with a text and callback property
+     * @param {String} title - the text to display in the confirmation box
+     * @param {String} subtitle - the smaller text to display below the title
+     * @param {String} themeColor - the vuesora theme color for the title
+     * @param {Object} submitButton - object with a text and callback property
+     * @param {Object} cancelButton - object with a text and callback property
      * @returns {Object} - Noty object to render the dialog
      */
     confirm({

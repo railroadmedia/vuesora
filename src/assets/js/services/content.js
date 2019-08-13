@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
 
-const endpointPrefix = process.env.endpointPrefix || '';
+const endpointPrefix = window.ENDPOINT_PREFIX || '';
 
 export default {
 
@@ -70,7 +70,7 @@ export default {
     /**
      * Flag a piece of content as "complete"
      *
-     * @param {string|number} contentId - the content ID
+     * @param {String|Number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
     markContentAsComplete(contentId) {
@@ -84,7 +84,7 @@ export default {
     /**
      * Flag a piece of content as "started"
      *
-     * @param {number} contentId - the content ID
+     * @param {String|Number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
     markContentAsStarted(contentId) {
@@ -100,7 +100,7 @@ export default {
     /**
      * Reset your progress for a piece of content
      *
-     * @param {number} contentId - the content ID
+     * @param {String|Number} contentId - the content ID
      * @returns {Promise} resolved promise with the response.data object
      */
     resetContentProgress(contentId) {
@@ -114,7 +114,7 @@ export default {
     /**
      * Add or Remove content from your list
      *
-     * @param content_id {string}
+     * @param content_id {String|Number}
      * @param is_added {boolean}
      *
      * @returns {Promise} resolved promise with the response.data object
@@ -135,7 +135,7 @@ export default {
      * Mark a learning path as started (this changes the users current active learning path for
      * progress tracking)
      *
-     * @param content_id {string}
+     * @param content_id {String|Number}
      *
      * @returns {Promise} resolved promise with the response.data object
      */

@@ -9,9 +9,11 @@ You can view [Airbnb's Javascript Style Guide](https://github.com/airbnb/javascr
 
 ### PHPStorm/Webstorm
 
+#### Code Hinting
+
 If you are using the PHPStorm or WebStorm IDEs, you can turn on the ESLint code hinting by going into:
 
-**Settings -> Languages & Frameworks -> Javascript -> Code Quality Tools -> ESLint -> Automatic ESLint Configuration**
+**File -> Settings -> Languages & Frameworks -> Javascript -> Code Quality Tools -> ESLint -> Automatic ESLint Configuration**
 
 ![ESLint Config](https://dmmior4id2ysr.cloudfront.net/docs/eslint-config.jpg)
 

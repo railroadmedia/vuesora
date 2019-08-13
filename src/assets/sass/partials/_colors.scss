@@ -144,9 +144,21 @@
 
   .hover-text-#{$key}:hover {
     color:$value;
+
+    @include large() {
+      & > span {
+        color: $value;
+      }
+    }
   }
   .hover-bg-#{$key}:hover {
     background-color:$value;
+
+    @include large(){
+      & > span {
+        color:$value;
+      }
+    }
   }
 }
 

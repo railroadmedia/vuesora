@@ -1,0 +1,406 @@
+@import './_variables.scss';
+@import './_animations.scss';
+
+.widescreen, .box-4-by-3 {
+
+  video {
+    max-width:100%;
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:1;
+  }
+}
+
+.video-wrap {
+  z-index:1;
+
+  &.picture-in-picture {
+    position:fixed;
+    top:90px;
+    right:30px;
+    width:480px;
+    max-width:100%;
+    z-index:95;
+
+    .settings-drawer {
+
+      @include medium {
+        width:100%;
+        z-index:102;
+        position:fixed;
+        bottom:0;
+        right:0;
+        border-radius:0;
+      }
+    }
+  }
+}
+
+@mixin playerActive(){
+  .controls {
+    transform:translateY(0);
+  }
+
+  .top-controls {
+    transform:translateY(0);
+  }
+
+  video::-webkit-media-text-track-container {
+    transform:translateY(-75px);
+  }
+}
+
+@mixin playerInactive(){
+  .controls {
+    transform:translateY(100%);
+  }
+
+  video::-webkit-media-text-track-container {
+    transform:translateY(-15px);
+  }
+}
+
+.video-player {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+
+  &.user-active {
+    @include playerActive();
+  }
+
+  video {
+    background-color:#000;
+
+    &::cue {
+      font: 700 20px/1em $defaultSansSerif;
+      background:rgba(0,0,0,.6);
+      padding:10px;
+      border-radius:3px;
+      text-shadow: 1px 1px 3px #000;
+      color:#fff;
+
+      @include medium {
+        font-size:24px;
+      }
+    }
+
+    &::-webkit-media-text-track-container {
+      z-index:30;
+      transition: transform .2s ease-in-out;
+    }
+  }
+
+  @include playerInactive();
+}
+
+.controls-wrap {
+  position:absolute;
+  overflow:hidden;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:26;
+  height:100%;
+}
+
+.controls {
+  transition: transform .1s ease-in-out;
+  background: linear-gradient(transparent,rgba(0,0,0,.8));
+  position:absolute;
+  width:100%;
+  bottom:0;
+  z-index:26;
+
+  button {
+    span {
+      background:none!important;
+      transition:color .1s ease-in-out;
+    }
+  }
+}
+
+.top-controls {
+  position:absolute;
+  transition: transform .1s ease-in-out;
+  top:0;
+  right:0;
+  width:100%;
+  height:50px;
+  z-index:27;
+  transform:translateY(-50px);
+  background: linear-gradient(rgba(0,0,0,.8), transparent);
+}
+
+.player-progress {
+  padding:7px;
+  width:100%;
+  cursor:pointer;
+  position:relative;
+
+  &:hover {
+    .progress-rail {
+      height:6px;
+    }
+
+    .progress-tooltip {
+      opacity:1;
+      visibility:visible;
+    }
+  }
+}
+
+.progress-tooltip {
+  position:absolute;
+  bottom:20px;
+  left:0;
+  background:#000;
+  padding:3px 0;
+  width:50px;
+  margin-left:-25px;
+  text-align:center;
+  transform-origin:50% 50%;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  //transition:transform .1s ease-in-out;
+}
+
+.progress-rail,
+.volume-rail {
+  width:100%;
+  height:3px;
+  background:#e4e4e4;
+  transition:height .1s ease-in-out;
+  border-radius:3px;
+  position:relative;
+  overflow:hidden;
+}
+
+.progress-fill,
+.volume-fill {
+  width:100%;
+  height:105%;
+  position:relative;
+  z-index:2;
+}
+
+.buffer-fill, .chapter-marker {
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:.6;
+  height: 105%;
+  z-index:1;
+}
+
+.chapter-marker {
+  width:3px;
+  opacity:1;
+  z-index:3;
+}
+
+.volume {
+  height:100%;
+  flex:0 0 125px;
+
+  &:hover {
+    .volume-rail-wrap {
+      transform:scaleX(1);
+    }
+  }
+}
+
+.volume-rail-wrap {
+  flex:0 0 75px;
+  transform:scaleX(0);
+  transition:transform .1s ease-in-out;
+  transform-origin:100% 100%;
+}
+
+.volume-rail  {
+  width:75px;
+  z-index:2;
+  height:4px;
+  overflow:visible;
+  position:relative;
+  cursor:pointer;
+}
+
+.volume-fill:after {
+  content: '';
+  position:absolute;
+  height:12px;
+  width:12px;
+  border-radius:50%;
+  right:-1px;
+  top:50%;
+  transform:translateY(-50%);
+  background-color:inherit;
+}
+
+.player-button {
+  flex:0 0 50px;
+}
+
+.volume-range {
+  width:100%;
+  height:200%;
+  margin-top:-2px;
+  z-index:3;
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:0;
+  cursor:pointer;
+}
+
+.settings-drawer {
+  width:100%;
+  z-index:102;
+  position:fixed;
+  bottom:0;
+  right:0;
+  border-radius:0;
+
+  @include small {
+    width:240px;
+    bottom:70px;
+    right:50px;
+    position:absolute;
+    border-radius:3px;
+
+    &.captions {
+      max-width:175px;
+    }
+  }
+}
+
+.selected-caption:before {
+  content: '\f111';
+  font-family: "Font Awesome 5 Pro";
+  font-size:10px;
+  position:absolute;
+  left:$gutterWidth / 2;
+  top:50%;
+  transform:translateY(-50%);
+  @include flexCenter();
+}
+
+.settings-mobile-overlay {
+  z-index:27;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.4);
+
+  @include medium {
+    display:none!important;
+  }
+}
+
+.cast-dialog {
+  position:absolute;
+  background-color:#000;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  z-index:10;
+}
+
+.player-overlay {
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  z-index:25;
+  @include flexCenter();
+
+  svg {
+    width:85px;
+    height:85px;
+
+    @include medium {
+      width:100px;
+      height:100px;
+    }
+  }
+
+  //&.big-play-button {
+  //  z-index:30;
+  //  pointer-events:none;
+  //}
+
+  .overlay-play {
+    width:60px;
+    height:60px;
+    background:rgba(0,0,0,.3);
+
+    @include medium {
+      width:85px;
+      height:85px;
+    }
+
+    i {
+      margin-left:2px;
+      font-size:28px;
+      color:#fff;
+
+      @include medium {
+        font-size:40px;
+      }
+    }
+  }
+}
+
+.context-menu {
+  width:200px;
+  z-index:100;
+}
+
+.player-dialog, .player-error {
+  z-index:27;
+  position:absolute;
+  top:$gutterWidth / 2;
+  left:$gutterWidth / 2;
+  width:400px;
+  max-height:calc(100% - #{$gutterWidth});
+  max-width:calc(100% - #{$gutterWidth});
+  overflow-y:auto;
+
+  td {
+    padding:5px;
+  }
+
+  .close-shortcuts {
+    position:absolute;
+    top:0;
+    right:0;
+    height:35px;
+    width:35px;
+    @include flexCenter();
+  }
+}
+
+.player-error {
+  width:auto;
+}
+
+.close-pip {
+  position:absolute;
+  height:50px;
+  width:50px;
+  top:0;
+  right:0;
+  z-index:28;
+}
+

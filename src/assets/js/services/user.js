@@ -1,14 +1,14 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
 
-const endpointPrefix = process.env.endpointPrefix || '';
+const endpointPrefix = window.ENDPOINT_PREFIX || '';
 
 export default {
     /**
      * Set a specific users details
      *
-     * @param {number|string} id
-     * @param {object} attributes
+     * @param {Number|String} id
+     * @param {Object} attributes
      * @returns {Promise} - resolved promise with the response object
      */
     setUserAttributes(id, attributes = {}) {
@@ -57,8 +57,8 @@ export default {
     /**
      * Update a credit card payment method
      *
-     * @param {number} id - the id of payment method to delete
-     * @param {object} payload - the data object with the payment method details
+     * @param {String|Number} id - the id of payment method to delete
+     * @param {Object} payload - the data object with the payment method details
      * @returns {Promise} - resolved promise with the response.data object
      */
     updatePaymentMethod(id, payload) {
@@ -70,7 +70,7 @@ export default {
     /**
      * Delete a payment method
      *
-     * @param {number} id - the id of payment method to delete
+     * @param {String|Number} id - the id of payment method to delete
      * @returns {Promise} - resolved promise with the response.data object
      */
     deletePaymentMethod(id) {
@@ -82,7 +82,7 @@ export default {
     /**
      * Crates a new payment method
      *
-     * @param {object} payload - the data object with the payment method details
+     * @param {Object} payload - the data object with the payment method details
      * @returns {Promise} - resolved promise with the response.data object
      */
     createPaymentMethod(payload) {
@@ -99,7 +99,7 @@ export default {
     /**
      * Upload a resource to S3 and get a CDN url back
      *
-     * @param {string} endpoint - the url endpoint to send the request to
+     * @param {String} endpoint - the url endpoint to send the request to
      * @param {Object} formData - the formData object to send with the request
      * @returns {Promise} resolved promise with the response.data object, containing the cdn url
      */
@@ -120,16 +120,16 @@ export default {
     /**
      * Send an Email
      *
-     * @param {string} type - the type of email to send (action or alert)
-     * @param {string} subject
-     * @param {array} lines - array of lines to display in the email, new index = new line break
-     * @param {object} callToAction - CTA with 2 keys, text and url
-     * @param {string} alert
-     * @param {string} brand
-     * @param {string} logo
-     * @param {string} view - The laravel dot notated blade template to use
-     * @param {string} recipient
-     * @param {string} endpoint
+     * @param {String} type - the type of email to send (action or alert)
+     * @param {String} subject
+     * @param {Array} lines - array of lines to display in the email, new index = new line break
+     * @param {Object} callToAction - CTA with 2 keys, text and url
+     * @param {String} alert
+     * @param {String} brand
+     * @param {String} logo
+     * @param {String} view - The laravel dot notated blade template to use
+     * @param {String} recipient
+     * @param {String} endpoint
      * @returns {Promise} resolved promise with the response.data object
      */
     sendEmail({
@@ -160,7 +160,7 @@ export default {
     /**
      * Mark a specific notification as read
      *
-     * @param {number} id - notification id
+     * @param {Number} id - notification id
      * @returns {Promise} resolved promise with the response.data object
      */
     markNotificationAsRead(id) {
@@ -172,7 +172,7 @@ export default {
     /**
      * Mark a specific notification as unread
      *
-     * @param {number} id - notification id
+     * @param {Number} id - notification id
      * @returns {Promise} resolved promise with the response.data object
      */
     markNotificationAsUnRead(id) {
