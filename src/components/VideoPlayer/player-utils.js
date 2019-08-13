@@ -1,5 +1,12 @@
 export default {
-    getElementPosition(el) {
+    /**
+     * Get an elements X and Y coordinates in the current viewport
+     *
+     * @param {Element|HTMLElement} element - the html element to get the coordinates of
+     * @returns {Object} - object with x and y coords as props
+     */
+    getElementPosition(element) {
+        let el = element;
         const positions = {
             x: 0,
             y: 0,
@@ -25,6 +32,13 @@ export default {
         return positions;
     },
 
+    /**
+     * Get the current x and y coordinates of a mouse or touch event relative to a dom element
+     *
+     * @param {Object} event - the mouse or touch event
+     * @param {Element|HTMLElement} element - the html element
+     * @returns {Object} - object with x and y coords as props
+     */
     getMousePosition(event, element) {
         const mouseX = event.clientX || (event.touches[0] ? event.touches[0].clientX : event.changedTouches[0].clientX);
         const mouseY = event.clientY || (event.touches[0] ? event.touches[0].clientY : event.changedTouches[0].clientY);
@@ -37,6 +51,13 @@ export default {
         };
     },
 
+    /**
+     * Get the mouse x position percentage relative to the player width
+     *
+     * @param {Number|String} currentMouseX - the current mouse x coordinates
+     * @param {Number|String} playerWidth - the width of the player
+     * @returns {Number} - the left offset percentage of the mouse
+     */
     getTimeRailMouseEventOffsetPercentage(currentMouseX, playerWidth) {
         const scrubberWidth = playerWidth - 14;
         let mouseX = currentMouseX - 7;
@@ -50,6 +71,12 @@ export default {
         return (mouseX / scrubberWidth);
     },
 
+    /**
+     * Parse a number in seconds as H:MM:SS
+     *
+     * @param {Number|String} time
+     * @returns {String} - the parsed timestamp as a string
+     */
     parseTime(time) {
         const _time = Number(time || 0);
         const sections = {
@@ -80,14 +107,39 @@ export default {
         return parsedTime;
     },
 
+    /**
+     * Return a quality label based on the qualities height
+     *
+     * @param {Number|String} height
+     * @returns {String} - the parsed label
+     */
     getQualityLabelByHeight(height) {
         return height === 2160 ? '4k' : `${height}p`;
     },
 
+    /**
+     * Check if the current user agent is any version of Internet Explorer
+     *
+     * @returns {Boolean}
+     */
+    isIE() {
+        return navigator.userAgent.match(/MSIE|Trident/) != null;
+    },
+
+    /**
+     * Check if the current user agent is any version of Safari
+     *
+     * @returns {Boolean}
+     */
     isSafari() {
         return navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
     },
 
+    /**
+     * Check if the current user agent is any mobile browser
+     *
+     * @returns {Object}
+     */
     isMobile() {
         const apple_phone = /iPhone/i;
         const apple_ipod = /iPod/i;
@@ -191,6 +243,12 @@ export default {
         return result;
     },
 
+    /**
+     * Parse time ranges as an array of objects with start and end properties
+     *
+     * @param {TimeRanges} timeRanges
+     * @returns {Array}
+     */
     parseTimeRangesAsArray(timeRanges) {
         const ranges = [];
 
