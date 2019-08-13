@@ -103,6 +103,14 @@ export default {
                     this.userActive = false;
                     this.closeDrawers();
                 },
+
+                enterpictureinpicture: () => {
+                    this.isExperimentalPictureInPictureEnabled = true;
+                },
+
+                leavepictureinpicture: () => {
+                    this.isExperimentalPictureInPictureEnabled = false;
+                },
             },
 
             chromeCastEventHandlers: {
