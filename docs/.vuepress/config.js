@@ -3,7 +3,10 @@ module.exports = {
     base: '/vuesora/',
     description: 'A custom front-end framework and Vue component library for the Musora member\'s area',
     head: [
-        ['link', { rel: 'icon', href: '/logo.png' }]
+        ['link', { rel: 'icon', href: '/logo.png' }],
+        ['link', {rel: 'stylesheet', href: 'https://dmmior4id2ysr.cloudfront.net/assets/FontAwesome/css/fontawesome-all.min.css'}],
+        ['link', {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Roboto+Condensed:400,700'}],
+        ['link', {rel: 'stylesheet', href: 'https://dpwjbsxqtam5n.cloudfront.net/fonts/icons.css'}],
     ],
     evergreen: true,
     themeConfig: {
