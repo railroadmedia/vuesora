@@ -312,7 +312,10 @@
             class="widescreen bg-black"
         ></div>
 
-        <div class="flex flex-row bg-black text-white pa-1 align-center flex-wrap">
+        <div
+            v-if="!hideBottomBars"
+            class="flex flex-row bg-black text-white pa-1 align-center flex-wrap"
+        >
             <p class="tiny">
                 You are currently viewing our new video player beta!
             </p>
@@ -329,6 +332,7 @@
         </div>
 
         <VideoSocialButtons
+            v-if="!hideBottomBars"
             :theme-color="themeColor"
             :is-liked="isLiked"
             :like-count="likeCount"
@@ -439,6 +443,11 @@ export default {
         castTitle: {
             type: String,
             default: () => '',
+        },
+
+        hideBottomBars: {
+            type: Boolean,
+            default: () => false,
         },
     },
     data() {
