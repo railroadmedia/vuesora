@@ -40,7 +40,7 @@
 }
 
 @mixin playerActive(){
-  .controls {
+  .player-controls {
     transform:translateY(0);
   }
 
@@ -54,7 +54,7 @@
 }
 
 @mixin playerInactive(){
-  .controls {
+  .player-controls {
     transform:translateY(100%);
   }
 
@@ -109,7 +109,7 @@
   height:100%;
 }
 
-.controls {
+.player-controls {
   transition: transform .1s ease-in-out;
   background: linear-gradient(transparent,rgba(0,0,0,.8));
   position:absolute;
