@@ -7,7 +7,9 @@
     theme-color="drumeo"
     poster="https://i.vimeocdn.com/video/793611974.jpg"
     hls-manifest-url="https://player.vimeo.com/external/344197872.m3u8?s=0ae01be5ccea6163bc62299ddfcd6b4a3c2b8198"
-    cast-title="Vuesora Video Player">
+    cast-title="Vuesora Video Player" 
+    hide-bottom-bars="true"
+>
 </VideoPlayer>
 </ClientOnly>
 
@@ -16,7 +18,8 @@
     theme-color="drumeo"
     poster="https://i.vimeocdn.com/video/793611974.jpg"
     hls-manifest-url="https://player.vimeo.com/external/344197872.m3u8?s=0ae01be5ccea6163bc62299ddfcd6b4a3c2b8198"
-    cast-title="Vuesora Video Player">
+    cast-title="Vuesora Video Player"
+>
 </video-player>
 ```
 
