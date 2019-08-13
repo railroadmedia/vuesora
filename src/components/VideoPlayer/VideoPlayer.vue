@@ -381,11 +381,6 @@ export default {
             default: () => 'drumeo',
         },
 
-        sources: {
-            type: Array,
-            default: () => [],
-        },
-
         hlsManifestUrl: {
             type: String,
             default: () => null,
@@ -636,8 +631,7 @@ export default {
 
         shaka.polyfill.installAll();
 
-
-        if (shaka.Player.isBrowserSupported()) {
+        if (shaka.Player.isBrowserSupported() && !PlayerUtils.isIE()) {
             this.shakaPlayer = new shaka.Player();
 
             Object.keys(this.eventHandlers).forEach((event) => {
@@ -687,8 +681,6 @@ export default {
                     this.attachMediaElementEventHandlers();
 
                     this.getDefaultVolume();
-
-                    console.log(this.currentTime);
 
                     // FULLSCREEN EVENT
                     document.addEventListener('fullscreenchange', () => {
@@ -1107,7 +1099,6 @@ export default {
                 if (this.isExperimentalPictureInPictureEnabled) {
                     document.exitPictureInPicture()
                         .then(() => {
-                            this.isExperimentalPictureInPictureEnabled = false;
                             resolve();
                         })
                         .catch((error) => {
@@ -1116,7 +1107,7 @@ export default {
                 } else {
                     this.mediaElement.requestPictureInPicture()
                         .then(() => {
-                            this.isExperimentalPictureInPictureEnabled = true;
+                            resolve();
                         })
                         .catch((error) => {
                             reject(error);
