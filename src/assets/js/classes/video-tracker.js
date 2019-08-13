@@ -1,7 +1,11 @@
 import axios from 'axios';
 import * as QueryString from 'query-string';
 
-const endpointPrefix = process.env.endpointPrefix || '';
+let endpointPrefix;
+
+if(window != null){
+    endpointPrefix = window.ENDPOINT_PREFIX || '';
+}
 
 export default class VideoTracker {
     constructor({

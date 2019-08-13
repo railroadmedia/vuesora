@@ -1,7 +1,11 @@
 import axios from 'axios';
 import ErrorHandler from './_error-handler';
 
-const endpointPrefix = window.ENDPOINT_PREFIX || '';
+let endpointPrefix;
+
+if(typeof window != 'undefined'){
+    endpointPrefix = window.ENDPOINT_PREFIX || '';
+}
 
 export default {
     /**
