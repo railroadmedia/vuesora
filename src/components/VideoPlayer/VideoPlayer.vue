@@ -165,7 +165,7 @@
                             </div>
                         </div>
 
-                        <div class="controls flex flex-column noselect">
+                        <div class="player-controls flex flex-column noselect">
                             <!--  TOP ROW  -->
                             <div
                                 class="flex flex-row"
