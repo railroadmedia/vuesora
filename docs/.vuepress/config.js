@@ -20,6 +20,10 @@ module.exports = {
                 link: '/layout/'
             },
             {
+                text: 'Components',
+                link: '/components/'
+            },
+            {
                 text: 'Style Guide',
                 link: '/style-guide/'
             },
