@@ -2,7 +2,7 @@ module.exports = {
     productionSourceMap: false,
     filenameHashing: false,
     css: {
-        extract: false,
+        extract: true,
     },
     chainWebpack: (config) => {
         config.plugins.delete('html');
