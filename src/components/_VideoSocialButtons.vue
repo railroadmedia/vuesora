@@ -75,6 +75,7 @@
                                 id="includeTimecode"
                                 v-model="useTimecode"
                                 type="checkbox"
+                                readonly
                             >
 
                             <span class="toggle">
@@ -135,7 +136,7 @@ export default {
             default: () => false,
         },
         likeCount: {
-            type: Number | String,
+            type: [Number, String],
             default: () => 0,
         },
         currentTimeInSeconds: {
@@ -143,7 +144,7 @@ export default {
             default: () => 0,
         },
         contentId: {
-            type: Number | String,
+            type: [Number, String],
             default: () => null,
         },
         userId: {
