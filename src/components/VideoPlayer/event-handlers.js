@@ -2,12 +2,6 @@ export default {
     data() {
         return {
             eventHandlers: {
-                canplaythrough: (event) => {
-                    setTimeout(() => {
-                        this.loading = false;
-                        this.$emit('canplaythrough', event);
-                    }, 500);
-                },
 
                 loading: () => {
                     this.loading = true;
@@ -32,6 +26,13 @@ export default {
             },
 
             mediaElementEventHandlers: {
+                canplaythrough: (event) => {
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.$emit('canplaythrough', event);
+                    }, 500);
+                },
+
                 loadedmetadata: (event) => {
                     setTimeout(() => {
                         this.loading = false;
@@ -65,6 +66,7 @@ export default {
                 play: (event) => {
                     this.isPlaying = true;
                     this.loading = false;
+                    this.hasBeenPlayed = true;
 
                     this.$emit('play', {
                         ...event,
@@ -102,6 +104,18 @@ export default {
                 userinactive: () => {
                     this.userActive = false;
                     this.closeDrawers();
+                },
+
+                seeking: () => {
+                    this.loading = true;
+                },
+
+                seeked: () => {
+                    this.loading = false;
+
+                    if (this.hasBeenPlayed) {
+                        this.mediaElement.play();
+                    }
                 },
 
                 enterpictureinpicture: () => {
