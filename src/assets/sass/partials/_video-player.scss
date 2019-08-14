@@ -145,7 +145,7 @@
 
   &:hover {
     .progress-rail {
-      height:6px;
+      transform:scaleY(2);
     }
 
     .progress-tooltip {
@@ -168,7 +168,8 @@
   opacity:0;
   visibility:hidden;
   pointer-events:none;
-  //transition:transform .1s ease-in-out;
+  transition:transform .05s linear;
+  will-change:transform;
 }
 
 .progress-rail,
@@ -176,10 +177,11 @@
   width:100%;
   height:3px;
   background:#e4e4e4;
-  transition:height .1s ease-in-out;
   border-radius:3px;
   position:relative;
   overflow:hidden;
+  transform:scaleY(1);
+  transition:transform .2s ease;
 }
 
 .progress-fill,
@@ -274,6 +276,7 @@
     right:50px;
     position:absolute;
     border-radius:3px;
+    transform-origin:100% 100%;
 
     &.captions {
       max-width:175px;
@@ -376,6 +379,7 @@
   max-height:calc(100% - #{$gutterWidth});
   max-width:calc(100% - #{$gutterWidth});
   overflow-y:auto;
+  transform-origin:0 0;
 
   td {
     padding:5px;

@@ -37,39 +37,37 @@
                         />
                     </transition>
 
-                    <transition name="grow-fade">
-                        <div
-                            v-show="contextMenu"
-                            ref="contextMenu"
-                            class="context-menu bg-grey-5 pointer text-white shadow overflow"
-                            :style="contextMenuPosition"
-                            @click.stop.prevent
-                        >
-                            <ul class="list-style-none tiny dense font-bold">
-                                <li
-                                    v-if="!isMobile"
-                                    class="pa-1 hover-bg-grey-4"
-                                    @click="openDialog('keyboardShortcuts')"
-                                >
-                                    {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
-                                </li>
-                                <li
-                                    class="pa-1 hover-bg-grey-4"
-                                    @click="openDialog('stats')"
-                                >
-                                    {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats
-                                </li>
-                                <li
-                                    v-if="!isMobile"
-                                    class="pa-1 hover-bg-grey-4"
-                                    @click="togglePip"
-                                >
-                                    {{ isPipEnabled || isExperimentalPictureInPictureEnabled
-                                        ? 'Disable' : 'Enable' }} Picture in Picture
-                                </li>
-                            </ul>
-                        </div>
-                    </transition>
+                    <div
+                        v-show="contextMenu"
+                        ref="contextMenu"
+                        class="context-menu bg-grey-5 pointer text-white shadow overflow"
+                        :style="contextMenuPosition"
+                        @click.stop.prevent
+                    >
+                        <ul class="list-style-none tiny dense font-bold">
+                            <li
+                                v-if="!isMobile"
+                                class="pa-1 hover-bg-grey-4"
+                                @click="openDialog('keyboardShortcuts')"
+                            >
+                                {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
+                            </li>
+                            <li
+                                class="pa-1 hover-bg-grey-4"
+                                @click="openDialog('stats')"
+                            >
+                                {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats
+                            </li>
+                            <li
+                                v-if="!isMobile"
+                                class="pa-1 hover-bg-grey-4"
+                                @click="togglePip"
+                            >
+                                {{ isPipEnabled || isExperimentalPictureInPictureEnabled
+                                    ? 'Disable' : 'Enable' }} Picture in Picture
+                            </li>
+                        </ul>
+                    </div>
 
                     <transition name="grow-fade">
                         <div
@@ -482,6 +480,7 @@ export default {
             isPipEnabled: false,
             isExperimentalPictureInPictureEnabled: false,
             isKeyboardControlsEnabled: false,
+            hasBeenPlayed: false,
             dialogs: {
                 stats: false,
                 keyboardShortcuts: false,
@@ -594,7 +593,7 @@ export default {
 
         playerStats: {
             get() {
-                if (this.shakaPlayer) {
+                if (this.shakaPlayer != null) {
                     return this.shakaPlayer.getStats();
                 }
 
@@ -659,8 +658,9 @@ export default {
                             },
                         },
                         streaming: {
-                            bufferingGoal: 150,
-                            ignoreTextStreamFailures: true,
+                            bufferingGoal: 45,
+                            rebufferingGoal: 15,
+                            bufferBehind: 0,
                         },
                     });
 
@@ -670,21 +670,8 @@ export default {
                     const urlParams = new URLSearchParams(window.location.search);
                     const timeToSeekTo = urlParams.get('time') || this.currentSecond;
 
-                    /*
-                    * Safari leaves the readyState at 2, and manually triggering a load
-                    * gives us our intended behavior, on Chrome the readyState is 0 and manually
-                    * triggering a load breaks the playback.
-                    *
-                    * Curtis, July 2019
-                    */
-                    if (this.mediaElement.readyState === 2) {
-                        if (timeToSeekTo !== this.currentTime) {
-                            setTimeout(() => {
-                                this.seek(timeToSeekTo, false);
-                            }, 100);
-                        } else {
-                            this.$refs.player.load();
-                        }
+                    if (timeToSeekTo !== this.currentTime) {
+                        this.seek(timeToSeekTo);
                     }
 
                     this.attachMediaElementEventHandlers();
@@ -768,20 +755,16 @@ export default {
     beforeDestroy() {
         document.removeEventListener('click', this.closeDrawers);
         document.removeEventListener('mouseup', this.mouseUpEventHandler);
+
+        this.shakaPlayer.destroy();
     },
     methods: {
         loadSource() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const timeToSeekTo = urlParams.get('time') || this.currentSecond;
             const supportsMSE = typeof MediaSource === 'function';
 
             return new Promise((resolve) => {
                 if (supportsMSE) {
-                    this.shakaPlayer.load(
-                        this.hlsManifestUrl,
-                        timeToSeekTo,
-                        'application/x-mpegURL',
-                    )
+                    this.shakaPlayer.load(this.hlsManifestUrl)
                         .then(() => {
                             resolve();
                         })
@@ -795,8 +778,6 @@ export default {
                     this.mediaElement.src = this.hlsManifestUrl;
 
                     setTimeout(() => {
-                        this.seek(timeToSeekTo, false);
-
                         resolve();
                     }, 100);
                 }
@@ -841,20 +822,13 @@ export default {
             this.playPause();
         },
 
-        seek(time, play = true) {
-            const _time = Number(time) < 0 ? 0 : Number(time);
-            this.currentTime = _time;
+        seek(time) {
             this.mediaElement.pause();
 
-            if (this.isChromeCastConnected) {
-                this.chromeCast.seek(_time);
-            } else {
-                this.mediaElement.currentTime = _time;
+            const seekTime = Number(time) > 0 ? Math.round(Number(time)) : 0;
+            this.currentTime = seekTime;
 
-                if (play) {
-                    this.mediaElement.play();
-                }
-            }
+            this.mediaElement.currentTime = seekTime;
         },
 
         fullscreen() {
@@ -899,17 +873,9 @@ export default {
             const { currentTime } = this.mediaElement;
 
             if (payload === 'auto') {
-                this.shakaPlayer.configure({
-                    abr: {
-                        enabled: true,
-                    },
-                });
+                this.shakaPlayer.configure('abr.enabled', true);
             } else {
-                this.shakaPlayer.configure({
-                    abr: {
-                        enabled: false,
-                    },
-                });
+                this.shakaPlayer.configure('abr.enabled', false);
 
                 this.shakaPlayer.selectVariantTrack(payload, true);
             }
@@ -1030,7 +996,10 @@ export default {
 
         toggleContextMenu() {
             this.contextMenu = true;
-            this.getContextMenuPosition();
+            setTimeout(() => {
+                // 1ms timeout allows the browser to calculate the context menu dimensions properly
+                this.getContextMenuPosition();
+            }, 1);
         },
 
         getContextMenuPosition() {
