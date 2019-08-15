@@ -4,7 +4,7 @@
             <div
                 class="flex flex-row pa hover-bg-grey-4 bb-grey-4-1 pointer noselect"
                 :class="isSingleSource ? 'bg-grey-4' : ''"
-                @click.stop="openQualities"
+                @click.stop="toggleQualities"
             >
                 <div class="flex flex-column">
                     <p class="body dense font-bold">
@@ -17,6 +17,10 @@
                         :class="themeTextClass"
                     >
                         {{ currentSourceLabel }}
+                        <i
+                            class="fas ml-1"
+                            :class="qualitiesDropdown ? 'fa-caret-down' : 'fa-caret-up'"
+                        ></i>
                     </p>
                 </div>
             </div>
@@ -50,7 +54,7 @@
 
             <div
                 class="flex flex-row pa hover-bg-grey-4 pointer noselect"
-                @click.stop="openRates"
+                @click.stop="toggleRates"
             >
                 <div class="flex flex-column">
                     <p class="body dense font-bold">
@@ -63,6 +67,10 @@
                         :class="themeTextClass"
                     >
                         {{ currentPlaybackRate }}x
+                        <i
+                            class="fas ml-1"
+                            :class="ratesDropdown ? 'fa-caret-down' : 'fa-caret-up'"
+                        ></i>
                     </p>
                 </div>
             </div>
@@ -170,18 +178,18 @@ export default {
         document.removeEventListener('click', this.closeDrawer);
     },
     methods: {
-        openQualities() {
+        toggleQualities() {
             if (this.isSingleSource) {
                 return;
             }
 
-            this.qualitiesDropdown = true;
+            this.qualitiesDropdown = !this.qualitiesDropdown;
             this.ratesDropdown = false;
         },
 
-        openRates() {
+        toggleRates() {
             this.qualitiesDropdown = false;
-            this.ratesDropdown = true;
+            this.ratesDropdown = !this.ratesDropdown;
         },
 
         setQuality(id) {
