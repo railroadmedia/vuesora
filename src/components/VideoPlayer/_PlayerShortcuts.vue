@@ -50,7 +50,7 @@
                         Left Arrow
                     </td>
                     <td class="text-grey-3">
-                        Rewind 10 seconds
+                        Rewind 5 seconds
                     </td>
                 </tr>
                 <tr>
@@ -58,7 +58,7 @@
                         Right Arrow
                     </td>
                     <td class="text-grey-3">
-                        Forward 10 seconds
+                        Forward 5 seconds
                     </td>
                 </tr>
                 <tr>

@@ -37,6 +37,15 @@
                         />
                     </transition>
 
+                    <transition name="grow-fade">
+                        <span
+                            v-show="currentPlaybackRate !== 1"
+                            class="rate-indicator title text-white pa-1"
+                        >
+                            {{ currentPlaybackRate }}x
+                        </span>
+                    </transition>
+
                     <div
                         v-show="contextMenu"
                         ref="contextMenu"
@@ -171,9 +180,9 @@
                             >
                                 <PlayerButton
                                     :theme-color="themeColor"
-                                    title="Rewind 10 Seconds (Left Arrow)"
+                                    title="Rewind 5 Seconds (Left Arrow)"
                                     data-cy="rewind-button"
-                                    @click.stop.native="seek(currentTime - 10)"
+                                    @click.stop.native="seek(currentTime - 5)"
                                 >
                                     <i class="fas fa-undo"></i>
                                 </PlayerButton>
@@ -182,9 +191,9 @@
 
                                 <PlayerButton
                                     :theme-color="themeColor"
-                                    title="Forward 10 Seconds (Right Arrow)"
+                                    title="Forward 5 Seconds (Right Arrow)"
                                     data-cy="fast-forward-button"
-                                    @click.stop.native="seek(currentTime + 10)"
+                                    @click.stop.native="seek(currentTime + 5)"
                                 >
                                     <i class="fas fa-redo"></i>
                                 </PlayerButton>
@@ -481,6 +490,7 @@ export default {
             isExperimentalPictureInPictureEnabled: false,
             isKeyboardControlsEnabled: false,
             hasBeenPlayed: false,
+            currentPlaybackRate: 1,
             dialogs: {
                 stats: false,
                 keyboardShortcuts: false,
@@ -534,13 +544,6 @@ export default {
             cache: false,
             get() {
                 return this.mediaElement ? this.mediaElement.currentSrc : '';
-            },
-        },
-
-        currentPlaybackRate: {
-            cache: false,
-            get() {
-                return this.mediaElement ? this.mediaElement.playbackRate : 1;
             },
         },
 

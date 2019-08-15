@@ -106,6 +106,12 @@ export default {
                     this.closeDrawers();
                 },
 
+                ratechange: () => {
+                    if (this.mediaElement.playbackRate !== 0) {
+                        this.currentPlaybackRate = this.mediaElement.playbackRate;
+                    }
+                },
+
                 seeking: () => {
                     this.loading = true;
                 },
@@ -175,8 +181,8 @@ export default {
 
             keyboardEventHandlers: {
                 Space: () => this.playPause(),
-                ArrowLeft: () => this.seek(this.currentTime - 10),
-                ArrowRight: () => this.seek(this.currentTime + 10),
+                ArrowLeft: () => this.seek(this.currentTime - 5),
+                ArrowRight: () => this.seek(this.currentTime + 5),
                 Digit1: () => this.seek(this.totalDuration * 0.10),
                 Digit2: () => this.seek(this.totalDuration * 0.20),
                 Digit3: () => this.seek(this.totalDuration * 0.30),
