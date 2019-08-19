@@ -1129,11 +1129,8 @@ export default {
         },
 
         stopTesting() {
-            axios.post('/laravel/public/video-player-beta/opt-out')
-                .then(() => {
-                    document.cookie = 'enableHlsPlayer=;path=/;expires=0;';
-                    window.location.reload();
-                });
+            document.cookie = 'enableHlsPlayer=;path=/;expires=0;';
+            window.location.reload();
         },
     },
 };
