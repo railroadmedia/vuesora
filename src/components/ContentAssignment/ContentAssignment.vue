@@ -555,7 +555,7 @@ export default {
 <style lang="scss">
     @import '../../assets/sass/partials/variables';
 
-    .arrow-column {
+    .flex.arrow-column {
         display:flex;
         flex:0 0 60px;
         padding-right:10px;
