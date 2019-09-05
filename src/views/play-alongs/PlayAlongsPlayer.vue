@@ -4,27 +4,25 @@
         class="container collapsed fluid bg-white shadow"
         :class="collapsed ? 'collapsed-down' : ''"
     >
-        <span
+        <div
             v-if="loop"
             id="anchorA"
             class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
-            :style="'left:' + anchor_offsets.a + '%;'"
-            @mousedown="initializeDrag('a')"
-            @touchstart="initializeDrag('a')"
+            :style="'left:' + anchorOffsets.a + '%;'"
+            @mousedown="emitAnchorMouseDown('a')"
         >
             A
-        </span>
+        </div>
 
-        <span
+        <div
             v-if="loop"
             id="anchorB"
             class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
-            :style="'left:' + anchor_offsets.b + '%;'"
-            @mousedown="initializeDrag('b')"
-            @touchstart="initializeDrag('b')"
+            :style="'left:' + anchorOffsets.b + '%;'"
+            @mousedown="emitAnchorMouseDown('b')"
         >
             B
-        </span>
+        </div>
 
         <div
             class="player-tab title text-drumeo bg-white shadow flex-center pointer"
@@ -36,22 +34,14 @@
             ></i>
         </div>
 
-        <div class="flex flex-row hide">
-            <audio
-                id="audioPlayer"
-                preload="auto"
-            >
-                <source :src="$_active_track">
-            </audio>
-        </div>
-
         <div
             class="progress-container flex flex-row bg-grey-5 pointer"
-            @click="seekViaProgressBar"
+            ref="progressBar"
+            @mousedown="mousedown = true"
         >
             <div
                 class="progress-amount bg-drumeo"
-                :style="'width:' + $_currentPosition + '%;'"
+                :style="durationOffsetStyles"
             ></div>
         </div>
 
@@ -61,7 +51,7 @@
                     {{ $_title }}
                 </h4>
                 <h6 class="body text-center">
-                    {{ $_style }} @ {{ $_bpm }} BPM
+                    <span class="capitalize">{{ $_style }}</span> @ {{ $_bpm }} BPM
                 </h6>
             </div>
         </div>
@@ -83,7 +73,7 @@
                 <span class="flat bg-black">
                     <i
                         class="fas"
-                        :class="$_isPlaying ? 'fa-pause' : 'fa-play'"
+                        :class="isPlaying ? 'fa-pause' : 'fa-play'"
                     ></i>
                 </span>
             </button>
@@ -105,7 +95,7 @@
             >
                 <span
                     class="bg-white rounded"
-                    :class="metronome ? 'text-grey-5' : 'inverted text-white'"
+                    :class="click ? 'text-grey-5' : 'inverted text-white'"
                 >
                     <i class="icon-metronome"></i>
                 </span>
@@ -138,60 +128,101 @@
     </div>
 </template>
 <script>
-import 'mediaelement/full';
-
 export default {
     name: 'PlayAlongsPlayer',
     props: {
-        activeItem: Object,
+        activeItem: {
+            type: Object,
+            default: () => null,
+        },
+
+        audioPlayer: {
+            type: [Object, HTMLAudioElement],
+            default: () => ({}),
+        },
+
+        isPlaying: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        click: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        drums: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        loop: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        anchorOffsets: {
+            type: Object,
+            default: () => ({
+                a: 0,
+                b: 100,
+            }),
+        },
+
+        currentTime: {
+            type: Number,
+            default: () => 0,
+        },
+
+        totalDuration: {
+            type: Number,
+            default: () => 0,
+        },
+
+        currentPosition: {
+            type: Number,
+            default: () => 0,
+        },
+
+        currentMouseX: {
+            type: Number,
+            default: () => 0,
+        },
     },
     data() {
         return {
-            metronome: true,
-            drums: false,
-            loop: false,
+            mousedown: false,
             collapsed: false,
-            dragging: false,
-            audioPlayer: undefined,
-            currentDuration: 0,
-            currentTime: 0,
-            anchor_offsets: {
-                a: 0,
-                b: 100,
-            },
-            draggingAnchor: null,
         };
     },
     computed: {
 
         $_title() {
-            return this.$_active_item.title;
+            return this.activeItem ? this.activeItem.getPostField('title') : '';
         },
 
         $_style() {
-            return this.$_active_item.style;
+            return this.activeItem ? this.activeItem.getPostField('style') : '';
         },
 
         $_bpm() {
-            return this.$_active_item.bpm;
+            return this.activeItem ? this.activeItem.getPostField('bpm') : '';
         },
 
-        $_active_track() {
-            if (this.metronome && this.drums) {
-                return this.$_active_item.mp3_yes_drums_yes_click_url;
-            }
-            if (this.metronome && !this.drums) {
-                return this.$_active_item.mp3_no_drums_yes_click_url;
-            }
-            if (!this.metronome && this.drums) {
-                return this.$_active_item.mp3_yes_drums_no_click_url;
+        durationOffsetStyles() {
+            if (this.mousedown) {
+                const percentOffset = (this.currentMouseX / this.$refs.progressBar.clientWidth) * 100;
+
+                return {
+                    transform: `translateX(${percentOffset - 100}%)`,
+                    'webkit-transform': `translateX(${percentOffset - 100}%)`,
+                };
             }
 
-            return this.$_active_item.mp3_no_drums_no_click_url;
-        },
-
-        $_currentPosition() {
-            return (this.currentTime / this.currentDuration) * 100;
+            return {
+                transform: `translateX(${this.currentPosition - 100}%)`,
+                'webkit-transform': `translateX(${this.currentPosition - 100}%)`,
+            };
         },
 
         $_isPlaying: {
@@ -201,139 +232,69 @@ export default {
             },
         },
 
-        $_anchorOffsetsInSeconds() {
+        anchorOffsetsInSeconds() {
             return {
-                a: (this.anchor_offsets.a / 100) * this.currentDuration,
-                b: (this.anchor_offsets.b / 100) * this.currentDuration,
+                a: (this.anchorOffsets.a / 100) * this.totalDuration,
+                b: (this.anchorOffsets.b / 100) * this.totalDuration,
             };
         },
     },
     mounted() {
-        const vm = this;
-
-        this.$parent.$on('songUpdate', (event) => {
-            if (vm.audioPlayer) {
-                vm.setSource(false);
-            }
-        });
-
-        window.audioPlayer = new MediaElementPlayer('audioPlayer', {
-            src: this.$_active_track,
-            success(mediaElement) {
-                vm.audioPlayer = mediaElement;
-
-                vm.audioPlayer.addEventListener('timeupdate', (event) => {
-                    vm.currentTime = vm.audioPlayer.getCurrentTime();
-                    vm.currentDuration = vm.audioPlayer.duration;
-
-                    if (vm.loop) {
-                        if (vm.currentTime < vm.$_anchorOffsetsInSeconds.a) {
-                            vm.audioPlayer.setCurrentTime(vm.$_anchorOffsetsInSeconds.a);
-                        }
-
-                        if (vm.currentTime > vm.$_anchorOffsetsInSeconds.b) {
-                            vm.audioPlayer.setCurrentTime(vm.$_anchorOffsetsInSeconds.a);
-                        }
-                    }
-                });
-
-                vm.audioPlayer.play();
-            },
-        });
-
-        document.body.addEventListener('mousemove', this.handleAnchorDrag);
-        document.body.addEventListener('touchmove', this.handleAnchorDrag);
-
-        document.body.addEventListener('mouseup', (event) => {
-            this.dragging = false;
-            this.draggingAnchor = null;
-        });
+        document.addEventListener('mouseup', this.handleMouseUp);
+    },
+    beforeDestroy() {
+        document.removeEventListener('mouseup', this.handleMouseUp);
     },
     methods: {
 
         playPause() {
-            if (this.$_isPlaying) {
-                this.audioPlayer.pause();
-            } else {
-                this.audioPlayer.play();
-            }
+            this.$emit('playPause');
+            this.$nextTick(() => this.$forceUpdate());
+        },
+
+        seek(position) {
+            this.$emit('seek', position);
         },
 
         toggleDrums() {
-            this.drums = !this.drums;
-            this.setSource(true);
+            this.$emit('drums', !this.drums);
         },
 
         toggleMetronome() {
-            this.metronome = !this.metronome;
-            this.setSource(true);
+            this.$emit('click', !this.click);
         },
 
         toggleLoop() {
-            this.loop = !this.loop;
-            this.anchor_offsets.a = 0;
-            this.anchor_offsets.b = 100;
-
-            this.audioPlayer.loop = this.loop;
-        },
-
-        setSource(retain_position = false) {
-            const current_position = this.audioPlayer.getCurrentTime();
-
-            this.$nextTick(function () {
-                this.audioPlayer.setSrc(this.$_active_track);
-                this.audioPlayer.play();
-
-                if (retain_position) {
-                    this.audioPlayer.setCurrentTime(current_position);
-                }
-            });
+            this.$emit('loop', !this.loop);
         },
 
         skipTen(forward = true) {
-            let new_position = this.currentTime - 10;
-
-            if (forward) {
-                new_position = this.currentTime + 10;
-            }
-
-            this.audioPlayer.setCurrentTime(new_position);
+            const newPosition = forward ? this.currentTime + 10 : this.currentTime - 10;
+            this.seek(newPosition);
         },
 
         seekViaProgressBar(event) {
-            const percentToSeekTo = event.offsetX / window.innerWidth;
-            const offsetToSeekTo = this.currentDuration * percentToSeekTo;
+            const percentToSeekTo = (event.clientX || event.touches[0].clientX) / this.$refs.progressBar.clientWidth;
+            const offsetToSeekTo = this.totalDuration * percentToSeekTo;
 
-            this.audioPlayer.setCurrentTime(offsetToSeekTo);
+            this.$emit('seek', offsetToSeekTo);
         },
 
+        handleMouseUp() {
+            if (this.mousedown) {
+                const percentToSeekTo = (this.currentMouseX / this.$refs.progressBar.clientWidth);
+                const offsetToSeekTo = this.totalDuration * percentToSeekTo;
 
-        initializeDrag(anchor) {
-            this.dragging = true;
-            this.draggingAnchor = anchor;
-        },
-
-        handleAnchorDrag(event) {
-            const xOffset = event.clientX || event.touches[0].clientX;
-            const xOffsetPercent = xOffset / window.innerWidth;
-
-            if (this.dragging) {
-                if (this.draggingAnchor === 'a') {
-                    if ((xOffsetPercent * 100) >= this.anchor_offsets.b) {
-                        this.anchor_offsets.a = this.anchor_offsets.b - 1;
-                    } else {
-                        this.anchor_offsets[this.draggingAnchor] = (xOffsetPercent * 100);
-                    }
-                }
-
-                if (this.draggingAnchor === 'b') {
-                    if ((xOffsetPercent * 100) <= this.anchor_offsets.a) {
-                        this.anchor_offsets.b = this.anchor_offsets.a + 1;
-                    } else {
-                        this.anchor_offsets[this.draggingAnchor] = (xOffsetPercent * 100);
-                    }
-                }
+                this.$emit('seek', offsetToSeekTo);
             }
+
+            setTimeout(() => {
+                this.mousedown = false;
+            }, 100);
+        },
+
+        emitAnchorMouseDown(anchor) {
+            this.$emit('anchorMouseDown', anchor);
         },
     },
 };

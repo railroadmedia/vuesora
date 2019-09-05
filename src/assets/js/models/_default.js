@@ -5,6 +5,7 @@ export default class ContentModel {
     constructor({ brand = 'drumeo', post }) {
         this.brand = brand;
         this.post = post;
+        this.id = post.id;
 
         this.card = {
             thumbnail: this.getPostThumbnail(),
