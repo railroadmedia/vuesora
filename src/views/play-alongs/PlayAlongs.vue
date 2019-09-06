@@ -1,5 +1,20 @@
 <template>
     <div class="flex flex-column grow">
+        <play-alongs-filters
+            :filter-options="filterOptions"
+            :selected-filters="selectedFilters"
+            :loading="loading"
+            @filterChange="handleFilterChange"
+        ></play-alongs-filters>
+
+        <div class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right">
+            <pagination
+                :current-page="Number(page)"
+                :total-pages="totalPages"
+                @pageChange="handlePageChange"
+            ></pagination>
+        </div>
+
         <catalogue-list-item
             v-for="(item, i) in content"
             :key="'list' + item.id"
@@ -12,6 +27,14 @@
             @addToList="addToListEventHandler"
             @click.native="updateTrack(item)"
         ></catalogue-list-item>
+
+        <div class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right">
+            <pagination
+                :current-page="Number(page)"
+                :total-pages="totalPages"
+                @pageChange="handlePageChange"
+            ></pagination>
+        </div>
 
         <play-alongs-player
             v-show="activeItem != null"
@@ -44,19 +67,26 @@
     </div>
 </template>
 <script>
+import ContentService from '../../assets/js/services/content';
+import * as QueryString from 'query-string';
 import CatalogueListItem from '../catalogues/_CatalogueListItem.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 import PlayAlongsPlayer from './PlayAlongsPlayer.vue';
 import ContentModel from '../../assets/js/models/_model';
 import EventHandlers from './event-handlers';
+import ThemeClasses from '../../mixins/ThemeClasses';
+import PlayAlongsFilters from './PlayAlongsFilters.vue';
+import Pagination from '../../components/Pagination';
 
 export default {
     name: 'PlayAlongs',
     components: {
         'catalogue-list-item': CatalogueListItem,
         'play-alongs-player': PlayAlongsPlayer,
+        'play-alongs-filters': PlayAlongsFilters,
+        pagination: Pagination,
     },
-    mixins: [UserCatalogueEvents, EventHandlers],
+    mixins: [ThemeClasses, UserCatalogueEvents, EventHandlers],
     props: {
         brand: {
             type: String,
@@ -70,7 +100,7 @@ export default {
 
         limit: {
             type: Number,
-            default: 10,
+            default: 20,
         },
 
         contentEndpoint: {
@@ -82,7 +112,14 @@ export default {
         return {
             content: this.preLoadedContent.data,
             loading: false,
-            page: 1,
+            page: this.preLoadedContent.meta.page,
+            totalResults: this.preLoadedContent.meta.totalResults,
+            filterOptions: this.preLoadedContent.meta.filterOptions,
+            selectedFilters: {
+                bpm: null,
+                style: null,
+                difficulty: null,
+            },
             active_id: null,
             activeItem: null,
             audioPlayer: this.$refs.audioPlayer,
@@ -120,6 +157,24 @@ export default {
         currentPosition() {
             return (this.currentTime / this.totalDuration) * 100;
         },
+
+        filterQueryObject() {
+            return {
+                included_fields: Object.keys(this.selectedFilters)
+                    .filter(key => this.selectedFilters[key] != null)
+                    .map(key => `${key},${this.selectedFilters[key]}`),
+                page: this.page,
+                limit: this.limit,
+            };
+        },
+
+        filterQueryString() {
+            return QueryString.stringify(this.filterQueryObject, { arrayFormat: 'bracket' });
+        },
+
+        totalPages() {
+            return Math.ceil(this.totalResults / this.limit);
+        },
     },
     mounted() {
         this.audioPlayer = this.$refs.audioPlayer;
@@ -146,6 +201,26 @@ export default {
         document.removeEventListener('mouseup', this.mouseUpEventHandler);
     },
     methods: {
+        getContent() {
+            this.loading = true;
+
+            ContentService.getContent({
+                ...this.filterQueryObject,
+                brand: this.brand,
+                included_types: ['play-along'],
+                statuses: ['published'],
+            })
+                .then((response) => {
+                    if (response) {
+                        this.content = response.data.data;
+                        this.page = response.data.meta.page;
+                        this.totalResults = response.data.meta.totalResults;
+                    }
+
+                    this.loading = false;
+                });
+        },
+
         updateTrack(item) {
             if (this.activeItem != null && item.id === this.activeItem.id) {
                 this.playPause();
@@ -253,6 +328,27 @@ export default {
         mouseUpEventHandler() {
             this.$set(this.anchorMouseDown, 'a', false);
             this.$set(this.anchorMouseDown, 'b', false);
+        },
+
+        updatePageUrl() {
+            const new_url = `${window.location.origin + window.location.pathname}?${this.filterQueryString}`;
+
+            window.history.replaceState(window.history.state, null, new_url);
+        },
+
+        handleFilterChange(payload) {
+            this.page = 1;
+            this.$set(this.selectedFilters, payload.key, payload.value);
+
+            this.updatePageUrl();
+            this.getContent();
+        },
+
+        handlePageChange({ page }) {
+            this.page = page;
+
+            this.updatePageUrl();
+            this.getContent();
         },
     },
 };

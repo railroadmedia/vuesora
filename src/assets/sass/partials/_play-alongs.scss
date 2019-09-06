@@ -1,5 +1,9 @@
 @import './_variables.scss';
 
+body.play-alongs-player-open {
+  padding-bottom: 225px;
+}
+
 #playAlongsPlayer {
   position:fixed;
   font-size:0;

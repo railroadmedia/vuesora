@@ -12,13 +12,11 @@
             @searchChange="handleSearch"
         ></catalogue-search>
 
-
         <catalogue-playlist-tabs
             v-if="isPlaylists"
             :theme-color="themeColor"
             :included-types="includedTypes"
         ></catalogue-playlist-tabs>
-
 
         <catalogue-filters
             v-if="filterableValues.length"

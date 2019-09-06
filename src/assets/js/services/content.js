@@ -10,6 +10,38 @@ if(typeof window != 'undefined'){
 export default {
 
     /**
+     * Get a list of Content
+     *
+     * @returns {Promise} - resolved promise with the response object
+     */
+    getContent({
+        brand = 'drumeo',
+        limit = '20',
+        statuses = ['published', 'scheduled', 'draft'],
+        sort = '-created_on',
+        term,
+        included_types,
+        included_fields,
+        page = '1',
+    }) {
+        return axios
+            .get(`${endpointPrefix}/railcontent/content`, {
+                params: {
+                    brand,
+                    limit,
+                    statuses,
+                    sort,
+                    term,
+                    included_types,
+                    included_fields,
+                    page,
+                },
+            })
+            .then(response => response)
+            .catch(ErrorHandler.push);
+    },
+
+    /**
      * Get railcontent content by ID
      *
      * @returns {Promise} - resolved promise with the response object

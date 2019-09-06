@@ -45,7 +45,7 @@
             ></div>
         </div>
 
-        <div class="flex flex-row align-h-center pv-1">
+        <div class="flex flex-row align-h-center pv-1 noselect">
             <div class="flex flex-column">
                 <h4 class="title text-center">
                     {{ $_title }}
@@ -237,6 +237,23 @@ export default {
                 a: (this.anchorOffsets.a / 100) * this.totalDuration,
                 b: (this.anchorOffsets.b / 100) * this.totalDuration,
             };
+        },
+    },
+    watch: {
+        collapsed() {
+            if (this.collapsed) {
+                document.body.classList.remove('play-alongs-player-open');
+            } else {
+                document.body.classList.add('play-alongs-player-open');
+            }
+        },
+
+        activeItem() {
+            if (this.activeItem != null) {
+                document.body.classList.add('play-alongs-player-open');
+            } else {
+                document.body.classList.remove('play-alongs-player-open');
+            }
         },
     },
     mounted() {
