@@ -59,6 +59,16 @@
         <div class="flex flex-row align-h-center pv-1">
             <button
                 class="btn collapse-square mh-1 skip-10"
+                :disabled="playedContent.length < 2"
+                @click="previousTrack"
+            >
+                <span class="flat bg-black">
+                    <i class="fas fa-step-backward"></i>
+                </span>
+            </button>
+
+            <button
+                class="btn collapse-square mh-1 skip-10"
                 @click="skipTen(false)"
             >
                 <span class="flat bg-black">
@@ -84,6 +94,15 @@
             >
                 <span class="flat bg-black">
                     <i class="fas fa-redo"></i>
+                </span>
+            </button>
+
+            <button
+                class="btn collapse-square mh-1 skip-10"
+                @click="nextTrack"
+            >
+                <span class="flat bg-black">
+                    <i class="fas fa-step-forward"></i>
                 </span>
             </button>
         </div>
@@ -188,6 +207,11 @@ export default {
             type: Number,
             default: () => 0,
         },
+
+        playedContent: {
+            type: Array,
+            default: () => [],
+        },
     },
     data() {
         return {
@@ -288,6 +312,14 @@ export default {
         skipTen(forward = true) {
             const newPosition = forward ? this.currentTime + 10 : this.currentTime - 10;
             this.seek(newPosition);
+        },
+
+        nextTrack() {
+            this.$emit('nextTrack');
+        },
+
+        previousTrack() {
+            this.$emit('previousTrack');
         },
 
         seekViaProgressBar(event) {

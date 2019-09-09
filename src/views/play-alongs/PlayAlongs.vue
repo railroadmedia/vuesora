@@ -7,6 +7,58 @@
             @filterChange="handleFilterChange"
         ></play-alongs-filters>
 
+        <div class="flex flex-row flex-wrap-xs-only">
+            <div class="flex flex-column flex-auto">
+                <div class="flex flex-row form-group align-v-center pa-2">
+                    <span class="toggle-input mr-1">
+                        <input
+                            id="favoritesOnly"
+                            name="favoritesOnly"
+                            :v-model="showFavoritesOnly"
+                            :checked="showFavoritesOnly"
+                            @change="showFavoritesOnly = !showFavoritesOnly"
+                            type="checkbox"
+                        >
+                        <span class="toggle">
+                            <span class="handle"></span>
+                        </span>
+                    </span>
+
+                    <label
+                        for="favoritesOnly"
+                        class="toggle-label"
+                    >
+                        Show favorites only
+                    </label>
+                </div>
+            </div>
+
+            <div class="flex flex-column flex-auto">
+                <div class="flex flex-row form-group align-v-center pa-2">
+                    <span class="toggle-input mr-1">
+                        <input
+                            id="isShuffle"
+                            name="isShuffle"
+                            :v-model="isShuffle"
+                            :checked="isShuffle"
+                            @change="isShuffle = !isShuffle"
+                            type="checkbox"
+                        >
+                        <span class="toggle">
+                            <span class="handle"></span>
+                        </span>
+                    </span>
+
+                    <label
+                        for="favoritesOnly"
+                        class="toggle-label"
+                    >
+                        Shuffle
+                    </label>
+                </div>
+            </div>
+        </div>
+
         <div class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right">
             <pagination
                 :current-page="Number(page)"
@@ -17,7 +69,8 @@
 
         <catalogue-list-item
             v-for="(item, i) in content"
-            :key="'list' + item.id"
+            :ref="`list${item.id}`"
+            :key="`list${item.id}`"
             :index="i + 1"
             :item="item"
             :brand="brand"
@@ -50,7 +103,10 @@
             :is-playing="isPlaying"
             :anchor-offsets="anchorOffsets"
             :current-mouse-x="currentMousePosition.x"
+            :played-content="playedContent"
             @playPause="playPause"
+            @nextTrack="playNextTrack"
+            @previousTrack="playPreviousTrack"
             @seek="seek"
             @drums="toggleDrums"
             @click="toggleClick"
@@ -67,8 +123,8 @@
     </div>
 </template>
 <script>
-import ContentService from '../../assets/js/services/content';
 import * as QueryString from 'query-string';
+import ContentService from '../../assets/js/services/content';
 import CatalogueListItem from '../catalogues/_CatalogueListItem.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 import PlayAlongsPlayer from './PlayAlongsPlayer.vue';
@@ -76,7 +132,8 @@ import ContentModel from '../../assets/js/models/_model';
 import EventHandlers from './event-handlers';
 import ThemeClasses from '../../mixins/ThemeClasses';
 import PlayAlongsFilters from './PlayAlongsFilters.vue';
-import Pagination from '../../components/Pagination';
+import Pagination from '../../components/Pagination.vue';
+import Prefetch from './prefetch';
 
 export default {
     name: 'PlayAlongs',
@@ -86,7 +143,7 @@ export default {
         'play-alongs-filters': PlayAlongsFilters,
         pagination: Pagination,
     },
-    mixins: [ThemeClasses, UserCatalogueEvents, EventHandlers],
+    mixins: [ThemeClasses, UserCatalogueEvents, EventHandlers, Prefetch],
     props: {
         brand: {
             type: String,
@@ -120,7 +177,9 @@ export default {
                 style: null,
                 difficulty: null,
             },
-            active_id: null,
+            playedContent: [],
+            showFavoritesOnly: false,
+            isShuffle: false,
             activeItem: null,
             audioPlayer: this.$refs.audioPlayer,
             drums: false,
@@ -204,7 +263,7 @@ export default {
         getContent() {
             this.loading = true;
 
-            ContentService.getContent({
+            return ContentService.getContent({
                 ...this.filterQueryObject,
                 brand: this.brand,
                 included_types: ['play-along'],
@@ -218,6 +277,8 @@ export default {
                     }
 
                     this.loading = false;
+
+                    this.preFetchedContent = null;
                 });
         },
 
@@ -252,14 +313,82 @@ export default {
 
         switchTrack(resume) {
             const { currentTime } = this;
-
-            this.audioPlayer.src = this.activeItem.getPostDatum(
+            const trackUrl = this.activeItem.getPostDatum(
                 `mp3_${this.drums ? 'yes' : 'no'}_drums_${this.click ? 'yes' : 'no'}_click_url`,
             );
 
-            if (resume) {
-                this.seek(currentTime);
+            if (trackUrl !== 'TBD' && this.audioPlayer.src !== trackUrl) {
+                this.audioPlayer.src = trackUrl;
+
+                if (resume) {
+                    this.seek(currentTime);
+                }
             }
+
+            this.$nextTick(() => {
+                const domElement = this.$refs[`list${this.activeItem.id}`][0].$el;
+
+                window.scrollTo({
+                    top: domElement.offsetTop - 100,
+                    left: 0,
+                    behavior: 'smooth',
+                });
+            });
+        },
+
+        async playPreviousTrack() {
+            if (this.loading) {
+                return false;
+            }
+
+            const { id, page } = this.playedContent[this.playedContent.length - 2];
+
+            if (page !== this.page) {
+                await this.handlePageChange({ page });
+
+                this.updateTrack(
+                    this.content.find(item => item.id === id),
+                );
+
+                this.playedContent.splice(this.playedContent.length - 1, 1);
+            } else {
+                this.updateTrack(
+                    this.content.find(item => item.id === id),
+                );
+
+                this.playedContent.splice(this.playedContent.length - 1, 1);
+            }
+        },
+
+        async playNextTrack() {
+            if (this.loading) {
+                return false;
+            }
+
+            let contentToPlay;
+            const playedContentIds = this.playedContent.map(content => content.id);
+
+            if (this.isShuffle) {
+                this.appendPreFetchedContent();
+
+                contentToPlay = this.getRandomContent();
+
+                while (playedContentIds.indexOf(contentToPlay.id) !== -1) {
+                    contentToPlay = this.getRandomContent();
+                }
+            } else {
+                const currentIndex = this.content.map(content => content.id).indexOf(this.activeItem.id);
+
+                if (currentIndex + 1 === this.content.length) {
+                    await this.handlePageChange({ page: Number(this.page) + 1 });
+
+                    contentToPlay = this.content[0];
+                } else {
+                    contentToPlay = this.content[currentIndex + 1];
+                }
+            }
+
+            this.updateTrack(contentToPlay);
         },
 
         seek(position) {
@@ -341,14 +470,27 @@ export default {
             this.$set(this.selectedFilters, payload.key, payload.value);
 
             this.updatePageUrl();
-            this.getContent();
+
+            this.playedContent = [];
+
+            return this.getContent();
         },
 
         handlePageChange({ page }) {
             this.page = page;
 
             this.updatePageUrl();
-            this.getContent();
+            return this.getContent();
+        },
+
+        getRandomPageNumber() {
+            return Math.floor((Math.random() * this.totalPages) + 1);
+        },
+
+        getRandomContent() {
+            const index = Math.floor((Math.random() * this.content.length) + 1);
+
+            return this.content[index];
         },
     },
 };
