@@ -1,6 +1,7 @@
 <template>
-    <div class="flex flex-column grow">
+    <div class="flex flex-column grow play-alongs">
         <play-alongs-filters
+            :theme-color="themeColor"
             :filter-options="filterOptions"
             :selected-filters="selectedFilters"
             :loading="loading"
@@ -16,8 +17,9 @@
                             name="favoritesOnly"
                             :v-model="showFavoritesOnly"
                             :checked="showFavoritesOnly"
-                            @change="showFavoritesOnly = !showFavoritesOnly"
                             type="checkbox"
+                            @keydown.prevent
+                            @change="toggleFavorites"
                         >
                         <span class="toggle">
                             <span class="handle"></span>
@@ -42,6 +44,7 @@
                             :v-model="isShuffle"
                             :checked="isShuffle"
                             @change="isShuffle = !isShuffle"
+                            @keydown.prevent
                             type="checkbox"
                         >
                         <span class="toggle">
@@ -67,7 +70,7 @@
             ></pagination>
         </div>
 
-        <catalogue-list-item
+        <play-alongs-list-item
             v-for="(item, i) in content"
             :ref="`list${item.id}`"
             :key="`list${item.id}`"
@@ -77,9 +80,10 @@
             :active="activeItem != null ? item.id === activeItem.id : false"
             :display-user-interactions="false"
             :no-link="true"
+            :theme-color="themeColor"
             @addToList="addToListEventHandler"
             @click.native="updateTrack(item)"
-        ></catalogue-list-item>
+        ></play-alongs-list-item>
 
         <div class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right">
             <pagination
@@ -88,6 +92,16 @@
                 @pageChange="handlePageChange"
             ></pagination>
         </div>
+
+        <transition name="show-from-bottom">
+            <div
+                v-show="loading"
+                class="loading bg-white corners shadow pa-2"
+                @click.stop.prevent
+            >
+                <loading-animation :theme-color="themeColor" />
+            </div>
+        </transition>
 
         <play-alongs-player
             v-show="activeItem != null"
@@ -125,7 +139,7 @@
 <script>
 import * as QueryString from 'query-string';
 import ContentService from '../../assets/js/services/content';
-import CatalogueListItem from '../catalogues/_CatalogueListItem.vue';
+import PlayAlongsListItem from './PlayAlongsListItem.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 import PlayAlongsPlayer from './PlayAlongsPlayer.vue';
 import ContentModel from '../../assets/js/models/_model';
@@ -133,14 +147,16 @@ import EventHandlers from './event-handlers';
 import ThemeClasses from '../../mixins/ThemeClasses';
 import PlayAlongsFilters from './PlayAlongsFilters.vue';
 import Pagination from '../../components/Pagination.vue';
+import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation.vue';
 import Prefetch from './prefetch';
 
 export default {
     name: 'PlayAlongs',
     components: {
-        'catalogue-list-item': CatalogueListItem,
+        'play-alongs-list-item': PlayAlongsListItem,
         'play-alongs-player': PlayAlongsPlayer,
         'play-alongs-filters': PlayAlongsFilters,
+        'loading-animation': LoadingAnimation,
         pagination: Pagination,
     },
     mixins: [ThemeClasses, UserCatalogueEvents, EventHandlers, Prefetch],
@@ -160,6 +176,11 @@ export default {
             default: 20,
         },
 
+        userId: {
+            type: [String, Number],
+            default: () => null,
+        },
+
         contentEndpoint: {
             type: String,
             default: () => '/railcontent/content',
@@ -169,9 +190,12 @@ export default {
         return {
             content: this.preLoadedContent.data,
             loading: false,
+            currentPlaybackRate: 1,
+            currentVolume: 1,
             page: this.preLoadedContent.meta.page,
             totalResults: this.preLoadedContent.meta.totalResults,
             filterOptions: this.preLoadedContent.meta.filterOptions,
+            isKeyboardControlsEnabled: false,
             selectedFilters: {
                 bpm: null,
                 style: null,
@@ -224,6 +248,7 @@ export default {
                     .map(key => `${key},${this.selectedFilters[key]}`),
                 page: this.page,
                 limit: this.limit,
+                required_user_playlists: this.showFavoritesOnly ? [this.userId] : undefined,
             };
         },
 
@@ -245,8 +270,12 @@ export default {
             );
         });
 
+        this.getDefaultVolume();
+
         document.addEventListener('mousemove', this.trackMousePosition);
         document.addEventListener('mouseup', this.mouseUpEventHandler);
+
+        this.enableKeyboardControls();
     },
     beforeDestroy() {
         Object.keys(this.eventHandlers).forEach((event) => {
@@ -274,9 +303,11 @@ export default {
                         this.content = response.data.data;
                         this.page = response.data.meta.page;
                         this.totalResults = response.data.meta.totalResults;
-                    }
 
-                    this.loading = false;
+                        this.$nextTick(() => {
+                            this.loading = false;
+                        });
+                    }
 
                     this.preFetchedContent = null;
                 });
@@ -337,7 +368,7 @@ export default {
         },
 
         async playPreviousTrack() {
-            if (this.loading) {
+            if (this.loading || this.fetching) {
                 return false;
             }
 
@@ -345,23 +376,19 @@ export default {
 
             if (page !== this.page) {
                 await this.handlePageChange({ page });
-
-                this.updateTrack(
-                    this.content.find(item => item.id === id),
-                );
-
-                this.playedContent.splice(this.playedContent.length - 1, 1);
-            } else {
-                this.updateTrack(
-                    this.content.find(item => item.id === id),
-                );
-
-                this.playedContent.splice(this.playedContent.length - 1, 1);
             }
+
+            this.$nextTick(() => {
+                this.updateTrack(
+                    this.content.find(item => item.id === id),
+                );
+
+                this.playedContent.splice(this.playedContent.length - 1, 1);
+            });
         },
 
         async playNextTrack() {
-            if (this.loading) {
+            if (this.loading || this.fetching) {
                 return false;
             }
 
@@ -380,19 +407,48 @@ export default {
                 const currentIndex = this.content.map(content => content.id).indexOf(this.activeItem.id);
 
                 if (currentIndex + 1 === this.content.length) {
-                    await this.handlePageChange({ page: Number(this.page) + 1 });
+                    const pageToGoTo = Number(this.page) === Number(this.totalPages)
+                        ? 1
+                        : Number(this.page) + 1;
 
+                    await this.handlePageChange({ page: pageToGoTo });
+
+                    // eslint-disable-next-line prefer-destructuring
                     contentToPlay = this.content[0];
                 } else {
                     contentToPlay = this.content[currentIndex + 1];
                 }
             }
 
-            this.updateTrack(contentToPlay);
+            this.$nextTick(() => {
+                this.updateTrack(contentToPlay);
+            });
         },
 
         seek(position) {
             this.audioPlayer.currentTime = position;
+        },
+
+        setRate(rate) {
+            let _rate = rate;
+
+            if (rate > 2) {
+                _rate = 2;
+            }
+
+            if (rate < 0.25) {
+                _rate = 0.25;
+            }
+
+            this.currentPlaybackRate = _rate;
+            this.audioPlayer.playbackRate = _rate;
+        },
+
+        changeVolume(volume) {
+            this.audioPlayer.volume = volume / 100;
+            this.currentVolume = this.audioPlayer.volume;
+
+            localStorage.setItem('playAlongsVolume', volume);
         },
 
         toggleDrums() {
@@ -471,9 +527,11 @@ export default {
 
             this.updatePageUrl();
 
-            this.playedContent = [];
+            this.$nextTick(() => {
+                this.playedContent = [];
 
-            return this.getContent();
+                return this.getContent();
+            });
         },
 
         handlePageChange({ page }) {
@@ -491,6 +549,60 @@ export default {
             const index = Math.floor((Math.random() * this.content.length) + 1);
 
             return this.content[index];
+        },
+
+        toggleFavorites() {
+            this.showFavoritesOnly = !this.showFavoritesOnly;
+
+            this.updatePageUrl();
+
+            this.$nextTick(() => {
+                this.playedContent = [];
+
+                return this.getContent();
+            });
+        },
+        
+        getDefaultVolume() {
+            if (window.localStorage.getItem('playAlongsVolume') != null) {
+                this.changeVolume({
+                    volume: Number(window.localStorage.getItem('playAlongsVolume')),
+                });
+            }
+        },
+
+        enableKeyboardControls() {
+            document.addEventListener('keydown', this.keyboardControlEventHandler);
+            this.isKeyboardControlsEnabled = true;
+
+            document.addEventListener('focusin', (event) => {
+                const element = event.target;
+                const isInputElement = element.matches('input[type="text"]')
+                    || element.matches('input[type="password"]')
+                    || element.matches('input[type="email"]')
+                    || element.matches('textarea');
+
+                if (!isInputElement) {
+                    document.removeEventListener('keydown', this.keyboardControlEventHandler);
+                    this.isKeyboardControlsEnabled = false;
+                }
+            });
+
+            document.addEventListener('focusout', () => {
+                if (!this.isKeyboardControlsEnabled) {
+                    document.addEventListener('keydown', this.keyboardControlEventHandler);
+                    this.isKeyboardControlsEnabled = true;
+                }
+            });
+        },
+
+        keyboardControlEventHandler(event) {
+            if (this.keyboardEventHandlers[event.code] && this.activeItem != null) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                this.keyboardEventHandlers[event.code]();
+            }
         },
     },
 };

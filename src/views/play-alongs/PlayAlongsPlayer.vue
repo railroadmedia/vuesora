@@ -61,6 +61,8 @@
                 class="btn collapse-square mh-1 skip-10"
                 :disabled="playedContent.length < 2"
                 @click="previousTrack"
+                @keyup.prevent
+                @keydown.prevent
             >
                 <span class="flat bg-black">
                     <i class="fas fa-step-backward"></i>
@@ -70,6 +72,8 @@
             <button
                 class="btn collapse-square mh-1 skip-10"
                 @click="skipTen(false)"
+                @keyup.prevent
+                @keydown.prevent
             >
                 <span class="flat bg-black">
                     <i class="fas fa-undo"></i>
@@ -79,6 +83,7 @@
             <button
                 class="btn collapse-square mh-1"
                 @click="playPause"
+                @keydown.prevent
             >
                 <span class="flat bg-black">
                     <i
@@ -91,6 +96,7 @@
             <button
                 class="btn collapse-square mh-1 skip-10"
                 @click="skipTen(true)"
+                @keydown.prevent
             >
                 <span class="flat bg-black">
                     <i class="fas fa-redo"></i>
@@ -100,6 +106,7 @@
             <button
                 class="btn collapse-square mh-1 skip-10"
                 @click="nextTrack"
+                @keydown.prevent
             >
                 <span class="flat bg-black">
                     <i class="fas fa-step-forward"></i>
@@ -111,6 +118,7 @@
             <button
                 class="btn collapse-square mh-1"
                 @click="toggleMetronome"
+                @keydown.prevent
             >
                 <span
                     class="bg-white rounded"
@@ -123,6 +131,7 @@
             <button
                 class="btn collapse-square mh-1"
                 @click="toggleDrums"
+                @keydown.prevent
             >
                 <span
                     class="bg-white rounded"
@@ -135,6 +144,7 @@
             <button
                 class="btn collapse-square mh-1"
                 @click="toggleLoop"
+                @keydown.prevent
             >
                 <span
                     class="bg-white rounded"

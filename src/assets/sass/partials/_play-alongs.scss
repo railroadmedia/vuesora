@@ -4,6 +4,17 @@ body.play-alongs-player-open {
   padding-bottom: 225px;
 }
 
+.play-alongs {
+  .loading {
+    position:fixed;
+    bottom:300px;
+    left:50%;
+    width:100px;
+    height:100px;
+    margin-left:-50px;
+  }
+}
+
 #playAlongsPlayer {
   position:fixed;
   font-size:0;

@@ -10,6 +10,7 @@ export default class PlayAlongContentModel extends ContentModel {
         this.card.color_title = this.getPostField('style');
 
         this.list.column_data = [
+            ContentModel.mapDifficulty(this.post),
             this.getPostField('style'),
             `${this.getPostField('bpm')} BPM`,
         ];

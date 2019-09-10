@@ -54,15 +54,15 @@ export default {
                 Digit0: () => this.seek(0),
                 Home: () => this.seek(0),
                 End: () => this.seek(this.totalDuration),
-                KeyF: () => this.fullscreen(),
-                Escape: () => (this.videojsInstance.isFullscreen ? this.fullscreen() : () => {}),
-                ArrowUp: () => this.changeVolume({ volume: (this.currentVolume * 100) + 5 }),
-                ArrowDown: () => this.changeVolume({ volume: (this.currentVolume * 100) - 5 }),
-                KeyM: () => (this.currentVolume === 0
-                    ? this.changeVolume({ volume: Number(window.localStorage.getItem('playerVolume') || 75) })
-                    : this.changeVolume({ volume: 0 })),
-                Minus: () => this.setRate({ rate: this.currentPlaybackRate - 0.25 }),
-                Equal: () => this.setRate({ rate: this.currentPlaybackRate + 0.25 }),
+                ArrowUp: () => this.changeVolume((this.currentVolume * 100) + 5),
+                ArrowDown: () => this.changeVolume((this.currentVolume * 100) - 5),
+                KeyM: () => (
+                    this.currentVolume === 0
+                        ? this.changeVolume(Number(window.localStorage.getItem('playAlongsVolume') || 75))
+                        : this.changeVolume(0)
+                ),
+                Minus: () => this.setRate(this.currentPlaybackRate - 0.25),
+                Equal: () => this.setRate(this.currentPlaybackRate + 0.25),
             },
         };
     },
