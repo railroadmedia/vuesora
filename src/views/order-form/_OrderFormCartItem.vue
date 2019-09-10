@@ -66,7 +66,7 @@
                 <div class="flex flex-column xs-12 sm-4 ph-3 pt-1 text-right align-v-top">
                     <h3
                         v-if="isDiscounted"
-                        class="body font-bold dense font-strike text-error"
+                        class="body font-bold dense font-strike text-grey-3"
                     >
                         ${{ item.price_before_discounts }}
                     </h3>
