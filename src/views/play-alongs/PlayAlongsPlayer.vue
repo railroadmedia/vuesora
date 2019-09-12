@@ -58,7 +58,7 @@
 
         <div class="flex flex-row align-h-center pv-1">
             <button
-                class="btn collapse-square mh-1 skip-10"
+                class="btn collapse-square mh-1 skip-5"
                 :disabled="playedContent.length < 2"
                 @click="previousTrack"
                 @keyup.prevent
@@ -70,8 +70,8 @@
             </button>
 
             <button
-                class="btn collapse-square mh-1 skip-10"
-                @click="skipTen(false)"
+                class="btn collapse-square mh-1 skip-5"
+                @click="skipFive(false)"
                 @keyup.prevent
                 @keydown.prevent
             >
@@ -95,7 +95,7 @@
 
             <button
                 class="btn collapse-square mh-1 skip-10"
-                @click="skipTen(true)"
+                @click="skipFive(true)"
                 @keydown.prevent
             >
                 <span class="flat bg-black">
@@ -319,8 +319,8 @@ export default {
             this.$emit('loop', !this.loop);
         },
 
-        skipTen(forward = true) {
-            const newPosition = forward ? this.currentTime + 10 : this.currentTime - 10;
+        skipFive(forward = true) {
+            const newPosition = forward ? this.currentTime + 5 : this.currentTime - 5;
             this.seek(newPosition);
         },
 
