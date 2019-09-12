@@ -58,7 +58,7 @@
 
         <div class="flex flex-row align-h-center pv-1">
             <button
-                class="btn collapse-square mh-1 skip-5"
+                class="btn collapse-square mh-1"
                 :disabled="playedContent.length < 2"
                 @click="previousTrack"
                 @keyup.prevent
@@ -94,7 +94,7 @@
             </button>
 
             <button
-                class="btn collapse-square mh-1 skip-10"
+                class="btn collapse-square mh-1 skip-5"
                 @click="skipFive(true)"
                 @keydown.prevent
             >
@@ -104,7 +104,7 @@
             </button>
 
             <button
-                class="btn collapse-square mh-1 skip-10"
+                class="btn collapse-square mh-1"
                 @click="nextTrack"
                 @keydown.prevent
             >
