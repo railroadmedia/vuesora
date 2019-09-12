@@ -22,6 +22,7 @@ export default {
         term,
         included_types,
         included_fields,
+        required_fields,
         page = '1',
     }) {
         return axios
@@ -34,6 +35,7 @@ export default {
                     term,
                     included_types,
                     included_fields,
+                    required_fields,
                     page,
                 },
             })
