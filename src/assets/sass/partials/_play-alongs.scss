@@ -2,6 +2,10 @@
 
 body.play-alongs-player-open {
   padding-bottom: 225px;
+
+  &.has-public-footer {
+    padding-bottom:270px;
+  }
 }
 
 .play-alongs {
@@ -82,13 +86,13 @@ body.play-alongs-player-open {
     }
   }
 
-  .skip-10 {
+  .skip-5 {
 
     i {
       position:relative;
 
       &:after {
-        content: '10';
+        content: '5';
         position:absolute;
         top:50%;
         left:50%;
