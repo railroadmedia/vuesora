@@ -76,7 +76,7 @@ export default {
                 course: '#07A0FF',
                 pack: '#07A0FF',
                 song: '#F8004F',
-                'play-along': '#FFB500',
+                'play-alongs': '#FFB500',
                 'student-focus': '#A82FFF',
                 rudiment: '#d06835',
                 dft: '#0DD3BF',
