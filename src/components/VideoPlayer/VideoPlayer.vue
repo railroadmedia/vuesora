@@ -353,9 +353,9 @@
 <script>
 import * as muxjs from 'mux.js';
 import shaka from 'shaka-player';
-import axios from 'axios';
 import Utils from 'js-helper-functions/modules/utils';
 import Screenfull from 'screenfull';
+import ContentService from '../../assets/js/services/content';
 import PlayerUtils from './player-utils';
 import ChromeCastPlugin from './chromecast';
 import ThemeClasses from '../../mixins/ThemeClasses';
@@ -459,6 +459,7 @@ export default {
     },
     data() {
         return {
+            source: this.hlsManifestUrl,
             loading: false,
             playerError: false,
             playerErrorCode: null,
@@ -491,6 +492,7 @@ export default {
             isKeyboardControlsEnabled: false,
             hasBeenPlayed: false,
             currentPlaybackRate: 1,
+            hasRetriedSource: false,
             dialogs: {
                 stats: false,
                 keyboardShortcuts: false,
@@ -670,27 +672,7 @@ export default {
                     return this.loadSource();
                 })
                 .then(() => {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const timeToSeekTo = urlParams.get('time') || this.currentSecond;
-
-                    if (timeToSeekTo !== this.currentTime) {
-                        this.seek(timeToSeekTo);
-                    }
-
-                    this.attachMediaElementEventHandlers();
-
-                    this.getDefaultVolume();
-
-                    // FULLSCREEN EVENT
-                    document.addEventListener('fullscreenchange', () => {
-                        this.isFullscreen = document.fullscreenElement != null;
-                    });
-
-                    this.enableKeyboardControls();
-
-                    setTimeout(() => {
-                        this.mediaElement.focus();
-                    }, 100);
+                    this.initializePlayer();
                 })
                 .catch((error) => {
                     if (error.severity === 2) {
@@ -767,24 +749,81 @@ export default {
 
             return new Promise((resolve) => {
                 if (supportsMSE) {
-                    this.shakaPlayer.load(this.hlsManifestUrl)
+                    this.shakaPlayer.load(this.source)
                         .then(() => {
+                            this.$nextTick(() => this.$forceUpdate());
                             resolve();
                         })
                         .catch((error) => {
                             if (error.severity === 2) {
-                                this.playerError = true;
-                                this.playerErrorCode = error.code;
+                                if (error.code === 1001 && !this.hasRetriedSource) {
+                                    this.retryVimeoUrl(error);
+                                } else {
+                                    this.playerError = true;
+                                    this.playerErrorCode = error.code;
+                                }
                             }
                         });
                 } else {
-                    this.mediaElement.src = this.hlsManifestUrl;
+                    this.mediaElement.src = this.source;
 
                     setTimeout(() => {
                         resolve();
                     }, 100);
                 }
             });
+        },
+
+        retryVimeoUrl(error) {
+            this.hasRetriedSource = true;
+
+            if (error.data.length < 2 && error.data[1] !== 410) {
+                this.playerError = true;
+                this.playerErrorCode = error.code;
+            } else {
+                this.loading = true;
+
+                ContentService.getVimeoUrlByVimeoId(this.videoId)
+                    .then((response) => {
+                        if (response) {
+                            const hlsManifest = response.data.files.find(
+                                file => file.quality === 'hls',
+                            );
+
+
+                            this.source = hlsManifest.link;
+                            return this.loadSource();
+                        }
+                    })
+                    .then(() => {
+                        this.initializePlayer(this.currentTime);
+                    });
+            }
+        },
+
+        initializePlayer(time) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const timeToSeekTo = time || (urlParams.get('time') || this.currentSecond);
+
+            if (timeToSeekTo !== this.currentTime) {
+                this.seek(timeToSeekTo);
+            }
+
+            this.attachMediaElementEventHandlers();
+
+            this.getDefaultVolume();
+
+            // FULLSCREEN EVENT
+            document.addEventListener('fullscreenchange', () => {
+                this.isFullscreen = document.fullscreenElement != null;
+            });
+
+            this.enableKeyboardControls();
+
+            setTimeout(() => {
+                this.hasRetriedSource = false;
+                this.mediaElement.focus();
+            }, 100);
         },
 
         attachMediaElementEventHandlers() {
@@ -963,7 +1002,7 @@ export default {
 
         enableChromeCast() {
             this.chromeCast.cast({
-                content: this.hlsManifestUrl,
+                content: this.source,
                 poster: this.poster,
                 title: this.castTitle,
                 subtitles: this.captions.map(caption => ({
