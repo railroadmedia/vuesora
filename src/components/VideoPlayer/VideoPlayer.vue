@@ -790,7 +790,6 @@ export default {
                                 file => file.quality === 'hls',
                             );
 
-
                             this.source = hlsManifest.link;
                             return this.loadSource();
                         }
