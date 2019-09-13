@@ -186,4 +186,10 @@ export default {
             .then(response => response)
             .catch(ErrorHandler);
     },
+
+    getVimeoUrlByVimeoId(vimeoId) {
+        return axios.get(`${endpointPrefix}/railcontent/vimeo-video/${vimeoId}`)
+            .then(response => response)
+            .catch(ErrorHandler);
+    },
 };

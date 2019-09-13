@@ -13,10 +13,14 @@ export default {
                     }
                 },
 
-                error: (event) => {
-                    if (event.severity === 2 || event.detail.severity === 2) {
-                        this.playerError = true;
-                        this.playerErrorCode = event.code || event.detail.code;
+                error: (error) => {
+                    if (error.severity === 2) {
+                        if (error.code === 1001 && !this.hasRetriedSource) {
+                            this.retryVimeoUrl(error);
+                        } else {
+                            this.playerError = true;
+                            this.playerErrorCode = error.code;
+                        }
                     }
                 },
 
