@@ -18,6 +18,8 @@ export default {
                     brand: this.brand,
                     included_types: ['play-along'],
                     statuses: ['published'],
+                    include_future: 0,
+                    required_parent_ids: this.showFavoritesOnly ? [this.userPlaylistId] : undefined,
                 })
                     .then((response) => {
                         if (response) {

@@ -18,12 +18,14 @@ export default {
         brand = 'drumeo',
         limit = '20',
         statuses = ['published', 'scheduled', 'draft'],
-        sort = '-created_on',
+        sort = '-published_on',
         term,
         included_types,
         included_fields,
         required_fields,
+        required_parent_ids,
         page = '1',
+        include_future = 1,
     }) {
         return axios
             .get(`${endpointPrefix}/railcontent/content`, {
@@ -36,7 +38,9 @@ export default {
                     included_types,
                     included_fields,
                     required_fields,
+                    required_parent_ids,
                     page,
+                    include_future,
                 },
             })
             .then(response => response)
