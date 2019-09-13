@@ -93,6 +93,23 @@
         ></play-alongs-list-item>
 
         <div
+            v-if="showFavoritesOnly && content.length === 0"
+            class="flex flex-row pa-2"
+        >
+            <div class="flex flex-column">
+                <p class="body mb-2">
+                    You don't currently have any favorites set.
+                </p>
+
+                <p class="body">
+                    To set a favorite, click or tap the
+                    <span class="title"><i class="far fa-star"></i></span>
+                    to the right of the track.
+                </p>
+            </div>
+        </div>
+
+        <div
             v-if="showPagination"
             class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right"
         >
@@ -128,6 +145,9 @@
             :anchor-offsets="anchorOffsets"
             :current-mouse-x="currentMousePosition.x"
             :played-content="playedContent"
+            :total-results="totalResults"
+            :is-shuffle="isShuffle"
+            :current-volume="Number(currentVolume * 100)"
             @playPause="playPause"
             @nextTrack="playNextTrack"
             @previousTrack="playPreviousTrack"
@@ -136,6 +156,7 @@
             @click="toggleClick"
             @loop="toggleLoop"
             @anchorMouseDown="handleAnchorMouseDown"
+            @volumeChange="changeVolume"
         ></play-alongs-player>
 
         <div class="flex flex-row hide">
@@ -181,7 +202,7 @@ export default {
             default: () => ({}),
         },
 
-        userId: {
+        userPlaylistId: {
             type: [String, Number],
             default: () => null,
         },
@@ -215,7 +236,7 @@ export default {
             page: 1,
             limit: 20,
             totalResults: this.preLoadedContent.meta.totalResults,
-            filterOptions: this.preLoadedContent.meta.filterOptions,
+            filterOptions: this.getFilterOptions(this.preLoadedContent.meta.filterOptions),
             isKeyboardControlsEnabled: false,
             selectedFilters: {
                 bpm: null,
@@ -269,7 +290,7 @@ export default {
                     .map(key => `${key},${this.selectedFilters[key]}`),
                 page: this.page,
                 limit: this.limit,
-                required_user_playlists: this.showFavoritesOnly ? [this.userId] : undefined,
+                required_parent_ids: this.showFavoritesOnly ? [this.userPlaylistId] : undefined,
             };
         },
 
@@ -278,7 +299,7 @@ export default {
         },
 
         totalPages() {
-            return Math.ceil(this.totalResults / this.limit);
+            return Math.ceil(this.totalResults / this.limit) || 1;
         },
     },
     mounted() {
@@ -322,13 +343,14 @@ export default {
                 brand: this.brand,
                 included_types: ['play-along'],
                 statuses: ['published'],
+                include_future: 0,
             })
                 .then((response) => {
                     if (response) {
                         this.content = response.data.data;
                         this.page = response.data.meta.page;
                         this.totalResults = response.data.meta.totalResults;
-                        this.filterOptions = response.data.meta.filterOptions;
+                        this.filterOptions = this.getFilterOptions(response.data.meta.filterOptions);
 
                         this.$nextTick(() => {
                             this.loading = false;
@@ -339,18 +361,34 @@ export default {
                 });
         },
 
+        getFilterOptions(options) {
+            if (Array.isArray(options)) {
+                return {
+                    bpm: [],
+                    style: [],
+                    difficulty: [],
+                };
+            }
+
+            return options;
+        },
+
         getActiveFilters() {
             const urlParams = QueryString.parse(window.location.search, { arrayFormat: 'bracket' });
 
             this.page = urlParams.page || 1;
             this.limit = urlParams.limit || 20;
 
-            if (urlParams.required_fields && urlParams.required_fields.length > 0) {
+            if (urlParams.required_fields != null && urlParams.required_fields.length > 0) {
                 urlParams.required_fields.forEach((field) => {
                     const keyValue = field.split(',');
 
                     this.$set(this.selectedFilters, keyValue[0], keyValue[1]);
                 });
+            }
+
+            if (urlParams.required_parent_ids != null) {
+                this.showFavoritesOnly = true;
             }
         },
 
@@ -437,7 +475,9 @@ export default {
             const playedContentIds = this.playedContent.map(content => content.id);
 
             if (this.isShuffle) {
-                this.appendPreFetchedContent();
+                if (this.totalPages > 1) {
+                    this.appendPreFetchedContent();
+                }
 
                 contentToPlay = this.getRandomContent();
 
@@ -600,7 +640,7 @@ export default {
         },
 
         getRandomContent() {
-            const index = Math.floor((Math.random() * this.content.length) + 1);
+            const index = Math.floor((Math.random() * (this.content.length - 1)));
 
             return this.content[index];
         },

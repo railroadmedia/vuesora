@@ -35,8 +35,8 @@
         </div>
 
         <div
-            class="progress-container flex flex-row bg-grey-5 pointer"
             ref="progressBar"
+            class="progress-container flex flex-row bg-grey-5 pointer"
             @mousedown="mousedown = true"
         >
             <div
@@ -45,7 +45,7 @@
             ></div>
         </div>
 
-        <div class="flex flex-row align-h-center pv-1 noselect">
+        <div class="flex flex-row align-h-center pv-1 noselect no-events">
             <div class="flex flex-column">
                 <h4 class="title text-center">
                     {{ $_title }}
@@ -105,6 +105,7 @@
 
             <button
                 class="btn collapse-square mh-1"
+                :disabled="isShuffle && playedContent.length === totalResults"
                 @click="nextTrack"
                 @keydown.prevent
             >
@@ -115,48 +116,104 @@
         </div>
 
         <div class="flex flex-row bg-grey-5 pv-1 align-h-center">
-            <button
-                class="btn collapse-square mh-1"
-                @click="toggleMetronome"
-                @keydown.prevent
-            >
-                <span
-                    class="bg-white rounded"
-                    :class="click ? 'text-grey-5' : 'inverted text-white'"
-                >
-                    <i class="icon-metronome"></i>
-                </span>
-            </button>
+            <div class="flex flex-column ph-1 grow"></div>
+            <div class="flex flex-column player-buttons">
+                <div class="flex flex-row">
+                    <button
+                        class="btn collapse-square mh-1"
+                        @click="toggleMetronome"
+                        @keydown.prevent
+                    >
+                        <span
+                            class="bg-white rounded"
+                            :class="click ? 'text-grey-5' : 'inverted text-white'"
+                        >
+                            <i class="icon-metronome"></i>
+                        </span>
+                    </button>
 
-            <button
-                class="btn collapse-square mh-1"
-                @click="toggleDrums"
-                @keydown.prevent
-            >
-                <span
-                    class="bg-white rounded"
-                    :class="drums ? 'text-grey-5' : 'inverted text-white'"
-                >
-                    <i class="icon-drums"></i>
-                </span>
-            </button>
+                    <button
+                        class="btn collapse-square mh-1"
+                        @click="toggleDrums"
+                        @keydown.prevent
+                    >
+                        <span
+                            class="bg-white rounded"
+                            :class="drums ? 'text-grey-5' : 'inverted text-white'"
+                        >
+                            <i class="icon-drums"></i>
+                        </span>
+                    </button>
 
-            <button
-                class="btn collapse-square mh-1"
-                @click="toggleLoop"
-                @keydown.prevent
-            >
-                <span
-                    class="bg-white rounded"
-                    :class="loop ? 'text-grey-5' : 'inverted text-white'"
-                >
-                    <i class="fa fa-repeat"></i>
-                </span>
-            </button>
+                    <button
+                        class="btn collapse-square mh-1"
+                        @click="toggleLoop"
+                        @keydown.prevent
+                    >
+                        <span
+                            class="bg-white rounded"
+                            :class="loop ? 'text-grey-5' : 'inverted text-white'"
+                        >
+                            <i class="fa fa-repeat"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-column grow ph-1">
+                <div class="flex flex-row">
+                    <div class="flex flex-column grow"></div>
+
+                    <div
+                        class="flex flex-column volume"
+                        v-if="!isMobile"
+                    >
+                        <div class="flex flex-row align-h-right align-v-center">
+                            <div class="flex flex-column volume-rail-wrap">
+                                <div class="volume-rail">
+                                    <div
+                                        class="volume-fill bg-white"
+                                        :style="volumeOffset"
+                                        @click.stop
+                                    ></div>
+
+                                    <input
+                                        type="range"
+                                        class="volume-range"
+                                        min="0"
+                                        max="100"
+                                        :value="currentVolume"
+                                        @click.stop
+                                        @input="emitVolumeChange"
+                                    >
+                                </div>
+                            </div>
+
+                            <button
+                                :title="currentVolume === 0 ? 'Unmute (M)' : 'Mute (M)'"
+                                class="btn collapse-square text-white"
+                                @click="emitVolumeChange(0)"
+                                @keydown.prevent
+                            >
+                                <span
+                                    class="text-white flat"
+                                >
+                                    <i
+                                        class="fa"
+                                        :class="volumeButtonClass"
+                                    ></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <script>
+import PlayerUtils from '../../components/VideoPlayer/player-utils';
+
 export default {
     name: 'PlayAlongsPlayer',
     props: {
@@ -222,14 +279,45 @@ export default {
             type: Array,
             default: () => [],
         },
+
+        currentVolume: {
+            type: Number,
+            default: () => 100,
+        },
+
+        totalResults: {
+            type: Number,
+            default: () => 0,
+        },
+
+        isShuffle: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {
             mousedown: false,
             collapsed: false,
+            volumeCache: this.currentVolume,
         };
     },
     computed: {
+        isMobile: () => PlayerUtils.isMobile().any,
+
+        volumeOffset() {
+            return {
+                width: `${this.currentVolume}%`,
+            };
+        },
+
+        volumeButtonClass() {
+            return {
+                'fa-volume-slash': this.currentVolume === 0,
+                'fa-volume-down': this.currentVolume > 0 && this.currentVolume < 50,
+                'fa-volume-up': this.currentVolume >= 50,
+            };
+        },
 
         $_title() {
             return this.activeItem ? this.activeItem.getPostField('title') : '';
@@ -297,7 +385,6 @@ export default {
         document.removeEventListener('mouseup', this.handleMouseUp);
     },
     methods: {
-
         playPause() {
             this.$emit('playPause');
             this.$nextTick(() => this.$forceUpdate());
@@ -354,6 +441,21 @@ export default {
 
         emitAnchorMouseDown(anchor) {
             this.$emit('anchorMouseDown', anchor);
+        },
+
+        emitVolumeChange(event) {
+            if (event) {
+                this.$emit('volumeChange', event.target.value);
+            } else {
+                let volume = this.volumeCache;
+
+                if (this.currentVolume) {
+                    volume = 0;
+                    this.volumeCache = this.currentVolume;
+                }
+
+                this.$emit('volumeChange', volume);
+            }
         },
     },
 };

@@ -24,7 +24,7 @@ export default {
 
                     // If shuffle is active we prefetch the next page of content and save the current ID
                     // in case a user wants to navigate back
-                    if (this.isShuffle && this.preFetchedContent === null) {
+                    if (this.isShuffle && this.preFetchedContent === null && this.totalPages > 1) {
                         this.preFetchContent(this.getRandomPageNumber());
                     }
                 },

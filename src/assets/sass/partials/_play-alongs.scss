@@ -38,6 +38,10 @@ body.play-alongs-player-open {
     transform:translateY(calc(100% - 10px));
   }
 
+  .player-buttons {
+    flex: 0 0 210px;
+  }
+
   .player-tab {
     position:absolute;
     height:30px;
