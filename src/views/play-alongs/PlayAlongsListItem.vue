@@ -80,8 +80,8 @@
                 @click.stop
             >
                 <i
-                    class="fas fa-video flex-center hover-text-black"
-                    :class="themeTextClass"
+                    class="fas fa-video flex-center"
+                    :class="[themeTextClass, themeHoverTextClass]"
                     title="Watch Lesson Video"
                 ></i>
             </a>
@@ -127,10 +127,10 @@ export default {
 
         addedToListClasses() {
             if (this.is_added) {
-                return [this.themeTextClass, 'fas'];
+                return [this.themeTextClass, this.themeHoverTextClass, 'fas'];
             }
 
-            return ['text-grey-2', 'far'];
+            return [this.themeHoverTextClass, 'text-grey-2', 'far'];
         },
     },
 };
