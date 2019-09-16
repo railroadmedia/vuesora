@@ -187,6 +187,13 @@ export default {
             .catch(ErrorHandler);
     },
 
+    /**
+     * Get a vimeo video url by vimeo video ID
+     *
+     * @param vimeoId {String|Number}
+     *
+     * @returns {Promise} resolved promise with the response.data object
+     */
     getVimeoUrlByVimeoId(vimeoId) {
         return axios.get(`${endpointPrefix}/railcontent/vimeo-video/${vimeoId}`)
             .then(response => response)
