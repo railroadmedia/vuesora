@@ -72,6 +72,7 @@
 
         <!-- VIEW LESSON VIDEO -->
         <div
+            v-if="showUserActions"
             class="flex flex-column icon-col align-v-center"
         >
             <a
@@ -89,6 +90,7 @@
 
         <!-- ADD TO FAVORITES -->
         <div
+            v-if="showUserActions"
             class="flex flex-column icon-col align-v-center"
         >
             <div
@@ -112,6 +114,12 @@ import ThemeClasses from '../../mixins/ThemeClasses';
 export default {
     name: 'PlayAlongsListItem',
     mixins: [ThemeClasses, CatalogueMixin],
+    props: {
+        showUserActions: {
+            type: Boolean,
+            default: () => false,
+        },
+    },
     computed: {
         mappedData() {
             return this.contentModel.list;

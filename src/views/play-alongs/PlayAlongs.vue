@@ -88,6 +88,7 @@
             :display-user-interactions="false"
             :no-link="true"
             :theme-color="themeColor"
+            :show-user-actions="showUserActions"
             @addToList="addToListEventHandler"
             @click.native="updateTrack(item)"
         ></play-alongs-list-item>
@@ -224,6 +225,11 @@ export default {
         },
 
         useUrlParams: {
+            type: Boolean,
+            default: () => true,
+        },
+
+        showUserActions: {
             type: Boolean,
             default: () => true,
         },
@@ -395,7 +401,7 @@ export default {
             ];
 
             const parsedOptions = {
-                difficulty: options.difficulty.sort((a, b) => a - b),
+                difficulty: options.difficulty ? options.difficulty.sort((a, b) => a - b) : [],
                 style: options.style,
                 bpm: [],
             };
@@ -544,7 +550,7 @@ export default {
                 });
             } else {
                 if (currentIndex === 0) {
-                    const pageToGoTo = Number(this.page) - 1;
+                    const pageToGoTo = Number(this.page) === 1 ? this.totalPages : Number(this.page) - 1;
 
                     if (pageToGoTo !== this.page) {
                         await this.handlePageChange({ page: pageToGoTo });
@@ -726,6 +732,8 @@ export default {
         },
 
         handlePageChange({ page }) {
+            console.log(page);
+
             this.page = page;
 
             if (this.useUrlParams) {
