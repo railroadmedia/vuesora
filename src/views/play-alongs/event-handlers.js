@@ -13,20 +13,6 @@ export default {
                             this.seek(startAnchor);
                         }
                     }
-
-                    // If we haven't played the track yet add it to the playedContent list
-                    if (!this.playedContent.find(content => content.id === this.activeItem.id)) {
-                        this.playedContent.push({
-                            id: this.activeItem.id,
-                            page: this.page,
-                        });
-                    }
-
-                    // If shuffle is active we prefetch the next page of content and save the current ID
-                    // in case a user wants to navigate back
-                    if (this.isShuffle && this.preFetchedContent === null && this.totalPages > 1) {
-                        this.preFetchContent(this.getRandomPageNumber());
-                    }
                 },
 
                 ended: () => {

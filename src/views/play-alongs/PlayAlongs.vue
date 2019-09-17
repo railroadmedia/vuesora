@@ -47,9 +47,9 @@
                             name="isShuffle"
                             :v-model="isShuffle"
                             :checked="isShuffle"
-                            @change="isShuffle = !isShuffle"
-                            @keydown.prevent
                             type="checkbox"
+                            @change="toggleShuffle"
+                            @keydown.prevent
                         >
                         <span class="toggle">
                             <span class="handle"></span>
@@ -180,6 +180,7 @@ import PlayAlongsFilters from './PlayAlongsFilters.vue';
 import Pagination from '../../components/Pagination.vue';
 import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation.vue';
 import Prefetch from './prefetch';
+import Utils from 'js-helper-functions/modules/utils';
 
 export default {
     name: 'PlayAlongs',
@@ -243,6 +244,7 @@ export default {
                 style: null,
                 difficulty: null,
             },
+            shufflePlaylist: [],
             playedContent: [],
             showFavoritesOnly: false,
             isShuffle: false,
@@ -285,9 +287,7 @@ export default {
 
         filterQueryObject() {
             return {
-                required_fields: Object.keys(this.selectedFilters)
-                    .filter(key => this.selectedFilters[key] != null)
-                    .map(key => `${key},${this.selectedFilters[key]}`),
+                required_fields: this.parseRequiredFields(),
                 page: this.page,
                 limit: this.limit,
                 required_parent_ids: this.showFavoritesOnly ? [this.userPlaylistId] : undefined,
@@ -362,6 +362,8 @@ export default {
         },
 
         getFilterOptions(options) {
+            const parsedOptions = this.parseBpmOptions(options);
+
             if (Array.isArray(options)) {
                 return {
                     bpm: [],
@@ -370,7 +372,69 @@ export default {
                 };
             }
 
-            return options;
+            return parsedOptions;
+        },
+
+        parseBpmOptions(options) {
+            const acceptedBpmOptions = [
+                {
+                    label: '50-90', min: 50, max: 90, active: false, 
+                },
+                {
+                    label: '91-120', min: 91, max: 120, active: false, 
+                },
+                {
+                    label: '121-150', min: 121, max: 150, active: false, 
+                },
+                {
+                    label: '151-180', min: 151, max: 180, active: false, 
+                },
+                {
+                    label: '181+', min: 181, max: 10000, active: false, 
+                },
+            ];
+
+            const parsedOptions = {
+                difficulty: options.difficulty.sort((a, b) => a - b),
+                style: options.style,
+                bpm: [],
+            };
+
+            if (options.bpm) {
+                acceptedBpmOptions.forEach((option) => {
+                    options.bpm.forEach((bpm) => {
+                        if (bpm > option.min && bpm < option.max) {
+                            // eslint-disable-next-line no-param-reassign
+                            option.active = true;
+                        }
+                    });
+                });
+
+                parsedOptions.bpm = acceptedBpmOptions.filter(option => option.active).map(option => option.label);
+            }
+
+            return parsedOptions;
+        },
+
+        parseRequiredFields() {
+            const selectedFilters = Object.keys(this.selectedFilters)
+                .filter(key => this.selectedFilters[key] != null);
+            const parsedFields = [];
+
+            selectedFilters.forEach((key) => {
+                if (key === 'bpm') {
+                    const bpmRange = this.selectedFilters[key].replace(/[+]/, '').split('-');
+
+                    parsedFields.push(`bpm,${bpmRange[0]},>`);
+                    if (bpmRange[1]) {
+                        parsedFields.push(`bpm,${bpmRange[1]},<`);
+                    }
+                } else {
+                    parsedFields.push(`${key},${this.selectedFilters[key]}`);
+                }
+            });
+
+            return parsedFields;
         },
 
         getActiveFilters() {
@@ -428,11 +492,7 @@ export default {
             );
 
             if (trackUrl !== 'TBD' && this.audioPlayer.src !== trackUrl) {
-                this.audioPlayer.src = trackUrl;
-
-                if (resume) {
-                    this.seek(currentTime);
-                }
+                this.updateSource(trackUrl, resume, currentTime);
             }
 
             this.$nextTick(() => {
@@ -446,24 +506,60 @@ export default {
             });
         },
 
+        updateSource(source, resume, time) {
+            this.audioPlayer.src = source;
+
+            const resumeTrack = () => {
+                this.seek(time);
+                this.audioPlayer.removeEventListener('canplay', resumeTrack);
+            };
+
+            if (resume) {
+                this.audioPlayer.addEventListener('canplay', resumeTrack);
+            }
+        },
+
         async playPreviousTrack() {
             if (this.loading || this.fetching) {
                 return false;
             }
 
-            const { id, page } = this.playedContent[this.playedContent.length - 2];
+            let contentToPlay;
+            const currentIndex = this.content.map(item => item.id).indexOf(this.activeItem.id);
 
-            if (page !== this.page) {
-                await this.handlePageChange({ page });
+            if (this.isShuffle) {
+                const { index, page } = this.playedContent[1];
+
+                if (page !== this.page) {
+                    await this.handlePageChange({ page });
+                }
+
+                contentToPlay = this.content[index];
+
+                this.$nextTick(() => {
+                    this.updateTrack(contentToPlay);
+
+                    this.shufflePlaylist.splice(0, 0, this.playedContent[0]);
+                    this.playedContent.splice(0, 1);
+                });
+            } else {
+                if (currentIndex === 0) {
+                    const pageToGoTo = Number(this.page) - 1;
+
+                    if (pageToGoTo !== this.page) {
+                        await this.handlePageChange({ page: pageToGoTo });
+                    }
+
+                    // eslint-disable-next-line prefer-destructuring
+                    contentToPlay = this.content[this.content.length - 1];
+                } else {
+                    contentToPlay = this.content[currentIndex - 1];
+                }
+
+                this.$nextTick(() => {
+                    this.updateTrack(contentToPlay);
+                });
             }
-
-            this.$nextTick(() => {
-                this.updateTrack(
-                    this.content.find(item => item.id === id),
-                );
-
-                this.playedContent.splice(this.playedContent.length - 1, 1);
-            });
         },
 
         async playNextTrack() {
@@ -472,25 +568,25 @@ export default {
             }
 
             let contentToPlay;
-            const playedContentIds = this.playedContent.map(content => content.id);
 
             if (this.isShuffle) {
-                if (this.totalPages > 1) {
-                    this.appendPreFetchedContent();
+                const { page, index } = this.shufflePlaylist[0];
+
+                if (this.totalPages > 1 && page !== this.page) {
+                    await this.handlePageChange({ page });
                 }
 
-                contentToPlay = this.getRandomContent();
+                contentToPlay = this.content[index];
 
-                while (playedContentIds.indexOf(contentToPlay.id) !== -1) {
-                    contentToPlay = this.getRandomContent();
-                }
+                this.playedContent.splice(0, 0, this.shufflePlaylist[0]);
+                this.shufflePlaylist.splice(0, 1);
             } else {
                 const currentIndex = this.content.map(content => content.id).indexOf(this.activeItem.id);
 
                 if (currentIndex + 1 === this.content.length) {
                     const pageToGoTo = Number(this.page) === Number(this.totalPages)
                         ? 1
-                        : Number(this.page) + 1;
+                        : Number(this.page) - 1;
 
                     if (pageToGoTo !== this.page) {
                         await this.handlePageChange({ page: pageToGoTo });
@@ -528,7 +624,11 @@ export default {
         },
 
         changeVolume(volume) {
-            this.audioPlayer.volume = volume / 100;
+            if (volume > 100 || volume < 0) {
+                return false;
+            }
+
+            this.audioPlayer.volume = Math.round(volume) / 100;
             this.currentVolume = this.audioPlayer.volume;
 
             if (volume !== 0) {
@@ -635,14 +735,40 @@ export default {
             return this.getContent();
         },
 
-        getRandomPageNumber() {
-            return Math.floor((Math.random() * this.totalPages) + 1);
+        generateRandomPlaylist() {
+            const indexes = Utils.range(this.totalResults);
+
+            for (let i = indexes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [indexes[i], indexes[j]] = [indexes[j], indexes[i]];
+            }
+
+            this.shufflePlaylist = indexes.map(index => (this.getTrackByIndex(String(index))));
         },
 
-        getRandomContent() {
-            const index = Math.floor((Math.random() * (this.content.length - 1)));
-
-            return this.content[index];
+        getTrackByIndex(index) {
+            switch (index.length) {
+            case 1:
+                return {
+                    page: 1,
+                    index,
+                };
+            case 2:
+                return {
+                    page: Math.floor((Number(index[0]) + 1) / 2),
+                    index: index[1],
+                };
+            case 3:
+                return {
+                    page: Math.floor((Number(`${index[0]}${index[1]}`) + 1) / 2),
+                    index: index[2],
+                };
+            default:
+                return {
+                    page: 1,
+                    index: 0,
+                };
+            }
         },
 
         toggleFavorites() {
@@ -674,7 +800,7 @@ export default {
                     || element.matches('input[type="email"]')
                     || element.matches('textarea');
 
-                if (!isInputElement) {
+                if (isInputElement) {
                     document.removeEventListener('keydown', this.keyboardControlEventHandler);
                     this.isKeyboardControlsEnabled = false;
                 }
@@ -694,6 +820,19 @@ export default {
                 event.preventDefault();
 
                 this.keyboardEventHandlers[event.code]();
+            }
+        },
+
+        toggleShuffle() {
+            this.playedContent = [];
+            this.isShuffle = !this.isShuffle;
+
+            if (this.isShuffle) {
+                this.generateRandomPlaylist();
+
+                this.playNextTrack();
+            } else {
+                this.shufflePlaylist = [];
             }
         },
     },

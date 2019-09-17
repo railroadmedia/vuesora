@@ -59,7 +59,7 @@
         <div class="flex flex-row align-h-center pv-1">
             <button
                 class="btn collapse-square mh-1"
-                :disabled="playedContent.length < 2"
+                :disabled="disablePreviousTrack"
                 @click="previousTrack"
                 @keyup.prevent
                 @keydown.prevent
@@ -359,6 +359,14 @@ export default {
                 a: (this.anchorOffsets.a / 100) * this.totalDuration,
                 b: (this.anchorOffsets.b / 100) * this.totalDuration,
             };
+        },
+
+        disablePreviousTrack() {
+            if (this.isShuffle) {
+                return this.playedContent.length < 2;
+            }
+
+            return false;
         },
     },
     watch: {
