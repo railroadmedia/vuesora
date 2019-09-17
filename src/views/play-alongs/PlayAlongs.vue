@@ -341,7 +341,7 @@ export default {
         document.removeEventListener('mouseup', this.mouseUpEventHandler);
     },
     methods: {
-        getContent() {
+        getContent(resetPlaylist = false) {
             this.loading = true;
 
             return ContentService.getContent({
@@ -358,8 +358,13 @@ export default {
                         this.totalResults = response.data.meta.totalResults;
                         this.filterOptions = this.getFilterOptions(response.data.meta.filterOptions);
 
+
                         this.$nextTick(() => {
                             this.loading = false;
+
+                            if (resetPlaylist) {
+                                this.generateRandomPlaylist();
+                            }
                         });
                     }
 
@@ -658,6 +663,7 @@ export default {
 
         toggleLoop() {
             this.loop = !this.loop;
+            this.audioPlayer.loop = this.loop;
 
             this.$set(this.anchorOffsets, 'a', 0);
             this.$set(this.anchorOffsets, 'b', 100);
@@ -727,13 +733,11 @@ export default {
             this.$nextTick(() => {
                 this.playedContent = [];
 
-                return this.getContent();
+                return this.getContent(this.isShuffle);
             });
         },
 
         handlePageChange({ page }) {
-            console.log(page);
-
             this.page = page;
 
             if (this.useUrlParams) {
