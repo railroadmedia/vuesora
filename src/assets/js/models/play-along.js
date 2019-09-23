@@ -7,11 +7,11 @@ export default class PlayAlongContentModel extends ContentModel {
             post,
         });
 
-        this.card.color_title = this.getPostField('style');
+        this.card.color_title = this.getPostFieldMulti('style').join(', ');
+        this.list.color_title = this.getPostFieldMulti('style').join(', ');
 
         this.list.column_data = [
             ContentModel.mapDifficulty(this.post),
-            this.getPostFieldMulti('style').join(', '),
             `${this.getPostFieldMulti('bpm').join(', ')} BPM`,
         ];
 
