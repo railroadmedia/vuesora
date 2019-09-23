@@ -45,6 +45,12 @@ export default class ContentModel {
         return postField ? postField.value : 'TBD';
     }
 
+    getPostFieldMulti(key) {
+        const postFields = this.post.fields.filter(field => field.key === key);
+
+        return postFields.length ? postFields.map(field => field.value) : ['TBD'];
+    }
+
     getPostDatum(key) {
         const datum = this.post.data.find(data => data.key === key);
 

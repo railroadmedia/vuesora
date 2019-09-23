@@ -11,8 +11,8 @@ export default class PlayAlongContentModel extends ContentModel {
 
         this.list.column_data = [
             ContentModel.mapDifficulty(this.post),
-            this.getPostField('style'),
-            `${this.getPostField('bpm')} BPM`,
+            this.getPostFieldMulti('style').join(', '),
+            `${this.getPostFieldMulti('bpm').join(', ')} BPM`,
         ];
 
         if (this.brand === 'guitareo') {
