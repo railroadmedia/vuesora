@@ -10,6 +10,7 @@
             class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
             :style="'left:' + anchorOffsets.a + '%;'"
             @mousedown="emitAnchorMouseDown('a')"
+            @touchstart="emitAnchorMouseDown('a')"
         >
             A
         </div>
@@ -20,6 +21,7 @@
             class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
             :style="'left:' + anchorOffsets.b + '%;'"
             @mousedown="emitAnchorMouseDown('b')"
+            @touchstart="emitAnchorMouseDown('b')"
         >
             B
         </div>
@@ -38,6 +40,7 @@
             ref="progressBar"
             class="progress-container flex flex-row bg-grey-5 pointer"
             @mousedown="mousedown = true"
+            @touchstart="mousedown = true"
         >
             <div
                 class="progress-amount bg-drumeo"
@@ -45,14 +48,50 @@
             ></div>
         </div>
 
-        <div class="flex flex-row align-h-center pv-1 noselect no-events">
-            <div class="flex flex-column">
+        <div class="flex flex-row align-h-center pv-1 noselect">
+            <div
+                v-show="loop"
+                class="flex flex-column align-center xs-4"
+            >
+                <button
+                    class="btn collapse-square short mb-1"
+                    @click="emitAnchorButtonClick('a')"
+                >
+                    <span class="bg-black text-white">
+                        A
+                    </span>
+                </button>
+
+                <p class="body">
+                    {{ getAnchorOffsetTime(anchorOffsets.a) }}
+                </p>
+            </div>
+
+            <div class="flex flex-column align-center grow no-events">
                 <h4 class="title text-center">
                     {{ $_title }}
                 </h4>
                 <h6 class="body text-center">
                     <span class="capitalize">{{ $_style }}</span> @ {{ $_bpm }} BPM
                 </h6>
+            </div>
+
+            <div
+                v-show="loop"
+                class="flex flex-column align-center xs-4"
+            >
+                <button
+                    class="btn collapse-square short mb-1"
+                    @click="emitAnchorButtonClick('b')"
+                >
+                    <span class="bg-black text-white">
+                        B
+                    </span>
+                </button>
+
+                <p class="body">
+                    {{ getAnchorOffsetTime(anchorOffsets.b) }}
+                </p>
             </div>
         </div>
 
@@ -434,6 +473,10 @@ export default {
             this.$emit('seek', offsetToSeekTo);
         },
 
+        getAnchorOffsetTime(offset) {
+            return (this.totalDuration * (offset / 100)).toFixed(2);
+        },
+
         handleMouseUp() {
             if (this.mousedown) {
                 const percentToSeekTo = (this.currentMouseX / this.$refs.progressBar.clientWidth);
@@ -449,6 +492,10 @@ export default {
 
         emitAnchorMouseDown(anchor) {
             this.$emit('anchorMouseDown', anchor);
+        },
+
+        emitAnchorButtonClick(anchor) {
+            this.$emit('anchorButtonClick', anchor);
         },
 
         emitVolumeChange(event) {

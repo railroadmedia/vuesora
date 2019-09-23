@@ -157,6 +157,7 @@
             @click="toggleClick"
             @loop="toggleLoop"
             @anchorMouseDown="handleAnchorMouseDown"
+            @anchorButtonClick="handleAnchorButtonClick"
             @volumeChange="changeVolume"
         ></play-alongs-player>
 
@@ -324,8 +325,7 @@ export default {
 
         this.getDefaultVolume();
 
-        document.addEventListener('mousemove', this.trackMousePosition);
-        document.addEventListener('mouseup', this.mouseUpEventHandler);
+        this.addMouseEventHandlers();
 
         this.enableKeyboardControls();
     },
@@ -337,8 +337,7 @@ export default {
             );
         });
 
-        document.removeEventListener('mousemove', this.trackMousePosition);
-        document.removeEventListener('mouseup', this.mouseUpEventHandler);
+        this.removeMouseEventHandlers();
     },
     methods: {
         getContent(resetPlaylist = false) {
@@ -568,6 +567,10 @@ export default {
                 }
 
                 this.$nextTick(() => {
+                    if (this.loop) {
+                        this.resetAnchors();
+                    }
+
                     this.updateTrack(contentToPlay);
                 });
             }
@@ -611,6 +614,10 @@ export default {
             }
 
             this.$nextTick(() => {
+                if (this.loop) {
+                    this.resetAnchors();
+                }
+
                 this.updateTrack(contentToPlay);
             });
         },
@@ -671,6 +678,23 @@ export default {
 
         handleAnchorMouseDown(anchor) {
             this.$set(this.anchorMouseDown, anchor, true);
+        },
+
+        handleAnchorButtonClick(anchor) {
+            let offset = (this.currentTime / this.totalDuration) * 100;
+
+            if (offset > 100) {
+                offset = 100;
+            } else if (offset < 0) {
+                offset = 0;
+            }
+
+            this.$set(this.anchorOffsets, anchor, offset);
+        },
+
+        resetAnchors() {
+            this.$set(this.anchorOffsets, 'a', 0);
+            this.$set(this.anchorOffsets, 'b', 100);
         },
 
         trackMousePosition(event) {
@@ -846,6 +870,20 @@ export default {
             } else {
                 this.shufflePlaylist = [];
             }
+        },
+        
+        addMouseEventHandlers() {
+            document.addEventListener('mousemove', this.trackMousePosition);
+            document.addEventListener('touchmove', this.trackMousePosition);
+            document.addEventListener('mouseup', this.mouseUpEventHandler);
+            document.addEventListener('touchend', this.mouseUpEventHandler);
+        },
+        
+        removeMouseEventHandlers() {
+            document.removeEventListener('mousemove', this.trackMousePosition);
+            document.removeEventListener('touchmove', this.trackMousePosition);
+            document.removeEventListener('mouseup', this.mouseUpEventHandler);
+            document.removeEventListener('touchend', this.mouseUpEventHandler);
         },
     },
 };
