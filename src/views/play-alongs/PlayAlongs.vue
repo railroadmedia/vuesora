@@ -13,55 +13,141 @@
             v-if="showFilters"
             class="flex flex-row flex-wrap-xs-only"
         >
-            <div class="flex flex-column flex-auto">
-                <div class="flex flex-row form-group align-v-center pa-2">
-                    <span class="toggle-input mr-1">
-                        <input
-                            id="favoritesOnly"
-                            name="favoritesOnly"
-                            :v-model="showFavoritesOnly"
-                            :checked="showFavoritesOnly"
-                            type="checkbox"
-                            @keydown.prevent
-                            @change="toggleFavorites"
-                        >
-                        <span class="toggle">
-                            <span class="handle"></span>
-                        </span>
-                    </span>
+            <div class="flex flex-column xs-12 sm-6">
+                <div class="flex flex-row flex-wrap-xs-only">
+                    <div class="flex flex-column flex-auto">
+                        <div class="flex flex-row form-group align-v-center pa-2">
+                            <span class="toggle-input mr-1">
+                                <input
+                                    id="favoritesOnly"
+                                    name="favoritesOnly"
+                                    :v-model="showFavoritesOnly"
+                                    :checked="showFavoritesOnly"
+                                    type="checkbox"
+                                    @keydown.prevent
+                                    @change="toggleFavorites"
+                                >
+                                <span class="toggle">
+                                    <span class="handle"></span>
+                                </span>
+                            </span>
 
-                    <label
-                        for="favoritesOnly"
-                        class="toggle-label"
-                    >
-                        Show favorites only
-                    </label>
+                            <label
+                                for="favoritesOnly"
+                                class="toggle-label"
+                            >
+                                Show favorites only
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-column flex-auto">
+                        <div class="flex flex-row form-group align-v-center pa-2">
+                            <span class="toggle-input mr-1">
+                                <input
+                                    id="isShuffle"
+                                    name="isShuffle"
+                                    :v-model="isShuffle"
+                                    :checked="isShuffle"
+                                    type="checkbox"
+                                    @change="toggleShuffle"
+                                    @keydown.prevent
+                                >
+                                <span class="toggle">
+                                    <span class="handle"></span>
+                                </span>
+                            </span>
+
+                            <label
+                                for="favoritesOnly"
+                                class="toggle-label"
+                            >
+                                Shuffle
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex flex-column flex-auto">
-                <div class="flex flex-row form-group align-v-center pa-2">
-                    <span class="toggle-input mr-1">
-                        <input
-                            id="isShuffle"
-                            name="isShuffle"
-                            :v-model="isShuffle"
-                            :checked="isShuffle"
-                            type="checkbox"
-                            @change="toggleShuffle"
-                            @keydown.prevent
+            <div class="flex flex-column xs-12 sm-6 align-h-right align-v-center pa-2">
+                <div class="flex flex-row flex-wrap">
+                    <div class="flex flex-column form-group mr-1">
+                        <select
+                            id="sortInput"
+                            type="text"
+                            class="borderless"
+                            style="width:200px;"
+                            @change="handleContentSort"
                         >
-                        <span class="toggle">
-                            <span class="handle"></span>
-                        </span>
-                    </span>
+                            <option
+                                value="-published_on"
+                                :selected="sort === '-published_on'"
+                            >
+                                Newest First
+                            </option>
+                            <option
+                                value="published_on"
+                                :selected="sort === 'published_on'"
+                            >
+                                Oldest First
+                            </option>
+                            <option
+                                value="slug"
+                                :selected="sort === 'slug'"
+                            >
+                                Name: A to Z
+                            </option>
+                            <option
+                                value="-slug"
+                                :selected="sort === '-slug'"
+                            >
+                                Name: Z to A
+                            </option>
+                        </select>
 
-                    <label
-                        for="favoritesOnly"
-                        class="toggle-label"
-                    >
-                        Shuffle
-                    </label>
+                        <label
+                            for="sortInput"
+                            :class="brand"
+                        >
+                            Sort By:
+                        </label>
+                    </div>
+
+                    <div class="flex flex-column form-group">
+                        <select
+                            id="limitInput"
+                            type="text"
+                            class="borderless"
+                            style="width:100px;"
+                            @change="handleContentLimit"
+                        >
+                            <option
+                                value="10"
+                                :selected="Number(limit) === 10"
+                            >
+                                10
+                            </option>
+                            <option
+                                value="20"
+                                :selected="Number(limit) === 20"
+                            >
+                                20
+                            </option>
+                            <option
+                                value="50"
+                                :selected="Number(limit) === 50"
+                            >
+                                50
+                            </option>
+                        </select>
+
+                        <label
+                            for="limitInput"
+                            :class="brand"
+                        >
+                            Per Page:
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,6 +257,7 @@
 </template>
 <script>
 import * as QueryString from 'query-string';
+import Utils from 'js-helper-functions/modules/utils';
 import ContentService from '../../assets/js/services/content';
 import PlayAlongsListItem from './PlayAlongsListItem.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
@@ -182,7 +269,6 @@ import PlayAlongsFilters from './PlayAlongsFilters.vue';
 import Pagination from '../../components/Pagination.vue';
 import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation.vue';
 import Prefetch from './prefetch';
-import Utils from 'js-helper-functions/modules/utils';
 
 export default {
     name: 'PlayAlongs',
@@ -243,6 +329,7 @@ export default {
             currentVolume: 1,
             page: 1,
             limit: 20,
+            sort: '-published_on',
             totalResults: this.preLoadedContent.meta.totalResults,
             filterOptions: this.getFilterOptions(this.preLoadedContent.meta.filterOptions),
             isKeyboardControlsEnabled: false,
@@ -298,6 +385,7 @@ export default {
                 page: this.page,
                 limit: this.limit,
                 required_parent_ids: this.showFavoritesOnly ? [this.userPlaylistId] : undefined,
+                sort: this.sort,
             };
         },
 
@@ -452,6 +540,7 @@ export default {
 
             this.page = urlParams.page || 1;
             this.limit = urlParams.limit || 20;
+            this.sort = urlParams.sort || '-published_on';
 
             if (urlParams.required_fields != null && urlParams.required_fields.length > 0) {
                 urlParams.required_fields.forEach((field) => {
@@ -505,15 +594,17 @@ export default {
                 this.updateSource(trackUrl, resume, currentTime);
             }
 
-            this.$nextTick(() => {
-                const domElement = this.$refs[`list${this.activeItem.id}`][0].$el;
+            if (!resume) {
+                this.$nextTick(() => {
+                    const domElement = this.$refs[`list${this.activeItem.id}`][0].$el;
 
-                window.scrollTo({
-                    top: domElement.offsetTop - 100,
-                    left: 0,
-                    behavior: 'smooth',
+                    window.scrollTo({
+                        top: domElement.offsetTop - 100,
+                        left: 0,
+                        behavior: 'smooth',
+                    });
                 });
-            });
+            }
         },
 
         updateSource(source, resume, time) {
@@ -763,6 +854,26 @@ export default {
 
         handlePageChange({ page }) {
             this.page = page;
+
+            if (this.useUrlParams) {
+                this.updatePageUrl();
+            }
+
+            return this.getContent();
+        },
+
+        handleContentSort(event) {
+            this.sort = event.target.value;
+
+            if (this.useUrlParams) {
+                this.updatePageUrl();
+            }
+
+            return this.getContent();
+        },
+
+        handleContentLimit(event) {
+            this.limit = event.target.value;
 
             if (this.useUrlParams) {
                 this.updatePageUrl();
