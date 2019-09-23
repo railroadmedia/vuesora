@@ -81,8 +81,8 @@
                 @click.stop
             >
                 <i
-                    class="fas fa-video flex-center"
-                    :class="[themeTextClass, themeHoverTextClass]"
+                    class="fas fa-video flex-center text-grey-2"
+                    :class="themeHoverTextClass"
                     title="Watch Lesson Video"
                 ></i>
             </a>
