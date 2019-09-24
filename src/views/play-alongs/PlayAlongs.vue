@@ -256,7 +256,7 @@ import ThemeClasses from '../../mixins/ThemeClasses';
 import PlayAlongsFilters from './PlayAlongsFilters.vue';
 import Pagination from '../../components/Pagination.vue';
 import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation.vue';
-import Prefetch from './prefetch';
+import Toasts from '../../assets/js/classes/toasts';
 
 export default {
     name: 'PlayAlongs',
@@ -267,7 +267,7 @@ export default {
         'loading-animation': LoadingAnimation,
         pagination: Pagination,
     },
-    mixins: [ThemeClasses, UserCatalogueEvents, EventHandlers, Prefetch],
+    mixins: [ThemeClasses, UserCatalogueEvents, EventHandlers],
     props: {
         brand: {
             type: String,
@@ -584,20 +584,30 @@ export default {
                 `mp3_${this.drums ? 'yes' : 'no'}_drums_${this.click ? 'yes' : 'no'}_click_url`,
             );
 
-            if (trackUrl !== 'TBD' && this.audioPlayer.src !== trackUrl) {
+            if (this.audioPlayer.src !== trackUrl) {
                 this.updateSource(trackUrl, resume, currentTime);
-            }
 
-            if (!resume) {
-                this.$nextTick(() => {
-                    const domElement = this.$refs[`list${this.activeItem.id}`][0].$el;
+                if (!resume) {
+                    this.$nextTick(() => {
+                        const domElement = this.$refs[`list${this.activeItem.id}`][0].$el;
 
-                    window.scrollTo({
-                        top: domElement.offsetTop - 100,
-                        left: 0,
-                        behavior: 'smooth',
+                        window.scrollTo({
+                            top: domElement.offsetTop - 100,
+                            left: 0,
+                            behavior: 'smooth',
+                        });
                     });
-                });
+                }
+
+                if (trackUrl === 'TBD') {
+                    Toasts.push({
+                        icon: 'doh',
+                        title: 'TRACK MISSING',
+                        themeColor: this.themeColor,
+                        message: 'We\'re sorry, the track you tried to play couldn\'t be found.',
+                        timeout: 10000,
+                    });
+                }
             }
         },
 
@@ -615,7 +625,7 @@ export default {
         },
 
         async playPreviousTrack() {
-            if (this.loading || this.fetching) {
+            if (this.loading) {
                 return false;
             }
 
@@ -662,7 +672,7 @@ export default {
         },
 
         async playNextTrack() {
-            if (this.loading || this.fetching) {
+            if (this.loading) {
                 return false;
             }
 
