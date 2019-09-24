@@ -104,6 +104,23 @@
                 ></i>
             </div>
         </div>
+
+        <!-- MARK AS COMPLETE -->
+        <div
+            v-if="showUserActions"
+            class="flex flex-column icon-col align-v-center"
+        >
+            <div
+                class="body"
+                @click.stop.prevent="markAsComplete"
+            >
+                <i
+                    class="add-to-list fa-check-circle flex-center hover-text-black"
+                    :class="markedAsCompletedClasses"
+                    :title="isCompleted ? 'Restart Progress' : 'Mark as Complete'"
+                ></i>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -125,6 +142,10 @@ export default {
             return this.contentModel.list;
         },
 
+        isCompleted() {
+            return this.item.completed === true;
+        },
+
         stateClasses() {
             return {
                 active: this.active,
@@ -139,6 +160,19 @@ export default {
             }
 
             return [this.themeHoverTextClass, 'text-grey-2', 'far'];
+        },
+
+        markedAsCompletedClasses() {
+            if (this.isCompleted) {
+                return [this.themeTextClass, this.themeHoverTextClass, 'fas'];
+            }
+
+            return [this.themeHoverTextClass, 'text-grey-2', 'far'];
+        },
+    },
+    methods: {
+        markAsComplete() {
+            this.$emit('markAsComplete', this.item.id);
         },
     },
 };

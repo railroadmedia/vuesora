@@ -14,58 +14,45 @@
             class="flex flex-row flex-wrap-xs-only"
         >
             <div class="flex flex-column xs-12 sm-6">
-                <div class="flex flex-row flex-wrap-xs-only">
-                    <div class="flex flex-column flex-auto">
-                        <div class="flex flex-row form-group align-v-center pa-2">
-                            <span class="toggle-input mr-1">
-                                <input
-                                    id="favoritesOnly"
-                                    name="favoritesOnly"
-                                    :v-model="showFavoritesOnly"
-                                    :checked="showFavoritesOnly"
-                                    type="checkbox"
-                                    @keydown.prevent
-                                    @change="toggleFavorites"
-                                >
-                                <span class="toggle">
-                                    <span class="handle"></span>
-                                </span>
-                            </span>
+                <div class="flex flex-row flex-wrap-xs-only ph-1">
+                    <button
+                        class="btn collapse-square mr-1"
+                        title="Toggle Favorites"
+                        @click="toggleFavorites"
+                    >
+                        <span
+                            class="bg-drumeo"
+                            :class="showFavoritesOnly ? 'text-white' : 'inverted text-drumeo'"
+                        >
+                            <i class="fas fa-star"></i>
+                        </span>
+                    </button>
 
-                            <label
-                                for="favoritesOnly"
-                                class="toggle-label"
-                            >
-                                Show favorites only
-                            </label>
-                        </div>
-                    </div>
+                    <button
+                        class="btn collapse-square mr-1"
+                        title="Toggle Completed"
+                        @click="toggleCompleted"
+                    >
+                        <span
+                            class="bg-drumeo"
+                            :class="showCompletedOnly ? 'text-white' : 'inverted text-drumeo'"
+                        >
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </button>
 
-                    <div class="flex flex-column flex-auto">
-                        <div class="flex flex-row form-group align-v-center pa-2">
-                            <span class="toggle-input mr-1">
-                                <input
-                                    id="isShuffle"
-                                    name="isShuffle"
-                                    :v-model="isShuffle"
-                                    :checked="isShuffle"
-                                    type="checkbox"
-                                    @change="toggleShuffle"
-                                    @keydown.prevent
-                                >
-                                <span class="toggle">
-                                    <span class="handle"></span>
-                                </span>
-                            </span>
-
-                            <label
-                                for="favoritesOnly"
-                                class="toggle-label"
-                            >
-                                Shuffle
-                            </label>
-                        </div>
-                    </div>
+                    <button
+                        class="btn collapse-square mr-1"
+                        title="Toggle Shuffle"
+                        @click="toggleShuffle"
+                    >
+                        <span
+                            class="bg-drumeo"
+                            :class="isShuffle ? 'text-white' : 'inverted text-drumeo'"
+                        >
+                            <i class="fas fa-random"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
 
@@ -176,6 +163,7 @@
             :theme-color="themeColor"
             :show-user-actions="showUserActions"
             @addToList="addToListEventHandler"
+            @markAsComplete="completedEventHandler"
             @click.native="updateTrack(item)"
         ></play-alongs-list-item>
 
@@ -341,6 +329,7 @@ export default {
             shufflePlaylist: [],
             playedContent: [],
             showFavoritesOnly: false,
+            showCompletedOnly: false,
             isShuffle: false,
             activeItem: null,
             audioPlayer: this.$refs.audioPlayer,
@@ -385,6 +374,7 @@ export default {
                 page: this.page,
                 limit: this.limit,
                 required_parent_ids: this.showFavoritesOnly ? [this.userPlaylistId] : undefined,
+                required_user_states: this.showCompletedOnly ? ['completed'] : undefined,
                 sort: this.sort,
             };
         },
@@ -501,7 +491,7 @@ export default {
             if (options.bpm) {
                 acceptedBpmOptions.forEach((option) => {
                     options.bpm.forEach((bpm) => {
-                        if (bpm > option.min && bpm < option.max) {
+                        if (bpm >= option.min && bpm <= option.max) {
                             // eslint-disable-next-line no-param-reassign
                             option.active = true;
                         }
@@ -552,6 +542,10 @@ export default {
 
             if (urlParams.required_parent_ids != null) {
                 this.showFavoritesOnly = true;
+            }
+
+            if (urlParams.required_parent_ids != null) {
+                this.showCompletedOnly = true;
             }
         },
 
@@ -874,10 +868,14 @@ export default {
 
         handleContentLimit(event) {
             this.limit = event.target.value;
+            this.page = 1;
 
             if (this.useUrlParams) {
                 this.updatePageUrl();
             }
+
+            this.fixPlaylistIndexes();
+            this.fixPlayedContentIndexes();
 
             return this.getContent();
         },
@@ -890,36 +888,38 @@ export default {
                 [indexes[i], indexes[j]] = [indexes[j], indexes[i]];
             }
 
-            this.shufflePlaylist = indexes.map(index => (this.getTrackByIndex(String(index))));
+            this.shufflePlaylist = indexes.map(index => (this.getTrackByIndex(index)));
         },
 
-        getTrackByIndex(index) {
-            switch (index.length) {
-            case 1:
-                return {
-                    page: 1,
-                    index,
-                };
-            case 2:
-                return {
-                    page: Math.floor((Number(index[0]) + 1) / 2),
-                    index: index[1],
-                };
-            case 3:
-                return {
-                    page: Math.floor((Number(`${index[0]}${index[1]}`) + 1) / 2),
-                    index: index[2],
-                };
-            default:
-                return {
-                    page: 1,
-                    index: 0,
-                };
-            }
+        fixPlaylistIndexes() {
+            this.shufflePlaylist = this.shufflePlaylist.map(item => (this.getTrackByIndex(item.originalIndex)));
+        },
+
+        fixPlayedContentIndexes() {
+            this.playedContent = this.playedContent.map(item => (this.getTrackByIndex(item.originalIndex)));
+        },
+
+        getTrackByIndex(originalIndex) {
+            const page = Math.ceil(originalIndex / this.limit) || 1;
+            const index = originalIndex - ((page - 1) * this.limit);
+
+            return { page, index, originalIndex };
         },
 
         toggleFavorites() {
             this.showFavoritesOnly = !this.showFavoritesOnly;
+
+            this.updatePageUrl();
+
+            this.$nextTick(() => {
+                this.playedContent = [];
+
+                return this.getContent();
+            });
+        },
+
+        toggleCompleted() {
+            this.showCompletedOnly = !this.showCompletedOnly;
 
             this.updatePageUrl();
 
@@ -995,6 +995,18 @@ export default {
             document.removeEventListener('touchmove', this.trackMousePosition);
             document.removeEventListener('mouseup', this.mouseUpEventHandler);
             document.removeEventListener('touchend', this.mouseUpEventHandler);
+        },
+
+        completedEventHandler(id) {
+            const contentToComplete = this.content.find(item => item.id === id);
+
+            if (contentToComplete.completed === true) {
+                ContentService.resetContentProgress(id);
+            } else {
+                ContentService.markContentAsComplete(id);
+            }
+
+            contentToComplete.completed = !contentToComplete.completed;
         },
     },
 };
