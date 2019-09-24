@@ -363,7 +363,7 @@ export default {
         },
 
         $_style() {
-            return this.activeItem ? this.activeItem.getPostField('style') : '';
+            return this.activeItem ? this.activeItem.getPostFieldMulti('style').join(', ') : '';
         },
 
         $_bpm() {
