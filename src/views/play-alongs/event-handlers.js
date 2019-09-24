@@ -1,3 +1,5 @@
+import Toasts from '../../assets/js/classes/toasts';
+
 export default {
     data() {
         return {
@@ -12,6 +14,18 @@ export default {
                         if (this.currentTime > endAnchor || this.currentTime < startAnchor) {
                             this.seek(startAnchor);
                         }
+                    }
+                },
+
+                error: (event) => {
+                    if (event.target.error.code === 4) {
+                        Toasts.push({
+                            icon: 'doh',
+                            title: 'TRACK MISSING',
+                            themeColor: this.themeColor,
+                            message: 'We\'re sorry, the track you tried to play couldn\'t be found.',
+                            timeout: 10000,
+                        });
                     }
                 },
 
