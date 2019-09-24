@@ -24,6 +24,7 @@ export default {
         included_fields,
         required_fields,
         required_parent_ids,
+        required_user_states,
         page = '1',
         include_future = 1,
     }) {
@@ -39,6 +40,7 @@ export default {
                     included_fields,
                     required_fields,
                     required_parent_ids,
+                    required_user_states,
                     page,
                     include_future,
                 },
