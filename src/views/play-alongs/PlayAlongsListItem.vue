@@ -6,7 +6,7 @@
     >
         <!-- THUMBNAIL COLUMN -->
         <div
-            class="flex flex-column align-v-center thumbnail-col"
+            class="flex flex-column align-v-center thumbnail-col hide-xs-only"
             :class="themeColor"
         >
             <div class="thumb-wrap corners-3">
