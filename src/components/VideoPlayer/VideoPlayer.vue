@@ -248,7 +248,7 @@
                                 />
 
                                 <PlayerButton
-                                    v-if="captions.length > 0"
+                                    v-if="captionOptions.length > 0"
                                     :theme-color="themeColor"
                                     :active="isCaptionsEnabled"
                                     @click.stop.native="toggleCaptionsDrawer"
