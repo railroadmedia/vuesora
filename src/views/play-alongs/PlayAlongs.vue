@@ -185,6 +185,23 @@
         </div>
 
         <div
+            v-if="showCompletedOnly && content.length === 0"
+            class="flex flex-row pa-2"
+        >
+            <div class="flex flex-column">
+                <p class="body mb-2">
+                    You don't currently have any completed lessons.
+                </p>
+
+                <p class="body">
+                    To complete a lesson, click or tap the
+                    <span class="title"><i class="far fa-check-circle"></i></span>
+                    to the right of the track.
+                </p>
+            </div>
+        </div>
+
+        <div
             v-if="showPagination"
             class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right"
         >
@@ -444,8 +461,6 @@ export default {
                             }
                         });
                     }
-
-                    this.preFetchedContent = null;
                 });
         },
 
@@ -498,7 +513,9 @@ export default {
                     });
                 });
 
-                parsedOptions.bpm = acceptedBpmOptions.filter(option => option.active).map(option => option.label);
+                parsedOptions.bpm = acceptedBpmOptions
+                    .filter(option => option.active)
+                    .map(option => option.label);
             }
 
             return parsedOptions;
@@ -540,11 +557,13 @@ export default {
                 });
             }
 
-            if (urlParams.required_parent_ids != null) {
+            if (urlParams.required_parent_ids != null
+                && urlParams.required_parent_ids.indexOf(this.userPlaylistId) !== -1) {
                 this.showFavoritesOnly = true;
             }
 
-            if (urlParams.required_parent_ids != null) {
+            if (urlParams.required_user_states != null
+                && urlParams.required_user_states.indexOf('completed') !== -1) {
                 this.showCompletedOnly = true;
             }
         },
@@ -917,6 +936,7 @@ export default {
         },
 
         toggleFavorites() {
+            this.page = 1;
             this.showFavoritesOnly = !this.showFavoritesOnly;
 
             this.updatePageUrl();
@@ -924,11 +944,12 @@ export default {
             this.$nextTick(() => {
                 this.playedContent = [];
 
-                return this.getContent();
+                return this.getContent(true);
             });
         },
 
         toggleCompleted() {
+            this.page = 1;
             this.showCompletedOnly = !this.showCompletedOnly;
 
             this.updatePageUrl();
@@ -936,7 +957,7 @@ export default {
             this.$nextTick(() => {
                 this.playedContent = [];
 
-                return this.getContent();
+                return this.getContent(true);
             });
         },
         

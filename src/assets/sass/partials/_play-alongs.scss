@@ -33,6 +33,7 @@ body.play-alongs-player-open {
   transform:translateY(0);
   transition:.2s transform ease-in-out;
   will-change:transform;
+  touch-action: manipulation;
 
   &.collapsed-down {
     transform:translateY(calc(100% - 10px));
