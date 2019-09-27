@@ -71,8 +71,11 @@
                 <h4 class="title text-center">
                     {{ $_title }}
                 </h4>
-                <h6 class="body text-center">
+                <h6 class="body text-center mb-2">
                     <span class="capitalize">{{ $_style }}</span> @ {{ $_bpm }} BPM
+                </h6>
+                <h6 class="body text-center">
+                    {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
                 </h6>
             </div>
 
@@ -474,7 +477,7 @@ export default {
         },
 
         getAnchorOffsetTime(offset) {
-            return (this.totalDuration * (offset / 100)).toFixed(2);
+            return this.parseTime(this.totalDuration * (offset / 100));
         },
 
         handleMouseUp() {
@@ -512,6 +515,8 @@ export default {
                 this.$emit('volumeChange', volume);
             }
         },
+
+        parseTime: time => PlayerUtils.parseTime(time),
     },
 };
 </script>
