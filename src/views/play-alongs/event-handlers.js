@@ -36,6 +36,18 @@ export default {
                 durationchange: () => {
                     this.totalDuration = this.audioPlayer.duration;
                 },
+
+                pause: (event) => {
+                    this.$emit('pause', {
+                        ...event,
+                    });
+                },
+
+                play: (event) => {
+                    this.$emit('play', {
+                        ...event,
+                    });
+                },
             },
 
             keyboardEventHandlers: {
