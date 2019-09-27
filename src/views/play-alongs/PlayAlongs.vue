@@ -530,9 +530,9 @@ export default {
                 if (key === 'bpm') {
                     const bpmRange = this.selectedFilters[key].replace(/[+]/, '').split('-');
 
-                    parsedFields.push(`bpm,${bpmRange[0]},>`);
+                    parsedFields.push(`bpm,${bpmRange[0]},integer,>`);
                     if (bpmRange[1]) {
-                        parsedFields.push(`bpm,${bpmRange[1]},<`);
+                        parsedFields.push(`bpm,${bpmRange[1]},integer,<`);
                     }
                 } else {
                     parsedFields.push(`${key},${this.selectedFilters[key]}`);
