@@ -553,7 +553,26 @@ export default {
                 urlParams.required_fields.forEach((field) => {
                     const keyValue = field.split(',');
 
-                    this.$set(this.selectedFilters, keyValue[0], keyValue[1]);
+                    // Since BPM can take either one or two values we just parse that here
+                    // If it's only one value then that's a minimum only, so we add a plus sign
+                    // Otherwise we remove the plus sign and add a dash between the two values
+                    if (keyValue[0] === 'bpm') {
+                        if (this.selectedFilters.bpm == null) {
+                            this.$set(
+                                this.selectedFilters,
+                                'bpm',
+                                `${keyValue[1]}+`,
+                            );
+                        } else {
+                            this.$set(
+                                this.selectedFilters,
+                                'bpm',
+                                `${this.selectedFilters.bpm.replace('+', '')}-${keyValue[1]}`,
+                            );
+                        }
+                    } else {
+                        this.$set(this.selectedFilters, keyValue[0], keyValue[1]);
+                    }
                 });
             }
 

@@ -62,7 +62,7 @@
                     </span>
                 </button>
 
-                <p class="body">
+                <p class="tiny text-grey-4 dense">
                     {{ getAnchorOffsetTime(anchorOffsets.a) }}
                 </p>
             </div>
@@ -71,10 +71,10 @@
                 <h4 class="title text-center">
                     {{ $_title }}
                 </h4>
-                <h6 class="body text-center mb-2">
+                <h6 class="body text-center text-grey-4 mb-2">
                     <span class="capitalize">{{ $_style }}</span> @ {{ $_bpm }} BPM
                 </h6>
-                <h6 class="body text-center">
+                <h6 class="body dense text-grey-4 text-center">
                     {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
                 </h6>
             </div>
@@ -92,7 +92,7 @@
                     </span>
                 </button>
 
-                <p class="body">
+                <p class="tiny text-grey-4 dense">
                     {{ getAnchorOffsetTime(anchorOffsets.b) }}
                 </p>
             </div>
@@ -163,6 +163,7 @@
                 <div class="flex flex-row">
                     <button
                         class="btn collapse-square mh-1"
+                        :title="click ? 'Disable Click Track' : 'Enable Click Track'"
                         @click="toggleMetronome"
                         @keydown.prevent
                     >
@@ -176,6 +177,7 @@
 
                     <button
                         class="btn collapse-square mh-1"
+                        :title="drums ? 'Disable Drum Track' : 'Enable Drum Track'"
                         @click="toggleDrums"
                         @keydown.prevent
                     >
@@ -189,6 +191,7 @@
 
                     <button
                         class="btn collapse-square mh-1"
+                        :title="loop ? 'Disable Loop' : 'Enable Loop'"
                         @click="toggleLoop"
                         @keydown.prevent
                     >
@@ -207,8 +210,8 @@
                     <div class="flex flex-column grow"></div>
 
                     <div
-                        class="flex flex-column volume"
                         v-if="!isMobile"
+                        class="flex flex-column volume"
                     >
                         <div class="flex flex-row align-h-right align-v-center">
                             <div class="flex flex-column volume-rail-wrap">
