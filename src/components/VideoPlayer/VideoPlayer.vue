@@ -398,8 +398,8 @@ export default {
         },
 
         captions: {
-            type: Array,
-            default: () => [],
+            type: String,
+            default: () => null,
         },
 
         poster: {
@@ -806,6 +806,10 @@ export default {
 
             if (timeToSeekTo !== this.currentTime) {
                 this.seek(timeToSeekTo);
+            }
+
+            if (this.captions != null) {
+                this.shakaPlayer.addTextTrack(this.captions, 'en', 'subtitle', 'text/vtt', null, 'English');
             }
 
             this.attachMediaElementEventHandlers();
