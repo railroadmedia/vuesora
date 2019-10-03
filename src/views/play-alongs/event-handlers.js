@@ -11,8 +11,12 @@ export default {
                         const startAnchor = (this.anchorOffsets.a / 100) * this.totalDuration;
                         const endAnchor = (this.anchorOffsets.b / 100) * this.totalDuration;
 
-                        if (this.currentTime > endAnchor || this.currentTime < startAnchor) {
+                        if (this.currentTime > (endAnchor + 0.1) || this.currentTime < (startAnchor - 0.1)) {
                             this.seek(startAnchor);
+
+                            this.$nextTick(() => {
+                                this.audioPlayer.play();
+                            });
                         }
                     }
                 },
@@ -73,8 +77,6 @@ export default {
                         ? this.changeVolume(Number(window.localStorage.getItem('playAlongsVolume') || 75))
                         : this.changeVolume(0)
                 ),
-                Minus: () => this.setRate(this.currentPlaybackRate - 0.25),
-                Equal: () => this.setRate(this.currentPlaybackRate + 0.25),
             },
         };
     },

@@ -168,35 +168,19 @@
         ></play-alongs-list-item>
 
         <div
-            v-if="showFavoritesOnly && content.length === 0"
+            v-if="content.length === 0"
             class="flex flex-row pa-2"
         >
             <div class="flex flex-column">
                 <p class="body mb-2">
-                    You don't currently have any favorites set.
+                    We're sorry, no results were found using those filters.
+                    Try removing a filter to broaden your search.
                 </p>
 
                 <p class="body">
-                    To set a favorite, click or tap the
-                    <span class="title"><i class="far fa-star"></i></span>
-                    to the right of the track.
-                </p>
-            </div>
-        </div>
-
-        <div
-            v-if="showCompletedOnly && content.length === 0"
-            class="flex flex-row pa-2"
-        >
-            <div class="flex flex-column">
-                <p class="body mb-2">
-                    You don't currently have any completed lessons.
-                </p>
-
-                <p class="body">
-                    To complete a lesson, click or tap the
-                    <span class="title"><i class="far fa-check-circle"></i></span>
-                    to the right of the track.
+                    If you're certain you should be seeing content,
+                    please contact support by using the chat widget on the bottom right of your screen.
+                    Alternatively, you can email <a href="mailto:support@drumeo.com">support@drumeo.com</a>.
                 </p>
             </div>
         </div>
@@ -637,15 +621,15 @@ export default {
                     });
                 }
 
-                if (trackUrl === 'TBD') {
-                    Toasts.push({
-                        icon: 'doh',
-                        title: 'TRACK MISSING',
-                        themeColor: this.themeColor,
-                        message: 'We\'re sorry, the track you tried to play couldn\'t be found.',
-                        timeout: 10000,
-                    });
-                }
+                // if (trackUrl === 'TBD') {
+                //     Toasts.push({
+                //         icon: 'doh',
+                //         title: 'TRACK MISSING',
+                //         themeColor: this.themeColor,
+                //         message: 'We\'re sorry, the track you tried to play couldn\'t be found.',
+                //         timeout: 10000,
+                //     });
+                // }
             }
         },
 
@@ -733,7 +717,7 @@ export default {
                 if (currentIndex + 1 === this.content.length) {
                     const pageToGoTo = Number(this.page) === Number(this.totalPages)
                         ? 1
-                        : Number(this.page) - 1;
+                        : Number(this.page) + 1;
 
                     if (pageToGoTo !== this.page) {
                         await this.handlePageChange({ page: pageToGoTo });

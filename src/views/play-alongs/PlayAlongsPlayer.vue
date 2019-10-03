@@ -7,7 +7,7 @@
         <div
             v-if="loop"
             id="anchorA"
-            class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
+            class="loop-anchor bg-drumeo text-white body dense font-bold rounded noselect pointer"
             :style="'left:' + anchorOffsets.a + '%;'"
             @mousedown="emitAnchorMouseDown('a')"
             @touchstart="emitAnchorMouseDown('a')"
@@ -18,7 +18,7 @@
         <div
             v-if="loop"
             id="anchorB"
-            class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
+            class="loop-anchor bg-drumeo text-white body dense font-bold rounded noselect pointer"
             :style="'left:' + anchorOffsets.b + '%;'"
             @mousedown="emitAnchorMouseDown('b')"
             @touchstart="emitAnchorMouseDown('b')"
@@ -424,7 +424,7 @@ export default {
         },
 
         activeItem() {
-            if (this.activeItem != null) {
+            if (this.activeItem != null && !this.collapsed) {
                 document.body.classList.add('play-alongs-player-open');
             } else {
                 document.body.classList.remove('play-alongs-player-open');
