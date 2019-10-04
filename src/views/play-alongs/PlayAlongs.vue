@@ -1,143 +1,78 @@
 <template>
     <div class="flex flex-column grow play-alongs">
-        <play-alongs-filters
-            v-if="showFilters"
-            :theme-color="themeColor"
-            :filter-options="filterOptions"
-            :selected-filters="selectedFilters"
-            :loading="loading"
-            @filterChange="handleFilterChange"
-        ></play-alongs-filters>
-
-        <div
-            v-if="showFilters"
-            class="flex flex-row flex-wrap-xs-only"
-        >
-            <div class="flex flex-column xs-12 sm-6">
-                <div class="flex flex-row flex-wrap-xs-only ph-1">
-                    <button
-                        class="btn collapse-square mr-1"
-                        title="Toggle Favorites"
-                        @click="toggleFavorites"
-                    >
-                        <span
-                            class="bg-drumeo"
-                            :class="showFavoritesOnly ? 'text-white' : 'inverted text-drumeo'"
-                        >
-                            <i class="fas fa-star"></i>
-                        </span>
-                    </button>
-
-                    <button
-                        class="btn collapse-square mr-1"
-                        title="Toggle Completed"
-                        @click="toggleCompleted"
-                    >
-                        <span
-                            class="bg-drumeo"
-                            :class="showCompletedOnly ? 'text-white' : 'inverted text-drumeo'"
-                        >
-                            <i class="fas fa-check"></i>
-                        </span>
-                    </button>
-
-                    <button
-                        class="btn collapse-square mr-1"
-                        title="Toggle Shuffle"
-                        @click="toggleShuffle"
-                    >
-                        <span
-                            class="bg-drumeo"
-                            :class="isShuffle ? 'text-white' : 'inverted text-drumeo'"
-                        >
-                            <i class="fas fa-random"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex flex-column xs-12 sm-6 align-h-right align-v-center pa-2">
-                <div class="flex flex-row flex-wrap">
-                    <div class="flex flex-column form-group mr-1">
-                        <select
-                            id="sortInput"
-                            type="text"
-                            class="borderless"
-                            style="width:200px;"
-                            @change="handleContentSort"
-                        >
-                            <option
-                                value="-published_on"
-                                :selected="sort === '-published_on'"
-                            >
-                                Newest First
-                            </option>
-                            <option
-                                value="published_on"
-                                :selected="sort === 'published_on'"
-                            >
-                                Oldest First
-                            </option>
-                            <option
-                                value="slug"
-                                :selected="sort === 'slug'"
-                            >
-                                Name: A to Z
-                            </option>
-                            <option
-                                value="-slug"
-                                :selected="sort === '-slug'"
-                            >
-                                Name: Z to A
-                            </option>
-                        </select>
-
-                        <label
-                            for="sortInput"
-                            :class="brand"
-                        >
-                            Sort By:
-                        </label>
-                    </div>
-
-                    <div class="flex flex-column form-group">
-                        <select
-                            id="limitInput"
-                            type="text"
-                            class="borderless"
-                            style="width:100px;"
-                            @change="handleContentLimit"
-                        >
-                            <option
-                                value="10"
-                                :selected="Number(limit) === 10"
-                            >
-                                10
-                            </option>
-                            <option
-                                value="20"
-                                :selected="Number(limit) === 20"
-                            >
-                                20
-                            </option>
-                            <option
-                                value="50"
-                                :selected="Number(limit) === 50"
-                            >
-                                50
-                            </option>
-                        </select>
-
-                        <label
-                            for="limitInput"
-                            :class="brand"
-                        >
-                            Per Page:
-                        </label>
-                    </div>
-                </div>
-            </div>
+        <div class="hide-xs-only">
+            <play-alongs-filters
+                v-if="showFilters"
+                :theme-color="themeColor"
+                :filter-options="filterOptions"
+                :selected-filters="selectedFilters"
+                :loading="loading"
+                :limit="limit"
+                :sort="sort"
+                :brand="brand"
+                :show-completed-only="showCompletedOnly"
+                :show-favorites-only="showFavoritesOnly"
+                :is-shuffle="isShuffle"
+                @filterChange="handleFilterChange"
+                @toggleFavorites="toggleFavorites"
+                @toggleCompleted="toggleCompleted"
+                @toggleShuffle="toggleShuffle"
+                @handleContentLimit="handleContentLimit"
+                @handleContentSort="handleContentSort"
+            ></play-alongs-filters>
         </div>
+
+        <div class="flex flex-row align-center show-mobile-filters bg-white shadow hide-sm-up">
+            <button
+                class="btn collapse-square"
+                @click="showMobileFilters = true"
+            >
+                <span class="text-drumeo bg-drumeo inverted">
+                    <i class="fas fa-filter"></i>
+                </span>
+            </button>
+        </div>
+
+        <transition name="show-from-bottom">
+            <div
+                v-show="showMobileFilters"
+                class="mobile-filters flex flex-column bg-white hide-sm-up"
+            >
+                <div class="flex flex-row pa-2 align-center">
+                    <h1 class="heading text-center">
+                        Play-Along Filters
+                    </h1>
+                </div>
+
+                <play-alongs-filters
+                    v-if="showFilters"
+                    :theme-color="themeColor"
+                    :filter-options="filterOptions"
+                    :selected-filters="selectedFilters"
+                    :loading="loading"
+                    :limit="limit"
+                    :sort="sort"
+                    :brand="brand"
+                    :show-completed-only="showCompletedOnly"
+                    :show-favorites-only="showFavoritesOnly"
+                    :is-shuffle="isShuffle"
+                    @filterChange="handleFilterChange"
+                    @toggleFavorites="toggleFavorites"
+                    @toggleCompleted="toggleCompleted"
+                    @toggleShuffle="toggleShuffle"
+                    @handleContentLimit="handleContentLimit"
+                    @handleContentSort="handleContentSort"
+                ></play-alongs-filters>
+
+                <div class="flex flex-row pa-2">
+                    <button class="btn short" @click="showMobileFilters = false">
+                        <span class="text-drumeo bg-drumeo inverted">
+                            Close <i class="fas fa-times ml-1"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </transition>
 
         <div
             v-if="showPagination"
@@ -351,6 +286,7 @@ export default {
                 x: 0,
                 y: 0,
             },
+            showMobileFilters: false,
         };
     },
     computed: {
@@ -576,6 +512,10 @@ export default {
                 this.playPause();
             } else {
                 this.playTrack(item);
+
+                if (this.loop) {
+                    this.resetAnchors();
+                }
             }
         },
 
@@ -684,10 +624,6 @@ export default {
                 }
 
                 this.$nextTick(() => {
-                    if (this.loop) {
-                        this.resetAnchors();
-                    }
-
                     this.updateTrack(contentToPlay);
                 });
             }
@@ -731,10 +667,6 @@ export default {
             }
 
             this.$nextTick(() => {
-                if (this.loop) {
-                    this.resetAnchors();
-                }
-
                 this.updateTrack(contentToPlay);
             });
         },
