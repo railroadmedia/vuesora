@@ -1,8 +1,27 @@
 <template>
     <div class="flex flex-column grow play-alongs">
-        <div class="hide-xs-only">
+        <div class="flex flex-row pa-1">
+            <div class="flex flex-column align-v-center">
+                <h1 class="subheading">
+                    {{ totalResults }} Play Alongs
+                </h1>
+            </div>
+            <div class="flex flex-column enable-filters">
+                <button
+                    class="btn collapse-square"
+                    @click="displayFilters = !displayFilters"
+                >
+                    <span class="text-drumeo bg-drumeo inverted">
+                        <i class="fas fa-filter"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <transition name="show-from-top">
             <play-alongs-filters
                 v-if="showFilters"
+                v-show="displayFilters"
                 :theme-color="themeColor"
                 :filter-options="filterOptions"
                 :selected-filters="selectedFilters"
@@ -20,58 +39,6 @@
                 @handleContentLimit="handleContentLimit"
                 @handleContentSort="handleContentSort"
             ></play-alongs-filters>
-        </div>
-
-        <div class="flex flex-row align-center show-mobile-filters bg-white shadow hide-sm-up">
-            <button
-                class="btn collapse-square"
-                @click="showMobileFilters = true"
-            >
-                <span class="text-drumeo bg-drumeo inverted">
-                    <i class="fas fa-filter"></i>
-                </span>
-            </button>
-        </div>
-
-        <transition name="show-from-bottom">
-            <div
-                v-show="showMobileFilters"
-                class="mobile-filters flex flex-column bg-white hide-sm-up"
-            >
-                <div class="flex flex-row pa-2 align-center">
-                    <h1 class="heading text-center">
-                        Play-Along Filters
-                    </h1>
-                </div>
-
-                <play-alongs-filters
-                    v-if="showFilters"
-                    :theme-color="themeColor"
-                    :filter-options="filterOptions"
-                    :selected-filters="selectedFilters"
-                    :loading="loading"
-                    :limit="limit"
-                    :sort="sort"
-                    :brand="brand"
-                    :show-completed-only="showCompletedOnly"
-                    :show-favorites-only="showFavoritesOnly"
-                    :is-shuffle="isShuffle"
-                    @filterChange="handleFilterChange"
-                    @toggleFavorites="toggleFavorites"
-                    @toggleCompleted="toggleCompleted"
-                    @toggleShuffle="toggleShuffle"
-                    @handleContentLimit="handleContentLimit"
-                    @handleContentSort="handleContentSort"
-                ></play-alongs-filters>
-
-                <div class="flex flex-row pa-2">
-                    <button class="btn short" @click="showMobileFilters = false">
-                        <span class="text-drumeo bg-drumeo inverted">
-                            Close <i class="fas fa-times ml-1"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
         </transition>
 
         <div
@@ -287,6 +254,7 @@ export default {
                 y: 0,
             },
             showMobileFilters: false,
+            displayFilters: false,
         };
     },
     computed: {
