@@ -39,7 +39,6 @@ export default class ShowContentModel extends ContentModel {
             'diy-drum-experiments',
         ];
 
-
         return showsThatShouldDisplayEpisodeNumbers.indexOf(this.post.type) !== -1;
     }
 }
