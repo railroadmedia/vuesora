@@ -275,9 +275,9 @@
                     <div class="flex flex-row mb-2">
                         <div class="flex flex-column md-6 ph-1">
                             <h5 class="tiny disclaimer">
-                                By completing your renewal you agree to the Pianote Terms
-                                Of Service. All payments in US dollars. You
-                                can cancel your subscription at any time by emailing support@pianote.com.
+                                By completing your order you agree to the terms of service. All payments
+                                in US dollars. You can cancel your subscription at any time by emailing
+                                <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>.
                             </h5>
                         </div>
                     </div>
