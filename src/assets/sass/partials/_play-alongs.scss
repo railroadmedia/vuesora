@@ -25,6 +25,12 @@ body.play-alongs-player-open {
     height:100px;
     margin-left:-50px;
   }
+
+  .enable-filters {
+    flex:0 0 50px;
+    max-width:50px;
+    min-width:50px;
+  }
 }
 
 #playAlongsPlayer {
@@ -124,13 +130,4 @@ body.play-alongs-player-open {
   height:60px;
   z-index:96;
   border-radius:3px 0 0 3px;
-}
-
-.mobile-filters {
-  position:fixed;
-  top:50px;
-  left:0;
-  width:100%;
-  height:calc(100vh - 50px);
-  z-index:97;
 }
