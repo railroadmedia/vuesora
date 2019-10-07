@@ -51,12 +51,14 @@
       -ms-flex: 0 0 150px;
           flex: 0 0 150px;
   max-width: 150px;
+  min-width: 150px;
 }
 .lesson-type {
   -webkit-box-flex: 0;
       -ms-flex: 0 0 150px;
           flex: 0 0 150px;
   max-width: 150px;
+  min-width: 150px;
 }
 .lesson-type i {
   font-size: 12px;
@@ -69,6 +71,7 @@
       -ms-flex: 0 0 60px;
           flex: 0 0 60px;
   max-width: 60px;
+  min-width: 60px;
 }
 .comment-body p {
   word-break: break-word;
@@ -85,6 +88,13 @@
   width: 100%;
   max-width: 960px;
   margin: 0 auto 0.9375rem;
+}
+.comment-item .user-name {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 100px;
+          flex: 0 0 100px;
+  max-width: 100px;
+  min-width: 100px;
 }
 .cc-icon {
   font-size: 55px;
