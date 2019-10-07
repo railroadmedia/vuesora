@@ -22,5 +22,24 @@ export default class ShowContentModel extends ContentModel {
         if (this.brand === 'guitareo') {
             this.card.color_title = this.getTypeWithIcon().replace(/recording/, 'archives');
         }
+
+        if (this.displayEpisodeNumber) {
+            this.list.color_title = this.episodeNumber;
+        }
+    }
+
+    get displayEpisodeNumber() {
+        const showsThatShouldDisplayEpisodeNumbers = [
+            'rhythmic-adventures-of-captain-carson',
+            'exploring-beats',
+            'podcasts',
+            'study-the-greats',
+            'rhythms-from-another-planet',
+            'behind-the-scenes',
+            'diy-drum-experiments',
+        ];
+
+
+        return showsThatShouldDisplayEpisodeNumbers.indexOf(this.post.type) !== -1;
     }
 }
