@@ -448,6 +448,7 @@ export default {
 
             this.progressTracker = null;
 
+            window.removeEventListener('unload', () => this.sendProgressTracking);
             document.removeEventListener('keyup', this.spacebarToPlayPause);
         },
 
@@ -516,6 +517,7 @@ export default {
         },
 
         setIsRequesting() {
+            this.isRequesting = !this.isRequesting;
             this.isRequesting = !this.isRequesting;
         },
 

@@ -42,12 +42,16 @@ export default {
                 },
 
                 pause: (event) => {
+                    this.progressTracker.stop();
+
                     this.$emit('pause', {
                         ...event,
                     });
                 },
 
                 play: (event) => {
+                    this.progressTracker.start();
+
                     this.$emit('play', {
                         ...event,
                     });

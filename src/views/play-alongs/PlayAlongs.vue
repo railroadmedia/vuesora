@@ -159,7 +159,7 @@ import ThemeClasses from '../../mixins/ThemeClasses';
 import PlayAlongsFilters from './PlayAlongsFilters.vue';
 import Pagination from '../../components/Pagination.vue';
 import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation.vue';
-import Toasts from '../../assets/js/classes/toasts';
+import ProgressTracker from "../../assets/js/classes/progress-tracker";
 
 export default {
     name: 'PlayAlongs',
@@ -211,6 +211,11 @@ export default {
             type: Boolean,
             default: () => true,
         },
+
+        sessionToken: {
+            type: String,
+            default: () => null,
+        },
     },
     data() {
         return {
@@ -255,6 +260,7 @@ export default {
             },
             showMobileFilters: false,
             displayFilters: false,
+            progressTracker: new ProgressTracker(),
         };
     },
     computed: {
@@ -479,6 +485,19 @@ export default {
             if (this.activeItem != null && item.id === this.activeItem.id) {
                 this.playPause();
             } else {
+                if (this.activeItem != null) {
+                    this.progressTracker.stop();
+
+                    // When a user switches the track we send their practice time and reset
+                    // the window unload event for the next track incase that's the last
+                    // one they play
+                    // - Curtis, Oct 2019
+                    this.sendProgressTracking();
+                    this.updateNavigatorBeacon();
+
+                    this.$nextTick(() => { this.progressTracker.reset(); });
+                }
+
                 this.playTrack(item);
 
                 if (this.loop) {
@@ -941,6 +960,25 @@ export default {
             }
 
             contentToComplete.completed = !contentToComplete.completed;
+        },
+
+        sendProgressTracking() {
+            console.log('sending');
+
+            this.progressTracker.send({
+                mediaId: this.activeItem.id,
+                mediaType: 'practice',
+                mediaCategory: 'play-alongs',
+                sessionToken: this.sessionToken,
+            });
+        },
+
+        updateNavigatorBeacon() {
+            window.removeEventListener('unload', this.sendProgressTracking);
+
+            this.$nextTick(() => {
+                window.addEventListener('unload', this.sendProgressTracking);
+            });
         },
     },
 };
