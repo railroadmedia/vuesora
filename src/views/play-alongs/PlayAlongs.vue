@@ -1,6 +1,9 @@
 <template>
     <div class="flex flex-column grow play-alongs">
-        <div class="flex flex-row pa-1">
+        <div
+            v-if="showFilters"
+            class="flex flex-row pa-1"
+        >
             <div class="flex flex-column align-v-center">
                 <h1 class="subheading">
                     {{ totalResults }} Play Alongs
@@ -216,6 +219,11 @@ export default {
             type: String,
             default: () => null,
         },
+
+        trackProgress: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {
@@ -260,7 +268,7 @@ export default {
             },
             showMobileFilters: false,
             displayFilters: false,
-            progressTracker: new ProgressTracker(),
+            progressTracker: this.trackProgress ? new ProgressTracker() : null,
         };
     },
     computed: {
@@ -485,7 +493,7 @@ export default {
             if (this.activeItem != null && item.id === this.activeItem.id) {
                 this.playPause();
             } else {
-                if (this.activeItem != null) {
+                if (this.activeItem != null && this.trackProgress) {
                     this.progressTracker.stop();
 
                     // When a user switches the track we send their practice time and reset
@@ -963,8 +971,6 @@ export default {
         },
 
         sendProgressTracking() {
-            console.log('sending');
-
             this.progressTracker.send({
                 mediaId: this.activeItem.id,
                 mediaType: 'practice',

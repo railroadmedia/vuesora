@@ -42,7 +42,9 @@ export default {
                 },
 
                 pause: (event) => {
-                    this.progressTracker.stop();
+                    if (this.trackProgress) {
+                        this.progressTracker.stop();
+                    }
 
                     this.$emit('pause', {
                         ...event,
@@ -50,7 +52,9 @@ export default {
                 },
 
                 play: (event) => {
-                    this.progressTracker.start();
+                    if (this.trackProgress) {
+                        this.progressTracker.start();
+                    }
 
                     this.$emit('play', {
                         ...event,
