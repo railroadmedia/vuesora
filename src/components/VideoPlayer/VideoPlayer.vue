@@ -808,7 +808,7 @@ export default {
                 this.seek(timeToSeekTo);
             }
 
-            if (this.captions != null) {
+            if (this.captions) {
                 this.shakaPlayer.addTextTrack(this.captions, 'en', 'subtitle', 'text/vtt', null, 'English');
             }
 
