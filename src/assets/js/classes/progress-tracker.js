@@ -10,7 +10,6 @@ export default class ProgressTracker {
 
     /**
      * Start the timer
-     *
      */
     start() {
         this.tickInterval = this.progressInterval();
@@ -18,10 +17,16 @@ export default class ProgressTracker {
 
     /**
      * Stop the timer
-     *
      */
     stop() {
         clearInterval(this.tickInterval);
+    }
+
+    /**
+     * Reset the timer
+     */
+    reset() {
+        this.secondsWatched = 0;
     }
 
     /**

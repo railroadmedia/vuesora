@@ -7,11 +7,12 @@ export default class PlayAlongContentModel extends ContentModel {
             post,
         });
 
-        this.card.color_title = this.getPostField('style');
+        this.card.color_title = this.getPostFieldMulti('style').join(', ');
+        this.list.color_title = this.getPostFieldMulti('style').join(', ');
 
         this.list.column_data = [
-            this.getPostField('style'),
-            `${this.getPostField('bpm')} BPM`,
+            ContentModel.mapDifficulty(this.post),
+            `${this.getPostFieldMulti('bpm').join(', ')} BPM`,
         ];
 
         if (this.brand === 'guitareo') {

@@ -1,5 +1,38 @@
 @import './_variables.scss';
 
+body.play-alongs-player-open {
+  padding-bottom: 225px;
+
+  &.has-public-footer {
+    padding-bottom:650px;
+
+    @include small {
+      padding-bottom:275px;
+    }
+  }
+
+  #intercom-container {
+    display:none;
+  }
+}
+
+.play-alongs {
+  .loading {
+    position:fixed;
+    bottom:300px;
+    left:50%;
+    width:100px;
+    height:100px;
+    margin-left:-50px;
+  }
+
+  .enable-filters {
+    flex:0 0 50px;
+    max-width:50px;
+    min-width:50px;
+  }
+}
+
 #playAlongsPlayer {
   position:fixed;
   font-size:0;
@@ -10,9 +43,14 @@
   transform:translateY(0);
   transition:.2s transform ease-in-out;
   will-change:transform;
+  touch-action: manipulation;
 
   &.collapsed-down {
     transform:translateY(calc(100% - 10px));
+  }
+
+  .player-buttons {
+    flex: 0 0 210px;
   }
 
   .player-tab {
@@ -67,13 +105,13 @@
     }
   }
 
-  .skip-10 {
+  .skip-5 {
 
     i {
       position:relative;
 
       &:after {
-        content: '10';
+        content: '5';
         position:absolute;
         top:50%;
         left:50%;
@@ -82,4 +120,14 @@
       }
     }
   }
+}
+
+.show-mobile-filters {
+  position:fixed;
+  top:110px;
+  right:0;
+  width:60px;
+  height:60px;
+  z-index:96;
+  border-radius:3px 0 0 3px;
 }

@@ -7,6 +7,7 @@
                 class="no-label"
                 :class="{'is-clearable': valueInterface}"
                 :disabled="valueInterface"
+                @keydown.prevent
             >
                 <option
                     selected
@@ -20,7 +21,7 @@
                     :key="filter.key"
                     :value="filter.value"
                 >
-                    {{ toTitleCase(filter.key.replace(/-/g, ' ')) }}
+                    {{ toTitleCase(filter.key) }}
                 </option>
             </select>
 
@@ -34,12 +35,6 @@
                     :class="'text-' + themeColor"
                 ></i>
             </span>
-
-            <!--<label class="capitalize"-->
-            <!--:class="themeColor"-->
-            <!--:for="filterName + 'Filter'">-->
-            <!--{{ filterName }}-->
-            <!--</label>-->
         </div>
     </div>
 </template>

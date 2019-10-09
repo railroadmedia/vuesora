@@ -41,6 +41,7 @@ button {
     width:100%;
     cursor:pointer;
     outline:none;
+    touch-action: manipulation;
 
     &.short > span {
       height:35px;
@@ -155,19 +156,19 @@ button {
     }
   }
 
-  &:focus {
-    @each $key, $value in $brand_colors {
-      &.bg-#{$key}, & > span.bg-#{$key} {
-        background-color: lighten($value, 10%);
-      }
-    }
-
-    @each $key, $value in $content_colors {
-      &.bg-#{$key}, &.bg-#{$key}s, & > span.bg-#{$key}, & > span.bg-#{$key}s {
-        background-color: lighten($value, 10%);
-      }
-    }
-  }
+  //&:focus {
+  //  @each $key, $value in $brand_colors {
+  //    &.bg-#{$key}, & > span.bg-#{$key} {
+  //      background-color: lighten($value, 10%);
+  //    }
+  //  }
+  //
+  //  @each $key, $value in $content_colors {
+  //    &.bg-#{$key}, &.bg-#{$key}s, & > span.bg-#{$key}, & > span.bg-#{$key}s {
+  //      background-color: lighten($value, 10%);
+  //    }
+  //  }
+  //}
 
   &:disabled {
     opacity:.2;
@@ -181,12 +182,12 @@ button {
   & > span.inverted:hover,
   & > span.flat:hover { background-color:rgba(126, 126, 126, .05); }
 
-  &.inverted:focus,
-  &.flat:focus,
-  &:focus > span.inverted,
-  &:focus > span.flat,
-  & > span.inverted:focus,
-  & > span.flat:focus { background-color:rgba(126, 126, 126, .1); }
+  //&.inverted:focus,
+  //&.flat:focus,
+  //&:focus > span.inverted,
+  //&:focus > span.flat,
+  //& > span.inverted:focus,
+  //& > span.flat:focus { background-color:rgba(126, 126, 126, .1); }
 }
 
 a {
