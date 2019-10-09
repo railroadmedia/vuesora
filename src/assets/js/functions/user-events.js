@@ -187,9 +187,9 @@ export default (function () {
                 let newProgress = null;
 
                 if (complete) {
-                    newProgress = Math.ceil(Number(currentProgress) + Number(progressDifference));
+                    newProgress = Math.round(Number(currentProgress) + Number(progressDifference));
                 } else {
-                    newProgress = Math.ceil(Number(currentProgress) - Number(progressDifference));
+                    newProgress = Math.round(Number(currentProgress) - Number(progressDifference));
                 }
 
                 if (progressBar) {

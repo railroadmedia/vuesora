@@ -92,18 +92,18 @@ export default {
         shippingZip,
     }) {
         return axios.put('/ecommerce/session/address', {
-            'shipping-address-line-1': shippingAddressLine1,
-            'shipping-address-line-2': shippingAddressLine2,
-            'shipping-city': shippingCity,
-            'shipping-country': shippingCountry,
-            'shipping-first-name': shippingFirstName,
-            'shipping-last-name': shippingLastName,
-            'shipping-region': shippingState,
-            'shipping-zip-or-postal-code': shippingZip,
-            'billing-country': billingCountry,
-            'billing-region': billingState,
-            'billing-zip-or-postal-code': billingZip,
-            'billing-email': billingEmail,
+            'shipping_address_line_1': shippingAddressLine1,
+            'shipping_address_line_2': shippingAddressLine2,
+            'shipping_city': shippingCity,
+            'shipping_country': shippingCountry,
+            'shipping_first_name': shippingFirstName,
+            'shipping_last_name': shippingLastName,
+            'shipping_region': shippingState,
+            'shipping_zip_or_postal_code': shippingZip,
+            'billing_country': billingCountry,
+            'billing_region': billingState,
+            'billing_zip_or_postal_code': billingZip,
+            'billing_email': billingEmail,
         })
             .then(response => response)
             .catch(ErrorHandler);

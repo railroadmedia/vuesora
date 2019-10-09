@@ -2,7 +2,16 @@
     <div class="flex flex-column bg-white shadow corners-5 pv-2 mb-3">
         <order-form-cart-item
             v-for="item in cartItems"
-            :key="item.id"
+            :key="item.sku"
+            :theme-color="themeColor"
+            :item="item"
+            :is-cart-locked="isCartLocked"
+            @updateCartItem="emitUpdateCartItem"
+        ></order-form-cart-item>
+
+        <order-form-cart-item
+            v-for="item in bonuses"
+            :key="item.sku"
             :theme-color="themeColor"
             :item="item"
             :is-cart-locked="isCartLocked"
@@ -37,6 +46,11 @@ export default {
         isCartLocked: {
             type: Boolean,
             default: () => false,
+        },
+
+        bonuses: {
+            type: Array,
+            default: () => [],
         },
     },
     mounted() {

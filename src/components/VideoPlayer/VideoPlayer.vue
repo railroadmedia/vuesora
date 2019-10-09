@@ -37,6 +37,15 @@
                         />
                     </transition>
 
+                    <transition name="grow-fade">
+                        <span
+                            v-show="currentPlaybackRate !== 1"
+                            class="rate-indicator title text-white pa-1"
+                        >
+                            {{ currentPlaybackRate }}x
+                        </span>
+                    </transition>
+
                     <div
                         v-show="contextMenu"
                         ref="contextMenu"
@@ -171,9 +180,9 @@
                             >
                                 <PlayerButton
                                     :theme-color="themeColor"
-                                    title="Rewind 10 Seconds (Left Arrow)"
+                                    title="Rewind 5 Seconds (Left Arrow)"
                                     data-cy="rewind-button"
-                                    @click.stop.native="seek(currentTime - 10)"
+                                    @click.stop.native="seek(currentTime - 5)"
                                 >
                                     <i class="fas fa-undo"></i>
                                 </PlayerButton>
@@ -182,9 +191,9 @@
 
                                 <PlayerButton
                                     :theme-color="themeColor"
-                                    title="Forward 10 Seconds (Right Arrow)"
+                                    title="Forward 5 Seconds (Right Arrow)"
                                     data-cy="fast-forward-button"
-                                    @click.stop.native="seek(currentTime + 10)"
+                                    @click.stop.native="seek(currentTime + 5)"
                                 >
                                     <i class="fas fa-redo"></i>
                                 </PlayerButton>
@@ -239,7 +248,7 @@
                                 />
 
                                 <PlayerButton
-                                    v-if="captions.length > 0"
+                                    v-if="captionOptions.length > 0"
                                     :theme-color="themeColor"
                                     :active="isCaptionsEnabled"
                                     @click.stop.native="toggleCaptionsDrawer"
@@ -344,9 +353,9 @@
 <script>
 import * as muxjs from 'mux.js';
 import shaka from 'shaka-player';
-import axios from 'axios';
 import Utils from 'js-helper-functions/modules/utils';
 import Screenfull from 'screenfull';
+import ContentService from '../../assets/js/services/content';
 import PlayerUtils from './player-utils';
 import ChromeCastPlugin from './chromecast';
 import ThemeClasses from '../../mixins/ThemeClasses';
@@ -389,8 +398,8 @@ export default {
         },
 
         captions: {
-            type: Array,
-            default: () => [],
+            type: String,
+            default: () => null,
         },
 
         poster: {
@@ -450,6 +459,7 @@ export default {
     },
     data() {
         return {
+            source: this.hlsManifestUrl,
             loading: false,
             playerError: false,
             playerErrorCode: null,
@@ -481,6 +491,8 @@ export default {
             isExperimentalPictureInPictureEnabled: false,
             isKeyboardControlsEnabled: false,
             hasBeenPlayed: false,
+            currentPlaybackRate: 1,
+            hasRetriedSource: false,
             dialogs: {
                 stats: false,
                 keyboardShortcuts: false,
@@ -534,13 +546,6 @@ export default {
             cache: false,
             get() {
                 return this.mediaElement ? this.mediaElement.currentSrc : '';
-            },
-        },
-
-        currentPlaybackRate: {
-            cache: false,
-            get() {
-                return this.mediaElement ? this.mediaElement.playbackRate : 1;
             },
         },
 
@@ -667,27 +672,7 @@ export default {
                     return this.loadSource();
                 })
                 .then(() => {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const timeToSeekTo = urlParams.get('time') || this.currentSecond;
-
-                    if (timeToSeekTo !== this.currentTime) {
-                        this.seek(timeToSeekTo);
-                    }
-
-                    this.attachMediaElementEventHandlers();
-
-                    this.getDefaultVolume();
-
-                    // FULLSCREEN EVENT
-                    document.addEventListener('fullscreenchange', () => {
-                        this.isFullscreen = document.fullscreenElement != null;
-                    });
-
-                    this.enableKeyboardControls();
-
-                    setTimeout(() => {
-                        this.mediaElement.focus();
-                    }, 100);
+                    this.initializePlayer();
                 })
                 .catch((error) => {
                     if (error.severity === 2) {
@@ -764,24 +749,84 @@ export default {
 
             return new Promise((resolve) => {
                 if (supportsMSE) {
-                    this.shakaPlayer.load(this.hlsManifestUrl)
+                    this.shakaPlayer.load(this.source)
                         .then(() => {
+                            this.$nextTick(() => this.$forceUpdate());
                             resolve();
                         })
                         .catch((error) => {
                             if (error.severity === 2) {
-                                this.playerError = true;
-                                this.playerErrorCode = error.code;
+                                if (error.code === 1001 && !this.hasRetriedSource) {
+                                    this.retryVimeoUrl(error);
+                                } else {
+                                    this.playerError = true;
+                                    this.playerErrorCode = error.code;
+                                }
                             }
                         });
                 } else {
-                    this.mediaElement.src = this.hlsManifestUrl;
+                    this.mediaElement.src = this.source;
 
                     setTimeout(() => {
                         resolve();
                     }, 100);
                 }
             });
+        },
+
+        retryVimeoUrl(error) {
+            this.hasRetriedSource = true;
+
+            if (error.data.length < 2 && error.data[1] !== 410) {
+                this.playerError = true;
+                this.playerErrorCode = error.code;
+            } else {
+                this.loading = true;
+
+                ContentService.getVimeoUrlByVimeoId(this.videoId)
+                    .then((response) => {
+                        if (response) {
+                            const hlsManifest = response.data.files.find(
+                                file => file.quality === 'hls',
+                            );
+
+                            this.source = hlsManifest.link;
+                            return this.loadSource();
+                        }
+                    })
+                    .then(() => {
+                        this.initializePlayer(this.currentTime);
+                    });
+            }
+        },
+
+        initializePlayer(time) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const timeToSeekTo = time || (urlParams.get('time') || this.currentSecond);
+
+            if (timeToSeekTo !== this.currentTime) {
+                this.seek(timeToSeekTo);
+            }
+
+            if (this.captions != null) {
+                this.shakaPlayer.addTextTrack(this.captions, 'en', 'subtitle', 'text/vtt', null, 'English');
+            }
+
+            this.attachMediaElementEventHandlers();
+
+            this.getDefaultVolume();
+
+            // FULLSCREEN EVENT
+            document.addEventListener('fullscreenchange', () => {
+                this.isFullscreen = document.fullscreenElement != null;
+            });
+
+            this.enableKeyboardControls();
+
+            setTimeout(() => {
+                this.hasRetriedSource = false;
+                this.mediaElement.focus();
+            }, 100);
         },
 
         attachMediaElementEventHandlers() {
@@ -960,7 +1005,7 @@ export default {
 
         enableChromeCast() {
             this.chromeCast.cast({
-                content: this.hlsManifestUrl,
+                content: this.source,
                 poster: this.poster,
                 title: this.castTitle,
                 subtitles: this.captions.map(caption => ({
@@ -1126,11 +1171,8 @@ export default {
         },
 
         stopTesting() {
-            axios.post('/laravel/public/video-player-beta/opt-out')
-                .then(() => {
-                    document.cookie = 'enableHlsPlayer=;path=/;expires=0;';
-                    window.location.reload();
-                });
+            document.cookie = 'enableHlsPlayer=;path=/;expires=0;';
+            window.location.reload();
         },
     },
 };

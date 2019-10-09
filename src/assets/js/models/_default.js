@@ -5,6 +5,7 @@ export default class ContentModel {
     constructor({ brand = 'drumeo', post }) {
         this.brand = brand;
         this.post = post;
+        this.id = post.id;
 
         this.card = {
             thumbnail: this.getPostThumbnail(),
@@ -42,6 +43,12 @@ export default class ContentModel {
         const postField = this.post.fields.find(field => field.key === key);
 
         return postField ? postField.value : 'TBD';
+    }
+
+    getPostFieldMulti(key) {
+        const postFields = this.post.fields.filter(field => field.key === key);
+
+        return postFields.length ? postFields.map(field => field.value) : ['TBD'];
     }
 
     getPostDatum(key) {

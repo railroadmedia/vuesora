@@ -514,11 +514,8 @@ export default {
         },
 
         startTesting() {
-            axios.post('/laravel/public/video-player-beta/opt-in')
-                .then(() => {
-                    document.cookie = 'enableHlsPlayer=true;path=/;max-age=31536000;';
-                    window.location.reload();
-                });
+            document.cookie = 'enableHlsPlayer=true;path=/;max-age=31536000;';
+            window.location.reload();
         },
     },
 };

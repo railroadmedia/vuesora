@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column bb-light-1">
+    <div class="flex flex-column bb-light-1 assignment-component">
         <div class="flex flex-row align-v-center flex-wrap pa-2">
             <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
@@ -448,6 +448,7 @@ export default {
 
             this.progressTracker = null;
 
+            window.removeEventListener('unload', () => this.sendProgressTracking);
             document.removeEventListener('keyup', this.spacebarToPlayPause);
         },
 
@@ -517,6 +518,7 @@ export default {
 
         setIsRequesting() {
             this.isRequesting = !this.isRequesting;
+            this.isRequesting = !this.isRequesting;
         },
 
         syncCompleteState(complete) {
@@ -555,7 +557,7 @@ export default {
 <style lang="scss">
     @import '../../assets/sass/partials/variables';
 
-    .arrow-column {
+    .flex.arrow-column {
         display:flex;
         flex:0 0 60px;
         padding-right:10px;

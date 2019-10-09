@@ -4,27 +4,27 @@
         class="container collapsed fluid bg-white shadow"
         :class="collapsed ? 'collapsed-down' : ''"
     >
-        <span
+        <div
             v-if="loop"
             id="anchorA"
-            class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
-            :style="'left:' + anchor_offsets.a + '%;'"
-            @mousedown="initializeDrag('a')"
-            @touchstart="initializeDrag('a')"
+            class="loop-anchor bg-drumeo text-white body dense font-bold rounded noselect pointer"
+            :style="'left:' + anchorOffsets.a + '%;'"
+            @mousedown="emitAnchorMouseDown('a')"
+            @touchstart="emitAnchorMouseDown('a')"
         >
             A
-        </span>
+        </div>
 
-        <span
+        <div
             v-if="loop"
             id="anchorB"
-            class="loop-anchor bg-drumeo text-white body rounded noselect pointer"
-            :style="'left:' + anchor_offsets.b + '%;'"
-            @mousedown="initializeDrag('b')"
-            @touchstart="initializeDrag('b')"
+            class="loop-anchor bg-drumeo text-white body dense font-bold rounded noselect pointer"
+            :style="'left:' + anchorOffsets.b + '%;'"
+            @mousedown="emitAnchorMouseDown('b')"
+            @touchstart="emitAnchorMouseDown('b')"
         >
             B
-        </span>
+        </div>
 
         <div
             class="player-tab title text-drumeo bg-white shadow flex-center pointer"
@@ -36,40 +36,86 @@
             ></i>
         </div>
 
-        <div class="flex flex-row hide">
-            <audio
-                id="audioPlayer"
-                preload="auto"
-            >
-                <source :src="$_active_track">
-            </audio>
-        </div>
-
         <div
+            ref="progressBar"
             class="progress-container flex flex-row bg-grey-5 pointer"
-            @click="seekViaProgressBar"
+            @mousedown="mousedown = true"
+            @touchstart="mousedown = true"
         >
             <div
                 class="progress-amount bg-drumeo"
-                :style="'width:' + $_currentPosition + '%;'"
+                :style="durationOffsetStyles"
             ></div>
         </div>
 
-        <div class="flex flex-row align-h-center pv-1">
-            <div class="flex flex-column">
+        <div class="flex flex-row align-h-center pv-1 noselect">
+            <div
+                v-show="loop"
+                class="flex flex-column align-center xs-4"
+            >
+                <button
+                    class="btn collapse-square short mb-1"
+                    @click="emitAnchorButtonClick('a')"
+                >
+                    <span class="bg-black text-white">
+                        A
+                    </span>
+                </button>
+
+                <p class="tiny text-grey-4 dense">
+                    {{ getAnchorOffsetTime(anchorOffsets.a) }}
+                </p>
+            </div>
+
+            <div class="flex flex-column align-center grow no-events">
                 <h4 class="title text-center">
                     {{ $_title }}
                 </h4>
-                <h6 class="body text-center">
-                    {{ $_style }} @ {{ $_bpm }} BPM
+                <h6 class="body text-center text-grey-4 mb-2">
+                    <span class="capitalize">{{ $_style }}</span> @ {{ $_bpm }} BPM
                 </h6>
+                <h6 class="body dense text-grey-4 text-center">
+                    {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
+                </h6>
+            </div>
+
+            <div
+                v-show="loop"
+                class="flex flex-column align-center xs-4"
+            >
+                <button
+                    class="btn collapse-square short mb-1"
+                    @click="emitAnchorButtonClick('b')"
+                >
+                    <span class="bg-black text-white">
+                        B
+                    </span>
+                </button>
+
+                <p class="tiny text-grey-4 dense">
+                    {{ getAnchorOffsetTime(anchorOffsets.b) }}
+                </p>
             </div>
         </div>
 
         <div class="flex flex-row align-h-center pv-1">
             <button
-                class="btn collapse-square mh-1 skip-10"
-                @click="skipTen(false)"
+                class="btn collapse-square mh-1"
+                :disabled="disablePreviousTrack"
+                @click="previousTrack"
+                @keyup.prevent
+                @keydown.prevent
+            >
+                <span class="flat bg-black">
+                    <i class="fas fa-step-backward"></i>
+                </span>
+            </button>
+
+            <button
+                class="btn collapse-square mh-1 skip-5"
+                @click="skipFive(false)"
+                @keyup.prevent
+                @keydown.prevent
             >
                 <span class="flat bg-black">
                     <i class="fas fa-undo"></i>
@@ -79,119 +125,271 @@
             <button
                 class="btn collapse-square mh-1"
                 @click="playPause"
+                @keydown.prevent
             >
                 <span class="flat bg-black">
                     <i
                         class="fas"
-                        :class="$_isPlaying ? 'fa-pause' : 'fa-play'"
+                        :class="isPlaying ? 'fa-pause' : 'fa-play'"
                     ></i>
                 </span>
             </button>
 
             <button
-                class="btn collapse-square mh-1 skip-10"
-                @click="skipTen(true)"
+                class="btn collapse-square mh-1 skip-5"
+                @click="skipFive(true)"
+                @keydown.prevent
             >
                 <span class="flat bg-black">
                     <i class="fas fa-redo"></i>
                 </span>
             </button>
+
+            <button
+                class="btn collapse-square mh-1"
+                :disabled="isShuffle && playedContent.length === totalResults"
+                @click="nextTrack"
+                @keydown.prevent
+            >
+                <span class="flat bg-black">
+                    <i class="fas fa-step-forward"></i>
+                </span>
+            </button>
         </div>
 
         <div class="flex flex-row bg-grey-5 pv-1 align-h-center">
-            <button
-                class="btn collapse-square mh-1"
-                @click="toggleMetronome"
-            >
-                <span
-                    class="bg-white rounded"
-                    :class="metronome ? 'text-grey-5' : 'inverted text-white'"
-                >
-                    <i class="icon-metronome"></i>
-                </span>
-            </button>
+            <div class="flex flex-column ph-1 grow"></div>
+            <div class="flex flex-column player-buttons">
+                <div class="flex flex-row">
+                    <button
+                        class="btn collapse-square mh-1"
+                        :title="click ? 'Disable Click Track' : 'Enable Click Track'"
+                        @click="toggleMetronome"
+                        @keydown.prevent
+                    >
+                        <span
+                            class="bg-white rounded"
+                            :class="click ? 'text-grey-5' : 'inverted text-white'"
+                        >
+                            <i class="icon-metronome"></i>
+                        </span>
+                    </button>
 
-            <button
-                class="btn collapse-square mh-1"
-                @click="toggleDrums"
-            >
-                <span
-                    class="bg-white rounded"
-                    :class="drums ? 'text-grey-5' : 'inverted text-white'"
-                >
-                    <i class="icon-drums"></i>
-                </span>
-            </button>
+                    <button
+                        class="btn collapse-square mh-1"
+                        :title="drums ? 'Disable Drum Track' : 'Enable Drum Track'"
+                        @click="toggleDrums"
+                        @keydown.prevent
+                    >
+                        <span
+                            class="bg-white rounded"
+                            :class="drums ? 'text-grey-5' : 'inverted text-white'"
+                        >
+                            <i class="icon-drums"></i>
+                        </span>
+                    </button>
 
-            <button
-                class="btn collapse-square mh-1"
-                @click="toggleLoop"
-            >
-                <span
-                    class="bg-white rounded"
-                    :class="loop ? 'text-grey-5' : 'inverted text-white'"
-                >
-                    <i class="fa fa-repeat"></i>
-                </span>
-            </button>
+                    <button
+                        class="btn collapse-square mh-1"
+                        :title="loop ? 'Disable Loop' : 'Enable Loop'"
+                        @click="toggleLoop"
+                        @keydown.prevent
+                    >
+                        <span
+                            class="bg-white rounded"
+                            :class="loop ? 'text-grey-5' : 'inverted text-white'"
+                        >
+                            <i class="fa fa-repeat"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-column grow ph-1">
+                <div class="flex flex-row">
+                    <div class="flex flex-column grow"></div>
+
+                    <div
+                        v-if="!isMobile"
+                        class="flex flex-column volume"
+                    >
+                        <div class="flex flex-row align-h-right align-v-center">
+                            <div class="flex flex-column volume-rail-wrap">
+                                <div class="volume-rail">
+                                    <div
+                                        class="volume-fill bg-white"
+                                        :style="volumeOffset"
+                                        @click.stop
+                                    ></div>
+
+                                    <input
+                                        type="range"
+                                        class="volume-range"
+                                        min="0"
+                                        max="100"
+                                        :value="currentVolume"
+                                        @click.stop
+                                        @input="emitVolumeChange"
+                                    >
+                                </div>
+                            </div>
+
+                            <button
+                                :title="currentVolume === 0 ? 'Unmute (M)' : 'Mute (M)'"
+                                class="btn collapse-square text-white"
+                                @click="emitVolumeChange(0)"
+                                @keydown.prevent
+                            >
+                                <span
+                                    class="text-white flat"
+                                >
+                                    <i
+                                        class="fa"
+                                        :class="volumeButtonClass"
+                                    ></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <script>
-import 'mediaelement/full';
+import PlayerUtils from '../../components/VideoPlayer/player-utils';
 
 export default {
     name: 'PlayAlongsPlayer',
     props: {
-        activeItem: Object,
+        activeItem: {
+            type: Object,
+            default: () => null,
+        },
+
+        audioPlayer: {
+            type: [Object, HTMLAudioElement],
+            default: () => ({}),
+        },
+
+        isPlaying: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        click: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        drums: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        loop: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        anchorOffsets: {
+            type: Object,
+            default: () => ({
+                a: 0,
+                b: 100,
+            }),
+        },
+
+        currentTime: {
+            type: Number,
+            default: () => 0,
+        },
+
+        totalDuration: {
+            type: Number,
+            default: () => 0,
+        },
+
+        currentPosition: {
+            type: Number,
+            default: () => 0,
+        },
+
+        currentMouseX: {
+            type: Number,
+            default: () => 0,
+        },
+
+        playedContent: {
+            type: Array,
+            default: () => [],
+        },
+
+        currentVolume: {
+            type: Number,
+            default: () => 100,
+        },
+
+        totalResults: {
+            type: Number,
+            default: () => 0,
+        },
+
+        isShuffle: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {
-            metronome: true,
-            drums: false,
-            loop: false,
+            mousedown: false,
             collapsed: false,
-            dragging: false,
-            audioPlayer: undefined,
-            currentDuration: 0,
-            currentTime: 0,
-            anchor_offsets: {
-                a: 0,
-                b: 100,
-            },
-            draggingAnchor: null,
+            volumeCache: this.currentVolume,
         };
     },
     computed: {
+        isMobile: () => PlayerUtils.isMobile().any,
+
+        volumeOffset() {
+            return {
+                width: `${this.currentVolume}%`,
+            };
+        },
+
+        volumeButtonClass() {
+            return {
+                'fa-volume-slash': this.currentVolume === 0,
+                'fa-volume-down': this.currentVolume > 0 && this.currentVolume < 50,
+                'fa-volume-up': this.currentVolume >= 50,
+            };
+        },
 
         $_title() {
-            return this.$_active_item.title;
+            return this.activeItem ? this.activeItem.getPostField('title') : '';
         },
 
         $_style() {
-            return this.$_active_item.style;
+            return this.activeItem ? this.activeItem.getPostFieldMulti('style').join(', ') : '';
         },
 
         $_bpm() {
-            return this.$_active_item.bpm;
+            return this.activeItem ? this.activeItem.getPostField('bpm') : '';
         },
 
-        $_active_track() {
-            if (this.metronome && this.drums) {
-                return this.$_active_item.mp3_yes_drums_yes_click_url;
-            }
-            if (this.metronome && !this.drums) {
-                return this.$_active_item.mp3_no_drums_yes_click_url;
-            }
-            if (!this.metronome && this.drums) {
-                return this.$_active_item.mp3_yes_drums_no_click_url;
+        durationOffsetStyles() {
+            if (this.mousedown) {
+                const percentOffset = (this.currentMouseX / this.$refs.progressBar.clientWidth) * 100;
+
+                return {
+                    transform: `translateX(${percentOffset - 100}%)`,
+                    'webkit-transform': `translateX(${percentOffset - 100}%)`,
+                };
             }
 
-            return this.$_active_item.mp3_no_drums_no_click_url;
-        },
-
-        $_currentPosition() {
-            return (this.currentTime / this.currentDuration) * 100;
+            return {
+                transform: `translateX(${this.currentPosition - 100}%)`,
+                'webkit-transform': `translateX(${this.currentPosition - 100}%)`,
+            };
         },
 
         $_isPlaying: {
@@ -201,140 +399,127 @@ export default {
             },
         },
 
-        $_anchorOffsetsInSeconds() {
+        anchorOffsetsInSeconds() {
             return {
-                a: (this.anchor_offsets.a / 100) * this.currentDuration,
-                b: (this.anchor_offsets.b / 100) * this.currentDuration,
+                a: (this.anchorOffsets.a / 100) * this.totalDuration,
+                b: (this.anchorOffsets.b / 100) * this.totalDuration,
             };
+        },
+
+        disablePreviousTrack() {
+            if (this.isShuffle) {
+                return this.playedContent.length < 2;
+            }
+
+            return false;
+        },
+    },
+    watch: {
+        collapsed() {
+            if (this.collapsed) {
+                document.body.classList.remove('play-alongs-player-open');
+            } else {
+                document.body.classList.add('play-alongs-player-open');
+            }
+        },
+
+        activeItem() {
+            if (this.activeItem != null && !this.collapsed) {
+                document.body.classList.add('play-alongs-player-open');
+            } else {
+                document.body.classList.remove('play-alongs-player-open');
+            }
         },
     },
     mounted() {
-        const vm = this;
-
-        this.$parent.$on('songUpdate', (event) => {
-            if (vm.audioPlayer) {
-                vm.setSource(false);
-            }
-        });
-
-        window.audioPlayer = new MediaElementPlayer('audioPlayer', {
-            src: this.$_active_track,
-            success(mediaElement) {
-                vm.audioPlayer = mediaElement;
-
-                vm.audioPlayer.addEventListener('timeupdate', (event) => {
-                    vm.currentTime = vm.audioPlayer.getCurrentTime();
-                    vm.currentDuration = vm.audioPlayer.duration;
-
-                    if (vm.loop) {
-                        if (vm.currentTime < vm.$_anchorOffsetsInSeconds.a) {
-                            vm.audioPlayer.setCurrentTime(vm.$_anchorOffsetsInSeconds.a);
-                        }
-
-                        if (vm.currentTime > vm.$_anchorOffsetsInSeconds.b) {
-                            vm.audioPlayer.setCurrentTime(vm.$_anchorOffsetsInSeconds.a);
-                        }
-                    }
-                });
-
-                vm.audioPlayer.play();
-            },
-        });
-
-        document.body.addEventListener('mousemove', this.handleAnchorDrag);
-        document.body.addEventListener('touchmove', this.handleAnchorDrag);
-
-        document.body.addEventListener('mouseup', (event) => {
-            this.dragging = false;
-            this.draggingAnchor = null;
-        });
+        document.addEventListener('mouseup', this.handleMouseUp);
+    },
+    beforeDestroy() {
+        document.removeEventListener('mouseup', this.handleMouseUp);
     },
     methods: {
-
         playPause() {
-            if (this.$_isPlaying) {
-                this.audioPlayer.pause();
-            } else {
-                this.audioPlayer.play();
-            }
+            this.$emit('playPause');
+            this.$nextTick(() => this.$forceUpdate());
+        },
+
+        seek(position) {
+            this.$emit('seek', position);
         },
 
         toggleDrums() {
-            this.drums = !this.drums;
-            this.setSource(true);
+            this.$emit('drums', !this.drums);
         },
 
         toggleMetronome() {
-            this.metronome = !this.metronome;
-            this.setSource(true);
+            this.$emit('click', !this.click);
         },
 
         toggleLoop() {
-            this.loop = !this.loop;
-            this.anchor_offsets.a = 0;
-            this.anchor_offsets.b = 100;
-
-            this.audioPlayer.loop = this.loop;
+            this.$emit('loop', !this.loop);
         },
 
-        setSource(retain_position = false) {
-            const current_position = this.audioPlayer.getCurrentTime();
-
-            this.$nextTick(function () {
-                this.audioPlayer.setSrc(this.$_active_track);
-                this.audioPlayer.play();
-
-                if (retain_position) {
-                    this.audioPlayer.setCurrentTime(current_position);
-                }
-            });
+        skipFive(forward = true) {
+            const newPosition = forward ? this.currentTime + 5 : this.currentTime - 5;
+            this.seek(newPosition);
         },
 
-        skipTen(forward = true) {
-            let new_position = this.currentTime - 10;
+        nextTrack() {
+            this.$emit('nextTrack');
+        },
 
-            if (forward) {
-                new_position = this.currentTime + 10;
-            }
-
-            this.audioPlayer.setCurrentTime(new_position);
+        previousTrack() {
+            this.$emit('previousTrack');
         },
 
         seekViaProgressBar(event) {
-            const percentToSeekTo = event.offsetX / window.innerWidth;
-            const offsetToSeekTo = this.currentDuration * percentToSeekTo;
+            const percentToSeekTo = (event.clientX || event.touches[0].clientX) / this.$refs.progressBar.clientWidth;
+            const offsetToSeekTo = this.totalDuration * percentToSeekTo;
 
-            this.audioPlayer.setCurrentTime(offsetToSeekTo);
+            this.$emit('seek', offsetToSeekTo);
         },
 
-
-        initializeDrag(anchor) {
-            this.dragging = true;
-            this.draggingAnchor = anchor;
+        getAnchorOffsetTime(offset) {
+            return this.parseTime(this.totalDuration * (offset / 100));
         },
 
-        handleAnchorDrag(event) {
-            const xOffset = event.clientX || event.touches[0].clientX;
-            const xOffsetPercent = xOffset / window.innerWidth;
+        handleMouseUp() {
+            if (this.mousedown) {
+                const percentToSeekTo = (this.currentMouseX / this.$refs.progressBar.clientWidth);
+                const offsetToSeekTo = this.totalDuration * percentToSeekTo;
 
-            if (this.dragging) {
-                if (this.draggingAnchor === 'a') {
-                    if ((xOffsetPercent * 100) >= this.anchor_offsets.b) {
-                        this.anchor_offsets.a = this.anchor_offsets.b - 1;
-                    } else {
-                        this.anchor_offsets[this.draggingAnchor] = (xOffsetPercent * 100);
-                    }
+                this.$emit('seek', offsetToSeekTo);
+            }
+
+            setTimeout(() => {
+                this.mousedown = false;
+            }, 100);
+        },
+
+        emitAnchorMouseDown(anchor) {
+            this.$emit('anchorMouseDown', anchor);
+        },
+
+        emitAnchorButtonClick(anchor) {
+            this.$emit('anchorButtonClick', anchor);
+        },
+
+        emitVolumeChange(event) {
+            if (event) {
+                this.$emit('volumeChange', event.target.value);
+            } else {
+                let volume = this.volumeCache;
+
+                if (this.currentVolume) {
+                    volume = 0;
+                    this.volumeCache = this.currentVolume;
                 }
 
-                if (this.draggingAnchor === 'b') {
-                    if ((xOffsetPercent * 100) <= this.anchor_offsets.a) {
-                        this.anchor_offsets.b = this.anchor_offsets.a + 1;
-                    } else {
-                        this.anchor_offsets[this.draggingAnchor] = (xOffsetPercent * 100);
-                    }
-                }
+                this.$emit('volumeChange', volume);
             }
         },
+
+        parseTime: time => PlayerUtils.parseTime(time),
     },
 };
 </script>

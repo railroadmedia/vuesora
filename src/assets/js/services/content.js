@@ -10,6 +10,46 @@ if(typeof window != 'undefined'){
 export default {
 
     /**
+     * Get a list of Content
+     *
+     * @returns {Promise} - resolved promise with the response object
+     */
+    getContent({
+        brand = 'drumeo',
+        limit = '20',
+        statuses = ['published', 'scheduled', 'draft'],
+        sort = '-published_on',
+        term,
+        included_types,
+        included_fields,
+        required_fields,
+        required_parent_ids,
+        required_user_states,
+        page = '1',
+        include_future = 1,
+    }) {
+        return axios
+            .get(`${endpointPrefix}/railcontent/content`, {
+                params: {
+                    brand,
+                    limit,
+                    statuses,
+                    sort,
+                    term,
+                    included_types,
+                    included_fields,
+                    required_fields,
+                    required_parent_ids,
+                    required_user_states,
+                    page,
+                    include_future,
+                },
+            })
+            .then(response => response)
+            .catch(ErrorHandler.push);
+    },
+
+    /**
      * Get railcontent content by ID
      *
      * @returns {Promise} - resolved promise with the response object
@@ -145,6 +185,19 @@ export default {
      */
     markLearningPathAsStarted(content_id) {
         return axios.post(`${endpointPrefix}/members/start-learning-path/${content_id}`)
+            .then(response => response)
+            .catch(ErrorHandler);
+    },
+
+    /**
+     * Get a vimeo video url by vimeo video ID
+     *
+     * @param vimeoId {String|Number}
+     *
+     * @returns {Promise} resolved promise with the response.data object
+     */
+    getVimeoUrlByVimeoId(vimeoId) {
+        return axios.get(`${endpointPrefix}/railcontent/vimeo-video/${vimeoId}`)
             .then(response => response)
             .catch(ErrorHandler);
     },

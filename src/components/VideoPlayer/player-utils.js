@@ -232,13 +232,14 @@ export default {
                     || match(other_chrome, ua),
             },
         };
-        (result.any = result.apple.device
+        result.any = (result.apple.device
             || result.android.device
             || result.windows.device
-            || result.other.device),
+            || result.other.device)
+            || 'ontouchend' in document;
         // excludes 'other' devices and ipods, targeting touchscreen phones
-        (result.phone = result.apple.phone || result.android.phone || result.windows.phone),
-        (result.tablet = result.apple.tablet || result.android.tablet || result.windows.tablet);
+        result.phone = result.apple.phone || result.android.phone || result.windows.phone;
+        result.tablet = result.apple.tablet || result.android.tablet || result.windows.tablet;
 
         return result;
     },

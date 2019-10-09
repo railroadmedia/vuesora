@@ -380,7 +380,7 @@ export default {
         },
 
         showUserExp() {
-            return this.userExpValue != null && (['team', 'pack'].indexOf(this.comment.user.access_level) === -1);
+            return this.userExpValue != null && this.comment.user.access_level !== 'team';
         },
     },
     mounted() {

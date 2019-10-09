@@ -7,6 +7,7 @@
         <order-form-cart
             :theme-color="themeColor"
             :cart-items="cartData.items"
+            :bonuses="bonuses"
             :is-cart-locked="cartData.locked"
             @updateCartItem="updateCart"
         />
@@ -221,6 +222,11 @@ export default {
         },
 
         provinces: {
+            type: Array,
+            default: () => [],
+        },
+
+        bonuses: {
             type: Array,
             default: () => [],
         },

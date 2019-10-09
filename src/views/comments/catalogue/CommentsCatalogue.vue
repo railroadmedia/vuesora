@@ -117,7 +117,7 @@
                         <div class="rounded overflow avatar mb-1 hide-xs-only">
                             <img :src="comment.user['fields.profile_picture_image_url']">
                         </div>
-                        <h6 class="tiny font-bold">
+                        <h6 class="tiny font-bold text-center text-truncate">
                             {{ comment.user.display_name }}
                         </h6>
 <!--                        </div>-->
@@ -513,11 +513,13 @@ export default {
     .lesson-title {
         flex: 0 0 150px;
         max-width:150px;
+        min-width:150px;
     }
 
     .lesson-type {
         flex: 0 0 150px;
         max-width:150px;
+        min-width:150px;
 
         i {
             font-size:12px;
@@ -531,6 +533,7 @@ export default {
     .replied-to {
         flex:0 0 60px;
         max-width:60px;
+        min-width:60px;
     }
 
     .comment-body p {
@@ -549,5 +552,11 @@ export default {
         width:100%;
         max-width:960px;
         margin:0 auto #{$gutterWidth / 2};
+    }
+
+    .comment-item .user-name {
+        flex:0 0 100px;
+        max-width:100px;
+        min-width:100px;
     }
 </style>
