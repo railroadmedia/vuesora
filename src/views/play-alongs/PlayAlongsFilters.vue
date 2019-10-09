@@ -15,11 +15,11 @@
             </div>
 
             <div class="flex flex-row flex-wrap-xs-only">
-                <div class="flex flex-column xs-12 sm-6">
-                    <div class="flex flex-row flex-wrap-xs-only ph-1">
-                        <div class="flex flex-column enable-filters mr-1">
+                <div class="flex flex-column xs-12 sm-6 pa-1">
+                    <div class="flex flex-row flex-wrap-xs-only">
+                        <div class="flex flex-column mr-1">
                             <button
-                                class="btn collapse-square mr-1"
+                                class="btn mr-1"
                                 title="Toggle Favorites"
                                 @click="toggleFavorites"
                             >
@@ -27,14 +27,15 @@
                                     class="bg-drumeo"
                                     :class="showFavoritesOnly ? 'text-white' : 'inverted text-drumeo'"
                                 >
-                                    <i class="fas fa-star"></i>
+                                    Favorites
+                                    <i class="fas fa-star ml-1"></i>
                                 </span>
                             </button>
                         </div>
 
-                        <div class="flex flex-column enable-filters mr-1">
+                        <div class="flex flex-column mr-1">
                             <button
-                                class="btn collapse-square mr-1"
+                                class="btn mr-1"
                                 title="Toggle Completed"
                                 @click="toggleCompleted"
                             >
@@ -42,36 +43,22 @@
                                     class="bg-drumeo"
                                     :class="showCompletedOnly ? 'text-white' : 'inverted text-drumeo'"
                                 >
-                                    <i class="fas fa-check"></i>
-                                </span>
-                            </button>
-                        </div>
-
-                        <div class="flex flex-column enable-filters">
-                            <button
-                                class="btn collapse-square mr-1"
-                                title="Toggle Shuffle"
-                                @click="toggleShuffle"
-                            >
-                                <span
-                                    class="bg-drumeo"
-                                    :class="isShuffle ? 'text-white' : 'inverted text-drumeo'"
-                                >
-                                    <i class="fas fa-random"></i>
+                                    Completed
+                                    <i class="fas fa-check ml-1"></i>
                                 </span>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 sm-6 align-h-right align-v-center pa-2">
+                <div class="flex flex-column xs-12 sm-6 align-h-right align-v-center pa-1">
                     <div class="flex flex-row flex-wrap">
                         <div class="flex flex-column form-group mr-1">
                             <select
                                 id="sortInput"
                                 type="text"
                                 class="borderless"
-                                style="width:200px;"
+                                style="width:175px;"
                                 @change="handleContentSort"
                             >
                                 <option
@@ -113,7 +100,7 @@
                                 id="limitInput"
                                 type="text"
                                 class="borderless"
-                                style="width:100px;"
+                                style="width:75px;"
                                 @change="handleContentLimit"
                             >
                                 <option

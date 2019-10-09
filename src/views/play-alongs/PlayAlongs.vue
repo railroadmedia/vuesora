@@ -9,12 +9,32 @@
                     {{ totalResults }} Play Alongs
                 </h1>
             </div>
+
+            <div class="flex flex-column enable-filters mr-1">
+                <button
+                    class="btn collapse-square mr-1"
+                    title="Toggle Shuffle"
+                    @click="toggleShuffle"
+                >
+                    <span
+                        class="bg-drumeo"
+                        :class="isShuffle ? 'text-white' : 'inverted text-drumeo'"
+                    >
+                        <i class="fas fa-random"></i>
+                    </span>
+                </button>
+            </div>
+
             <div class="flex flex-column enable-filters">
                 <button
                     class="btn collapse-square"
+                    title="Toggle Filters"
                     @click="displayFilters = !displayFilters"
                 >
-                    <span class="text-drumeo bg-drumeo inverted">
+                    <span
+                        class="bg-drumeo"
+                        :class="displayFilters ? 'text-white' : 'inverted text-drumeo'"
+                    >
                         <i class="fas fa-filter"></i>
                     </span>
                 </button>
@@ -38,7 +58,6 @@
                 @filterChange="handleFilterChange"
                 @toggleFavorites="toggleFavorites"
                 @toggleCompleted="toggleCompleted"
-                @toggleShuffle="toggleShuffle"
                 @handleContentLimit="handleContentLimit"
                 @handleContentSort="handleContentSort"
             ></play-alongs-filters>
@@ -222,7 +241,7 @@ export default {
 
         trackProgress: {
             type: Boolean,
-            default: () => false,
+            default: () => true,
         },
     },
     data() {
