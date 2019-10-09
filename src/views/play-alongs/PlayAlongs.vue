@@ -574,16 +574,6 @@ export default {
                         });
                     });
                 }
-
-                // if (trackUrl === 'TBD') {
-                //     Toasts.push({
-                //         icon: 'doh',
-                //         title: 'TRACK MISSING',
-                //         themeColor: this.themeColor,
-                //         message: 'We\'re sorry, the track you tried to play couldn\'t be found.',
-                //         timeout: 10000,
-                //     });
-                // }
             }
         },
 

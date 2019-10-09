@@ -27,7 +27,8 @@ export default {
                             icon: 'doh',
                             title: 'TRACK MISSING',
                             themeColor: this.themeColor,
-                            message: 'We\'re sorry, the track you tried to play couldn\'t be found.',
+                            message: 'The <em>odd-time</em> metronome and drum tracks aren\'t available, '
+                                + 'please turn those options on/off.',
                             timeout: 10000,
                         });
                     }
