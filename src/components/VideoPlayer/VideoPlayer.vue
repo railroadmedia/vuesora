@@ -1008,11 +1008,11 @@ export default {
                 content: this.source,
                 poster: this.poster,
                 title: this.castTitle,
-                subtitles: this.captions.map(caption => ({
+                subtitles: {
                     active: false,
-                    srclang: caption.language,
-                    src: caption.url,
-                })),
+                    srclang: 'en',
+                    src: this.captions,
+                },
                 time: this.currentTime,
                 volume: this.currentVolume,
                 muted: false,
