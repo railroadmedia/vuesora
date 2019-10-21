@@ -663,8 +663,8 @@ export default {
                             },
                         },
                         streaming: {
-                            bufferingGoal: 45,
-                            rebufferingGoal: 15,
+                            bufferingGoal: 15,
+                            rebufferingGoal: 5,
                             bufferBehind: 0,
                         },
                     });
