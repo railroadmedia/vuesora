@@ -48,7 +48,7 @@ $borderDirections: (
   bl: ( border-left )
 );
 // Loop from 1 to 3 for each different border width value
-@for $i from 1 through 3 {
+@for $i from 1 through 7 {
 
   // Loop through the directions and add additional modifiers
 
@@ -62,18 +62,6 @@ $borderDirections: (
     .#{$parentKey}-black-#{$i} {
       @each $property in $parentValue {
         #{$property}:#{$i}px solid #000;
-      }
-    }
-
-    .#{$parentKey}-light-#{$i} {
-      @each $property in $parentValue {
-        #{$property}:#{$i}px solid $lightGray;
-      }
-    }
-
-    .#{$parentKey}-dark-#{$i} {
-      @each $property in $parentValue {
-        #{$property}:#{$i}px solid $darkGray;
       }
     }
 
@@ -206,6 +194,14 @@ $borderDirections: (
   @include centerBoth();
 }
 
+.absolute-fill {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+}
+
 .bg-center {
   background-size:cover;
   background-repeat:no-repeat;
@@ -227,4 +223,15 @@ $borderDirections: (
 .list-style-none {
   list-style-type:none;
   padding-left:0;
+}
+
+.raised-hover {
+  transform:scale(1);
+  transition:transform .2s ease-in-out, box-shadow .2s ease-in-out;
+  box-shadow:0 0 5px rgba(0,0,0,0);
+
+  &:hover {
+    transform:scale(1.02);
+    box-shadow:0 0 7px rgba(0,0,0,.3);
+  }
 }
