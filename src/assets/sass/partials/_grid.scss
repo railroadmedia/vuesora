@@ -355,6 +355,37 @@ $numerators: 2 3 6 9 10;
     margin-right:$spacing;
   }
 
+  // Negative Margin
+  .nma-#{$i}{
+    margin:-#{$spacing};
+  }
+
+  .nmv-#{$i} {
+    margin-top:-#{$spacing};
+    margin-bottom:-#{$spacing};
+  }
+
+  .nmh-#{$i} {
+    margin-left:-#{$spacing};
+    margin-right:-#{$spacing};
+  }
+
+  .nmt-#{$i}{
+    margin-top:-#{$spacing};
+  }
+
+  .nmb-#{$i}{
+    margin-bottom:-#{$spacing};
+  }
+
+  .nml-#{$i}{
+    margin-left:-#{$spacing};
+  }
+
+  .nmr-#{$i}{
+    margin-right:-#{$spacing};
+  }
+
   // Padding
   .pa-#{$i}{
     padding:$spacing;
