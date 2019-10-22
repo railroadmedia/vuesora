@@ -100,6 +100,10 @@ body {
         @include large {
           transform:translateX(calc(-#{$large} + 145px));
         }
+
+        @include xLarge {
+          transform:translateX(calc(-#{$xLarge} + 145px));
+        }
       }
     }
 
@@ -125,6 +129,10 @@ body {
 
       @include large {
         width:calc(#{$large} - 85px);
+      }
+
+      @include xLarge {
+        width:calc(#{$xLarge} - 85px);
       }
     }
 
