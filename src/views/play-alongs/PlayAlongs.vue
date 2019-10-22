@@ -65,7 +65,7 @@
 
         <div
             v-if="showPagination"
-            class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="Number(page)"
@@ -111,7 +111,7 @@
 
         <div
             v-if="showPagination"
-            class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="Number(page)"

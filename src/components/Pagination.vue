@@ -1,60 +1,77 @@
 <template>
     <div class="flex flex-row pagination align-center">
-        <div
-            v-if="currentPage > 1"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 hide-xs-only"
+        <button
+            v-show="currentPage > 1"
+            class="btn short collapse-square page-button"
             @click="goToPage(currentPage - 1)"
         >
-            <i class="fal fa-chevron-left"></i>
-        </div>
+            <span class="bg-grey-3 inverted text-grey-3">
+                <i class="fas fa-chevron-left"></i>
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage > 2"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3"
+        <button
+            v-show="currentPage > 2"
+            class="btn short collapse-square page-button"
             @click="goToPage(1)"
         >
-            1
-        </div>
+            <span class="bg-grey-3 inverted text-grey-3">
+                1
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage > 3"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 filler font-light"
+        <button
+            v-show="currentPage > 3"
+            disabled
+            class="btn short collapse-square page-button"
         >
-            ...
-        </div>
+            <span class="bg-grey-3 inverted text-grey-3">
+                ...
+            </span>
+        </button>
 
-        <div
+        <button
             v-for="i in totalPages"
-            v-if="i < (currentPage + 2) && i > (currentPage - 2)"
-            class="tiny corners-3 page-button flex-center shadow noselect"
-            :class="currentPage === i ? 'bg-x-dark text-white active' : 'bg-white text-grey-3'"
+            v-show="i < (currentPage + 2) && i > (currentPage - 2)"
+            :key="`page-${i}`"
+            class="btn short collapse-square page-button"
             @click="goToPage(i)"
         >
-            {{ i }}
-        </div>
+            <span class="bg-grey-3"
+                  :class="currentPage === i ? 'text-white active' : 'inverted text-grey-3'">
+                {{ i }}
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage < totalPages - 2"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 filler font-light"
+        <button
+            v-show="currentPage < totalPages - 2"
+            disabled
+            class="btn short collapse-square page-button"
         >
-            ...
-        </div>
+            <span class="bg-grey-3 inverted text-grey-3">
+                ...
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage < totalPages - 1"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3"
+        <button
+            v-show="currentPage < totalPages - 1"
+            class="btn short collapse-square page-button"
             @click="goToPage(totalPages)"
         >
-            {{ totalPages }}
-        </div>
+            <span class="bg-grey-3 inverted text-grey-3">
+                {{ totalPages }}
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage < totalPages"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 hide-xs-only"
+        <button
+            v-show="currentPage < totalPages"
+            class="btn short collapse-square page-button"
             @click="goToPage(currentPage + 1)"
         >
-            <i class="fal fa-chevron-right"></i>
-        </div>
+            <span class="bg-grey-3 inverted text-grey-3">
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </button>
     </div>
 </template>
 <script>
@@ -81,19 +98,7 @@ export default {
 };
 </script>
 <style lang="scss">
-    .pagination {
-        height:30px;
-    }
     .page-button {
-        min-width:30px;
-        width:30px;
-        min-height:30px;
-        height:30px;
         margin:0 3px;
-        cursor:pointer;
-
-        &.filler, &.active {
-            pointer-events:none;
-        }
     }
 </style>
