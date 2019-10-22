@@ -10,6 +10,7 @@ export default class ContentModel {
         this.card = {
             thumbnail: this.getPostThumbnail(),
             color_title: this.postType,
+            content_type: this.getTypeWithIcon(),
             black_title: this.getPostField('title'),
             description: this.getPostDatum('description'),
             sheet_music: null,
@@ -98,7 +99,7 @@ export default class ContentModel {
         const icon = ContentHelpers.getContentTypeIcon(this.post.type);
         const type = this.postType;
 
-        return `<i class="${icon}" style="margin-right:5px;"></i> <span class="text-white">${type}</span>`;
+        return `<i class="${icon}" style="margin-right:5px;"></i> ${type}`;
     }
 
     get episodeNumber() {
