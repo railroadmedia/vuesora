@@ -23,7 +23,7 @@ $gutterWidth: 1.875rem;   // 30px - usually divided by 2 or 3
 $small: 40rem;             // 640px
 $medium: 64rem;            // 1024px
 $large: 72.5rem;           // 1240px
-//$xLarge: 72.5em;        // 1940px
+$xLarge: 97.5rem;           // 1560px
 
 // Breakpoint Mixins
 // Breakpoints start mobile first. xSmall is technically the default breakpoint, so it doesn't need to be defined
@@ -46,11 +46,11 @@ $large: 72.5rem;           // 1240px
   }
 }
 
-//@mixin xLarge {
-//  @media screen and (min-width: #{$xLarge}) {
-//    @content;
-//  }
-//}
+@mixin xLarge {
+  @media screen and (min-width: #{$xLarge}) {
+    @content;
+  }
+}
 
 @mixin highDpi {
   @media only screen and (-webkit-min-device-pixel-ratio: 1.3),
@@ -78,11 +78,11 @@ $large: 72.5rem;           // 1240px
   }
 }
 
-//@mixin largeOnly {
-//  @media screen and (min-width: #{$large}) and (max-width: #{$xLarge - .0625em}) {
-//    @content;
-//  }
-//}
+@mixin largeOnly {
+  @media screen and (min-width: #{$large}) and (max-width: #{$xLarge - .0625em}) {
+    @content;
+  }
+}
 
 
 ///////////////////////////////////////
@@ -101,7 +101,7 @@ $defaultMonospace: 'Courier New', monospace;
 /// 3. COLORS
 ///////////////////////////////////////
 
-$backgroundGray: #EFF0F0;
+$backgroundGray: #fff;
 $darkGray:#a8a8a8;
 $lightGray:#d1d1d1;
 $greys: (

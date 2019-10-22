@@ -145,9 +145,9 @@
     max-width:$large;
   }
 
-  //@include xLarge {
-  //  max-width:$xLarge;
-  //}
+  @include xLarge {
+    max-width:$xLarge;
+  }
 
   &.fluid {
     max-width:100%;
@@ -204,17 +204,17 @@
   }
 }
 
-//@include xLarge {
-//  @for $i from 1 through 12 {
-//    .xl-#{$i} {
-//      flex: 0 0 #{$i / 12 * 100%};
-//      max-width:#{$i / 12 * 100%};
-//    }
-//    .xl-offset-#{$i} {
-//      margin-left:#{$i / 12 * 100%};
-//    }
-//  }
-//}
+@include xLarge {
+  @for $i from 1 through 12 {
+    .xl-#{$i} {
+      flex: 0 0 #{$i / 12 * 100%};
+      max-width:#{$i / 12 * 100%};
+    }
+    .xl-offset-#{$i} {
+      margin-left:#{$i / 12 * 100%};
+    }
+  }
+}
 
 
 ///////////////////////////////////////
@@ -272,12 +272,12 @@
   }
 }
 
-//@include xLarge {
-//  .hide-xl-only,
-//  .hide-xl-down {
-//    display:none!important;
-//  }
-//}
+@include xLarge {
+  .hide-xl-only,
+  .hide-xl-down {
+    display:none!important;
+  }
+}
 
 ///////////////////////////////////////
 /// 4. SPACING
