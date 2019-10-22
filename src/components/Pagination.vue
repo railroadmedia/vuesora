@@ -5,8 +5,11 @@
             class="btn short collapse-square page-button"
             @click="goToPage(currentPage - 1)"
         >
-            <span class="bg-grey-3 inverted text-grey-3">
-                <i class="fas fa-chevron-left"></i>
+            <span
+                class="bg-grey-3 flat"
+                :class="themeTextClass"
+            >
+                <i class="far fa-chevron-left"></i>
             </span>
         </button>
 
@@ -15,7 +18,9 @@
             class="btn short collapse-square page-button"
             @click="goToPage(1)"
         >
-            <span class="bg-grey-3 inverted text-grey-3">
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]">
                 1
             </span>
         </button>
@@ -25,7 +30,10 @@
             disabled
             class="btn short collapse-square page-button"
         >
-            <span class="bg-grey-3 inverted text-grey-3">
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]"
+            >
                 ...
             </span>
         </button>
@@ -37,8 +45,9 @@
             class="btn short collapse-square page-button"
             @click="goToPage(i)"
         >
-            <span class="bg-grey-3"
-                  :class="currentPage === i ? 'text-white active' : 'inverted text-grey-3'">
+            <span
+                :class="currentPage === i ? activeClasses : inactiveClasses"
+            >
                 {{ i }}
             </span>
         </button>
@@ -48,7 +57,10 @@
             disabled
             class="btn short collapse-square page-button"
         >
-            <span class="bg-grey-3 inverted text-grey-3">
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]"
+            >
                 ...
             </span>
         </button>
@@ -58,7 +70,10 @@
             class="btn short collapse-square page-button"
             @click="goToPage(totalPages)"
         >
-            <span class="bg-grey-3 inverted text-grey-3">
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]"
+            >
                 {{ totalPages }}
             </span>
         </button>
@@ -68,16 +83,21 @@
             class="btn short collapse-square page-button"
             @click="goToPage(currentPage + 1)"
         >
-            <span class="bg-grey-3 inverted text-grey-3">
-                <i class="fas fa-chevron-right"></i>
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]"
+            >
+                <i class="far fa-chevron-right"></i>
             </span>
         </button>
     </div>
 </template>
 <script>
+import ThemeClasses from '../mixins/ThemeClasses';
 
 export default {
     name: 'Pagination',
+    mixins: [ThemeClasses],
     props: {
         currentPage: {
             type: Number,
@@ -87,9 +107,23 @@ export default {
             type: Number,
             default: () => 0,
         },
+        themeColor: {
+            type: String,
+            default: 'grey-3',
+        },
+    },
+    computed: {
+        activeClasses() {
+            return ['text-white', this.themeBgClass];
+        },
+        inactiveClasses() {
+            return [this.themeTextClass, 'flat'];
+        },
     },
     methods: {
         goToPage(page) {
+
+
             this.$emit('pageChange', {
                 page,
             });
@@ -98,7 +132,12 @@ export default {
 };
 </script>
 <style lang="scss">
-    .page-button {
+    button.btn.page-button {
         margin:0 3px;
+
+        & > span {
+            border-width:1px;
+            font-weight:500;
+        }
     }
 </style>
