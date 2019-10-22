@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row">
         <div class="flex flex-column">
-            <div class="flex flex-row flex-wrap-xs-only pv-2">
+            <div class="flex flex-row flex-wrap-xs-only pv-2 nmh-1">
                 <catalogue-filter
                     v-for="option in availableFilters"
                     :key="option"
@@ -14,7 +14,7 @@
                 ></catalogue-filter>
             </div>
 
-            <div class="flex flex-row flex-wrap-xs-only">
+            <div class="flex flex-row flex-wrap-xs-only nmh-1">
                 <div class="flex flex-column xs-12 sm-6 pa-1">
                     <div class="flex flex-row flex-wrap-xs-only">
                         <div class="flex flex-column mr-1">

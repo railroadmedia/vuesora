@@ -2,10 +2,10 @@
     <div class="flex flex-column grow play-alongs">
         <div
             v-if="showFilters"
-            class="flex flex-row pa-1"
+            class="flex flex-row pv-1"
         >
             <div class="flex flex-column align-v-center">
-                <h1 class="subheading">
+                <h1 class="heading">
                     {{ totalResults }} Play Alongs
                 </h1>
             </div>

@@ -1,7 +1,7 @@
 <template>
     <div
         class="content-table-row flex flex-row bb-grey-1-1
-         no-decoration pa-1 pointer relative text-grey-3 hover-bg-grey-7 hover-text-black"
+         no-decoration pv-1 pointer relative text-grey-3 hover-bg-grey-7 hover-text-black"
         :class="stateClasses"
     >
         <!-- THUMBNAIL COLUMN -->

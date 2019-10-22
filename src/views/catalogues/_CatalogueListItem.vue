@@ -1,6 +1,6 @@
 <template>
     <a
-        class="flex flex-row bb-grey-1-1 no-decoration pa-1 hover-bg-grey-7 relative text-grey-3 hover-text-black"
+        class="flex flex-row bb-grey-1-1 no-decoration pv-1 hover-bg-grey-7 relative text-grey-3 hover-text-black"
         :class="class_object"
         :href="renderLink ? item.url : false"
     >
