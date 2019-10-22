@@ -24,6 +24,18 @@ h1, h2, h3, h4, h5, h6, p {
   text-align:center;
 }
 
+.large-display {
+  font: 700 36px/1.25em $defaultSansSerif;
+
+  @include medium {
+    font-size:48px;
+  }
+
+  @include large {
+    font-size:54px;
+  }
+}
+
 .display {
   font: 700 32px/1.25em $defaultSansSerif;
 
