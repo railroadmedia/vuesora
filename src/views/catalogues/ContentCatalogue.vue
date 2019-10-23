@@ -89,7 +89,7 @@
 
         <div
             v-if="paginate && total_pages > 1 && !infiniteScroll"
-            class="flex flex-row bg-light pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="Number(page)"

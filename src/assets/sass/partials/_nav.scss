@@ -3,7 +3,7 @@
 
 body {
   padding-top:50px;
-  padding-bottom:50px;
+  padding-bottom:120px;
 
   @include small {
     padding-bottom:60px;
@@ -494,6 +494,22 @@ footer {
   left:0;
   width:100%;
   z-index:96;
+
+  section {
+    align-items:center;
+
+    &:first-child {
+      @include small {
+        align-items:flex-start;
+      }
+    }
+
+    &:last-child {
+      @include small {
+        align-items:flex-end;
+      }
+    }
+  }
 
   .footer-col {
     height:25px;
