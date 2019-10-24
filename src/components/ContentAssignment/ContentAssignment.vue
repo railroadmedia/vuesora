@@ -309,8 +309,8 @@ export default {
 
         accordionButtonIconClasses() {
             return {
-                'fa-chevron-up': !this.accordionActive && !this.accordionLoading,
-                'fa-chevron-down': this.accordionActive && !this.accordionLoading,
+                'fa-chevron-down': !this.accordionActive && !this.accordionLoading,
+                'fa-chevron-up': this.accordionActive && !this.accordionLoading,
                 'fa-spinner': this.accordionActive && this.accordionLoading,
                 'fa-spin': this.accordionActive && this.accordionLoading,
             };
