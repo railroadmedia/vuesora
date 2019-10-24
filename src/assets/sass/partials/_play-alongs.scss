@@ -4,10 +4,18 @@ body.play-alongs-player-open {
   padding-bottom: 225px;
 
   &.has-public-footer {
-    padding-bottom:650px;
+    padding-bottom:891px;
+
+    footer {
+      padding-bottom:260px;
+    }
 
     @include small {
-      padding-bottom:275px;
+      padding-bottom:539px;
+
+      footer {
+        padding-bottom:263px;
+      }
     }
   }
 
@@ -39,7 +47,7 @@ body.play-alongs-player-open {
   bottom:0;
   left:0;
   right:0;
-  z-index:98;
+  z-index:97;
   transform:translateY(0);
   transition:.2s transform ease-in-out;
   will-change:transform;
