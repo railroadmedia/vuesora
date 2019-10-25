@@ -12,19 +12,23 @@
                     </h1>
                 </div>
                 <div class="flex flex-row flex-wrap">
-                    <button
+                    <div
                         v-for="tempo in loops[loop].tempos"
                         :key="`${loop}-${tempo}`"
-                        class="btn short collapse-100"
-                        @click="selectLoop(loop, tempo)"
+                        class="flex flex-column loop-play-button"
                     >
-                        <span
-                            class="bg-drumeo"
-                            :class="isCurrentLoop(loop, tempo) ? 'text-white' : 'flat text-drumeo'"
+                        <button
+                            class="btn short"
+                            @click="selectLoop(loop, tempo)"
                         >
-                            {{ tempo }} BPM
-                        </span>
-                    </button>
+                            <span
+                                class="bg-drumeo"
+                                :class="isCurrentLoop(loop, tempo) ? 'text-white' : 'flat text-drumeo'"
+                            >
+                                {{ tempo }} BPM
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,3 +133,18 @@ export default {
     },
 };
 </script>
+<style lang="scss">
+    @import '../../assets/sass/partials/_variables.scss';
+
+    .loop-play-button {
+        flex:0 0 33.3333%;
+        max-width:33.3333%;
+        min-width:33.3333%;
+
+        @include small {
+            flex:0 0 100px;
+            max-width:100px;
+            min-width:100px;
+        }
+    }
+</style>
