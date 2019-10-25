@@ -162,6 +162,7 @@
 
         <div class="flex flex-row hide">
             <audio
+                id="playAlongsAudioPlayer"
                 ref="audioPlayer"
                 preload="auto"
             ></audio>
@@ -344,6 +345,16 @@ export default {
         this.addMouseEventHandlers();
 
         this.enableKeyboardControls();
+
+        // Pause the player if any other audio players on the page are played
+        const audioPlayers = document.querySelectorAll('audio');
+        Array.from(audioPlayers).forEach((player) => {
+            if (!player.matches('#playAlongsAudioPlayer')) {
+                player.addEventListener('play', () => {
+                    this.audioPlayer.pause();
+                });
+            }
+        });
     },
     beforeDestroy() {
         Object.keys(this.eventHandlers).forEach((event) => {
