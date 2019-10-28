@@ -58,7 +58,7 @@
                 <div class="flex flex-row">
                     <button
                         v-if="soundsliceSlug"
-                        class="btn collapse-100 mr-1"
+                        class="btn mr-1"
                         @click="openExercise"
                     >
                         <span class="text-white bg-grey-3 inverted text-grey-3">
@@ -67,7 +67,7 @@
                     </button>
 
                     <button
-                        class="btn collapse-100"
+                        class="btn"
                         :disabled="isRequesting"
                         @click.stop="markAsComplete"
                     >
