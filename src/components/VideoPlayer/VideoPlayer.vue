@@ -585,7 +585,11 @@ export default {
                 return true;
             }
 
-            return this.userActive;
+            if (this.isMobile) {
+                return this.userActive;
+            }
+
+            return true;
         },
 
         isCaptionsEnabled() {
