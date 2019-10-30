@@ -97,7 +97,7 @@
     </div>
 </template>
 <script>
-import { Content as ContentHelpers } from 'js-helper-functions';
+import { Content as ContentHelpers } from '@musora/helper-functions';
 import Mixin from './_mixin';
 import ContentModel from '../../assets/js/models/_model.js';
 import ThemeClasses from '../../mixins/ThemeClasses';

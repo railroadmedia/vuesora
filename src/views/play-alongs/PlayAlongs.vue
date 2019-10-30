@@ -171,7 +171,7 @@
 </template>
 <script>
 import * as QueryString from 'query-string';
-import Utils from 'js-helper-functions/modules/utils';
+import Utils from '@musora/helper-functions/modules/utils';
 import ContentService from '../../assets/js/services/content';
 import PlayAlongsListItem from './PlayAlongsListItem.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
