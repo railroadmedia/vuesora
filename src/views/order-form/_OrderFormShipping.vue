@@ -283,7 +283,7 @@
     </div>
 </template>
 <script>
-import Utils from 'js-helper-functions/modules/utils';
+import Utils from '@musora/helper-functions/modules/utils';
 import Validation from './_validation';
 
 export default {

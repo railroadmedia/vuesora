@@ -353,7 +353,7 @@
 <script>
 import * as muxjs from 'mux.js';
 import shaka from 'shaka-player';
-import Utils from 'js-helper-functions/modules/utils';
+import Utils from '@musora/helper-functions/modules/utils';
 import Screenfull from 'screenfull';
 import ContentService from '../../assets/js/services/content';
 import PlayerUtils from './player-utils';
@@ -585,7 +585,11 @@ export default {
                 return true;
             }
 
-            return this.userActive;
+            if (this.isMobile) {
+                return this.userActive;
+            }
+
+            return true;
         },
 
         isCaptionsEnabled() {

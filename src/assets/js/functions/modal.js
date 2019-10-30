@@ -19,6 +19,11 @@ export default (function () {
             const buttonClicked = event.target;
             const modalId = buttonClicked.dataset.openModal;
             const modalToOpen = document.getElementById(modalId);
+            const openEvent = new CustomEvent('modalOpen', {
+                detail: {
+                    trigger: buttonClicked,
+                },
+            });
 
             closeModal();
 
@@ -30,6 +35,7 @@ export default (function () {
                 document.body.classList.add('no-scroll');
                 document.documentElement.classList.add('no-scroll');
                 modalToOpen.classList.add('active');
+                modalToOpen.dispatchEvent(openEvent);
             } else {
                 console.error(`Modal Error - Could not find modal with the ID: "${modalId}"`);
             }

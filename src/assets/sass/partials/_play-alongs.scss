@@ -1,13 +1,25 @@
 @import './_variables.scss';
 
 body.play-alongs-player-open {
-  padding-bottom: 225px;
+  padding-bottom: 325px;
+
+  footer {
+    margin-bottom:263px;
+  }
 
   &.has-public-footer {
-    padding-bottom:650px;
+    padding-bottom:891px;
+
+    footer {
+      padding-bottom:260px;
+    }
 
     @include small {
-      padding-bottom:275px;
+      padding-bottom:539px;
+
+      footer {
+        padding-bottom:263px;
+      }
     }
   }
 

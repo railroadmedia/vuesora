@@ -162,6 +162,7 @@
 
         <div class="flex flex-row hide">
             <audio
+                id="playAlongsAudioPlayer"
                 ref="audioPlayer"
                 preload="auto"
             ></audio>
@@ -170,7 +171,7 @@
 </template>
 <script>
 import * as QueryString from 'query-string';
-import Utils from 'js-helper-functions/modules/utils';
+import Utils from '@musora/helper-functions/modules/utils';
 import ContentService from '../../assets/js/services/content';
 import PlayAlongsListItem from './PlayAlongsListItem.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
@@ -344,6 +345,16 @@ export default {
         this.addMouseEventHandlers();
 
         this.enableKeyboardControls();
+
+        // Pause the player if any other audio players on the page are played
+        const audioPlayers = document.querySelectorAll('audio');
+        Array.from(audioPlayers).forEach((player) => {
+            if (!player.matches('#playAlongsAudioPlayer')) {
+                player.addEventListener('play', () => {
+                    this.audioPlayer.pause();
+                });
+            }
+        });
     },
     beforeDestroy() {
         Object.keys(this.eventHandlers).forEach((event) => {

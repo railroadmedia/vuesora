@@ -47,6 +47,10 @@ button {
       height:35px;
     }
 
+    &.rounded > span {
+      border-radius:50%;
+    }
+
     &:disabled {
       opacity:.5;
     }
@@ -98,6 +102,10 @@ button {
     }
   }
 
+  &.collapse-100 {
+    max-width:100px;
+  }
+
   &.collapse-150 {
     max-width:150px;
   }
@@ -138,6 +146,10 @@ button {
     }
   }
 
+  &.rounded {
+    border-radius:50%;
+  }
+
   &.text-white-important {
     color:#fff!important;
   }
@@ -170,7 +182,7 @@ button {
   //  }
   //}
 
-  &:disabled {
+  &:disabled, &.disabled {
     opacity:.2;
     pointer-events:none;
   }

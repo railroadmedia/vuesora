@@ -12,6 +12,14 @@ body {
   @include large {
     padding-top:65px;
   }
+
+  &.has-public-footer {
+    padding-bottom:630px;
+
+    @include small {
+      padding-bottom:270px;
+    }
+  }
 }
 
 #nav {
@@ -480,20 +488,13 @@ body {
     color:#fff;
   }
 }
-body.has-public-footer {
-  padding-bottom:650px;
-
-  @include small {
-    padding-bottom:270px;
-  }
-}
 
 footer {
   position:absolute;
   bottom:0;
   left:0;
   width:100%;
-  z-index:96;
+  z-index:95;
 
   section {
     align-items:center;

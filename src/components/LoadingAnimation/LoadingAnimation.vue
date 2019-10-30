@@ -1,64 +1,11 @@
 <template>
-    <svg
-        id="L7"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        x="0px"
-        y="0px"
-        viewBox="0 0 100 100"
-        enable-background="new 0 0 100 100"
-        xml:space="preserve"
-    >
-        <path
-            :fill="colorCode"
-            d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
-          c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z"
-            transform="rotate(98.6504 50 50)"
+    <div class="spin-wrapper">
+        <div
+            class="spinner"
+            :style="`border-top-color:${colorCode};`"
         >
-            <animateTransform
-                attributeName="transform"
-                attributeType="XML"
-                type="rotate"
-                dur="2s"
-                from="0 50 50"
-                to="360 50 50"
-                repeatCount="indefinite"
-            ></animateTransform>
-        </path>
-        <path
-            :fill="colorCode"
-            d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7
-          c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z"
-            transform="rotate(-197.301 50 50)"
-        >
-            <animateTransform
-                attributeName="transform"
-                attributeType="XML"
-                type="rotate"
-                dur="1s"
-                from="0 50 50"
-                to="-360 50 50"
-                repeatCount="indefinite"
-            ></animateTransform>
-        </path>
-        <path
-            :fill="colorCode"
-            d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5
-          L82,35.7z"
-            transform="rotate(98.6504 50 50)"
-        >
-            <animateTransform
-                attributeName="transform"
-                attributeType="XML"
-                type="rotate"
-                dur="2s"
-                from="0 50 50"
-                to="360 50 50"
-                repeatCount="indefinite"
-            ></animateTransform>
-        </path>
-    </svg>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -98,3 +45,58 @@ export default {
     },
 };
 </script>
+<style lang="scss">
+    .spin-wrapper {
+        position: absolute;
+        top:0;
+        left:0;
+        width: 100%;
+        height: 100%;
+
+        .spinner {
+            position: absolute;
+            height: 60px;
+            width: 60px;
+            border: 7px solid transparent;
+            top: 50%;
+            left: 50%;
+            margin: -30px;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+
+            &:before, &:after {
+                content: '';
+                position: absolute;
+                border: 7px solid transparent;
+                border-radius: 50%;
+            }
+
+            &:before {
+                border-top-color: inherit;
+                top: -16px;
+                left: -16px;
+                right: -16px;
+                bottom: -16px;
+                animation: spin .75s linear infinite reverse;
+            }
+
+            &:after {
+                border-top-color: inherit;
+                top: 4px;
+                left: 4px;
+                right: 4px;
+                bottom: 4px;
+                animation: spin .87s linear infinite reverse;
+            }
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>

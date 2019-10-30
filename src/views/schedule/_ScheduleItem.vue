@@ -85,7 +85,7 @@
     </div>
 </template>
 <script>
-import { Content as ContentHelpers } from 'js-helper-functions';
+import { Content as ContentHelpers } from '@musora/helper-functions';
 import { DateTime } from 'luxon';
 import ContentModel from '../../assets/js/models/_model.js';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';

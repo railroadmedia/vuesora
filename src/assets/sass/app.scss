@@ -482,6 +482,40 @@ ul {
   }
 }
 
+.chapter-card {
+  @include medium {
+    flex:0 0 20%;
+    max-width:20%;
+    min-width:20%;
+  }
+
+  .square {
+    transform:scale(1);
+    box-shadow:0 0 5px transparent;
+    transition: transform .2s ease-in-out, box-shadow .2s ease-in-out;
+  }
+
+  &:hover {
+    .square {
+      transform:scale(1.04);
+      box-shadow:0 0 5px rgba(0,0,0,.8);
+    }
+  }
+
+  .card-gradient {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+    @include topToBottomGradient(transparent, transparentize(darken($drumeoBlue, 13%), .15));
+  }
+  .absolute-center {
+    z-index:2;
+  }
+}
+
 .letter-anchor {
   flex:0 0 4%;
 

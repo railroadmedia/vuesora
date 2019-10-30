@@ -58,7 +58,7 @@
                 <div class="flex flex-row">
                     <button
                         v-if="soundsliceSlug"
-                        class="btn collapse-100 mr-1"
+                        class="btn mr-1"
                         @click="openExercise"
                     >
                         <span class="text-white bg-grey-3 inverted text-grey-3">
@@ -67,7 +67,7 @@
                     </button>
 
                     <button
-                        class="btn collapse-100"
+                        class="btn"
                         :disabled="isRequesting"
                         @click.stop="markAsComplete"
                     >
@@ -309,8 +309,8 @@ export default {
 
         accordionButtonIconClasses() {
             return {
-                'fa-chevron-up': !this.accordionActive && !this.accordionLoading,
-                'fa-chevron-down': this.accordionActive && !this.accordionLoading,
+                'fa-chevron-down': !this.accordionActive && !this.accordionLoading,
+                'fa-chevron-up': this.accordionActive && !this.accordionLoading,
                 'fa-spinner': this.accordionActive && this.accordionLoading,
                 'fa-spin': this.accordionActive && this.accordionLoading,
             };

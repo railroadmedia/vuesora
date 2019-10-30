@@ -90,7 +90,7 @@
     </div>
 </template>
 <script>
-import UtilsHelpers from 'js-helper-functions/modules/utils';
+import UtilsHelpers from '@musora/helper-functions/modules/utils';
 import AddEventDropdown from './AddEventDropdown.vue';
 import ThemeClasses from '../../mixins/ThemeClasses';
 

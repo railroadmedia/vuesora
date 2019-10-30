@@ -8,6 +8,7 @@ import ImageCropper from './ImageCropper/ImageCropper.vue';
 import PaymentMethods from '../views/payment-methods/PaymentMethods.vue';
 import Comments from '../views/comments/Comments.vue';
 import ContentAssignment from './ContentAssignment/ContentAssignment.vue';
+import LegacyLoops from './LegacyLoops/LegacyLoops.vue';
 
 const Components = {
     EmailForm,
@@ -20,6 +21,7 @@ const Components = {
     PaymentMethods,
     Comments,
     ContentAssignment,
+    LegacyLoops,
 };
 
 export default Components;

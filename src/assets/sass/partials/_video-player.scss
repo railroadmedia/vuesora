@@ -40,6 +40,8 @@
 }
 
 @mixin playerActive(){
+  cursor: default;
+
   .player-controls {
     transform:translateY(0);
   }
@@ -54,6 +56,8 @@
 }
 
 @mixin playerInactive(){
+  cursor: none;
+
   .player-controls {
     transform:translateY(100%);
   }
