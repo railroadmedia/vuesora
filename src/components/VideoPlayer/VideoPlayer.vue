@@ -353,7 +353,7 @@
 <script>
 import * as muxjs from 'mux.js';
 import shaka from 'shaka-player';
-import Utils from 'js-helper-functions/modules/utils';
+import Utils from '@musora/helper-functions/modules/utils';
 import Screenfull from 'screenfull';
 import ContentService from '../../assets/js/services/content';
 import PlayerUtils from './player-utils';
@@ -585,7 +585,11 @@ export default {
                 return true;
             }
 
-            return this.userActive;
+            if (this.isMobile) {
+                return this.userActive;
+            }
+
+            return true;
         },
 
         isCaptionsEnabled() {
@@ -663,8 +667,8 @@ export default {
                             },
                         },
                         streaming: {
-                            bufferingGoal: 45,
-                            rebufferingGoal: 15,
+                            bufferingGoal: 15,
+                            rebufferingGoal: 5,
                             bufferBehind: 0,
                         },
                     });
@@ -808,7 +812,7 @@ export default {
                 this.seek(timeToSeekTo);
             }
 
-            if (this.captions != null) {
+            if (this.captions) {
                 this.shakaPlayer.addTextTrack(this.captions, 'en', 'subtitle', 'text/vtt', null, 'English');
             }
 
@@ -1008,11 +1012,11 @@ export default {
                 content: this.source,
                 poster: this.poster,
                 title: this.castTitle,
-                subtitles: this.captions.map(caption => ({
+                subtitles: {
                     active: false,
-                    srclang: caption.language,
-                    src: caption.url,
-                })),
+                    srclang: 'en',
+                    src: this.captions,
+                },
                 time: this.currentTime,
                 volume: this.currentVolume,
                 muted: false,

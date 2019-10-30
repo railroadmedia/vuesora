@@ -162,6 +162,7 @@
 
         <div class="flex flex-row hide">
             <audio
+                id="playAlongsAudioPlayer"
                 ref="audioPlayer"
                 preload="auto"
             ></audio>
@@ -170,7 +171,7 @@
 </template>
 <script>
 import * as QueryString from 'query-string';
-import Utils from 'js-helper-functions/modules/utils';
+import Utils from '@musora/helper-functions/modules/utils';
 import ContentService from '../../assets/js/services/content';
 import PlayAlongsListItem from './PlayAlongsListItem.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
@@ -344,6 +345,16 @@ export default {
         this.addMouseEventHandlers();
 
         this.enableKeyboardControls();
+
+        // Pause the player if any other audio players on the page are played
+        const audioPlayers = document.querySelectorAll('audio');
+        Array.from(audioPlayers).forEach((player) => {
+            if (!player.matches('#playAlongsAudioPlayer')) {
+                player.addEventListener('play', () => {
+                    this.audioPlayer.pause();
+                });
+            }
+        });
     },
     beforeDestroy() {
         Object.keys(this.eventHandlers).forEach((event) => {
@@ -512,14 +523,16 @@ export default {
             if (this.activeItem != null && item.id === this.activeItem.id) {
                 this.playPause();
             } else {
-                if (this.activeItem != null && this.trackProgress) {
+                if (this.trackProgress) {
                     this.progressTracker.stop();
 
                     // When a user switches the track we send their practice time and reset
                     // the window unload event for the next track incase that's the last
                     // one they play
                     // - Curtis, Oct 2019
-                    this.sendProgressTracking();
+                    if (this.activeItem != null) {
+                        this.sendProgressTracking();
+                    }
                     this.updateNavigatorBeacon();
 
                     this.$nextTick(() => { this.progressTracker.reset(); });

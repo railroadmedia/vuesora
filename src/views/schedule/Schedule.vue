@@ -20,7 +20,7 @@
     </div>
 </template>
 <script>
-import { Content as ContentHelpers } from 'js-helper-functions';
+import { Content as ContentHelpers } from '@musora/helper-functions';
 import ScheduleItem from './_ScheduleItem.vue';
 import AddEventModal from '../../components/AddEvent/AddEventModal.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';

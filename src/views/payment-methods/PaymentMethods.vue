@@ -142,7 +142,9 @@
                 class="form-loading bg-white shadow corners-3 overflow pa-3 text-center"
                 @click.stop
             >
-                <loading-animation :theme-color="themeColor" />
+                <div class="square">
+                    <loading-animation :theme-color="themeColor" />
+                </div>
 
                 <p class="body mt-3">
                     Loading Please Wait...

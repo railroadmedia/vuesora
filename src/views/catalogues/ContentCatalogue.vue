@@ -120,7 +120,7 @@
 <script>
 import axios from 'axios';
 import * as QueryString from 'query-string';
-import { Content as ContentHelpers } from 'js-helper-functions';
+import { Content as ContentHelpers } from '@musora/helper-functions';
 import GridCatalogue from './GridCatalogue.vue';
 import ListCatalogue from './ListCatalogue.vue';
 import CatalogueFilters from './_CatalogueFilters.vue';

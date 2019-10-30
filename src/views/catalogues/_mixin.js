@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Content as ContentHelpers } from 'js-helper-functions';
+import { Content as ContentHelpers } from '@musora/helper-functions';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 import ContentModel from '../../assets/js/models/_model.js';
 
