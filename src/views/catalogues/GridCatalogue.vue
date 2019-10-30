@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-row"
+        class="flex flex-row nmh-2"
         :class="noWrap ? 'overflow' : 'flex-wrap'"
     >
         <catalogue-card

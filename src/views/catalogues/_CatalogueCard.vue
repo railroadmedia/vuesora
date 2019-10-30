@@ -30,8 +30,7 @@
 
                 <h3
                     v-if="!isGuitareoChordAndScale"
-                    class="thumbnail-title tiny font-compressed uppercase dense font-bold"
-                    :class="themeTextClass"
+                    class="thumbnail-title tiny font-compressed uppercase dense font-bold text-white"
                     v-html="mappedData.color_title"
                 >
                     {{ mappedData.color_title }}
@@ -59,6 +58,7 @@
                         class="fas"
                         :class="thumbnailIcon"
                     ></i>
+
                     <p
                         v-if="!isReleased"
                         class="tiny text-white font-bold"
@@ -73,12 +73,14 @@
                 :src="mappedData.sheet_music"
             >
 
-            <h1
+            <h5 class="x-tiny text-grey-4 uppercase" v-html="mappedData.content_type"></h5>
+
+            <h4
                 class="tiny text-black mb-1 font-compressed font-bold capitalize"
                 :class="{'text-center': isGuitareoChordAndScale}"
             >
                 {{ mappedData.black_title }}
-            </h1>
+            </h4>
 
             <p
                 v-if="mappedData.show_description"
@@ -87,12 +89,12 @@
                 {{ mappedData.description.replace(/<[^>]+>/g, '') }}
             </p>
 
-            <h4
-                class="x-tiny font-compressed text-grey-3 font-italic uppercase"
+            <h6
+                class="x-tiny font-compressed text-grey-3 uppercase"
                 :class="{'text-center': isGuitareoChordAndScale}"
             >
                 {{ mappedData.grey_title }}
-            </h4>
+            </h6>
         </a>
     </div>
 </template>

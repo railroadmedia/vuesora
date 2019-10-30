@@ -1,1 +1,279 @@
-.pagination{height:30px}.page-button{min-width:30px;width:30px;min-height:30px;height:30px;margin:0 3px;cursor:pointer}.page-button.active,.page-button.filler{pointer-events:none}.user-name{-webkit-box-flex:0;-ms-flex:0 0 100px;flex:0 0 100px;max-width:100px}@media screen and (min-width:40rem){.user-name{-webkit-box-flex:0;-ms-flex:0 0 250px;flex:0 0 250px;max-width:250px}}.user-name .avatar{max-width:45px}.user-name h6{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lesson-title,.lesson-type{-webkit-box-flex:0;-ms-flex:0 0 150px;flex:0 0 150px;max-width:150px;min-width:150px}.lesson-type i{font-size:12px}.comment-item.replied{display:none}.replied-to{-webkit-box-flex:0;-ms-flex:0 0 60px;flex:0 0 60px;max-width:60px;min-width:60px}.comment-body p{word-break:break-word}.comment-data{padding:.9375rem 0}@media screen and (min-width:40rem){.comment-data{padding:.9375rem}}.active-comment{width:100%;max-width:960px;margin:0 auto .9375rem}.comment-item .user-name{-webkit-box-flex:0;-ms-flex:0 0 100px;flex:0 0 100px;max-width:100px;min-width:100px}.cc-icon{font-size:55px;line-height:50px}.spin-wrapper{position:absolute;top:0;left:0;width:100%;height:100%}.spin-wrapper .spinner{position:absolute;height:60px;width:60px;border:7px solid transparent;top:50%;left:50%;margin:-30px;border-radius:50%;-webkit-animation:spin 1.5s linear infinite;animation:spin 1.5s linear infinite}.spin-wrapper .spinner:after,.spin-wrapper .spinner:before{content:"";position:absolute;border:7px solid transparent;border-radius:50%}.spin-wrapper .spinner:before{border-top-color:inherit;top:-16px;left:-16px;right:-16px;bottom:-16px;animation:spin .75s linear infinite reverse}.spin-wrapper .spinner:after{border-top-color:inherit;top:4px;left:4px;right:4px;bottom:4px;animation:spin .87s linear infinite reverse}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}.form-loading{position:fixed;top:50%;left:50%;z-index:200;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);width:250px}.form-loading i{font-size:72px}.form-loading .success-message{position:absolute;top:0;left:0;bottom:0;right:0}.loading-overlay{content:"";position:fixed;top:0;left:0;bottom:0;right:0;z-index:199;background:rgba(0,0,0,.4)}.radio-col{-webkit-box-flex:0;-ms-flex:0 0 30px;flex:0 0 30px;max-width:30px}.default-col{-webkit-box-flex:0;-ms-flex:0 0 60px;flex:0 0 60px;max-width:60px}.expiry-col{-webkit-box-flex:0;-ms-flex:0 0 120px;flex:0 0 120px;max-width:120px}.actions-col{-webkit-box-flex:0;-ms-flex:0 0 70px;flex:0 0 70px;max-width:70px}.flex.arrow-column{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-flex:0;-ms-flex:0 0 60px;flex:0 0 60px;padding-right:10px}.complete-column{margin-top:.9375rem}@media screen and (min-width:64rem){.complete-column{margin-top:0}}@media screen and (min-width:40rem){.assignment-title{-webkit-box-flex:0;-ms-flex:0 0 auto;flex:0 0 auto}}#practiceOverlay{position:fixed;top:50px;left:0;right:0;bottom:0;z-index:97}@media screen and (min-width:72.5rem){#practiceOverlay{top:65px}}#practiceOverlay .loading-exercise{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}#ssEmbed,.embed-column{height:100%}#ssEmbed{width:100%;position:absolute;top:0;left:0}.carousel{position:relative}.carousel .page{-webkit-transform:translateX(0);transform:translateX(0);will-change:transform;-webkit-transition:-webkit-transform .4s ease-in-out;transition:-webkit-transform .4s ease-in-out;transition:transform .4s ease-in-out;transition:transform .4s ease-in-out,-webkit-transform .4s ease-in-out}.carousel .page img{width:100%}.carousel .side-button{position:absolute;top:0;height:100%;background-color:transparent;will-change:background-color;-webkit-transition:background-color .2s ease-in-out;transition:background-color .2s ease-in-out;cursor:pointer;width:1.875rem}.carousel .side-button i{font-size:20px}.carousel .side-button:hover{background-color:#f2f2f2}.carousel .side-button.prev{left:0}.carousel .side-button.next{right:0}.carousel .page-buttons{position:absolute;bottom:0;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);white-space:nowrap}.carousel .page-buttons .page-button{height:12px;width:12px;display:inline-block;border-width:2px;cursor:pointer}.loop-play-button{-webkit-box-flex:0;-ms-flex:0 0 33.3333%;flex:0 0 33.3333%;max-width:33.3333%;min-width:33.3333%}@media screen and (min-width:40rem){.loop-play-button{-webkit-box-flex:0;-ms-flex:0 0 100px;flex:0 0 100px;max-width:100px;min-width:100px}}
+button.btn.page-button {
+  margin: 0 3px;
+}
+button.btn.page-button > span {
+  border-width: 1px;
+  font-weight: 500;
+}
+/**
+* Make a horizontal gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+/**
+* Make a vertical gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+.user-name {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 100px;
+          flex: 0 0 100px;
+  max-width: 100px;
+}
+@media screen and (min-width: 40rem) {
+.user-name {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 250px;
+            flex: 0 0 250px;
+    max-width: 250px;
+}
+}
+.user-name .avatar {
+  max-width: 45px;
+}
+.user-name h6 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lesson-title {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 150px;
+          flex: 0 0 150px;
+  max-width: 150px;
+  min-width: 150px;
+}
+.lesson-type {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 150px;
+          flex: 0 0 150px;
+  max-width: 150px;
+  min-width: 150px;
+}
+.lesson-type i {
+  font-size: 12px;
+}
+.comment-item.replied {
+  display: none;
+}
+.replied-to {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 60px;
+          flex: 0 0 60px;
+  max-width: 60px;
+  min-width: 60px;
+}
+.comment-body p {
+  word-break: break-word;
+}
+.comment-data {
+  padding: 0.9375rem 0;
+}
+@media screen and (min-width: 40rem) {
+.comment-data {
+    padding: 0.9375rem;
+}
+}
+.active-comment {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto 0.9375rem;
+}
+.comment-item .user-name {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 100px;
+          flex: 0 0 100px;
+  max-width: 100px;
+  min-width: 100px;
+}
+.cc-icon {
+  font-size: 55px;
+  line-height: 50px;
+}
+/**
+* Make a horizontal gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+/**
+* Make a vertical gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+.form-loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 200;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 250px;
+}
+.form-loading i {
+  font-size: 72px;
+}
+.form-loading .success-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.loading-overlay {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 199;
+  background: rgba(0, 0, 0, 0.4);
+}
+.radio-col {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 30px;
+          flex: 0 0 30px;
+  max-width: 30px;
+}
+.default-col {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 60px;
+          flex: 0 0 60px;
+  max-width: 60px;
+}
+.expiry-col {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 120px;
+          flex: 0 0 120px;
+  max-width: 120px;
+}
+.actions-col {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 70px;
+          flex: 0 0 70px;
+  max-width: 70px;
+}
+/**
+* Make a horizontal gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+/**
+* Make a vertical gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+.flex.arrow-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 60px;
+          flex: 0 0 60px;
+  padding-right: 10px;
+}
+.complete-column {
+  margin-top: 0.9375rem;
+}
+@media screen and (min-width: 64rem) {
+.complete-column {
+    margin-top: 0;
+}
+}
+@media screen and (min-width: 40rem) {
+.assignment-title {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+}
+}
+#practiceOverlay {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 97;
+}
+@media screen and (min-width: 72.5rem) {
+#practiceOverlay {
+    top: 65px;
+}
+}
+#practiceOverlay .loading-exercise {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+.embed-column {
+  height: 100%;
+}
+#ssEmbed {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.carousel {
+  position: relative;
+}
+.carousel .page {
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+  will-change: transform;
+  -webkit-transition: -webkit-transform 0.4s ease-in-out;
+  transition: -webkit-transform 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out, -webkit-transform 0.4s ease-in-out;
+}
+.carousel .page img {
+  width: 100%;
+}
+.carousel .side-button {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: transparent;
+  will-change: background-color;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+  width: 1.875rem;
+}
+.carousel .side-button i {
+  font-size: 20px;
+}
+.carousel .side-button:hover {
+  background-color: #f2f2f2;
+}
+.carousel .side-button.prev {
+  left: 0;
+}
+.carousel .side-button.next {
+  right: 0;
+}
+.carousel .page-buttons {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  white-space: nowrap;
+}
+.carousel .page-buttons .page-button {
+  height: 12px;
+  width: 12px;
+  display: inline-block;
+  border-width: 2px;
+  cursor: pointer;
+}

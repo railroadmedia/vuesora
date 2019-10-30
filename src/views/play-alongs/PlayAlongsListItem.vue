@@ -1,7 +1,7 @@
 <template>
     <div
-        class="content-table-row flex flex-row bt-grey-1-1
-         no-decoration pa-1 pointer relative text-grey-3 hover-text-black"
+        class="content-table-row flex flex-row bb-grey-1-1
+         no-decoration pv-1 pointer relative text-grey-3 hover-bg-grey-7 hover-text-black"
         :class="stateClasses"
     >
         <!-- THUMBNAIL COLUMN -->
@@ -150,7 +150,6 @@ export default {
             return {
                 active: this.active,
                 'bg-grey-7': this.active,
-                'bg-white': !this.active,
             };
         },
 
