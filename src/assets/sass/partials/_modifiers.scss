@@ -235,3 +235,11 @@ $borderDirections: (
     box-shadow:0 0 7px rgba(0,0,0,.3);
   }
 }
+
+.icon-bg-circle {
+  height:35px;
+  width:35px;
+  min-height:35px;
+  min-width:35px;
+  @include flexCenter();
+}
