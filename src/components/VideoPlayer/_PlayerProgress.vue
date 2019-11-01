@@ -127,8 +127,7 @@ export default {
             }
 
             return {
-                transform: `translateX(${offset}px)`,
-                '-webkit-transform': `translateX(${offset}px)`,
+                left: `${offset}px`,
             };
         },
 
