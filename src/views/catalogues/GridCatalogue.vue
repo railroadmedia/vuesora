@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-row nmh-2"
+        class="flex flex-row nmh-1"
         :class="noWrap ? 'overflow' : 'flex-wrap'"
     >
         <catalogue-card
@@ -15,6 +15,7 @@
             :lock-unowned="lockUnowned"
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
+            :six-wide="sixWide"
             @addToList="emitAddToList"
         ></catalogue-card>
     </div>
@@ -63,6 +64,10 @@ export default {
             default: () => '',
         },
         lockUnowned: {
+            type: Boolean,
+            default: () => false,
+        },
+        sixWide: {
             type: Boolean,
             default: () => false,
         },

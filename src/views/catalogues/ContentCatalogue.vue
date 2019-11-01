@@ -61,6 +61,7 @@
             :lock-unowned="lockUnowned"
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
+            :six-wide="sixWide"
             @addToList="addToListEventHandler"
         ></grid-catalogue>
 
@@ -286,6 +287,10 @@ export default {
         catalogueName: {
             type: String,
             default: () => '',
+        },
+        sixWide: {
+            type: Boolean,
+            default: () => false,
         },
     },
     data() {

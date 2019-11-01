@@ -1,7 +1,7 @@
 <template>
     <div
         class="flex flex-column pa-1 catalogue-card"
-        :class="{'no-access': this.noAccess}"
+        :class="[{'no-access': this.noAccess}, {'six-wide': sixWide}]"
     >
         <a
             :href="renderLink ? item.url : false"
@@ -107,6 +107,12 @@ import ThemeClasses from '../../mixins/ThemeClasses';
 export default {
     name: 'CatalogueCard',
     mixins: [Mixin, ThemeClasses],
+    props: {
+        sixWide: {
+            type: Boolean,
+            default: () => false,
+        },
+    },
     computed: {
         mappedData() {
             return this.contentModel.card;
