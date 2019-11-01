@@ -275,6 +275,21 @@
     max-width:25%;
   }
 
+  &.six-wide {
+    flex:0 0 33.33%;
+    max-width:33.33%;
+
+    @include small(){
+      flex:0 0 25%;
+      max-width:25%;
+    }
+
+    @include medium(){
+      flex:0 0 16.66%;
+      max-width:16.66%;
+    }
+  }
+
   &:hover {
     .card-media {
       .thumb-img {
@@ -398,11 +413,13 @@
       color:#fff;
     }
   }
+
   .new {
     position:absolute;
-    top:0;
-    left:0;
-    border-radius:5px 0 5px 0;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    border-radius:5px 5px 0 0;
     padding:5px;
   }
 }
@@ -535,6 +552,21 @@
 
   @include medium {
     .catalogue-card:nth-child(n+4) {
+      display:flex;
+    }
+  }
+}
+
+.six-cards-row {
+
+  @include small {
+    .catalogue-card:nth-child(n+5) {
+      display:none;
+    }
+  }
+
+  @include medium {
+    .catalogue-card:nth-child(n+5) {
       display:flex;
     }
   }

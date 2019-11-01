@@ -650,3 +650,50 @@ ul {
 .simplebar-scrollbar:before {
   background: nth(nth($greys, 4), 2);
 }
+
+.user-metric {
+  height:150px;
+  border-radius:75px;
+}
+
+.method-progress {
+  height:150px;
+  border-radius:75px;
+
+  img {
+    width:200px;
+    max-width:100%;
+    height:auto;
+
+    @include small {
+      width:500px;
+    }
+  }
+
+  .progress-bar {
+    width:100%;
+    max-width:200px;
+    height:26px;
+    border-radius:13px;
+
+    .progress {
+      height:100%;
+      position:absolute;
+      border-radius:10px;
+      top:0;
+      left:0;
+
+      .amount {
+        position:absolute;
+        right:5px;
+        top:0;
+        height:100%;
+
+        &.right {
+          right:-5px;
+          transform:translateX(100%);
+        }
+      }
+    }
+  }
+}
