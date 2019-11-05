@@ -113,16 +113,16 @@ ul {
   }
 }
 
+.header-avatar {
+  flex:0 0 125px;
+  max-width:125px;
+}
+
 #pageHeader {
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
   background-color:#000;
-
-  .header-avatar {
-    flex:0 0 125px;
-    max-width:125px;
-  }
 
   .pack-header {
     background-size:cover;
@@ -672,7 +672,7 @@ ul {
 
   .progress-bar {
     width:100%;
-    max-width:200px;
+    max-width:260px;
     height:26px;
     border-radius:13px;
 

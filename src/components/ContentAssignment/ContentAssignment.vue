@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-column bb-light-1 assignment-component">
-        <div class="flex flex-row align-v-center flex-wrap pa-2">
+    <div class="flex flex-column bt-light-1 assignment-component bb-grey-1-1">
+        <div class="flex flex-row align-v-center flex-wrap pv-3">
             <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
                     <div class="flex flex-column arrow-column hide-xs-only">
