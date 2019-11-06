@@ -274,6 +274,36 @@
   }
 }
 
+.resource-buttons {
+  justify-content:stretch;
+
+  @include small {
+    justify-content:flex-end;
+  }
+}
+
+.resource-button {
+  //flex:0 0 25%;
+  //
+  //@include xSmallOnly {
+  //  max-width:25%;
+  //  min-width:25%;
+  //}
+
+  @include small {
+    flex:0 0 auto;
+  }
+}
+
+.download-dropdown {
+  position:absolute;
+  width:200px;
+  top:105%;
+  left:50%;
+  margin-left:-100px;
+  z-index:20;
+}
+
 .catalogue-card {
   flex:0 0 50%;
   max-width:50%;

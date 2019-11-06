@@ -183,7 +183,7 @@ export default (function () {
                 const completeButton = document.querySelector('.completeButton');
                 const progressBar = document.querySelector('.trophy-progress');
                 const progressText = progressBar.querySelector('.progress-percent');
-                const currentProgress = progressBar ? progressBar.style.width.replace(/%/g, '') : 0;
+                const currentProgress = progressBar ? progressBar.dataset.currentProgress : 0;
                 const progressDifference = 100 / numberOfAssignments;
                 let newProgress = null;
 
@@ -201,6 +201,7 @@ export default (function () {
 
                 if (progressBar) {
                     progressBar.style.transform = `translateX(${newProgress - 100}%)`;
+                    progressBar.dataset.currentProgress = newProgress;
                     progressText.innerHTML = `${newProgress}%`;
 
                     if (newProgress <= 50) {

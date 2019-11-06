@@ -337,17 +337,6 @@
                 </span>
             </button>
         </div>
-
-        <VideoSocialButtons
-            v-if="!hideBottomBars"
-            :theme-color="themeColor"
-            :is-liked="isLiked"
-            :like-count="likeCount"
-            :content-id="contentId"
-            :user-id="userId"
-            :brand="brand"
-            :current-time-in-seconds="currentTime"
-        />
     </div>
 </template>
 <script>
@@ -369,7 +358,6 @@ import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
 import PlayerShortcuts from './_PlayerShortcuts.vue';
 import PlayerError from './_PlayerError.vue';
 import PlayerStats from './_PlayerStats.vue';
-import VideoSocialButtons from '../_VideoSocialButtons.vue';
 
 export default {
     name: 'VideoPlayer',
@@ -383,7 +371,6 @@ export default {
         PlayerShortcuts,
         PlayerError,
         PlayerStats,
-        VideoSocialButtons,
     },
     mixins: [ThemeClasses, EventHandlers],
     props: {
