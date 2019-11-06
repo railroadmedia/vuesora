@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column bt-light-1 assignment-component bb-grey-1-1">
+    <div class="flex flex-column assignment-component bb-grey-1-1">
         <div class="flex flex-row align-v-center flex-wrap pv-3">
             <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
@@ -198,12 +198,9 @@
 
                 <div
                     v-if="loading"
-                    class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
+                    class="loading-exercise heading ph-4 pv-2"
                 >
-                    <i
-                        class="fas fa-spinner fa-spin"
-                        :class="'text-' + themeColor"
-                    ></i>
+                    <loading-animation :theme-color="themeColor" />
                 </div>
             </div>
         </transition>
@@ -215,9 +212,13 @@ import ContentService from '../../assets/js/services/content';
 import Utils from '../../assets/js/classes/utils';
 import Toasts from '../../assets/js/classes/toasts';
 import ProgressTracker from '../../assets/js/classes/progress-tracker';
+import LoadingAnimation from "../LoadingAnimation/LoadingAnimation";
 
 export default {
     name: 'ContentAssignment',
+    components: {
+        'loading-animation': LoadingAnimation,
+    },
     props: {
         brand: {
             type: String,
