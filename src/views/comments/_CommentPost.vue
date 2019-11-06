@@ -146,7 +146,7 @@
                 leave-active-class=""
             >
                 <div
-                    v-show="replying"
+                    v-if="replying"
                     class="flex flex-row comment-post mv-2"
                 >
                     <div class="flex flex-column avatar-column pr hide-xs-only">
@@ -439,8 +439,6 @@ export default {
         },
 
         likeComment() {
-            console.log(this.comment.id);
-
             this.$emit('likeComment', {
                 id: this.comment.id,
                 isLiked: this.comment.is_liked,
