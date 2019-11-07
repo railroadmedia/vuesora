@@ -243,3 +243,22 @@ $borderDirections: (
   min-width:35px;
   @include flexCenter();
 }
+
+.skeleton-loader {
+  background-color:nth(nth($greys, 2), 2)!important;
+  max-width:100%;
+  overflow:hidden;
+  position:relative;
+
+  &:after {
+    content: '';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    width:100%;
+    animation: skeleton-loader 1.5s infinite;
+    background:linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  }
+}
