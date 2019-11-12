@@ -141,6 +141,16 @@
   opacity: 0;
 }
 
+.fade-enter-active {
+  transition: all .3s ease-in-out;
+}
+.fade-leave-active {
+  transition: all .3s ease-in-out;
+}
+.fade-enter, .grow-fade-leave-to {
+  opacity: .1;
+}
+
 
 // NOTY
 .noty_effects_open {
