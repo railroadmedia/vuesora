@@ -10,6 +10,7 @@ import Comments from '../views/comments/Comments.vue';
 import ContentAssignment from './ContentAssignment/ContentAssignment.vue';
 import LegacyLoops from './LegacyLoops/LegacyLoops.vue';
 import VideoResources from './VideoResources/VideoResources.vue';
+import YoutubePlayer from './YoutubePlayer/YoutubePlayer.vue';
 
 const Components = {
     EmailForm,
@@ -24,6 +25,7 @@ const Components = {
     ContentAssignment,
     LegacyLoops,
     VideoResources,
+    YoutubePlayer,
 };
 
 export default Components;
