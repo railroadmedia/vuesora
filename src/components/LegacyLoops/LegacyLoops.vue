@@ -32,8 +32,11 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-row pa-1">
-            <div class="flex flex-column icon-col">
+        <div class="flex flex-row pa-1 loops-audio-player">
+            <div
+                v-if="clickTrack"
+                class="flex flex-column icon-col"
+            >
                 <button
                     class="btn"
                     @click="enableClick"
@@ -46,10 +49,13 @@
                     </span>
                 </button>
             </div>
-            <div class="flex flex-column pl-1">
+            <div
+                class="flex flex-column"
+                :class="clickTrack ? 'pl-1' : ''"
+            >
                 <audio
+                    :id="audioPlayerId"
                     ref="audioPlayer"
-                    id="loopsAudioPlayer"
                     controls
                     loop
                     :src="currentSource"
@@ -70,6 +76,11 @@ export default {
         loops: {
             type: Object,
             default: () => ({}),
+        },
+
+        clickTrack: {
+            type: Boolean,
+            default: () => true,
         },
 
         audioPlayerId: {
