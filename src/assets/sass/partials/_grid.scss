@@ -523,6 +523,15 @@ $numerators: 2 3 6 9 10;
 }
 
 // CONDITIONAL PADDING/MARGIN
+@include xSmallOnly {
+  .p-sm-up {
+    padding:0!important;
+  }
+  .m-sm-up {
+    margin:0!important;
+  }
+}
+
 @include small {
   .p-xs-only {
     padding:0!important;

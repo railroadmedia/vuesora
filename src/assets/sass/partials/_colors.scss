@@ -107,13 +107,18 @@
 
 
 [class*='hover-bg-'] {
-  transition:background-color .1s ease-in-out;
+  transition:background-color .1s ease;
   will-change:background-color;
 }
 
 [class*='hover-text-'] {
-  transition:color .1s ease-in-out;
+  transition:color .1s ease;
   will-change:color;
+}
+
+[class*='hover-border-'] {
+  transition:border .1s ease;
+  will-change:border;
 }
 
 .hover-bg-black:hover {
@@ -144,21 +149,14 @@
 
   .hover-text-#{$key}:hover {
     color:$value;
-
-    @include large() {
-      & > span {
-        color: $value;
-      }
-    }
   }
+
   .hover-bg-#{$key}:hover {
     background-color:$value;
+  }
 
-    @include large(){
-      & > span {
-        color:$value;
-      }
-    }
+  .hover-border-#{$key}:hover {
+    border-color:$value;
   }
 }
 

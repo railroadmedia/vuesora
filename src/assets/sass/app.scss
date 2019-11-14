@@ -67,6 +67,22 @@ body {
   }
 }
 
+#intercom-container {
+  .intercom-launcher-frame, .intercom-messenger-frame {
+    transition: bottom .2s ease;
+  }
+
+  &.moved {
+    .intercom-launcher-frame {
+      bottom:100px;
+    }
+
+    .intercom-messenger-frame {
+      bottom:200px;
+    }
+  }
+}
+
 iframe {
   border:none;
 }
