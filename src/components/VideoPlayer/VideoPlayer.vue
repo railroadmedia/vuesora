@@ -55,7 +55,7 @@
                     >
                         <ul class="list-style-none tiny dense font-bold">
                             <li
-                                v-if="!isMobile"
+                                v-if="!isMobile && useKeyboard"
                                 class="pa-1 hover-bg-grey-4"
                                 @click="openDialog('keyboardShortcuts')"
                             >
@@ -404,34 +404,9 @@ export default {
             default: () => 0,
         },
 
-        isLiked: {
-            type: Boolean,
-            default: () => false,
-        },
-
-        likeCount: {
-            type: [Number, String],
-            default: () => 0,
-        },
-
-        contentId: {
-            type: [Number, String],
-            default: () => null,
-        },
-
-        userId: {
-            type: [Number, String],
-            default: () => null,
-        },
-
         videoId: {
             type: [Number, String],
             default: () => null,
-        },
-
-        progressState: {
-            type: String,
-            default: () => 'unstarted',
         },
 
         castTitle: {
@@ -442,6 +417,11 @@ export default {
         hideBottomBars: {
             type: Boolean,
             default: () => false,
+        },
+
+        useKeyboard: {
+            type: Boolean,
+            default: () => true,
         },
     },
     data() {
@@ -812,7 +792,9 @@ export default {
                 this.isFullscreen = document.fullscreenElement != null;
             });
 
-            this.enableKeyboardControls();
+            if (this.useKeyboard) {
+                this.enableKeyboardControls();
+            }
 
             setTimeout(() => {
                 this.hasRetriedSource = false;
