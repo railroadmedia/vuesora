@@ -2,6 +2,8 @@ import ChordsAndScalesModel from './chords-and-scales';
 import CourseModel from './course';
 import CoursePartModel from './course-part';
 import LearningPathModel from './learning-path';
+import LearningPathLevelModel from './learning-path-level';
+import LearningPathCourseModel from './learning-path-course';
 import LearningPathPartModel from './learning-path-part';
 import PackBundleModel from './pack-bundle';
 import PackBundleLessonModel from './pack-bundle-lesson';
@@ -39,6 +41,8 @@ export default class ContentTypeModel {
         case 'course': return new CourseModel({ brand, post });
         case 'course-part': return new CoursePartModel({ brand, post });
         case 'learning-path': return new LearningPathModel({ brand, post });
+        case 'learning-path-level': return new LearningPathLevelModel({ brand, post });
+        case 'learning-path-course': return new LearningPathCourseModel({ brand, post });
         case 'learning-path-part': return new LearningPathPartModel({ brand, post });
         case 'pack-bundle': return new PackBundleModel({ brand, post });
         case 'pack-bundle-lesson': return new PackBundleLessonModel({ brand, post });
