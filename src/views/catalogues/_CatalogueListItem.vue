@@ -1,6 +1,6 @@
 <template>
     <a
-        class="flex flex-row bb-grey-1-1 no-decoration pv-1 hover-bg-grey-7 relative text-grey-3 hover-text-black"
+        class="flex flex-row bb-grey-1-1 no-decoration pa-1 hover-bg-grey-7 relative text-grey-3 hover-text-black"
         :class="class_object"
         :href="renderLink ? item.url : false"
     >
@@ -38,6 +38,13 @@
                         ></span>
                     </div>
 
+                    <h5
+                        v-if="mappedData.thumb_title"
+                        class="thumb-title heading uppercase text-center text-white"
+                    >
+                        {{ mappedData.thumb_title }}
+                    </h5>
+
                     <span class="thumb-hover flex-center">
                         <i
                             class="fas"
@@ -46,7 +53,7 @@
                         <p
                             v-if="!isReleased"
                             class="text-white font-bold"
-                            :class="this.overview ? 'tiny' : 'x-tiny'"
+                            :class="overview ? 'tiny' : 'x-tiny'"
                         >
                             {{ releaseDate }}
                         </p>
@@ -94,18 +101,21 @@
             <p
                 v-if="brand !== 'guitareo'"
                 class="tiny font-compressed uppercase text-truncate"
-                :class="themeTextClass"
+                :class="[themeTextClass, overview ? 'dense font-bold' : 'font-compressed']"
             >
                 {{ mappedData.color_title }}
             </p>
 
-            <p class="tiny font-compressed text-black font-bold item-title">
+            <p
+                class="text-black font-bold item-title"
+                :class="overview ? 'title' : 'tiny font-compressed'"
+            >
                 {{ mappedData.black_title }}
             </p>
 
             <p
                 v-if="overview && mappedData.description"
-                class="tiny text-black"
+                class="tiny text-grey-6"
                 v-html="mappedData.description"
             >
                 {{ mappedData.description }}
@@ -115,13 +125,16 @@
                 v-if="!is_search"
                 class="x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up"
             >
-                <span v-for="(item, i) in mappedData.column_data">
+                <span
+                    v-for="(column_data, i) in mappedData.column_data"
+                    :key="`${item.id}-mappedData-${i}`"
+                >
                     <span
                         v-if="i > 0"
                         class="bullet"
                     >-</span>
 
-                    {{ item }}
+                    {{ column_data }}
                 </span>
             </p>
         </div>
@@ -136,11 +149,12 @@
 
         <!-- SHOW ALL OF THE DATA COLUMNS FROM THE DATA MAPPER -->
         <div
-            v-for="(item, i) in mappedData.column_data"
+            v-for="(column_data, i) in mappedData.column_data"
             v-if="!is_search"
+            :key="`${item.id}-mappedData-${i}`"
             class="flex flex-column uppercase align-center basic-col text-center font-italic x-tiny font-compressed hide-sm-down"
         >
-            {{ item }}
+            {{ column_data }}
         </div>
 
         <!-- ONLY SHOW TYPE ON SEARCHES -->
@@ -260,7 +274,8 @@ export default {
                 'large-thumbnail': this.overview,
                 'thumbnail-col': !this.overview,
                 active: this.active,
-                'background-cards': this.item.type === 'learning-path',
+                'background-cards': this.item.type === 'learning-path'
+                    || this.item.type === 'learning-path-course',
             };
         },
 

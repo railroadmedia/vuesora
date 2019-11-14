@@ -132,7 +132,8 @@ export default {
 
         thumbnailIcon() {
             const contentWithHierarchy = {
-                drumeo: ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
+                drumeo: ['course', 'learning-path', 'learning-path-level', 'learning-path-course', 'pack',
+                    'pack-bundle', 'semester-pack'],
                 guitareo: ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
                 pianote: ['course', 'learning-path', 'pack', 'chord-and-scale'],
             };
