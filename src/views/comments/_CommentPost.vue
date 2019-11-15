@@ -29,13 +29,13 @@
 
             <p
                 v-if="showUserExp"
-                class="x-tiny dense font-bold uppercase text-center mt-1"
+                class="body dense font-bold uppercase text-center mt-1"
             >
-                {{ userExpRank }}
+                Level {{ userExpRank }}
             </p>
             <p
                 v-if="showUserExp"
-                class="x-tiny dense text-center font-compressed"
+                class="tiny dense text-center font-compressed"
             >
                 {{ userExpValue }} XP
             </p>
@@ -245,7 +245,6 @@ import Toasts from '../../assets/js/classes/toasts';
 import CommentService from '../../assets/js/services/comments';
 import TextEditor from '../../components/TextEditor/TextEditor.vue';
 import CommentReply from './_CommentReply.vue';
-import xpMapper from '../../assets/js/classes/xp-mapper';
 import Utils from '../../assets/js/classes/utils';
 import ThemeClasses from '../../mixins/ThemeClasses';
 
@@ -323,7 +322,7 @@ export default {
                 return `${this.brand} Team`;
             }
 
-            return xpMapper.getNearestValue(this.comment.user.xp);
+            return this.comment.user.level_number || '0.0';
         },
 
         repliesToShow() {

@@ -258,8 +258,6 @@ export default {
         const uriParams = QueryString.parse(window.location.search);
         // Run the goToComment method if it does
         if (Object.keys(uriParams).indexOf('goToComment') !== -1) {
-            console.log(uriParams.goToComment);
-
             this.goToComment(uriParams.goToComment);
         }
 
