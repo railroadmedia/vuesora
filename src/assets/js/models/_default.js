@@ -102,6 +102,10 @@ export default class ContentModel {
         return `<i class="${icon}" style="margin-right:5px;"></i> ${type}`;
     }
 
+    getPostDifficulty() {
+        return ContentModel.mapDifficulty(this.post);
+    }
+
     get episodeNumber() {
         return this.post.sort ? `Episode #${this.post.sort}` : 'TBD';
     }
