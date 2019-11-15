@@ -318,25 +318,6 @@
             v-if="isPipEnabled"
             class="widescreen bg-black"
         ></div>
-
-        <div
-            v-if="!hideBottomBars"
-            class="flex flex-row bg-black text-white pa-1 align-center flex-wrap"
-        >
-            <p class="tiny">
-                You are currently viewing our new video player beta!
-            </p>
-
-            <button class="btn collapse-150"
-                    @click="stopTesting">
-                <span
-                    class="flat short"
-                    :class="themeTextClass"
-                >
-                    Stop Testing
-                </span>
-            </button>
-        </div>
     </div>
 </template>
 <script>
@@ -412,11 +393,6 @@ export default {
         castTitle: {
             type: String,
             default: () => '',
-        },
-
-        hideBottomBars: {
-            type: Boolean,
-            default: () => false,
         },
 
         useKeyboard: {
@@ -1141,11 +1117,6 @@ export default {
             Object.keys(this.dialogs).forEach((dialog) => {
                 this.dialogs[dialog] = false;
             });
-        },
-
-        stopTesting() {
-            document.cookie = 'enableHlsPlayer=;path=/;expires=0;';
-            window.location.reload();
         },
     },
 };
