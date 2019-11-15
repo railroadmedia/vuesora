@@ -148,6 +148,10 @@ export default {
                 }
             }
 
+            if (this.item.completed) {
+                return this.completedIcon;
+            }
+
             return contentWithHierarchy[this.brand].indexOf(this.item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
         },
 

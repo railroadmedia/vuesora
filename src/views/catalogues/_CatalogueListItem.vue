@@ -256,6 +256,7 @@ export default {
         class_object() {
             return {
                 active: this.active,
+                completed: this.item.completed,
                 'content-overview': this.overview,
                 'content-table-row': !this.overview,
                 'no-access': this.noAccess,

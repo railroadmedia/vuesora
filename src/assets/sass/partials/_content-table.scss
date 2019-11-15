@@ -240,7 +240,7 @@
 
 .content-table-row, .content-overview {
 
-  &:hover:not(.scheduled), &.active {
+  &:hover:not(.scheduled), &.active, &.completed {
     .thumb-wrap {
       //.thumb-img {
       //  transform:scale(1.1);
