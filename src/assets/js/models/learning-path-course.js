@@ -16,8 +16,4 @@ export default class LearningPathCourseContentModel extends ContentModel {
         ];
         this.list.description = this.getPostDatum('description');
     }
-
-    get levelNumber() {
-        return `Level ${this.post.position}`;
-    }
 }
