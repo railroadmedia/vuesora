@@ -43,6 +43,7 @@ export default class ContentTypeModel {
         case 'learning-path': return new LearningPathModel({ brand, post });
         case 'learning-path-level': return new LearningPathLevelModel({ brand, post });
         case 'learning-path-course': return new LearningPathCourseModel({ brand, post });
+        case 'learning-path-lesson': return new LearningPathPartModel({ brand, post });
         case 'learning-path-part': return new LearningPathPartModel({ brand, post });
         case 'pack-bundle': return new PackBundleModel({ brand, post });
         case 'pack-bundle-lesson': return new PackBundleLessonModel({ brand, post });
