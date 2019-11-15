@@ -3,59 +3,36 @@
 // Progress
 .content-progress {
 
-  &.compact {
-
-    & > .flex-column {
-      flex:1 1 100%;
+  & > .flex-column {
+    @include xSmallOnly {
+      flex:0 0 100%;
     }
 
-    .trophy-progress-bar {
-      margin-right:0;
-      margin-bottom:0;
+    &.left-column {
+      flex:0 0 100%;
+      margin-bottom:$gutterWidth / 2;
+
+      h3 {
+        text-align:center;
+      }
+
+      @include medium {
+        flex:0 0 250px;
+        margin-bottom:0;
+
+        h3 {
+          text-align:left;
+        }
+      }
+    }
+
+    &.right-column {
+      @include small {
+        flex:0 0 250px;
+      }
     }
   }
 }
-
-.congrats-container {
-  &.compact {
-
-    .subtitle {
-      font-size:16px;
-    }
-  }
-}
-
-//.content-progress {
-//  position:sticky;
-//  top:60px;
-//  z-index:20;
-//
-//  @include medium {
-//    top:80px;
-//  }
-//}
-
-//.lesson-sidebar {
-//
-//  @include medium {
-//    position:sticky;
-//    top:60px;
-//    z-index:20;
-//
-//    .content-table {
-//      max-height:calc(100vh - 180px);
-//      overflow:auto;
-//
-//      &.has-see-all {
-//        max-height:calc(100vh - 230px);
-//      }
-//    }
-//  }
-//
-//  @include large {
-//    top:80px;
-//  }
-//}
 
 .trophy-progress-bar {
   height:50px;
