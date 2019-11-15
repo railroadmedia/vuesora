@@ -16,6 +16,7 @@
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
             :six-wide="sixWide"
+            :display-inline="displayInline"
             @addToList="emitAddToList"
         ></catalogue-card>
     </div>
@@ -68,6 +69,10 @@ export default {
             default: () => false,
         },
         sixWide: {
+            type: Boolean,
+            default: () => false,
+        },
+        displayInline: {
             type: Boolean,
             default: () => false,
         },

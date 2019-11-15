@@ -62,6 +62,7 @@
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
             :six-wide="sixWide"
+            :display-inline="displayInline"
             @addToList="addToListEventHandler"
         ></grid-catalogue>
 
@@ -289,6 +290,10 @@ export default {
             default: () => '',
         },
         sixWide: {
+            type: Boolean,
+            default: () => false,
+        },
+        displayInline: {
             type: Boolean,
             default: () => false,
         },

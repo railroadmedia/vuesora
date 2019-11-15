@@ -548,6 +548,23 @@ $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
   }
 }
 
+.related-lessons {
+  .thumbnail-col {
+    flex:0 0 150px;
+    max-width:150px;
+    min-width:150px;
+  }
+
+  .thumbnail-title {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:$gutterWidth #{$gutterWidth / 3} #{$gutterWidth / 3};
+    @include topToBottomGradient(transparent, #000);
+  }
+}
+
 .dashboard-new-lessons {
 
   //@include large {

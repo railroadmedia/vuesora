@@ -172,21 +172,27 @@
   max-width:100%;
 }
 
+
 // Lesson Info Sidebar
 #lessonInfo {
   flex-wrap:wrap;
 
-  @include medium {
+  @include small {
     flex-wrap:nowrap;
   }
 
   .lesson-sidebar {
     flex:0 0 100%;
 
-    @include medium {
+    @include small {
       flex:0 0 320px;
       max-width:320px;
       margin-left:$gutterWidth / 2;
+    }
+
+    @include medium {
+      flex:0 0 420px;
+      max-width:420px;
     }
 
     .content-table {
@@ -318,6 +324,12 @@
     max-width:25%;
   }
 
+  &.display-inline {
+    flex:0 0 100%;
+    max-width:100%;
+    min-width:100%;
+  }
+
   &.six-wide {
     flex:0 0 33.33%;
     max-width:33.33%;
@@ -350,6 +362,24 @@
     .card-media .thumb-hover {
       opacity:1;
       visibility:visible;
+    }
+  }
+
+  .thumbnail-col {
+    flex: 0 0 175px;
+    max-width:175px;
+    min-width:175px;
+
+    @include small {
+      flex: 0 0 125px;
+      max-width:125px;
+      min-width:125px;
+    }
+
+    @include medium {
+      flex: 0 0 175px;
+      max-width:175px;
+      min-width:175px;
     }
   }
 

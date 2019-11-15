@@ -165,7 +165,7 @@ export default {
             }
             
             return {
-                drumeo: ['song'],
+                drumeo: ['song', 'learning-path-level'],
                 guitareo: ['song', 'chord-and-scale'],
                 pianote: ['song'],
             }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
