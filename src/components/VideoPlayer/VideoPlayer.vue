@@ -37,7 +37,7 @@
                         />
                     </transition>
 
-                    <transition name="grow-fade">
+                    <transition name="fade">
                         <span
                             v-show="currentPlaybackRate !== 1"
                             class="rate-indicator title text-white pa-1"
@@ -78,7 +78,7 @@
                         </ul>
                     </div>
 
-                    <transition name="grow-fade">
+                    <transition name="fade">
                         <div
                             v-show="isPipEnabled"
                             class="close-pip"
@@ -104,7 +104,7 @@
                         </div>
                     </transition>
 
-                    <transition name="grow-fade">
+                    <transition name="fade">
                         <div
                             v-show="isChromeCastConnected"
                             class="cast-dialog flex flex-center pa-3 text-center text-white"
@@ -148,7 +148,7 @@
                             <div class="flex flex-row align-h-right">
                                 <transition name="grow-fade">
                                     <PlayerButton
-                                        v-if="isChromeCastSupported"
+                                        v-if="isChromeCastSupported && controls.chromecast"
                                         :theme-color="themeColor"
                                         title="Chromecast"
                                         :active="chromeCast && chromeCast.Connected"
@@ -160,7 +160,7 @@
 
                                 <transition name="grow-fade">
                                     <PlayerButton
-                                        v-if="isAirplaySupported"
+                                        v-if="isAirplaySupported && controls.airplay"
                                         :theme-color="themeColor"
                                         title="Apple Airplay"
                                         :active="isAirplayConnected"
@@ -176,9 +176,11 @@
                             <!--  TOP ROW  -->
                             <div
                                 class="flex flex-row"
+                                style="min-height:50px;"
                                 @click.stop.native="playPauseViaControlWrap"
                             >
                                 <PlayerButton
+                                    v-if="controls.backward"
                                     :theme-color="themeColor"
                                     title="Rewind 5 Seconds (Left Arrow)"
                                     data-cy="rewind-button"
@@ -190,6 +192,7 @@
                                 <div class="flex flex-column spacer"></div>
 
                                 <PlayerButton
+                                    v-if="controls.forward"
                                     :theme-color="themeColor"
                                     title="Forward 5 Seconds (Right Arrow)"
                                     data-cy="fast-forward-button"
@@ -200,7 +203,10 @@
                             </div>
 
                             <!--  MIDDLE ROW  -->
-                            <div class="flex flex-row">
+                            <div
+                                v-if="controls.progress"
+                                class="flex flex-row"
+                            >
                                 <PlayerProgress
                                     :theme-color="themeColor"
                                     :current-progress="currentProgress"
@@ -223,6 +229,7 @@
                                 @click.stop.prevent
                             >
                                 <PlayerButton
+                                    v-if="controls.play"
                                     :theme-color="themeColor"
                                     :title="isPlaying ? 'Pause (Spacebar)' : 'Play (Spacebar)'"
                                     data-cy="play-pause-button"
@@ -234,21 +241,24 @@
                                     ></i>
                                 </PlayerButton>
 
-                                <div class="flex flex-column text-white body align-v-center noselect flex-auto">
+                                <div
+                                    v-if="controls.time"
+                                    class="flex flex-column text-white body align-v-center noselect flex-auto"
+                                >
                                     {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
                                 </div>
 
                                 <div class="flex flex-column spacer"></div>
 
                                 <PlayerVolume
-                                    v-if="!isMobile"
+                                    v-if="!isMobile && controls.volume"
                                     :theme-color="themeColor"
                                     :current-volume="currentVolume"
                                     @volumeChange="changeVolume"
                                 />
 
                                 <PlayerButton
-                                    v-if="captionOptions.length > 0"
+                                    v-if="captionOptions.length > 0 && controls.captions"
                                     :theme-color="themeColor"
                                     :active="isCaptionsEnabled"
                                     @click.stop.native="toggleCaptionsDrawer"
@@ -257,6 +267,7 @@
                                 </PlayerButton>
 
                                 <PlayerButton
+                                    v-if="controls.settings"
                                     :theme-color="themeColor"
                                     title="Settings"
                                     :disabled="isChromeCastConnected"
@@ -266,6 +277,7 @@
                                 </PlayerButton>
 
                                 <PlayerButton
+                                    v-if="controls.fullscreen"
                                     :theme-color="themeColor"
                                     title="Fullscreen (F)"
                                     :disabled="isChromeCastConnected"
@@ -288,6 +300,7 @@
 
                     <transition :name="drawersShouldOpenFromBottom ? 'show-from-bottom' : 'grow-fade'">
                         <PlayerSettings
+                            v-if="controls.settings"
                             v-show="settingsDrawer"
                             :drawer="settingsDrawer"
                             :theme-color="themeColor"
@@ -302,6 +315,7 @@
 
                     <transition :name="drawersShouldOpenFromBottom ? 'show-from-bottom' : 'grow-fade'">
                         <PlayerCaptions
+                            v-if="controls.settings"
                             v-show="captionsDrawer"
                             :theme-color="themeColor"
                             :is-captions-enabled="isCaptionsEnabled"
@@ -398,6 +412,22 @@ export default {
         useKeyboard: {
             type: Boolean,
             default: () => true,
+        },
+
+        controls: {
+            type: Object,
+            default: () => ({
+                chromecast: true,
+                airplay: true,
+                forward: true,
+                backward: true,
+                progress: true,
+                play: true,
+                time: true,
+                volume: true,
+                settings: true,
+                fullscreen: true,
+            }),
         },
     },
     data() {
