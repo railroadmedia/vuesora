@@ -622,7 +622,7 @@ ul {
 }
 
 .header-gradient-overlay {
-  @include topToBottomGradient(transparent, transparentize($drumeoBlue, .5));
+  @include topToBottomGradient(transparent, transparentize($drumeoBlue, .25));
 }
 
 [data-open-course] {
@@ -683,5 +683,11 @@ ul {
         }
       }
     }
+  }
+}
+
+.remove-borders {
+  .content-table-row, .content-overview {
+    border:none!important;
   }
 }

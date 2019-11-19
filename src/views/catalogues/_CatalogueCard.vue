@@ -13,7 +13,7 @@
                 :class="{'thumbnail-col': displayInline}"
             >
                 <div
-                    class="card-media active corners-5 mb-1"
+                    class="card-media active corners-5"
                     :class="[thumbnailType, {'mb-1': !displayInline}]"
                 >
                     <div
