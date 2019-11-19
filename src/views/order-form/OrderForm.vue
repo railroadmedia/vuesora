@@ -155,18 +155,18 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
-import EcommerceService from '../../assets/js/services/ecommerce.js';
-import OrderFormAccount from './_OrderFormAccount.vue';
-import OrderFormCart from './_OrderFormCart.vue';
-import OrderFormPayment from './_OrderFormPayment.vue';
-import OrderFormPaymentPlan from './_OrderFormPaymentPlan.vue';
-import OrderFormShipping from './_OrderFormShipping.vue';
-import ThemeClasses from '../../mixins/ThemeClasses';
-import Toasts from '../../assets/js/classes/toasts';
-import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
+    import axios from 'axios';
+    import EcommerceService from '../../assets/js/services/ecommerce.js';
+    import OrderFormAccount from './_OrderFormAccount.vue';
+    import OrderFormCart from './_OrderFormCart.vue';
+    import OrderFormPayment from './_OrderFormPayment.vue';
+    import OrderFormPaymentPlan from './_OrderFormPaymentPlan.vue';
+    import OrderFormShipping from './_OrderFormShipping.vue';
+    import ThemeClasses from '../../mixins/ThemeClasses';
+    import Toasts from '../../assets/js/classes/toasts';
+    import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
 
-export default {
+    export default {
     name: 'OrderForm',
     components: {
         'order-form-account': OrderFormAccount,
@@ -260,7 +260,7 @@ export default {
     },
     computed: {
         cartContainsSubscription() {
-            return this.cartData.items.filter(item => !!item.subscription_interval_type).length > 0;
+            return this.cartData.items.filter(item => !!item.is_digital).length > 0;
         },
 
         cartRequiresShippingAddress() {
@@ -382,14 +382,13 @@ export default {
             }
 
             if (!this.user) {
-                // TODO: Fix this when Caleb implements a flag for has subscription
-                // if (this.cartContainsSubscription) {
-                payload.account_creation_email = this.accountStateFactory.accountEmail;
-                payload.account_creation_password = this.accountStateFactory.accountPassword;
-                payload.account_creation_password_confirmation = this.accountStateFactory.accountPasswordConfirm;
-                // } else {
-                //     payload['billing_email'] = this.accountStateFactory.billingEmail;
-                // }
+                if (this.cartContainsSubscription) {
+                    payload.account_creation_email = this.accountStateFactory.accountEmail;
+                    payload.account_creation_password = this.accountStateFactory.accountPassword;
+                    payload.account_creation_password_confirmation = this.accountStateFactory.accountPasswordConfirm;
+                } else {
+                    payload.billing_email = this.accountStateFactory.billingEmail;
+                }
             }
 
             if (this.cartRequiresShippingAddress) {

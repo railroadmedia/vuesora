@@ -1,46 +1,47 @@
 <template>
     <div class="flex flex-column mb-3">
         <div v-if="!isSignedIn">
-            <!--            <div v-if="!requiresAccountInfo">-->
-            <!--                <div class="flex flex-row align-v-center mb-2">-->
-            <!--                    <div class="flex flex-column">-->
-            <!--                        <h3 class="heading">Billing Email</h3>-->
 
-            <!--                        <span class="flex flex-auto">-->
-            <!--                            <a :href="loginUrl"-->
-            <!--                               class="body font-underline">-->
-            <!--                                Already have an account? Click here to login.-->
-            <!--                            </a>-->
-            <!--                        </span>-->
-            <!--                    </div>-->
-            <!--                </div>-->
+            <div v-if="!requiresAccountInfo">
+                <div class="flex flex-row align-v-center mb-2">
+                    <div class="flex flex-column">
+                        <h3 class="heading">Billing Email</h3>
 
-            <!--                <div class="flex flex-column bg-white shadow corners-5 pa-3">-->
-            <!--                    <div class="form-group">-->
-            <!--                        <input type="email"-->
-            <!--                               id="billingEmail"-->
-            <!--                               name="billing-email"-->
-            <!--                               class="order-form-input"-->
-            <!--                               :class="{ 'has-error': errors.billingEmail.length,-->
-            <!--                               'has-input': $_billingEmail != null }"-->
-            <!--                               v-model.lazy="$_billingEmail">-->
+                        <span class="flex flex-auto">
+                            <a :href="loginUrl"
+                               class="body font-underline">
+                                Already have an account? Click here to login.
+                            </a>
+                        </span>
+                    </div>
+                </div>
 
-            <!--                        <label for="billingEmail"-->
-            <!--                               :class="brand">-->
-            <!--                            Email Address-->
-            <!--                        </label>-->
+                <div class="flex flex-column bg-white shadow corners-5 pa-3">
+                    <div class="form-group">
+                        <input type="email"
+                               id="billingEmail"
+                               name="billing-email"
+                               class="order-form-input"
+                               :class="{ 'has-error': errors.billingEmail.length,
+                               'has-input': $_billingEmail != null }"
+                               v-model.lazy="$_billingEmail">
 
-            <!--                        <ul class="errors tiny">-->
-            <!--                            <li v-for="(error, i) in errors.billingEmail"-->
-            <!--                                :key="'accountEmailError' + i">-->
-            <!--                                {{ error || null }}-->
-            <!--                            </li>-->
-            <!--                        </ul>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
+                        <label for="billingEmail"
+                               :class="brand">
+                            Email Address
+                        </label>
 
-            <div>
+                        <ul class="errors tiny">
+                            <li v-for="(error, i) in errors.billingEmail"
+                                :key="'accountEmailError' + i">
+                                {{ error || null }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="requiresAccountInfo">
                 <div class="flex flex-row align-v-center pb-2">
                     <div class="flex flex-column">
                         <h3 class="heading">
@@ -237,6 +238,10 @@ export default {
     data() {
         return {
             rules: {
+                billingEmail: [
+                    v => !!v || 'Email is required.',
+                    v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Must be a valid email',
+                ],
                 accountEmail: [
                     v => !!v || 'Email is required.',
                     v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Must be a valid email',
