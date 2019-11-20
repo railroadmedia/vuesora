@@ -25,9 +25,9 @@
         >
             <div class="thumb-wrap corners-3">
                 <div
+                    v-lazy:background-image="mappedData.thumbnail"
                     class="thumb-img corners-3"
                     :class="thumbnailType"
-                    :style="'background-image:url( ' + mappedData.thumbnail + ' );'"
                 >
 
                     <div class="lesson-progress overflow">

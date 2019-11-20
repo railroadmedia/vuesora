@@ -17,8 +17,8 @@
                     :class="[thumbnailType, {'mb-1': !displayInline}]"
                 >
                     <div
+                        v-lazy:background-image="mappedData.thumbnail"
                         class="thumb-img bg-center"
-                        :style="'background-image:url(' + mappedData.thumbnail + ');'"
                         :class="item.type === 'chord-and-scale' ? 'no-bg' : ''"
                     ></div>
 

@@ -244,7 +244,7 @@ $borderDirections: (
   @include flexCenter();
 }
 
-.skeleton-loader {
+.skeleton-loader, img[lazy=loading] {
   background-color:nth(nth($greys, 2), 2)!important;
   max-width:100%;
   overflow:hidden;
