@@ -1,16 +1,10 @@
 export default (function () {
-    document.addEventListener('DOMContentLoaded', () => {
-        const instructorInfo = document.getElementById('instructorInfo');
-        const toggleInstructorInfo = document.getElementById('toggleInstructorInfo');
-
-        if (instructorInfo) {
-            toggleInstructorInfo.addEventListener('click', toggleInfo);
-        }
-
-        function toggleInfo(event) {
+    document.addEventListener('click', (event) => {
+        if (event.target.matches('#toggleInstructorInfo')) {
+            const instructorInfo = document.getElementById('instructorInfo');
             event.stopPropagation();
 
-            toggleInstructorInfo.classList.toggle('active');
+            event.target.classList.toggle('active');
             instructorInfo.classList.toggle('active');
 
             if (event.target.classList.contains('active')) {
