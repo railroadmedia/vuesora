@@ -399,6 +399,11 @@ export default {
             default: () => 0,
         },
 
+        contentId: {
+            type: [Number, String],
+            default: () => null,
+        },
+
         videoId: {
             type: [Number, String],
             default: () => null,
