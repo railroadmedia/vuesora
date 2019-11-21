@@ -6,24 +6,24 @@ export default (function () {
         const closeEvent = new CustomEvent('modalClose');
 
         document.body.addEventListener('click', (event) => {
-            if (event.target.dataset.openModal != null) {
-                openModal(event);
+            const buttonClicked = event.target;
+            const modalId = buttonClicked.dataset.openModal;
+
+            if (modalId != null) {
+                openModal(modalId);
             }
 
-            if (event.target.classList.contains('close-modal')) {
+            if (buttonClicked.classList.contains('close-modal')) {
                 closeModal();
             }
         });
 
-        function openModal(event) {
-            const buttonClicked = event.target;
-            const modalId = buttonClicked.dataset.openModal;
+        document.body.addEventListener('openModal', (event) => {
+            openModal(event.detail.target);
+        });
+
+        function openModal(modalId) {
             const modalToOpen = document.getElementById(modalId);
-            const openEvent = new CustomEvent('modalOpen', {
-                detail: {
-                    trigger: buttonClicked,
-                },
-            });
 
             closeModal();
 
@@ -35,7 +35,6 @@ export default (function () {
                 document.body.classList.add('no-scroll');
                 document.documentElement.classList.add('no-scroll');
                 modalToOpen.classList.add('active');
-                modalToOpen.dispatchEvent(openEvent);
             } else {
                 console.error(`Modal Error - Could not find modal with the ID: "${modalId}"`);
             }

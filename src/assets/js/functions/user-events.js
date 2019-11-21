@@ -36,6 +36,60 @@ export default (function () {
             });
         }
 
+        window.recalculateProgress = function (complete, master = false) {
+            const numberOfAssignments = document.querySelectorAll('.assignment-component').length;
+            const progressContainer = document.querySelector('.trophy-progress-bar');
+
+            if (progressContainer) {
+                const completeButton = document.querySelector('.completeButton');
+                const progressBar = document.querySelector('.trophy-progress');
+                const progressText = progressBar.querySelector('.progress-percent');
+                const currentProgress = progressBar ? progressBar.dataset.currentProgress : 0;
+                const progressDifference = 100 / (master ? 1 : numberOfAssignments);
+                let newProgress = null;
+
+                if (complete) {
+                    newProgress = Math.ceil(Number(currentProgress) + Number(progressDifference));
+                } else {
+                    newProgress = Math.floor(Number(currentProgress) - Number(progressDifference));
+                }
+
+                if (newProgress < 0) {
+                    newProgress = 0;
+                } else if (newProgress > 100) {
+                    newProgress = 100;
+                }
+
+                if (progressBar) {
+                    progressBar.style.transform = `translateX(${newProgress - 100}%)`;
+                    progressBar.dataset.currentProgress = newProgress;
+                    progressText.innerHTML = `${newProgress}%`;
+
+                    if (newProgress <= 50) {
+                        progressText.classList.remove('text-white');
+                        progressText.classList.add('text-drumeo', 'right');
+                    } else {
+                        progressText.classList.add('text-white');
+                        progressText.classList.remove('text-drumeo', 'right');
+                    }
+                }
+
+                if (newProgress >= 100) {
+                    progressContainer.classList.add('complete');
+                    completeButton.classList.add('is-complete');
+
+                    Utils.triggerEvent(window, 'lesson-complete', { complete: true });
+                } else {
+                    progressContainer.classList.remove('complete');
+                    completeButton.classList.remove('is-complete');
+
+                    if (newProgress <= 0) {
+                        Utils.triggerEvent(window, 'lesson-complete', { complete: false });
+                    }
+                }
+            }
+        };
+
         function progressReset(event) {
             const element = event.target;
             const contentType = Utils.toTitleCase(element.dataset.contentType || 'content');
@@ -133,7 +187,7 @@ export default (function () {
                             callback: () => {
                                 element.classList.remove('is-complete');
 
-                                handleCompleteEvent(isRemoving);
+                                window.recalculateProgress(!isRemoving, true);
 
                                 ContentService.resetContentProgress(contentId)
                                     .then((resolved) => {
@@ -159,7 +213,7 @@ export default (function () {
                 } else {
                     element.classList.add('is-complete');
 
-                    handleCompleteEvent(isRemoving);
+                    window.recalculateProgress(!isRemoving, true);
 
                     ContentService.markContentAsComplete(contentId)
                         .then((resolved) => {
@@ -173,79 +227,6 @@ export default (function () {
             }
 
             setClickTimeout();
-        }
-
-        window.recalculateProgress = function (complete) {
-            const numberOfAssignments = document.querySelectorAll('.assignment-component').length;
-            const progressContainer = document.querySelector('.trophy-progress-bar');
-
-            if (progressContainer) {
-                const completeButton = document.querySelector('.completeButton');
-                const progressBar = document.querySelector('.trophy-progress');
-                const progressText = progressBar.querySelector('.progress-percent');
-                const currentProgress = progressBar ? progressBar.dataset.currentProgress : 0;
-                const progressDifference = 100 / numberOfAssignments;
-                let newProgress = null;
-
-                if (complete) {
-                    newProgress = Math.ceil(Number(currentProgress) + Number(progressDifference));
-                } else {
-                    newProgress = Math.floor(Number(currentProgress) - Number(progressDifference));
-                }
-
-                if (newProgress < 0) {
-                    newProgress = 0;
-                } else if (newProgress > 100) {
-                    newProgress = 100;
-                }
-
-                if (progressBar) {
-                    progressBar.style.transform = `translateX(${newProgress - 100}%)`;
-                    progressBar.dataset.currentProgress = newProgress;
-                    progressText.innerHTML = `${newProgress}%`;
-
-                    if (newProgress <= 50) {
-                        progressText.classList.remove('text-white');
-                        progressText.classList.add('text-drumeo', 'right');
-                    } else {
-                        progressText.classList.add('text-white');
-                        progressText.classList.remove('text-drumeo', 'right');
-                    }
-                }
-
-                if (newProgress >= 100) {
-                    progressContainer.classList.add('complete');
-                    completeButton.classList.add('is-complete');
-                } else {
-                    progressContainer.classList.remove('complete');
-                    completeButton.classList.remove('is-complete');
-                }
-            }
-        };
-
-        function handleCompleteEvent(removing = false) {
-            const progressContainer = document.querySelector('.trophy-progress-bar');
-            const progressBar = document.querySelector('.trophy-progress');
-            const progressText = progressBar.querySelector('.progress-percent');
-
-            Utils.triggerEvent(window, 'lesson-complete', { complete: !removing });
-
-            if (progressBar) {
-                progressBar.style.transform = `translateX(${removing ? -100 : 0}%`;
-                progressText.innerHTML = removing ? '0%' : '100%';
-
-                if (removing) {
-                    progressText.classList.remove('text-white');
-                    progressText.classList.add('text-drumeo', 'right');
-                } else {
-                    progressText.classList.add('text-white');
-                    progressText.classList.remove('text-drumeo', 'right');
-                }
-            }
-
-            if (progressContainer) {
-                progressContainer.classList.toggle('complete');
-            }
         }
 
         function setClickTimeout() {
