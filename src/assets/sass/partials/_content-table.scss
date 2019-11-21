@@ -242,10 +242,6 @@
 
   &:hover:not(.scheduled), &.active, &.completed {
     .thumb-wrap {
-      //.thumb-img {
-      //  transform:scale(1.1);
-      //}
-
       .thumb-hover {
         opacity:1;
         visibility:visible;
@@ -342,7 +338,7 @@
   background-size:cover;
   background-position:center 16%;
   background-repeat:no-repeat;
-  background-color:nth(nth($greys, 2), 2);
+  background-color:#000;
   transform:scale(1);
   transition:transform .2s ease-in-out;
   will-change:transform;

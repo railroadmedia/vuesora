@@ -1,7 +1,7 @@
 <template>
     <div
-        class="flex flex-row nmh-1"
-        :class="noWrap ? 'overflow' : 'flex-wrap'"
+        class="flex flex-row"
+        :class="[noWrap ? 'overflow' : 'flex-wrap', {'nmh-1': !displayInline}]"
     >
         <catalogue-card
             v-for="(item, i) in content"

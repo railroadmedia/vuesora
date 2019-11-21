@@ -1,7 +1,7 @@
 <template>
     <div
         class="flex flex-column pa-1 catalogue-card"
-        :class="[{'no-access': noAccess}, {'six-wide': sixWide}, {'bb-grey-1-1 display-inline': displayInline}]"
+        :class="class_object"
     >
         <a
             :href="renderLink ? item.url : false"
@@ -131,6 +131,16 @@ export default {
     computed: {
         mappedData() {
             return this.contentModel.card;
+        },
+
+        class_object() {
+            return {
+                'no-access': this.noAccess,
+                completed: this.item.completed,
+                'six-wide': this.sixWide,
+                'bb-grey-1-1': this.displayInline,
+                'display-inline': this.displayInline,
+            };
         },
 
         is_added: {
