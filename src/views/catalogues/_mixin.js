@@ -171,7 +171,7 @@ export default {
             return {
                 drumeo: ['song', 'learning-path-level'],
                 guitareo: ['song', 'chord-and-scale'],
-                pianote: ['song'],
+                pianote: ['song', 'unit'],
             }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
         },
     },

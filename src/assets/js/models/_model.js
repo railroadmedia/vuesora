@@ -19,7 +19,7 @@ import SongPartModel from './song-part';
 import StudentFocusModel from './student-focus';
 import StudentReviewModel from './student-review';
 import QnaModel from './question-and-answer';
-import UnitModel from './unit';
+import UnitContentModel from './unit';
 import UnitPartModel from './unit-part';
 import ContentModel from './_default';
 
@@ -59,7 +59,7 @@ export default class ContentTypeModel {
         case 'student-focus': return new StudentFocusModel({ brand, post });
         case 'student-review': return new StudentReviewModel({ brand, post });
         case 'question-and-answer': return new QnaModel({ brand, post });
-        case 'unit': return new UnitModel({ brand, post });
+        case 'unit': return new UnitContentModel({ brand, post });
         case 'unit-part': return new UnitPartModel({ brand, post });
         default: return new ContentModel({ brand, post });
         }

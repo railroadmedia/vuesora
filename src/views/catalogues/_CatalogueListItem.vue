@@ -276,7 +276,7 @@ export default {
                 'thumbnail-col': !this.overview,
                 active: this.active,
                 'background-cards': this.item.type === 'learning-path'
-                    || this.item.type === 'learning-path-course',
+                    || this.item.type === 'learning-path-course'
             };
         },
 
