@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column bg-white shadow corners-3 grow content-table">
+    <div class="flex flex-column grow content-table">
         <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column mb-3 align-v-center">
                 <div class="flex flex-row">
@@ -146,7 +146,7 @@
 
         <div
             v-if="!searching && totalPages > 1"
-            class="flex flex-row bg-light pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="currentPage"
@@ -157,7 +157,7 @@
 
         <div
             v-if="searching && totalSearchPages > 1"
-            class="flex flex-row bg-light pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="searchResultsPage"

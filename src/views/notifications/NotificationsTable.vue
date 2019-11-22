@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-column bg-white corners-3 shadow">
-        <div class="flex flex-row pa-3 align-v-center flex-wrap">
+    <div class="flex flex-column">
+        <div class="flex flex-row pv-3 align-v-center flex-wrap">
             <div class="flex flex-column">
                 <h1 class="heading">
                     Notifications
@@ -34,9 +34,11 @@
             </div>
         </div>
 
-        <div class="flex flex-row pa-3">
+        <div
+            v-if="notifications.length === 0"
+            class="flex flex-row pa-3"
+        >
             <p
-                v-if="notifications.length === 0"
                 class="tiny text-grey-3 font-italic"
             >
                 You do not appear to have any notifications at this time.
