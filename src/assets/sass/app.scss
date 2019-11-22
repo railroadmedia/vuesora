@@ -206,6 +206,13 @@ ul {
     }
   }
 
+  .header-gradient-overlay {
+    z-index: 1;
+  }
+  .container {
+    z-index: 2;
+  }
+
   .user {
     align-items:center;
 
