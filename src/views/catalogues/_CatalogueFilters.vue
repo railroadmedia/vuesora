@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row flex-wrap pb nmh-1">
+    <div class="flex flex-row flex-wrap mb nmh-1 ph-1">
         <catalogue-filter
             v-for="item in filterableValues.filter(item => item !== 'progress')"
             :key="item.key"
