@@ -625,6 +625,10 @@ ul {
 
 .header-gradient-overlay {
   @include topToBottomGradient(transparent, transparentize($drumeoBlue, .25));
+
+  &.pianote {
+    @include topToBottomGradient(transparent, transparentize($pianoteRed, .4));
+  }
 }
 
 [data-open-course] {
