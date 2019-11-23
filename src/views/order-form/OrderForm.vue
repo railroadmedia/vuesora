@@ -141,7 +141,7 @@
                             Success!
                         </h4>
                         <p class="tiny text-grey-3">
-                            Your order has been processed. Redirecting you to the member's area.
+                            Your order has been processed. Redirecting you now...
                         </p>
                     </div>
                 </transition>
