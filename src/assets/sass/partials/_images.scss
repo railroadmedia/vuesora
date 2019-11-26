@@ -1,0 +1,11 @@
+@import './_variables.scss';
+
+[data-ix-lazy] {
+  opacity:0;
+  visibility:hidden;
+
+  &.ix-loaded {
+    opacity:1;
+    visibility:visible;
+  }
+}

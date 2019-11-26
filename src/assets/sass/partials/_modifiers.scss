@@ -164,6 +164,15 @@ $borderDirections: (
   position:relative;
   height:0;
   padding-bottom:100%;
+
+  & > img {
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    object-fit: cover;
+  }
 }
 
 .widescreen {
@@ -171,12 +180,16 @@ $borderDirections: (
   height:0;
   padding-bottom:56.25%;
 
-  & > iframe {
+  & > iframe, & > img {
     position:absolute;
     top:0;
     left:0;
     height:100%;
     width:100%;
+  }
+
+  & > img {
+    object-fit: cover;
   }
 }
 

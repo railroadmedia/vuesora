@@ -16,11 +16,17 @@
                     class="card-media active corners-5"
                     :class="[thumbnailType, {'mb-1': !displayInline}]"
                 >
-                    <div
-                        v-lazy:background-image="mappedData.thumbnail"
-                        class="thumb-img bg-center"
-                        :class="item.type === 'chord-and-scale' ? 'no-bg' : ''"
-                    ></div>
+<!--                    <div-->
+<!--                        v-lazy:background-image="mappedData.thumbnail"-->
+<!--                        class="thumb-img bg-center"-->
+<!--                        :class="item.type === 'chord-and-scale' ? 'no-bg' : ''"-->
+<!--                    ></div>-->
+
+                    <img
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="mappedData.thumbnail"
+                        class="bg-grey-2"
+                    >
 
                     <i
                         v-if="item.type !== 'pack-bundle'"

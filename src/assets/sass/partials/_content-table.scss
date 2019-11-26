@@ -88,6 +88,7 @@
       right:0;
       padding-top:$gutterWidth;
       @include topToBottomGradient(transparent, #000);
+      min-height:60px;
     }
 
     .bundle-complete, .thumb-hover {

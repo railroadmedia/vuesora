@@ -25,11 +25,14 @@
         >
             <div class="thumb-wrap corners-3">
                 <div
-                    v-lazy:background-image="mappedData.thumbnail"
                     class="thumb-img corners-3"
                     :class="thumbnailType"
                 >
-
+                    <img
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="mappedData.thumbnail"
+                        alt="Lesson Thumbnail"
+                    >
                     <div class="lesson-progress overflow">
                         <span
                             class="progress"
