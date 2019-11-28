@@ -13,7 +13,7 @@
                 :class="{'thumbnail-col': displayInline}"
             >
                 <div
-                    class="card-media active corners-5"
+                    class="card-media bg-grey-2 active corners-5"
                     :class="[thumbnailType, {'mb-1': !displayInline}]"
                 >
 <!--                    <div-->
@@ -25,6 +25,7 @@
                     <img
                         src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
                         :data-ix-src="mappedData.thumbnail"
+                        data-ix-fade
                         class="bg-grey-2"
                     >
 

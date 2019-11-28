@@ -1,12 +1,11 @@
 @import './_variables.scss';
 
-[data-ix-lazy] {
+[data-ix-fade] {
   opacity:0;
-  visibility:hidden;
+  transition: opacity .5s;
 
   &.ix-loaded {
     opacity:1;
-    visibility:visible;
   }
 }
 

@@ -31,8 +31,6 @@ export default class ImgixService {
             .forEach((image) => {
                 this.addSource(image);
 
-                this.addSourceSet(image);
-
                 image.addEventListener('load', this.addLoadedClass);
             });
     }
@@ -70,9 +68,18 @@ export default class ImgixService {
             ...this.defaultParams,
             w: image.clientWidth,
             h: image.clientHeight,
+            dpr: 1,
         });
 
-        image.src = preload.src;
+        preload.addEventListener('load', () => {
+            setTimeout(() => {
+                image.src = preload.src;
+
+                this.addSourceSet(image);
+            }, 100);
+
+            preload.remove();
+        });
     }
 
     /**
@@ -117,9 +124,9 @@ export default class ImgixService {
         preload.addEventListener('load', () => {
             setTimeout(() => {
                 container.style.backgroundImage = `url(${preload.src})`;
-            }, 100);
+            }, 500);
 
-            document.removeChild(preload);
+            preload.remove();
         });
     }
 }
