@@ -25,6 +25,7 @@ export default class ShowContentModel extends ContentModel {
 
         if (this.displayEpisodeNumber) {
             this.list.color_title = this.episodeNumber;
+            this.card.color_title = this.episodeNumber;
         }
     }
 
@@ -37,6 +38,7 @@ export default class ShowContentModel extends ContentModel {
             'rhythms-from-another-planet',
             'behind-the-scenes',
             'diy-drum-experiments',
+            'in-rhythm',
         ];
 
         return showsThatShouldDisplayEpisodeNumbers.indexOf(this.post.type) !== -1;
