@@ -47,7 +47,7 @@
                             Create Your Account
                         </h3>
 
-                        <span class="flex flex-auto body">
+                        <span class="flex flex-auto flex-wrap body">
                             Already have a Musora Account?
                             &nbsp;
                             <span class="capitalize">
@@ -62,11 +62,11 @@
                             >
                                 Click here to login.
                             </a>
-                    </span>
+                        </span>
                     </div>
                 </div>
-                <div class="flex flex-row bg-white flex-wrap shadow corners-5 pt-3 ph-2 mb-1">
-                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-3">
+                <div class="flex flex-row flex-wrap nmh-1 mb-1">
+                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-1">
                         <div class="form-group">
                             <input
                                 id="newAccountEmail"
@@ -96,7 +96,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-3">
+                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-1">
                         <div class="form-group">
                             <input
                                 id="newAccountPassword"
@@ -126,7 +126,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-3">
+                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-1">
                         <div class="form-group">
                             <input
                                 id="newAccountPasswordConfirm"
@@ -182,7 +182,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-row bg-white shadow corners-5 pa-3">
+            <div class="flex flex-row pa-3">
                 <div class="flex flex-column text-center">
                     <h4 class="body text-grey-3 mb-1">
                         You are currently logged in as:

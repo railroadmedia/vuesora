@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-column mb-2">
-        <div class="flex flex-column bg-white shadow corners-5 pt-3 ph-2">
-            <div class="flex flex-row flex-wrap align-v-center">
+        <div class="flex flex-column">
+            <div class="flex flex-row flex-wrap align-v-center nmh-1">
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
                         <select
@@ -50,7 +50,7 @@
             <!-- v-show is used to keep the stripe elements iframes loaded but hidden, using v-if would require re-initialization -->
             <div
                 v-show="$_paymentMethod === 'credit_card'"
-                class="flex flex-row flex-wrap"
+                class="flex flex-row flex-wrap nmh-1"
             >
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
@@ -135,7 +135,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-row flex-wrap mb-2">
+            <div class="flex flex-row flex-wrap nmh-1 mb-2">
                 <div
                     class="flex flex-column xs-12 ph-1 mb-2"
                     :class="$_billingCountry === 'Canada' ? 'sm-6' : ''"
@@ -223,7 +223,7 @@
 
             <div
                 v-if="isOrder"
-                class="flex flex-row mb-1"
+                class="flex flex-row mb-1 nmh-1"
             >
                 <div class="flex flex-column">
                     <div class="flex flex-row reverse flex-wrap">

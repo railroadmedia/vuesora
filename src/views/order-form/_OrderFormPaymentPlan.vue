@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column mb-3">
-        <div class="flex flex-row flex-wrap bg-white shadow corners-5 pt-2 ph-2 align-v-center">
+        <div class="flex flex-row flex-wrap nmh-1 align-v-center">
             <div class="flex flex-column ph-1 xs-12 sm-6 mb-2">
                 <div class="form-group">
                     <select

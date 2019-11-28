@@ -84,33 +84,33 @@
         />
 
         <div class="flex flex-row flex-wrap pv-3 text-center features">
-            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
+            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-3">
                 <i class="fa fa-phone text-grey-3 mb-2"></i>
                 <p class="body font-bold">
                     We're always here to help
                 </p>
-                <p class="body text-grey-4">
+                <p class="tiny text-grey-4">
                     Call 1-800-439-8921 or email
                     <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>
                 </p>
             </div>
 
-            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
+            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-3">
                 <i class="fa fa-lock text-grey-3 mb-2"></i>
                 <p class="body font-bold">
                     Your Information is Secure
                 </p>
-                <p class="body text-grey-4">
+                <p class="tiny text-grey-4">
                     This page is securely encrypted with world-class SSL protection.
                 </p>
             </div>
 
-            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
+            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-3">
                 <i class="fa fa-check-circle text-grey-3 mb-2"></i>
                 <p class="body font-bold">
                     100% Money Back Guarantee
                 </p>
-                <p class="body text-grey-4">
+                <p class="tiny text-grey-4">
                     Order risk-free with our 90-day, 100% money back guarantee.
                 </p>
             </div>
@@ -272,7 +272,7 @@ export default {
         },
 
         canAcceptPaymentPlans() {
-            return this.cartData.payment_plan_options.length && !this.cartContainsSubscription;
+            return this.cartData.payment_plan_options.length > 0 && !this.cartContainsSubscription;
         },
     },
     methods: {
