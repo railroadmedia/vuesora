@@ -65,11 +65,14 @@ export default class ImgixService {
      * @param {HTMLElement} image - the image element to attach a source to
      */
     addSource(image) {
-        image.src = this.client.buildURL(image.dataset.ixSrc, {
+        const preload = new Image();
+        preload.src = this.client.buildURL(image.dataset.ixSrc, {
             ...this.defaultParams,
             w: image.clientWidth,
             h: image.clientHeight,
         });
+
+        image.src = preload.src;
     }
 
     /**
@@ -104,10 +107,19 @@ export default class ImgixService {
      * @param {HTMLElement} container - the container to add a background image to
      */
     addBackgroundStyle(container) {
-        container.style.backgroundImage = `url(${this.client.buildURL(container.dataset.ixBg, {
+        const preload = new Image();
+        preload.src = this.client.buildURL(container.dataset.ixBg, {
             ...this.defaultParams,
             w: container.clientWidth,
             h: container.clientHeight,
-        })})`;
+        });
+
+        preload.addEventListener('load', () => {
+            setTimeout(() => {
+                container.style.backgroundImage = `url(${preload.src})`;
+            }, 100);
+
+            document.removeChild(preload);
+        });
     }
 }
