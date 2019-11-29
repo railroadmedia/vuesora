@@ -47,7 +47,7 @@
                             Create Your Account
                         </h3>
 
-                        <span class="flex flex-auto body">
+                        <p class="body">
                             Already have a Musora Account?
                             &nbsp;
                             <span class="capitalize">
@@ -62,7 +62,7 @@
                             >
                                 Click here to login.
                             </a>
-                    </span>
+                        </p>
                     </div>
                 </div>
                 <div class="flex flex-row bg-white flex-wrap shadow corners-5 pt-3 ph-2 mb-1">
