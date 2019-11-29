@@ -58,6 +58,7 @@
     </div>
 </template>
 <script>
+import { Utils } from '@musora/helper-functions';
 
 export default {
     name: 'Pagination',
@@ -71,12 +72,25 @@ export default {
             default: () => 0,
         },
     },
+    computed: {
+        activePages() {
+            // TODO: I haven't tested this, but it should work. Instead of using v-if with v-for
+            const pages = this.range(this.totalPages, 1);
+
+            return pages.filter(page =>
+                page < (this.currentPage + 2)
+                && page > (this.currentPage - 2)
+            );
+        },
+    },
     methods: {
         goToPage(page) {
             this.$emit('pageChange', {
                 page,
             });
         },
+
+        range: (length, start) => Utils.range(length, start)
     },
 };
 </script>
