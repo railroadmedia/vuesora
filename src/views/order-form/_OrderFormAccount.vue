@@ -48,14 +48,15 @@
                         </h3>
 
                         <p class="body">
-                            Already have a Musora Account?
-                            &nbsp;
-                            <span class="capitalize">
-                                ({{ brand }}, {{ ['drumeo', 'guitareo', 'pianote']
-                                    .filter(item => item !== brand)
-                                    .join(', ') }})
-                            </span>
-                            &nbsp;
+<!--                            Already have a Musora Account?-->
+<!--                            &nbsp;-->
+<!--                            <span class="capitalize">-->
+<!--                                ({{ brand }}, {{ ['drumeo', 'guitareo', 'pianote']-->
+<!--                                    .filter(item => item !== brand)-->
+<!--                                    .join(', ') }})-->
+<!--                            </span>-->
+                            Already have a <span class="capitalize">{{ brand }}</span> account?
+
                             <a
                                 :href="loginUrl"
                                 class="font-underline"
