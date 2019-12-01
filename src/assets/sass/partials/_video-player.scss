@@ -16,6 +16,8 @@
 
 .video-wrap {
   z-index:1;
+  top:-50%;
+  right:480px;
 
   &.picture-in-picture {
     position:fixed;
@@ -24,6 +26,7 @@
     width:480px;
     max-width:100%;
     z-index:95;
+    transition:top .5s, right .5s;
 
     .settings-drawer {
 
@@ -362,10 +365,6 @@
       margin-left:2px;
       font-size:28px;
       color:#fff;
-
-      @include medium {
-        font-size:40px;
-      }
     }
   }
 }

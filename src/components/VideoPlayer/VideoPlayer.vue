@@ -78,22 +78,6 @@
                         </ul>
                     </div>
 
-                    <transition name="fade">
-                        <div
-                            v-show="isPipEnabled"
-                            class="close-pip"
-                            @click.stop.prevent
-                        >
-                            <PlayerButton
-                                :theme-color="themeColor"
-                                title="Disable PIP"
-                                @click.stop.native="isPipEnabled = false"
-                            >
-                                <i class="fas fa-times"></i>
-                            </PlayerButton>
-                        </div>
-                    </transition>
-
                     <transition name="grow-fade">
                         <div
                             v-show="loading && !isPlaying"
@@ -130,16 +114,19 @@
                     <div
                         ref="controls"
                         class="controls-wrap"
+                        @dblclick.stop.prevent="fullscreen"
                         @click.stop="playPauseViaControlWrap"
                     >
-                        <transition name="grow-fade">
+                        <transition name="fast-fade">
                             <div
-                                v-show="!loading && !isPlaying"
+                                v-show="isTransitioning"
                                 class="player-overlay big-play-button pointer"
-                                @click.stop="playPauseViaControlWrap"
                             >
-                                <div class="overlay-play rounded ba-white-3 flex-center shadows">
-                                    <i class="fas fa-play"></i>
+                                <div class="overlay-play rounded flex-center shadows">
+                                    <i
+                                        class="fas"
+                                        :class="isPlaying ? 'fa-pause' : 'fa-play'"
+                                    ></i>
                                 </div>
                             </div>
                         </transition>
@@ -167,6 +154,17 @@
                                         @click.stop.native="enableAirplay"
                                     >
                                         <i class="icon-airplay"></i>
+                                    </PlayerButton>
+                                </transition>
+
+                                <transition name="grow-fade">
+                                    <PlayerButton
+                                        v-show="isPipEnabled"
+                                        :theme-color="themeColor"
+                                        title="Disable PIP"
+                                        @click.stop.native="isPipEnabled = false"
+                                    >
+                                        <i class="fas fa-times"></i>
                                     </PlayerButton>
                                 </transition>
                             </div>
@@ -434,6 +432,11 @@ export default {
                 fullscreen: true,
             }),
         },
+
+        useIntersectionObserver: {
+            type: Boolean,
+            default: () => false,
+        }
     },
     data() {
         return {
@@ -475,6 +478,12 @@ export default {
                 stats: false,
                 keyboardShortcuts: false,
             },
+            intersection: null,
+            timeouts: {
+                controlWrapClick: null,
+                isTransitioning: null,
+            },
+            isTransitioning: false,
         };
     },
     computed: {
@@ -611,7 +620,7 @@ export default {
         },
     },
     mounted() {
-        const { player } = this.$refs;
+        const { player, videoWrap } = this.$refs;
         const supportsMSE = typeof MediaSource === 'function';
 
         /*
@@ -718,6 +727,9 @@ export default {
         player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
             this.isAirplayConnected = !this.isAirplayConnected;
         });
+        if(this.useIntersectionObserver){
+            this.enableIntersectionObserver(videoWrap);
+        }
     },
     beforeDestroy() {
         document.removeEventListener('click', this.closeDrawers);
@@ -831,6 +843,7 @@ export default {
         },
 
         playPause() {
+
             if (this.chromeCast && this.chromeCast.Connected) {
                 this.chromeCast.playOrPause();
             } else if (this.isPlaying) {
@@ -840,15 +853,30 @@ export default {
             }
         },
 
-        playPauseViaControlWrap() {
-            if (this.settingsDrawer || this.captionsDrawer || !this.canPlayPause) {
-                this.settingsDrawer = false;
-                this.captionsDrawer = false;
+        playPauseViaControlWrap(event) {
+            this.isTransitioning = true;
+            clearTimeout(this.timeouts.controlWrapClick);
+            clearTimeout(this.timeouts.isTransitioning);
 
-                return;
+            if(event.detail === 1){
+                this.timeouts.controlWrapClick = setTimeout(() => {
+                    if (this.settingsDrawer || this.captionsDrawer || !this.canPlayPause) {
+                        this.settingsDrawer = false;
+                        this.captionsDrawer = false;
+
+                        return;
+                    }
+
+
+                    setTimeout(() => {
+                        this.playPause();
+                    }, 10);
+                }, 500);
+
+                this.timeouts.isTransitioning = setTimeout(() => {
+                    this.isTransitioning = false;
+                }, 300);
             }
-
-            this.playPause();
         },
 
         seek(time) {
@@ -862,6 +890,7 @@ export default {
 
         fullscreen() {
             const { container } = this.$refs;
+            this.isTransitioning = false;
 
             // If we have access to the requestFullscreen API then use that
             if (Screenfull.enabled) {
@@ -1128,7 +1157,9 @@ export default {
             this.isKeyboardControlsEnabled = true;
 
             document.addEventListener('focusin', (event) => {
-                const isVideoPlayerElement = event.path.filter((el) => {
+                const path = event.path || (event.composedPath && event.composedPath());
+
+                const isVideoPlayerElement = path.filter((el) => {
                     if (typeof el.matches !== 'undefined' && el.matches('#lessonVideoWrap')) {
                         return el;
                     }
@@ -1152,6 +1183,20 @@ export default {
             Object.keys(this.dialogs).forEach((dialog) => {
                 this.dialogs[dialog] = false;
             });
+        },
+
+        enableIntersectionObserver(videoWrap) {
+            this.intersection = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    const isVisible = entry.intersectionRatio >= 0.5;
+                    this.isPipEnabled = !isVisible && !this.isMobile;
+                });
+            }, {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            });
+            this.intersection.observe(videoWrap.parentElement);
         },
     },
 };
