@@ -94,6 +94,7 @@
 </template>
 <script>
 import ThemeClasses from '../mixins/ThemeClasses';
+import { Utils } from '@musora/helper-functions';
 
 export default {
     name: 'Pagination',
@@ -120,6 +121,17 @@ export default {
             return [this.themeTextClass, 'flat'];
         },
     },
+    computed: {
+        activePages() {
+            // TODO: I haven't tested this, but it should work. Instead of using v-if with v-for
+            const pages = this.range(this.totalPages, 1);
+
+            return pages.filter(page =>
+                page < (this.currentPage + 2)
+                && page > (this.currentPage - 2)
+            );
+        },
+    },
     methods: {
         goToPage(page) {
 
@@ -128,6 +140,8 @@ export default {
                 page,
             });
         },
+
+        range: (length, start) => Utils.range(length, start)
     },
 };
 </script>
