@@ -1113,21 +1113,25 @@ export default {
             if (document.pictureInPictureEnabled) {
                 this.toggleExperimentalPip();
             } else {
-                const { videoWrap } = this.$refs;
-                this.isPipEnabled = !this.isPipEnabled;
-
-                /*
-                * Safari has a bug that doesn't trigger a repaint when the player
-                * is put into PIP. The following hack will manually trigger the repaint
-                * allowing the new styles to propagate.
-                *
-                * Curtis - July 2019
-                * */
-                videoWrap.style.display = 'none';
-                setTimeout(() => {
-                    videoWrap.style.display = '';
-                }, 50);
+                this.toggleFakePip();
             }
+        },
+
+        toggleFakePip() {
+            const { videoWrap } = this.$refs;
+            this.isPipEnabled = !this.isPipEnabled;
+
+            /*
+            * Safari has a bug that doesn't trigger a repaint when the player
+            * is put into PIP. The following hack will manually trigger the repaint
+            * allowing the new styles to propagate.
+            *
+            * Curtis - July 2019
+            * */
+            videoWrap.style.display = 'none';
+            setTimeout(() => {
+                videoWrap.style.display = null;
+            }, 50);
         },
 
         toggleExperimentalPip() {
@@ -1194,7 +1198,7 @@ export default {
             }, {
                 root: null,
                 rootMargin: '0px',
-                threshold: 0.5
+                threshold: 0.5,
             });
             this.intersection.observe(videoWrap.parentElement);
         },
