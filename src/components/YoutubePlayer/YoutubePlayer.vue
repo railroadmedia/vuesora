@@ -140,8 +140,6 @@ export default {
         enableIntersectionObserver() {
             this.intersection = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
-                    console.log(entry);
-
                     const isVisible = entry.intersectionRatio >= 0.5;
                     this.isPipEnabled = !isVisible && !this.isMobile;
                 });
