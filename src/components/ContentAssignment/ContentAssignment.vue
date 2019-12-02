@@ -222,7 +222,7 @@ export default {
     props: {
         brand: {
             type: String,
-            default: () => 'recordeo',
+            default: () => 'drumeo',
         },
         themeColor: {
             type: String,
@@ -467,7 +467,7 @@ export default {
                         callback: () => {
                             this.isComplete = !this.isComplete;
 
-                            window.recalculateProgress(false);
+                            window.recalculateProgress(false, false, this.themeColor);
 
                             ContentService.resetContentProgress(vm.id)
                                 .then((resolved) => {
@@ -498,7 +498,7 @@ export default {
             } else {
                 this.isComplete = !this.isComplete;
 
-                window.recalculateProgress(true);
+                window.recalculateProgress(true, false, this.themeColor);
 
                 ContentService.markContentAsComplete(vm.id)
                     .then((resolved) => {
