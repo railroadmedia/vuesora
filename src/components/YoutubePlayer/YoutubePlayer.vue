@@ -58,7 +58,12 @@ export default {
         };
     },
     computed: {
-        isMobile: () => PlayerUtils.isMobile().any,
+        isMobileViewport: {
+            cache: false,
+            get() {
+                return window.matchMedia('(min-width: 641px)').matches === false;
+            },
+        },
     },
     mounted() {
         const youtubeIframeApi = document.getElementById('youtubeIframeApi');
@@ -141,7 +146,7 @@ export default {
             this.intersection = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     const isVisible = entry.intersectionRatio >= 0.5;
-                    this.isPipEnabled = !isVisible && !this.isMobile;
+                    this.isPipEnabled = !isVisible && !this.isMobileViewport;
                 });
             }, {
                 root: null,
