@@ -727,7 +727,8 @@ export default {
         player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
             this.isAirplayConnected = !this.isAirplayConnected;
         });
-        if(this.useIntersectionObserver){
+
+        if (this.useIntersectionObserver) {
             this.enableIntersectionObserver(videoWrap);
         }
     },

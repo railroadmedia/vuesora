@@ -1,13 +1,21 @@
 <template>
-    <div class="widescreen">
-        <div
-            ref="youtubeIframe"
-            class="iframe"
-        ></div>
+    <div
+        ref="videoWrap"
+        class="video-wrap"
+        :class="{'picture-in-picture': isPipEnabled}"
+    >
+        <div class="widescreen">
+            <div
+                ref="youtubeIframe"
+                class="iframe"
+            ></div>
+        </div>
     </div>
 </template>
 
 <script>
+import PlayerUtils from "../VideoPlayer/player-utils";
+
 export default {
     name: 'YoutubePlayer',
     props: {
@@ -35,13 +43,22 @@ export default {
             type: [String, Number],
             default: () => null,
         },
+
+        useIntersectionObserver: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {
             player: null,
             syncInterval: null,
             currentTime: 0,
+            isPipEnabled: false,
         };
+    },
+    computed: {
+        isMobile: () => PlayerUtils.isMobile().any,
     },
     mounted() {
         const youtubeIframeApi = document.getElementById('youtubeIframeApi');
@@ -55,11 +72,16 @@ export default {
         } else {
             this.initPlayer();
         }
+
+        if (this.useIntersectionObserver) {
+            this.enableIntersectionObserver();
+        }
     },
     beforeDestroy() {
         clearInterval(this.syncInterval);
     },
     methods: {
+
         appendIframeApi() {
             const scriptTag = document.createElement('script');
             const firstScriptTag = document.querySelector('script');
@@ -113,6 +135,22 @@ export default {
                     },
                 },
             });
+        },
+
+        enableIntersectionObserver() {
+            this.intersection = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    console.log(entry);
+
+                    const isVisible = entry.intersectionRatio >= 0.5;
+                    this.isPipEnabled = !isVisible && !this.isMobile;
+                });
+            }, {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5,
+            });
+            this.intersection.observe(this.$refs.videoWrap.parentElement);
         },
     },
 };
