@@ -4,7 +4,7 @@
             <!--            <div v-if="!requiresAccountInfo">-->
             <!--                <div class="flex flex-row align-v-center mb-2">-->
             <!--                    <div class="flex flex-column">-->
-            <!--                        <h3 class="heading">Billing Email</h3>-->
+            <!--                        <h3 class="title uppercase">Billing Email</h3>-->
 
             <!--                        <span class="flex flex-auto">-->
             <!--                            <a :href="loginUrl"-->
@@ -41,22 +41,19 @@
             <!--            </div>-->
 
             <div>
-                <div class="flex flex-row align-v-center pb-2">
+                <div class="flex flex-row align-v-center mb-1">
                     <div class="flex flex-column">
-                        <h3 class="heading">
+                        <h3 class="title uppercase">
                             Create Your Account
                         </h3>
 
                         <p class="body">
-<!--                            Already have a Musora Account?-->
-<!--                            &nbsp;-->
-<!--                            <span class="capitalize">-->
-<!--                                ({{ brand }}, {{ ['drumeo', 'guitareo', 'pianote']-->
-<!--                                    .filter(item => item !== brand)-->
-<!--                                    .join(', ') }})-->
-<!--                            </span>-->
-                            Already have a <span class="capitalize">{{ brand }}</span> account?
-
+                            Already have a Musora Account?
+                            <span class="capitalize">
+                                ({{ brand }}, {{ ['drumeo', 'guitareo', 'pianote']
+                                    .filter(item => item !== brand)
+                                    .join(', ') }})
+                            </span>
                             <a
                                 :href="loginUrl"
                                 class="font-underline"
@@ -67,7 +64,7 @@
                     </div>
                 </div>
                 <div class="flex flex-row flex-wrap nmh-1 mb-1">
-                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-1">
+                    <div class="flex flex-column xs-12 ph-1 mb-1">
                         <div class="form-group">
                             <input
                                 id="newAccountEmail"
@@ -97,7 +94,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-1">
+                    <div class="flex flex-column xs-12 sm-6 ph-1 mb-1">
                         <div class="form-group">
                             <input
                                 id="newAccountPassword"
@@ -127,7 +124,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-column xs-12 sm-4 ph-1 mb-1">
+                    <div class="flex flex-column xs-12 sm-6 ph-1 mb-1">
                         <div class="form-group">
                             <input
                                 id="newAccountPasswordConfirm"
@@ -166,9 +163,9 @@
         </div>
 
         <div v-if="isSignedIn">
-            <div class="flex flex-row align-v-center pb-2">
+            <div class="flex flex-row align-v-center mb-1">
                 <div class="flex flex-column">
-                    <h3 class="heading">
+                    <h3 class="title uppercase">
                         Add To Existing Account
                     </h3>
 
