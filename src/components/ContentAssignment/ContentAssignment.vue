@@ -3,7 +3,9 @@
         <div class="flex flex-row align-v-center flex-wrap pv-3">
             <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
-                    <div class="flex flex-column arrow-column hide-xs-only">
+                    <div
+                        class="flex flex-column arrow-column hide-xs-only"
+                    >
                         <button
                             class="btn collapse-square"
                             @click="openAssignment"
@@ -82,10 +84,13 @@
         <transition name="slide-down-fade">
             <div
                 v-if="accordionActive && thisAssignment != null"
-                v-show="!this.accordionLoading"
-                class="flex flex-column pa-2"
+                v-show="!accordionLoading"
+                class="flex flex-column"
             >
-                <div class="flex flex-row mb-3">
+                <div
+                    v-show="$_description.length > 0"
+                    class="flex flex-row mb-3 pa-3"
+                >
                     <div
                         class="body"
                         v-html="$_description"
@@ -93,11 +98,13 @@
                         {{ $_description }}
                     </div>
                 </div>
-                <div class="flex flex-row">
+                <div
+                    v-show="$_totalPages > 0"
+                    class="flex flex-row pa-3"
+                >
                     <div class="flex flex-column grow">
                         <div class="flex flex-column">
                             <div
-                                v-if="$_totalPages > 0"
                                 ref="carouselContainer"
                                 class="flex flex-row carousel bg-white overflow mv pb-3"
                             >
@@ -107,7 +114,10 @@
                                     class="flex flex-column xs-12 grow page"
                                     :style="pageScrollPosition"
                                 >
-                                    <img :src="page">
+                                    <img
+                                        :data-ix-src="page"
+                                        data-ix-fade
+                                    >
                                 </div>
 
                                 <div
@@ -355,6 +365,18 @@ export default {
             };
         },
     },
+    watch: {
+        accordionActive() {
+            if (this.accordionActive) {
+                setTimeout(() => {
+                    // Load the Imgix Service to load srcs and srcsets
+                    if (window.ImgixService && this.accordionActive) {
+                        window.ImgixService.loadImageSources();
+                    }
+                }, 100);
+            }
+        },
+    },
     mounted() {
         if (this.position < 3) {
             this.openAssignment();
@@ -419,11 +441,13 @@ export default {
 
                             setTimeout(() => {
                                 this.accordionLoading = false;
-                            }, 750);
+                            }, 250);
                         }
                     });
             } else {
                 this.accordionActive = !this.accordionActive;
+
+
             }
         },
 

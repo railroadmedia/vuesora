@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row comment-post pl pv mv-1">
+    <div class="flex flex-row comment-post pv mv-1">
         <div class="flex flex-column avatar-column pr">
             <div
                 v-if="hasPublicProfiles"
@@ -12,7 +12,9 @@
                     class="no-decoration"
                 >
                     <img
-                        :src="comment.user['fields.profile_picture_image_url']"
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="comment.user['fields.profile_picture_image_url']"
+                        data-ix-fade
                         class="rounded"
                     >
                 </a>

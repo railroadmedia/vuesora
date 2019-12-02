@@ -1,7 +1,7 @@
 <template>
     <div
         :id="domID"
-        class="flex flex-row comment-post pa mb-1"
+        class="flex flex-row comment-post pv mb-1"
         :class="{'pinned': pinned}"
     >
         <div class="flex flex-column avatar-column pr">
@@ -16,7 +16,9 @@
                     class="no-decoration"
                 >
                     <img
-                        :src="comment.user['fields.profile_picture_image_url']"
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="comment.user['fields.profile_picture_image_url']"
+                        data-ix-fade
                         class="rounded"
                     >
                 </a>
