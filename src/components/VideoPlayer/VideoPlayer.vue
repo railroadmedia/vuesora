@@ -731,10 +731,6 @@ export default {
         if (this.useIntersectionObserver) {
             this.enableIntersectionObserver(videoWrap);
         }
-
-        // setInterval(() => {
-        //     this.isTransitioning = !this.isTransitioning;
-        // }, 1000);
     },
     beforeDestroy() {
         document.removeEventListener('click', this.closeDrawers);
