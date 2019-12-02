@@ -54,6 +54,7 @@ export default class ImgixService {
         this.defaultParams = {
             fit: 'crop',
             crop: 'faces',
+            auto: 'format',
         };
     }
 
@@ -68,7 +69,7 @@ export default class ImgixService {
             ...this.defaultParams,
             w: image.clientWidth,
             h: image.clientHeight,
-            dpr: 1,
+            dpr: window.devicePixelRatio || 1,
         });
 
         preload.addEventListener('load', () => {

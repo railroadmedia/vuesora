@@ -31,6 +31,7 @@
                     <img
                         src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
                         :data-ix-src="mappedData.thumbnail"
+                        data-ix-fade
                         alt="Lesson Thumbnail"
                     >
                     <div class="lesson-progress overflow">
