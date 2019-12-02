@@ -23,10 +23,14 @@
     position:fixed;
     top:90px;
     right:30px;
-    width:480px;
+    width:360px;
     max-width:100%;
     z-index:95;
     transition:top .5s, right .5s;
+
+    @include large {
+      width:480px;
+    }
 
     .settings-drawer {
 
