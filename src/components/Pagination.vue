@@ -39,8 +39,7 @@
         </button>
 
         <button
-            v-for="i in totalPages"
-            v-show="i < (currentPage + 2) && i > (currentPage - 2)"
+            v-for="i in activePages"
             :key="`page-${i}`"
             class="btn short collapse-square page-button"
             @click="goToPage(i)"
@@ -117,31 +116,25 @@ export default {
         activeClasses() {
             return ['text-white', this.themeBgClass];
         },
+
         inactiveClasses() {
             return [this.themeTextClass, 'flat'];
         },
-    },
-    computed: {
+
         activePages() {
-            // TODO: I haven't tested this, but it should work. Instead of using v-if with v-for
             const pages = this.range(this.totalPages, 1);
 
-            return pages.filter(page =>
-                page < (this.currentPage + 2)
-                && page > (this.currentPage - 2)
-            );
+            return pages.filter(page => page < (this.currentPage + 2) && page > (this.currentPage - 2));
         },
     },
     methods: {
         goToPage(page) {
-
-
             this.$emit('pageChange', {
                 page,
             });
         },
 
-        range: (length, start) => Utils.range(length, start)
+        range: (length, start) => Utils.range(length, start),
     },
 };
 </script>
