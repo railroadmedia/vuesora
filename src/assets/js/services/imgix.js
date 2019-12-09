@@ -53,7 +53,7 @@ export default class ImgixService {
     getDefaultParams() {
         this.defaultParams = {
             fit: 'crop',
-            crop: 'faces',
+            crop: 'faces,edges',
             auto: 'format',
         };
     }
@@ -119,7 +119,7 @@ export default class ImgixService {
         preload.src = this.client.buildURL(container.dataset.ixBg, {
             ...this.defaultParams,
             w: container.clientWidth,
-            h: container.clientHeight,
+            dpr: window.devicePixelRatio || 1,
         });
 
         preload.addEventListener('load', () => {
