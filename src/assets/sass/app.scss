@@ -635,7 +635,7 @@ ul {
   @include topToBottomGradient(transparent, transparentize($drumeoBlue, .25));
 
   &.pianote {
-    @include topToBottomGradient(transparent, transparentize($pianoteRed, .4));
+    @include topToBottomGradient(transparent, transparentize($pianoteRed, .7));
   }
 }
 
