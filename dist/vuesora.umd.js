@@ -35157,20 +35157,15 @@ var _CataloguePlaylistTabs_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CataloguePlaylistTabs = (_CataloguePlaylistTabs_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2ef92821-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=40c51224&
-var Paginationvue_type_template_id_40c51224_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row pagination align-center"},[_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 1),expression:"currentPage > 1"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.currentPage - 1)}}},[_c('span',{staticClass:"bg-grey-3 flat",class:_vm.themeTextClass},[_c('i',{staticClass:"far fa-chevron-left"})])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 2),expression:"currentPage > 2"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(1)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            1\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 3),expression:"currentPage > 3"}],staticClass:"btn short collapse-square page-button",attrs:{"disabled":""}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            ...\n        ")])]),_vm._l((_vm.totalPages),function(i){return _c('button',{directives:[{name:"show",rawName:"v-show",value:(i < (_vm.currentPage + 2) && i > (_vm.currentPage - 2)),expression:"i < (currentPage + 2) && i > (currentPage - 2)"}],key:("page-" + i),staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(i)}}},[_c('span',{class:_vm.currentPage === i ? _vm.activeClasses : _vm.inactiveClasses},[_vm._v("\n            "+_vm._s(i)+"\n        ")])])}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages - 2),expression:"currentPage < totalPages - 2"}],staticClass:"btn short collapse-square page-button",attrs:{"disabled":""}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            ...\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages - 1),expression:"currentPage < totalPages - 1"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.totalPages)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            "+_vm._s(_vm.totalPages)+"\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages),expression:"currentPage < totalPages"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.currentPage + 1)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_c('i',{staticClass:"far fa-chevron-right"})])])],2)}
-var Paginationvue_type_template_id_40c51224_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2ef92821-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=89c563fc&
+var Paginationvue_type_template_id_89c563fc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row pagination align-center"},[_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 1),expression:"currentPage > 1"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.currentPage - 1)}}},[_c('span',{staticClass:"bg-grey-3 flat",class:_vm.themeTextClass},[_c('i',{staticClass:"far fa-chevron-left"})])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 2),expression:"currentPage > 2"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(1)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            1\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 3),expression:"currentPage > 3"}],staticClass:"btn short collapse-square page-button",attrs:{"disabled":""}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            ...\n        ")])]),_vm._l((_vm.activePages),function(i){return _c('button',{key:("page-" + i),staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(i)}}},[_c('span',{class:_vm.currentPage === i ? _vm.activeClasses : _vm.inactiveClasses},[_vm._v("\n            "+_vm._s(i)+"\n        ")])])}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages - 2),expression:"currentPage < totalPages - 2"}],staticClass:"btn short collapse-square page-button",attrs:{"disabled":""}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            ...\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages - 1),expression:"currentPage < totalPages - 1"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.totalPages)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            "+_vm._s(_vm.totalPages)+"\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages),expression:"currentPage < totalPages"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.currentPage + 1)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_c('i',{staticClass:"far fa-chevron-right"})])])],2)}
+var Paginationvue_type_template_id_89c563fc_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Pagination.vue?vue&type=template&id=40c51224&
+// CONCATENATED MODULE: ./src/components/Pagination.vue?vue&type=template&id=89c563fc&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=script&lang=js&
 
-
-
-var _name$mixins$props$co;
-
-//
 //
 //
 //
@@ -35266,7 +35261,7 @@ var _name$mixins$props$co;
 //
 
 
-/* harmony default export */ var Paginationvue_type_script_lang_js_ = (_name$mixins$props$co = {
+/* harmony default export */ var Paginationvue_type_script_lang_js_ = ({
   name: 'Pagination',
   mixins: [ThemeClasses],
   props: {
@@ -35293,28 +35288,27 @@ var _name$mixins$props$co;
     },
     inactiveClasses: function inactiveClasses() {
       return [this.themeTextClass, 'flat'];
+    },
+    activePages: function activePages() {
+      var _this = this;
+
+      var pages = this.range(this.totalPages, 1);
+      return pages.filter(function (page) {
+        return page < _this.currentPage + 2 && page > _this.currentPage - 2;
+      });
+    }
+  },
+  methods: {
+    goToPage: function goToPage(page) {
+      this.$emit('pageChange', {
+        page: page
+      });
+    },
+    range: function range(length, start) {
+      return utils.range(length, start);
     }
   }
-}, _defineProperty(_name$mixins$props$co, "computed", {
-  activePages: function activePages() {
-    var _this = this;
-
-    // TODO: I haven't tested this, but it should work. Instead of using v-if with v-for
-    var pages = this.range(this.totalPages, 1);
-    return pages.filter(function (page) {
-      return page < _this.currentPage + 2 && page > _this.currentPage - 2;
-    });
-  }
-}), _defineProperty(_name$mixins$props$co, "methods", {
-  goToPage: function goToPage(page) {
-    this.$emit('pageChange', {
-      page: page
-    });
-  },
-  range: function range(length, start) {
-    return utils.range(length, start);
-  }
-}), _name$mixins$props$co);
+});
 // CONCATENATED MODULE: ./src/components/Pagination.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_Paginationvue_type_script_lang_js_ = (Paginationvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./src/components/Pagination.vue?vue&type=style&index=0&lang=scss&
@@ -35331,8 +35325,8 @@ var Paginationvue_type_style_index_0_lang_scss_ = __webpack_require__("5eaf");
 
 var Pagination_component = normalizeComponent(
   components_Paginationvue_type_script_lang_js_,
-  Paginationvue_type_template_id_40c51224_render,
-  Paginationvue_type_template_id_40c51224_staticRenderFns,
+  Paginationvue_type_template_id_89c563fc_render,
+  Paginationvue_type_template_id_89c563fc_staticRenderFns,
   false,
   null,
   null,
