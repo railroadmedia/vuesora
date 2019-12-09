@@ -175,7 +175,8 @@
                             <div
                                 class="flex flex-row"
                                 style="min-height:50px;"
-                                @click.stop.native="playPauseViaControlWrap"
+                                @dblclick.stop.prevent="() => false"
+                                @click.stop.prevent="() => false"
                             >
                                 <PlayerButton
                                     v-if="controls.backward"
@@ -204,6 +205,7 @@
                             <div
                                 v-if="controls.progress"
                                 class="flex flex-row"
+                                @dblclick.stop.prevent="() => false"
                             >
                                 <PlayerProgress
                                     :theme-color="themeColor"
@@ -224,7 +226,8 @@
                             <!--  BOTTOM ROW  -->
                             <div
                                 class="flex flex-row"
-                                @click.stop.prevent
+                                @dblclick.stop.prevent="() => false"
+                                @click.stop.prevent="() => false"
                             >
                                 <PlayerButton
                                     v-if="controls.play"
@@ -1194,7 +1197,7 @@ export default {
             this.intersection = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     const isVisible = entry.intersectionRatio >= 0.5;
-                    this.isPipEnabled = !isVisible && !this.isMobileViewport;
+                    this.isPipEnabled = !isVisible && !this.isMobileViewport && this.isPlaying;
                 });
             }, {
                 root: null,
