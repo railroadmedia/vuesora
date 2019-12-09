@@ -5,8 +5,8 @@
                 <div class="flex flex-row">
                     <a
                         href="/members/forums"
-                        class="no-decoration text-black mr-3"
-                        :class="!isFollowedSection ? 'bb-' + themeColor + '-1' : ''"
+                        class="no-decoration mr-3"
+                        :class="!isFollowedSection ? tabSelectedClasses : 'text-grey-2'"
                     >
                         <h1 class="heading pointer">
                             All Forums
@@ -14,8 +14,8 @@
                     </a>
                     <a
                         href="/members/forums?followed=true"
-                        class="no-decoration text-black"
-                        :class="[isFollowedSection ? 'bb-' + themeColor + '-1' : '', {'hide': searching}]"
+                        class="no-decoration"
+                        :class="[isFollowedSection ? tabSelectedClasses : 'text-grey-2', {'hide': searching}]"
                     >
                         <h1 class="heading pointer">
                             Followed
@@ -238,6 +238,7 @@ export default {
             searchResultsCount: 0,
             searchResultsPage: 1,
             searchResultsPageLength: 10,
+            tabSelectedClasses: `bb-${this.themeColor}-1 text-black`,
         };
     },
     computed: {
