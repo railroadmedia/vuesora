@@ -260,7 +260,7 @@
     },
     computed: {
         cartContainsSubscription() {
-            return this.cartData.items.filter(item => !!item.is_digital).length > 0;
+            return this.cartData.items.filter(item => item.is_physical).length > 0;
         },
 
         cartRequiresShippingAddress() {
