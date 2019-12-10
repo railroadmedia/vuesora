@@ -48,14 +48,23 @@
                             Create Your Account
                         </h3>
 
-                        <span class="flex flex-auto">
+                        <p class="body">
+<!--                            Already have a Musora Account?-->
+<!--                            &nbsp;-->
+<!--                            <span class="capitalize">-->
+<!--                                ({{ brand }}, {{ ['drumeo', 'guitareo', 'pianote']-->
+<!--                                    .filter(item => item !== brand)-->
+<!--                                    .join(', ') }})-->
+<!--                            </span>-->
+                            Already have a <span class="capitalize">{{ brand }}</span> account?
+
                             <a
                                 :href="loginUrl"
-                                class="body font-underline"
+                                class="font-underline"
                             >
-                                Already have an account? Click here to login.
+                                Click here to login.
                             </a>
-                        </span>
+                        </p>
                     </div>
                 </div>
                 <div class="flex flex-row bg-white flex-wrap shadow corners-5 pt-3 ph-2 mb-1">

@@ -79,7 +79,7 @@
                         v-if="item.subscription_interval_type"
                         class="x-tiny text-grey-3"
                     >
-                        per {{ item.subscription_interval_type }}
+                        {{ intervalString }}
                     </h3>
                 </div>
             </div>
@@ -135,6 +135,14 @@ export default {
 
         isDiscounted() {
             return this.item.price_after_discounts !== this.item.price_before_discounts;
+        },
+
+        intervalString() {
+            if(this.item.subscription_interval_count === 1){
+                return `per ${ this.item.subscription_interval_type }`;
+            }
+
+            return `per ${ this.item.subscription_interval_count } ${ this.item.subscription_interval_type }s`
         },
     },
     mounted() {

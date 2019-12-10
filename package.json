@@ -1,6 +1,6 @@
 {
   "name": "vuesora",
-  "version": "0.14.2",
+  "version": "0.14.6",
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
@@ -31,6 +31,7 @@
     "es6-promise": "^4.2.4",
     "eslint-plugin-vue": "^5.2.2",
     "flatpickr": "^4.6.3",
+    "imgix.js": "^3.4.1",
     "luxon": "^1.19.3",
     "mediaelement": "^4.2.8",
     "mediaelement-plugins": "^2.5.0",
