@@ -291,7 +291,6 @@
 
         updateShippingData({ key, value }) {
             this.$set(this.shippingStateFactory, key, value);
-            clearTimeout(this.updateTimeout);
 
             this.updateAddressesInSession();
         },
