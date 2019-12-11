@@ -256,11 +256,12 @@
             stripeToken: null,
             submitTimeout: null,
             formSuccess: false,
+            updateTimeout: null,
         };
     },
     computed: {
         cartContainsSubscription() {
-            return this.cartData.items.filter(item => item.is_physical).length > 0;
+            return this.cartData.items.filter(item => !!item.is_digital).length > 0;
         },
 
         cartRequiresShippingAddress() {
@@ -290,33 +291,40 @@
 
         updateShippingData({ key, value }) {
             this.$set(this.shippingStateFactory, key, value);
+            clearTimeout(this.updateTimeout);
+
             this.updateAddressesInSession();
         },
 
         updatePaymentData({ key, value }) {
             this.$set(this.paymentStateFactory, key, value);
+
             this.updateAddressesInSession();
         },
             
         updateAddressesInSession() {
-            EcommerceService.updateAddressesInSession({
-                shippingAddressLine1: this.shippingStateFactory.street_line_one,
-                shippingAddressLine2: this.shippingStateFactory.street_line_two,
-                shippingCity: this.shippingStateFactory.city,
-                shippingCountry: this.shippingStateFactory.country,
-                shippingFirstName: this.shippingStateFactory.first_name,
-                shippingLastName: this.shippingStateFactory.last_name,
-                shippingState: this.shippingStateFactory.state,
-                shippingZip: this.shippingStateFactory.zip_or_postal_code,
-                billingCountry: this.paymentStateFactory.billingCountry,
-                billingState: this.paymentStateFactory.billingRegion,
-                billingEmail: this.accountStateFactory.billingEmail,
-            })
-                .then((response) => {
-                    if (response) {
-                        this.updateCart(response.data);
-                    }
-                });
+            clearTimeout(this.updateTimeout);
+
+            this.updateTimeout = setTimeout(() => {
+                EcommerceService.updateAddressesInSession({
+                    shippingAddressLine1: this.shippingStateFactory.street_line_one,
+                    shippingAddressLine2: this.shippingStateFactory.street_line_two,
+                    shippingCity: this.shippingStateFactory.city,
+                    shippingCountry: this.shippingStateFactory.country,
+                    shippingFirstName: this.shippingStateFactory.first_name,
+                    shippingLastName: this.shippingStateFactory.last_name,
+                    shippingState: this.shippingStateFactory.state,
+                    shippingZip: this.shippingStateFactory.zip_or_postal_code,
+                    billingCountry: this.paymentStateFactory.billingCountry,
+                    billingState: this.paymentStateFactory.billingRegion,
+                    billingEmail: this.accountStateFactory.billingEmail,
+                })
+                    .then((response) => {
+                        if (response) {
+                            this.updateCart(response.data);
+                        }
+                    });
+            }, 200);
         },
 
         submitForm() {
