@@ -22,9 +22,9 @@
                                id="billingEmail"
                                name="billing-email"
                                class="order-form-input"
-                               :class="{ 'has-error': errors.billingEmail.length,
-                               'has-input': $_billingEmail != null }"
-                               v-model.lazy="$_billingEmail">
+                               :class="{ 'has-error': errors.accountEmail.length,
+                               'has-input': $_accountEmail != null }"
+                               v-model.lazy="$_accountEmail">
 
                         <label for="billingEmail"
                                :class="brand">
@@ -32,7 +32,7 @@
                         </label>
 
                         <ul class="errors tiny">
-                            <li v-for="(error, i) in errors.billingEmail"
+                            <li v-for="(error, i) in errors.accountEmail"
                                 :key="'accountEmailError' + i">
                                 {{ error || null }}
                             </li>
@@ -247,10 +247,6 @@ export default {
     data() {
         return {
             rules: {
-                billingEmail: [
-                    v => !!v || 'Email is required.',
-                    v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Must be a valid email',
-                ],
                 accountEmail: [
                     v => !!v || 'Email is required.',
                     v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Must be a valid email',
@@ -266,7 +262,6 @@ export default {
                 ],
             },
             errors: {
-                billingEmail: [],
                 accountEmail: [],
                 accountPassword: [],
                 accountPasswordConfirm: [],

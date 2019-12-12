@@ -394,7 +394,7 @@
                     payload.account_creation_password = this.accountStateFactory.accountPassword;
                     payload.account_creation_password_confirmation = this.accountStateFactory.accountPasswordConfirm;
                 } else {
-                    payload.billing_email = this.accountStateFactory.billingEmail;
+                    payload.billing_email = this.accountStateFactory.accountEmail;
                 }
             }
 
