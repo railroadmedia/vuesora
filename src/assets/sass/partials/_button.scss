@@ -136,6 +136,12 @@ button {
     }
   }
 
+  &.stacked {
+    & > span {
+      flex-direction:column;
+    }
+  }
+
   &.btn-tiny {
     font-size:13px;
     height:35px;

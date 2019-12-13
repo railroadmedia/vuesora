@@ -6,24 +6,29 @@ export default (function () {
         const closeEvent = new CustomEvent('modalClose');
 
         document.body.addEventListener('click', (event) => {
-            if (event.target.dataset.openModal != null) {
-                openModal(event);
+            const buttonClicked = event.target;
+            const modalId = buttonClicked.dataset.openModal;
+
+            if (modalId != null) {
+                openModal(modalId, buttonClicked);
             }
 
-            if (event.target.classList.contains('close-modal')) {
+            if (buttonClicked.classList.contains('close-modal')) {
                 closeModal();
             }
         });
 
-        function openModal(event) {
-            const buttonClicked = event.target;
-            const modalId = buttonClicked.dataset.openModal;
-            const modalToOpen = document.getElementById(modalId);
+        document.body.addEventListener('openModal', (event) => {
+            openModal(event.detail.target);
+        });
+
+        function openModal(modalId, buttonClicked) {
             const openEvent = new CustomEvent('modalOpen', {
                 detail: {
                     trigger: buttonClicked,
                 },
             });
+            const modalToOpen = document.getElementById(modalId);
 
             closeModal();
 

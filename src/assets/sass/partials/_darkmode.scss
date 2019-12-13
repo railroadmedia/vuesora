@@ -1,7 +1,4 @@
-body.dark-mode {
-  color:#fefefe;
-  background-color:#141414;
-
+.dark-mode {
   .bg-white:not(.btn):not(span) {
     background-color:#242424;
   }
@@ -36,8 +33,8 @@ body.dark-mode {
     border-color: #444444;
   }
 
-  [class*='-grey-7'] {
-    background-color:#444444;
+  [class*='hover-bg-grey-7']:hover {
+    background-color: #242424;
   }
 
   .carousel img {
@@ -47,7 +44,6 @@ body.dark-mode {
   .noty_theme__musoraNoty {
     background-color:#242424;
   }
-
 
   .forum-post {
 

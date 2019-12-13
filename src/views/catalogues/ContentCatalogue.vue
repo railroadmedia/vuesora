@@ -61,6 +61,8 @@
             :lock-unowned="lockUnowned"
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
+            :six-wide="sixWide"
+            :display-inline="displayInline"
             @addToList="addToListEventHandler"
         ></grid-catalogue>
 
@@ -89,7 +91,7 @@
 
         <div
             v-if="paginate && total_pages > 1 && !infiniteScroll"
-            class="flex flex-row bg-light pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="Number(page)"
@@ -286,6 +288,14 @@ export default {
         catalogueName: {
             type: String,
             default: () => '',
+        },
+        sixWide: {
+            type: Boolean,
+            default: () => false,
+        },
+        displayInline: {
+            type: Boolean,
+            default: () => false,
         },
     },
     data() {
@@ -529,14 +539,19 @@ export default {
                 }
             }
 
-            // Sometimes vue caches the add event button.
-            // If it doesn't we need to force a refresh, done with a timeout to
-            // Prevent race conditions.
-            if (window.addeventatc) {
-                setTimeout(() => {
+            setTimeout(() => {
+                // Sometimes vue caches the add event button.
+                // If it doesn't we need to force a refresh, done with a timeout to
+                // Prevent race conditions.
+                if (window.addeventatc) {
                     window.addeventatc.refresh();
-                }, 500);
-            }
+                }
+
+                // Load the Imgix Service to load srcs and srcsets
+                if (window.ImgixService) {
+                    window.ImgixService.loadImageSources();
+                }
+            }, 500);
 
             this.loading = false;
             this.requestingMore = false;

@@ -1,12 +1,12 @@
 <template>
-    <div class="flex flex-column bg-white shadow corners-3 grow content-table">
+    <div class="flex flex-column grow content-table">
         <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column mb-3 align-v-center">
                 <div class="flex flex-row">
                     <a
                         href="/members/forums"
-                        class="no-decoration text-black mr-3"
-                        :class="!isFollowedSection ? 'bb-' + themeColor + '-1' : ''"
+                        class="no-decoration mr-3"
+                        :class="!isFollowedSection ? tabSelectedClasses : 'text-grey-2'"
                     >
                         <h1 class="heading pointer">
                             All Forums
@@ -14,8 +14,8 @@
                     </a>
                     <a
                         href="/members/forums?followed=true"
-                        class="no-decoration text-black"
-                        :class="[isFollowedSection ? 'bb-' + themeColor + '-1' : '', {'hide': searching}]"
+                        class="no-decoration"
+                        :class="[isFollowedSection ? tabSelectedClasses : 'text-grey-2', {'hide': searching}]"
                     >
                         <h1 class="heading pointer">
                             Followed
@@ -146,7 +146,7 @@
 
         <div
             v-if="!searching && totalPages > 1"
-            class="flex flex-row bg-light pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="currentPage"
@@ -157,7 +157,7 @@
 
         <div
             v-if="searching && totalSearchPages > 1"
-            class="flex flex-row bg-light pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="searchResultsPage"
@@ -238,6 +238,7 @@ export default {
             searchResultsCount: 0,
             searchResultsPage: 1,
             searchResultsPageLength: 10,
+            tabSelectedClasses: `bb-${this.themeColor}-1 text-black`,
         };
     },
     computed: {

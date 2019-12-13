@@ -135,6 +135,10 @@ export default {
                 leavepictureinpicture: () => {
                     this.isExperimentalPictureInPictureEnabled = false;
                 },
+
+                ended: () => {
+                    this.isPipEnabled = false;
+                },
             },
 
             chromeCastEventHandlers: {

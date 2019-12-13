@@ -145,9 +145,9 @@
     max-width:$large;
   }
 
-  //@include xLarge {
-  //  max-width:$xLarge;
-  //}
+  @include xLarge {
+    max-width:$xLarge;
+  }
 
   &.fluid {
     max-width:100%;
@@ -204,17 +204,17 @@
   }
 }
 
-//@include xLarge {
-//  @for $i from 1 through 12 {
-//    .xl-#{$i} {
-//      flex: 0 0 #{$i / 12 * 100%};
-//      max-width:#{$i / 12 * 100%};
-//    }
-//    .xl-offset-#{$i} {
-//      margin-left:#{$i / 12 * 100%};
-//    }
-//  }
-//}
+@include xLarge {
+  @for $i from 1 through 12 {
+    .xl-#{$i} {
+      flex: 0 0 #{$i / 12 * 100%};
+      max-width:#{$i / 12 * 100%};
+    }
+    .xl-offset-#{$i} {
+      margin-left:#{$i / 12 * 100%};
+    }
+  }
+}
 
 
 ///////////////////////////////////////
@@ -272,12 +272,12 @@
   }
 }
 
-//@include xLarge {
-//  .hide-xl-only,
-//  .hide-xl-down {
-//    display:none!important;
-//  }
-//}
+@include xLarge {
+  .hide-xl-only,
+  .hide-xl-down {
+    display:none!important;
+  }
+}
 
 ///////////////////////////////////////
 /// 4. SPACING
@@ -353,6 +353,37 @@ $numerators: 2 3 6 9 10;
 
   .mr-#{$i}{
     margin-right:$spacing;
+  }
+
+  // Negative Margin
+  .nma-#{$i}{
+    margin:-#{$spacing};
+  }
+
+  .nmv-#{$i} {
+    margin-top:-#{$spacing};
+    margin-bottom:-#{$spacing};
+  }
+
+  .nmh-#{$i} {
+    margin-left:-#{$spacing};
+    margin-right:-#{$spacing};
+  }
+
+  .nmt-#{$i}{
+    margin-top:-#{$spacing};
+  }
+
+  .nmb-#{$i}{
+    margin-bottom:-#{$spacing};
+  }
+
+  .nml-#{$i}{
+    margin-left:-#{$spacing};
+  }
+
+  .nmr-#{$i}{
+    margin-right:-#{$spacing};
   }
 
   // Padding
@@ -492,6 +523,15 @@ $numerators: 2 3 6 9 10;
 }
 
 // CONDITIONAL PADDING/MARGIN
+@include xSmallOnly {
+  .p-sm-up {
+    padding:0!important;
+  }
+  .m-sm-up {
+    margin:0!important;
+  }
+}
+
 @include small {
   .p-xs-only {
     padding:0!important;

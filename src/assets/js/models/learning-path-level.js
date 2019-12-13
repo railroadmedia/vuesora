@@ -1,21 +1,21 @@
 import ContentModel from './_default';
 
-export default class UnitContentModel extends ContentModel {
+export default class LearningPathLevelContentModel extends ContentModel {
     constructor({ brand = 'drumeo', post }) {
         super({
             brand,
             post,
         });
 
-        this.card.color_title = this.postInstructor;
+        this.card.grey_title = this.postChildLessonCount;
 
         this.list.thumb_title = this.levelNumber;
         this.list.color_title = this.postInstructor;
         this.list.column_data = [
-            ContentModel.mapDifficulty(this.post),
             this.postChildLessonCount,
-            this.postPublisedOn,
+            `${this.getPostField('xp')} xp`,
         ];
+        this.list.description = this.getPostDatum('description');
     }
 
     get levelNumber() {

@@ -1,67 +1,103 @@
 <template>
     <div class="flex flex-row pagination align-center">
-        <div
-            v-if="currentPage > 1"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 hide-xs-only"
+        <button
+            v-show="currentPage > 1"
+            class="btn short collapse-square page-button"
             @click="goToPage(currentPage - 1)"
         >
-            <i class="fal fa-chevron-left"></i>
-        </div>
+            <span
+                class="bg-grey-3 flat"
+                :class="themeTextClass"
+            >
+                <i class="far fa-chevron-left"></i>
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage > 2"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3"
+        <button
+            v-show="currentPage > 2"
+            class="btn short collapse-square page-button"
             @click="goToPage(1)"
         >
-            1
-        </div>
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]">
+                1
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage > 3"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 filler font-light"
+        <button
+            v-show="currentPage > 3"
+            disabled
+            class="btn short collapse-square page-button"
         >
-            ...
-        </div>
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]"
+            >
+                ...
+            </span>
+        </button>
 
-        <div
-            v-for="i in totalPages"
-            v-if="i < (currentPage + 2) && i > (currentPage - 2)"
-            class="tiny corners-3 page-button flex-center shadow noselect"
-            :class="currentPage === i ? 'bg-x-dark text-white active' : 'bg-white text-grey-3'"
+        <button
+            v-for="i in activePages"
+            :key="`page-${i}`"
+            class="btn short collapse-square page-button"
             @click="goToPage(i)"
         >
-            {{ i }}
-        </div>
+            <span
+                :class="currentPage === i ? activeClasses : inactiveClasses"
+            >
+                {{ i }}
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage < totalPages - 2"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 filler font-light"
+        <button
+            v-show="currentPage < totalPages - 2"
+            disabled
+            class="btn short collapse-square page-button"
         >
-            ...
-        </div>
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]"
+            >
+                ...
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage < totalPages - 1"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3"
+        <button
+            v-show="currentPage < totalPages - 1"
+            class="btn short collapse-square page-button"
             @click="goToPage(totalPages)"
         >
-            {{ totalPages }}
-        </div>
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]"
+            >
+                {{ totalPages }}
+            </span>
+        </button>
 
-        <div
-            v-if="currentPage < totalPages"
-            class="tiny corners-3 page-button flex-center shadow noselect bg-white text-grey-3 hide-xs-only"
+        <button
+            v-show="currentPage < totalPages"
+            class="btn short collapse-square page-button"
             @click="goToPage(currentPage + 1)"
         >
-            <i class="fal fa-chevron-right"></i>
-        </div>
+            <span
+                class="flat"
+                :class="[themeTextClass, themeBgClass]"
+            >
+                <i class="far fa-chevron-right"></i>
+            </span>
+        </button>
     </div>
 </template>
 <script>
+import ThemeClasses from '../mixins/ThemeClasses';
 import { Utils } from '@musora/helper-functions';
 
 export default {
     name: 'Pagination',
+    mixins: [ThemeClasses],
     props: {
         currentPage: {
             type: Number,
@@ -71,16 +107,24 @@ export default {
             type: Number,
             default: () => 0,
         },
+        themeColor: {
+            type: String,
+            default: 'grey-3',
+        },
     },
     computed: {
+        activeClasses() {
+            return ['text-white', this.themeBgClass];
+        },
+
+        inactiveClasses() {
+            return [this.themeTextClass, 'flat'];
+        },
+
         activePages() {
-            // TODO: I haven't tested this, but it should work. Instead of using v-if with v-for
             const pages = this.range(this.totalPages, 1);
 
-            return pages.filter(page =>
-                page < (this.currentPage + 2)
-                && page > (this.currentPage - 2)
-            );
+            return pages.filter(page => page < (this.currentPage + 2) && page > (this.currentPage - 2));
         },
     },
     methods: {
@@ -90,24 +134,17 @@ export default {
             });
         },
 
-        range: (length, start) => Utils.range(length, start)
+        range: (length, start) => Utils.range(length, start),
     },
 };
 </script>
 <style lang="scss">
-    .pagination {
-        height:30px;
-    }
-    .page-button {
-        min-width:30px;
-        width:30px;
-        min-height:30px;
-        height:30px;
+    button.btn.page-button {
         margin:0 3px;
-        cursor:pointer;
 
-        &.filler, &.active {
-            pointer-events:none;
+        & > span {
+            border-width:1px;
+            font-weight:500;
         }
     }
 </style>

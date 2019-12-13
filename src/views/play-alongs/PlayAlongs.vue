@@ -2,10 +2,10 @@
     <div class="flex flex-column grow play-alongs">
         <div
             v-if="showFilters"
-            class="flex flex-row pa-1"
+            class="flex flex-row pv-1"
         >
             <div class="flex flex-column align-v-center">
-                <h1 class="subheading">
+                <h1 class="heading">
                     {{ totalResults }} Play Alongs
                 </h1>
             </div>
@@ -65,7 +65,7 @@
 
         <div
             v-if="showPagination"
-            class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="Number(page)"
@@ -111,7 +111,7 @@
 
         <div
             v-if="showPagination"
-            class="flex flex-row bg-grey-7 bt-grey-1-1 pagination-row align-h-right"
+            class="flex flex-row pagination-row align-h-right"
         >
             <pagination
                 :current-page="Number(page)"

@@ -3,62 +3,38 @@
 // Progress
 .content-progress {
 
-  &.compact {
-
-    & > .flex-column {
-      flex:1 1 100%;
+  & > .flex-column {
+    @include xSmallOnly {
+      flex:0 0 100%;
     }
 
-    .trophy-progress-bar {
-      margin-right:0;
-      margin-bottom:0;
+    &.left-column {
+      flex:0 0 100%;
+      margin-bottom:$gutterWidth / 2;
+
+      h3 {
+        text-align:center;
+      }
+
+      @include medium {
+        flex:0 0 250px;
+        margin-bottom:0;
+
+        h3 {
+          text-align:left;
+        }
+      }
+    }
+
+    &.right-column {
+      @include small {
+        flex:0 0 250px;
+      }
     }
   }
 }
-
-.congrats-container {
-  &.compact {
-
-    .subtitle {
-      font-size:16px;
-    }
-  }
-}
-
-//.content-progress {
-//  position:sticky;
-//  top:60px;
-//  z-index:20;
-//
-//  @include medium {
-//    top:80px;
-//  }
-//}
-
-//.lesson-sidebar {
-//
-//  @include medium {
-//    position:sticky;
-//    top:60px;
-//    z-index:20;
-//
-//    .content-table {
-//      max-height:calc(100vh - 180px);
-//      overflow:auto;
-//
-//      &.has-see-all {
-//        max-height:calc(100vh - 230px);
-//      }
-//    }
-//  }
-//
-//  @include large {
-//    top:80px;
-//  }
-//}
 
 .trophy-progress-bar {
-  background-color:rgba(0,0,0,.2);
   height:50px;
   border-radius:50px;
   overflow:hidden;
@@ -66,11 +42,6 @@
   @include xSmallOnly {
     margin-right:0;
     margin-bottom:$gutterWidth / 3;
-  }
-
-
-  &.complete {
-    background-color:#fff;
   }
 
   .trophy-progress-cutoff {
@@ -81,12 +52,31 @@
     border-width:10px;
     overflow:hidden;
 
-    .trophy-progress {
+    .progress-border {
       height:100%;
-      width:0;
+      width:100%;
       border-radius:70px;
-      transition:width .2s ease-in-out;
-      will-change:width;
+      z-index:2;
+    }
+
+    .trophy-progress {
+      height:calc(100% - 10px);
+      top:5px;
+      width:100%;
+      border-radius:70px;
+      transition:transform .2s ease-in-out;
+      z-index:1;
+    }
+  }
+
+  .progress-percent {
+    position:absolute;
+    top:50%;
+    right:10px;
+    transform:translateY(-50%);
+
+    &.right {
+      right:-45px;
     }
   }
 
@@ -159,21 +149,27 @@
   max-width:100%;
 }
 
+
 // Lesson Info Sidebar
 #lessonInfo {
   flex-wrap:wrap;
 
-  @include medium {
+  @include small {
     flex-wrap:nowrap;
   }
 
   .lesson-sidebar {
     flex:0 0 100%;
 
-    @include medium {
+    @include small {
       flex:0 0 320px;
       max-width:320px;
       margin-left:$gutterWidth / 2;
+    }
+
+    @include medium {
+      flex:0 0 420px;
+      max-width:420px;
     }
 
     .content-table {
@@ -261,6 +257,48 @@
   }
 }
 
+.resource-buttons {
+  justify-content:stretch;
+
+  @include small {
+    justify-content:flex-end;
+  }
+}
+
+.resource-button {
+  //flex:0 0 25%;
+  //
+  //@include xSmallOnly {
+  //  max-width:25%;
+  //  min-width:25%;
+  //}
+
+  @include small {
+    flex:0 0 auto;
+  }
+}
+
+.download-dropdown {
+  position:absolute;
+  width:200px;
+  top:105%;
+  left:50%;
+  margin-left:-100px;
+  z-index:20;
+}
+
+.single-col {
+  .nmh-1 {
+    margin:0;
+  }
+
+  .catalogue-card {
+    flex:0 0 100%;
+    max-width:100%;
+    min-width:100%;
+  }
+}
+
 .catalogue-card {
   flex:0 0 50%;
   max-width:50%;
@@ -273,6 +311,27 @@
   @include medium {
     flex:0 0 25%;
     max-width:25%;
+  }
+
+  &.display-inline {
+    flex:0 0 100%;
+    max-width:100%;
+    min-width:100%;
+  }
+
+  &.six-wide {
+    flex:0 0 33.33%;
+    max-width:33.33%;
+
+    @include small(){
+      flex:0 0 25%;
+      max-width:25%;
+    }
+
+    @include medium(){
+      flex:0 0 16.66%;
+      max-width:16.66%;
+    }
   }
 
   &:hover {
@@ -288,10 +347,28 @@
     }
   }
 
-  &.no-access {
+  &.no-access, &.completed {
     .card-media .thumb-hover {
       opacity:1;
       visibility:visible;
+    }
+  }
+
+  .thumbnail-col {
+    flex: 0 0 175px;
+    max-width:175px;
+    min-width:175px;
+
+    @include small {
+      flex: 0 0 125px;
+      max-width:125px;
+      min-width:125px;
+    }
+
+    @include medium {
+      flex: 0 0 175px;
+      max-width:175px;
+      min-width:175px;
     }
   }
 
@@ -351,10 +428,11 @@
       z-index:2;
 
       i {
-        font-size:16px;
+        font-size:32px;
         color:#fff;
       }
     }
+
     .thumb-hover {
       opacity:0;
       visibility:hidden;
@@ -398,11 +476,13 @@
       color:#fff;
     }
   }
+
   .new {
     position:absolute;
-    top:0;
-    left:0;
-    border-radius:5px 0 5px 0;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    border-radius:5px 5px 0 0;
     padding:5px;
   }
 }
@@ -527,15 +607,38 @@
 
 .four-cards-row {
 
-  @include small {
+  @include smallOnly {
     .catalogue-card:nth-child(n+4) {
       display:none;
     }
   }
 
   @include medium {
-    .catalogue-card:nth-child(n+4) {
+    .catalogue-card:nth-child(n+5) {
+      display:none;
+    }
+  }
+
+  content-catalogue, transition {
+    width:100%;
+  }
+}
+
+.six-cards-row {
+
+  @include small {
+    .catalogue-card:nth-child(n+5) {
+      display:none;
+    }
+  }
+
+  @include medium {
+    .catalogue-card:nth-child(n+5) {
       display:flex;
     }
   }
+}
+
+content-catalogue, transition {
+  width:100%;
 }
