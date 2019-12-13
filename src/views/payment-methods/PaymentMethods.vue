@@ -44,7 +44,7 @@
                 </div>
 
                 <div
-                    v-if="paymentMethod.attributes.method_type === 'credit_card'"
+                    v-if="paymentMethod.relationships.method.data.type === 'creditCard'"
                     class="flex flex-column body"
                 >
                     {{ getRelatedAttributesByTypeAndId(
@@ -57,7 +57,7 @@
                 </div>
 
                 <div
-                    v-if="paymentMethod.attributes.method_type === 'paypal'"
+                    v-if="paymentMethod.relationships.method.data.type === 'paypalBillingAgreement'"
                     class="flex flex-column body"
                 >
                     PayPal
