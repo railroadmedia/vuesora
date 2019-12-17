@@ -350,9 +350,27 @@
 
   .thumb-title {
     position:absolute;
-    bottom:15px;
+    top:0;
+    left:0;
+    height:100%;
     width:100%;
     text-shadow:0 0 2px rgba(0,0,0,.8);
+
+    h5 {
+      line-height:1em;
+    }
+
+    img {
+      filter: drop-shadow(0 0 2px rgba(0,0,0,.8))
+    }
+
+    &.drumeo {
+      @include topToBottomGradient(transparent, transparentize($drumeoBlue, .25));
+    }
+
+    &.pianote {
+      @include topToBottomGradient(transparent, transparentize($pianoteRed, .7));
+    }
   }
 }
 

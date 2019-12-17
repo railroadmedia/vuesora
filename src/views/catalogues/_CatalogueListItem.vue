@@ -42,12 +42,23 @@
                         ></span>
                     </div>
 
-                    <h5
+                    <div
                         v-if="mappedData.thumb_title"
-                        class="thumb-title heading uppercase text-center text-white"
+                        class="thumb-title flex-center text-center ph-1"
+                        :class="brand"
                     >
-                        {{ mappedData.thumb_title }}
-                    </h5>
+                        <img
+                            v-if="mappedData.thumb_logo"
+                            :src="mappedData.thumb_logo"
+                            alt="Item Logo"
+                            style="max-width:150px;"
+                        >
+                        <h5
+                            class="large-display uppercase text-white"
+                        >
+                            {{ mappedData.thumb_title }}
+                        </h5>
+                    </div>
 
                     <span class="thumb-hover flex-center">
                         <i
