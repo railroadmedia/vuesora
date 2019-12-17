@@ -146,7 +146,7 @@ export default {
             this.intersection = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     const isVisible = entry.intersectionRatio >= 0.5;
-                    this.isPipEnabled = !isVisible && !this.isMobileViewport;
+                    this.isPipEnabled = !isVisible && !this.isMobileViewport && this.isPlaying;
                 });
             }, {
                 root: null,
