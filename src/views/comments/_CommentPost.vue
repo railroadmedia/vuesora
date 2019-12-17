@@ -369,7 +369,7 @@ export default {
         },
 
         isUsersPost() {
-            return String(this.currentUser.id) === String(this.user_id);
+            return String(this.currentUser.id) === String(this.comment.user_id);
         },
 
         isCurrentUserAdmin() {
