@@ -89,7 +89,10 @@
                 class="btn"
                 @click.stop="submitForm"
             >
-                <span class="bg-pianote text-white">
+                <span
+                    class="text-white"
+                    :class="themeBgClass"
+                >
                     Place Order
                 </span>
             </button>
@@ -476,6 +479,6 @@ export default {
     }
     .totals-col {
         position:sticky;
-        top:$gutterWidth / 2;
+        top:90px;
     }
 </style>
