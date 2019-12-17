@@ -39,7 +39,11 @@ export default (function () {
 
                 document.body.classList.add('no-scroll');
                 document.documentElement.classList.add('no-scroll');
-                modalToOpen.classList.add('active');
+                modalToOpen.classList.add('displayed');
+                setTimeout(() => {
+                    modalToOpen.classList.add('active');
+                }, 50);
+
                 modalToOpen.dispatchEvent(openEvent);
             } else {
                 console.error(`Modal Error - Could not find modal with the ID: "${modalId}"`);
@@ -66,6 +70,7 @@ export default (function () {
             // Remove the active class from all Modals (easier than finding the specific one open)
             Array.from(modalDialogs).forEach((dialog) => {
                 dialog.classList.remove('active');
+                dialog.classList.remove('displayed');
             });
 
             // window.modalSimpleBar = null;

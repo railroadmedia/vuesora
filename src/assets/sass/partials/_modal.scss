@@ -18,9 +18,14 @@
   transition:opacity .3s ease-in-out, visibility .3s ease-in-out, transform .3s ease-in-out;
   transform:scale(.9);
   pointer-events:none;
+  display:none;
 
   * {
     max-width:100%;
+  }
+
+  &.displayed {
+    display:block;
   }
 
   &.active {
