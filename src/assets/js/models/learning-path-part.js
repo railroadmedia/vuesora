@@ -12,7 +12,7 @@ export default class LearningPathPartContentModel extends ContentModel {
         this.card.grey_title = this.getPostDifficulty();
 
         this.list.color_title = null;
-        this.list.description = this.getPostDatum('learning_path_description');
+        this.list.description = this.getPostDatum('description');
         this.list.column_data = [
             this.getPostDuration(),
             `${this.getPostField('xp')} XP`,
