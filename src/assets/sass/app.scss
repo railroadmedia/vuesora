@@ -622,7 +622,7 @@ ul {
 }
 
 .header-gradient-overlay {
-  @include topToBottomGradient(transparent, transparentize($drumeoBlue, .25));
+  @include topToBottomGradient(transparent, transparentize($drumeoBlue, .6));
 
   &.pianote {
     @include topToBottomGradient(transparent, transparentize($pianoteRed, .7));
