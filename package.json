@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@musora/helper-functions": "^0.1.2",
-    "@musora/icons": "^1.0.2",
+    "@musora/icons": "^1.0.3",
     "@tinymce/tinymce-vue": "^1.0.6",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
