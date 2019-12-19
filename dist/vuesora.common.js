@@ -39570,23 +39570,23 @@ var ImageCropper_component = normalizeComponent(
 )
 
 /* harmony default export */ var ImageCropper = (ImageCropper_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17d8a2ea-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=eb81ecd0&
-var PaymentMethodsvue_type_template_id_eb81ecd0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column grow"},[_vm._m(0),_c('ul',{staticClass:"body list-style-none mb-3"},[_vm._m(1),_vm._l((_vm.paymentMethodsData.data),function(paymentMethod,i){return _c('li',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column default-col text-center body hide-xs-only"},[(_vm.isPrimaryPaymentMethod(paymentMethod))?_c('i',{staticClass:"fas fa-check"}):_vm._e()]),(paymentMethod.relationships.method.data.type === 'creditCard')?_c('div',{staticClass:"flex flex-column body"},[_vm._v("\n                "+_vm._s(_vm.getRelatedAttributesByTypeAndId(
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17d8a2ea-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=2f86db7c&
+var PaymentMethodsvue_type_template_id_2f86db7c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column grow"},[_vm._m(0),_c('ul',{staticClass:"body list-style-none mb-3"},[_vm._m(1),_vm._l((_vm.paymentMethodsData.data),function(paymentMethod,i){return _c('li',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column default-col text-center body hide-xs-only"},[(_vm.isPrimaryPaymentMethod(paymentMethod))?_c('i',{staticClass:"fas fa-check"}):_vm._e()]),(paymentMethod.relationships.method.data.type === 'creditCard')?_c('div',{staticClass:"flex flex-column body"},[_vm._v("\n                "+_vm._s(_vm.getRelatedAttributesByTypeAndId(
                     paymentMethod.relationships.method.data
                 ).attributes.company_name || 'N/A')+"\n                -\n                "+_vm._s(_vm.getRelatedAttributesByTypeAndId(
                     paymentMethod.relationships.method.data
-                ).attributes.last_four_digits || 'N/A')+"\n            ")]):_vm._e(),(paymentMethod.relationships.method.data.type === 'paypalBillingAgreement')?_c('div',{staticClass:"flex flex-column body"},[_vm._v("\n                PayPal\n            ")]):_vm._e(),_c('div',{staticClass:"flex flex-column body expiry-col text-center"},[_vm._v("\n                "+_vm._s(_vm.getExpirationDate(paymentMethod))+"\n            ")]),_c('div',{staticClass:"flex flex-column actions-col text-center"},[_c('div',{staticClass:"flex flex-row"},[_c('button',{staticClass:"btn short collapse-square",attrs:{"title":"Delete Payment Method","disabled":_vm.isPrimaryPaymentMethod(paymentMethod)},on:{"click":function($event){return _vm.deletePaymentMethod(paymentMethod.id)}}},[_vm._m(2,true)]),_c('button',{staticClass:"btn short collapse-square",attrs:{"title":"Set As Default","disabled":_vm.isPrimaryPaymentMethod(paymentMethod)},on:{"click":function($event){return _vm.markPaymentMethodAsDefault(paymentMethod.id)}}},[_vm._m(3,true)])])])])})],2),_c('div',{staticClass:"flex flex-row flex-wrap align-v-center"},[_c('div',{staticClass:"flex flex-column xs-12 sm-4"},[_c('button',{staticClass:"btn",attrs:{"data-open-modal":"paymentMethodModal","title":"Add New Payment Method"}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_c('i',{staticClass:"fas fa-plus mr-1"}),_vm._v(" New Payment Method\n                ")])])])]),_c('div',{staticClass:"modal",attrs:{"id":"paymentMethodModal"}},[_c('order-form-payment',{ref:"paymentForm",attrs:{"theme-color":_vm.themeColor,"brand":_vm.brand,"payment-details":_vm.editingPaymentMethod,"stripe-publishable-key":_vm.stripePublishableKey,"totals":_vm.totals,"discounts":[],"stripe-token":_vm.stripeToken,"countries":_vm.countries,"provinces":_vm.provinces,"is-order":false,"is-active":_vm.isActive,"has-subscription":_vm.hasSubscription},on:{"updatePaymentData":_vm.updatePaymentData,"formSubmit":_vm.submitForm,"formCancel":_vm.cancelForm}})],1),_c('transition',{attrs:{"name":"grow-fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"form-loading bg-white shadow corners-3 overflow pa-3 text-center",on:{"click":function($event){$event.stopPropagation();}}},[_c('div',{staticClass:"square"},[_c('loading-animation',{attrs:{"theme-color":_vm.themeColor}})],1),_c('p',{staticClass:"body mt-3"},[_vm._v("\n                Loading Please Wait...\n            ")]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.formSuccess),expression:"formSuccess"}],staticClass:"success-message flex flex-column flex-center bg-white pa-3"},[_c('i',{staticClass:"fas fa-check-circle text-success"}),_c('h4',{staticClass:"title mb-2"},[_vm._v("\n                        Success!\n                    ")]),_c('p',{staticClass:"tiny text-grey-3"},[_vm._v("\n                        Your payment method has been successfully changed!\n                    ")])])])],1)]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading-overlay"})],1)}
-var PaymentMethodsvue_type_template_id_eb81ecd0_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row mb-3 pt-3"},[_c('h4',{staticClass:"subheading"},[_vm._v("\n            Payment Methods\n        ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column default-col text-center hide-xs-only"},[_c('h6',{staticClass:"tiny font-bold dense"},[_vm._v("\n                    Default\n                ")])]),_c('div',{staticClass:"flex flex-column"},[_c('h6',{staticClass:"tiny font-bold dense"},[_vm._v("\n                    Info\n                ")])]),_c('div',{staticClass:"flex flex-column expiry-col text-center"},[_c('h6',{staticClass:"tiny font-bold dense"},[_vm._v("\n                    Expires On\n                ")])]),_c('div',{staticClass:"flex flex-column actions-col text-center"},[_c('h6',{staticClass:"tiny font-bold dense"},[_vm._v("\n                    Actions\n                ")])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"text-error flat"},[_c('i',{staticClass:"fas fa-trash"})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"text-success flat"},[_c('i',{staticClass:"fas fa-check"})])}]
+                ).attributes.last_four_digits || 'N/A')+"\n            ")]):_vm._e(),(paymentMethod.relationships.method.data.type === 'paypalBillingAgreement')?_c('div',{staticClass:"flex flex-column body"},[_vm._v("\n                PayPal\n            ")]):_vm._e(),_c('div',{staticClass:"flex flex-column body expiry-col text-center"},[_vm._v("\n                "+_vm._s(_vm.getExpirationDate(paymentMethod))+"\n            ")]),_c('div',{staticClass:"flex flex-column actions-col text-center"},[_c('div',{staticClass:"flex flex-row"},[_c('button',{staticClass:"btn short collapse-square",attrs:{"title":"Delete Payment Method","disabled":_vm.isPrimaryPaymentMethod(paymentMethod)},on:{"click":function($event){return _vm.deletePaymentMethod(paymentMethod.id)}}},[_vm._m(2,true)]),_c('button',{staticClass:"btn short collapse-square",attrs:{"title":"Set As Default","disabled":_vm.isPrimaryPaymentMethod(paymentMethod)},on:{"click":function($event){return _vm.markPaymentMethodAsDefault(paymentMethod.id)}}},[_vm._m(3,true)])])])])})],2),_c('div',{staticClass:"flex flex-row flex-wrap align-v-center"},[_c('div',{staticClass:"flex flex-column xs-12 sm-4"},[_c('button',{staticClass:"btn",attrs:{"data-open-modal":"paymentMethodModal","title":"Add New Payment Method"}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_c('i',{staticClass:"fas fa-plus mr-1"}),_vm._v(" New Payment Method\n                ")])])])]),_c('div',{staticClass:"modal",attrs:{"id":"paymentMethodModal"}},[_c('div',{staticClass:"flex flex-column bg-white corners-3 shadow ph-2"},[_vm._m(4),_c('order-form-payment',{ref:"paymentForm",attrs:{"theme-color":_vm.themeColor,"brand":_vm.brand,"payment-details":_vm.editingPaymentMethod,"stripe-publishable-key":_vm.stripePublishableKey,"totals":_vm.totals,"discounts":[],"stripe-token":_vm.stripeToken,"countries":_vm.countries,"provinces":_vm.provinces,"is-order":false,"is-active":_vm.isActive,"has-subscription":_vm.hasSubscription},on:{"updatePaymentData":_vm.updatePaymentData,"formSubmit":_vm.submitForm,"formCancel":_vm.cancelForm}})],1)]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"form-loading bg-white shadow corners-3 overflow pa-3 text-center",on:{"click":function($event){$event.stopPropagation();}}},[_c('div',{staticClass:"square"},[_c('loading-animation',{attrs:{"theme-color":_vm.themeColor}})],1),_c('p',{staticClass:"body mt-3"},[_vm._v("\n                Loading Please Wait...\n            ")]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.formSuccess),expression:"formSuccess"}],staticClass:"success-message flex flex-column flex-center bg-white pa-3"},[_c('i',{staticClass:"fas fa-check-circle text-success"}),_c('h4',{staticClass:"title mb-2"},[_vm._v("\n                        Success!\n                    ")]),_c('p',{staticClass:"tiny text-grey-3"},[_vm._v("\n                        Your payment method has been successfully changed!\n                    ")])])])],1)]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading-overlay"})],1)}
+var PaymentMethodsvue_type_template_id_2f86db7c_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row mb-3 pt-3"},[_c('h4',{staticClass:"subheading"},[_vm._v("\n            Payment Methods\n        ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column default-col text-center hide-xs-only"},[_c('h6',{staticClass:"tiny font-bold dense"},[_vm._v("\n                    Default\n                ")])]),_c('div',{staticClass:"flex flex-column"},[_c('h6',{staticClass:"tiny font-bold dense"},[_vm._v("\n                    Info\n                ")])]),_c('div',{staticClass:"flex flex-column expiry-col text-center"},[_c('h6',{staticClass:"tiny font-bold dense"},[_vm._v("\n                    Expires On\n                ")])]),_c('div',{staticClass:"flex flex-column actions-col text-center"},[_c('h6',{staticClass:"tiny font-bold dense"},[_vm._v("\n                    Actions\n                ")])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"text-error flat"},[_c('i',{staticClass:"fas fa-trash"})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"text-success flat"},[_c('i',{staticClass:"fas fa-check"})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row mb-2 pv-3"},[_c('h1',{staticClass:"heading"},[_vm._v("Add New Payment Method")])])}]
 
 
-// CONCATENATED MODULE: ./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=eb81ecd0&
+// CONCATENATED MODULE: ./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=2f86db7c&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17d8a2ea-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/order-form/_OrderFormPayment.vue?vue&type=template&id=657e32d4&
-var _OrderFormPaymentvue_type_template_id_657e32d4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column mb-2"},[_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row flex-wrap align-v-center nmh-1"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_paymentMethod),expression:"$_paymentMethod",modifiers:{"lazy":true}}],staticClass:"order-form-input",attrs:{"id":"paymentMethodType"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_paymentMethod=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":"credit_card"}},[_vm._v("\n                            Credit Card\n                        ")]),_c('option',{attrs:{"value":"paypal"}},[_vm._v("\n                            PayPal\n                        ")])]),_c('label',{class:_vm.brand,attrs:{"for":"paymentMethodType"}},[_vm._v("\n                        Payment Method Type\n                    ")])])]),_vm._m(0)]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.$_paymentMethod === 'credit_card'),expression:"$_paymentMethod === 'credit_card'"}],staticClass:"flex flex-row flex-wrap nmh-1"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-number"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                        Card Number\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardNumber),function(error,i){return _c('li',{key:'cardNumberError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6"},[_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-expiry"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                                Expiry (MM / YY)\n                            ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardExpiry),function(error,i){return _c('li',{key:'cardExpiryError' + i},[_vm._v("\n                                    "+_vm._s(error || null)+"\n                                ")])}),0)])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-cvc"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                                CVC\n                            ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardCvc),function(error,i){return _c('li',{key:'cardCvcError' + i},[_vm._v("\n                                    "+_vm._s(error || null)+"\n                                ")])}),0)])])])])]),_c('div',{staticClass:"flex flex-row flex-wrap nmh-1 mb-2"},[_c('div',{staticClass:"flex flex-column xs-12 ph-1 mb-2",class:_vm.$_billingCountry === 'Canada' ? 'sm-6' : ''},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_billingCountry),expression:"$_billingCountry",modifiers:{"lazy":true}}],class:{ invalid: _vm.errors.billingCountry, 'has-input': _vm.$_billingCountry != null },attrs:{"id":"billingCountry"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_billingCountry=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},_vm._l((_vm.countries),function(country){return _c('option',{key:country,domProps:{"value":country}},[_vm._v("\n                            "+_vm._s(country)+"\n                        ")])}),0),_c('label',{class:_vm.brand,attrs:{"for":"billingCountry"}},[_vm._v("\n                        Country\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.billingCountry),function(error,i){return _c('li',{key:'billingCountryError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]),(_vm.$_billingCountry === 'Canada')?_c('div',{staticClass:"flex flex-column xs-12 ph-1 sm-6"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_billingRegion),expression:"$_billingRegion",modifiers:{"lazy":true}}],class:{ invalid: _vm.errors.billingRegion, 'has-input': _vm.$_billingRegion != null },attrs:{"id":"billingRegion","disabled":_vm.$_billingCountry !== 'Canada'},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_billingRegion=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},_vm._l((_vm.provinces),function(province){return _c('option',{key:province,domProps:{"value":_vm.toCapitalCase(province)}},[_vm._v("\n                            "+_vm._s(_vm.toCapitalCase(province))+"\n                        ")])}),0),_c('label',{class:_vm.brand,attrs:{"for":"billingRegion"}},[_vm._v("\n                        State/Province\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.billingRegion),function(error,i){return _c('li',{key:'billingRegionError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]):_vm._e()]),(_vm.$_paymentMethod === 'paypal')?_c('div',{staticClass:"flex flex-row pa-1"},[_c('h3',{staticClass:"tiny text-grey-3 font-italic"},[_vm._v("\n                * Submitting this form will redirect you to PayPal to complete your order.\n            ")])]):_vm._e()])])}
-var _OrderFormPaymentvue_type_template_id_657e32d4_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column xs-12 sm-6 mb-2 overflow"},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-visa cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-mastercard cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-amex cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-paypal cc-icon"})])])])}]
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"17d8a2ea-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/order-form/_OrderFormPayment.vue?vue&type=template&id=2684e1d8&
+var _OrderFormPaymentvue_type_template_id_2684e1d8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column mb-2"},[_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row flex-wrap align-v-center nmh-1"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_paymentMethod),expression:"$_paymentMethod",modifiers:{"lazy":true}}],staticClass:"order-form-input",attrs:{"id":"paymentMethodType"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_paymentMethod=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":"credit_card"}},[_vm._v("\n                            Credit Card\n                        ")]),_c('option',{attrs:{"value":"paypal"}},[_vm._v("\n                            PayPal\n                        ")])]),_c('label',{class:_vm.brand,attrs:{"for":"paymentMethodType"}},[_vm._v("\n                        Payment Method Type\n                    ")])])]),_vm._m(0)]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.$_paymentMethod === 'credit_card'),expression:"$_paymentMethod === 'credit_card'"}],staticClass:"flex flex-row flex-wrap nmh-1"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-number"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                        Card Number\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardNumber),function(error,i){return _c('li',{key:'cardNumberError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6"},[_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-expiry"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                                Expiry (MM / YY)\n                            ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardExpiry),function(error,i){return _c('li',{key:'cardExpiryError' + i},[_vm._v("\n                                    "+_vm._s(error || null)+"\n                                ")])}),0)])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-cvc"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                                CVC\n                            ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardCvc),function(error,i){return _c('li',{key:'cardCvcError' + i},[_vm._v("\n                                    "+_vm._s(error || null)+"\n                                ")])}),0)])])])])]),_c('div',{staticClass:"flex flex-row flex-wrap nmh-1 mb-2"},[_c('div',{staticClass:"flex flex-column xs-12 ph-1 mb-2",class:_vm.$_billingCountry === 'Canada' ? 'sm-6' : ''},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_billingCountry),expression:"$_billingCountry",modifiers:{"lazy":true}}],class:{ invalid: _vm.errors.billingCountry, 'has-input': _vm.$_billingCountry != null },attrs:{"id":"billingCountry"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_billingCountry=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},_vm._l((_vm.countries),function(country){return _c('option',{key:country,domProps:{"value":country}},[_vm._v("\n                            "+_vm._s(country)+"\n                        ")])}),0),_c('label',{class:_vm.brand,attrs:{"for":"billingCountry"}},[_vm._v("\n                        Country\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.billingCountry),function(error,i){return _c('li',{key:'billingCountryError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]),(_vm.$_billingCountry === 'Canada')?_c('div',{staticClass:"flex flex-column xs-12 ph-1 sm-6"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_billingRegion),expression:"$_billingRegion",modifiers:{"lazy":true}}],class:{ invalid: _vm.errors.billingRegion, 'has-input': _vm.$_billingRegion != null },attrs:{"id":"billingRegion","disabled":_vm.$_billingCountry !== 'Canada'},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_billingRegion=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},_vm._l((_vm.provinces),function(province){return _c('option',{key:province,domProps:{"value":_vm.toCapitalCase(province)}},[_vm._v("\n                            "+_vm._s(_vm.toCapitalCase(province))+"\n                        ")])}),0),_c('label',{class:_vm.brand,attrs:{"for":"billingRegion"}},[_vm._v("\n                        State/Province\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.billingRegion),function(error,i){return _c('li',{key:'billingRegionError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]):_vm._e()]),(_vm.$_paymentMethod === 'paypal')?_c('div',{staticClass:"flex flex-row pa-1"},[_c('h3',{staticClass:"tiny text-grey-3 font-italic"},[_vm._v("\n                * Submitting this form will redirect you to PayPal to complete your order.\n            ")])]):_vm._e(),(!_vm.isOrder)?_c('div',{staticClass:"flex flex-row mb-1"},[_c('div',{staticClass:"flex flex-column ph-1"},[(_vm.hasSubscription)?_c('div',{staticClass:"flex flex-row mb-2"},[_vm._m(1)]):_vm._e(),(_vm.hasSubscription && !_vm.isActive)?_c('div',{staticClass:"flex flex-row flex-wrap"},[_vm._m(2),_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2"},[(_vm.totals.shipping)?_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Shipping: $"+_vm._s(_vm.totalShipping)+"\n                        ")]):_vm._e(),_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Tax: $"+_vm._s(_vm.totalTax)+"\n                        ")]),_c('div',{staticClass:"body font-bold"},[_c('span',{staticClass:"display"},[_vm._v("$"+_vm._s(_vm.totalDue))]),_vm._v(" USD\n                        ")]),_c('div',{staticClass:"body font-bold"},[_vm._v("\n                            Due Today\n                        ")])])]):_vm._e(),_c('div',{staticClass:"flex flex-row flex-wrap align-h-right align-v-center"},[_c('div',{staticClass:"flex flex-column xs-6 sm-4 pr-1"},[_c('button',{staticClass:"btn short close-modal",on:{"click":_vm.cancelForm}},[_c('span',{staticClass:"flat text-grey-4"},[_vm._v("\n                                Cancel\n                            ")])])]),_c('div',{staticClass:"flex flex-column xs-6 sm-4 pl-1"},[_c('button',{staticClass:"btn",on:{"click":_vm.submitForm}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("\n                                Submit\n                            ")])])])])])]):_vm._e()])])}
+var _OrderFormPaymentvue_type_template_id_2684e1d8_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column xs-12 sm-6 mb-2 overflow"},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-visa cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-mastercard cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-amex cc-icon"})]),_c('div',{staticClass:"ph-1"},[_c('i',{staticClass:"fab fa-cc-paypal cc-icon"})])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('p',{staticClass:"tiny font-italic text-grey-3"},[_vm._v("\n                            * Submitting this form will create a new default payment method for you.\n                            Your current subscription will be billed to this payment method when it's due.\n                        ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column xs-12 sm-6 mb-2"},[_c('p',{staticClass:"tiny font-italic text-grey-3"},[_vm._v("\n                            * Payment for inactive subscriptions is due today.\n                        ")])])}]
 
 
-// CONCATENATED MODULE: ./src/views/order-form/_OrderFormPayment.vue?vue&type=template&id=657e32d4&
+// CONCATENATED MODULE: ./src/views/order-form/_OrderFormPayment.vue?vue&type=template&id=2684e1d8&
 
 // CONCATENATED MODULE: ./src/views/order-form/_validation.js
 
@@ -39858,6 +39858,103 @@ var _OrderFormPaymentvue_type_template_id_657e32d4_staticRenderFns = [function (
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -39866,7 +39963,10 @@ var _OrderFormPaymentvue_type_template_id_657e32d4_staticRenderFns = [function (
   mixins: [_validation, ThemeClasses],
   props: {
     brand: {
-      type: String
+      type: String,
+      default: function _default() {
+        return 'drumeo';
+      }
     },
     paymentDetails: {
       type: Object,
@@ -40027,6 +40127,9 @@ var _OrderFormPaymentvue_type_template_id_657e32d4_staticRenderFns = [function (
     toCapitalCase: function toCapitalCase(string) {
       return utils.toCapitalCase(string);
     },
+    submitForm: function submitForm() {
+      this.$emit('formSubmit');
+    },
     cancelForm: function cancelForm() {
       var _this = this;
 
@@ -40115,8 +40218,8 @@ var _OrderFormPaymentvue_type_style_index_0_lang_scss_ = __webpack_require__("e1
 
 var _OrderFormPayment_component = normalizeComponent(
   order_form_OrderFormPaymentvue_type_script_lang_js_,
-  _OrderFormPaymentvue_type_template_id_657e32d4_render,
-  _OrderFormPaymentvue_type_template_id_657e32d4_staticRenderFns,
+  _OrderFormPaymentvue_type_template_id_2684e1d8_render,
+  _OrderFormPaymentvue_type_template_id_2684e1d8_staticRenderFns,
   false,
   null,
   null,
@@ -40398,6 +40501,12 @@ var LoadingAnimation_component = normalizeComponent(
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/payment-methods/PaymentMethods.vue?vue&type=script&lang=js&
 
 
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -40863,8 +40972,8 @@ var PaymentMethodsvue_type_style_index_0_lang_scss_ = __webpack_require__("1456"
 
 var PaymentMethods_component = normalizeComponent(
   payment_methods_PaymentMethodsvue_type_script_lang_js_,
-  PaymentMethodsvue_type_template_id_eb81ecd0_render,
-  PaymentMethodsvue_type_template_id_eb81ecd0_staticRenderFns,
+  PaymentMethodsvue_type_template_id_2f86db7c_render,
+  PaymentMethodsvue_type_template_id_2f86db7c_staticRenderFns,
   false,
   null,
   null,
