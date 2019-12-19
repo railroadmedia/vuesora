@@ -21,15 +21,15 @@ export default (function () {
         document.addEventListener('click', (event) => {
             const element = event.target;
 
-            if(element.matches('.addToList')){
+            if (element.matches('.addToList')) {
                 addToList(event);
             }
 
-            if(element.matches('.completeButton')){
+            if (element.matches('.completeButton')) {
                 markAsComplete(event);
             }
 
-            if(element.matches('.resetProgress')){
+            if (element.matches('.resetProgress')) {
                 progressReset(event);
             }
         });
@@ -40,6 +40,7 @@ export default (function () {
 
             if (progressContainer) {
                 const completeButton = document.querySelector('.completeButton');
+                const completeUnderlay = document.querySelector('.white-underlay');
                 const progressBar = document.querySelector('.trophy-progress');
                 const progressText = progressBar.querySelector('.progress-percent');
                 const currentProgress = progressBar ? progressBar.dataset.currentProgress : 0;
@@ -64,22 +65,30 @@ export default (function () {
                     progressText.innerHTML = `${newProgress}%`;
 
                     if (newProgress <= 50) {
-                        progressText.classList.remove('text-white');
-                        progressText.classList.add(`text-${brand}`, 'right');
+                        progressText.classList.add('right');
                     } else {
-                        progressText.classList.add('text-white');
-                        progressText.classList.remove(`text-${brand}`, 'right');
+                        progressText.classList.remove('right');
                     }
                 }
 
                 if (newProgress >= 100) {
                     progressContainer.classList.add('complete');
-                    if(completeButton) completeButton.classList.add('is-complete');
+                    if (completeButton) {
+                        completeButton.classList.add('is-complete');
+                    }
+                    if (completeUnderlay) {
+                        completeUnderlay.classList.add('visible');
+                    }
 
                     Utils.triggerEvent(window, 'lesson-complete', { complete: true });
                 } else {
                     progressContainer.classList.remove('complete');
-                    if(completeButton) completeButton.classList.add('is-complete');
+                    if (completeButton) {
+                        completeButton.classList.remove('is-complete');
+                    }
+                    if (completeUnderlay) {
+                        completeUnderlay.classList.remove('visible');
+                    }
 
                     if (newProgress <= 0) {
                         Utils.triggerEvent(window, 'lesson-complete', { complete: false });
@@ -91,7 +100,7 @@ export default (function () {
         function progressReset(event) {
             const element = event.target;
             const contentType = Utils.toTitleCase(element.dataset.contentType || 'content');
-            const contentId = element.dataset.contentId;
+            const { contentId } = element.dataset;
             const brand = element.dataset.brand || 'drumeo';
             const icon = element.querySelector('.fas');
 
@@ -140,7 +149,7 @@ export default (function () {
 
         function addToList(event) {
             const element = event.target;
-            const contentId = element.dataset.contentId;
+            const { contentId } = element.dataset;
             const is_added = element.classList.contains('added');
 
             if (!clickTimeout) {
@@ -169,7 +178,7 @@ export default (function () {
 
         function markAsComplete(event) {
             const element = event.target;
-            const contentId = element.dataset.contentId;
+            const { contentId } = element.dataset;
             const isRemoving = element.classList.contains('is-complete');
             const brand = element.dataset.brand || 'drumeo';
 

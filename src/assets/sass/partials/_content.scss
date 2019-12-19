@@ -39,24 +39,47 @@
   border-radius:50px;
   overflow:hidden;
 
+  &.drumeo {
+    background-color:darken($drumeoBlue, 12%);
+
+    .progress-border {
+      border-color:darken($drumeoBlue, 12%);
+    }
+  }
+  &.pianote {
+    background-color:darken($pianoteRed, 20%);
+
+    .progress-border {
+      border-color:darken($pianoteRed, 20%);
+    }
+  }
+  &.guitareo {
+    background-color:darken($guitareoGreen, 20%);
+
+    .progress-border {
+      border-color:darken($guitareoGreen, 20%);
+    }
+  }
+
   @include xSmallOnly {
     margin-right:0;
     margin-bottom:$gutterWidth / 3;
   }
 
   .trophy-progress-cutoff {
-    border-radius:55px;
+    border-radius:35px;
     height:70px;
     margin-top:-10px;
     margin-left:-10px;
     border-width:10px;
     overflow:hidden;
+    z-index:3;
 
     .progress-border {
       height:100%;
       width:100%;
-      border-radius:70px;
-      z-index:2;
+      border-radius:25px;
+      z-index:3;
     }
 
     .trophy-progress {
@@ -65,14 +88,14 @@
       width:100%;
       border-radius:70px;
       transition:transform .2s ease-in-out;
-      z-index:1;
+      z-index:2;
     }
   }
 
   .progress-percent {
     position:absolute;
     top:50%;
-    right:10px;
+    right:15px;
     transform:translateY(-50%);
 
     &.right {
@@ -82,9 +105,59 @@
 
   .trophy {
     flex:0 0 auto;
+    position:relative;
 
     * {
       transition:all .2s ease-in-out;
+    }
+
+    .reward {
+      z-index:2;
+    }
+
+    .white-underlay {
+      position:absolute;
+      z-index:1;
+      background-color:white;
+      top:0;
+      right:0;
+      width:calc(100% + 10px);
+      height:100%;
+      border:5px solid #000;
+      border-left:none;
+      border-radius:0 25px 25px 0;
+      opacity:0;
+      visibility:hidden;
+
+      &.visible {
+        opacity:1;
+        visibility:visible;
+      }
+
+      &:after {
+        content: '';
+        position:absolute;
+        width:35px;
+        height:70px;
+        top:-15px;
+        right:calc(100% - 15px);
+        background-color:transparent;
+        border:5px solid #000;
+        border-left:none;
+        border-radius:0 35px 35px 0;
+      }
+
+      &.drumeo, &.drumeo:after {
+        border-color:darken($drumeoBlue, 12%);
+      }
+
+      &.pianote, &.pianote:after {
+        border-color:darken($drumeoBlue, 12%);
+      }
+
+      &.pianote, &.pianote:after {
+        border-color:darken($drumeoBlue, 12%);
+      }
     }
   }
 }
