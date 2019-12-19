@@ -220,6 +220,103 @@
                     * Submitting this form will redirect you to PayPal to complete your order.
                 </h3>
             </div>
+
+            <div
+                v-if="!isOrder"
+                class="flex flex-row mb-1"
+            >
+                <div class="flex flex-column ph-1">
+                    <!--                    <div v-if="showCheckbox"-->
+                    <!--                         class="flex flex-row form-group align-v-center mb-2">-->
+                    <!--                        <span class="toggle-input mr-1">-->
+                    <!--                            <input id="subscriptionCheck"-->
+                    <!--                                   name="subscription-check"-->
+                    <!--                                   v-model="$_subscriptionCheck"-->
+                    <!--                                   type="checkbox">-->
+
+                    <!--                            <span class="toggle">-->
+                    <!--                                <span class="handle"></span>-->
+                    <!--                            </span>-->
+                    <!--                        </span>-->
+
+                    <!--                        <label for="subscriptionCheck"-->
+                    <!--                               class="toggle-label capitalize">-->
+                    <!--                            Set as default payment method-->
+                    <!--                        </label>-->
+                    <!--                    </div>-->
+
+                    <div
+                        v-if="hasSubscription"
+                        class="flex flex-row mb-2"
+                    >
+                        <div class="flex flex-column">
+                            <p class="tiny font-italic text-grey-3">
+                                * Submitting this form will create a new default payment method for you.
+                                Your current subscription will be billed to this payment method when it's due.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        v-if="hasSubscription && !isActive"
+                        class="flex flex-row flex-wrap"
+                    >
+                        <div class="flex flex-column xs-12 sm-6 mb-2">
+                            <p class="tiny font-italic text-grey-3">
+                                * Payment for inactive subscriptions is due today.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2">
+                            <div
+                                v-if="totals.shipping"
+                                class="body font-bold"
+                            >
+                                Shipping: ${{ totalShipping }}
+                            </div>
+
+                            <div class="body font-bold">
+                                Tax: ${{ totalTax }}
+                            </div>
+
+                            <div class="body font-bold">
+                                <span class="display">${{ totalDue }}</span> USD
+                            </div>
+
+                            <div class="body font-bold">
+                                Due Today
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row flex-wrap align-h-right align-v-center">
+                        <div class="flex flex-column xs-6 sm-4 pr-1">
+                            <button
+                                class="btn short close-modal"
+                                @click="cancelForm"
+                            >
+                                <span class="flat text-grey-4">
+                                    Cancel
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="flex flex-column xs-6 sm-4 pl-1">
+                            <button
+                                class="btn"
+                                @click="submitForm"
+                            >
+                                <span
+                                    class="text-white"
+                                    :class="themeBgClass"
+                                >
+                                    Submit
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -234,6 +331,7 @@ export default {
     props: {
         brand: {
             type: String,
+            default: () => 'drumeo',
         },
 
         paymentDetails: {
@@ -397,6 +495,10 @@ export default {
     },
     methods: {
         toCapitalCase: string => Utils.toCapitalCase(string),
+
+        submitForm() {
+            this.$emit('formSubmit');
+        },
 
         cancelForm() {
             this.initStripeElements();

@@ -116,24 +116,30 @@
             id="paymentMethodModal"
             class="modal"
         >
-            <order-form-payment
-                ref="paymentForm"
-                :theme-color="themeColor"
-                :brand="brand"
-                :payment-details="editingPaymentMethod"
-                :stripe-publishable-key="stripePublishableKey"
-                :totals="totals"
-                :discounts="[]"
-                :stripe-token="stripeToken"
-                :countries="countries"
-                :provinces="provinces"
-                :is-order="false"
-                :is-active="isActive"
-                :has-subscription="hasSubscription"
-                @updatePaymentData="updatePaymentData"
-                @formSubmit="submitForm"
-                @formCancel="cancelForm"
-            />
+            <div class="flex flex-column bg-white corners-3 shadow ph-2">
+                <div class="flex flex-row mb-2 pv-3">
+                    <h1 class="heading">Add New Payment Method</h1>
+                </div>
+
+                <order-form-payment
+                    ref="paymentForm"
+                    :theme-color="themeColor"
+                    :brand="brand"
+                    :payment-details="editingPaymentMethod"
+                    :stripe-publishable-key="stripePublishableKey"
+                    :totals="totals"
+                    :discounts="[]"
+                    :stripe-token="stripeToken"
+                    :countries="countries"
+                    :provinces="provinces"
+                    :is-order="false"
+                    :is-active="isActive"
+                    :has-subscription="hasSubscription"
+                    @updatePaymentData="updatePaymentData"
+                    @formSubmit="submitForm"
+                    @formCancel="cancelForm"
+                />
+            </div>
         </div>
 
         <transition name="grow-fade">
