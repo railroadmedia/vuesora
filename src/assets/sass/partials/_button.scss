@@ -13,7 +13,7 @@ a, div {
     text-align:center;
     height:50px;
     cursor:pointer;
-    border-radius:5px;
+    border-radius:25px;
     border:none;
     outline:none;
     width:100%;
@@ -27,7 +27,8 @@ a, div {
     @include rippleDirective();
 
     &.short {
-      height:35px;
+      height:36px;
+      border-radius:18px;
     }
   }
 }
@@ -44,7 +45,8 @@ button {
     touch-action: manipulation;
 
     &.short > span {
-      height:35px;
+      height:36px;
+      border-radius:18px;
     }
 
     &.rounded > span {
@@ -66,7 +68,7 @@ button {
       text-align:center;
       height:50px;
       cursor:pointer;
-      border-radius:5px;
+      border-radius:25px;
       border:none;
       outline:none;
       width:100%;
@@ -80,7 +82,8 @@ button {
       @include rippleDirective();
 
       &.short {
-        height:35px;
+        height:36px;
+        border-radius:18px;
       }
     }
 

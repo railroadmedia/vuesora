@@ -3,13 +3,13 @@
 .stripe-element-container {
   height: 50px;
   line-height:50px;
-  border-radius: 5px;
+  border-radius: 25px;
   box-shadow: none;
   border: 1px solid #d1d1d1;
   position: relative;
   padding-top:12px;
-  padding-left:$gutterWidth / 2;
-  padding-right:$gutterWidth / 2;
+  padding-left:25px;
+  padding-right:25px;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -19,7 +19,7 @@
   &.StripeElement--invalid {
 
     & ~ label {
-      transform:scale(.7) translateY(-10px);
+      transform:scale(.7) translateY(-8px) translateX(15px);
       color:$primary;
 
       @each $key, $value in $brand_colors {
@@ -58,4 +58,5 @@
   color:nth(nth($greys, 3), 2);
   pointer-events:none;
   font:400 16px/1.5em $defaultSansSerif;
+  transform:scale(1) translateY(0) translateX(15px);
 }
