@@ -47,17 +47,17 @@
     }
   }
   &.pianote {
-    background-color:darken($pianoteRed, 20%);
+    background-color:darken($pianoteRed, 12%);
 
     .progress-border {
-      border-color:darken($pianoteRed, 20%);
+      border-color:darken($pianoteRed, 12%);
     }
   }
   &.guitareo {
-    background-color:darken($guitareoGreen, 20%);
+    background-color:darken($guitareoGreen, 12%);
 
     .progress-border {
-      border-color:darken($guitareoGreen, 20%);
+      border-color:darken($guitareoGreen, 12%);
     }
   }
 
@@ -152,11 +152,11 @@
       }
 
       &.pianote, &.pianote:after {
-        border-color:darken($drumeoBlue, 12%);
+        border-color:darken($pianoteRed, 12%);
       }
 
-      &.pianote, &.pianote:after {
-        border-color:darken($drumeoBlue, 12%);
+      &.guitareo, &.guitareo:after {
+        border-color:darken($guitareoGreen, 12%);
       }
     }
   }
