@@ -19,8 +19,8 @@
                         @click="likeContent"
                     >
                         <span
-                            class="text-grey-3"
                             style="padding:0 8px;"
+                            :class="hasLiked ? themeTextClass : 'text-grey-3'"
                         >
                             <i
                                 class="fa-thumbs-up mb-1"

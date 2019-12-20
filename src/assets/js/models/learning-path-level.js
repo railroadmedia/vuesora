@@ -9,9 +9,11 @@ export default class LearningPathLevelContentModel extends ContentModel {
 
         this.card.grey_title = this.postChildLessonCount;
 
+
         this.list.thumb_title = this.levelNumber;
         this.list.thumb_logo = this.getThumbLogo();
-        this.list.color_title = this.postInstructor;
+        this.list.color_title = null;
+        this.list.grey_title = `with ${this.parseInstructors()}`;
         this.list.column_data = [
             this.postChildLessonCount,
             `${this.getPostField('xp')} xp`,
@@ -25,5 +27,13 @@ export default class LearningPathLevelContentModel extends ContentModel {
 
     getThumbLogo() {
         return 'https://dpwjbsxqtam5n.cloudfront.net/pack-logos/drumeo-method-logo.png';
+    }
+
+    parseInstructors() {
+        const instructors = this.getInstructors();
+
+        console.log(instructors);
+
+        return instructors ? instructors.replace(/,(?=[^,]*$)/, ' &') : 'TBD';
     }
 }

@@ -49,7 +49,7 @@ export default class ContentModel {
     getPostFieldMulti(key) {
         const postFields = this.post.fields.filter(field => field.key === key);
 
-        return postFields.length ? postFields.map(field => field.value) : ['TBD'];
+        return postFields.length ? postFields.map(field => field.value) : [];
     }
 
     getPostDatum(key) {
@@ -66,6 +66,25 @@ export default class ContentModel {
         }
 
         return 'TBD';
+    }
+
+    getInstructors() {
+        const instructors = this.getPostFieldMulti('instructor');
+        let mappedInstructors;
+
+        if (instructors.length) {
+            mappedInstructors = instructors
+                // Get all the instructor fields
+                .map((instructor) => instructor.fields
+                    // Find only the name field
+                    .find((field) => field.key === 'name'))
+                // Map the field values
+                .map((field) => field.value)
+                // Join them with a comma
+                .join(', ');
+        }
+
+        return mappedInstructors;
     }
 
     getPostDuration() {

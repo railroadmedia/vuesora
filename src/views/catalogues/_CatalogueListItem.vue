@@ -23,9 +23,9 @@
             class="flex flex-column align-v-center"
             :class="[thumbnailColumnClass, themeColor]"
         >
-            <div class="thumb-wrap corners-3">
+            <div class="thumb-wrap corners-10">
                 <div
-                    class="thumb-img corners-3"
+                    class="thumb-img corners-10"
                     :class="thumbnailType"
                 >
                     <img
@@ -111,7 +111,7 @@
         </div>
 
         <!-- TITLES AND COLUMN DATA (on mobile) -->
-        <div class="flex flex-column align-v-center ph-1 title-column overflow">
+        <div class="flex flex-column align-v-center title-column overflow">
 
             <p
                 v-if="brand !== 'guitareo'"
@@ -123,14 +123,21 @@
 
             <p
                 class="text-black font-bold item-title"
-                :class="overview ? 'title' : 'tiny font-compressed'"
+                :class="overview ? 'heading' : 'tiny font-compressed'"
             >
                 {{ mappedData.black_title }}
             </p>
 
             <p
+                v-if="mappedData.grey_title"
+                class="text-grey-3 item-title body mv-2"
+            >
+                {{ mappedData.grey_title }}
+            </p>
+
+            <p
                 v-if="overview && mappedData.description"
-                class="tiny text-grey-6"
+                class="tiny text-grey-6 mb-1 m-xs-only"
                 v-html="mappedData.description"
             >
                 {{ mappedData.description }}
@@ -138,7 +145,7 @@
 
             <p
                 v-if="!is_search"
-                class="x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up"
+                class="x-tiny font-compressed text-grey-3 text-truncate uppercase hide-md-up"
             >
                 <span
                     v-for="(column_data, i) in mappedData.column_data"
@@ -167,7 +174,7 @@
             v-for="(column_data, i) in mappedData.column_data"
             v-if="!is_search"
             :key="`${item.id}-mappedData-${i}`"
-            class="flex flex-column uppercase align-center basic-col text-center font-italic x-tiny font-compressed hide-sm-down"
+            class="flex flex-column uppercase align-center basic-col text-center x-tiny font-compressed hide-sm-down"
         >
             {{ column_data }}
         </div>
@@ -175,7 +182,7 @@
         <!-- ONLY SHOW TYPE ON SEARCHES -->
         <div
             v-if="is_search"
-            class="flex flex-column uppercase align-center basic-col text-center font-italic x-tiny hide-sm-down"
+            class="flex flex-column uppercase align-center basic-col text-center x-tiny hide-sm-down"
         >
             {{ item.type.replace('bundle-', '').replace(/-/g, ' ') }}
         </div>
