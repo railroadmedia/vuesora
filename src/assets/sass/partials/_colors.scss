@@ -145,6 +145,10 @@
       background-color:transparent;
       border:2px solid $value;
     }
+    
+    &.bg-darken {
+      background-color: darken($value, 12%);
+    }
   }
 
   .hover-text-#{$key}:hover {
@@ -163,6 +167,10 @@
 @each $key, $value in $content_colors {
   .text-#{$key} {
     color: $value;
+
+    .text-darken {
+      color: darken($value, 12%);
+    }
   }
   .bg-#{$key} {
     background-color: $value;
@@ -170,6 +178,10 @@
     &.inverted {
       background-color:transparent;
       border:2px solid $value;
+    }
+
+    &.bg-darken {
+      background-color: darken($value, 12%);
     }
   }
   .text-#{$key}s {
@@ -207,13 +219,14 @@
       background-color:transparent;
       border:2px solid $grey;
     }
-  }
 
+    &.bg-darken {
+      background-color: darken($grey, 12%);
+    }
+  }
   .text-grey-#{$i} {
     color:$grey;
   }
-
-
   .hover-text-grey-#{$i}:hover {
     color:$grey;
   }

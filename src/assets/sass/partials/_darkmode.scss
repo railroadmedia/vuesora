@@ -1,3 +1,5 @@
+@import './_variables.scss';
+
 .dark-mode {
   .bg-white:not(.btn):not(span) {
     background-color:#242424;
@@ -79,5 +81,10 @@
         }
       }
     }
+  }
+
+  .card-media {
+    background-color:#000!important;
+    box-shadow: 0 0 2px transparentize(nth(nth($greys, 4), 2), .5);
   }
 }

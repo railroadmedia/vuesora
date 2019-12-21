@@ -74,6 +74,10 @@ $borderDirections: (
         @each $property in $parentValue {
           #{$property}: #{$i}px solid $value;
         }
+
+        &.border-darken {
+          border-color: darken($value, 12%);
+        }
       }
     }
 
@@ -83,6 +87,10 @@ $borderDirections: (
         @each $property in $parentValue {
           #{$property}: #{$i}px solid $value;
         }
+
+        &.border-darken {
+          border-color: darken($value, 12%);
+        }
       }
     }
 
@@ -91,6 +99,10 @@ $borderDirections: (
       .#{$parentKey}-grey-#{$index}-#{$i} {
         @each $property in $parentValue {
           #{$property}: #{$i}px solid #{$grey};
+        }
+
+        &.border-darken {
+          border-color: darken($grey, 12%);
         }
       }
     }
