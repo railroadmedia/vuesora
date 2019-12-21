@@ -294,6 +294,7 @@ export default {
             },
             isRequesting: false,
             isComplete: this.completed,
+            ssEventTimeout: null,
         };
     },
     computed: {
@@ -383,21 +384,6 @@ export default {
         }
         const vm = this;
 
-        window.addEventListener('message', (event) => {
-            if (event.origin === 'https://www.soundslice.com') {
-                const cmd = JSON.parse(event.data);
-
-                switch (cmd.method) {
-                case 'ssPlay':
-                    vm.handlePlay();
-                    break;
-                case 'ssPause':
-                    vm.handlePause();
-                    break;
-                }
-            }
-        });
-
         window.addEventListener('requesting-completion', this.setIsRequesting);
         window.addEventListener('lesson-complete', this.syncCompleteState);
     },
@@ -446,8 +432,6 @@ export default {
                     });
             } else {
                 this.accordionActive = !this.accordionActive;
-
-
             }
         },
 
@@ -457,6 +441,7 @@ export default {
 
             this.progressTracker = new ProgressTracker();
 
+            window.addEventListener('message', this.handleSoundsliceEvent);
             document.addEventListener('keyup', this.spacebarToPlayPause);
         },
 
@@ -474,6 +459,7 @@ export default {
             this.progressTracker = null;
 
             window.removeEventListener('unload', () => this.sendProgressTracking);
+            window.removeEventListener('message', this.handleSoundsliceEvent);
             document.removeEventListener('keyup', this.spacebarToPlayPause);
         },
 
@@ -562,6 +548,8 @@ export default {
         handlePlay() {
             this.isPlaying = true;
 
+            console.log(this.progressTracker);
+
             this.progressTracker.start();
 
             if (!this.progressTrackerEventListener) {
@@ -576,6 +564,25 @@ export default {
 
             this.progressTracker.stop();
         },
+
+        handleSoundsliceEvent(event) {
+            const vm  = this;
+
+            if (event.origin === 'https://www.soundslice.com') {
+                const cmd = JSON.parse(event.data);
+
+                console.log(cmd.method);
+
+                switch (cmd.method) {
+                    case 'ssPlay':
+                        vm.handlePlay();
+                        break;
+                    case 'ssPause':
+                        vm.handlePause();
+                        break;
+                }
+            }
+        }
     },
 };
 </script>
