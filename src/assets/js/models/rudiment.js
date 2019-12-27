@@ -8,6 +8,7 @@ export default class RudimentContentModel extends ContentModel {
         });
 
         this.card.sheet_music = this.getPostDatum('sheet_music_thumbnail_url');
+        this.card.color_title = this.getPostField('topic');
 
         this.list.color_title = null;
         this.list.sheet_music = this.getPostDatum('sheet_music_thumbnail_url');

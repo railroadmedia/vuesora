@@ -8,6 +8,7 @@ export default class CoursePartContentModel extends ContentModel {
         });
 
         this.card.color_title = this.postInstructor;
+        this.card.content_type = '<i class="icon-courses" style="margin-right:5px;"></i> Course Lesson';
 
         this.list.show_numbers = true;
         this.list.color_title = null;
