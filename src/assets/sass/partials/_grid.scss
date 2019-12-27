@@ -153,6 +153,10 @@
     max-width:100%;
   }
 
+  &.lean {
+    max-width:$large;
+  }
+
   &.narrow {
     max-width:47.5em;
   }
