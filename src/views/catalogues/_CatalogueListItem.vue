@@ -1,6 +1,6 @@
 <template>
     <a
-        class="flex flex-row bt-grey-1-1 no-decoration pa-1 relative bg-white text-grey-3 hover-text-black"
+        class="flex flex-row bb-grey-1-1 no-decoration pa-1 hover-bg-grey-7 relative text-grey-3 hover-text-black"
         :class="class_object"
         :href="renderLink ? item.url : false"
     >
@@ -23,19 +23,41 @@
             class="flex flex-column align-v-center"
             :class="[thumbnailColumnClass, themeColor]"
         >
-            <div class="thumb-wrap corners-3">
+            <div class="thumb-wrap corners-10">
                 <div
-                    class="thumb-img corners-3"
+                    class="thumb-img corners-10"
                     :class="thumbnailType"
-                    :style="'background-image:url( ' + mappedData.thumbnail + ' );'"
                 >
-
+                    <img
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="mappedData.thumbnail"
+                        data-ix-fade
+                        alt="Lesson Thumbnail"
+                    >
                     <div class="lesson-progress overflow">
                         <span
                             class="progress"
                             :class="themeBgClass"
                             :style="'width:' + progress_percent + '%'"
                         ></span>
+                    </div>
+
+                    <div
+                        v-if="mappedData.thumb_title"
+                        class="thumb-title flex-center text-center ph-1"
+                        :class="brand"
+                    >
+                        <img
+                            v-if="mappedData.thumb_logo"
+                            :src="mappedData.thumb_logo"
+                            alt="Item Logo"
+                            style="max-width:150px;"
+                        >
+                        <h5
+                            class="large-display uppercase text-white"
+                        >
+                            {{ mappedData.thumb_title }}
+                        </h5>
                     </div>
 
                     <span class="thumb-hover flex-center">
@@ -46,7 +68,7 @@
                         <p
                             v-if="!isReleased"
                             class="text-white font-bold"
-                            :class="this.overview ? 'tiny' : 'x-tiny'"
+                            :class="overview ? 'tiny' : 'x-tiny'"
                         >
                             {{ releaseDate }}
                         </p>
@@ -89,23 +111,33 @@
         </div>
 
         <!-- TITLES AND COLUMN DATA (on mobile) -->
-        <div class="flex flex-column align-v-center ph-1 title-column overflow">
+        <div class="flex flex-column align-v-center title-column overflow">
 
             <p
                 v-if="brand !== 'guitareo'"
                 class="tiny font-compressed uppercase text-truncate"
-                :class="themeTextClass"
+                :class="[themeTextClass, overview ? 'dense font-bold' : 'font-compressed']"
             >
                 {{ mappedData.color_title }}
             </p>
 
-            <p class="tiny font-compressed text-black font-bold item-title">
+            <p
+                class="text-black font-bold item-title"
+                :class="overview ? 'heading' : 'tiny font-compressed'"
+            >
                 {{ mappedData.black_title }}
             </p>
 
             <p
+                v-if="mappedData.grey_title"
+                class="text-grey-3 item-title body mv-2"
+            >
+                {{ mappedData.grey_title }}
+            </p>
+
+            <p
                 v-if="overview && mappedData.description"
-                class="tiny text-black"
+                class="tiny text-grey-6 mb-1 m-xs-only"
                 v-html="mappedData.description"
             >
                 {{ mappedData.description }}
@@ -113,15 +145,18 @@
 
             <p
                 v-if="!is_search"
-                class="x-tiny font-compressed text-grey-3 text-truncate font-italic uppercase hide-md-up"
+                class="x-tiny font-compressed text-grey-3 text-truncate uppercase hide-md-up"
             >
-                <span v-for="(item, i) in mappedData.column_data">
+                <span
+                    v-for="(column_data, i) in mappedData.column_data"
+                    :key="`${item.id}-mappedData-${i}`"
+                >
                     <span
                         v-if="i > 0"
                         class="bullet"
                     >-</span>
 
-                    {{ item }}
+                    {{ column_data }}
                 </span>
             </p>
         </div>
@@ -136,17 +171,18 @@
 
         <!-- SHOW ALL OF THE DATA COLUMNS FROM THE DATA MAPPER -->
         <div
-            v-for="(item, i) in mappedData.column_data"
+            v-for="(column_data, i) in mappedData.column_data"
             v-if="!is_search"
-            class="flex flex-column uppercase align-center basic-col text-center font-italic x-tiny font-compressed hide-sm-down"
+            :key="`${item.id}-mappedData-${i}`"
+            class="flex flex-column uppercase align-center basic-col text-center x-tiny font-compressed hide-sm-down"
         >
-            {{ item }}
+            {{ column_data }}
         </div>
 
         <!-- ONLY SHOW TYPE ON SEARCHES -->
         <div
             v-if="is_search"
-            class="flex flex-column uppercase align-center basic-col text-center font-italic x-tiny hide-sm-down"
+            class="flex flex-column uppercase align-center basic-col text-center x-tiny hide-sm-down"
         >
             {{ item.type.replace('bundle-', '').replace(/-/g, ' ') }}
         </div>
@@ -242,6 +278,7 @@ export default {
         class_object() {
             return {
                 active: this.active,
+                completed: this.item.completed,
                 'content-overview': this.overview,
                 'content-table-row': !this.overview,
                 'no-access': this.noAccess,
@@ -260,7 +297,8 @@ export default {
                 'large-thumbnail': this.overview,
                 'thumbnail-col': !this.overview,
                 active: this.active,
-                'background-cards': this.item.type === 'learning-path',
+                'background-cards': this.item.type === 'learning-path'
+                    || this.item.type === 'learning-path-course'
             };
         },
 

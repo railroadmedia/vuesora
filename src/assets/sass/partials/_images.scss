@@ -1,0 +1,14 @@
+@import './_variables.scss';
+
+[data-ix-fade] {
+  opacity:0;
+  transition: opacity .5s;
+
+  &.ix-loaded {
+    opacity:1;
+  }
+}
+
+[data-ix-bg] {
+  //transition: background-image 5s;
+}

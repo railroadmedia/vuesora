@@ -132,7 +132,8 @@ export default {
 
         thumbnailIcon() {
             const contentWithHierarchy = {
-                drumeo: ['course', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
+                drumeo: ['course', 'learning-path', 'learning-path-level', 'learning-path-course', 'pack',
+                    'pack-bundle', 'semester-pack'],
                 guitareo: ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
                 pianote: ['course', 'learning-path', 'pack', 'chord-and-scale'],
             };
@@ -145,6 +146,10 @@ export default {
                 if (!this.isReleased) {
                     return 'fa-clock';
                 }
+            }
+
+            if (this.item.completed) {
+                return this.completedIcon;
             }
 
             return contentWithHierarchy[this.brand].indexOf(this.item.type) !== -1 ? 'fa-arrow-right' : 'fa-play';
@@ -164,9 +169,9 @@ export default {
             }
             
             return {
-                drumeo: ['song'],
+                drumeo: ['song', 'learning-path-level'],
                 guitareo: ['song', 'chord-and-scale'],
-                pianote: ['song'],
+                pianote: ['song', 'unit'],
             }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
         },
     },

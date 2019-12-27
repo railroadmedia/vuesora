@@ -107,13 +107,18 @@
 
 
 [class*='hover-bg-'] {
-  transition:background-color .1s ease-in-out;
+  transition:background-color .1s ease;
   will-change:background-color;
 }
 
 [class*='hover-text-'] {
-  transition:color .1s ease-in-out;
+  transition:color .1s ease;
   will-change:color;
+}
+
+[class*='hover-border-'] {
+  transition:border .1s ease;
+  will-change:border;
 }
 
 .hover-bg-black:hover {
@@ -140,31 +145,32 @@
       background-color:transparent;
       border:2px solid $value;
     }
+    
+    &.bg-darken {
+      background-color: darken($value, 12%);
+    }
   }
 
   .hover-text-#{$key}:hover {
     color:$value;
-
-    @include large() {
-      & > span {
-        color: $value;
-      }
-    }
   }
+
   .hover-bg-#{$key}:hover {
     background-color:$value;
+  }
 
-    @include large(){
-      & > span {
-        color:$value;
-      }
-    }
+  .hover-border-#{$key}:hover {
+    border-color:$value;
   }
 }
 
 @each $key, $value in $content_colors {
   .text-#{$key} {
     color: $value;
+
+    .text-darken {
+      color: darken($value, 12%);
+    }
   }
   .bg-#{$key} {
     background-color: $value;
@@ -172,6 +178,10 @@
     &.inverted {
       background-color:transparent;
       border:2px solid $value;
+    }
+
+    &.bg-darken {
+      background-color: darken($value, 12%);
     }
   }
   .text-#{$key}s {
@@ -209,13 +219,14 @@
       background-color:transparent;
       border:2px solid $grey;
     }
-  }
 
+    &.bg-darken {
+      background-color: darken($grey, 12%);
+    }
+  }
   .text-grey-#{$i} {
     color:$grey;
   }
-
-
   .hover-text-grey-#{$i}:hover {
     color:$grey;
   }

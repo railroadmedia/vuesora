@@ -16,14 +16,21 @@
 
 .video-wrap {
   z-index:1;
+  top:-50%;
+  right:480px;
 
   &.picture-in-picture {
     position:fixed;
     top:90px;
     right:30px;
-    width:480px;
+    width:360px;
     max-width:100%;
     z-index:95;
+    transition:top .5s, right .5s;
+
+    @include large {
+      width:480px;
+    }
 
     .settings-drawer {
 
@@ -349,9 +356,51 @@
   //}
 
   .overlay-play {
+    transform:scale(1);
+    transition: transform .5s;
+
+    &:after {
+      content: '';
+      top:0;
+      left:0;
+      bottom:0;
+      right:0;
+      position:absolute;
+      background-color:#000;
+      z-index: 1;
+      border-radius:50%;
+      transform:scale(1);
+      opacity:.2;
+      transition:all 1s;
+    }
+
+    i {
+      z-index:2;
+    }
+  }
+
+  &.fast-fade-enter-active {
+    .overlay-play {
+      transform:scale(0);
+    }
+  }
+
+  &.fast-fade-enter-to {
+    .overlay-play {
+      transform:scale(1);
+
+      &:after {
+        transform:scale(1);
+        opacity:1;
+      }
+    }
+  }
+
+  .overlay-play {
     width:60px;
     height:60px;
-    background:rgba(0,0,0,.3);
+    position:relative;
+    //background:rgba(0,0,0,.3);
 
     @include medium {
       width:85px;
@@ -362,10 +411,6 @@
       margin-left:2px;
       font-size:28px;
       color:#fff;
-
-      @include medium {
-        font-size:40px;
-      }
     }
   }
 }

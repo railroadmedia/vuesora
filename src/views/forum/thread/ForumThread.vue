@@ -1,6 +1,6 @@
 <template>
     <div class="container mv-3 forum-post">
-        <div class="flex flex-column bg-white shadow corners-3">
+        <div class="flex flex-column">
             <div class="flex flex-row pa-3 flex-wrap align-v-center">
                 <div class="flex flex-column mb-1 xs-12 sm-6">
                     <h1 class="heading thread-title">
@@ -76,7 +76,7 @@
 
             <div
                 v-if="totalPages > 1"
-                class="flex flex-row pagination-row align-h-right bg-grey-7 bv-grey-1-1"
+                class="flex flex-row pagination-row align-h-right"
             >
                 <pagination
                     :current-page="currentPage"
@@ -103,7 +103,7 @@
 
             <div
                 v-if="totalPages > 1"
-                class="flex flex-row pagination-row align-h-right bg-grey-7 bb-grey-1-1"
+                class="flex flex-row pagination-row align-h-right"
             >
                 <pagination
                     :current-page="currentPage"

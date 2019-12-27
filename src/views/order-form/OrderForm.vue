@@ -1,120 +1,109 @@
 <template>
-    <div class="flex flex-column order-form mv-2">
-        <h3 class="subheading text-center mb-3">
-            Your Order is Protected by Our Extended 90-Day 100% Money Back Guarantee!
-        </h3>
+    <div class="flex flex-row flex-wrap align-v-top nmh-1">
+        <div class="flex flex-column order-form xs-12 md-9 ph-1">
+            <order-form-cart
+                :theme-color="themeColor"
+                :cart-items="cartData.items"
+                :bonuses="bonuses"
+                :is-cart-locked="cartData.locked"
+                @updateCartItem="updateCart"
+            />
 
-        <order-form-cart
-            :theme-color="themeColor"
-            :cart-items="cartData.items"
-            :bonuses="bonuses"
-            :is-cart-locked="cartData.locked"
-            @updateCartItem="updateCart"
-        />
+            <order-form-account
+                ref="accountForm"
+                :theme-color="themeColor"
+                :brand="brand"
+                :current-user="user"
+                :account-details="accountStateFactory"
+                :requires-account-info="cartContainsSubscription"
+                :login-url="loginUrl"
+                :logout-url="logoutUrl"
+                @updateAccountData="updateAccountData"
+            />
 
-        <order-form-account
-            ref="accountForm"
-            :theme-color="themeColor"
-            :brand="brand"
-            :current-user="user"
-            :account-details="accountStateFactory"
-            :requires-account-info="cartContainsSubscription"
-            :login-url="loginUrl"
-            :logout-url="logoutUrl"
-            @updateAccountData="updateAccountData"
-        />
+            <div
+                v-if="cartRequiresShippingAddress"
+                class="flex flex-row mb-1"
+            >
+                <h3 class="title uppercase">
+                    Shipping Information
+                </h3>
+            </div>
+            <order-form-shipping
+                v-if="cartRequiresShippingAddress"
+                ref="shippingForm"
+                :brand="brand"
+                :shipping-data="shippingStateFactory"
+                :countries="countries"
+                :provinces="provinces"
+                @updateShippingData="updateShippingData"
+            />
 
-        <div
-            v-if="cartRequiresShippingAddress"
-            class="flex flex-row mb-2"
-        >
-            <h3 class="heading color-blue">
-                Shipping Information
-            </h3>
-        </div>
-        <order-form-shipping
-            v-if="cartRequiresShippingAddress"
-            ref="shippingForm"
-            :brand="brand"
-            :shipping-data="shippingStateFactory"
-            :countries="countries"
-            :provinces="provinces"
-            @updateShippingData="updateShippingData"
-        />
-
-        <div
-            v-if="canAcceptPaymentPlans"
-            class="flex flex-row mb-2"
-        >
-            <h3 class="heading color-blue">
-                Payment Plan
-            </h3>
-        </div>
-        <order-form-payment-plan
-            v-if="canAcceptPaymentPlans"
-            :brand="brand"
-            :number-of-payments="cartData.number_of_payments"
-            :payment-plan-options="cartData.payment_plan_options"
-            @updateCartData="updateCart"
-        />
-
-
-        <div
-            v-if="this.cartData.items.length"
-            class="flex flex-row mb-2"
-        >
-            <h3 class="heading">
-                Payment Details
-            </h3>
-        </div>
-        <order-form-payment
-            v-if="this.cartData.items.length"
-            ref="paymentForm"
-            :theme-color="themeColor"
-            :brand="brand"
-            :payment-details="paymentStateFactory"
-            :stripe-publishable-key="stripePublishableKey"
-            :totals="cartData.totals"
-            :discounts="cartData.discounts"
-            :stripe-token="stripeToken"
-            :countries="countries"
-            :provinces="provinces"
-            @updatePaymentData="updatePaymentData"
-            @formSubmit="submitForm"
-        />
-
-        <div class="flex flex-row flex-wrap pv-3 text-center features">
-            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
-                <i class="fa fa-phone text-grey-3 mb-2"></i>
-                <p class="body font-bold">
-                    We're always here to help
-                </p>
-                <p class="body text-grey-4">
-                    Call 1-800-439-8921 or email
-                    <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>
-                </p>
+            <div
+                v-if="canAcceptPaymentPlans"
+                class="flex flex-row mb-1"
+            >
+                <h3 class="title uppercase">
+                    Payment Plan
+                </h3>
             </div>
 
-            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
-                <i class="fa fa-lock text-grey-3 mb-2"></i>
-                <p class="body font-bold">
-                    Your Information is Secure
-                </p>
-                <p class="body text-grey-4">
-                    This page is securely encrypted with world-class SSL protection.
-                </p>
+            <order-form-payment-plan
+                v-if="canAcceptPaymentPlans"
+                :brand="brand"
+                :number-of-payments="cartData.number_of_payments"
+                :payment-plan-options="cartData.payment_plan_options"
+                @updateCartData="updateCart"
+            />
+            <div
+                v-if="cartData.items.length"
+                class="flex flex-row mb-1"
+            >
+                <h3 class="title uppercase">
+                    Payment Details
+                </h3>
             </div>
-
-            <div class="flex flex-column xs-12 sm-4 display mb-2 ph-5">
-                <i class="fa fa-check-circle text-grey-3 mb-2"></i>
-                <p class="body font-bold">
-                    100% Money Back Guarantee
-                </p>
-                <p class="body text-grey-4">
-                    Order risk-free with our 90-day, 100% money back guarantee.
-                </p>
-            </div>
+            <order-form-payment
+                v-if="cartData.items.length"
+                ref="paymentForm"
+                :theme-color="themeColor"
+                :brand="brand"
+                :payment-details="paymentStateFactory"
+                :stripe-publishable-key="stripePublishableKey"
+                :totals="cartData.totals"
+                :discounts="cartData.discounts"
+                :stripe-token="stripeToken"
+                :countries="countries"
+                :provinces="provinces"
+                @updatePaymentData="updatePaymentData"
+            />
         </div>
+
+        <div class="flex flex-column xs-12 md-3 ph-1 totals-col">
+            <order-form-totals
+                :totals="cartData.totals"
+                :discounts="cartData.discounts"
+            />
+
+            <button
+                class="btn"
+                @click.stop="submitForm"
+            >
+                <span
+                    class="text-white"
+                    :class="themeBgClass"
+                >
+                    Place Order
+                </span>
+            </button>
+
+            <p class="tiny disclaimer mt-1 text-grey-3">
+                By completing your order you agree to the terms of service. All payments
+                in US dollars. You can cancel your subscription at any time by emailing
+                <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>.
+            </p>
+        </div>
+
 
         <transition name="grow-fade">
             <div
@@ -147,7 +136,6 @@
                 </transition>
             </div>
         </transition>
-
         <div
             v-show="loading"
             class="loading-overlay"
@@ -155,18 +143,19 @@
     </div>
 </template>
 <script>
-    import axios from 'axios';
-    import EcommerceService from '../../assets/js/services/ecommerce.js';
-    import OrderFormAccount from './_OrderFormAccount.vue';
-    import OrderFormCart from './_OrderFormCart.vue';
-    import OrderFormPayment from './_OrderFormPayment.vue';
-    import OrderFormPaymentPlan from './_OrderFormPaymentPlan.vue';
-    import OrderFormShipping from './_OrderFormShipping.vue';
-    import ThemeClasses from '../../mixins/ThemeClasses';
-    import Toasts from '../../assets/js/classes/toasts';
-    import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
+import axios from 'axios';
+import EcommerceService from '../../assets/js/services/ecommerce';
+import OrderFormAccount from './_OrderFormAccount.vue';
+import OrderFormCart from './_OrderFormCart.vue';
+import OrderFormPayment from './_OrderFormPayment.vue';
+import OrderFormPaymentPlan from './_OrderFormPaymentPlan.vue';
+import OrderFormShipping from './_OrderFormShipping.vue';
+import OrderFormTotals from './_OrderFormTotals.vue';
+import ThemeClasses from '../../mixins/ThemeClasses';
+import Toasts from '../../assets/js/classes/toasts';
+import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation.vue';
 
-    export default {
+export default {
     name: 'OrderForm',
     components: {
         'order-form-account': OrderFormAccount,
@@ -175,6 +164,7 @@
         'order-form-payment': OrderFormPayment,
         'order-form-payment-plan': OrderFormPaymentPlan,
         'loading-animation': LoadingAnimation,
+        'order-form-totals': OrderFormTotals,
     },
     mixins: [ThemeClasses],
     props: {
@@ -273,7 +263,7 @@
         },
 
         canAcceptPaymentPlans() {
-            return this.cartData.payment_plan_options.length && !this.cartContainsSubscription;
+            return this.cartData.payment_plan_options.length > 0 && !this.cartContainsSubscription;
         },
     },
     methods: {
@@ -455,6 +445,8 @@
 </script>
 
 <style lang="scss">
+@import '../../assets/sass/partials/variables';
+
     .form-loading {
         position:fixed;
         top:50%;
@@ -484,5 +476,9 @@
         right:0;
         z-index:199;
         background:rgba(0,0,0,.4);
+    }
+    .totals-col {
+        position:sticky;
+        top:90px;
     }
 </style>

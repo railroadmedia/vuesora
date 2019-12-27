@@ -23,6 +23,7 @@
     color:nth(nth($greys, 3), 2);
     pointer-events:none;
     font:400 16px/1.5em $defaultSansSerif;
+    transform:scale(1) translateY(0) translateX(15px);
 
     @include medium {
       left:$gutterWidth / 2;
@@ -72,7 +73,7 @@ input[type='date'],
 select,
 textarea {
   height:50px;
-  border-radius:5px;
+  border-radius:25px;
   background:#fff;
   color:#000;
   box-shadow:none;
@@ -81,9 +82,8 @@ textarea {
   width:100%;
   padding-top:12px;
   font:400 16px/1.5em $defaultSansSerif;
-
-  // Pull in padding styles from the .ph class
-  @extend .ph;
+  padding-left:25px;
+  padding-right:25px;
 
   &:focus {
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
@@ -98,7 +98,7 @@ textarea {
   &.sticky-label {
 
     & ~ label {
-      transform:scale(.7) translateY(-10px);
+      transform:scale(.7) translateY(-8px) translateX(15px)!important;
       color:$primary;
 
       @each $key, $value in $brand_colors {
@@ -148,6 +148,7 @@ textarea {
 
     & ~ label {
       left:0;
+      transform:scale(.7) translateY(-8px) translateX(0)!important;
     }
   }
 
@@ -347,6 +348,7 @@ textarea {
   resize:none;
   height:150px;
   padding-top:15px;
+  border-radius:10px;
 
   label {
     justify-content:flex-start;

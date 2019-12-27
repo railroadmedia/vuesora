@@ -1,9 +1,11 @@
 <template>
-    <div class="flex flex-column bb-light-1 assignment-component">
-        <div class="flex flex-row align-v-center flex-wrap pa-2">
+    <div class="flex flex-column assignment-component bb-grey-1-1">
+        <div class="flex flex-row align-v-center flex-wrap pv-3">
             <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
-                    <div class="flex flex-column arrow-column hide-xs-only">
+                    <div
+                        class="flex flex-column arrow-column hide-xs-only"
+                    >
                         <button
                             class="btn collapse-square"
                             @click="openAssignment"
@@ -82,10 +84,13 @@
         <transition name="slide-down-fade">
             <div
                 v-if="accordionActive && thisAssignment != null"
-                v-show="!this.accordionLoading"
-                class="flex flex-column pa-2"
+                v-show="!accordionLoading"
+                class="flex flex-column"
             >
-                <div class="flex flex-row mb-3">
+                <div
+                    v-show="$_description.length > 0"
+                    class="flex flex-row mb-3 pa-3"
+                >
                     <div
                         class="body"
                         v-html="$_description"
@@ -93,11 +98,13 @@
                         {{ $_description }}
                     </div>
                 </div>
-                <div class="flex flex-row">
+                <div
+                    v-show="$_totalPages > 0"
+                    class="flex flex-row pa-3"
+                >
                     <div class="flex flex-column grow">
                         <div class="flex flex-column">
                             <div
-                                v-if="$_totalPages > 0"
                                 ref="carouselContainer"
                                 class="flex flex-row carousel bg-white overflow mv pb-3"
                             >
@@ -107,7 +114,10 @@
                                     class="flex flex-column xs-12 grow page"
                                     :style="pageScrollPosition"
                                 >
-                                    <img :src="page">
+                                    <img
+                                        :data-ix-src="page"
+                                        data-ix-fade
+                                    >
                                 </div>
 
                                 <div
@@ -198,12 +208,9 @@
 
                 <div
                     v-if="loading"
-                    class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
+                    class="loading-exercise heading ph-4 pv-2"
                 >
-                    <i
-                        class="fas fa-spinner fa-spin"
-                        :class="'text-' + themeColor"
-                    ></i>
+                    <loading-animation :theme-color="themeColor" />
                 </div>
             </div>
         </transition>
@@ -215,13 +222,17 @@ import ContentService from '../../assets/js/services/content';
 import Utils from '../../assets/js/classes/utils';
 import Toasts from '../../assets/js/classes/toasts';
 import ProgressTracker from '../../assets/js/classes/progress-tracker';
+import LoadingAnimation from "../LoadingAnimation/LoadingAnimation";
 
 export default {
     name: 'ContentAssignment',
+    components: {
+        'loading-animation': LoadingAnimation,
+    },
     props: {
         brand: {
             type: String,
-            default: () => 'recordeo',
+            default: () => 'drumeo',
         },
         themeColor: {
             type: String,
@@ -283,6 +294,7 @@ export default {
             },
             isRequesting: false,
             isComplete: this.completed,
+            ssEventTimeout: null,
         };
     },
     computed: {
@@ -354,26 +366,23 @@ export default {
             };
         },
     },
+    watch: {
+        accordionActive() {
+            if (this.accordionActive) {
+                setTimeout(() => {
+                    // Load the Imgix Service to load srcs and srcsets
+                    if (window.ImgixService && this.accordionActive) {
+                        window.ImgixService.loadImageSources();
+                    }
+                }, 100);
+            }
+        },
+    },
     mounted() {
         if (this.position < 3) {
             this.openAssignment();
         }
         const vm = this;
-
-        window.addEventListener('message', (event) => {
-            if (event.origin === 'https://www.soundslice.com') {
-                const cmd = JSON.parse(event.data);
-
-                switch (cmd.method) {
-                case 'ssPlay':
-                    vm.handlePlay();
-                    break;
-                case 'ssPause':
-                    vm.handlePause();
-                    break;
-                }
-            }
-        });
 
         window.addEventListener('requesting-completion', this.setIsRequesting);
         window.addEventListener('lesson-complete', this.syncCompleteState);
@@ -418,7 +427,7 @@ export default {
 
                             setTimeout(() => {
                                 this.accordionLoading = false;
-                            }, 750);
+                            }, 250);
                         }
                     });
             } else {
@@ -432,6 +441,7 @@ export default {
 
             this.progressTracker = new ProgressTracker();
 
+            window.addEventListener('message', this.handleSoundsliceEvent);
             document.addEventListener('keyup', this.spacebarToPlayPause);
         },
 
@@ -449,6 +459,7 @@ export default {
             this.progressTracker = null;
 
             window.removeEventListener('unload', () => this.sendProgressTracking);
+            window.removeEventListener('message', this.handleSoundsliceEvent);
             document.removeEventListener('keyup', this.spacebarToPlayPause);
         },
 
@@ -466,7 +477,7 @@ export default {
                         callback: () => {
                             this.isComplete = !this.isComplete;
 
-                            window.recalculateProgress(false);
+                            window.recalculateProgress(false, false, this.themeColor);
 
                             ContentService.resetContentProgress(vm.id)
                                 .then((resolved) => {
@@ -497,7 +508,7 @@ export default {
             } else {
                 this.isComplete = !this.isComplete;
 
-                window.recalculateProgress(true);
+                window.recalculateProgress(true, false, this.themeColor);
 
                 ContentService.markContentAsComplete(vm.id)
                     .then((resolved) => {
@@ -537,6 +548,8 @@ export default {
         handlePlay() {
             this.isPlaying = true;
 
+            console.log(this.progressTracker);
+
             this.progressTracker.start();
 
             if (!this.progressTrackerEventListener) {
@@ -551,6 +564,25 @@ export default {
 
             this.progressTracker.stop();
         },
+
+        handleSoundsliceEvent(event) {
+            const vm  = this;
+
+            if (event.origin === 'https://www.soundslice.com') {
+                const cmd = JSON.parse(event.data);
+
+                console.log(cmd.method);
+
+                switch (cmd.method) {
+                    case 'ssPlay':
+                        vm.handlePlay();
+                        break;
+                    case 'ssPause':
+                        vm.handlePause();
+                        break;
+                }
+            }
+        }
     },
 };
 </script>

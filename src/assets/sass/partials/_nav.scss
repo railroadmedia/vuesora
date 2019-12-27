@@ -3,10 +3,10 @@
 
 body {
   padding-top:50px;
-  padding-bottom:50px;
+  padding-bottom:120px;
 
   @include small {
-    padding-bottom:60px;
+    padding-bottom:70px;
   }
 
   @include large {
@@ -108,6 +108,10 @@ body {
         @include large {
           transform:translateX(calc(-#{$large} + 145px));
         }
+
+        @include xLarge {
+          transform:translateX(calc(-#{$xLarge} + 145px));
+        }
       }
     }
 
@@ -133,6 +137,10 @@ body {
 
       @include large {
         width:calc(#{$large} - 85px);
+      }
+
+      @include xLarge {
+        width:calc(#{$xLarge} - 85px);
       }
     }
 
@@ -487,6 +495,22 @@ footer {
   left:0;
   width:100%;
   z-index:95;
+
+  section {
+    align-items:center;
+
+    &:first-child {
+      @include small {
+        align-items:flex-start;
+      }
+    }
+
+    &:last-child {
+      @include small {
+        align-items:flex-end;
+      }
+    }
+  }
 
   .footer-col {
     height:25px;

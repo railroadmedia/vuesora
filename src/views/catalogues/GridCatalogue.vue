@@ -1,7 +1,7 @@
 <template>
     <div
         class="flex flex-row"
-        :class="noWrap ? 'overflow' : 'flex-wrap'"
+        :class="[noWrap ? 'overflow' : 'flex-wrap', {'nmh-1': !displayInline}]"
     >
         <catalogue-card
             v-for="(item, i) in content"
@@ -15,6 +15,8 @@
             :lock-unowned="lockUnowned"
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
+            :six-wide="sixWide"
+            :display-inline="displayInline"
             @addToList="emitAddToList"
         ></catalogue-card>
     </div>
@@ -63,6 +65,14 @@ export default {
             default: () => '',
         },
         lockUnowned: {
+            type: Boolean,
+            default: () => false,
+        },
+        sixWide: {
+            type: Boolean,
+            default: () => false,
+        },
+        displayInline: {
             type: Boolean,
             default: () => false,
         },

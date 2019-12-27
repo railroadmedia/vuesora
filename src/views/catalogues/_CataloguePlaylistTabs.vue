@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row flex-wrap align-v-center">
         <div class="flex flex-column xs-12 sm-8 pv-3">
-            <div class="flex flex-row flex-wrap filter-tabs ph align-v-center">
+            <div class="flex flex-row flex-wrap filter-tabs align-v-center">
                 <div
                     class="heading-tab pointer mr-3 flex flex-auto"
                     @click="changeTab('added')"
@@ -52,7 +52,7 @@
         </div>
 
         <div class="flex flex-column xs-12 sm-4 pv-1 align-v-center">
-            <div class="flex flex-row">
+            <div class="flex flex-row nmh-1">
                 <catalogue-filter
                     filter-name="type"
                     :item="parsedTypes"

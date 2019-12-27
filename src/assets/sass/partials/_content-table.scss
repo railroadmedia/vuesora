@@ -34,20 +34,6 @@
     }
   }
 
-  &:hover:not(.scheduled), &.active {
-
-    .thumb-wrap {
-      .thumb-img {
-        transform:scale(1.1);
-      }
-
-      .thumb-hover {
-        opacity:1;
-        visibility:visible;
-      }
-    }
-  }
-
   &.scheduled {
     cursor:default;
     padding-left:30px;
@@ -73,14 +59,16 @@
     font-size:8px;
     vertical-align:top;
   }
+
+  .title-column {
+    padding:0 #{$gutterWidth / 3};
+  }
 }
 
 .large-thumbnail {
   position:relative;
   z-index:3;
   margin-bottom:$gutterWidth / 2;
-  padding-left:$gutterWidth / 3;
-  padding-right:$gutterWidth / 3;
 
   @include medium {
     margin-bottom:0;
@@ -88,7 +76,6 @@
 
   .thumb-wrap {
     overflow:hidden;
-    border-radius:3px;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     -webkit-transform: translate3d(0, 0, 0);
@@ -104,15 +91,7 @@
       right:0;
       padding-top:$gutterWidth;
       @include topToBottomGradient(transparent, #000);
-    }
-
-    &:hover {
-      transform:scale(1.1);
-
-      .thumb-hover {
-        opacity:1;
-        visibility:visible;
-      }
+      min-height:60px;
     }
 
     .bundle-complete, .thumb-hover {
@@ -134,7 +113,7 @@
       visibility:hidden;
       transition:all .2s ease-in-out;
       will-change:opacity, visibility;
-      border-radius:3px;
+      border-radius:5px;
     }
   }
 
@@ -184,7 +163,7 @@
     &:before {
       background:lighten($recordeoYellow, 20%);
       transform:scale(0.9) translateY(-50%);
-      margin-top:-10px;
+      margin-top:-13px;
       z-index:-1;
     }
   }
@@ -192,7 +171,7 @@
   &:after {
     background:lighten($recordeoYellow, 30%);
     transform:scale(0.8) translateY(-50%);
-    margin-top:-25px;
+    margin-top:-26px;
     z-index:-2;
   }
 }
@@ -214,8 +193,6 @@
 }
 
 .content-overview {
-  padding:#{$gutterWidth}  #{$gutterWidth / 3};
-
   @include xSmallOnly {
     flex-wrap:wrap;
   }
@@ -228,11 +205,11 @@
     flex:1 0 100%;
 
     @include small {
-      flex:0 0 240px;
+      flex:0 0 220px;
     }
 
     @include medium {
-      flex:0 0 320px;
+      flex:0 0 280px;
     }
   }
 
@@ -263,12 +240,43 @@
       }
     }
   }
+
+  .title-column {
+
+    @include small {
+      padding:0 $gutterWidth;
+    }
+  }
+}
+
+.content-table-row, .content-overview {
+
+  &:hover:not(.scheduled), &.active, &.completed {
+    .thumb-wrap {
+      .thumb-hover {
+        opacity:1;
+        visibility:visible;
+      }
+    }
+  }
 }
 
 
 .item-description {
-  transition:max-height .1s ease-in-out;
+  transition:max-height .1s ease-in-out, height .1s ease-in-out;
   will-change:max-height;
+  position:relative;
+  box-sizing:content-box;
+
+  &:after {
+    content: '';
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:-20px;
+    right:0;
+    @include topToBottomGradient(transparent, #fff);
+  }
 
   &.always-truncate {
     max-height:3em;
@@ -281,6 +289,10 @@
     &.active {
       overflow:visible;
       -webkit-line-clamp:initial;
+
+      &:after {
+        @include topToBottomGradient(transparent, transparent);
+      }
     }
   }
 
@@ -342,16 +354,39 @@
   transition:transform .2s ease-in-out;
   will-change:transform;
 
-
   &.no-bg {
     background-color:transparent;
+  }
+
+  .thumb-title {
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    text-shadow:0 0 2px rgba(0,0,0,.8);
+
+    h5 {
+      line-height:1em;
+    }
+
+    img {
+      filter: drop-shadow(0 0 2px rgba(0,0,0,.8))
+    }
+
+    &.drumeo {
+      @include topToBottomGradient(transparent, transparentize($drumeoBlue, .25));
+    }
+
+    &.pianote {
+      @include topToBottomGradient(transparent, transparentize($pianoteRed, .7));
+    }
   }
 }
 
 .thumb-wrap {
   position:relative;
   overflow:hidden;
-  border-radius:3px;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
@@ -375,7 +410,7 @@
     opacity:0;
     transition:all .2s ease-in-out;
     will-change:opacity, visibility;
-    border-radius:3px;
+    border-radius:5px;
   }
 }
 
@@ -533,6 +568,23 @@ $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
     p {
       white-space:nowrap;
     }
+  }
+}
+
+.related-lessons {
+  .thumbnail-col {
+    flex:0 0 150px;
+    max-width:150px;
+    min-width:150px;
+  }
+
+  .thumbnail-title {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:$gutterWidth #{$gutterWidth / 3} #{$gutterWidth / 3};
+    @include topToBottomGradient(transparent, #000);
   }
 }
 

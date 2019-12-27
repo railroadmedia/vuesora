@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row comment-post pl pv mv-1">
+    <div class="flex flex-row comment-post pv mv-1">
         <div class="flex flex-column avatar-column pr">
             <div
                 v-if="hasPublicProfiles"
@@ -12,7 +12,9 @@
                     class="no-decoration"
                 >
                     <img
-                        :src="comment.user['fields.profile_picture_image_url']"
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="comment.user['fields.profile_picture_image_url']"
+                        data-ix-fade
                         class="rounded"
                     >
                 </a>
@@ -25,13 +27,13 @@
 
             <p
                 v-if="showUserExp"
-                class="x-tiny dense font-bold uppercase text-center mt-1"
+                class="body dense font-bold uppercase text-center mt-1"
             >
-                {{ userExpRank }}
+                Level {{ userExpRank }}
             </p>
             <p
                 v-if="showUserExp"
-                class="x-tiny dense text-center font-compressed"
+                class="tiny dense text-center font-compressed"
             >
                 {{ userExpValue }} XP
             </p>
@@ -191,7 +193,6 @@
 </template>
 <script>
 import { DateTime } from 'luxon';
-import xpMapper from '../../assets/js/classes/xp-mapper';
 import Utils from '../../assets/js/classes/utils';
 import TextEditor from '../../components/TextEditor/TextEditor.vue';
 import Toasts from '../../assets/js/classes/toasts';
@@ -289,7 +290,7 @@ export default {
                 return `${this.brand} Team`;
             }
 
-            return xpMapper.getNearestValue(this.comment.user.xp);
+            return this.comment.user.level_number || '0.0';
         },
 
         profileRoute() {
@@ -339,7 +340,7 @@ export default {
         },
 
         openLikes() {
-            if (this.likeCount > 0) {
+            if (this.comment.like_count > 0) {
                 this.$emit('openLikes', {
                     id: this.comment.id,
                     totalLikeUsers: this.comment.like_count,

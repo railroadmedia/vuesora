@@ -1,7 +1,6 @@
-body.dark-mode {
-  color:#fefefe;
-  background-color:#141414;
+@import './_variables.scss';
 
+.dark-mode {
   .bg-white:not(.btn):not(span) {
     background-color:#242424;
   }
@@ -36,8 +35,8 @@ body.dark-mode {
     border-color: #444444;
   }
 
-  [class*='-grey-7'] {
-    background-color:#444444;
+  [class*='hover-bg-grey-7']:hover {
+    background-color: #242424;
   }
 
   .carousel img {
@@ -47,7 +46,6 @@ body.dark-mode {
   .noty_theme__musoraNoty {
     background-color:#242424;
   }
-
 
   .forum-post {
 
@@ -83,5 +81,10 @@ body.dark-mode {
         }
       }
     }
+  }
+
+  .card-media {
+    background-color:#000!important;
+    box-shadow: 0 0 2px transparentize(nth(nth($greys, 4), 2), .5);
   }
 }

@@ -22,6 +22,15 @@
   }
 }
 
+@keyframes skeleton-loader {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
 @keyframes noty_anim_in {
   100% {
     transform: translate(0);
@@ -129,6 +138,26 @@
 }
 .grow-fade-enter, .grow-fade-leave-to {
   transform: scale(.5);
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: all .3s ease-in-out;
+}
+.fade-leave-active {
+  transition: all .3s ease-in-out;
+}
+.fade-enter, .fade-leave-to {
+  opacity: .1;
+}
+
+.fast-fade-enter-active {
+  transition: all .2s ease;
+}
+.fast-fade-leave-active {
+  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fast-fade-enter, .fast-fade-leave-to {
   opacity: 0;
 }
 

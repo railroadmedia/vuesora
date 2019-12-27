@@ -10,6 +10,7 @@ export default class ContentModel {
         this.card = {
             thumbnail: this.getPostThumbnail(),
             color_title: this.postType,
+            content_type: this.getTypeWithIcon(),
             black_title: this.getPostField('title'),
             description: this.getPostDatum('description'),
             sheet_music: null,
@@ -48,7 +49,7 @@ export default class ContentModel {
     getPostFieldMulti(key) {
         const postFields = this.post.fields.filter(field => field.key === key);
 
-        return postFields.length ? postFields.map(field => field.value) : ['TBD'];
+        return postFields.length ? postFields.map(field => field.value) : [];
     }
 
     getPostDatum(key) {
@@ -65,6 +66,25 @@ export default class ContentModel {
         }
 
         return 'TBD';
+    }
+
+    getInstructors() {
+        const instructors = this.getPostFieldMulti('instructor');
+        let mappedInstructors;
+
+        if (instructors.length) {
+            mappedInstructors = instructors
+                // Get all the instructor fields
+                .map((instructor) => instructor.fields
+                    // Find only the name field
+                    .find((field) => field.key === 'name'))
+                // Map the field values
+                .map((field) => field.value)
+                // Join them with a comma
+                .join(', ');
+        }
+
+        return mappedInstructors;
     }
 
     getPostDuration() {
@@ -98,7 +118,11 @@ export default class ContentModel {
         const icon = ContentHelpers.getContentTypeIcon(this.post.type);
         const type = this.postType;
 
-        return `<i class="${icon}" style="margin-right:5px;"></i> <span class="text-white">${type}</span>`;
+        return `<i class="${icon}" style="margin-right:5px;"></i> ${type}`;
+    }
+
+    getPostDifficulty() {
+        return ContentModel.mapDifficulty(this.post);
     }
 
     get episodeNumber() {
@@ -115,7 +139,8 @@ export default class ContentModel {
             pianote: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg',
             guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg',
         };
-        let thumb = this.getPostDatum('thumbnail_url');
+        const originalThumb = this.getPostDatum('original_thumbnail_url');
+        let thumb = originalThumb === 'TBD' ? this.getPostDatum('thumbnail_url') : originalThumb;
 
         if (this.postType === 'learning-path' && this.brand === 'drumeo') {
             thumb = this.getPostDatum('background_image_url');

@@ -6,30 +6,11 @@ export default {
      * @returns {Object} - object with x and y coords as props
      */
     getElementPosition(element) {
-        let el = element;
-        const positions = {
-            x: 0,
-            y: 0,
+        const { left, top } = element.getBoundingClientRect();
+        return {
+            x: left,
+            y: top,
         };
-
-        while (el) {
-            if (el.tagName === 'BODY') {
-                // deal with browser quirks with body/window/document and page scroll
-                const xScroll = el.scrollLeft || document.documentElement.scrollLeft;
-                const yScroll = el.scrollTop || document.documentElement.scrollTop;
-
-                positions.x += (el.offsetLeft - xScroll + el.clientLeft);
-                positions.y += (el.offsetTop - yScroll + el.clientTop);
-            } else {
-                // for all other non-BODY elements
-                positions.x += (el.offsetLeft - el.scrollLeft + el.clientLeft);
-                positions.y += (el.offsetTop - el.scrollTop + el.clientTop);
-            }
-
-            el = el.offsetParent;
-        }
-
-        return positions;
     },
 
     /**

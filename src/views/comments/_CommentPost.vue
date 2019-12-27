@@ -1,7 +1,7 @@
 <template>
     <div
         :id="domID"
-        class="flex flex-row comment-post pa mb-1"
+        class="flex flex-row comment-post pv mb-1"
         :class="{'pinned': pinned}"
     >
         <div class="flex flex-column avatar-column pr">
@@ -16,7 +16,9 @@
                     class="no-decoration"
                 >
                     <img
-                        :src="comment.user['fields.profile_picture_image_url']"
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="comment.user['fields.profile_picture_image_url']"
+                        data-ix-fade
                         class="rounded"
                     >
                 </a>
@@ -29,13 +31,13 @@
 
             <p
                 v-if="showUserExp"
-                class="x-tiny dense font-bold uppercase text-center mt-1"
+                class="body dense font-bold uppercase text-center mt-1"
             >
-                {{ userExpRank }}
+                Level {{ userExpRank }}
             </p>
             <p
                 v-if="showUserExp"
-                class="x-tiny dense text-center font-compressed"
+                class="tiny dense text-center font-compressed"
             >
                 {{ userExpValue }} XP
             </p>
@@ -146,7 +148,7 @@
                 leave-active-class=""
             >
                 <div
-                    v-show="replying"
+                    v-if="replying"
                     class="flex flex-row comment-post mv-2"
                 >
                     <div class="flex flex-column avatar-column pr hide-xs-only">
@@ -245,7 +247,6 @@ import Toasts from '../../assets/js/classes/toasts';
 import CommentService from '../../assets/js/services/comments';
 import TextEditor from '../../components/TextEditor/TextEditor.vue';
 import CommentReply from './_CommentReply.vue';
-import xpMapper from '../../assets/js/classes/xp-mapper';
 import Utils from '../../assets/js/classes/utils';
 import ThemeClasses from '../../mixins/ThemeClasses';
 
@@ -323,7 +324,7 @@ export default {
                 return `${this.brand} Team`;
             }
 
-            return xpMapper.getNearestValue(this.comment.user.xp);
+            return this.comment.user.level_number || '0.0';
         },
 
         repliesToShow() {
@@ -439,8 +440,6 @@ export default {
         },
 
         likeComment() {
-            console.log(this.comment.id);
-
             this.$emit('likeComment', {
                 id: this.comment.id,
                 isLiked: this.comment.is_liked,

@@ -3,7 +3,7 @@
         id="commentsSection"
         class="flex flex-column grow"
     >
-        <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
+        <div class="flex flex-row flex-wrap pt-3 align-v-center">
             <div class="flex flex-column xs-12 sm-9 mb-3">
                 <h1 class="heading">
                     {{ totalComments }} Comments
@@ -42,7 +42,7 @@
 
         <div
             id="postComment"
-            class="flex flex-row comment-post ph mv-3"
+            class="flex flex-row comment-post mv-3"
         >
             <div class="flex flex-column avatar-column pr hide-xs-only">
                 <div
@@ -50,7 +50,9 @@
                     :class="avatarClassObject"
                 >
                     <img
-                        :src="currentUser.avatar"
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="currentUser.avatar"
+                        data-ix-fade
                         class="rounded"
                     >
                 </div>
@@ -258,8 +260,6 @@ export default {
         const uriParams = QueryString.parse(window.location.search);
         // Run the goToComment method if it does
         if (Object.keys(uriParams).indexOf('goToComment') !== -1) {
-            console.log(uriParams.goToComment);
-
             this.goToComment(uriParams.goToComment);
         }
 
@@ -299,6 +299,13 @@ export default {
                         if (this.pinnedComment != null) {
                             this.comments = this.comments.filter(comment => comment.id !== this.pinnedComment.id);
                         }
+
+                        setTimeout(() => {
+                            // Load the Imgix Service to load srcs and srcsets
+                            if (window.ImgixService) {
+                                window.ImgixService.loadImageSources();
+                            }
+                        }, 500);
                     }
                 });
         },

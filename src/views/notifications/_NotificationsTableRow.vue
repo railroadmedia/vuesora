@@ -8,8 +8,15 @@
         <div class="flex flex-column avatar-col align-v-center">
             <div
                 class="thumb-img square rounded bg-center"
-                :style="'background-image:url(' + userAvatar + ');'"
-            ></div>
+            >
+                <img
+                    src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                    :data-ix-src="userAvatar"
+                    data-ix-fade
+                    alt="User Avatar"
+                    class="rounded"
+                >
+            </div>
         </div>
 
         <div class="flex flex-column align-v-center ph-1 title-column overflow">

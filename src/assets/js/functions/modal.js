@@ -6,24 +6,29 @@ export default (function () {
         const closeEvent = new CustomEvent('modalClose');
 
         document.body.addEventListener('click', (event) => {
-            if (event.target.dataset.openModal != null) {
-                openModal(event);
+            const buttonClicked = event.target;
+            const modalId = buttonClicked.dataset.openModal;
+
+            if (modalId != null) {
+                openModal(modalId, buttonClicked);
             }
 
-            if (event.target.classList.contains('close-modal')) {
+            if (buttonClicked.classList.contains('close-modal')) {
                 closeModal();
             }
         });
 
-        function openModal(event) {
-            const buttonClicked = event.target;
-            const modalId = buttonClicked.dataset.openModal;
-            const modalToOpen = document.getElementById(modalId);
+        document.body.addEventListener('openModal', (event) => {
+            openModal(event.detail.target);
+        });
+
+        function openModal(modalId, buttonClicked) {
             const openEvent = new CustomEvent('modalOpen', {
                 detail: {
                     trigger: buttonClicked,
                 },
             });
+            const modalToOpen = document.getElementById(modalId);
 
             closeModal();
 
@@ -34,7 +39,11 @@ export default (function () {
 
                 document.body.classList.add('no-scroll');
                 document.documentElement.classList.add('no-scroll');
-                modalToOpen.classList.add('active');
+                modalToOpen.classList.add('displayed');
+                setTimeout(() => {
+                    modalToOpen.classList.add('active');
+                }, 50);
+
                 modalToOpen.dispatchEvent(openEvent);
             } else {
                 console.error(`Modal Error - Could not find modal with the ID: "${modalId}"`);
@@ -61,6 +70,7 @@ export default (function () {
             // Remove the active class from all Modals (easier than finding the specific one open)
             Array.from(modalDialogs).forEach((dialog) => {
                 dialog.classList.remove('active');
+                dialog.classList.remove('displayed');
             });
 
             // window.modalSimpleBar = null;
