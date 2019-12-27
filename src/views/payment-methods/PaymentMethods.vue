@@ -96,7 +96,7 @@
         </ul>
 
         <div class="flex flex-row flex-wrap align-v-center">
-            <div class="flex flex-column xs-12 sm-4">
+            <div class="flex flex-column xs-12 sm-7 md-4">
                 <button
                     class="btn"
                     data-open-modal="paymentMethodModal"
