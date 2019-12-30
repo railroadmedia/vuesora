@@ -123,7 +123,6 @@
       right:0;
       width:calc(100% + 10px);
       height:100%;
-      border:5px solid #000;
       border-left:none;
       border-radius:0 25px 25px 0;
       opacity:0;
@@ -142,21 +141,10 @@
         top:-15px;
         right:calc(100% - 15px);
         background-color:transparent;
-        border:5px solid #000;
+        border:5px solid;
         border-left:none;
+        border-color:inherit;
         border-radius:0 35px 35px 0;
-      }
-
-      &.drumeo, &.drumeo:after {
-        border-color:darken($drumeoBlue, 12%);
-      }
-
-      &.pianote, &.pianote:after {
-        border-color:darken($pianoteRed, 12%);
-      }
-
-      &.guitareo, &.guitareo:after {
-        border-color:darken($guitareoGreen, 12%);
       }
     }
   }
