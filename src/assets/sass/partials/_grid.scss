@@ -534,6 +534,9 @@ $numerators: 2 3 6 9 10;
   .m-sm-up {
     margin:0!important;
   }
+  .p-lg-only {
+    padding:0!important;
+  }
 }
 
 @include small {

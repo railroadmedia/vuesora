@@ -1,6 +1,6 @@
 <template>
     <a
-        class="flex flex-row bb-grey-1-1 no-decoration pa-1 hover-bg-grey-7 relative text-grey-3 hover-text-black"
+        class="flex flex-row bb-grey-1-1 no-decoration ph-1 hover-bg-grey-7 relative text-grey-3 hover-text-black"
         :class="class_object"
         :href="renderLink ? item.url : false"
     >
@@ -280,7 +280,9 @@ export default {
                 active: this.active,
                 completed: this.item.completed,
                 'content-overview': this.overview,
+                'pv-2': this.overview,
                 'content-table-row': !this.overview,
+                'pv-1': !this.overview,
                 'no-access': this.noAccess,
                 'wrap-on-mobile': false,
                 compact: this.compactLayout,
@@ -298,7 +300,7 @@ export default {
                 'thumbnail-col': !this.overview,
                 active: this.active,
                 'background-cards': this.item.type === 'learning-path'
-                    || this.item.type === 'learning-path-course'
+                    || this.item.type === 'learning-path-course',
             };
         },
 
