@@ -8,6 +8,7 @@ export default class UnitPartContentModel extends ContentModel {
         });
 
         this.card.color_title = this.postInstructor;
+        this.card.grey_title = this.getPostDuration();
 
         this.list.show_numbers = true;
         this.list.color_title = null;
