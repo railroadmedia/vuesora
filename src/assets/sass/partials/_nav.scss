@@ -5,7 +5,7 @@ body {
   padding-top:50px;
   padding-bottom:120px;
 
-  @include small {
+  @include medium {
     padding-bottom:70px;
   }
 
@@ -500,13 +500,13 @@ footer {
     align-items:center;
 
     &:first-child {
-      @include small {
+      @include medium {
         align-items:flex-start;
       }
     }
 
     &:last-child {
-      @include small {
+      @include medium {
         align-items:flex-end;
       }
     }
