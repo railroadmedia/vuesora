@@ -9,7 +9,6 @@ export default class LearningPathLevelContentModel extends ContentModel {
 
         this.card.grey_title = this.postChildLessonCount;
 
-
         this.list.thumb_title = this.levelNumber;
         this.list.thumb_logo = this.getThumbLogo();
         this.list.color_title = null;
@@ -19,6 +18,10 @@ export default class LearningPathLevelContentModel extends ContentModel {
             `${this.getPostField('xp')} xp`,
         ];
         this.list.description = this.getPostDatum('description');
+    }
+
+    get postChildLessonCount() {
+        return this.post.lesson_count ? `${this.post.lesson_count} Courses` : 'TBD';
     }
 
     get levelNumber() {
