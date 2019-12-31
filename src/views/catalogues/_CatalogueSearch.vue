@@ -1,26 +1,9 @@
 <template>
     <div class="flex flex-column">
-        <div class="flex flex-row flex-wrap">
-            <div
-                class="flex flex-column xs-12 pa-1"
-                :class="includedTypes.length ? 'sm-8' : ''"
-            >
-                <div class="form-group">
-                    <input
-                        id="catalogueSearch"
-                        v-model.lazy="searchTermInterface"
-                        type="text"
-                        name="search"
-                        autocomplete="off"
-                        placeholder="Search..."
-                        class="no-label"
-                    >
-                </div>
-            </div>
-
+        <div class="flex flex-row flex-wrap mb-1">
             <div
                 v-if="includedTypes.length"
-                class="flex flex-column xs-12 sm-4 pv-1"
+                class="flex flex-column xs-12 sm-4"
             >
                 <catalogue-filter
                     filter-name="type"
@@ -30,6 +13,39 @@
                     :initial-value="selectedTypes"
                     @filterChange="changeFilter"
                 ></catalogue-filter>
+            </div>
+
+            <div
+                class="flex flex-column xs-12 ph-1"
+                :class="includedTypes.length ? 'sm-8' : ''"
+            >
+                <div class="flex flex-row">
+                    <div class="flex flex-column grow form-group pr-2">
+                        <input
+                            id="catalogueSearch"
+                            v-model="searchTermInterface"
+                            type="text"
+                            name="search"
+                            autocomplete="off"
+                            placeholder="Search..."
+                            class="no-label"
+                            @keydown.enter="submitSearch"
+                        >
+                    </div>
+
+                    <div class="flex flex-column search-button-col">
+                        <button
+                            class="btn"
+                            title="Search"
+                            @click="submitSearch"
+                        >
+                            <span class="bg-drumeo text-white">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="flex flex-row ph-1 pb-1">
@@ -81,17 +97,18 @@ export default {
             default: () => 0,
         },
     },
+    data() {
+        return {
+            search_term: this.searchTerm,
+        };
+    },
     computed: {
         searchTermInterface: {
             get() {
-                return this.searchTerm;
+                return this.search_term === undefined ? this.searchTerm : this.search_term;
             },
             set(value) {
-                if (value) {
-                    this.$emit('searchChange', {
-                        term: value,
-                    });
-                }
+                this.search_term = value;
             },
         },
 
@@ -108,7 +125,7 @@ export default {
 
             this.includedTypes.forEach((type) => {
                 parsedArray.push({
-                    key: type,
+                    key: type.replace(/-/g, ' '),
                     value: type,
                 });
             });
@@ -123,6 +140,21 @@ export default {
                 value: item.value,
             });
         },
+
+        submitSearch() {
+            this.$emit('searchChange', {
+                term: this.searchTermInterface,
+            });
+        },
     },
 };
 </script>
+<style lang="scss">
+    @import '../../assets/sass/partials/variables';
+
+    .search-button-col {
+        flex: 0 0 50px;
+        max-width:50px;
+        min-width:50px;
+    }
+</style>

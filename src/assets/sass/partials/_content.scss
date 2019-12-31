@@ -381,12 +381,12 @@
   }
 
   &.six-wide {
-    flex:0 0 33.33%;
-    max-width:33.33%;
+    flex:0 0 50%;
+    max-width:50%;
 
     @include small(){
-      flex:0 0 25%;
-      max-width:25%;
+      flex:0 0 33.33%;
+      max-width:33.33%;
     }
 
     @include medium(){
@@ -685,20 +685,20 @@
   }
 }
 
-.six-cards-row {
-
-  @include small {
-    .catalogue-card:nth-child(n+5) {
-      display:none;
-    }
-  }
-
-  @include medium {
-    .catalogue-card:nth-child(n+5) {
-      display:flex;
-    }
-  }
-}
+//.six-cards-row {
+//
+//  @include small {
+//    .catalogue-card:nth-child(n+5) {
+//      display:none;
+//    }
+//  }
+//
+//  @include medium {
+//    .catalogue-card:nth-child(n+5) {
+//      display:flex;
+//    }
+//  }
+//}
 
 content-catalogue, transition {
   width:100%;

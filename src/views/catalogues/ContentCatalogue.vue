@@ -348,7 +348,7 @@ export default {
 
         selectedTypes() {
             if (this.searchBar) {
-                return this.selected_types ? [this.selected_types] : [];
+                return this.selected_types ? [this.selected_types] : this.includedTypes;
             }
 
             return this.includedTypes;
@@ -442,9 +442,11 @@ export default {
                         const this_val = query_object[key].split(',');
                         this.selected_types[this_val[0]] = this_val[1];
                     } else {
-                        query_object[key].forEach((param) => {
-                            this.selected_types = param;
-                        });
+                        if (query_object[key].length === 1) {
+                            query_object[key].forEach((param) => {
+                                this.selected_types = param;
+                            });
+                        }
                     }
                 } else if (key === 'term' && this.searchBar) {
                     this.search_term = query_object[key];
@@ -629,6 +631,8 @@ export default {
         },
 
         handleSearch(payload) {
+            console.log(payload);
+
             this.search_term = payload.term || undefined;
             this.page = 1;
 

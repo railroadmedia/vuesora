@@ -186,6 +186,12 @@
         >
             {{ item.type.replace('bundle-', '').replace(/-/g, ' ') }}
         </div>
+        <div
+            v-if="is_search"
+            class="flex flex-column uppercase align-center basic-col text-center x-tiny hide-sm-down"
+        >
+            {{ releaseDate }}
+        </div>
 
         <!-- ADD TO LIST OR RESET PROGRESS BUTTONS -->
         <div
