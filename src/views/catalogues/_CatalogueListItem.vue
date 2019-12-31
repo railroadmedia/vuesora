@@ -43,7 +43,7 @@
                     </div>
 
                     <div
-                        v-if="mappedData.thumb_title"
+                        v-if="mappedData.thumb_title && overview"
                         class="thumb-title flex-center text-center ph-1"
                         :class="brand"
                     >
@@ -54,6 +54,7 @@
                             style="max-width:150px;"
                         >
                         <h5
+                            v-if="mappedData.thumb_title"
                             class="large-display uppercase text-white"
                         >
                             {{ mappedData.thumb_title }}
@@ -129,7 +130,7 @@
             </p>
 
             <p
-                v-if="mappedData.grey_title"
+                v-if="mappedData.grey_title && overview"
                 class="text-grey-3 item-title body mv-2"
             >
                 {{ mappedData.grey_title }}
