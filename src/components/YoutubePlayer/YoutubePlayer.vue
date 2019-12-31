@@ -128,6 +128,7 @@ export default {
                                 ...event,
                                 contentId: vm.contentId,
                                 progressState: vm.progressState,
+                                isYoutube: true,
                             });
                         }
 
