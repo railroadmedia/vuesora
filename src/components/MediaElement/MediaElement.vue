@@ -50,25 +50,8 @@
                         </h6>
                     </div>
                 </div>
-
-                <input
-                    id="currentTimeInSeconds"
-                    v-model="urlWithTimecode"
-                    type="text"
-                >
             </div>
         </div>
-
-        <video-social-buttons
-            v-if="elementId === 'lessonPlayer'"
-            :theme-color="themeColor"
-            :is-liked="isLiked"
-            :like-count="likeCount"
-            :content-id="contentId"
-            :user-id="userId"
-            :brand="brand"
-            :current-time-in-seconds="currentTimeInSeconds"
-        ></video-social-buttons>
     </div>
 </template>
 
@@ -84,21 +67,14 @@ import 'mediaelement-plugins/src/jump-forward/jump-forward';
 import 'mediaelement-plugins/src/jump-forward/jump-forward.css';
 import 'mediaelement-plugins/src/skip-back/skip-back';
 import 'mediaelement-plugins/src/skip-back/skip-back.css';
-// import 'mediaelement-plugins/src/chromecast/chromecast';
-// import 'mediaelement-plugins/src/chromecast/chromecast.css';
 import 'mediaelement-plugins/src/airplay/airplay';
 import 'mediaelement-plugins/src/airplay/airplay.css';
 import * as QueryString from 'query-string';
 import Utils from '../../assets/js/classes/utils';
 import Toasts from '../../assets/js/classes/toasts';
-import VideoSocialButtons from '../_VideoSocialButtons';
-import axios from 'axios';
 
 export default {
     name: 'VideoMediaElement',
-    components: {
-        'video-social-buttons': VideoSocialButtons,
-    },
     props: {
         elementId: {
             type: String,
