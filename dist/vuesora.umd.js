@@ -42834,12 +42834,12 @@ var VideoResources_component = normalizeComponent(
 )
 
 /* harmony default export */ var VideoResources = (VideoResources_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"68665a72-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/YoutubePlayer/YoutubePlayer.vue?vue&type=template&id=43166f6b&
-var YoutubePlayervue_type_template_id_43166f6b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"videoWrap",staticClass:"video-wrap",class:{'picture-in-picture': _vm.isPipEnabled}},[_c('div',{staticClass:"widescreen"},[_c('div',{ref:"youtubeIframe",staticClass:"iframe"})])])}
-var YoutubePlayervue_type_template_id_43166f6b_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"68665a72-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/YoutubePlayer/YoutubePlayer.vue?vue&type=template&id=7da511be&
+var YoutubePlayervue_type_template_id_7da511be_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"videoWrap",staticClass:"video-wrap",class:{'picture-in-picture': _vm.isPipEnabled}},[_c('div',{staticClass:"widescreen"},[_c('div',{ref:"youtubeIframe",staticClass:"iframe"})])])}
+var YoutubePlayervue_type_template_id_7da511be_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/YoutubePlayer/YoutubePlayer.vue?vue&type=template&id=43166f6b&
+// CONCATENATED MODULE: ./src/components/YoutubePlayer/YoutubePlayer.vue?vue&type=template&id=7da511be&
 
 // CONCATENATED MODULE: ./src/components/VideoPlayer/player-utils.js
 
@@ -43214,7 +43214,8 @@ function YoutubePlayervue_type_script_lang_js_objectSpread(target) { for (var i 
             if (event.data === 1) {
               vm.$emit('play', YoutubePlayervue_type_script_lang_js_objectSpread({}, event, {
                 contentId: vm.contentId,
-                progressState: vm.progressState
+                progressState: vm.progressState,
+                isYoutube: true
               }));
             }
 
@@ -43256,8 +43257,8 @@ function YoutubePlayervue_type_script_lang_js_objectSpread(target) { for (var i 
 
 var YoutubePlayer_component = normalizeComponent(
   YoutubePlayer_YoutubePlayervue_type_script_lang_js_,
-  YoutubePlayervue_type_template_id_43166f6b_render,
-  YoutubePlayervue_type_template_id_43166f6b_staticRenderFns,
+  YoutubePlayervue_type_template_id_7da511be_render,
+  YoutubePlayervue_type_template_id_7da511be_staticRenderFns,
   false,
   null,
   null,
