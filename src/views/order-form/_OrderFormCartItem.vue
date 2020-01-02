@@ -1,24 +1,28 @@
 <template>
-    <div class="flex flex-row ph-2 pt-2 align-v-center flex-wrap-xs-only">
+    <div class="cart-item-row flex flex-row ph-2 pt-2">
         <div class="flex flex-column cart-thumbnail mb-2">
             <div
-                class="thumbnail rounded bg-center"
-                :style="`background-image:url(${item.thumbnail_url});`"
-            ></div>
+                class="square rounded bg-center"
+            >
+                <img
+                    :src="item.thumbnail_url"
+                    class="rounded"
+                >
+            </div>
         </div>
-        <div class="flex flex-column mb-2">
-            <div class="flex flex-row flex-wrap">
-                <div class="flex flex-column xs-8">
+        <div class="flex flex-column mb-2 pl">
+            <div class="flex flex-row flex-wrap align-v-top">
+                <div class="flex flex-column xs-12 sm-8">
                     <h3 class="title font-bold">
                         {{ item.name }}
                     </h3>
-                    <h4 class="body text-grey-4 mb-2">
+                    <h4 class="body text-grey-4">
                         {{ item.description }}
                     </h4>
 
                     <div
                         v-if="item.requires_shipping && !isCartLocked"
-                        class="flex flex-row align-h-left align-v-center"
+                        class="flex flex-row align-h-left align-v-center mt-2"
                     >
                         <div class="flex flex-column flex-auto">
                             <h4 class="body quantity-label dense font-bold">
@@ -63,20 +67,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-column xs-4 pt-1 text-right align-v-top">
-                    <h3
-                        v-if="isDiscounted"
-                        class="body font-bold dense font-strike text-grey-3"
-                    >
-                        ${{ item.price_before_discounts }}
-                    </h3>
+                <div class="flex flex-column price-column xs-12 sm-4 pt-1 text-right align-v-top">
+                    <div class="flex price-flex">
+                        <h3
+                            v-if="isDiscounted"
+                            class="body dense font-strike text-grey-3 mr-1 m-xs-only"
+                        >
+                            ${{ item.price_before_discounts }}
+                        </h3>
 
-                    <h2
-                        class="title font-bold"
-                        :class="themeTextClass"
-                    >
-                        ${{ totalPriceAfterDiscounts }}
-                    </h2>
+                        <h2
+                            class="body font-bold"
+                            :class="themeTextClass"
+                        >
+                            ${{ totalPriceAfterDiscounts }}
+                        </h2>
+                    </div>
 
                     <h3
                         v-if="item.subscription_interval_type"
@@ -193,9 +199,16 @@ export default {
 <style lang="scss">
     @import '../../assets/sass/partials/variables';
 
+    .cart-item-row {
+        align-items:flex-start;
+
+        @include small {
+            align-items:center;
+        }
+    }
     .cart-thumbnail {
-        flex:0 0 100px;
-        max-width:100px;
+        flex:0 0 60px;
+        max-width:60px;
 
         @include small {
             flex:0 0 120px;
@@ -203,27 +216,26 @@ export default {
         }
 
         @include medium {
-            flex:0 0 200px;
-            max-width:200px;
-        }
-
-        .thumbnail {
-            height:80px;
-            width:80px;
-
-            @include small {
-                height:100px;
-                width:100px;
-            }
-
-            @include medium {
-                height:160px;
-                width:160px;
-            }
+            flex:0 0 150px;
+            max-width:150px;
         }
     }
     .quantity-column {
         flex:0 0 75px;
         max-width:75px;
+    }
+    .price-column {
+        text-align:left;
+
+        @include small {
+            text-align:right;
+        }
+    }
+    .price-flex {
+        flex-direction:row;
+
+        @include small {
+            flex-direction:column;
+        }
     }
 </style>
