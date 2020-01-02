@@ -194,8 +194,8 @@ export default {
     @import '../../assets/sass/partials/variables';
 
     .cart-thumbnail {
-        flex:0 0 100%;
-        max-width:100%;
+        flex:0 0 100px;
+        max-width:100px;
 
         @include small {
             flex:0 0 120px;
@@ -208,8 +208,13 @@ export default {
         }
 
         .thumbnail {
-            height:100px;
-            width:100px;
+            height:80px;
+            width:80px;
+
+            @include small {
+                height:100px;
+                width:100px;
+            }
 
             @include medium {
                 height:160px;
