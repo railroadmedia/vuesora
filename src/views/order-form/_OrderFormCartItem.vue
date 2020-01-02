@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row ph-2 pt-2 align-v-center flex-wrap-xs-only">
-        <div class="flex flex-column cart-thumbnail align-center mb-2">
+        <div class="flex flex-column cart-thumbnail mb-2">
             <div
                 class="thumbnail rounded bg-center"
                 :style="`background-image:url(${item.thumbnail_url});`"
@@ -8,8 +8,8 @@
         </div>
         <div class="flex flex-column mb-2">
             <div class="flex flex-row flex-wrap">
-                <div class="flex flex-column xs-12 sm-8 ph-2">
-                    <h3 class="subheading">
+                <div class="flex flex-column xs-8">
+                    <h3 class="title font-bold">
                         {{ item.name }}
                     </h3>
                     <h4 class="body text-grey-4 mb-2">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-column xs-12 sm-4 ph-3 pt-1 text-right align-v-top">
+                <div class="flex flex-column xs-4 pt-1 text-right align-v-top">
                     <h3
                         v-if="isDiscounted"
                         class="body font-bold dense font-strike text-error"
@@ -200,8 +200,13 @@ export default {
         }
 
         .thumbnail {
-            height:180px;
-            width:180px;
+            height:100px;
+            width:100px;
+
+            @include small {
+                height:160px;
+                width:160px;
+            }
         }
     }
     .quantity-column {

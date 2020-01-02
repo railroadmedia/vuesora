@@ -44,7 +44,7 @@
             <div v-if="requiresAccountInfo">
                 <div class="flex flex-row align-v-center pb-2">
                     <div class="flex flex-column">
-                        <h3 class="title uppercase">
+                        <h3 class="title uppercase font-bold">
                             Create Your Account
                         </h3>
 
@@ -166,7 +166,7 @@
         <div v-if="isSignedIn">
             <div class="flex flex-row align-v-center mb-1">
                 <div class="flex flex-column">
-                    <h3 class="title uppercase">
+                    <h3 class="title uppercase font-bold">
                         Add To Existing Account
                     </h3>
 

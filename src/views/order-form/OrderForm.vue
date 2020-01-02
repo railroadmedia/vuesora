@@ -25,7 +25,7 @@
                 v-if="cartRequiresShippingAddress"
                 class="flex flex-row mb-1"
             >
-                <h3 class="title uppercase">
+                <h3 class="title uppercase font-bold">
                     Shipping Information
                 </h3>
             </div>
@@ -43,7 +43,7 @@
                 v-if="canAcceptPaymentPlans"
                 class="flex flex-row mb-1"
             >
-                <h3 class="title uppercase">
+                <h3 class="title uppercase font-bold">
                     Payment Plan
                 </h3>
             </div>
@@ -59,7 +59,7 @@
                 v-if="cartData.items.length"
                 class="flex flex-row mb-1"
             >
-                <h3 class="title uppercase">
+                <h3 class="title uppercase font-bold">
                     Payment Details
                 </h3>
             </div>

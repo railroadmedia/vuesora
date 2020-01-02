@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row mb-2">
-        <div class="flex flex-column corners-3 ba-black-1 pa-2">
+        <div class="flex flex-column corners-10 ba-black-1 pa-2">
             <div class="flex flex-row mb-1">
                 <p class="flex flex-column body text-left">
                     Subtotal
