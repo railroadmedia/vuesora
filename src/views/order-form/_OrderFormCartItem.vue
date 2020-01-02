@@ -66,18 +66,21 @@
                 <div class="flex flex-column xs-4 pt-1 text-right align-v-top">
                     <h3
                         v-if="isDiscounted"
-                        class="body font-bold dense font-strike text-error"
+                        class="body font-bold dense font-strike text-grey-3"
                     >
                         ${{ item.price_before_discounts }}
                     </h3>
 
-                    <h2 class="title font-bold">
+                    <h2
+                        class="title font-bold"
+                        :class="themeTextClass"
+                    >
                         ${{ totalPriceAfterDiscounts }}
                     </h2>
 
                     <h3
                         v-if="item.subscription_interval_type"
-                        class="x-tiny text-grey-3"
+                        class="tiny"
                     >
                         {{ intervalString }}
                     </h3>
@@ -195,6 +198,11 @@ export default {
         max-width:100%;
 
         @include small {
+            flex:0 0 120px;
+            max-width:120px;
+        }
+
+        @include medium {
             flex:0 0 200px;
             max-width:200px;
         }
@@ -203,7 +211,7 @@ export default {
             height:100px;
             width:100px;
 
-            @include small {
+            @include medium {
                 height:160px;
                 width:160px;
             }
