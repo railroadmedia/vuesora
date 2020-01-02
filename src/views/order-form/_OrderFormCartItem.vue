@@ -71,7 +71,7 @@
                         ${{ item.price_before_discounts }}
                     </h3>
 
-                    <h2 class="display dense">
+                    <h2 class="title font-bold">
                         ${{ totalPriceAfterDiscounts }}
                     </h2>
 
