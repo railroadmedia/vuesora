@@ -39,7 +39,10 @@
                             title="Search"
                             @click="submitSearch"
                         >
-                            <span class="bg-drumeo text-white">
+                            <span
+                                class="text-white"
+                                :class="`bg-${themeColor}`"
+                            >
                                 <i class="fas fa-search"></i>
                             </span>
                         </button>

@@ -31,12 +31,4 @@ export default class LearningPathLevelContentModel extends ContentModel {
     getThumbLogo() {
         return 'https://dpwjbsxqtam5n.cloudfront.net/pack-logos/drumeo-method-logo.png';
     }
-
-    parseInstructors() {
-        const instructors = this.getInstructors();
-
-        console.log(instructors);
-
-        return instructors ? instructors.replace(/,(?=[^,]*$)/, ' &') : 'TBD';
-    }
 }

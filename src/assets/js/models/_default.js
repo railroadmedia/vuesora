@@ -170,4 +170,10 @@ export default class ContentModel {
         // if its falsey, just default it to 'TBD'
         return difficulty || 'TBD';
     }
+
+    parseInstructors() {
+        const instructors = this.getInstructors();
+
+        return instructors ? instructors.replace(/,(?=[^,]*$)/, ' &') : 'TBD';
+    }
 }

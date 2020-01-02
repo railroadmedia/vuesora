@@ -13,5 +13,9 @@ export default class LearningPathContentModel extends ContentModel {
         this.list.column_data = [
             this.getPostField('difficulty_range'),
         ];
+
+        if (brand === 'pianote') {
+            this.list.grey_title = `with ${this.parseInstructors()}`;
+        }
     }
 }
