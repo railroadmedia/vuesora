@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-column assignment-component bb-grey-1-1">
+    <div
+        class="flex flex-column assignment-component bb-grey-1-1"
+    >
         <div class="flex flex-row align-v-center flex-wrap pv-3">
             <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
@@ -102,22 +104,26 @@
                     v-show="$_totalPages > 0"
                     class="flex flex-row pa-3"
                 >
-                    <div class="flex flex-column grow">
+                    <div
+                        ref="carouselWrap"
+                        class="flex flex-column grow"
+                    >
                         <div class="flex flex-column">
                             <div
                                 ref="carouselContainer"
                                 class="flex flex-row carousel bg-white overflow mv pb-3"
                             >
-                                <div
-                                    v-for="(page, i) in $_sheet_music_pages"
-                                    :key="'page' + (i + 1)"
-                                    class="flex flex-column xs-12 grow page"
-                                    :style="pageScrollPosition"
-                                >
-                                    <img
-                                        :data-ix-src="page"
-                                        data-ix-fade
+                                <div class="flex flex-row">
+                                    <div
+                                        v-for="(page, i) in $_sheet_music_pages"
+                                        :key="'page' + (i + 1)"
+                                        class="flex flex-column xs-12 grow page"
+                                        :style="pageScrollPosition"
                                     >
+                                        <img
+                                            :src="page"
+                                        >
+                                    </div>
                                 </div>
 
                                 <div
@@ -365,17 +371,25 @@ export default {
                 'sm-3': this.thisAssignment.sheet_music_image_type === 'full-width' || this.thisAssignment.sheet_music_image_type == null,
             };
         },
-    },
-    watch: {
-        accordionActive() {
-            if (this.accordionActive) {
-                setTimeout(() => {
-                    // Load the Imgix Service to load srcs and srcsets
-                    if (window.ImgixService && this.accordionActive) {
-                        window.ImgixService.loadImageSources();
-                    }
-                }, 100);
-            }
+
+        carouselWidth: {
+            cache: false,
+            get() {
+                const { carouselWrap } = this.$refs;
+
+                if (carouselWrap) {
+                    return carouselWrap.clientWidth;
+                }
+
+                return 1100;
+            },
+        },
+
+        imgixParams() {
+            return {
+                auto: 'format',
+                width: `${this.carouselWidth}px`,
+            };
         },
     },
     mounted() {
@@ -548,8 +562,6 @@ export default {
         handlePlay() {
             this.isPlaying = true;
 
-            console.log(this.progressTracker);
-
             this.progressTracker.start();
 
             if (!this.progressTrackerEventListener) {
@@ -570,8 +582,6 @@ export default {
 
             if (event.origin === 'https://www.soundslice.com') {
                 const cmd = JSON.parse(event.data);
-
-                console.log(cmd.method);
 
                 switch (cmd.method) {
                     case 'ssPlay':
