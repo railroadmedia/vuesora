@@ -14,14 +14,14 @@
                     @mousemove="trackMousePosition"
                     @touchmove="trackMousePosition"
                 >
-                    <transition name="grow-fade">
-                        <PlayerStats
-                            v-if="playerStats"
-                            v-show="dialogs.stats"
-                            :player-stats="playerStats"
-                            @close="closeAllDialogs"
-                        />
-                    </transition>
+<!--                    <transition name="grow-fade">-->
+<!--                        <PlayerStats-->
+<!--                            v-if="playerStats"-->
+<!--                            v-show="dialogs.stats"-->
+<!--                            :player-stats="playerStats"-->
+<!--                            @close="closeAllDialogs"-->
+<!--                        />-->
+<!--                    </transition>-->
 
                     <transition name="grow-fade">
                         <PlayerShortcuts
@@ -61,12 +61,12 @@
                             >
                                 {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
                             </li>
-                            <li
-                                class="pa-1 hover-bg-grey-4"
-                                @click="openDialog('stats')"
-                            >
-                                {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats
-                            </li>
+<!--                            <li-->
+<!--                                class="pa-1 hover-bg-grey-4"-->
+<!--                                @click="openDialog('stats')"-->
+<!--                            >-->
+<!--                                {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats-->
+<!--                            </li>-->
                             <li
                                 v-if="!isMobile"
                                 class="pa-1 hover-bg-grey-4"
@@ -109,7 +109,6 @@
                         crossorigin="anonymous"
                         :poster="poster"
                     ></video>
-
 
                     <div
                         ref="controls"
@@ -353,7 +352,7 @@ import EventHandlers from './event-handlers';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
 import PlayerShortcuts from './_PlayerShortcuts.vue';
 import PlayerError from './_PlayerError.vue';
-import PlayerStats from './_PlayerStats.vue';
+// import PlayerStats from './_PlayerStats.vue';
 
 export default {
     name: 'VideoPlayer',
@@ -366,7 +365,7 @@ export default {
         LoadingAnimation,
         PlayerShortcuts,
         PlayerError,
-        PlayerStats,
+        // PlayerStats,
     },
     mixins: [ThemeClasses, EventHandlers],
     props: {
@@ -378,6 +377,11 @@ export default {
         hlsManifestUrl: {
             type: String,
             default: () => null,
+        },
+
+        sources: {
+            type: Array,
+            default: () => [],
         },
 
         captions: {
@@ -439,7 +443,7 @@ export default {
         useIntersectionObserver: {
             type: Boolean,
             default: () => false,
-        }
+        },
     },
     data() {
         return {
@@ -500,13 +504,15 @@ export default {
         isAbrEnabled: {
             cache: false,
             get() {
-                if (this.shakaPlayer == null) {
-                    return false;
-                }
+                // if (this.shakaPlayer == null) {
+                //     return false;
+                // }
+                //
+                // const { abr } = this.shakaPlayer.getConfiguration();
+                //
+                // return abr ? abr.enabled : false;
 
-                const { abr } = this.shakaPlayer.getConfiguration();
-
-                return abr ? abr.enabled : false;
+                return false;
             },
         },
 
@@ -517,7 +523,12 @@ export default {
                     return [];
                 }
 
-                const qualities = this.shakaPlayer.getVariantTracks().map(source => ({
+                // const qualities = this.shakaPlayer.getVariantTracks().map(source => ({
+                //     ...source,
+                //     label: PlayerUtils.getQualityLabelByHeight(source.height),
+                // }));
+
+                const qualities = this.sources.map(source => ({
                     ...source,
                     label: PlayerUtils.getQualityLabelByHeight(source.height),
                 }));
@@ -535,7 +546,7 @@ export default {
         currentSource: {
             cache: false,
             get() {
-                return this.mediaElement ? this.mediaElement.currentSrc : '';
+                return this.mediaElement ? this.mediaElement.src : '';
             },
         },
 
@@ -660,6 +671,7 @@ export default {
                             bufferingGoal: 15,
                             rebufferingGoal: 5,
                             bufferBehind: 0,
+                            useNativeHlsOnSafari: true,
                         },
                     });
 
@@ -725,13 +737,13 @@ export default {
                     this.isAirplaySupported = true;
                 }
             });
+
+            player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
+                this.isAirplayConnected = !this.isAirplayConnected;
+            });
         }
 
-        player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
-            this.isAirplayConnected = !this.isAirplayConnected;
-        });
-
-        if (this.useIntersectionObserver) {
+        if (this.useIntersectionObserver && typeof IntersectionObserver !== 'undefined') {
             this.enableIntersectionObserver(videoWrap);
         }
     },
@@ -742,33 +754,46 @@ export default {
         this.shakaPlayer.destroy();
     },
     methods: {
-        loadSource() {
+        getSource(source) {
+            if (source) {
+                this.source = source;
+            } else {
+                this.source = this.getDefaultPlaybackQualityIndex();
+            }
+        },
+
+        loadSource(source) {
             const supportsMSE = typeof MediaSource === 'function';
+            this.getSource(source);
 
             return new Promise((resolve) => {
-                if (supportsMSE) {
-                    this.shakaPlayer.load(this.source)
-                        .then(() => {
-                            this.$nextTick(() => this.$forceUpdate());
-                            resolve();
-                        })
-                        .catch((error) => {
-                            if (error.severity === 2) {
-                                if (error.code === 1001 && !this.hasRetriedSource) {
-                                    this.retryVimeoUrl(error);
-                                } else {
-                                    this.playerError = true;
-                                    this.playerErrorCode = error.code;
-                                }
-                            }
-                        });
-                } else {
-                    this.mediaElement.src = this.source;
-
-                    setTimeout(() => {
+                // if (supportsMSE) {
+                this.shakaPlayer.load(this.source.file)
+                    .then(() => {
+                        this.$nextTick(() => this.$forceUpdate());
                         resolve();
-                    }, 100);
-                }
+                    })
+                    .catch((error) => {
+                        if (error.severity === 2) {
+                            // The following code was removed after ABR
+                            // was stripped from the player
+                            // Curtis - Jan 2020
+
+                            // if (error.code === 1001 && !this.hasRetriedSource) {
+                            //     this.retryVimeoUrl(error);
+                            // } else {
+                            this.playerError = true;
+                            this.playerErrorCode = error.code;
+                            // }
+                        }
+                    });
+                // } else {
+                //     this.mediaElement.src = this.source.file;
+                //
+                //     setTimeout(() => {
+                //         resolve();
+                //     }, 100);
+                // }
             });
         },
 
@@ -847,7 +872,6 @@ export default {
         },
 
         playPause() {
-
             if (this.chromeCast && this.chromeCast.Connected) {
                 this.chromeCast.playOrPause();
             } else if (this.isPlaying) {
@@ -862,7 +886,7 @@ export default {
             clearTimeout(this.timeouts.controlWrapClick);
             clearTimeout(this.timeouts.isTransitioning);
 
-            if(event.detail === 1){
+            if (event.detail === 1) {
                 this.timeouts.controlWrapClick = setTimeout(() => {
                     if (this.settingsDrawer || this.captionsDrawer || !this.canPlayPause) {
                         this.settingsDrawer = false;
@@ -933,14 +957,16 @@ export default {
 
         setQuality(payload) {
             const { currentTime } = this.mediaElement;
+            this.loadSource(payload);
+            this.setDefaultPlaybackQualityWidth(payload.width);
 
-            if (payload === 'auto') {
-                this.shakaPlayer.configure('abr.enabled', true);
-            } else {
-                this.shakaPlayer.configure('abr.enabled', false);
-
-                this.shakaPlayer.selectVariantTrack(payload, true);
-            }
+            // if (payload === 'auto') {
+            //     this.shakaPlayer.configure('abr.enabled', true);
+            // } else {
+            //     this.shakaPlayer.configure('abr.enabled', false);
+            //
+            //     this.shakaPlayer.selectVariantTrack(payload, true);
+            // }
 
             setTimeout(() => {
                 this.seek(currentTime);
@@ -960,14 +986,9 @@ export default {
         getDefaultPlaybackQualityIndex() {
             const widthToCheck = window.localStorage.getItem('vuesoraDefaultVideoQuality')
                 || document.documentElement.clientWidth;
-            const qualityIndexes = this.playbackQualities.map((quality, index) => {
-                if (quality.width >= widthToCheck) {
-                    return index;
-                }
-            });
-            const closestIndex = qualityIndexes.filter(index => index != null)[0];
+            const matchedQualities = this.playbackQualities.filter(quality => quality.width >= widthToCheck);
 
-            return closestIndex || 0;
+            return matchedQualities[0] || this.playbackQualities[0];
         },
 
         toggleSettingsDrawer() {

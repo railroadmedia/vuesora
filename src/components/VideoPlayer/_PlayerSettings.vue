@@ -35,19 +35,19 @@
                             v-for="quality in playbackQualities"
                             :key="quality.label"
                             class="pa-1 hover-bg-grey-4 pointer"
-                            :class="quality.active && !isAbrEnabled ? themeTextClass : ''"
+                            :class="quality.file === currentSource ? themeTextClass : ''"
                             @click="setQuality(quality)"
                         >
                             {{ quality.label }}
                         </li>
 
-                        <li
-                            class="pa-1 hover-bg-grey-4 pointer"
-                            :class="[isAbrEnabled ? themeTextClass : '']"
-                            @click="setQuality('auto')"
-                        >
-                            Auto
-                        </li>
+<!--                        <li-->
+<!--                            class="pa-1 hover-bg-grey-4 pointer"-->
+<!--                            :class="[isAbrEnabled ? themeTextClass : '']"-->
+<!--                            @click="setQuality('auto')"-->
+<!--                        >-->
+<!--                            Auto-->
+<!--                        </li>-->
                     </ul>
                 </div>
             </div>
@@ -142,7 +142,7 @@ export default {
     },
     computed: {
         currentSourceLabel() {
-            const currentQuality = this.playbackQualities.find(quality => quality.active === true);
+            const currentQuality = this.playbackQualities.find(quality => quality.file === this.currentSource);
 
             if (this.isAbrEnabled) {
                 if (!this.isSingleSource) {
@@ -159,7 +159,7 @@ export default {
             return 'Auto';
         },
 
-        isSingleSource(){
+        isSingleSource() {
             return this.playbackQualities.length <= 1;
         },
     },
@@ -192,8 +192,8 @@ export default {
             this.ratesDropdown = !this.ratesDropdown;
         },
 
-        setQuality(id) {
-            this.$emit('setQuality', id);
+        setQuality(quality) {
+            this.$emit('setQuality', quality);
         },
 
         setRate(rate) {

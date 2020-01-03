@@ -1,3 +1,5 @@
+import UserService from '../../assets/js/services/user';
+
 export default {
     data() {
         return {
@@ -10,6 +12,12 @@ export default {
                 onstatechange: (event) => {
                     if (event.state === 'load') {
                         this.loading = false;
+                    }
+
+                    if (event.state === 'src-equals') {
+                        this.$nextTick(() => {
+                            this.mediaElement.load();
+                        });
                     }
                 },
 
@@ -31,6 +39,8 @@ export default {
 
             mediaElementEventHandlers: {
                 canplaythrough: (event) => {
+                    this.totalDuration = this.mediaElement.duration;
+
                     setTimeout(() => {
                         this.loading = false;
                         this.$emit('canplaythrough', event);
@@ -93,10 +103,6 @@ export default {
                     this.currentTime = this.mediaElement.currentTime;
 
                     this.$emit('timeupdate', event);
-                },
-
-                error: (event) => {
-                    console.error(event);
                 },
 
                 useractive: () => {
