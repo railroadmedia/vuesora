@@ -15,7 +15,7 @@
                 :brand="brand"
                 :current-user="user"
                 :account-details="accountStateFactory"
-                :requires-account-info="cartContainsSubscription"
+                :requires-account-info="cartContainsDigitalItems"
                 :login-url="loginUrl"
                 :logout-url="logoutUrl"
                 @updateAccountData="updateAccountData"
@@ -251,7 +251,11 @@ export default {
     },
     computed: {
         cartContainsSubscription() {
-            return this.cartData.items.filter(item => !!item.is_digital).length > 0;
+            return this.cartData.items.filter(item => !!item.subscription_interval_type).length > 0;
+        },
+
+        cartContainsDigitalItems() {
+            return this.cartData.items.filter(item => item.is_digital).length > 0;
         },
 
         cartRequiresShippingAddress() {
@@ -259,7 +263,7 @@ export default {
         },
 
         cartRequiresAccountInfo() {
-            return this.cartContainsSubscription && this.user == null;
+            return this.cartContainsDigitalItems && this.user == null;
         },
 
         canAcceptPaymentPlans() {
@@ -379,7 +383,7 @@ export default {
             }
 
             if (!this.user) {
-                if (this.cartContainsSubscription) {
+                if (this.cartContainsDigitalItems) {
                     payload.account_creation_email = this.accountStateFactory.accountEmail;
                     payload.account_creation_password = this.accountStateFactory.accountPassword;
                     payload.account_creation_password_confirmation = this.accountStateFactory.accountPasswordConfirm;
