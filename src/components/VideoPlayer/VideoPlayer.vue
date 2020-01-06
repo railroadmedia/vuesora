@@ -763,12 +763,12 @@ export default {
         },
 
         loadSource(source) {
-            const supportsMSE = typeof MediaSource === 'function';
+            // const supportsMSE = typeof MediaSource === 'function';
             this.getSource(source);
 
             return new Promise((resolve) => {
                 // if (supportsMSE) {
-                this.shakaPlayer.load(this.source.file)
+                this.shakaPlayer.load(this.source.file, null, 'video/mp4')
                     .then(() => {
                         this.$nextTick(() => this.$forceUpdate());
                         resolve();
@@ -957,8 +957,14 @@ export default {
 
         setQuality(payload) {
             const { currentTime } = this.mediaElement;
-            this.loadSource(payload);
             this.setDefaultPlaybackQualityWidth(payload.width);
+
+            this.loadSource(payload)
+                .then(() => {
+                    setTimeout(() => {
+                        this.seek(currentTime);
+                    }, 200);
+                });
 
             // if (payload === 'auto') {
             //     this.shakaPlayer.configure('abr.enabled', true);
@@ -967,10 +973,6 @@ export default {
             //
             //     this.shakaPlayer.selectVariantTrack(payload, true);
             // }
-
-            setTimeout(() => {
-                this.seek(currentTime);
-            }, 200);
         },
 
         setRate(payload) {

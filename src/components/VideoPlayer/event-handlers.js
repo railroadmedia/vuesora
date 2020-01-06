@@ -40,6 +40,7 @@ export default {
             mediaElementEventHandlers: {
                 canplaythrough: (event) => {
                     this.totalDuration = this.mediaElement.duration;
+                    this.currentTime = this.mediaElement.currentTime;
 
                     setTimeout(() => {
                         this.loading = false;
