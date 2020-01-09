@@ -71,13 +71,13 @@
                     <div class="flex price-flex">
                         <h3
                             v-if="isDiscounted"
-                            class="body dense font-strike text-grey-3 mr-1 m-xs-only"
+                            class="tiny font-bold font-strike text-grey-3 mr-1 m-xs-only"
                         >
                             ${{ item.price_before_discounts }}
                         </h3>
 
                         <h2
-                            class="body font-bold"
+                            class="title font-bold"
                             :class="themeTextClass"
                         >
                             ${{ totalPriceAfterDiscounts }}
