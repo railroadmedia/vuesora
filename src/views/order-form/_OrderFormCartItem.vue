@@ -77,10 +77,19 @@
                         </h3>
 
                         <h2
+                            v-if="totalPriceAfterDiscounts > 0"
                             class="title font-bold"
                             :class="themeTextClass"
                         >
                             ${{ totalPriceAfterDiscounts }}
+                        </h2>
+
+                        <h2
+                            v-if="totalPriceAfterDiscounts <= 0"
+                            class="title font-bold"
+                            :class="themeTextClass"
+                        >
+                            FREE
                         </h2>
                     </div>
 
