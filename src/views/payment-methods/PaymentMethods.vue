@@ -318,6 +318,7 @@ export default {
 
                             setTimeout(() => {
                                 this.cancelForm();
+                                window.location.reload();
                             }, 1000);
                         }
                     } else {
