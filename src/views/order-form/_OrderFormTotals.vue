@@ -6,7 +6,7 @@
                     Subtotal
                 </p>
                 <p class="flex flex-column body text-right">
-                    USD${{ parseTotal(totals.due - totals.tax + sumOfDiscounts) }}
+                    ${{ parseTotal(totals.due - totals.tax + sumOfDiscounts) }}
                 </p>
             </div>
 
@@ -15,7 +15,7 @@
                     Shipping
                 </p>
                 <p class="flex flex-column body text-right">
-                    USD${{ parseTotal(totals.shipping) }}
+                    ${{ parseTotal(totals.shipping) }}
                 </p>
             </div>
 
@@ -27,7 +27,7 @@
                     My Savings
                 </p>
                 <p class="flex flex-column body text-right text-error">
-                    -USD${{ sumOfDiscounts.toFixed(2) }}
+                    -${{ sumOfDiscounts.toFixed(2) }}
                 </p>
             </div>
 
@@ -36,7 +36,7 @@
                     Tax
                 </p>
                 <p class="flex flex-column body text-right">
-                    USD${{ parseTotal(totals.tax) }}
+                    ${{ parseTotal(totals.tax) }}
                 </p>
             </div>
 
@@ -45,7 +45,7 @@
                     Total
                 </p>
                 <p class="flex flex-column title text-right">
-                    USD${{ parseTotal(totals.due) }}
+                    USD ${{ parseTotal(totals.due) }}
                     <br>
                     <span class="x-tiny font-regular text-grey-3">
                         Due Today
