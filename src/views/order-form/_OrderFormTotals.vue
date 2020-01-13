@@ -41,10 +41,10 @@
             </div>
 
             <div class="flex flex-row mb-1 bt-grey-1-1 pt-1">
-                <p class="flex flex-column title text-left">
+                <p class="flex flex-column title font-bold text-left">
                     Total
                 </p>
-                <p class="flex flex-column title text-right">
+                <p class="flex flex-column title font-bold text-right">
                     USD ${{ parseTotal(totals.due) }}
                     <br>
                     <span class="x-tiny font-regular text-grey-3">
