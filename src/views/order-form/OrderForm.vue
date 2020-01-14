@@ -98,7 +98,7 @@
             </button>
 
             <p class="tiny disclaimer mt-1 text-grey-3">
-                By completing your order you agree to the terms of service. All payments
+                By completing your order you agree to the <a href="/terms">terms of service</a>. All payments
                 in US dollars. You can cancel your subscription at any time by emailing
                 <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>.
             </p>
