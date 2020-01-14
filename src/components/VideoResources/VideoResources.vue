@@ -128,7 +128,7 @@
                 <div class="form-group mb-2">
                     <input
                         id="shareableUrlInput"
-                        class="no-label"
+                        class="no-label mb-2"
                         type="text"
                         :value="shareUrl"
                     >
@@ -249,10 +249,10 @@ export default {
     computed: {
         subtitle() {
             if (this.parentTitle) {
-                return `From <span class="text-${this.themeColor}">${this.parentTitle}</span>`;
+                return `From ${this.parentTitle}`;
             }
 
-            return `With <span class="text-${this.themeColor}">${this.instructors.join(', ')}</span>`;
+            return `With ${this.instructors.join(', ')}`;
         },
 
         currentTime() {

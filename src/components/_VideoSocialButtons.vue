@@ -52,7 +52,7 @@
                 <div class="form-group mb-2">
                     <input
                         id="shareableUrlInput"
-                        class="no-label"
+                        class="no-label mb-2"
                         type="text"
                         :value="shareUrl"
                     >
