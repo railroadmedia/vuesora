@@ -20,6 +20,13 @@ body {
       padding-bottom:270px;
     }
   }
+  &.has-public-footer-minimal {
+    padding-bottom:82px;
+
+    @include small {
+      padding-bottom:59px;
+    }
+  }
 }
 
 #nav {
@@ -513,13 +520,14 @@ footer {
   }
 
   .footer-col {
-    height:25px;
     font-size:13px;
     flex:1 1 100%;
+    padding:2px 0;
 
     @include small {
-      height:60px;
       flex:0 0 auto;
+      padding:12px 0;
+      padding:3px 0;
     }
 
     a {
