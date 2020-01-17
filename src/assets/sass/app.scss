@@ -621,8 +621,18 @@ ul {
   }
 }
 
+.header-background-container {
+  max-width: 1530px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .header-gradient-overlay {
-  @include topToBottomGradient(transparent, transparentize($drumeoBlue, .6));
+  background: linear-gradient(180deg,hsla(0, 0%, 0%, 0.05) 45%,hsla(0, 0%, 10%, 0.8));
+
+  &.drumeo {
+    background: linear-gradient(180deg,hsla(0, 0%, 0%, 0.05) 45%,transparentize(darken($drumeoBlue, 10%), 0.3) 100%);
+  }
 
   &.pianote {
     @include topToBottomGradient(transparent, transparentize($pianoteRed, .7));

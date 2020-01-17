@@ -79,7 +79,7 @@ $xLarge: 97.5rem;           // 1560px
 }
 
 @mixin largeOnly {
-  @media screen and (min-width: #{$large}) and (max-width: #{$xLarge - .0625em}) {
+  @media screen and (min-width: #{$large}) and (max-width: #{$xLarge - .0625rem}) {
     @content;
   }
 }
