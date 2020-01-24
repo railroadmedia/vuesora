@@ -216,6 +216,8 @@ export default {
         }
     }
     .cart-thumbnail {
+        border:3px solid #d1d1d1;
+        background:#eee;
         flex:0 0 60px;
         max-width:60px;
 
