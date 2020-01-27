@@ -5,7 +5,7 @@
                 {{ title }}
             </h1>
             <h4
-                class="subtitle uppercase text-white"
+                class="body text-grey-3"
                 v-html="subtitle"
             >
             </h4>
