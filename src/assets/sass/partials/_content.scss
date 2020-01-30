@@ -420,6 +420,9 @@
         display: flex;
       }
     }
+    .flex-column {
+      flex-basis:0;
+    }
   }
 
   &:hover {
