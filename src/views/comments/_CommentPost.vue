@@ -332,6 +332,20 @@ export default {
         },
 
         repliesToShow() {
+            setTimeout(() => {
+                // Sometimes vue caches the add event button.
+                // If it doesn't we need to force a refresh, done with a timeout to
+                // Prevent race conditions.
+                if (window.addeventatc) {
+                    window.addeventatc.refresh();
+                }
+
+                // Load the Imgix Service to load srcs and srcsets
+                if (window.ImgixService) {
+                    window.ImgixService.loadImageSources();
+                }
+            }, 300);
+
             if (this.showAllReplies) {
                 return this.comment.replies;
             }
