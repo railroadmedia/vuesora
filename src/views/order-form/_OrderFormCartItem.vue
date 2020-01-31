@@ -1,6 +1,6 @@
 <template>
     <div class="cart-item-row flex flex-row ph-2 pt-2">
-        <div class="flex flex-column cart-thumbnail mb-2">
+        <div class="flex flex-column rounded cart-thumbnail mb-2">
             <div
                 class="square rounded bg-center"
             >
