@@ -33,7 +33,7 @@
                 v-if="showUserExp"
                 class="body dense font-bold uppercase text-center mt-1"
             >
-                Level {{ userExpRank }}
+                {{ userExpRank }}
             </p>
             <p
                 v-if="showUserExp"
@@ -324,7 +324,11 @@ export default {
                 return `${this.brand} Team`;
             }
 
-            return this.comment.user.level_number || '0.0';
+            if (this.brand === 'pianote') {
+                return this.comment.user.rank || 'Casual';
+            }
+
+            return 'Level ' + (this.comment.user.level_number || '0.0');
         },
 
         repliesToShow() {

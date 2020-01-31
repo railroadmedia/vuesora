@@ -259,7 +259,7 @@ export default {
             const { mediaElementVueInstance } = this.$root.$refs;
 
             if (mediaElementVueInstance) {
-                return mediaElementVueInstance.currentTime;
+                return mediaElementVueInstance.currentTimeInSeconds;
             }
 
             return 0;
