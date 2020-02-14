@@ -320,6 +320,13 @@ export default {
                     active: true,
                 },
                 {
+                    key: 'learning-path-lesson',
+                    brand: ['drumeo'],
+                    value: ['learning-path-lesson'],
+                    icon: 'icon-packs',
+                    active: true,
+                },
+                {
                     key: 'unit',
                     brand: ['pianote'],
                     value: ['unit-part'],
