@@ -6,7 +6,7 @@
                     Subtotal
                 </p>
                 <p class="flex flex-column body text-right">
-                    ${{ parseTotal(totals.due - totals.tax + sumOfDiscounts) }}
+                    ${{ parseTotal(totals.due - totals.tax + sumOfDiscounts - totals.shipping) }}
                 </p>
             </div>
 
