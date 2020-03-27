@@ -354,14 +354,15 @@ export default {
             this.commentInterface = payload.currentValue;
         },
 
+        // NOTE: you cannot jump to replies, only top level parent comments
         goToComment(id) {
             CommentService.getCommentById(id)
                 .then((resolved) => {
                     if (resolved) {
                         const commentsSection = document.getElementById('postComment');
-                        this.pinnedComment = resolved.data.find(result => result.id == id);
 
-                        console.log(resolved);
+                        this.pinnedComment = resolved.data.find(result => result.id == id);
+                        this.pinnedComment.showAllReplies = true;
 
                         /*
                             * Check intermittently for the DOM Element, it could possibly take a couple

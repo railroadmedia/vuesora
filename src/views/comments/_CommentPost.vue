@@ -346,7 +346,9 @@ export default {
                 }
             }, 300);
 
-            if (this.showAllReplies) {
+            if (this.showAllReplies || this.pinned) {
+                this.showAllReplies = true;
+
                 return this.comment.replies;
             }
 
