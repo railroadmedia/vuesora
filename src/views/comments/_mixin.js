@@ -123,6 +123,8 @@ export default {
                         this.comments = this.comments.filter(comment => comment.id !== payload.id);
                     }
 
+                    window.ImgixService.reloadCommentImages();
+
                     Toasts.push({
                         icon: 'happy',
                         themeColor: this.themeColor,
@@ -140,6 +142,8 @@ export default {
                     if (resolved) {
                         this.comments[index].replies = this.comments[index].replies
                             .filter(reply => reply.id !== payload.id);
+
+                        window.ImgixService.reloadCommentImages();
 
                         Toasts.push({
                             icon: 'happy',

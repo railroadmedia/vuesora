@@ -300,6 +300,8 @@ export default {
                             this.comments = this.comments.filter(comment => comment.id !== this.pinnedComment.id);
                         }
 
+                        window.ImgixService.reloadCommentImages();
+
                         setTimeout(() => {
                             // Load the Imgix Service to load srcs and srcsets
                             if (window.ImgixService) {
@@ -339,6 +341,8 @@ export default {
                             });
 
                             this.comments.splice(0, 0, thisComment);
+
+                            window.ImgixService.reloadCommentImages();
                         }
 
                         this.loading = false;

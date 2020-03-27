@@ -228,7 +228,7 @@
             </transition-group>
 
             <div
-                v-if="comment.replies.length > 2"
+                v-if="comment.replies && comment.replies.length > 2"
                 class="flex flex-row align-center"
             >
                 <a
@@ -350,7 +350,7 @@ export default {
                 return this.comment.replies;
             }
 
-            return this.comment.replies.filter((reply, index) => index < 2);
+            return this.comment.replies ? this.comment.replies.filter((reply, index) => index < 2) : [];
         },
 
         replyInterface: {
@@ -448,7 +448,10 @@ export default {
         },
 
         replyPosted(payload) {
-            this.comment.replies.splice(this.comment.replies.length, 0, payload.data);
+            if (this.comment.replies) {
+                this.comment.replies.splice(this.comment.replies.length, 0, payload.data);
+            }
+
             this.showAllReplies = true;
         },
 
