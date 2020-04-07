@@ -94,7 +94,7 @@
                     </div>
 
                     <h3
-                        v-if="item.subscription_interval_type"
+                        v-if="item.subscription_interval_type && totalPriceAfterDiscounts > 0"
                         class="tiny"
                     >
                         {{ intervalString }}
