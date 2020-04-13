@@ -278,6 +278,9 @@ ul {
   width:40px;
   border-bottom-left-radius:40px;
   border-bottom-right-radius:40px;
+  position:relative;
+  z-index:2;
+
 
   &.active {
     i {
