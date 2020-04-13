@@ -130,7 +130,7 @@ body {
       z-index:3;
       background:#000;
       transform:translateX(0);
-      transition:transform .2s ease-in-out;
+      //transition:transform .2s ease-in-out;
       will-change:transform;
       width:calc(100vw - 100px);
 
