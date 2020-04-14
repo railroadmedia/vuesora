@@ -84,6 +84,7 @@ body {
       flex:0 0 auto;
       max-width:none;
       z-index:8;
+      background: none;
     }
   }
 
@@ -298,10 +299,10 @@ body {
       transform-origin:50% 50%;
       transform:scale(1.25);
       background:$errorRed;
-      filter:blur(8px);
+      filter:blur(4px);
       z-index:-1;
       animation-name: growShrink;
-      animation-duration: 1.5s;
+      animation-duration: 1.25s;
       animation-iteration-count: infinite
     }
   }
