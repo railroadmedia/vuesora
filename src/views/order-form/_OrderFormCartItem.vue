@@ -22,10 +22,10 @@
 
                     <div
                         v-if="item.requires_shipping && !isCartLocked"
-                        class="flex flex-row align-h-left align-v-center mt-2"
+                        class="flex flex-row align-h-left align-v-center"
                     >
                         <div class="flex flex-column flex-auto">
-                            <h4 class="body quantity-label dense font-bold">
+                            <h4 class="quantity-label tiny dense font-bold uppercase">
                                 Quantity:
                             </h4>
                         </div>
