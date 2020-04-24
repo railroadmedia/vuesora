@@ -280,7 +280,7 @@
                 </div>
 
                 <div
-                    v-if="$_country ===  'India' || $_country === 'Peru' || $_country === 'South Africa' || $_country === 'Saudi Arabia'"
+                    v-if="bannedCountries.includes($_country)"
                     class="flex flex-column ph-1 mb-2"
                 >
                     <p class="flex flex-column tiny text-center font-bold text-error">
@@ -319,6 +319,11 @@ export default {
         },
 
         countries: {
+            type: Array,
+            default: () => [],
+        },
+
+        bannedCountries: {
             type: Array,
             default: () => [],
         },

@@ -35,6 +35,7 @@
                 :brand="brand"
                 :shipping-data="shippingStateFactory"
                 :countries="countries"
+                :banned-countries="bannedCountries"
                 :provinces="provinces"
                 @updateShippingData="updateShippingData"
             />
@@ -209,6 +210,11 @@ export default {
         },
 
         countries: {
+            type: Array,
+            default: () => [],
+        },
+
+        bannedCountries: {
             type: Array,
             default: () => [],
         },
