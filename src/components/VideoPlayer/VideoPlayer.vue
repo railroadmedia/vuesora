@@ -459,6 +459,7 @@ export default {
             userActive: true,
             userActiveTimeout: null,
             isPlaying: false,
+            lastPlayPauseToggleTime: Math.round(Date.now()/1000),
             currentTime: 0,
             totalDuration: 0,
             mousedown: false,
@@ -864,6 +865,14 @@ export default {
         },
 
         getDefaultVolume() {
+            if (window.localStorage.getItem('isMuted') != null) {
+                this.changeVolume({
+                    volume: Number(0),
+                }, false);
+
+                return;
+            }
+
             if (window.localStorage.getItem('playerVolume') != null) {
                 this.changeVolume({
                     volume: Number(window.localStorage.getItem('playerVolume')),
@@ -872,6 +881,14 @@ export default {
         },
 
         playPause() {
+            console.log(this.lastPlayPauseToggleTime);
+            console.log(Math.round(Date.now()/1000));
+            if (this.lastPlayPauseToggleTime === Math.round(Date.now()/1000)) {
+                return;
+            }
+
+            this.lastPlayPauseToggleTime = Math.round(Date.now()/1000);
+
             if (this.chromeCast && this.chromeCast.Connected) {
                 this.chromeCast.playOrPause();
             } else if (this.isPlaying) {
@@ -929,11 +946,13 @@ export default {
             }
         },
 
-        changeVolume(payload) {
+        changeVolume(payload, remember = true) {
             this.mediaElement.volume = payload.volume / 100;
             this.currentVolume = this.mediaElement.volume;
 
-            localStorage.setItem('playerVolume', payload.volume);
+            if (remember) {
+                localStorage.setItem('playerVolume', payload.volume);
+            }
 
             if (this.isChromeCastConnected) {
                 this.chromeCast.volume(payload.volume);

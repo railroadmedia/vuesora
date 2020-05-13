@@ -214,9 +214,15 @@ export default {
                 Escape: () => (this.videojsInstance.isFullscreen ? this.fullscreen() : () => {}),
                 ArrowUp: () => this.changeVolume({ volume: (this.currentVolume * 100) + 5 }),
                 ArrowDown: () => this.changeVolume({ volume: (this.currentVolume * 100) - 5 }),
-                KeyM: () => (this.currentVolume === 0
-                    ? this.changeVolume({ volume: Number(window.localStorage.getItem('playerVolume') || 75) })
-                    : this.changeVolume({ volume: 0 })),
+                KeyM: () => {
+                    if (window.localStorage.getItem('isMuted') === null) {
+                        window.localStorage.setItem('isMuted', true);
+                        this.changeVolume({ volume: 0 }, false);
+                    } else {
+                        window.localStorage.removeItem('isMuted');
+                        this.changeVolume({ volume: Number(window.localStorage.getItem('playerVolume') || 75) });
+                    }
+                },
                 Minus: () => this.setRate({ rate: this.currentPlaybackRate - 0.25 }),
                 Equal: () => this.setRate({ rate: this.currentPlaybackRate + 0.25 }),
             },
