@@ -241,9 +241,9 @@
 }
 
 @include smallOnly {
-  .hide-sm-only,
   .hide-xs-up,
   .hide-sm-up,
+  .hide-sm-only,
   .hide-sm-down,
   .hide-md-down,
   .hide-lg-down,
@@ -253,10 +253,10 @@
 }
 
 @include mediumOnly {
-  .hide-md-only,
   .hide-xs-up,
   .hide-sm-up,
   .hide-md-up,
+  .hide-md-only,
   .hide-md-down,
   .hide-lg-down,
   .hide-xl-down {
@@ -264,12 +264,12 @@
   }
 }
 
-@include large {
-  .hide-lg-only,
+@include largeOnly {
   .hide-xs-up,
   .hide-sm-up,
   .hide-md-up,
   .hide-lg-up,
+  .hide-lg-only,
   .hide-lg-down,
   .hide-xl-down {
     display:none!important;
@@ -277,6 +277,11 @@
 }
 
 @include xLarge {
+  .hide-xs-up,
+  .hide-sm-up,
+  .hide-md-up,
+  .hide-lg-up,
+  .hide-xl-down,
   .hide-xl-only,
   .hide-xl-down {
     display:none!important;

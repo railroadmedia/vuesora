@@ -502,7 +502,7 @@ export default {
                     Toasts.push({
                         icon: 'doh',
                         themeColor: this.themeColor,
-                        title: 'This is Embarassing That didn\'t work',
+                        title: 'This is Embarrassing That didn\'t work',
                         message: 'Refresh the page and try once more, if it happens again please let us know using the chat below. ',
                     });
 

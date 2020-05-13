@@ -300,6 +300,8 @@ export default {
                             this.comments = this.comments.filter(comment => comment.id !== this.pinnedComment.id);
                         }
 
+                        window.ImgixService.reloadCommentImages();
+
                         setTimeout(() => {
                             // Load the Imgix Service to load srcs and srcsets
                             if (window.ImgixService) {
@@ -339,6 +341,8 @@ export default {
                             });
 
                             this.comments.splice(0, 0, thisComment);
+
+                            window.ImgixService.reloadCommentImages();
                         }
 
                         this.loading = false;
@@ -350,14 +354,15 @@ export default {
             this.commentInterface = payload.currentValue;
         },
 
+        // NOTE: you cannot jump to replies, only top level parent comments
         goToComment(id) {
             CommentService.getCommentById(id)
                 .then((resolved) => {
                     if (resolved) {
                         const commentsSection = document.getElementById('postComment');
-                        this.pinnedComment = resolved.data.find(result => result.id == id);
 
-                        console.log(resolved);
+                        this.pinnedComment = resolved.data.find(result => result.id == id);
+                        this.pinnedComment.showAllReplies = true;
 
                         /*
                             * Check intermittently for the DOM Element, it could possibly take a couple

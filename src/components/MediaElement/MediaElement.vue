@@ -32,21 +32,17 @@
                 >
                     <div class="flex flex-column align-center text-center">
                         <img
-                            src="https://dmmior4id2ysr.cloudfront.net/icons/emoji-mad.svg"
+                            src="https://dmmior4id2ysr.cloudfront.net/icons/emoji-doh.svg"
                             class="error-icon mb-2"
                         >
                         <h1 class="title text-white">
-                            We're sorry, there was an issue finding this video.
+                            Oops, something went wrong!<br>
+                            Please refresh or contact support.
                         </h1>
-                        <h3 class="title text-white mb-2">
-                            Please refresh the page to try again.
-                        </h3>
                         <h6 class="tiny text-white">
-                        </h6>
-                        <h6 class="tiny text-white">
-                            If the problem persists please contact support, either by clicking the chat widget
-                            on the bottom of your screen, or by emailing
-                            <a :href="'mailto:support@' + brand + '.com'">support@{{ brand }}.com</a>.
+                            to contact support click the chat widget on the bottom of your screen,<br>
+                            or send an email to
+                            <a :href="'mailto:support@' + brand + '.com'" class="text-white">support@{{ brand }}.com</a>.
                         </h6>
                     </div>
                 </div>
@@ -515,7 +511,6 @@ export default {
             @include small {
                 height:150px;
                 min-height:150px;
-                margin-top:-50px;
             }
         }
     }

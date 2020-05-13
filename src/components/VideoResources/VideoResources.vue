@@ -5,7 +5,7 @@
                 {{ title }}
             </h1>
             <h4
-                class="subtitle uppercase text-white"
+                class="body text-grey-3"
                 v-html="subtitle"
             >
             </h4>
@@ -128,7 +128,7 @@
                 <div class="form-group mb-2">
                     <input
                         id="shareableUrlInput"
-                        class="no-label"
+                        class="no-label mb-2"
                         type="text"
                         :value="shareUrl"
                     >
@@ -249,17 +249,17 @@ export default {
     computed: {
         subtitle() {
             if (this.parentTitle) {
-                return `From <span class="text-${this.themeColor}">${this.parentTitle}</span>`;
+                return `From ${this.parentTitle}`;
             }
 
-            return `With <span class="text-${this.themeColor}">${this.instructors.join(', ')}</span>`;
+            return `With ${this.instructors.join(', ')}`;
         },
 
         currentTime() {
             const { mediaElementVueInstance } = this.$root.$refs;
 
             if (mediaElementVueInstance) {
-                return mediaElementVueInstance.currentTime;
+                return mediaElementVueInstance.currentTimeInSeconds;
             }
 
             return 0;

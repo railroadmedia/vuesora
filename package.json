@@ -1,6 +1,6 @@
 {
   "name": "vuesora",
-  "version": "0.16.10",
+  "version": "0.16.33",
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
@@ -48,7 +48,8 @@
     "smoothscroll-polyfill": "^0.4.3",
     "vue": "^2.6.10",
     "vue-lazyload": "^1.3.3",
-    "vue-router": "^3.0.3"
+    "vue-router": "^3.0.3",
+    "es-abstract": "1.14.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",

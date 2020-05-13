@@ -15,7 +15,7 @@
                 :brand="brand"
                 :current-user="user"
                 :account-details="accountStateFactory"
-                :requires-account-info="cartContainsSubscription"
+                :requires-account-info="cartContainsDigitalItems"
                 :login-url="loginUrl"
                 :logout-url="logoutUrl"
                 @updateAccountData="updateAccountData"
@@ -35,6 +35,7 @@
                 :brand="brand"
                 :shipping-data="shippingStateFactory"
                 :countries="countries"
+                :banned-countries="bannedCountries"
                 :provinces="provinces"
                 @updateShippingData="updateShippingData"
             />
@@ -98,7 +99,7 @@
             </button>
 
             <p class="tiny disclaimer mt-1 text-grey-3">
-                By completing your order you agree to the terms of service. All payments
+                By completing your order you agree to the <a href="/terms">terms of service</a>. All payments
                 in US dollars. You can cancel your subscription at any time by emailing
                 <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>.
             </p>
@@ -213,6 +214,11 @@ export default {
             default: () => [],
         },
 
+        bannedCountries: {
+            type: Array,
+            default: () => [],
+        },
+
         provinces: {
             type: Array,
             default: () => [],
@@ -251,7 +257,11 @@ export default {
     },
     computed: {
         cartContainsSubscription() {
-            return this.cartData.items.filter(item => !!item.is_digital).length > 0;
+            return this.cartData.items.filter(item => !!item.subscription_interval_type).length > 0;
+        },
+
+        cartContainsDigitalItems() {
+            return this.cartData.items.filter(item => item.is_digital).length > 0;
         },
 
         cartRequiresShippingAddress() {
@@ -259,7 +269,7 @@ export default {
         },
 
         cartRequiresAccountInfo() {
-            return this.cartContainsSubscription && this.user == null;
+            return this.cartContainsDigitalItems && this.user == null;
         },
 
         canAcceptPaymentPlans() {
@@ -379,7 +389,7 @@ export default {
             }
 
             if (!this.user) {
-                if (this.cartContainsSubscription) {
+                if (this.cartContainsDigitalItems) {
                     payload.account_creation_email = this.accountStateFactory.accountEmail;
                     payload.account_creation_password = this.accountStateFactory.accountPassword;
                     payload.account_creation_password_confirmation = this.accountStateFactory.accountPasswordConfirm;

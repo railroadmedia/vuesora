@@ -278,6 +278,16 @@
                         </ul>
                     </div>
                 </div>
+
+                <div
+                    v-if="bannedCountries.includes($_country)"
+                    class="flex flex-column ph-1 mb-2"
+                >
+                    <p class="flex flex-column tiny text-center font-bold text-error">
+                        Shipping to this country is currently suspended due to COVID-19.<br class="hide-xs-only">
+                        Any physical items in this order will be delayed.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -309,6 +319,11 @@ export default {
         },
 
         countries: {
+            type: Array,
+            default: () => [],
+        },
+
+        bannedCountries: {
             type: Array,
             default: () => [],
         },

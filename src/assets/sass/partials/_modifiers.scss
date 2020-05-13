@@ -262,6 +262,20 @@ $borderDirections: (
   }
 }
 
+.bg-top {
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:center top;
+
+  &.contain {
+    background-size:contain;
+  }
+
+  &.contain-80 {
+    background-size:80%;
+  }
+}
+
 .desaturate {
   filter:saturate(0);
 }

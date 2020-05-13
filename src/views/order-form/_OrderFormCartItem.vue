@@ -1,6 +1,6 @@
 <template>
     <div class="cart-item-row flex flex-row ph-2 pt-2">
-        <div class="flex flex-column cart-thumbnail mb-2">
+        <div class="flex flex-column rounded cart-thumbnail mb-2">
             <div
                 class="square rounded bg-center"
             >
@@ -22,10 +22,10 @@
 
                     <div
                         v-if="item.requires_shipping && !isCartLocked"
-                        class="flex flex-row align-h-left align-v-center mt-2"
+                        class="flex flex-row align-h-left align-v-center"
                     >
                         <div class="flex flex-column flex-auto">
-                            <h4 class="body quantity-label dense font-bold">
+                            <h4 class="quantity-label tiny dense font-bold uppercase">
                                 Quantity:
                             </h4>
                         </div>
@@ -71,21 +71,30 @@
                     <div class="flex price-flex">
                         <h3
                             v-if="isDiscounted"
-                            class="body dense font-strike text-grey-3 mr-1 m-xs-only"
+                            class="tiny font-bold font-strike text-grey-3 mr-1 m-xs-only"
                         >
                             ${{ item.price_before_discounts }}
                         </h3>
 
                         <h2
-                            class="body font-bold"
+                            v-if="totalPriceAfterDiscounts > 0"
+                            class="title font-bold"
                             :class="themeTextClass"
                         >
                             ${{ totalPriceAfterDiscounts }}
                         </h2>
+
+                        <h2
+                            v-if="totalPriceAfterDiscounts <= 0"
+                            class="title font-bold"
+                            :class="themeTextClass"
+                        >
+                            FREE
+                        </h2>
                     </div>
 
                     <h3
-                        v-if="item.subscription_interval_type"
+                        v-if="item.subscription_interval_type && totalPriceAfterDiscounts > 0"
                         class="tiny"
                     >
                         {{ intervalString }}
@@ -207,6 +216,8 @@ export default {
         }
     }
     .cart-thumbnail {
+        border:3px solid #d1d1d1;
+        background:#eee;
         flex:0 0 60px;
         max-width:60px;
 

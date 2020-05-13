@@ -48,6 +48,20 @@ export default class ImgixService {
     }
 
     /**
+     * Load all the image backgrounds that have a [data-ix-bg] attribute
+     */
+    reloadCommentImages() {
+        const images = document.querySelectorAll('.comment-post [data-ix-src]');
+
+        Array.from(images)
+            .forEach((image) => {
+                window.ImgixService.addSource(image);
+
+                image.addEventListener('load', this.addLoadedClass);
+            });
+    }
+
+    /**
      * Create default params to use in imgix requests
      */
     getDefaultParams() {

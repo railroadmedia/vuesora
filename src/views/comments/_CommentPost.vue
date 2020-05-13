@@ -33,7 +33,7 @@
                 v-if="showUserExp"
                 class="body dense font-bold uppercase text-center mt-1"
             >
-                Level {{ userExpRank }}
+                {{ userExpRank }}
             </p>
             <p
                 v-if="showUserExp"
@@ -228,7 +228,7 @@
             </transition-group>
 
             <div
-                v-if="comment.replies.length > 2"
+                v-if="comment.replies && comment.replies.length > 2"
                 class="flex flex-row align-center"
             >
                 <a
@@ -324,15 +324,35 @@ export default {
                 return `${this.brand} Team`;
             }
 
-            return this.comment.user.level_number || '0.0';
+            if (this.brand === 'pianote') {
+                return this.comment.user.rank || 'Casual';
+            }
+
+            return 'Level ' + (this.comment.user.level_number || '0.0');
         },
 
         repliesToShow() {
-            if (this.showAllReplies) {
+            setTimeout(() => {
+                // Sometimes vue caches the add event button.
+                // If it doesn't we need to force a refresh, done with a timeout to
+                // Prevent race conditions.
+                if (window.addeventatc) {
+                    window.addeventatc.refresh();
+                }
+
+                // Load the Imgix Service to load srcs and srcsets
+                if (window.ImgixService) {
+                    window.ImgixService.loadImageSources();
+                }
+            }, 300);
+
+            if (this.showAllReplies || this.pinned) {
+                this.showAllReplies = true;
+
                 return this.comment.replies;
             }
 
-            return this.comment.replies.filter((reply, index) => index < 2);
+            return this.comment.replies ? this.comment.replies.filter((reply, index) => index < 2) : [];
         },
 
         replyInterface: {
@@ -430,7 +450,10 @@ export default {
         },
 
         replyPosted(payload) {
-            this.comment.replies.splice(this.comment.replies.length, 0, payload.data);
+            if (this.comment.replies) {
+                this.comment.replies.splice(this.comment.replies.length, 0, payload.data);
+            }
+
             this.showAllReplies = true;
         },
 
