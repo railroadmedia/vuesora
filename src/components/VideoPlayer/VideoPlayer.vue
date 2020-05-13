@@ -459,7 +459,7 @@ export default {
             userActive: true,
             userActiveTimeout: null,
             isPlaying: false,
-            lastPlayPauseToggleTime: Math.round(Date.now()/1000),
+            lastPlayPauseToggleTime: Date.now(),
             currentTime: 0,
             totalDuration: 0,
             mousedown: false,
@@ -881,13 +881,11 @@ export default {
         },
 
         playPause() {
-            console.log(this.lastPlayPauseToggleTime);
-            console.log(Math.round(Date.now()/1000));
-            if (this.lastPlayPauseToggleTime === Math.round(Date.now()/1000)) {
+            if (Date.now() - this.lastPlayPauseToggleTime < 200) {
                 return;
             }
 
-            this.lastPlayPauseToggleTime = Math.round(Date.now()/1000);
+            this.lastPlayPauseToggleTime = Date.now();
 
             if (this.chromeCast && this.chromeCast.Connected) {
                 this.chromeCast.playOrPause();
