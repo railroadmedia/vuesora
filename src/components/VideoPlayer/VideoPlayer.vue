@@ -105,7 +105,7 @@
                     <video
                         ref="player"
                         playsinline
-                        preload="auto"
+                        preload="metadata"
                         crossorigin="anonymous"
                         :poster="poster"
                     ></video>
@@ -826,9 +826,9 @@ export default {
 
         initializePlayer(time) {
             const urlParams = new URLSearchParams(window.location.search);
-            const timeToSeekTo = time || (urlParams.get('time') || this.currentSecond);
+            const timeToSeekTo = time || (urlParams.get('time') || window.localStorage.getItem(`${this.videoId}_currentTime`) || this.currentSecond);
 
-            if (timeToSeekTo !== this.currentTime) {
+            if (parseInt(timeToSeekTo) !== parseInt(this.currentTime)) {
                 this.seek(timeToSeekTo);
             }
 
@@ -853,6 +853,10 @@ export default {
                 this.hasRetriedSource = false;
                 this.mediaElement.focus();
             }, 100);
+
+            setInterval(() => {
+                window.localStorage.setItem(`${this.videoId}_currentTime`, this.currentTime);
+            }, 2500);
         },
 
         attachMediaElementEventHandlers() {
