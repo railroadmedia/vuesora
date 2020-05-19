@@ -14,14 +14,14 @@
                     @mousemove="trackMousePosition"
                     @touchmove="trackMousePosition"
                 >
-<!--                    <transition name="grow-fade">-->
-<!--                        <PlayerStats-->
-<!--                            v-if="playerStats"-->
-<!--                            v-show="dialogs.stats"-->
-<!--                            :player-stats="playerStats"-->
-<!--                            @close="closeAllDialogs"-->
-<!--                        />-->
-<!--                    </transition>-->
+                    <!--                    <transition name="grow-fade">-->
+                    <!--                        <PlayerStats-->
+                    <!--                            v-if="playerStats"-->
+                    <!--                            v-show="dialogs.stats"-->
+                    <!--                            :player-stats="playerStats"-->
+                    <!--                            @close="closeAllDialogs"-->
+                    <!--                        />-->
+                    <!--                    </transition>-->
 
                     <transition name="grow-fade">
                         <PlayerShortcuts
@@ -61,12 +61,12 @@
                             >
                                 {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
                             </li>
-<!--                            <li-->
-<!--                                class="pa-1 hover-bg-grey-4"-->
-<!--                                @click="openDialog('stats')"-->
-<!--                            >-->
-<!--                                {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats-->
-<!--                            </li>-->
+                            <!--                            <li-->
+                            <!--                                class="pa-1 hover-bg-grey-4"-->
+                            <!--                                @click="openDialog('stats')"-->
+                            <!--                            >-->
+                            <!--                                {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats-->
+                            <!--                            </li>-->
                             <li
                                 v-if="!isMobile"
                                 class="pa-1 hover-bg-grey-4"
@@ -134,7 +134,7 @@
                             <div class="flex flex-row align-h-right">
                                 <transition name="grow-fade">
                                     <PlayerButton
-                                        v-if="isChromeCastSupported && controls.chromecast"
+                                        v-if="isChromeCastSupported && controls.chromecast && !isPipEnabled"
                                         :theme-color="themeColor"
                                         title="Chromecast"
                                         :active="chromeCast && chromeCast.Connected"
@@ -146,7 +146,7 @@
 
                                 <transition name="grow-fade">
                                     <PlayerButton
-                                        v-if="isAirplaySupported && controls.airplay"
+                                        v-if="isAirplaySupported && controls.airplay && !isPipEnabled"
                                         :theme-color="themeColor"
                                         title="Apple Airplay"
                                         :active="isAirplayConnected"
@@ -258,6 +258,7 @@
                                 />
 
                                 <PlayerButton
+                                    v-show="!isPipEnabled"
                                     v-if="captionOptions.length > 0 && controls.captions"
                                     :theme-color="themeColor"
                                     :active="isCaptionsEnabled"
@@ -267,6 +268,7 @@
                                 </PlayerButton>
 
                                 <PlayerButton
+                                    v-show="!isPipEnabled"
                                     v-if="controls.settings"
                                     :theme-color="themeColor"
                                     title="Settings"
@@ -277,6 +279,7 @@
                                 </PlayerButton>
 
                                 <PlayerButton
+                                    v-show="!isPipEnabled"
                                     v-if="controls.fullscreen"
                                     :theme-color="themeColor"
                                     title="Fullscreen (F)"
