@@ -336,26 +336,26 @@
     </div>
 </template>
 <script>
-import * as muxjs from 'mux.js';
-import shaka from 'shaka-player';
-import Utils from '@musora/helper-functions/modules/utils';
-import Screenfull from 'screenfull';
-import ContentService from '../../assets/js/services/content';
-import PlayerUtils from './player-utils';
-import ChromeCastPlugin from './chromecast';
-import ThemeClasses from '../../mixins/ThemeClasses';
-import PlayerButton from './_PlayerButton.vue';
-import PlayerProgress from './_PlayerProgress.vue';
-import PlayerVolume from './_PlayerVolume.vue';
-import PlayerSettings from './_PlayerSettings.vue';
-import PlayerCaptions from './_PlayerCaptions.vue';
-import EventHandlers from './event-handlers';
-import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
-import PlayerShortcuts from './_PlayerShortcuts.vue';
-import PlayerError from './_PlayerError.vue';
-import PlayerStats from './_PlayerStats.vue';
+    import * as muxjs from 'mux.js';
+    import shaka from 'shaka-player';
+    import Utils from '@musora/helper-functions/modules/utils';
+    import Screenfull from 'screenfull';
+    import ContentService from '../../assets/js/services/content';
+    import PlayerUtils from './player-utils';
+    import ChromeCastPlugin from './chromecast';
+    import ThemeClasses from '../../mixins/ThemeClasses';
+    import PlayerButton from './_PlayerButton.vue';
+    import PlayerProgress from './_PlayerProgress.vue';
+    import PlayerVolume from './_PlayerVolume.vue';
+    import PlayerSettings from './_PlayerSettings.vue';
+    import PlayerCaptions from './_PlayerCaptions.vue';
+    import EventHandlers from './event-handlers';
+    import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
+    import PlayerShortcuts from './_PlayerShortcuts.vue';
+    import PlayerError from './_PlayerError.vue';
+    import PlayerStats from './_PlayerStats.vue';
 
-export default {
+    export default {
     name: 'VideoPlayer',
     components: {
         PlayerButton,
@@ -979,6 +979,10 @@ export default {
             this.settingsDrawer = !this.settingsDrawer;
 
             if (this.drawersShouldOpenFromBottom && this.settingsDrawer) {
+                if (document.getElementsByClassName('intercom-lightweight-app-launcher')[0]) {
+                    document.getElementsByClassName('intercom-lightweight-app-launcher')[0].style.display = 'none';
+                }
+
                 document.body.classList.add('drawer-open');
             }
 
@@ -992,6 +996,10 @@ export default {
             this.settingsDrawer = false;
 
             if (this.drawersShouldOpenFromBottom && this.captionsDrawer) {
+                if (document.getElementsByClassName('intercom-lightweight-app-launcher')[0]) {
+                    document.getElementsByClassName('intercom-lightweight-app-launcher')[0].style.display = 'none';
+                }
+
                 document.body.classList.add('drawer-open');
             }
 
@@ -1004,6 +1012,11 @@ export default {
             this.settingsDrawer = false;
             this.captionsDrawer = false;
             this.contextMenu = false;
+
+            if (this.drawersShouldOpenFromBottom
+                && document.getElementsByClassName('intercom-lightweight-app-launcher')[0]) {
+                document.getElementsByClassName('intercom-lightweight-app-launcher')[0].style.display = 'block';
+            }
 
             document.body.classList.remove('drawer-open');
         },
