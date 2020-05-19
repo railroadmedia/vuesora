@@ -2,8 +2,10 @@ import axios from 'axios';
 
 export default class ProgressTracker {
     constructor() {
-        this.tickInterval = 0;
+        this.startTime = 0;
+        this.endTime = 0;
         this.secondsWatched = 0;
+        this.running = false;
 
         this.endpointPrefix = window.ENDPOINT_PREFIX || '';
     }
@@ -12,14 +14,30 @@ export default class ProgressTracker {
      * Start the timer
      */
     start() {
-        this.tickInterval = this.progressInterval();
+        this.startTime = performance.now();
+        this.running = true;
+        //console.log(this.startTime + ' (this.startTime in start)');
     }
 
     /**
      * Stop the timer
      */
     stop() {
-        clearInterval(this.tickInterval);
+        this.calculateSecondsWatched();
+    }
+
+    calculateSecondsWatched() {
+        this.endTime = performance.now();
+        this.running = false;
+
+        let millisecondsToAddToSecondsWatched = this.endTime - this.startTime;
+        let secondsToAddToSecondsWatched = millisecondsToAddToSecondsWatched/1000;
+
+        this.secondsWatched = this.secondsWatched + secondsToAddToSecondsWatched;
+
+        //console.log(this.endTime + ' (this.endTime in calculateSecondsWatched)');
+        //console.log(secondsToAddToSecondsWatched + '(secondsToAddToSecondsWatched in calculateSecondsWatched)');
+        //console.log(this.secondsWatched + ' (this.secondsWatched in calculateSecondsWatched)');
     }
 
     /**
@@ -50,6 +68,12 @@ export default class ProgressTracker {
         sessionToken,
     }) {
         const data = new FormData();
+
+        if(this.running){
+            this.calculateSecondsWatched();
+        }
+
+        this.secondsWatched = Math.round(this.secondsWatched);
 
         data.append('seconds_played', this.secondsWatched);
         data.append('media_id', mediaId);
@@ -90,6 +114,12 @@ export default class ProgressTracker {
             return new Promise.resolve(false);
         }
 
+        if(this.running){
+            this.calculateSecondsWatched();
+        }
+
+        this.secondsWatched = Math.round(this.secondsWatched);
+
         return axios.post(endpoint, {
             seconds_played: this.secondsWatched,
             media_id: mediaId,
@@ -103,17 +133,5 @@ export default class ProgressTracker {
             .catch((error) => {
                 console.error(error);
             });
-    }
-
-    /**
-     * Interval that increments the secondsWatched property every second
-     *
-     */
-    progressInterval() {
-        // TODO: should probably use performance.now() to get millisecond precision
-
-        return setInterval(() => {
-            this.secondsWatched++;
-        }, 1000);
     }
 }
