@@ -14,14 +14,14 @@
                     @mousemove="trackMousePosition"
                     @touchmove="trackMousePosition"
                 >
-                    <transition name="grow-fade">
-                        <PlayerStats
-                            v-if="playerStats"
-                            v-show="dialogs.stats"
-                            :player-stats="playerStats"
-                            @close="closeAllDialogs"
-                        />
-                    </transition>
+                    <!--                    <transition name="grow-fade">-->
+                    <!--                        <PlayerStats-->
+                    <!--                            v-if="playerStats"-->
+                    <!--                            v-show="dialogs.stats"-->
+                    <!--                            :player-stats="playerStats"-->
+                    <!--                            @close="closeAllDialogs"-->
+                    <!--                        />-->
+                    <!--                    </transition>-->
 
                     <transition name="grow-fade">
                         <PlayerShortcuts
@@ -61,12 +61,12 @@
                             >
                                 {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
                             </li>
-                            <li
-                                class="pa-1 hover-bg-grey-4"
-                                @click="openDialog('stats')"
-                            >
-                                {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats
-                            </li>
+                            <!--                            <li-->
+                            <!--                                class="pa-1 hover-bg-grey-4"-->
+                            <!--                                @click="openDialog('stats')"-->
+                            <!--                            >-->
+                            <!--                                {{ dialogs.stats ? 'Hide' : 'Show' }} Player Stats-->
+                            <!--                            </li>-->
                             <li
                                 v-if="!isMobile"
                                 class="pa-1 hover-bg-grey-4"
@@ -105,11 +105,10 @@
                     <video
                         ref="player"
                         playsinline
-                        preload="auto"
+                        preload="metadata"
                         crossorigin="anonymous"
                         :poster="poster"
                     ></video>
-
 
                     <div
                         ref="controls"
@@ -135,7 +134,7 @@
                             <div class="flex flex-row align-h-right">
                                 <transition name="grow-fade">
                                     <PlayerButton
-                                        v-if="isChromeCastSupported && controls.chromecast"
+                                        v-if="isChromeCastSupported && controls.chromecast && !isPipEnabled"
                                         :theme-color="themeColor"
                                         title="Chromecast"
                                         :active="chromeCast && chromeCast.Connected"
@@ -147,7 +146,7 @@
 
                                 <transition name="grow-fade">
                                     <PlayerButton
-                                        v-if="isAirplaySupported && controls.airplay"
+                                        v-if="isAirplaySupported && controls.airplay && !isPipEnabled"
                                         :theme-color="themeColor"
                                         title="Apple Airplay"
                                         :active="isAirplayConnected"
@@ -259,6 +258,7 @@
                                 />
 
                                 <PlayerButton
+                                    v-show="!isPipEnabled"
                                     v-if="captionOptions.length > 0 && controls.captions"
                                     :theme-color="themeColor"
                                     :active="isCaptionsEnabled"
@@ -268,6 +268,7 @@
                                 </PlayerButton>
 
                                 <PlayerButton
+                                    v-show="!isPipEnabled"
                                     v-if="controls.settings"
                                     :theme-color="themeColor"
                                     title="Settings"
@@ -278,6 +279,7 @@
                                 </PlayerButton>
 
                                 <PlayerButton
+                                    v-show="!isPipEnabled"
                                     v-if="controls.fullscreen"
                                     :theme-color="themeColor"
                                     title="Fullscreen (F)"
@@ -336,26 +338,26 @@
     </div>
 </template>
 <script>
-    import * as muxjs from 'mux.js';
-    import shaka from 'shaka-player';
-    import Utils from '@musora/helper-functions/modules/utils';
-    import Screenfull from 'screenfull';
-    import ContentService from '../../assets/js/services/content';
-    import PlayerUtils from './player-utils';
-    import ChromeCastPlugin from './chromecast';
-    import ThemeClasses from '../../mixins/ThemeClasses';
-    import PlayerButton from './_PlayerButton.vue';
-    import PlayerProgress from './_PlayerProgress.vue';
-    import PlayerVolume from './_PlayerVolume.vue';
-    import PlayerSettings from './_PlayerSettings.vue';
-    import PlayerCaptions from './_PlayerCaptions.vue';
-    import EventHandlers from './event-handlers';
-    import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
-    import PlayerShortcuts from './_PlayerShortcuts.vue';
-    import PlayerError from './_PlayerError.vue';
-    import PlayerStats from './_PlayerStats.vue';
+import * as muxjs from 'mux.js';
+import shaka from 'shaka-player';
+import Utils from '@musora/helper-functions/modules/utils';
+import Screenfull from 'screenfull';
+import ContentService from '../../assets/js/services/content';
+import PlayerUtils from './player-utils';
+import ChromeCastPlugin from './chromecast';
+import ThemeClasses from '../../mixins/ThemeClasses';
+import PlayerButton from './_PlayerButton.vue';
+import PlayerProgress from './_PlayerProgress.vue';
+import PlayerVolume from './_PlayerVolume.vue';
+import PlayerSettings from './_PlayerSettings.vue';
+import PlayerCaptions from './_PlayerCaptions.vue';
+import EventHandlers from './event-handlers';
+import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
+import PlayerShortcuts from './_PlayerShortcuts.vue';
+import PlayerError from './_PlayerError.vue';
+// import PlayerStats from './_PlayerStats.vue';
 
-    export default {
+export default {
     name: 'VideoPlayer',
     components: {
         PlayerButton,
@@ -366,7 +368,7 @@
         LoadingAnimation,
         PlayerShortcuts,
         PlayerError,
-        PlayerStats,
+        // PlayerStats,
     },
     mixins: [ThemeClasses, EventHandlers],
     props: {
@@ -378,6 +380,11 @@
         hlsManifestUrl: {
             type: String,
             default: () => null,
+        },
+
+        sources: {
+            type: Array,
+            default: () => [],
         },
 
         captions: {
@@ -439,7 +446,7 @@
         useIntersectionObserver: {
             type: Boolean,
             default: () => false,
-        }
+        },
     },
     data() {
         return {
@@ -455,6 +462,7 @@
             userActive: true,
             userActiveTimeout: null,
             isPlaying: false,
+            lastPlayPauseToggleTime: Date.now(),
             currentTime: 0,
             totalDuration: 0,
             mousedown: false,
@@ -500,13 +508,15 @@
         isAbrEnabled: {
             cache: false,
             get() {
-                if (this.shakaPlayer == null) {
-                    return false;
-                }
+                // if (this.shakaPlayer == null) {
+                //     return false;
+                // }
+                //
+                // const { abr } = this.shakaPlayer.getConfiguration();
+                //
+                // return abr ? abr.enabled : false;
 
-                const { abr } = this.shakaPlayer.getConfiguration();
-
-                return abr ? abr.enabled : false;
+                return false;
             },
         },
 
@@ -517,7 +527,12 @@
                     return [];
                 }
 
-                const qualities = this.shakaPlayer.getVariantTracks().map(source => ({
+                // const qualities = this.shakaPlayer.getVariantTracks().map(source => ({
+                //     ...source,
+                //     label: PlayerUtils.getQualityLabelByHeight(source.height),
+                // }));
+
+                const qualities = this.sources.map(source => ({
                     ...source,
                     label: PlayerUtils.getQualityLabelByHeight(source.height),
                 }));
@@ -535,7 +550,7 @@
         currentSource: {
             cache: false,
             get() {
-                return this.mediaElement ? this.mediaElement.currentSrc : '';
+                return this.mediaElement ? this.mediaElement.src : '';
             },
         },
 
@@ -660,6 +675,7 @@
                             bufferingGoal: 15,
                             rebufferingGoal: 5,
                             bufferBehind: 0,
+                            useNativeHlsOnSafari: true,
                         },
                     });
 
@@ -725,13 +741,13 @@
                     this.isAirplaySupported = true;
                 }
             });
+
+            player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
+                this.isAirplayConnected = !this.isAirplayConnected;
+            });
         }
 
-        player.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', () => {
-            this.isAirplayConnected = !this.isAirplayConnected;
-        });
-
-        if (this.useIntersectionObserver) {
+        if (this.useIntersectionObserver && typeof IntersectionObserver !== 'undefined') {
             this.enableIntersectionObserver(videoWrap);
         }
     },
@@ -742,33 +758,46 @@
         this.shakaPlayer.destroy();
     },
     methods: {
-        loadSource() {
-            const supportsMSE = typeof MediaSource === 'function';
+        getSource(source) {
+            if (source) {
+                this.source = source;
+            } else {
+                this.source = this.getDefaultPlaybackQualityIndex();
+            }
+        },
+
+        loadSource(source) {
+            // const supportsMSE = typeof MediaSource === 'function';
+            this.getSource(source);
 
             return new Promise((resolve) => {
-                if (supportsMSE) {
-                    this.shakaPlayer.load(this.source)
-                        .then(() => {
-                            this.$nextTick(() => this.$forceUpdate());
-                            resolve();
-                        })
-                        .catch((error) => {
-                            if (error.severity === 2) {
-                                if (error.code === 1001 && !this.hasRetriedSource) {
-                                    this.retryVimeoUrl(error);
-                                } else {
-                                    this.playerError = true;
-                                    this.playerErrorCode = error.code;
-                                }
-                            }
-                        });
-                } else {
-                    this.mediaElement.src = this.source;
-
-                    setTimeout(() => {
+                // if (supportsMSE) {
+                this.shakaPlayer.load(this.source.file, null, 'video/mp4')
+                    .then(() => {
+                        this.$nextTick(() => this.$forceUpdate());
                         resolve();
-                    }, 100);
-                }
+                    })
+                    .catch((error) => {
+                        if (error.severity === 2) {
+                            // The following code was removed after ABR
+                            // was stripped from the player
+                            // Curtis - Jan 2020
+
+                            // if (error.code === 1001 && !this.hasRetriedSource) {
+                            //     this.retryVimeoUrl(error);
+                            // } else {
+                            this.playerError = true;
+                            this.playerErrorCode = error.code;
+                            // }
+                        }
+                    });
+                // } else {
+                //     this.mediaElement.src = this.source.file;
+                //
+                //     setTimeout(() => {
+                //         resolve();
+                //     }, 100);
+                // }
             });
         },
 
@@ -800,9 +829,9 @@
 
         initializePlayer(time) {
             const urlParams = new URLSearchParams(window.location.search);
-            const timeToSeekTo = time || (urlParams.get('time') || this.currentSecond);
+            const timeToSeekTo = time || (urlParams.get('time') || window.localStorage.getItem(`${this.videoId}_currentTime`) || this.currentSecond);
 
-            if (timeToSeekTo !== this.currentTime) {
+            if (parseInt(timeToSeekTo) !== parseInt(this.currentTime)) {
                 this.seek(timeToSeekTo);
             }
 
@@ -827,6 +856,10 @@
                 this.hasRetriedSource = false;
                 this.mediaElement.focus();
             }, 100);
+
+            setInterval(() => {
+                window.localStorage.setItem(`${this.videoId}_currentTime`, this.currentTime);
+            }, 2500);
         },
 
         attachMediaElementEventHandlers() {
@@ -839,6 +872,14 @@
         },
 
         getDefaultVolume() {
+            if (window.localStorage.getItem('isMuted') != null) {
+                this.changeVolume({
+                    volume: Number(0),
+                }, false);
+
+                return;
+            }
+
             if (window.localStorage.getItem('playerVolume') != null) {
                 this.changeVolume({
                     volume: Number(window.localStorage.getItem('playerVolume')),
@@ -847,6 +888,11 @@
         },
 
         playPause() {
+            if (Date.now() - this.lastPlayPauseToggleTime < 200) {
+                return;
+            }
+
+            this.lastPlayPauseToggleTime = Date.now();
 
             if (this.chromeCast && this.chromeCast.Connected) {
                 this.chromeCast.playOrPause();
@@ -862,7 +908,7 @@
             clearTimeout(this.timeouts.controlWrapClick);
             clearTimeout(this.timeouts.isTransitioning);
 
-            if(event.detail === 1){
+            if (event.detail === 1) {
                 this.timeouts.controlWrapClick = setTimeout(() => {
                     if (this.settingsDrawer || this.captionsDrawer || !this.canPlayPause) {
                         this.settingsDrawer = false;
@@ -905,11 +951,13 @@
             }
         },
 
-        changeVolume(payload) {
+        changeVolume(payload, remember = true) {
             this.mediaElement.volume = payload.volume / 100;
             this.currentVolume = this.mediaElement.volume;
 
-            localStorage.setItem('playerVolume', payload.volume);
+            if (remember) {
+                localStorage.setItem('playerVolume', payload.volume);
+            }
 
             if (this.isChromeCastConnected) {
                 this.chromeCast.volume(payload.volume);
@@ -933,18 +981,22 @@
 
         setQuality(payload) {
             const { currentTime } = this.mediaElement;
+            this.setDefaultPlaybackQualityWidth(payload.width);
 
-            if (payload === 'auto') {
-                this.shakaPlayer.configure('abr.enabled', true);
-            } else {
-                this.shakaPlayer.configure('abr.enabled', false);
+            this.loadSource(payload)
+                .then(() => {
+                    setTimeout(() => {
+                        this.seek(currentTime);
+                    }, 200);
+                });
 
-                this.shakaPlayer.selectVariantTrack(payload, true);
-            }
-
-            setTimeout(() => {
-                this.seek(currentTime);
-            }, 200);
+            // if (payload === 'auto') {
+            //     this.shakaPlayer.configure('abr.enabled', true);
+            // } else {
+            //     this.shakaPlayer.configure('abr.enabled', false);
+            //
+            //     this.shakaPlayer.selectVariantTrack(payload, true);
+            // }
         },
 
         setRate(payload) {
@@ -960,14 +1012,9 @@
         getDefaultPlaybackQualityIndex() {
             const widthToCheck = window.localStorage.getItem('vuesoraDefaultVideoQuality')
                 || document.documentElement.clientWidth;
-            const qualityIndexes = this.playbackQualities.map((quality, index) => {
-                if (quality.width >= widthToCheck) {
-                    return index;
-                }
-            });
-            const closestIndex = qualityIndexes.filter(index => index != null)[0];
+            const matchedQualities = this.playbackQualities.filter(quality => quality.width >= widthToCheck);
 
-            return closestIndex || 0;
+            return matchedQualities[0] || this.playbackQualities[0];
         },
 
         toggleSettingsDrawer() {
@@ -979,10 +1026,6 @@
             this.settingsDrawer = !this.settingsDrawer;
 
             if (this.drawersShouldOpenFromBottom && this.settingsDrawer) {
-                if (document.getElementsByClassName('intercom-lightweight-app-launcher')[0]) {
-                    document.getElementsByClassName('intercom-lightweight-app-launcher')[0].style.display = 'none';
-                }
-
                 document.body.classList.add('drawer-open');
             }
 
@@ -996,10 +1039,6 @@
             this.settingsDrawer = false;
 
             if (this.drawersShouldOpenFromBottom && this.captionsDrawer) {
-                if (document.getElementsByClassName('intercom-lightweight-app-launcher')[0]) {
-                    document.getElementsByClassName('intercom-lightweight-app-launcher')[0].style.display = 'none';
-                }
-
                 document.body.classList.add('drawer-open');
             }
 
@@ -1012,11 +1051,6 @@
             this.settingsDrawer = false;
             this.captionsDrawer = false;
             this.contextMenu = false;
-
-            if (this.drawersShouldOpenFromBottom
-                && document.getElementsByClassName('intercom-lightweight-app-launcher')[0]) {
-                document.getElementsByClassName('intercom-lightweight-app-launcher')[0].style.display = 'block';
-            }
 
             document.body.classList.remove('drawer-open');
         },

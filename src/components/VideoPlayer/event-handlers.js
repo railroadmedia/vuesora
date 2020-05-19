@@ -1,3 +1,5 @@
+import UserService from '../../assets/js/services/user';
+
 export default {
     data() {
         return {
@@ -10,6 +12,12 @@ export default {
                 onstatechange: (event) => {
                     if (event.state === 'load') {
                         this.loading = false;
+                    }
+
+                    if (event.state === 'src-equals') {
+                        this.$nextTick(() => {
+                            this.mediaElement.load();
+                        });
                     }
                 },
 
@@ -31,6 +39,9 @@ export default {
 
             mediaElementEventHandlers: {
                 canplaythrough: (event) => {
+                    this.totalDuration = this.mediaElement.duration;
+                    this.currentTime = this.mediaElement.currentTime;
+
                     setTimeout(() => {
                         this.loading = false;
                         this.$emit('canplaythrough', event);
@@ -93,10 +104,6 @@ export default {
                     this.currentTime = this.mediaElement.currentTime;
 
                     this.$emit('timeupdate', event);
-                },
-
-                error: (event) => {
-                    console.error(event);
                 },
 
                 useractive: () => {
@@ -207,9 +214,15 @@ export default {
                 Escape: () => (this.videojsInstance.isFullscreen ? this.fullscreen() : () => {}),
                 ArrowUp: () => this.changeVolume({ volume: (this.currentVolume * 100) + 5 }),
                 ArrowDown: () => this.changeVolume({ volume: (this.currentVolume * 100) - 5 }),
-                KeyM: () => (this.currentVolume === 0
-                    ? this.changeVolume({ volume: Number(window.localStorage.getItem('playerVolume') || 75) })
-                    : this.changeVolume({ volume: 0 })),
+                KeyM: () => {
+                    if (window.localStorage.getItem('isMuted') === null) {
+                        window.localStorage.setItem('isMuted', true);
+                        this.changeVolume({ volume: 0 }, false);
+                    } else {
+                        window.localStorage.removeItem('isMuted');
+                        this.changeVolume({ volume: Number(window.localStorage.getItem('playerVolume') || 75) });
+                    }
+                },
                 Minus: () => this.setRate({ rate: this.currentPlaybackRate - 0.25 }),
                 Equal: () => this.setRate({ rate: this.currentPlaybackRate + 0.25 }),
             },

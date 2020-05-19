@@ -26,7 +26,7 @@
                 :theme-color="themeColor"
                 :active="currentVolume === 0"
                 :title="currentVolume === 0 ? 'Unmute (M)' : 'Mute (M)'"
-                @click.native.stop="emitVolumeChange(0)"
+                @click.native.stop="emitMute"
             >
                 <i
                     class="fas"
@@ -88,6 +88,21 @@ export default {
 
                 this.$emit('volumeChange', {
                     volume,
+                });
+            }
+        },
+        emitMute() {
+            if (window.localStorage.getItem('isMuted') === null) {
+                window.localStorage.setItem('isMuted', true);
+
+                this.$emit('volumeChange', {
+                    volume: 0,
+                }, false);
+            } else {
+                window.localStorage.removeItem('isMuted');
+
+                this.$emit('volumeChange', {
+                    volume: Number(window.localStorage.getItem('playerVolume') || 75),
                 });
             }
         },
