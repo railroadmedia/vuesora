@@ -542,6 +542,12 @@ export default {
         },
 
         currentProgress() {
+            if (this.isChromeCastConnected) {
+                const progress = (this.chromeCast.Player.currentTime / this.totalDuration) * 100;
+
+                return isNaN(progress) ? 0 : progress;
+            }
+
             const progress = (this.currentTime / this.totalDuration) * 100;
 
             return isNaN(progress) ? 0 : progress;
@@ -894,7 +900,7 @@ export default {
 
             this.lastPlayPauseToggleTime = Date.now();
 
-            if (this.chromeCast && this.chromeCast.Connected) {
+            if (this.chromeCast && this.chromeCast.Connected && this.isChromeCastConnected) {
                 this.chromeCast.playOrPause();
             } else if (this.isPlaying) {
                 this.mediaElement.pause();
@@ -931,9 +937,13 @@ export default {
 
         seek(time) {
             this.mediaElement.pause();
-
             const seekTime = Number(time) > 0 ? Math.round(Number(time)) : 0;
+
             this.currentTime = seekTime;
+
+            if (this.isChromeCastConnected) {
+                this.chromeCast.seek(seekTime);
+            }
 
             this.mediaElement.currentTime = seekTime;
         },
@@ -952,16 +962,19 @@ export default {
         },
 
         changeVolume(payload, remember = true) {
-            this.mediaElement.volume = payload.volume / 100;
-            this.currentVolume = this.mediaElement.volume;
-
             if (remember) {
                 localStorage.setItem('playerVolume', payload.volume);
             }
 
             if (this.isChromeCastConnected) {
                 this.chromeCast.volume(payload.volume);
+                this.mediaElement.volume = 0;
+
+                return;
             }
+
+            this.mediaElement.volume = payload.volume / 100;
+            this.currentVolume = this.mediaElement.volume;
         },
 
         parseTime: time => PlayerUtils.parseTime(time),

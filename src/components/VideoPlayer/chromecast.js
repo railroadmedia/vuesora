@@ -108,6 +108,7 @@ export default class ChromeCastPlugin {
     }
 
     disconnect() {
+        this.Connected = false;
         cast.framework.CastContext.getInstance().endCurrentSession();
     }
 
@@ -135,11 +136,19 @@ export default class ChromeCastPlugin {
         });
         this.Controller.addEventListener('currentTimeChanged', () => {
             this.Media.time = this.Player.currentTime;
-            this.TriggerEvent('time', {
-                progress: this.Controller.getSeekPosition(this.Player.currentTime, this.Player.duration) || 0,
-                time: this.Player.currentTime,
-                duration: this.Controller.getFormattedTime(this.Player.duration),
-            });
+
+            // We need a small timeout here because chromecast API automatically sets time to zero before triggering
+            // the disconnect event. This will always reset the regular player to time zero, but we want it to pick
+            // up wherever it left off so we must add a small delay here so chromecast is fully disconnected before
+            // setting the current time.
+            // Caleb - May 2020
+            setTimeout(() => {
+                this.TriggerEvent('time', {
+                    progress: this.Controller.getSeekPosition(this.Player.currentTime, this.Player.duration) || 0,
+                    time: this.Player.currentTime,
+                    duration: this.Controller.getFormattedTime(this.Player.duration),
+                });
+            }, 150);
         });
 
         this.Controller.addEventListener('durationChanged', () => {
@@ -225,8 +234,8 @@ export default class ChromeCastPlugin {
             } else {
                 this.Session = cast.framework.CastContext.getInstance().getCurrentSession();
                 if (this.Session && this.Media.content) {
-                    const mediaInfo = new chrome.cast.media.MediaInfo(this.Media.content);
-                    // mediaInfo.contentType = 'video/mp4' ??
+                    const mediaInfo = new chrome.cast.media.MediaInfo(this.Media.content.file, 'video/mp4');
+                    mediaInfo.contentType = 'video/mp4';
                     mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
                     // The sexy subtitle support function <3
                     if (this.Media.subtitles.length > 0) {

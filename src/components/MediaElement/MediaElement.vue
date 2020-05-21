@@ -360,7 +360,7 @@ export default {
             this.mediaElement.setCurrentTime(timeInSeconds);
             // }
 
-            if (play) {
+            if (play && !this.isChromeCastConnected) {
                 setTimeout(() => {
                     this.mediaElement.play();
                 }, 100);

@@ -130,7 +130,7 @@ export default {
                 seeked: () => {
                     this.loading = false;
 
-                    if (this.hasBeenPlayed) {
+                    if (this.hasBeenPlayed && !this.isChromeCastConnected) {
                         this.mediaElement.play();
                     }
                 },
@@ -150,7 +150,9 @@ export default {
 
             chromeCastEventHandlers: {
                 time: (event) => {
-                    this.currentTime = event.time || 0;
+                    if (this.chromeCast.Connected) {
+                        this.currentTime = event.time || 0;
+                    }
 
                     this.$emit('cc-time', event);
                 },
@@ -165,11 +167,12 @@ export default {
                     this.isPlaying = true;
                     this.isChromeCastConnected = true;
 
-                    this.mediaElement.pause();
-
                     if (this.currentTime) {
                         this.seek(this.currentTime);
                     }
+
+                    this.mediaElement.pause();
+                    this.mediaElement.volume = 0;
 
                     this.$emit('cc-media', event);
                 },
@@ -177,9 +180,11 @@ export default {
                 disconnect: (event) => {
                     this.isChromeCastConnected = false;
                     this.isPlaying = true;
+                    this.mediaElement.volume = this.currentVolume;
 
                     if (this.currentTime) {
                         this.seek(this.currentTime);
+                        this.mediaElement.play();
                     }
 
                     this.$emit('cc-disconnect', event);
