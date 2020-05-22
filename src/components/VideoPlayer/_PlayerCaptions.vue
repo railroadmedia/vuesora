@@ -15,7 +15,7 @@
                         </li>
                         <li
                             class="pa-1 hover-bg-grey-4 pointer relative"
-                            :class="!isCaptionsEnabled ? [themeTextClass, 'selected-caption'] : ''"
+                            :class="!isOff ? [themeTextClass, 'selected-caption'] : ''"
                             @click="selectCaptionHandler(null)"
                         >
                             Off
@@ -59,11 +59,21 @@ export default {
         noCaptions() {
             return this.currentCaptions === null;
         },
+
+        isOff() {
+            for (let i = 0, L = this.captionOptions.length; i < L; i++) { /* tracks.length == 10 */
+                if (this.captionOptions[i].mode === 'showing' && this.isCaptionsEnabled) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
     },
 
     methods: {
         isSelected(caption) {
-            return caption.active === true && this.isCaptionsEnabled;
+            return caption.mode === 'showing' && this.isCaptionsEnabled;
         },
 
         selectCaptionHandler(caption) {

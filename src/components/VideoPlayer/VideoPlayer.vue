@@ -108,7 +108,11 @@
                         preload="metadata"
                         crossorigin="anonymous"
                         :poster="poster"
-                    ></video>
+                    >
+
+                        <track v-if="captions" :src="captions" label="English" kind="subtitles" srclang="en" default>
+
+                    </video>
 
                     <div
                         ref="controls"
@@ -338,7 +342,6 @@
     </div>
 </template>
 <script>
-    import * as muxjs from 'mux.js';
     import shaka from 'shaka-player';
     import Utils from '@musora/helper-functions/modules/utils';
     import Screenfull from 'screenfull';
@@ -440,6 +443,7 @@ export default {
                 volume: true,
                 settings: true,
                 fullscreen: true,
+                captions: true,
             }),
         },
 
@@ -563,8 +567,16 @@ export default {
         captionOptions: {
             cache: false,
             get() {
-                if (this.shakaPlayer) {
-                    return this.shakaPlayer.getTextTracks().filter(track => track.kind === 'subtitle');
+                if (this.mediaElement) {
+                    const trackArray = [];
+
+                    for (let i = 0, L = this.mediaElement.textTracks.length; i < L; i++) { /* tracks.length == 10 */
+                        if (this.mediaElement.textTracks[i].label !== 'Shaka Player TextTrack') {
+                            trackArray.push(this.mediaElement.textTracks[i]);
+                        }
+                    }
+
+                    return trackArray;
                 }
 
                 return [];
@@ -575,10 +587,10 @@ export default {
             cache: false,
             get() {
                 if (this.shakaPlayer != null) {
-                    const supportsMSE = typeof MediaSource === 'function';
-                    if (supportsMSE) {
-                        return this.shakaPlayer.getBufferedInfo().total;
-                    }
+                    // const supportsMSE = typeof MediaSource === 'function';
+                    // if (supportsMSE) {
+                    //     return this.shakaPlayer.getBufferedInfo().total;
+                    // }
 
                     if (this.mediaElement) {
                         return PlayerUtils.parseTimeRangesAsArray(this.mediaElement.buffered);
@@ -604,8 +616,9 @@ export default {
         },
 
         isCaptionsEnabled() {
-            if (this.shakaPlayer) {
-                return this.shakaPlayer.isTextTrackVisible();
+
+            if (this.mediaElement && this.mediaElement.textTracks[0]) {
+                return this.mediaElement.textTracks[0].mode === 'showing';
             }
 
             return false;
@@ -645,7 +658,7 @@ export default {
     },
     mounted() {
         const { player, videoWrap } = this.$refs;
-        const supportsMSE = typeof MediaSource === 'function';
+        const supportsMSE = false;
 
         /*
         * Mux.js is required to mux TS streams into Mp4 on the fly, Shaka requires the
@@ -653,9 +666,9 @@ export default {
         *
         * Curtis, July 2019
         */
-        if (window.muxjs == null && supportsMSE) {
-            window.muxjs = muxjs;
-        }
+        // if (window.muxjs == null && supportsMSE) {
+        //     window.muxjs = muxjs;
+        // }
 
         shaka.polyfill.installAll();
 
@@ -678,9 +691,9 @@ export default {
                             },
                         },
                         streaming: {
-                            bufferingGoal: 15,
-                            rebufferingGoal: 5,
-                            bufferBehind: 0,
+                            bufferingGoal: 25,
+                            rebufferingGoal: 10,
+                            bufferBehind: 1000,
                             useNativeHlsOnSafari: true,
                         },
                     });
@@ -777,32 +790,51 @@ export default {
             this.getSource(source);
 
             return new Promise((resolve) => {
-                // if (supportsMSE) {
-                this.shakaPlayer.load(this.source.file, null, 'video/mp4')
-                    .then(() => {
-                        this.$nextTick(() => this.$forceUpdate());
-                        resolve();
-                    })
-                    .catch((error) => {
-                        if (error.severity === 2) {
-                            // The following code was removed after ABR
-                            // was stripped from the player
-                            // Curtis - Jan 2020
+                // Shaka player does not like MP4s for whatever reason, I think its related to MSE so switching to
+                // media player resolved all seeking issues.
+                // Caleb - May 2020
 
-                            // if (error.code === 1001 && !this.hasRetriedSource) {
-                            //     this.retryVimeoUrl(error);
-                            // } else {
-                            this.playerError = true;
-                            this.playerErrorCode = error.code;
-                            // }
-                        }
-                    });
-                // } else {
-                //     this.mediaElement.src = this.source.file;
+                // if (supportsMSE) {
+                // this.shakaPlayer.load(this.source.file, null, 'video/mp4')
+                //     .then(() => {
+                //         this.$nextTick(() => this.$forceUpdate());
                 //
-                //     setTimeout(() => {
+                //         console.log(this.shakaPlayer.loadMode_);
+                //
                 //         resolve();
-                //     }, 100);
+                //
+                //         if (this.captions) {
+                //             setTimeout(() => {
+                //                 let promise1 = this.shakaPlayer.addTextTrack('https://gofile.io/d/ha1xNl', 'en', 'subtitle', 'text/vtt', null, 'English')
+                //                 console.log(promise1);
+                //
+                //             }, 5000);
+                //
+                //         }
+                //     })
+                //     .catch((error) => {
+                //         if (error.severity === 2) {
+                //             // The following code was removed after ABR
+                //             // was stripped from the player
+                //             // Curtis - Jan 2020
+                //
+                //             // if (error.code === 1001 && !this.hasRetriedSource) {
+                //             //     this.retryVimeoUrl(error);
+                //             // } else {
+                //             this.playerError = true;
+                //             this.playerErrorCode = error.code;
+                //             // }
+                //         }
+                //     });
+                // } else {
+
+                this.mediaElement.src = this.source.file;
+
+                setTimeout(() => {
+                    console.log(this.mediaElement.textTracks);
+                    resolve();
+                }, 100);
+
                 // }
             });
         },
@@ -839,10 +871,6 @@ export default {
 
             if (parseInt(timeToSeekTo) !== parseInt(this.currentTime)) {
                 this.seek(timeToSeekTo);
-            }
-
-            if (this.captions) {
-                this.shakaPlayer.addTextTrack(this.captions, 'en', 'subtitle', 'text/vtt', null, 'English');
             }
 
             this.attachMediaElementEventHandlers();
@@ -940,6 +968,7 @@ export default {
         },
 
         seek(time) {
+            console.log('-------------------------');
             this.mediaElement.pause();
             const seekTime = Number(time) > 0 ? Math.round(Number(time)) : 0;
 
@@ -1073,14 +1102,10 @@ export default {
         },
 
         enableCaptions(payload) {
-            this.shakaPlayer.setTextTrackVisibility(payload != null);
-
-            if (payload != null) {
-                if (this.isChromeCastConnected) {
-                    this.chromeCast.changeSubtitle(payload ? 0 : null);
-                } else {
-                    this.shakaPlayer.selectTextTrack(payload);
-                }
+            if (payload) {
+                this.mediaElement.textTracks[0].mode = 'showing';
+            } else {
+                this.mediaElement.textTracks[0].mode = 'hidden';
             }
         },
 
