@@ -623,6 +623,13 @@ export default {
         isSafari: () => PlayerUtils.isSafari(),
 
         isMobileDrawerOpen() {
+            if (document.getElementsByClassName('intercom-launcher')[0]
+                && ((this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom)) {
+                document.getElementsByClassName('intercom-launcher')[0].style.display = 'none';
+            } else if (document.getElementsByClassName('intercom-launcher')[0]) {
+                document.getElementsByClassName('intercom-launcher')[0].style.display = 'block';
+            }
+
             return (this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom;
         },
 
