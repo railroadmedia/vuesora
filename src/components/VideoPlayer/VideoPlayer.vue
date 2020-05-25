@@ -263,7 +263,7 @@
 
                                 <PlayerButton
                                     v-show="!isPipEnabled"
-                                    v-if="captionOptions.length > 0 && controls.captions"
+                                    v-if="textTracks.length > 0 && controls.captions"
                                     :theme-color="themeColor"
                                     :active="isCaptionsEnabled"
                                     @click.stop.native="toggleCaptionsDrawer"
@@ -326,8 +326,8 @@
                             v-show="captionsDrawer"
                             :theme-color="themeColor"
                             :is-captions-enabled="isCaptionsEnabled"
-                            :caption-options="captionOptions"
-                            :current-captions="currentCaptions"
+                            :caption-options="textTracks"
+                            :current-captions="currentTextTrackLanguage"
                             @captionsSelected="enableCaptions"
                         />
                     </transition>
@@ -462,6 +462,8 @@ export default {
             contextMenu: false,
             shakaPlayer: null,
             mediaElement: null,
+            textTracks: [],
+            currentTextTrackLanguage: null,
             playerReady: false,
             userActive: true,
             userActiveTimeout: null,
@@ -474,7 +476,6 @@ export default {
             currentVolume: 1,
             settingsDrawer: false,
             captionsDrawer: false,
-            currentCaptions: null,
             chromeCast: null,
             isChromeCastSupported: false,
             isChromeCastConnected: false,
@@ -564,25 +565,6 @@ export default {
             },
         },
 
-        captionOptions: {
-            cache: false,
-            get() {
-                if (this.mediaElement) {
-                    const trackArray = [];
-
-                    for (let i = 0, L = this.mediaElement.textTracks.length; i < L; i++) { /* tracks.length == 10 */
-                        if (this.mediaElement.textTracks[i].label !== 'Shaka Player TextTrack') {
-                            trackArray.push(this.mediaElement.textTracks[i]);
-                        }
-                    }
-
-                    return trackArray;
-                }
-
-                return [];
-            },
-        },
-
         bufferedTimeRanges: {
             cache: false,
             get() {
@@ -616,12 +598,7 @@ export default {
         },
 
         isCaptionsEnabled() {
-
-            if (this.mediaElement && this.mediaElement.textTracks[0]) {
-                return this.mediaElement.textTracks[0].mode === 'showing';
-            }
-
-            return false;
+            return this.currentTextTrackLanguage !== null;
         },
 
         playerStats: {
@@ -831,7 +808,6 @@ export default {
                 this.mediaElement.src = this.source.file;
 
                 setTimeout(() => {
-                    console.log(this.mediaElement.textTracks);
                     resolve();
                 }, 100);
 
@@ -876,6 +852,25 @@ export default {
             this.attachMediaElementEventHandlers();
 
             this.getDefaultVolume();
+
+            if (this.mediaElement) {
+                for (let i = 0, L = this.mediaElement.textTracks.length; i < L; i++) {
+                    const thisTextTrack = this.mediaElement.textTracks[i];
+
+                    if (thisTextTrack.label !== 'Shaka Player TextTrack') {
+                        this.textTracks.push(thisTextTrack);
+                    }
+
+                    if (window.localStorage.getItem('currentTextTrackLanguage') === thisTextTrack.language) {
+                        this.currentTextTrackLanguage = thisTextTrack.language;
+                    }
+
+                    if (!window.localStorage.getItem('currentTextTrackLanguage')) {
+                        this.currentTextTrackLanguage = null;
+                        thisTextTrack.mode = 'hidden';
+                    }
+                }
+            }
 
             // FULLSCREEN EVENT
             document.addEventListener('fullscreenchange', () => {
@@ -968,7 +963,6 @@ export default {
         },
 
         seek(time) {
-            console.log('-------------------------');
             this.mediaElement.pause();
             const seekTime = Number(time) > 0 ? Math.round(Number(time)) : 0;
 
@@ -1103,9 +1097,14 @@ export default {
 
         enableCaptions(payload) {
             if (payload) {
-                this.mediaElement.textTracks[0].mode = 'showing';
+                this.textTracks[0].mode = 'showing';
+                this.currentTextTrackLanguage = this.textTracks[0].language;
+                window.localStorage.setItem('currentTextTrackLanguage', this.currentTextTrackLanguage);
+
             } else {
-                this.mediaElement.textTracks[0].mode = 'hidden';
+                this.textTracks[0].mode = 'hidden';
+                this.currentTextTrackLanguage = null;
+                window.localStorage.removeItem('currentTextTrackLanguage');
             }
         },
 
