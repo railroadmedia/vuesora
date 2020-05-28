@@ -1,25 +1,17 @@
 <template>
     <div class="flex flex-row flex-wrap align-v-center pv-2">
-        <div class="flex flex-column xs-12 sm-5 text-white">
-            <h1 class="heading">
-                {{ title }}
-            </h1>
-            <h4
-                class="body text-grey-3"
-                v-html="subtitle"
-            >
-            </h4>
-        </div>
-
         <div class="flex flex-column pv-2 xs-12 sm-7">
-            <div class="flex flex-row nmh-1 flex-wrap resource-buttons">
+            <div
+                class="flex flex-row nmh-1 flex-wrap resource-buttons"
+                style="justify-content: flex-start;"
+            >
                 <div class="flex flex-column resource-button ph-1">
                     <button
                         class="btn stacked"
                         @click="likeContent"
                     >
                         <span
-                            style="padding:0 8px;"
+                            style="padding:0 8px; border: none; box-shadow: none;"
                             :class="hasLiked ? themeTextClass : 'text-grey-3'"
                         >
                             <i
@@ -32,10 +24,13 @@
                 </div>
 
                 <div class="flex flex-column resource-button ph-1">
-                    <button class="btn stacked" data-open-modal="shareVideoModal">
+                    <button
+                        class="btn stacked"
+                        data-open-modal="shareVideoModal"
+                    >
                         <span
                             class="text-grey-3"
-                            style="padding:0 8px;"
+                            style="padding:0 8px; box-shadow: none;"
                         >
                             <i class="fas fa-share mb-1"></i>
                             Share
@@ -53,7 +48,7 @@
                     >
                         <span
                             :class="resourceDropdown ? themeTextClass : 'text-grey-3'"
-                            style="padding:0 8px;"
+                            style="padding:0 8px; box-shadow: none;"
                         >
                             <i class="fas fa-download mb-1"></i>
                             Downloads
@@ -94,7 +89,7 @@
                         @click="addToList"
                     >
                         <span
-                            style="padding:0 8px;"
+                            style="padding:0 8px; box-shadow: none;"
                             :class="hasAdded ? themeTextClass : 'text-grey-3'"
                         >
                             <i
@@ -112,7 +107,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div
@@ -144,30 +138,6 @@
                     </button>
                 </div>
 
-                <div class="form-group mb-2">
-                    <div class="flex flex-row form-group align-v-center">
-                        <span class="toggle-input mr-1">
-                            <input
-                                id="includeTimecode"
-                                v-model="useTimecode"
-                                type="checkbox"
-                                readonly
-                            >
-
-                            <span class="toggle">
-                                <span class="handle"></span>
-                            </span>
-                        </span>
-
-                        <label
-                            for="includeTimecode"
-                            class="toggle-label pointer dense uppercase font-bold tiny"
-                        >
-                            Start at Current Time
-                        </label>
-                    </div>
-                </div>
-
                 <p class="tiny font-italic text-grey-3">
                     This link is only accessible by {{ toCapitalCase(brand) }} Members.
                 </p>
@@ -182,7 +152,7 @@ import ThemeClasses from '../../mixins/ThemeClasses';
 import ContentService from '../../assets/js/services/content';
 
 export default {
-    name: 'VideoResources',
+    name: 'ContentLessonActionButtons',
     mixins: [ThemeClasses],
     props: {
         brand: {
@@ -266,10 +236,6 @@ export default {
         },
 
         shareUrl() {
-            if (this.useTimecode) {
-                return `${location.protocol}//${location.host}${location.pathname}?time=${Math.floor(this.currentTime)}`;
-            }
-
             return `${location.protocol}//${location.host}${location.pathname}`;
         },
     },
