@@ -342,23 +342,24 @@
     </div>
 </template>
 <script>
-    import shaka from 'shaka-player';
-    import Utils from '@musora/helper-functions/modules/utils';
-    import Screenfull from 'screenfull';
-    import ContentService from '../../assets/js/services/content';
-    import PlayerUtils from './player-utils';
-    import ChromeCastPlugin from './chromecast';
-    import ThemeClasses from '../../mixins/ThemeClasses';
-    import PlayerButton from './_PlayerButton.vue';
-    import PlayerProgress from './_PlayerProgress.vue';
-    import PlayerVolume from './_PlayerVolume.vue';
-    import PlayerSettings from './_PlayerSettings.vue';
-    import PlayerCaptions from './_PlayerCaptions.vue';
-    import EventHandlers from './event-handlers';
-    import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
-    import PlayerShortcuts from './_PlayerShortcuts.vue';
-    import PlayerError from './_PlayerError.vue';
-    // import PlayerStats from './_PlayerStats.vue';
+import shaka from 'shaka-player';
+import Utils from '@musora/helper-functions/modules/utils';
+import Screenfull from 'screenfull';
+import ContentService from '../../assets/js/services/content';
+import PlayerUtils from './player-utils';
+import ChromeCastPlugin from './chromecast';
+import ThemeClasses from '../../mixins/ThemeClasses';
+import PlayerButton from './_PlayerButton.vue';
+import PlayerProgress from './_PlayerProgress.vue';
+import PlayerVolume from './_PlayerVolume.vue';
+import PlayerSettings from './_PlayerSettings.vue';
+import PlayerCaptions from './_PlayerCaptions.vue';
+import EventHandlers from './event-handlers';
+import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
+import PlayerShortcuts from './_PlayerShortcuts.vue';
+import PlayerError from './_PlayerError.vue';
+import Intercom from '../../assets/js/services/intercom';
+// import PlayerStats from './_PlayerStats.vue';
 
 export default {
     name: 'VideoPlayer',
@@ -623,11 +624,10 @@ export default {
         isSafari: () => PlayerUtils.isSafari(),
 
         isMobileDrawerOpen() {
-            if (document.getElementsByClassName('intercom-launcher')[0]
-                && ((this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom)) {
-                document.getElementsByClassName('intercom-launcher')[0].style.display = 'none';
-            } else if (document.getElementsByClassName('intercom-launcher')[0]) {
-                document.getElementsByClassName('intercom-launcher')[0].style.display = 'block';
+            if ((this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom) {
+                Intercom.hideWidget();
+            } else {
+                Intercom.showWidget();
             }
 
             return (this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom;

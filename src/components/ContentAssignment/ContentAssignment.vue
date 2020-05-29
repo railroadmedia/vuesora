@@ -228,7 +228,8 @@ import ContentService from '../../assets/js/services/content';
 import Utils from '../../assets/js/classes/utils';
 import Toasts from '../../assets/js/classes/toasts';
 import ProgressTracker from '../../assets/js/classes/progress-tracker';
-import LoadingAnimation from "../LoadingAnimation/LoadingAnimation";
+import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+import Intercom from "../../assets/js/services/intercom"
 
 export default {
     name: 'ContentAssignment',
@@ -447,6 +448,8 @@ export default {
             } else {
                 this.accordionActive = !this.accordionActive;
             }
+
+            Intercom.hideWidget();
         },
 
         openExercise() {
@@ -457,6 +460,8 @@ export default {
 
             window.addEventListener('message', this.handleSoundsliceEvent);
             document.addEventListener('keyup', this.spacebarToPlayPause);
+
+            Intercom.hideWidget();
         },
 
         closeExercise() {
@@ -475,6 +480,8 @@ export default {
             window.removeEventListener('unload', () => this.sendProgressTracking);
             window.removeEventListener('message', this.handleSoundsliceEvent);
             document.removeEventListener('keyup', this.spacebarToPlayPause);
+
+            Intercom.showWidget();
         },
 
         markAsComplete(event) {
