@@ -574,7 +574,7 @@ export default {
             if (!this.progressTrackerEventListener) {
                 this.progressTrackerEventListener = true;
 
-                window.addEventListener('unload', () => this.sendProgressTracking);
+                window.addEventListener('unload', this.sendProgressTracking);
             }
         },
 
