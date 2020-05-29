@@ -5,8 +5,6 @@ export default {
     hideWidget() {
         const elements = document.getElementsByClassName('intercom-launcher');
 
-        console.log(elements);
-
         if (elements[0]) {
             elements[0].style.display = 'none';
         }
@@ -17,8 +15,6 @@ export default {
      */
     showWidget() {
         const elements = document.getElementsByClassName('intercom-launcher');
-
-        console.log(elements);
 
         if (elements[0]) {
             elements[0].style.display = 'block';
