@@ -115,7 +115,21 @@ export default {
                     onReady() {
                         if (timeToSeekTo > 0) {
                             vm.player.seekTo(timeToSeekTo);
-                            vm.player.pauseVideo();
+
+                            let intervalTries = 0;
+
+                            const pauseOnSeekInterval = setInterval(() => {
+                                intervalTries += 1;
+
+                                if (vm.player.getPlayerState() === 1) {
+                                    vm.player.pauseVideo();
+                                    window.clearInterval(pauseOnSeekInterval);
+                                }
+
+                                if (intervalTries > 100) {
+                                    window.clearInterval(pauseOnSeekInterval);
+                                }
+                            }, 50);
                         }
 
                         vm.syncInterval = setInterval(() => {
