@@ -203,7 +203,7 @@
                         <div class="flex flex-column relative">
                             <iframe
                                 id="ssEmbed"
-                                :src="'https://www.soundslice.com/scores/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0'"
+                                :src="'https://www.soundslice.com/' + scoreOrSlice() + '/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0'"
                                 frameBorder="0"
                                 allowfullscreen
                                 @load="loading = false"
@@ -407,6 +407,14 @@ export default {
         window.removeEventListener('lesson-complete', this.syncCompleteState);
     },
     methods: {
+        scoreOrSlice() {
+            if (/^\d+$/.test(this.soundsliceSlug)) {
+                return 'scores';
+            }
+
+            return 'slices';
+        },
+
         scrollToPage(page) {
             this.currentPage = page;
         },
