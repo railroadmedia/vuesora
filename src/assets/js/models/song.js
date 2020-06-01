@@ -13,8 +13,7 @@ export default class SongContentModel extends ContentModel {
         this.list.color_title = this.getPostField('artist');
         this.list.column_data = [
             ContentModel.mapDifficulty(this.post),
-            this.getPostDuration(),
-            this.postPublisedOn,
+            this.getPostField('style'),
         ];
 
         if (this.brand === 'guitareo') {
