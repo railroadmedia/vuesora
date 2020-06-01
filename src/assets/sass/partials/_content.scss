@@ -223,8 +223,8 @@
     flex:0 0 100%;
 
     @include small {
-      flex:0 0 320px;
-      max-width:320px;
+      flex:0 0 310px;
+      max-width:310px;
       margin-left:$gutterWidth / 2;
     }
 
