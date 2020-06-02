@@ -21,7 +21,7 @@
                     :key="filter.key"
                     :value="filter.value"
                 >
-                    {{ toTitleCase(filter.key) }}
+                    {{ filter.key }}
                 </option>
             </select>
 

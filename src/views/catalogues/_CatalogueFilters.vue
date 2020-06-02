@@ -70,8 +70,8 @@ export default {
     data() {
         return {
             progress_options: [
-                { key: 'in progress', value: 'started' },
-                { key: 'completed', value: 'completed' },
+                { key: 'In Progress', value: 'started' },
+                { key: 'Completed', value: 'completed' },
             ],
         };
     },

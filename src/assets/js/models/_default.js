@@ -118,6 +118,10 @@ export default class ContentModel {
         const icon = ContentHelpers.getContentTypeIcon(this.post.type);
         const type = this.postType;
 
+        if (type === 'song') {
+            return `${this.getPostField('artist')}`;
+        }
+
         return `<i class="${icon}" style="margin-right:5px;"></i> ${type}`;
     }
 

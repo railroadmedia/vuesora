@@ -10,7 +10,7 @@
         >
             <div
                 class="flex flex-column"
-                :class="{'thumbnail-col': displayInline}"
+                :class="[{'thumbnail-col': displayInline}, item.type + '-thumbnail']"
             >
                 <div
                     class="card-media bg-grey-2 active corners-10"
