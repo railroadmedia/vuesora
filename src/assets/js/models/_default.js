@@ -122,7 +122,7 @@ export default class ContentModel {
             return `${this.getPostField('artist')}`;
         }
 
-        return `<i class="${icon}" style="margin-right:5px;"></i> ${type}`;
+        return `${type}`;
     }
 
     getPostDifficulty() {

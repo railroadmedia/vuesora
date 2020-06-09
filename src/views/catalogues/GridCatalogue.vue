@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-row"
+        class="flex flex-row align-v-top"
         :class="[noWrap ? 'overflow' : 'flex-wrap', {'nmh-1': !displayInline}]"
     >
         <catalogue-card

@@ -39,14 +39,6 @@
                         @click.stop.prevent="addToList"
                     ></i>
 
-                    <h3
-                        v-if="!isGuitareoChordAndScale"
-                        class="thumbnail-title tiny font-compressed uppercase dense font-bold text-white"
-                        v-html="mappedData.color_title"
-                    >
-                        {{ mappedData.color_title }}
-                    </h3>
-
                     <div class="lesson-progress overflow">
                         <span
                             class="progress"
@@ -90,11 +82,12 @@
             >
                 <h5
                     class="x-tiny text-grey-4 uppercase"
-                    v-html="mappedData.content_type"
-                ></h5>
+                    v-if="!isGuitareoChordAndScale" v-html="mappedData.color_title">
+                    {{ mappedData.color_title }}
+                    </h5>
 
                 <h4
-                    class="tiny text-black mb-1 font-compressed font-bold capitalize"
+                    class="tiny text-black font-compressed font-bold capitalize mb-1"
                     :class="{'text-center': isGuitareoChordAndScale}"
                 >
                     {{ mappedData.black_title }}
@@ -108,9 +101,13 @@
                 </p>
 
                 <h6
-                    class="x-tiny font-compressed text-grey-3 uppercase"
+                    class="x-tiny text-grey-3 capitalize"
                     :class="{'text-center': isGuitareoChordAndScale}"
                 >
+                    <span
+                            v-html="mappedData.content_type"
+                    ></span>
+                    &nbsp;-&nbsp;
                     {{ mappedData.grey_title }}
                 </h6>
             </div>
