@@ -14,7 +14,7 @@
         <catalogue-filter
             v-if="hasProgressFilter"
             filter-name="progress"
-            :item="progress_options"
+            :item="progressOptions"
             :theme-color="themeColor"
             :loading="loading"
             :initial-value="user_state"
@@ -66,13 +66,15 @@ export default {
                 };
             },
         },
+        contentTypes: {
+            type: Array,
+            default() {
+                return [];
+            },
+        },
     },
     data() {
         return {
-            progress_options: [
-                { key: 'In Progress', value: 'started' },
-                { key: 'Completed', value: 'completed' },
-            ],
         };
     },
     computed: {
@@ -82,6 +84,19 @@ export default {
 
         hasProgressFilter() {
             return this.filterableValues.indexOf('progress') !== -1;
+        },
+
+        progressOptions() {
+            if (this.contentTypes[0] === 'song' && this.contentTypes.length === 1) {
+                return [
+                    { key: 'Completed', value: 'completed' },
+                ];
+            }
+
+            return [
+                { key: 'In Progress', value: 'started' },
+                { key: 'Completed', value: 'completed' },
+            ];
         },
     },
     methods: {

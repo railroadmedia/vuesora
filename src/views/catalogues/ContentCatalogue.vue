@@ -26,6 +26,7 @@
             :filter-params="filter_params"
             :loading="loading"
             :theme-color="themeColor"
+            :content-types="selectedTypes"
             @filterChange="handleFilterChange"
             @progressChange="handleProgressChange"
         ></catalogue-filters>
