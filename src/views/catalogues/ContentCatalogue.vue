@@ -27,6 +27,7 @@
             :loading="loading"
             :theme-color="themeColor"
             :content-types="selectedTypes"
+            :brand="brand"
             @filterChange="handleFilterChange"
             @progressChange="handleProgressChange"
         ></catalogue-filters>

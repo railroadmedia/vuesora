@@ -72,6 +72,10 @@ export default {
                 return [];
             },
         },
+        brand: {
+            type: String,
+            default: () => 'drumeo',
+        },
     },
     data() {
         return {
@@ -87,7 +91,7 @@ export default {
         },
 
         progressOptions() {
-            if (this.contentTypes[0] === 'song' && this.contentTypes.length === 1) {
+            if (this.contentTypes[0] === 'song' && this.contentTypes.length === 1 && this.brand === 'drumeo') {
                 return [
                     { key: 'Completed', value: 'completed' },
                 ];
