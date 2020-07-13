@@ -73,7 +73,7 @@
                             v-if="isDiscounted"
                             class="tiny font-bold font-strike text-grey-3 mr-1 m-xs-only"
                         >
-                            ${{ item.price_before_discounts }}
+                            ${{ Number(item.price_before_discounts).toFixed(2) }}
                         </h3>
 
                         <h2
