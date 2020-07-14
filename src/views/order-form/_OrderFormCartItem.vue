@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="flex flex-column price-column xs-12 sm-4 pt-1 text-right align-v-top">
-                    <div class="flex price-flex">
+                    <div class="flex flex-column">
                         <h3
                             v-if="isDiscounted"
                             class="tiny font-bold font-strike text-grey-3 mr-1 m-xs-only"
@@ -97,6 +97,10 @@
                         v-if="item.subscription_interval_type && totalPriceAfterDiscounts > 0"
                         class="tiny"
                     >
+                        <span v-if="item.price_before_discounts > totalPriceAfterDiscounts">
+                            then ${{ Number(item.price_before_discounts).toFixed(2)}}
+                        </span>
+
                         {{ intervalString }}
                     </h3>
                 </div>
