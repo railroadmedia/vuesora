@@ -97,8 +97,8 @@
                         v-if="item.subscription_interval_type && totalPriceAfterDiscounts > 0"
                         class="tiny"
                     >
-                        <span v-if="item.price_before_discounts > totalPriceAfterDiscounts">
-                            then ${{ Number(item.price_before_discounts).toFixed(2)}}
+                        <span v-if="item.subscription_renewal_price != totalPriceAfterDiscounts">
+                            then ${{ Number(item.subscription_renewal_price).toFixed(2)}}
                         </span>
 
                         {{ intervalString }}
