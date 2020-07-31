@@ -21,6 +21,11 @@ export default {
             default: () => '',
         },
 
+        isAdmin: {
+            type: Boolean,
+            default: () => false,
+        },
+
         contentTypeOverride: {
             type: String,
             default: '',
@@ -107,6 +112,10 @@ export default {
         },
 
         noAccess() {
+            if (this.isAdmin) {
+                return false;
+            }
+
             return (this.lockUnowned && this.item.is_owned === false) || (this.lockUnowned && !this.isReleased);
         },
 
@@ -119,6 +128,10 @@ export default {
         },
 
         isReleased() {
+            if (this.isAdmin) {
+                return true;
+            }
+
             return this.dateNow > this.datePublshedOn;
         },
 

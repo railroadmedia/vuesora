@@ -60,6 +60,7 @@
             :use-theme-color="useThemeColor"
             :no-wrap="noWrapGrid"
             :user-id="userId"
+            :is-admin="isAdmin"
             :lock-unowned="lockUnowned"
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
@@ -76,6 +77,7 @@
             :use-theme-color="useThemeColor"
             :card_type="catalogueType"
             :user-id="userId"
+            :is-admin="isAdmin"
             :display-items-as-overview="displayItemsAsOverview"
             :display-user-interactions="displayUserInteractions"
             :content-type-override="contentTypeOverride"
@@ -154,6 +156,10 @@ export default {
         userId: {
             type: String,
             default: () => '',
+        },
+        isAdmin: {
+            type: Boolean,
+            default: () => false,
         },
         brand: {
             type: String,

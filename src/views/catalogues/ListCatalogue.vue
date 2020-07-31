@@ -11,6 +11,7 @@
             :use-theme-color="useThemeColor"
             :overview="displayItemsAsOverview"
             :user-id="userId"
+            :is-admin="isAdmin"
             :display-user-interactions="displayUserInteractions"
             :content-type-override="contentTypeOverride"
             :show-numbers="showNumbers"
@@ -63,6 +64,10 @@ export default {
         userId: {
             type: String,
             default: () => '',
+        },
+        isAdmin: {
+            type: Boolean,
+            default: () => false,
         },
         brand: {
             type: String,

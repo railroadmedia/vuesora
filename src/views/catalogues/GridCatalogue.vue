@@ -12,6 +12,7 @@
             :theme-color="themeColor"
             :use-theme-color="useThemeColor"
             :user-id="userId"
+            :is-admin="isAdmin"
             :lock-unowned="lockUnowned"
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
@@ -47,6 +48,10 @@ export default {
         userId: {
             type: String,
             default: () => '',
+        },
+        isAdmin: {
+            type: Boolean,
+            default: () => false,
         },
         brand: {
             type: String,
