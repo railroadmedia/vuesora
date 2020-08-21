@@ -70,6 +70,54 @@
                             Dont show comments we've replied to
                         </label>
                     </div>
+
+                    <div class="flex flex-row form-group align-v-center mb-1">
+                        <span class="toggle-input mr-1">
+                            <input
+                                id="openOnly"
+                                name="openOnly"
+                                :v-model="openOnly"
+                                :checked="openOnly"
+                                type="checkbox"
+                                @change="changeOpenClosedCommentsOnly"
+                            >
+
+                            <span class="toggle">
+                                <span class="handle"></span>
+                            </span>
+                        </span>
+
+                        <label
+                            :for="openOnly"
+                            class="toggle-label capitalize"
+                        >
+                            Open conversation comments only
+                        </label>
+                    </div>
+
+                    <div class="flex flex-row form-group align-v-center mb-1">
+                        <span class="toggle-input mr-1">
+                            <input
+                                id="closedOnly"
+                                name="closedOnly"
+                                :v-model="closedOnly"
+                                :checked="closedOnly"
+                                type="checkbox"
+                                @change="changeOpenClosedCommentsOnly"
+                            >
+
+                            <span class="toggle">
+                                <span class="handle"></span>
+                            </span>
+                        </span>
+
+                        <label
+                            :for="closedOnly"
+                            class="toggle-label capitalize"
+                        >
+                            Closed conversation comments only
+                        </label>
+                    </div>
                 </div>
             </div>
         </transition>
@@ -101,6 +149,9 @@
             </div>
             <div class="flex flex-column replied-to tiny dense font-bold ph-1 text-center">
                 Replied
+            </div>
+            <div class="flex flex-column status tiny dense font-bold ph-1 text-center">
+                Status
             </div>
         </div>
         <div
@@ -158,6 +209,51 @@
                             :class="repliedToClasses(comment)"
                         ></i>
                     </div>
+
+                    <div class="flex flex-column status hide-xs-only ph-1 align-center text-center">
+                        <h6
+                                v-if="comment.conversation_status"
+                                class="tiny font-bold"
+                        >
+                            {{ comment.conversation_status }}
+                        </h6>
+
+<!--                        <button-->
+<!--                                class="button btn collapse-250"-->
+<!--                                @click="loadMore"-->
+<!--                        >-->
+<!--                <span-->
+<!--                        class="text-white"-->
+<!--                        :class="themeBgClass"-->
+<!--                >-->
+<!--                    <i-->
+<!--                            v-if="loading || requestingData"-->
+<!--                            class="fas fa-spin fa-spinner mr-1"-->
+<!--                    ></i>-->
+<!--                    {{ loading || requestingData ? 'Loading...' : 'Load More' }}-->
+<!--                </span>-->
+<!--                        </button>-->
+
+                        <button
+                                class="button btn collapse-250"
+                                v-if="comment.conversation_status === 'open'"
+                        >
+                            <span
+                                    class="text-white"
+                                    :class="themeBgClass"
+                            >
+                                Close
+                            </span>
+                        </button>
+
+                        <button
+                                class="btn collapse-square"
+                                v-if="comment.conversation_status === 'closed'"
+                        >
+                            <span class="body">Open</span>
+                        </button>
+                    </div>
+
                 </div>
 
                 <transition
@@ -250,6 +346,8 @@ export default {
             openCommentId: 0,
             filterTimeout: null,
             noRepliedTo: true,
+            openOnly: true,
+            closedOnly: false,
             contentTypes: [
                 {
                     key: 'course-part',
@@ -425,6 +523,17 @@ export default {
             this.openCommentId = comment.id;
         },
 
+        changeOpenClosedCommentsOnly(comment) {
+            this.openOnly = !this.openOnly;
+            this.closedOnly = !this.openOnly;
+
+            clearTimeout(this.filterTimeout);
+
+            this.filterTimeout = setTimeout(() => {
+                this.getComments(true);
+            }, 1000);
+        },
+
         getComments(replace = false) {
             this.requestingData = true;
 
@@ -439,6 +548,7 @@ export default {
                 sort: this.sortParam,
                 content_type: this.activeTypes,
                 page: this.currentPage,
+                conversation_status: this.openOnly === true ? 'open' : 'closed',
             })
                 .then((response) => {
                     // Pulls all Content IDs from every comment and returns all uniques
@@ -521,6 +631,12 @@ export default {
         flex: 0 0 150px;
         max-width:150px;
         min-width:150px;
+    }
+
+    .status {
+        flex: 0 0 100px;
+        max-width:100px;
+        min-width:100px;
     }
 
     .lesson-type {
