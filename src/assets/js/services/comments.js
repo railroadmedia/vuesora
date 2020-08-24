@@ -3,7 +3,7 @@ import ErrorHandler from './_error-handler';
 
 let endpointPrefix;
 
-if(typeof window != 'undefined'){
+if (typeof window !== 'undefined') {
     endpointPrefix = window.ENDPOINT_PREFIX || '';
 }
 
@@ -19,6 +19,24 @@ export default {
         return axios.get(`${endpointPrefix}/railcontent/comment`, {
             params,
         })
+            .then(response => response.data)
+            .catch(ErrorHandler);
+    },
+
+    /**
+     * Get a comment by ID
+     * WARNING: Doesn't actually work like you think, pulls the PAGE of the list where that
+     * specific comment is, so you need to find the comment in that array - Curtis, Sept 2018
+     *
+     * @param {String|Number} id - the comment id to get
+     * @param {String} conversationStatus - the new status, 'open' or 'closed'
+     * @returns {Promise} resolved promise with the response.data object, containing the comments array
+     */
+    updateCommentConversationStatus(id, conversationStatus) {
+        return axios.patch(
+            `${endpointPrefix}/railcontent/comment/${id}`,
+            { conversation_status: conversationStatus },
+        )
             .then(response => response.data)
             .catch(ErrorHandler);
     },

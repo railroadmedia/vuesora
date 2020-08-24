@@ -158,20 +158,20 @@
             v-for="comment in comments"
             v-if="!loading"
             class="comment-item flex flex-row bb-grey-1-1 pointer hover-bg-grey-7"
-            :class="[openCommentId === comment.id ? 'bg-grey-7' : '', lastReplyIsByTeam(comment) && noRepliedTo ? 'replied' : '']"
+            :class="[openCommentId === comment.id ? 'bg-grey-7' : '']"
             @click="openCommentThread(comment)"
         >
             <div class="flex flex-column">
                 <div class="comment-data flex flex-row align-v-top pa-2">
                     <div class="flex flex-column align-center user-name ph-1">
-<!--                        <div class="flex flex-row align-v-center">-->
+                        <!--                        <div class="flex flex-row align-v-center">-->
                         <div class="rounded overflow avatar mb-1 hide-xs-only">
                             <img :src="comment.user['fields.profile_picture_image_url']">
                         </div>
                         <h6 class="tiny font-bold text-center text-truncate">
                             {{ comment.user.display_name }}
                         </h6>
-<!--                        </div>-->
+                        <!--                        </div>-->
                     </div>
 
                     <div
@@ -212,48 +212,34 @@
 
                     <div class="flex flex-column status hide-xs-only ph-1 align-center text-center">
                         <h6
-                                v-if="comment.conversation_status"
-                                class="tiny font-bold"
+                            v-if="comment.conversation_status"
+                            :class="['font-bold', 'body', 'text-center', 'uppercase', comment.conversation_status === 'open' ? 'color-green' : 'color-red']"
                         >
                             {{ comment.conversation_status }}
                         </h6>
 
-<!--                        <button-->
-<!--                                class="button btn collapse-250"-->
-<!--                                @click="loadMore"-->
-<!--                        >-->
-<!--                <span-->
-<!--                        class="text-white"-->
-<!--                        :class="themeBgClass"-->
-<!--                >-->
-<!--                    <i-->
-<!--                            v-if="loading || requestingData"-->
-<!--                            class="fas fa-spin fa-spinner mr-1"-->
-<!--                    ></i>-->
-<!--                    {{ loading || requestingData ? 'Loading...' : 'Load More' }}-->
-<!--                </span>-->
-<!--                        </button>-->
-
                         <button
-                                class="button btn collapse-250"
-                                v-if="comment.conversation_status === 'open'"
+                            v-if="comment.conversation_status === 'open'"
+                            class="button btn collapse-250"
+                            style="margin-top: 15px;"
+                            @click.prevent.stop="markClosed(comment)"
                         >
                             <span
-                                    class="text-white"
-                                    :class="themeBgClass"
+                                class="text-white background-color-red tiny" style="height: 25px;"
                             >
                                 Close
                             </span>
                         </button>
 
                         <button
-                                class="btn collapse-square"
-                                v-if="comment.conversation_status === 'closed'"
+                            v-if="comment.conversation_status === 'closed'"
+                            class="button btn collapse-250"
+                            style="margin-top: 15px;"
+                            @click.prevent.stop="markOpen(comment)"
                         >
-                            <span class="body">Open</span>
+                            <span class="text-white background-color-green tiny" style="height: 25px;">Open</span>
                         </button>
                     </div>
-
                 </div>
 
                 <transition
@@ -521,6 +507,27 @@ export default {
 
         openCommentThread(comment) {
             this.openCommentId = comment.id;
+        },
+
+
+        markOpen(comment) {
+            comment.conversation_status = 'open';
+
+            CommentService.updateCommentConversationStatus(comment.id, 'open');
+
+            if (this.closedOnly) {
+                this.comments.splice(this.comments.indexOf(comment), 1);
+            }
+        },
+
+        markClosed(comment) {
+            comment.conversation_status = 'closed';
+
+            CommentService.updateCommentConversationStatus(comment.id, 'closed');
+
+            if (!this.closedOnly) {
+                this.comments.splice(this.comments.indexOf(comment), 1);
+            }
         },
 
         changeOpenClosedCommentsOnly(comment) {
