@@ -1,268 +1,268 @@
 @import './_variables.scss';
 
 // Text Color
-.text-primary {
+.vs-text-primary {
   color: $primary;
 }
 
-.text-secondary {
+.vs-text-secondary {
   color: $secondary;
 }
 
-.text-white {
+.vs-text-white {
   color: #fff;
 }
 
-.text-black {
+.vs-text-black {
   color:#000;
 }
 
-.text-light {
+.vs-text-light {
   color: $lightGray;
 }
 
-.text-dark {
+.vs-text-dark {
   color: $darkGray;
 }
 
-.text-success {
+.vs-text-success {
   color: $successGreen;
 }
 
-.text-warning {
+.vs-text-warning {
   color: $warningYellow;
 }
 
-.text-error {
+.vs-text-error {
   color: $errorRed;
 }
 
-.text-x-dark {
+.vs-text-x-dark {
   color:#242424;
 }
 
 // Background Color
-.bg-primary {
+.vs-bg-primary {
   background-color: $primary;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid $primary;
   }
 }
 
-.bg-secondary {
+.vs-bg-secondary {
   background-color: $secondary;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid $secondary;
   }
 }
 
-.bg-success {
+.vs-bg-success {
   background-color: $successGreen;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid $successGreen;
   }
 }
 
-.bg-warning {
+.vs-bg-warning {
   background-color: $warningYellow;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid $warningYellow;
   }
 }
 
-.bg-error {
+.vs-bg-error {
   background-color: $errorRed;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid $errorRed;
   }
 }
 
-.bg-black {
+.vs-bg-black {
   background-color: #000;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid #000;
   }
 }
 
-.bg-white {
+.vs-bg-white {
   background-color: #fff;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid #fff;
   }
 }
 
 
-[class*='hover-bg-'] {
+[class*='vs-hover-bg-'] {
   transition:background-color .1s ease;
   will-change:background-color;
 }
 
-[class*='hover-text-'] {
+[class*='vs-hover-text-'] {
   transition:color .1s ease;
   will-change:color;
 }
 
-[class*='hover-border-'] {
+[class*='vs-hover-border-'] {
   transition:border .1s ease;
   will-change:border;
 }
 
-.hover-bg-black:hover {
+.vs-hover-bg-black:hover {
   background-color:#000;
 }
-.hover-text-black:hover {
+.vs-hover-text-black:hover {
   color:#000;
 }
-.hover-bg-white:hover {
+.vs-hover-bg-white:hover {
   background-color:#fff;
 }
-.hover-text-white:hover {
+.vs-hover-text-white:hover {
   color:#fff;
 }
 
 @each $key, $value in $brand_colors {
-  .text-#{$key} {
+  .vs-text-#{$key} {
     color: $value;
   }
-  .bg-#{$key} {
+  .vs-bg-#{$key} {
     background-color: $value;
 
-    &.inverted {
+    &.vs-inverted {
       background-color:transparent;
       border:2px solid $value;
     }
     
-    &.bg-darken {
+    &.vs-bg-darken {
       background-color: darken($value, 12%);
     }
   }
 
-  .hover-text-#{$key}:hover {
+  .vs-hover-text-#{$key}:hover {
     color:$value;
   }
 
-  .hover-bg-#{$key}:hover {
+  .vs-hover-bg-#{$key}:hover {
     background-color:$value;
   }
 
-  .hover-border-#{$key}:hover {
+  .vs-hover-border-#{$key}:hover {
     border-color:$value;
   }
 }
 
 @each $key, $value in $content_colors {
-  .text-#{$key} {
+  .vs-text-#{$key} {
     color: $value;
 
-    .text-darken {
+    .vs-text-darken {
       color: darken($value, 12%);
     }
   }
-  .bg-#{$key} {
+  .vs-bg-#{$key} {
     background-color: $value;
 
-    &.inverted {
+    &.vs-inverted {
       background-color:transparent;
       border:2px solid $value;
     }
 
-    &.bg-darken {
+    &.vs-bg-darken {
       background-color: darken($value, 12%);
     }
   }
-  .text-#{$key}s {
+  .vs-text-#{$key}s {
     color: $value;
   }
-  .bg-#{$key}s {
+  .vs-bg-#{$key}s {
     background-color: $value;
 
-    &.inverted {
+    &.vs-inverted {
       background-color:transparent;
       border:2px solid $value;
     }
   }
 
-  .hover-text-#{$key}:hover {
+  .vs-hover-text-#{$key}:hover {
     color:$value;
   }
-  .hover-bg-#{$key}:hover {
+  .vs-hover-bg-#{$key}:hover {
     background-color:$value;
   }
 
-  .hover-text-#{$key}s:hover {
+  .vs-hover-text-#{$key}s:hover {
     color:$value;
   }
-  .hover-bg-#{$key}s:hover {
+  .vs-hover-bg-#{$key}s:hover {
     background-color:$value;
   }
 }
 
 @each $i, $grey in $greys {
-  .bg-grey-#{$i} {
+  .vs-bg-grey-#{$i} {
     background-color:$grey;
 
-    &.inverted {
+    &.vs-inverted {
       background-color:transparent;
       border:2px solid $grey;
     }
 
-    &.bg-darken {
+    &.vs-bg-darken {
       background-color: darken($grey, 12%);
     }
   }
-  .text-grey-#{$i} {
+  .vs-text-grey-#{$i} {
     color:$grey;
   }
-  .hover-text-grey-#{$i}:hover {
+  .vs-hover-text-grey-#{$i}:hover {
     color:$grey;
   }
-  .hover-bg-grey-#{$i}:hover {
+  .vs-hover-bg-grey-#{$i}:hover {
     background-color:$grey;
   }
 }
 
-input[type="text"].bg-light,
-.bg-light {
+input[type="text"].vs-bg-light,
+.vs-bg-light {
   background-color:transparentize($lightGray, .5);
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid transparentize($lightGray, .5);
   }
 }
 
-.bg-dark {
+.vs-bg-dark {
   background-color:$darkGray;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid $darkGray;
   }
 }
 
-.bg-x-dark {
+.vs-bg-x-dark {
   background-color:#242424;
 
-  &.inverted {
+  &.vs-inverted {
     background-color:transparent;
     border:2px solid #242424;
   }
 }
 
-.invert-fill {
+.vs-invert-fill {
   filter:invert(100%);
 }

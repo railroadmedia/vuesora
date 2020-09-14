@@ -13,14 +13,14 @@ body {
     padding-top:65px;
   }
 
-  &.has-public-footer {
+  &.vs-has-public-footer {
     padding-bottom:630px;
 
     @include small {
       padding-bottom:270px;
     }
   }
-  &.has-public-footer-minimal {
+  &.vs-has-public-footer-minimal {
     padding-bottom:82px;
 
     @include small {
@@ -29,7 +29,7 @@ body {
   }
 }
 
-#nav {
+#vs-nav {
   height:50px;
   z-index:99;
   position:fixed;
@@ -42,15 +42,15 @@ body {
     height:65px;
   }
 
-  & > .container {
+  & > .vs-container {
     overflow:hidden;
   }
 
-  .flex-row {
+  .vs-flex-row {
     height:100%;
   }
 
-  .logo {
+  .vs-logo {
     position:relative;
     z-index:8;
     flex:0 0 125px;
@@ -66,7 +66,7 @@ body {
     }
   }
 
-  .header-button {
+  .vs-header-button {
     position:relative;
     z-index:10;
     background:#000;
@@ -80,7 +80,7 @@ body {
       max-height:64px;
     }
 
-    &.live-button {
+    &.vs-live-button {
       flex:0 0 auto;
       max-width:none;
       z-index:8;
@@ -88,7 +88,7 @@ body {
     }
   }
 
-  .search-column {
+  .vs-search-column {
     flex:0 1 100%;
     max-width:50px;
     transition:all .1s;
@@ -100,9 +100,9 @@ body {
       max-height:64px;
     }
 
-    &.active {
+    &.vs-active {
 
-      .search-row {
+      .vs-search-row {
         transform:translateX(calc(-#{100%} + 50px));
 
         @include small {
@@ -123,7 +123,7 @@ body {
       }
     }
 
-    .search-row {
+    .vs-search-row {
       position:absolute;
       top:0;
       left:0;
@@ -152,33 +152,33 @@ body {
       }
     }
 
-    .search-button {
+    .vs-search-button {
       flex:0 0 35px;
       max-width:35px;
     }
   }
 
-  .nav-page-links {
+  .vs-nav-page-links {
     transition:all .1s;
     max-width:100%;
 
-    &.inactive {
+    &.vs-inactive {
       //flex:0 0 0;
       max-width:0;
       overflow:hidden;
     }
   }
 
-  #notificationButton {
+  #vs-notificationButton {
 
-    .wrap {
+    .vs-wrap {
       position:absolute;
       top:0;
       left:0;
       height:100%;
       width:100%;
 
-      .new {
+      .vs-new {
         width:100%;
         height:100%;
         font-size: 12px;
@@ -208,7 +208,7 @@ body {
     }
   }
 
-  .menu {
+  .vs-menu {
     flex: 0 0 50px;
     cursor:pointer;
     will-change:background-color;
@@ -236,7 +236,7 @@ body {
 
     @include rippleDirective();
 
-    &.active {
+    &.vs-active {
       background-color:nth(nth($greys, 5), 2);
 
       i {
@@ -284,7 +284,7 @@ body {
     }
   }
 
-  #liveIndicator {
+  #vs-liveIndicator {
     position:relative;
     z-index:2;
     padding:0 3px;
@@ -308,7 +308,7 @@ body {
   }
 }
 
-.notification-badge {
+.vs-notification-badge {
   position:absolute;
   top:8px;
   right:8px;
@@ -316,7 +316,7 @@ body {
   width:16px;
   background:$errorRed;
 
-  &.smaller {
+  &.vs-smaller {
     top:-4px;
     right:-4px;
     height:8px;
@@ -324,7 +324,7 @@ body {
   }
 }
 
-#navSideBar {
+#vs-navSideBar {
   position:fixed;
   top:50px;
   height:calc(100% - 50px);
@@ -336,7 +336,7 @@ body {
   transition:transform .3s ease-in-out;
   overflow-y:auto;
 
-  &.active {
+  &.vs-active {
     transform:translateX(0);
   }
 
@@ -345,38 +345,38 @@ body {
     height:calc(100% - 65px);
   }
 
-  #userInfo {
+  #vs-userInfo {
     //flex:0 0 300px;
 
-    .avatar-wrap {
+    .vs-avatar-wrap {
       width:125px;
       max-width:125px;
       height:125px;
     }
   }
 
-  #pageLinks {
+  #vs-pageLinks {
 
-    .page-link {
+    .vs-page-link {
       //border-bottom:1px solid $lightGray;
       text-decoration:none;
       will-change: color, background-color;
       transition:color .1s ease-in-out, background-color .1s ease-in-out;
       flex:0 0 auto;
 
-      .parent-button {
+      .vs-parent-button {
         width:100%;
         position:relative;
 
-        &.active {
+        &.vs-active {
           background-color:#f2f2f2;
 
-          .arrow {
+          .vs-arrow {
             transform:rotate(180deg);
           }
         }
 
-        .arrow {
+        .vs-arrow {
           position:absolute;
           top:0;
           right:$gutterWidth / 3;
@@ -388,18 +388,18 @@ body {
         }
       }
 
-      .child-links {
+      .vs-child-links {
         max-height:0;
         overflow:hidden;
         transition:max-height .2s ease-in-out;
         will-change:max-height;
 
-        .page-link {
+        .vs-page-link {
           padding-left:$gutterWidth;
         }
       }
 
-      &:not(.parent):hover {
+      &:not(.vs-parent):hover {
         color:#000;
         background-color:#f2f2f2;
       }
@@ -410,7 +410,7 @@ body {
       }
     }
 
-    .sub-links {
+    .vs-sub-links {
       flex:0 0 auto;
 
       a {
@@ -421,10 +421,10 @@ body {
   }
 }
 
-#subNav {
+#vs-subNav {
   z-index:99;
 
-  .subnav-link {
+  .vs-subnav-link {
     transition:color .1s ease-in-out, background-color .1s ease-in-out;
     will-change:color, background-color;
     flex:0 0 120px;
@@ -447,7 +447,7 @@ body {
       background-color:nth(nth($greys, 5), 2)
     }
 
-    &.my-lists {
+    &.vs-my-lists {
       @include xSmallOnly {
         display:none;
       }
@@ -456,8 +456,8 @@ body {
     @each $key, $value in $content_colors {
       &.#{$key}:hover,
       &.#{$key}s:hover,
-      &.#{$key}.active,
-      &.#{$key}s.active {
+      &.#{$key}.vs-active,
+      &.#{$key}s.vs-active {
         color:#fff;
         border-bottom-color:$value;
 
@@ -468,12 +468,12 @@ body {
     }
   }
 
-  .pad-sides {
+  .vs-pad-sides {
     padding:0 35px;
   }
 }
 
-#subNavWrap {
+#vs-subNavWrap {
   z-index:10;
   overflow-x:auto;
   -ms-overflow-style: none;
@@ -483,13 +483,13 @@ body {
   }
 }
 
-#publicFooter {
+#vs-publicFooter {
 
-  .dark-logo {
+  .vs-dark-logo {
     max-width:150px;
   }
 
-  a:hover:not(.social-media-link) {
+  a:hover:not(.vs-social-media-link) {
     text-decoration:underline;
   }
   a:hover {
@@ -520,7 +520,7 @@ footer {
     }
   }
 
-  .footer-col {
+  .vs-footer-col {
     font-size:13px;
     flex:1 1 100%;
     padding:2px 0;
@@ -534,7 +534,7 @@ footer {
     a {
       margin:0 3px;
 
-      &.social-media-link {
+      &.vs-social-media-link {
 
         i {
           font-size:20px;
@@ -547,18 +547,18 @@ footer {
   }
 }
 
-.main-section-link {
+.vs-main-section-link {
   transition: font-weight .2s ease-in-out, color .2s ease-in-out;
   will-change: font-weight, color;
   @include rippleDirective();
 
-  &:hover, &.active {
+  &:hover, &.vs-active {
     font-weight:700;
     color:#fff;
   }
 }
 
-.scroll-sub-nav {
+.vs-scroll-sub-nav {
   position:absolute;
   top:0;
   bottom:0;
@@ -572,14 +572,14 @@ footer {
   }
 }
 
-#scrollSubNavLeft {
+#vs-scrollSubNavLeft {
   left:0;
 }
-#scrollSubNavRight {
+#vs-scrollSubNavRight {
   right:0;
 }
 
-#backgroundOverlay {
+#vs-backgroundOverlay {
   position:fixed;
   top:0;
   left:0;
@@ -593,7 +593,7 @@ footer {
   transition:opacity .2s ease-in-out, visibility .2s ease-in-out;
   cursor:pointer;
 
-  &.active {
+  &.vs-active {
     opacity:1;
     visibility:visible;
   }

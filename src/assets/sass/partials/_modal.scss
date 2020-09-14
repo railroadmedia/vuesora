@@ -4,7 +4,7 @@
   pointer-events:none;
 }
 
-.modal {
+.vs-modal {
   position:fixed;
   top:0;
   left:0;
@@ -24,17 +24,17 @@
     max-width:100%;
   }
 
-  &.displayed {
+  &.vs-displayed {
     display:block;
   }
 
-  &.active {
+  &.vs-active {
     opacity:1;
     visibility:visible;
     transform:scale(1);
   }
 
-  &#addToCalendarModal {
+  &#vs-addToCalendarModal {
     & > div {
       @include xSmallOnly {
         top:40%;
@@ -42,7 +42,7 @@
     }
   }
 
-  &.small > div {
+  &.vs-small > div {
     max-width:480px;
   }
 
@@ -62,7 +62,7 @@
     }
   }
 
-  .close-button {
+  .vs-close-button {
     position:absolute;
     height:25px;
     width:25px;
@@ -76,11 +76,11 @@
     cursor: pointer;
     z-index:5;
 
-    @extend .flex-center;
+    @extend .vs-flex-center;
   }
 }
 
-#modalOverlay {
+#vs-modalOverlay {
   position:fixed;
   top:0;
   left:0;
@@ -93,7 +93,7 @@
   will-change:opacity, visibility;
   transition:opacity .3s ease-in-out, visibility .3s ease-in-out;
 
-  &.active {
+  &.vs-active {
     opacity:1;
     visibility:visible;
   }

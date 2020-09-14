@@ -1,7 +1,7 @@
 <template>
-    <div class="spin-wrapper">
+    <div class="vs-spin-wrapper">
         <div
-            class="spinner"
+            class="vs-spinner"
             :style="`border-top-color:${colorCode};`"
         >
         </div>
@@ -46,14 +46,14 @@ export default {
 };
 </script>
 <style lang="scss">
-    .spin-wrapper {
+    .vs-spin-wrapper {
         position: absolute;
         top:0;
         left:0;
         width: 100%;
         height: 100%;
 
-        .spinner {
+        .vs-spinner {
             position: absolute;
             height: 60px;
             width: 60px;

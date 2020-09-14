@@ -1,10 +1,10 @@
 <template>
-    <div class="flex flex-column volume">
-        <div class="flex flex-row align-v-center">
-            <div class="flex flex-column volume-rail-wrap">
-                <div class="volume-rail">
+    <div class="vs-flex vs-flex-column vs-volume">
+        <div class="vs-flex vs-flex-row vs-align-v-center">
+            <div class="vs-flex vs-flex-column vs-volume-rail-wrap">
+                <div class="vs-volume-rail">
                     <div
-                        class="volume-fill"
+                        class="vs-volume-fill"
                         :style="volumeOffset"
                         :class="themeBgClass"
                         @click.stop
@@ -12,7 +12,7 @@
 
                     <input
                         type="range"
-                        class="volume-range"
+                        class="vs-volume-range"
                         min="0"
                         max="100"
                         :value="currentVolume"

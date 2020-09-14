@@ -2,14 +2,14 @@
     <div>
         <div
             ref="videoWrap"
-            class="video-wrap"
-            :class="{'picture-in-picture': isPipEnabled}"
+            class="vs-video-wrap"
+            :class="{'vs-picture-in-picture': isPipEnabled}"
         >
-            <div class="widescreen bg-black">
+            <div class="vs-widescreen vs-bg-black">
                 <div
                     ref="container"
-                    class="flex flex-column video-player"
-                    :class="{'user-active': userActive || !isPlaying}"
+                    class="vs-flex vs-flex-column vs-video-player"
+                    :class="{'vs-user-active': userActive || !isPlaying}"
                     @contextmenu.stop.prevent="toggleContextMenu"
                     @mousemove="trackMousePosition"
                     @touchmove="trackMousePosition"
@@ -40,7 +40,7 @@
                     <transition name="fade">
                         <span
                             v-show="currentPlaybackRate !== 1"
-                            class="rate-indicator title text-white pa-1"
+                            class="vs-rate-indicator vs-title vs-text-white vs-pa-1"
                         >
                             {{ currentPlaybackRate }}x
                         </span>
@@ -49,14 +49,14 @@
                     <div
                         v-show="contextMenu"
                         ref="contextMenu"
-                        class="context-menu bg-grey-5 pointer text-white shadow overflow"
+                        class="vs-context-menu vs-bg-grey-5 vs-pointer vs-text-white vs-shadow vs-overflow"
                         :style="contextMenuPosition"
                         @click.stop.prevent
                     >
-                        <ul class="list-style-none tiny dense font-bold">
+                        <ul class="vs-list-style-none vs-tiny vs-dense vs-font-bold">
                             <li
                                 v-if="!isMobile && useKeyboard"
-                                class="pa-1 hover-bg-grey-4"
+                                class="vs-pa-1 vs-hover-bg-grey-4"
                                 @click="openDialog('keyboardShortcuts')"
                             >
                                 {{ dialogs.keyboardShortcuts ? 'Hide' : 'Show' }} Keyboard Shortcuts
@@ -69,7 +69,7 @@
                             <!--                            </li>-->
                             <li
                                 v-if="!isMobile"
-                                class="pa-1 hover-bg-grey-4"
+                                class="vs-pa-1 vs-hover-bg-grey-4"
                                 @click="togglePip"
                             >
                                 {{ isPipEnabled || isExperimentalPictureInPictureEnabled
@@ -81,7 +81,7 @@
                     <transition name="grow-fade">
                         <div
                             v-show="loading && !isPlaying"
-                            class="player-overlay"
+                            class="vs-player-overlay"
                             @click.stop.prevent
                         >
                             <LoadingAnimation :theme-color="themeColor " />
@@ -91,12 +91,12 @@
                     <transition name="fade">
                         <div
                             v-show="isChromeCastConnected"
-                            class="cast-dialog flex flex-center pa-3 text-center text-white"
+                            class="vs-cast-dialog vs-flex vs-flex-center vs-pa-3 vs-text-center vs-text-white"
                         >
                             <span style="font-size:72px;">
                                 <i class="fab fa-chromecast"></i>
                             </span>
-                            <h1 class="subheading">
+                            <h1 class="vs-subheading">
                                 Video is playing on another device
                             </h1>
                         </div>
@@ -116,16 +116,16 @@
 
                     <div
                         ref="controls"
-                        class="controls-wrap"
+                        class="vs-controls-wrap"
                         @dblclick.stop.prevent="fullscreen"
                         @click.stop="playPauseViaControlWrap"
                     >
                         <transition name="fast-fade">
                             <div
                                 v-show="isTransitioning"
-                                class="player-overlay big-play-button pointer"
+                                class="vs-player-overlay vs-big-play-button vs-pointer"
                             >
-                                <div class="overlay-play rounded flex-center shadows">
+                                <div class="vs-overlay-play vs-rounded vs-flex-center vs-shadows">
                                     <i
                                         class="fas"
                                         :class="isPlaying ? 'fa-pause' : 'fa-play'"
@@ -134,8 +134,8 @@
                             </div>
                         </transition>
 
-                        <div class="top-controls">
-                            <div class="flex flex-row align-h-right">
+                        <div class="vs-top-controls">
+                            <div class="vs-flex vs-flex-row vs-align-h-right">
                                 <transition name="grow-fade">
                                     <PlayerButton
                                         v-if="isChromeCastSupported && controls.chromecast && !isPipEnabled"
@@ -173,10 +173,10 @@
                             </div>
                         </div>
 
-                        <div class="player-controls flex flex-column noselect">
+                        <div class="vs-player-controls vs-flex vs-flex-column vs-noselect">
                             <!--  TOP ROW  -->
                             <div
-                                class="flex flex-row"
+                                class="vs-flex vs-flex-row"
                                 style="min-height:50px;"
                                 @dblclick.stop.prevent="() => false"
                                 @click.stop.prevent="() => false"
@@ -191,7 +191,7 @@
                                     <i class="fas fa-undo"></i>
                                 </PlayerButton>
 
-                                <div class="flex flex-column spacer"></div>
+                                <div class="vs-flex vs-flex-column vs-spacer"></div>
 
                                 <PlayerButton
                                     v-if="controls.forward"
@@ -207,7 +207,7 @@
                             <!--  MIDDLE ROW  -->
                             <div
                                 v-if="controls.progress"
-                                class="flex flex-row"
+                                class="vs-flex vs-flex-row"
                                 @dblclick.stop.prevent="() => false"
                             >
                                 <PlayerProgress
@@ -228,7 +228,7 @@
 
                             <!--  BOTTOM ROW  -->
                             <div
-                                class="flex flex-row"
+                                class="vs-flex vs-flex-row"
                                 @dblclick.stop.prevent="() => false"
                                 @click.stop.prevent="() => false"
                             >
@@ -247,12 +247,12 @@
 
                                 <div
                                     v-if="controls.time"
-                                    class="flex flex-column text-white body align-v-center noselect flex-auto"
+                                    class="vs-flex vs-flex-column vs-text-white vs-body vs-align-v-center vs-noselect vs-flex-auto"
                                 >
                                     {{ parseTime(currentTime) }} / {{ parseTime(totalDuration) }}
                                 </div>
 
-                                <div class="flex flex-column spacer"></div>
+                                <div class="vs-flex vs-flex-column vs-spacer"></div>
 
                                 <PlayerVolume
                                     v-if="!isMobile && controls.volume"
@@ -301,7 +301,7 @@
 
                     <div
                         v-show="isMobileDrawerOpen"
-                        class="settings-mobile-overlay"
+                        class="vs-settings-mobile-overlay"
                         @click="settingsDrawer = false"
                     ></div>
 
@@ -337,7 +337,7 @@
 
         <div
             v-if="isPipEnabled"
-            class="widescreen bg-black"
+            class="vs-widescreen vs-bg-black"
         ></div>
     </div>
 </template>
@@ -1074,10 +1074,12 @@ export default {
 
             if (this.drawersShouldOpenFromBottom && this.settingsDrawer) {
                 document.body.classList.add('drawer-open');
+                // todo - review this class name useage
             }
 
             if (this.drawersShouldOpenFromBottom && !this.settingsDrawer) {
                 document.body.classList.remove('drawer-open');
+                // todo - review this class name useage
             }
         },
 
@@ -1087,10 +1089,12 @@ export default {
 
             if (this.drawersShouldOpenFromBottom && this.captionsDrawer) {
                 document.body.classList.add('drawer-open');
+                // todo - review this class name useage
             }
 
             if (this.drawersShouldOpenFromBottom && !this.captionsDrawer) {
                 document.body.classList.remove('drawer-open');
+                // todo - review this class name useage
             }
         },
 
@@ -1100,6 +1104,7 @@ export default {
             this.contextMenu = false;
 
             document.body.classList.remove('drawer-open');
+            // todo - review this class name useage
         },
 
         enableCaptions(payload) {

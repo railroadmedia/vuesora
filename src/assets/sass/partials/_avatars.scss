@@ -1,13 +1,13 @@
 @import './_variables.scss';
 
-.user-avatar {
+.uvs-ser-avatar {
   position:relative;
   height:0;
   padding-bottom:100%;
   border-radius:50%;
   overflow:hidden;
 
-  &.smaller img {
+  &.vs-smaller img {
     border:3px solid #fff;
   }
 
@@ -26,7 +26,7 @@
     max-width:100%;
   }
 
-  &.subscriber {
+  &.vs-subscriber {
 
     &:after {
       content:'';
@@ -40,7 +40,7 @@
       background-repeat:no-repeat;
     }
 
-    &.team {
+    &.vs-team {
       background-color:#000;
 
       &:after {
@@ -54,7 +54,7 @@
       }
     }
 
-    &.edge {
+    &.vs-edge {
       background-color: $drumeoBlue;
 
       &:after {
@@ -68,7 +68,7 @@
       }
     }
 
-    &.lifetime {
+    &.vs-lifetime {
       background-color: $recordeoYellow;
 
       &:after {
@@ -82,7 +82,7 @@
       }
     }
 
-    &.guitar {
+    &.vs-guitar {
       background-color:$guitareoGreen;
 
       img {
@@ -91,7 +91,7 @@
       }
     }
 
-    &.piano {
+    &.vs-piano {
       background-color:$pianoteRed;
 
       img {

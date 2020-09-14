@@ -1,13 +1,13 @@
 @import './_variables.scss';
 
-body.play-alongs-player-open {
+body.vs-play-alongs-player-open {
   padding-bottom: 325px;
 
   footer {
     margin-bottom:263px;
   }
 
-  &.has-public-footer {
+  &.vs-has-public-footer {
     padding-bottom:891px;
 
     footer {
@@ -23,13 +23,13 @@ body.play-alongs-player-open {
     }
   }
 
-  #intercom-container {
+  #vs-intercom-container {
     display:none;
   }
 }
 
-.play-alongs {
-  .loading {
+.vs-play-alongs {
+  .vs-loading {
     position:fixed;
     bottom:300px;
     left:50%;
@@ -38,14 +38,14 @@ body.play-alongs-player-open {
     margin-left:-50px;
   }
 
-  .enable-filters {
+  .vs-enable-filters {
     flex:0 0 50px;
     max-width:50px;
     min-width:50px;
   }
 }
 
-#playAlongsPlayer {
+#vs-playAlongsPlayer {
   position:fixed;
   font-size:0;
   bottom:0;
@@ -57,15 +57,15 @@ body.play-alongs-player-open {
   will-change:transform;
   touch-action: manipulation;
 
-  &.collapsed-down {
+  &.vs-collapsed-down {
     transform:translateY(calc(100% - 10px));
   }
 
-  .player-buttons {
+  .vs-player-buttons {
     flex: 0 0 210px;
   }
 
-  .player-tab {
+  .vs-player-tab {
     position:absolute;
     height:30px;
     width:60px;
@@ -75,11 +75,11 @@ body.play-alongs-player-open {
     z-index:1;
   }
 
-  .progress-container {
+  .vs-progress-container {
     position:relative;
     height:10px;
 
-    .progress-amount {
+    .vs-progress-amount {
       height:100%;
       width:100%;
       position:absolute;
@@ -88,7 +88,7 @@ body.play-alongs-player-open {
     }
   }
 
-  .loop-anchor {
+  .vs-loop-anchor {
     position:absolute;
     top:-35px;
     width:30px;
@@ -117,7 +117,7 @@ body.play-alongs-player-open {
     }
   }
 
-  .skip-5 {
+  .vs-skip-5 {
 
     i {
       position:relative;
@@ -134,7 +134,7 @@ body.play-alongs-player-open {
   }
 }
 
-.show-mobile-filters {
+.vs-show-mobile-filters {
   position:fixed;
   top:110px;
   right:0;

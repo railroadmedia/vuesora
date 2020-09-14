@@ -77,13 +77,13 @@
     width:320px;
   }
 
-  .flex-row {
+  .vs-flex-row {
     flex:0 1 100%;
     max-width:100%;
     width:100%;
   }
 
-  .icon-column {
+  .vs-icon-column {
     flex:0 0 50px;
     color:nth(nth($greys, 2), 2);
     transition:color .1s ease-in-out;
@@ -91,7 +91,7 @@
   }
 
   &:hover {
-    .icon-column {
+    .vs-icon-column {
       color:#000;
     }
   }

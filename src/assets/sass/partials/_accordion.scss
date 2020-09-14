@@ -1,21 +1,21 @@
 @import './_variables.scss';
 
-.accordion {
+.vs-accordion {
 
-  &.active {
+  &.vs-active {
     padding-bottom:$gutterWidth;
 
-    .arrow-col {
+    .vs-arrow-col {
       transform: rotate(180deg);
     }
   }
 
-  .accordion-trigger {
+  .vs-accordion-trigger {
     * {
       pointer-events:none;
     }
 
-    .meta-data-col {
+    .vs-meta-data-col {
        @include xSmallOnly {
          display:none;
        }
@@ -23,7 +23,7 @@
       flex:0 0 100px;
     }
 
-    .arrow-col {
+    .vs-arrow-col {
       transition:transform .2s ease-in-out;
       will-change:transform;
       z-index:5;
@@ -32,7 +32,7 @@
     }
   }
 
-  .accordion-content {
+  .vs-accordion-content {
     max-height:0;
     overflow:hidden;
     will-change:max-height;

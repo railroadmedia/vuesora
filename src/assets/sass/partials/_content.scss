@@ -1,14 +1,14 @@
 @import './_variables.scss';
 
 // Progress
-.content-progress {
+.vs-content-progress {
 
-  & > .flex-column {
+  & > .vs-flex-column {
     @include xSmallOnly {
       flex:0 0 100%;
     }
 
-    &.left-column {
+    &.vs-left-column {
       flex:0 0 100%;
       margin-bottom:$gutterWidth / 2;
 
@@ -26,7 +26,7 @@
       }
     }
 
-    &.right-column {
+    &.vs-right-column {
       @include small {
         flex:0 0 250px;
       }
@@ -34,29 +34,29 @@
   }
 }
 
-.trophy-progress-bar {
+.vs-trophy-progress-bar {
   height:50px;
   border-radius:50px;
   overflow:hidden;
 
-  &.drumeo {
+  &.vs-drumeo {
     background-color:darken($drumeoBlue, 12%);
 
-    .progress-border {
+    .vs-progress-border {
       border-color:darken($drumeoBlue, 12%);
     }
   }
-  &.pianote {
+  &.vs-pianote {
     background-color:darken($pianoteRed, 12%);
 
-    .progress-border {
+    .vs-progress-border {
       border-color:darken($pianoteRed, 12%);
     }
   }
-  &.guitareo {
+  &.vs-guitareo {
     background-color:darken($guitareoGreen, 12%);
 
-    .progress-border {
+    .vs-progress-border {
       border-color:darken($guitareoGreen, 12%);
     }
   }
@@ -66,7 +66,7 @@
     margin-bottom:$gutterWidth / 3;
   }
 
-  .trophy-progress-cutoff {
+  .vs-trophy-progress-cutoff {
     border-radius:35px;
     height:70px;
     margin-top:-10px;
@@ -75,14 +75,14 @@
     overflow:hidden;
     z-index:3;
 
-    .progress-border {
+    .vs-progress-border {
       height:100%;
       width:100%;
       border-radius:25px;
       z-index:3;
     }
 
-    .trophy-progress {
+    .vs-trophy-progress {
       height:calc(100% - 10px);
       top:5px;
       width:100%;
@@ -92,18 +92,18 @@
     }
   }
 
-  .progress-percent {
+  .vs-progress-percent {
     position:absolute;
     top:50%;
     right:15px;
     transform:translateY(-50%);
 
-    &.right {
+    &.vs-right {
       right:-45px;
     }
   }
 
-  .trophy {
+  .vs-trophy {
     flex:0 0 auto;
     position:relative;
 
@@ -111,11 +111,11 @@
       transition:all .2s ease-in-out;
     }
 
-    .reward {
+    .vs-reward {
       z-index:2;
     }
 
-    .white-underlay {
+    .vs-white-underlay {
       position:absolute;
       z-index:1;
       background-color:white;
@@ -128,7 +128,7 @@
       opacity:0;
       visibility:hidden;
 
-      &.visible {
+      &.vs-visible {
         opacity:1;
         visibility:visible;
       }
@@ -150,7 +150,7 @@
   }
 }
 
-.next-prev-button-col {
+.vs-next-prev-button-col {
   flex:0 0 50px;
 
   @include small {
@@ -159,7 +159,7 @@
 }
 
 // Live Video Container
-#liveVideo {
+#vs-liveVideo {
   position:absolute;
   top:0;
   left:0;
@@ -168,7 +168,7 @@
 }
 
 // Chat Container
-#chatContainer {
+#vs-chatContainer {
   padding-left:0;
   flex:0 0 100%;
   height:350px;
@@ -181,7 +181,7 @@
     margin-top:0;
   }
 
-  .inside {
+  .vs-inside {
     position:relative;
     overflow:hidden;
   }
@@ -196,7 +196,7 @@
 }
 
 // Breadcrumbs
-#breadCrumbs {
+#vs-breadCrumbs {
 
   i {
     height:20px;
@@ -205,21 +205,21 @@
 }
 
 // Video Container
-#videoContainer {
+#vs-videoContainer {
   flex:1 1 50%;
   max-width:100%;
 }
 
 
 // Lesson Info Sidebar
-#lessonInfo {
+#vs-lessonInfo {
   flex-wrap:wrap;
 
   @include small {
     flex-wrap:nowrap;
   }
 
-  .lesson-sidebar {
+  .vs-lesson-sidebar {
     flex:0 0 100%;
 
     @include small {
@@ -233,10 +233,10 @@
       max-width:420px;
     }
 
-    .content-table {
+    .vs-content-table {
       max-width:100%;
 
-      .xs-12 {
+      .vs-xs-12 {
         max-width:100%;
       }
     }
@@ -245,32 +245,32 @@
 
 // Complete Button
 
-.completeButton {
+.vs-completeButton {
   span {
     transition: opacity .2s ease-in-out, visibility .2s ease-in-out;
     will-change:opacity, visibility;
   }
 
-  &.is-complete {
+  &.vs-is-complete {
 
-    .incompleted {
+    .vs-incompleted {
       opacity:0;
       visibility:hidden;
       display:none;
     }
-    .completed {
+    .vs-completed {
       opacity:1;
       visibility:visible;
       display:flex;
     }
   }
 
-  .incompleted {
+  .vs-incompleted {
     opacity:1;
     visibility:visible;
     display:flex;
   }
-  .completed {
+  .vs-completed {
     opacity:0;
     visibility:hidden;
     display:none;
@@ -279,7 +279,7 @@
 
 
 // Catalogues
-.progress-filters {
+.vs-progress-filters {
   flex: 0 0 100%;
   flex-direction:row;
 
@@ -289,7 +289,7 @@
   }
 }
 
-.catalogue-filter {
+.vs-catalogue-filter {
   flex:0 0 100%;
   margin-bottom:$gutterWidth / 2;
 
@@ -298,7 +298,7 @@
     margin-bottom:0;
   }
 
-  .cancel-filter {
+  .vs-cancel-filter {
     position:absolute;
     top:0;
     right:0;
@@ -318,7 +318,7 @@
   }
 }
 
-.resource-buttons {
+.vs-resource-buttons {
   justify-content:stretch;
 
   @include small {
@@ -326,7 +326,7 @@
   }
 }
 
-.resource-button {
+.vs-resource-button {
   //flex:0 0 25%;
   //
   //@include xSmallOnly {
@@ -339,7 +339,7 @@
   }
 }
 
-.download-dropdown {
+.vs-download-dropdown {
   position:absolute;
   top:105%;
   left:50%;
@@ -347,19 +347,19 @@
   z-index:20;
 }
 
-.single-col {
-  .nmh-1 {
+.vs-single-col {
+  .vs-nmh-1 {
     margin:0;
   }
 
-  .catalogue-card {
+  .vs-catalogue-card {
     flex:0 0 100%;
     max-width:100%;
     min-width:100%;
   }
 }
 
-.catalogue-card {
+.vs-catalogue-card {
   flex:0 0 50%;
   max-width:50%;
 
@@ -373,13 +373,13 @@
     max-width:25%;
   }
 
-  &.display-inline {
+  &.vs-display-inline {
     flex:0 0 100%;
     max-width:100%;
     min-width:100%;
   }
 
-  &.six-wide {
+  &.vs-six-wide {
     flex:0 0 100%;
     max-width:100%;
 
@@ -420,32 +420,32 @@
         display: flex;
       }
     }
-    .flex-column {
+    .vs-flex-column {
       //flex-basis: auto;
     }
   }
 
   &:hover {
-    .card-media {
-      .thumb-img {
+    .vs-card-media {
+      .vs-thumb-img {
         transform:scale(1.1);
       }
 
-      .thumb-hover {
+      .vs-thumb-hover {
         opacity:1;
         visibility:visible;
       }
     }
   }
 
-  &.no-access, &.completed {
-    .card-media .thumb-hover {
+  &.vs-no-access, &.vs-completed {
+    .vs-card-media .vs-thumb-hover {
       opacity:1;
       visibility:visible;
     }
   }
 
-  .thumbnail-col {
+  .vs-thumbnail-col {
     flex: 0 0 175px;
     max-width:175px;
     min-width:175px;
@@ -467,14 +467,14 @@
     word-wrap:break-word;
   }
 
-  .card-media {
+  .vs-card-media {
     position:relative;
     overflow:hidden;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
 
-    .thumb-img {
+    .vs-thumb-img {
       position:absolute;
       top:0;
       left:0;
@@ -482,7 +482,7 @@
       right:0;
     }
 
-    .add-to-list {
+    .vs-add-to-list {
       position:absolute;
       top:0;
       right:0;
@@ -495,12 +495,12 @@
       text-shadow:0 0 2px rgba(0,0,0,.8);
       z-index:3;
 
-      &.is-added {
+      &.vs-is-added {
         transform:rotate(45deg);
       }
     }
 
-    .thumbnail-title {
+    .vs-thumbnail-title {
       position:absolute;
       bottom:0;
       left:0;
@@ -509,7 +509,7 @@
       @include topToBottomGradient(transparent, #000);
     }
 
-    .bundle-complete, .thumb-hover {
+    .vs-bundle-complete, .vs-thumb-hover {
       position:absolute;
       top:0;
       left:0;
@@ -524,20 +524,20 @@
       }
     }
 
-    .thumb-hover {
+    .vs-thumb-hover {
       opacity:0;
       visibility:hidden;
       transition:all .2s ease-in-out;
       will-change:opacity, visibility;
     }
 
-    &.song.widescreen .thumb-img {
+    &.vs-song.widescreen .vs-thumb-img {
       background-size:contain;
     }
   }
 }
 
-.show-index-card {
+.vs-show-index-card {
   background-position:center;
   background-size:100%;
   background-repeat:no-repeat;
@@ -546,12 +546,12 @@
   &:hover {
     background-size:110%;
 
-    .box-hover {
+    .vs-box-hover {
       opacity:1;
     }
   }
 
-  .box-hover {
+  .vs-box-hover {
     position:absolute;
     top:0;
     left:0;
@@ -568,7 +568,7 @@
     }
   }
 
-  .new {
+  .vs-new {
     position:absolute;
     bottom:0;
     left:50%;
@@ -578,14 +578,14 @@
   }
 }
 
-#loadingDialog {
+#vs-loadingDialog {
   position:fixed;
   bottom:$gutterWidth;
   z-index:98;
   width:100%;
   left:0;
 
-  .loading-spinner {
+  .vs-loading-spinner {
     max-width:250px;
     flex:0 0 250px;
 
@@ -597,55 +597,55 @@
   }
 }
 
-#playQAVideo {
+#vs-playQAVideo {
 
-  .lesson {
+  .vs-lesson {
     display:none;
   }
 
-  &.active {
-    .lesson {
+  &.vs-active {
+    .vs-lesson {
       display:flex;
     }
-    .qa {
+    .vs-qa {
       display:none;
     }
   }
 }
 
-.addToList {
+.vs-addToList {
   span {
     transition: opacity .2s ease-in-out, visibility .2s ease-in-out;
     will-change:opacity, visibility;
   }
 
-  &.added {
+  &.vs-added {
 
-    .un-added {
+    .vs-un-added {
       opacity:0;
       visibility:hidden;
       display:none;
     }
-    .is-added {
+    .vs-is-added {
       opacity:1;
       visibility:visible;
       display:flex;
     }
   }
 
-  .un-added {
+  .vs-un-added {
     opacity:1;
     visibility:visible;
     display:flex;
   }
-  .is-added {
+  .vs-is-added {
     opacity:0;
     visibility:hidden;
     display:none;
   }
 }
 
-#timezoneLabel {
+#vs-timezoneLabel {
   position:relative;
 
   select {
@@ -658,11 +658,11 @@
   }
 }
 
-*[data-toggle-catalogue], .heading-tab h3 {
+*[data-toggle-catalogue], .vs-heading-tab h3 {
   padding-bottom:3px;
 }
 
-.catalogue-heading-tab {
+.vs-catalogue-heading-tab {
   flex:0 0 auto;
   align-items:flex-start;
   justify-content:flex-start;
@@ -671,7 +671,7 @@
     flex:0 0 100%;
   }
 
-  .heading {
+  .vs-heading {
     flex:0 0 auto;
 
     @include xSmallOnly {
@@ -681,22 +681,22 @@
   }
 }
 
-.sbt-image, .sbt-video {
+.vs-sbt-image, .vs-sbt-video {
   filter:contrast(125%);
   max-width:100%;
 }
 
-.play-sbt {
-  .start { display:flex; }
-  .stop { display:none; }
+.vs-play-sbt {
+  .vs-start { display:flex; }
+  .vs-stop { display:none; }
 
-  &.playing {
-    .start { display:none; }
-    .stop { display:flex; }
+  &.vs-playing {
+    .vs-start { display:none; }
+    .vs-stop { display:flex; }
   }
 }
 
-.four-cards-row {
+.vs-four-cards-row {
 
   @include smallOnly {
     .catalogue-card:nth-child(n+4) {
@@ -705,7 +705,7 @@
   }
 
   @include medium {
-    .catalogue-card:nth-child(n+5) {
+    .vs-catalogue-card:nth-child(n+5) {
       display:none;
     }
   }

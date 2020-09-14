@@ -1,6 +1,6 @@
 <template>
     <div
-        class="loading-wrap heading"
+        class="vs-loading-wrap vs-heading"
         @click.stop.prevent
     >
         <!--<i class="fas fa-spinner fa-spin"></i>-->

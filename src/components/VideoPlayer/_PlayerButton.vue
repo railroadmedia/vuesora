@@ -1,13 +1,13 @@
 <template>
-    <div class="flex flex-column player-button">
+    <div class="vs-flex vs-flex-column vs-player-button">
         <button
-            class="btn collapse-square"
+            class="vs-btn vs-collapse-square"
             :title="title"
             :class="!disabled ? themeHoverTextClass : ''"
             :disabled="disabled"
         >
             <span
-                class="flat text-white"
+                class="vs-flat vs-text-white"
                 :class="active ? themeTextClass : ''"
             >
                 <slot></slot>

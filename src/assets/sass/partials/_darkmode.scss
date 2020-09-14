@@ -1,29 +1,29 @@
 @import './_variables.scss';
 
-.dark-mode {
-  .bg-white:not(.btn):not(span) {
+.vs-dark-mode {
+  .vs-bg-white:not(.btn):not(span) {
     background-color:#242424;
   }
 
-  .text-black {
+  .vs-text-black {
     color:#fefefe;
   }
 
-  .bg-black:not(header):not(#subNav):not(#breadCrumbs) {
+  .vs-bg-black:not(header):not(#vs-subNav):not(#vs-breadCrumbs) {
     background-color:#fff;
 
-    &.inverted {
+    &.vs-inverted {
       background-color:transparent;
       border-color:#fff;
     }
   }
 
-  .hover-text-black:hover {
+  .vs-hover-text-black:hover {
     color:#ffffff;
   }
 
   select,
-  input[type='text']:not(#searchInput),
+  input[type='text']:not(#vs-searchInput),
   input[type='password'],
   input[type='email'],
   input[type='number'] {
@@ -35,11 +35,11 @@
     border-color: #444444;
   }
 
-  [class*='hover-bg-grey-7']:hover {
+  [class*='vs-hover-bg-grey-7']:hover {
     background-color: #242424;
   }
 
-  .carousel img {
+  .vs-carousel img {
     filter:invert(100%);
   }
 
@@ -83,7 +83,7 @@
     }
   }
 
-  .card-media {
+  .vs-card-media {
     background-color:#000!important;
     box-shadow: 0 0 2px transparentize(nth(nth($greys, 4), 2), .5);
   }

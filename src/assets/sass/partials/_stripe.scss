@@ -1,6 +1,6 @@
 @import './_variables.scss';
 
-.stripe-element-container {
+.vs-stripe-element-container {
   height: 50px;
   line-height:50px;
   border-radius: 25px;
@@ -44,7 +44,7 @@
   }
 }
 
-.stripe-element-container label {
+.vs-stripe-element-container label {
   position:absolute;
   left:$gutterWidth / 3;
   top:0;

@@ -1,6 +1,6 @@
 @import './_variables.scss';
 
-.add-event-dropdown {
+.vs-add-event-dropdown {
   width:200px;
   max-width:200px;
   min-width:200px;
@@ -11,7 +11,7 @@
   color:#000;
   z-index:10;
 
-  .addeventatc, a {
+  .vs-addeventatc, a {
     transition:background .1s ease-in-out;
     will-change:background;
     outline:none;

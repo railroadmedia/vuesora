@@ -1,21 +1,21 @@
 <template>
     <div
-        class="player-progress"
+        class="vs-player-progress"
         @click.stop
         @drag.prevent.stop
         @dragstart.prevent.stop
         @dragenter.prevent.stop
     >
         <div
-            class="progress-tooltip tiny text-white"
+            class="vs-progress-tooltip vs-tiny vs-text-white"
             :style="toolTipOffset"
         >
             {{ toolTipValue }}
         </div>
 
-        <div class="progress-rail">
+        <div class="vs-progress-rail">
             <div
-                class="progress-fill"
+                class="vs-progress-fill"
                 :class="themeBgClass"
                 :style="progressTransforms"
             ></div>
@@ -23,15 +23,15 @@
             <div
                 v-for="(range, i) in bufferedTimeRanges"
                 :key="`range-${i}`"
-                class="buffer-fill bg-grey-3"
+                class="vs-buffer-fill vs-bg-grey-3"
                 :style="getTimeRangePosition(range)"
             ></div>
 
             <span
                 v-for="(chapter, i) in chapters"
                 :key="`chapter-${i}`"
-                class="chapter-marker"
-                :class="chapter.chapter_timecode > currentTime ? themeBgClass : 'bg-white'"
+                class="vs-chapter-marker"
+                :class="chapter.chapter_timecode > currentTime ? themeBgClass : 'vs-bg-white'"
                 :style="getChapterPosition(chapter)"
             ></span>
         </div>

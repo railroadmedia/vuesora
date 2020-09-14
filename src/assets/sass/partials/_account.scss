@@ -1,24 +1,24 @@
 @import './_variables.scss';
 
 // Settings
-.account-link {
+.vs-account-link {
 
-  &.drumeo a:hover {
+  &.vs-drumeo a:hover {
     background-color:$drumeoBlue;
     border-color:$drumeoBlue;
   }
 
-  &.pianote a:hover {
+  &.vs-pianote a:hover {
     background-color:$pianoteRed;
     border-color:$pianoteRed;
   }
 
-  &.guitareo a:hover {
+  &.vs-guitareo a:hover {
     background-color:$guitareoGreen;
     border-color:$guitareoGreen;
   }
 
-  &.recordeo a:hover {
+  &.vs-recordeo a:hover {
     background-color:$recordeoYellow;
     border-color:$recordeoYellow;
   }
@@ -35,7 +35,7 @@
   }
 }
 
-.account-nav-link {
+.vs-account-nav-link {
   border-bottom:3px solid transparent;
   transition:border-color .2s ease-in-out, color .2s ease-in-out;
 
@@ -43,13 +43,13 @@
     transition:color .2s ease-in-out;
   }
 
-  &:hover, &.active {
+  &:hover, &.vs-active {
     color:#000;
   }
 
   @each $key, $value in $brand_colors {
     &.#{$key} {
-      &:hover, &.active {
+      &:hover, &.vs-active {
         color:#000;
         border-bottom-color:$value;
 
@@ -61,11 +61,11 @@
   }
 }
 
-#settingsSidebar {
+#vs-settingsSidebar {
   flex:0 0 275px;
   overflow:hidden;
 
-  .section-link {
+  .vs-section-link {
     flex:0 0 50px;
     will-change:background-color, font-weight;
     transition:.1s background-color ease-in-out, .1s font-weight ease-in-out;
@@ -75,7 +75,7 @@
       font-weight:700;
     }
 
-    &.active {
+    &.vs-active {
       pointer-events:none;
     }
 
@@ -85,20 +85,20 @@
   }
 }
 
-#editForm {
+#vs-editForm {
 
-  .edit-button {
+  .vs-edit-button {
     flex:0 0 100px;
   }
 
-  .text-field {
+  .vs-text-field {
     flex-wrap:wrap;
 
     @include small {
       flex-wrap:nowrap;
     }
 
-    .key {
+    .vs-key {
       flex:0 0 100%;
 
       @include small {
@@ -106,31 +106,31 @@
       }
     }
 
-    .value {
+    .vs-value {
       word-break:break-word;
       word-wrap:break-word;
     }
   }
 
-  .image-col {
+  .vs-image-col {
     flex:0 0 200px;
     max-width:100%;
   }
 
-  .gear-photo-col {
+  .vs-gear-photo-col {
     flex:0 0 300px;
     max-width:300px;
   }
 
-  .payment-col {
+  .vs-payment-col {
     flex:0 0 125px;
   }
 }
 
-.cc-col {
+.vs-cc-col {
   position:relative;
 
-  .default-overlay {
+  .vs-default-overlay {
     position:absolute;
     top:-5px;
     left:-5px;
@@ -147,17 +147,17 @@
     }
   }
 
-  .credit-card-box {
+  .vs-credit-card-box {
     position:relative;
     height:0;
     padding-bottom:63%;
     z-index:1;
 
-    &.visa { background-color:#2d68a9; }
-    &.mastercard { background-color:#33495d; }
-    &.paypal { background-color:#a4bbc6; }
-    &.amex { background-color: #18325b; }
-    &.default-payment::after {
+    &.vs-visa { background-color:#2d68a9; }
+    &.vs-mastercard { background-color:#33495d; }
+    &.vs-paypal { background-color:#a4bbc6; }
+    &.vs-amex { background-color: #18325b; }
+    &.vs-default-payment::after {
       content: '';
       display: block;
       position: absolute;
@@ -169,14 +169,14 @@
       border: 2px solid $recordeoYellow;
     }
 
-    .card {
+    .vs-card {
       position:absolute;
       top:0;
       left:0;
       width:100%;
       height:100%;
 
-      & > .flex-column {
+      & > .vs-flex-column {
         height:100%;
 
         @include xSmallOnly {
@@ -184,12 +184,12 @@
         }
       }
 
-      .card-number {
+      .vs-card-number {
         font-size:50%;
       }
     }
 
-    .default-payment-method {
+    .vs-default-payment-method {
       display:inline-block;
       padding: 3px 5px 3px 5px;
       border-radius: 5px 0 5px 0;
@@ -202,13 +202,13 @@
       }
     }
 
-    .cc-icon {
+    .vs-cc-icon {
       font-size:36px;
     }
   }
 }
 
-.clear-button {
+.vs-clear-button {
   position:absolute;
   top:0;
   right:0;
@@ -224,7 +224,7 @@
   }
 }
 
-.completed-badge {
+.vs-completed-badge {
   position:absolute;
   top:0;
   left:0;
@@ -235,9 +235,9 @@
   @include flexCenter();
 }
 
-.stats-dial {
+.vs-stats-dial {
 
-  .stats-content {
+  .vs-stats-content {
     position:absolute;
     top:50%;
     left:50%;
@@ -250,7 +250,7 @@
       text-align:center;
     }
 
-    .display {
+    .vs-display {
       font-size:48px;
       line-height:48px;
 
@@ -266,7 +266,7 @@
     }
   }
 
-  .stats-type {
+  .vs-stats-type {
     position:absolute;
     bottom:-5px;
     left:50%;
@@ -283,7 +283,7 @@
   }
 }
 
-.exp-wrap {
+.vs-exp-wrap {
   width:100%;
   height:50px;
   border-radius:25px;
@@ -291,14 +291,14 @@
   position:relative;
   box-shadow: inset 0 0 0 2px nth(nth($greys, 2), 2);
 
-  .exp {
+  .vs-exp {
     position:absolute;
     top:0;
     left:0;
     height:100%;
     border-radius:25px;
 
-    .move-text-over {
+    .vs-move-text-over {
       transform:translateX(100%);
     }
   }

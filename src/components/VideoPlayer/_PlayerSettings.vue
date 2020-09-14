@@ -1,19 +1,19 @@
 <template>
-    <div class="settings-drawer bg-grey-5 text-white shadow overflow">
+    <div class="vs-settings-drawer vs-bg-grey-5 vs-text-white vs-shadow vs-overflow">
         <div class="flex flex-column">
             <div
-                class="flex flex-row pa hover-bg-grey-4 bb-grey-4-1 pointer noselect"
-                :class="isSingleSource ? 'bg-grey-4' : ''"
+                class="vs-flex vs-flex-row vs-pa vs-hover-bg-grey-4 vs-bb-grey-4-1 vs-pointer vs-noselect"
+                :class="isSingleSource ? 'vs-bg-grey-4' : ''"
                 @click.stop="toggleQualities"
             >
-                <div class="flex flex-column">
-                    <p class="body dense font-bold">
+                <div class="vs-flex vs-flex-column">
+                    <p class="vs-body vs-dense vs-font-bold">
                         Quality:
                     </p>
                 </div>
-                <div class="flex flex-column align-v-center">
+                <div class="vs-flex vs-flex-column vs-align-v-center">
                     <p
-                        class="tiny dense font-bold text-right"
+                        class="vs-tiny vs-dense vs-font-bold vs-text-right"
                         :class="themeTextClass"
                     >
                         {{ currentSourceLabel }}
@@ -27,14 +27,14 @@
 
             <div
                 v-show="qualitiesDropdown"
-                class="flex flex-row bb-grey-4-1"
+                class="vs-flex vs-flex-row vs-bb-grey-4-1"
             >
-                <div class="flex flex-column">
-                    <ul class="list-style-none tiny text-right dense font-bold">
+                <div class="vs-flex vs-flex-column">
+                    <ul class="vs-list-style-none vs-tiny vs-text-right vs-dense vs-font-bold">
                         <li
                             v-for="quality in playbackQualities"
                             :key="quality.label"
-                            class="pa-1 hover-bg-grey-4 pointer"
+                            class="vs-pa-1 vs-hover-bg-grey-4 vs-pointer"
                             :class="quality.file === currentSource ? themeTextClass : ''"
                             @click="setQuality(quality)"
                         >
@@ -53,22 +53,22 @@
             </div>
 
             <div
-                class="flex flex-row pa hover-bg-grey-4 pointer noselect"
+                class="vs-flex vs-flex-row vs-pa vs-hover-bg-grey-4 vs-pointer vs-noselect"
                 @click.stop="toggleRates"
             >
-                <div class="flex flex-column">
-                    <p class="body dense font-bold">
+                <div class="vs-flex vs-flex-column">
+                    <p class="vs-body vs-dense vs-font-bold">
                         Playback Rate:
                     </p>
                 </div>
-                <div class="flex flex-column align-v-center">
+                <div class="vs-flex vs-flex-column vs-align-v-center">
                     <p
-                        class="tiny dense font-bold text-right"
+                        class="vs-tiny vs-dense vs-font-bold vs-text-right"
                         :class="themeTextClass"
                     >
                         {{ currentPlaybackRate }}x
                         <i
-                            class="fas ml-1"
+                            class="fas vs-ml-1"
                             :class="ratesDropdown ? 'fa-caret-down' : 'fa-caret-up'"
                         ></i>
                     </p>
@@ -77,14 +77,14 @@
 
             <div
                 v-show="ratesDropdown"
-                class="flex flex-row bt-grey-4-1"
+                class="vs-flex vs-flex-row vs-bt-grey-4-1"
             >
-                <div class="flex flex-column align-v-center">
-                    <ul class="list-style-none tiny text-right dense font-bold">
+                <div class="vs-flex vs-flex-column vs-align-v-center">
+                    <ul class="vs-list-style-none vs-tiny vs-text-right vs-dense vs-font-bold">
                         <li
                             v-for="rate in playbackRates"
                             :key="`playbackRate-${rate}`"
-                            class="pa-1 hover-bg-grey-4 pointer"
+                            class="vs-pa-1 vs-hover-bg-grey-4 vs-pointer"
                             :class="rate === currentPlaybackRate ? themeTextClass : ''"
                             @click="setRate(rate)"
                         >

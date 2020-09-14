@@ -2,23 +2,23 @@
 @import '~dropzone/dist/min/dropzone.min.css';
 @import '../../../assets/sass/partials/variables';
 
-.image-processor {
+.vs-image-processor {
   text-align:center;
 }
-.image-uploader {
+.vs-image-uploader {
   cursor:pointer;
   text-align:center;
 
-  &.dz-drag-hover {
-    .choose {
+  &.vs-dz-drag-hover {
+    .vs-choose {
       display:none;
     }
-    .drop {
+    .vs-drop {
       display:flex;
     }
   }
 
-  .drop {
+  .vs-drop {
     display:none;
   }
 
@@ -26,7 +26,7 @@
     pointer-events:none;
   }
 
-  .dz-preview {
+  .vs-dz-preview {
     display:none;
   }
 
@@ -34,7 +34,7 @@
     margin:0 auto;
   }
 
-  .uploader-content {
+  .vs-uploader-content {
     position:absolute;
     top:50%;
     left:50%;
@@ -44,7 +44,7 @@
   }
 }
 
-.loading-element {
+.vs-loading-element {
   position:absolute;
   top:0;
   left:0;
@@ -58,20 +58,20 @@
   }
 }
 
-.image-cropper {
+.vs-image-cropper {
   position:relative;
 
-  .cropper-controls {
+  .vs-cropper-controls {
     a {
       width:35px;
 
-      &.normal {
+      &.vs-normal {
         width:100px;
       }
     }
   }
 
-  .image-preview {
+  .vs-image-preview {
     position:absolute;
     top:0;
     left:0;
@@ -87,7 +87,7 @@
       left:50%;
       transform:translate(-50%, -50%);
 
-      &.rounded {
+      &.vs-rounded {
         max-width:250px;
       }
     }

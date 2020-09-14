@@ -1,42 +1,42 @@
 @import './_variables.scss';
 
 // Drop Shadows
-.shadow {
+.vs-shadow {
   box-shadow: 0 0 5px rgba(0, 0, 0, .2);
 }
-.shadow-md {
+.vs-shadow-md {
   box-shadow: 0 0 15px rgba(0, 0, 0, .32);
 }
 
-.rotate-45 {
+.vs-rotate-45 {
   transform:rotate(45deg);
 }
 
 // Border Radius
 $directions:top bottom left right;
-.corners-3 {
+.vs-corners-3 {
   border-radius:3px;
 }
-.corners-5 {
+.vs-corners-5 {
   border-radius:5px;
 }
-.corners-10 {
+.vs-corners-10 {
   border-radius:10px;
 }
 @each $direction in $directions {
-  .corners-#{$direction}-3 {
+  .vs-corners-#{$direction}-3 {
     border-radius:5px 5px 0 0;
   }
 
-  .corners-#{$direction}-5 {
+  .vs-corners-#{$direction}-5 {
     border-radius:5px 5px 0 0;
   }
 }
 
-.rounded {
+.vs-rounded {
   border-radius:50%;
 
-  &.inset-border {
+  &.vs-inset-border {
     border:2px solid #fff;
     background:#fff;
   }
@@ -59,13 +59,13 @@ $borderDirections: (
   // Loop through the directions and add additional modifiers
 
   @each $parentKey, $parentValue in $borderDirections {
-    .#{$parentKey}-white-#{$i} {
+    .vs-#{$parentKey}-white-#{$i} {
       @each $property in $parentValue {
         #{$property}:#{$i}px solid #fff;
       }
     }
 
-    .#{$parentKey}-black-#{$i} {
+    .vs-#{$parentKey}-black-#{$i} {
       @each $property in $parentValue {
         #{$property}:#{$i}px solid #000;
       }
@@ -73,12 +73,12 @@ $borderDirections: (
 
     // Loop through each brand color and add the color modifier
     @each $key, $value in $brand_colors {
-      .#{$parentKey}-#{$key}-#{$i} {
+      .vs-#{$parentKey}-#{$key}-#{$i} {
         @each $property in $parentValue {
           #{$property}: #{$i}px solid $value;
         }
 
-        &.border-darken {
+        &.vs-border-darken {
           border-color: darken($value, 12%);
         }
       }
@@ -86,12 +86,12 @@ $borderDirections: (
 
     // Loop through each content color and add the color modifier
     @each $key, $value in $content_colors {
-      .#{$parentKey}-#{$key}-#{$i} {
+      .vs-#{$parentKey}-#{$key}-#{$i} {
         @each $property in $parentValue {
           #{$property}: #{$i}px solid $value;
         }
 
-        &.border-darken {
+        &.vs-border-darken {
           border-color: darken($value, 12%);
         }
       }
@@ -99,12 +99,12 @@ $borderDirections: (
 
     // Loop through each grey and add the color modifier
     @each $index, $grey in $greys {
-      .#{$parentKey}-grey-#{$index}-#{$i} {
+      .vs-#{$parentKey}-grey-#{$index}-#{$i} {
         @each $property in $parentValue {
           #{$property}: #{$i}px solid #{$grey};
         }
 
-        &.border-darken {
+        &.vs-border-darken {
           border-color: darken($grey, 12%);
         }
       }
@@ -112,73 +112,73 @@ $borderDirections: (
   }
 }
 
-.dashed {
+.vs-dashed {
   border-style:dashed;
 }
 
-.pointer {
+.vs-pointer {
   cursor:pointer;
 }
 
 // No Select
-.noselect {
+.vs-noselect {
   user-select: none;
 }
 
 // Overflow
-.overflow {
+.vs-overflow {
   overflow:hidden;
 }
 
-.overflow-y {
+.vs-overflow-y {
   overflow-y:hidden;
 }
 
-.overflow-x {
+.vs-overflow-x {
   overflow-x:hidden;
 }
 
-.overflow-auto {
+.vs-overflow-auto {
   overflow:auto;
 }
 
-.overflow-y-auto {
+.vs-overflow-y-auto {
   overflow-y:auto;
 }
 
-.overflow-x-auto {
+.vs-overflow-x-auto {
   overflow-x:auto;
 }
 
-.overflow-visible {
+.vs-overflow-visible {
   overflow:visible!important;
 }
 
-.nowrap {
+.vs-nowrap {
   white-space:nowrap;
 }
 
-.text-truncate {
+.vs-text-truncate {
   width:100%;
   overflow:hidden;
   white-space:nowrap;
   text-overflow:ellipsis;
 }
 
-.text-truncate-2-lines {
+.vs-text-truncate-2-lines {
   max-height:3em;
   overflow:hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 
-  &.font-compressed {
+  &.vs-font-compressed {
     max-height:2.5em;
   }
 }
 
 // Box Ratios
-.square {
+.vs-square {
   position:relative;
   height:0;
   padding-bottom:100%;
@@ -193,7 +193,7 @@ $borderDirections: (
   }
 }
 
-.widescreen {
+.vs-widescreen {
   position:relative;
   height:0;
   padding-bottom:56.25%;
@@ -211,7 +211,7 @@ $borderDirections: (
   }
 }
 
-.book-cover {
+.vs-book-cover {
   position:relative;
   height:0;
   padding-bottom:126.25%;
@@ -229,21 +229,21 @@ $borderDirections: (
   }
 }
 
-.box-4-by-3 {
+.vs-box-4-by-3 {
   position:relative;
   height:0!important;
   padding-bottom:75%;
 }
 
-.relative {
+.vs-relative {
   position:relative;
 }
 
-.absolute-center {
+.vs-absolute-center {
   @include centerBoth();
 }
 
-.absolute-fill {
+.vs-absolute-fill {
   position:absolute;
   top:0;
   left:0;
@@ -251,44 +251,44 @@ $borderDirections: (
   height:100%;
 }
 
-.bg-center {
+.vs-bg-center {
   background-size:cover;
   background-repeat:no-repeat;
   background-position:center;
 
-  &.contain {
+  &.vs-contain {
     background-size:contain;
   }
 
-  &.contain-80 {
+  &.vs-contain-80 {
     background-size:80%;
   }
 }
 
-.bg-top {
+.vs-bg-top {
   background-size:cover;
   background-repeat:no-repeat;
   background-position:center top;
 
-  &.contain {
+  &.vs-contain {
     background-size:contain;
   }
 
-  &.contain-80 {
+  &.vs-contain-80 {
     background-size:80%;
   }
 }
 
-.desaturate {
+.vs-desaturate {
   filter:saturate(0);
 }
 
-.list-style-none {
+.vs-list-style-none {
   list-style-type:none;
   padding-left:0;
 }
 
-.raised-hover {
+.vs-raised-hover {
   transform:scale(1);
   transition:transform .2s ease-in-out, box-shadow .2s ease-in-out;
   box-shadow:0 0 5px rgba(0,0,0,0);
@@ -299,7 +299,7 @@ $borderDirections: (
   }
 }
 
-.icon-bg-circle {
+.vs-icon-bg-circle {
   height:35px;
   width:35px;
   min-height:35px;
@@ -307,7 +307,7 @@ $borderDirections: (
   @include flexCenter();
 }
 
-.skeleton-loader, img[lazy=loading] {
+.vs-skeleton-loader, img[lazy=loading] {
   background-color:nth(nth($greys, 2), 2)!important;
   max-width:100%;
   overflow:hidden;

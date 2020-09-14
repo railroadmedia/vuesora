@@ -1,30 +1,31 @@
 @import './_variables.scss';
 
-.uppercase {
+.vs-uppercase {
   text-transform:uppercase;
 }
 
-.capitalize {
+.vs-capitalize {
   text-transform:capitalize;
 }
 
+// this may create conflicts
 h1, h2, h3, h4, h5, h6, p {
   margin:0;
 }
 
-.text-left {
+.vs-text-left {
   text-align:left;
 }
 
-.text-right {
+.vs-text-right {
   text-align:right;
 }
 
-.text-center {
+.vs-text-center {
   text-align:center;
 }
 
-.large-display {
+.vs-large-display {
   font: 700 36px/1.25em $defaultSansSerif;
 
   @include medium {
@@ -36,7 +37,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
-.display {
+.vs-display {
   font: 700 32px/1.25em $defaultSansSerif;
 
   @include medium {
@@ -48,7 +49,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
-.heading {
+.vs-heading {
   font: 700 24px/1.25em $defaultSansSerif;
 
   @include medium {
@@ -60,7 +61,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
-.subheading {
+.vs-subheading {
   font: 600 20px/1.25em $defaultSansSerif;
 
   @include medium {
@@ -72,7 +73,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
-.title {
+.vs-title {
   font: 600 18px/1.5em $defaultSansSerif;
 
   @include medium {
@@ -84,7 +85,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
-.subtitle {
+.vs-subtitle {
   font: 400 16px/1.5em $defaultSansSerif;
 
   @include medium {
@@ -96,59 +97,59 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
-.color-green {
+.vs-color-green {
   color: #4bb543;
 }
 
-.color-red {
+.vs-color-red {
   color: #F61A30;
 }
 
-.body {
+.vs-body {
   font:400 16px/1.5em $defaultSansSerif;
 }
 
-.tiny {
+.vs-tiny {
   font:400 13px/1.5em $defaultSansSerif;
 }
 
-.x-tiny {
+.vs-x-tiny {
   font:400 10px/1.5em $defaultSansSerif;
 }
 
-.font-compressed {
+.vs-font-compressed {
   line-height:1.25em;
 }
 
-.font-light {
+.vs-font-light {
   font-weight:300;
 }
 
-.font-regular {
+.vs-font-regular {
   font-weight:400;
 }
 
-.font-underline {
+.vs-font-underline {
   text-decoration:underline;
 }
 
-.font-strike {
+.vs-font-strike {
   text-decoration:line-through;
 }
 
-.font-bold {
+.vs-font-bold {
   font-weight:700;
 }
 
-.font-italic {
+.vs-font-italic {
   font-style:italic;
 }
 
-.dense {
+.vs-dense {
   font-family:$secondarySansSerif;
 }
 
-.break-words {
+.vs-break-words {
   word-break: break-word;
   word-wrap: break-word;
 }

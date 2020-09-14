@@ -1,7 +1,7 @@
 @import './_variables.scss';
 @import './_animations.scss';
 
-.widescreen, .box-4-by-3 {
+.vs-widescreen, .vs-box-4-by-3 {
 
   video {
     max-width:100%;
@@ -14,12 +14,12 @@
   }
 }
 
-.video-wrap {
+.vs-video-wrap {
   z-index:1;
   top:-50%;
   right:480px;
 
-  &.picture-in-picture {
+  &.vs-picture-in-picture {
     position:fixed;
     top:90px;
     right:30px;
@@ -32,7 +32,7 @@
       width:480px;
     }
 
-    .settings-drawer {
+    .vs-settings-drawer {
 
       @include medium {
         width:100%;
@@ -49,11 +49,11 @@
 @mixin playerActive(){
   cursor: default;
 
-  .player-controls {
+  .vs-player-controls {
     transform:translateY(0);
   }
 
-  .top-controls {
+  .vs-top-controls {
     transform:translateY(0);
   }
 
@@ -65,7 +65,7 @@
 @mixin playerInactive(){
   cursor: none;
 
-  .player-controls {
+  .vs-player-controls {
     transform:translateY(100%);
   }
 
@@ -74,14 +74,14 @@
   }
 }
 
-.video-player {
+.vs-video-player {
   position:absolute;
   top:0;
   left:0;
   width:100%;
   height:100%;
 
-  &.user-active {
+  &.vs-user-active {
     @include playerActive();
   }
 
@@ -110,7 +110,7 @@
   @include playerInactive();
 }
 
-.controls-wrap {
+.vs-controls-wrap {
   position:absolute;
   overflow:hidden;
   bottom:0;
@@ -120,7 +120,7 @@
   height:100%;
 }
 
-.player-controls {
+.vs-player-controls {
   transition: transform .1s ease-in-out;
   background: linear-gradient(transparent,rgba(0,0,0,.8));
   position:absolute;
@@ -136,7 +136,7 @@
   }
 }
 
-.top-controls {
+.vs-top-controls {
   position:absolute;
   transition: transform .1s ease-in-out;
   top:0;
@@ -148,25 +148,25 @@
   background: linear-gradient(rgba(0,0,0,.8), transparent);
 }
 
-.player-progress {
+.vs-player-progress {
   padding:7px;
   width:100%;
   cursor:pointer;
   position:relative;
 
   &:hover {
-    .progress-rail {
+    .vs-progress-rail {
       transform:scaleY(2);
     }
 
-    .progress-tooltip {
+    .vs-progress-tooltip {
       opacity:1;
       visibility:visible;
     }
   }
 }
 
-.progress-tooltip {
+.vs-progress-tooltip {
   position:absolute;
   bottom:20px;
   left:0;
@@ -183,8 +183,8 @@
   will-change:transform;
 }
 
-.progress-rail,
-.volume-rail {
+.vs-progress-rail,
+.vs-volume-rail {
   width:100%;
   height:3px;
   background:#e4e4e4;
@@ -195,15 +195,15 @@
   transition:transform .2s ease;
 }
 
-.progress-fill,
-.volume-fill {
+.vs-progress-fill,
+.vs-volume-fill {
   width:100%;
   height:105%;
   position:relative;
   z-index:2;
 }
 
-.buffer-fill, .chapter-marker {
+.vs-buffer-fill, .vs-chapter-marker {
   position:absolute;
   top:0;
   left:0;
@@ -212,24 +212,24 @@
   z-index:1;
 }
 
-.chapter-marker {
+.vs-chapter-marker {
   width:3px;
   opacity:1;
   z-index:3;
 }
 
-.volume {
+.vs-volume {
   height:100%;
   flex:0 0 135px;
 
   &:hover {
-    .volume-rail-wrap {
+    .vs-volume-rail-wrap {
       transform:scaleX(1);
     }
   }
 }
 
-.volume-rail-wrap {
+.vs-volume-rail-wrap {
   flex:0 0 75px;
   transform:scaleX(0);
   transition:transform .1s ease-in-out;
@@ -237,7 +237,7 @@
   padding:0 5px;
 }
 
-.volume-rail  {
+.vs-volume-rail  {
   width:75px;
   z-index:2;
   height:4px;
@@ -246,7 +246,7 @@
   cursor:pointer;
 }
 
-.volume-fill:after {
+.vs-volume-fill:after {
   content: '';
   position:absolute;
   height:12px;
@@ -258,11 +258,11 @@
   background-color:inherit;
 }
 
-.player-button {
+.vs-player-button {
   flex:0 0 50px;
 }
 
-.volume-range {
+.vs-volume-range {
   width:100%;
   height:200%;
   margin-top:-2px;
@@ -274,7 +274,7 @@
   cursor:pointer;
 }
 
-.settings-drawer {
+.vs-settings-drawer {
   width:100%;
   z-index:102;
   position:fixed;
@@ -290,13 +290,13 @@
     border-radius:3px;
     transform-origin:100% 100%;
 
-    &.captions {
+    &.vs-captions {
       max-width:175px;
     }
   }
 }
 
-.selected-caption:before {
+.vs-selected-caption:before {
   content: '\f111';
   font-family: "Font Awesome 5 Pro";
   font-size:10px;
@@ -307,7 +307,7 @@
   @include flexCenter();
 }
 
-.settings-mobile-overlay {
+.vs-settings-mobile-overlay {
   z-index:27;
   position:fixed;
   top:0;
@@ -321,7 +321,7 @@
   }
 }
 
-.cast-dialog {
+.vs-cast-dialog {
   position:absolute;
   background-color:#000;
   top:0;
@@ -331,7 +331,7 @@
   z-index:10;
 }
 
-.player-overlay {
+.vs-player-overlay {
   position:absolute;
   top:0;
   left:0;
@@ -355,7 +355,7 @@
   //  pointer-events:none;
   //}
 
-  .overlay-play {
+  .vs-overlay-play {
     transform:scale(1);
     transition: transform .5s;
 
@@ -380,13 +380,13 @@
   }
 
   &.fast-fade-enter-active {
-    .overlay-play {
+    .vs-overlay-play {
       transform:scale(0);
     }
   }
 
   &.fast-fade-enter-to {
-    .overlay-play {
+    .vs-overlay-play {
       transform:scale(1);
 
       &:after {
@@ -396,7 +396,7 @@
     }
   }
 
-  .overlay-play {
+  .vs-overlay-play {
     width:60px;
     height:60px;
     position:relative;
@@ -415,12 +415,12 @@
   }
 }
 
-.context-menu {
+.vs-context-menu {
   width:200px;
   z-index:100;
 }
 
-.player-dialog, .player-error {
+.vs-player-dialog, .vs-player-error {
   z-index:27;
   position:absolute;
   top:$gutterWidth / 2;
@@ -435,7 +435,7 @@
     padding:5px;
   }
 
-  .close-shortcuts {
+  .vs-close-shortcuts {
     position:absolute;
     top:0;
     right:0;
@@ -445,7 +445,7 @@
   }
 }
 
-.rate-indicator {
+.vs-rate-indicator {
   position:absolute;
   top:60px;
   right:0;
@@ -453,11 +453,11 @@
   opacity:.4;
 }
 
-.player-error {
+.vs-player-error {
   width:auto;
 }
 
-.close-pip {
+.vs-close-pip {
   position:absolute;
   height:50px;
   width:50px;

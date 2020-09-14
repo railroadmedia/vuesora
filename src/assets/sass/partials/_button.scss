@@ -3,7 +3,7 @@
 
 a, div {
 
-  &.btn {
+  &.vs-btn {
     position:relative;
     display:flex;
     flex-direction:row;
@@ -26,7 +26,7 @@ a, div {
 
     @include rippleDirective();
 
-    &.short {
+    &.vs-short {
       height:36px;
       border-radius:18px;
     }
@@ -34,7 +34,7 @@ a, div {
 }
 
 button {
-  &.btn {
+  &.vs-btn {
     border:none;
     background:none;
     padding:0;
@@ -44,12 +44,12 @@ button {
     outline:none;
     touch-action: manipulation;
 
-    &.short > span {
+    &.vs-short > span {
       height:36px;
       border-radius:18px;
     }
 
-    &.rounded > span {
+    &.vs-rounded > span {
       border-radius:50%;
     }
 
@@ -81,7 +81,7 @@ button {
 
       @include rippleDirective();
 
-      &.short {
+      &.vs-short {
         height:36px;
         border-radius:18px;
       }
@@ -93,45 +93,45 @@ button {
   }
 }
 
-.btn {
+.vs-btn {
   position:relative;
   overflow:hidden;
 
-  &.collapse-square {
+  &.vs-collapse-square {
     max-width:50px;
 
-    &.short {
+    &.vs-short {
       max-width:35px;
     }
   }
 
-  &.collapse-100 {
+  &.vs-collapse-100 {
     max-width:100px;
   }
 
-  &.collapse-150 {
+  &.vs-collapse-150 {
     max-width:150px;
   }
 
-  &.collapse-200 {
+  &.vs-collapse-200 {
     max-width:200px;
   }
 
-  &.collapse-250 {
+  &.vs-collapse-250 {
     max-width:250px;
   }
 
-  &.collapse-320 {
+  &.vs-collapse-320 {
     max-width:320px;
   }
 
-  &.flat, & > span.flat {
+  &.vs-flat, & > span.vs-flat {
     background-color:transparent;
     border:none;
     box-shadow:none;
   }
 
-  &.big-text {
+  &.vs-big-text {
     font-size:20px;
 
     & > span {
@@ -139,13 +139,13 @@ button {
     }
   }
 
-  &.stacked {
+  &.vs-stacked {
     & > span {
       flex-direction:column;
     }
   }
 
-  &.btn-tiny {
+  &.vs-btn-tiny {
     font-size:13px;
     height:35px;
 
@@ -155,23 +155,23 @@ button {
     }
   }
 
-  &.rounded {
+  &.vs-rounded {
     border-radius:50%;
   }
 
-  &.text-white-important {
+  &.vs-text-white-important {
     color:#fff!important;
   }
 
   &:hover {
     @each $key, $value in $brand_colors {
-      &.bg-#{$key}, & > span.bg-#{$key} {
+      &.vs-bg-#{$key}, & > span.vs-bg-#{$key} {
         background-color: lighten($value, 5%);
       }
     }
 
     @each $key, $value in $content_colors {
-      &.bg-#{$key}, &.bg-#{$key}s, & > span.bg-#{$key}, & > span.bg-#{$key}s {
+      &.vs-bg-#{$key}, &.vs-bg-#{$key}s, & > span.vs-bg-#{$key}, & > span.vs-bg-#{$key}s {
         background-color: lighten($value, 5%);
       }
     }
@@ -191,17 +191,17 @@ button {
   //  }
   //}
 
-  &:disabled, &.disabled {
+  &:disabled, &.vs-disabled {
     opacity:.2;
     pointer-events:none;
   }
 
-  &.inverted:hover,
-  &.flat:hover,
-  &:hover > span.inverted,
-  &:hover > span.flat,
-  & > span.inverted:hover,
-  & > span.flat:hover { background-color:rgba(126, 126, 126, .05); }
+  &.vs-inverted:hover,
+  &.vs-flat:hover,
+  &:hover > span.vs-inverted,
+  &:hover > span.vs-flat,
+  & > span.vs-inverted:hover,
+  & > span.vs-flat:hover { background-color:rgba(126, 126, 126, .05); }
 
   //&.inverted:focus,
   //&.flat:focus,
@@ -230,10 +230,10 @@ a {
   }
 }
 
-.background-color-green {
+.vs-background-color-green {
   background-color: #4bb543;
 }
 
-.background-color-red {
+.vs-background-color-red {
   background-color: #F61A30;
 }
