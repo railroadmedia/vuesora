@@ -65,107 +65,108 @@
   }
 }
 
-// todo - check if these create conflicts
-input[type='text'],
-input[type='email'],
-input[type='number'],
-input[type='password'],
-input[type='date'],
-select,
-textarea {
-  height:50px;
-  border-radius:25px;
-  background:#fff;
-  color:#000;
-  box-shadow:none;
-  border:1px solid $lightGray;
-  outline:none;
-  width:100%;
-  padding-top:12px;
-  font:400 16px/1.5em $defaultSansSerif;
-  padding-left:25px;
-  padding-right:25px;
+.vs {
+  input[type='text'],
+  input[type='email'],
+  input[type='number'],
+  input[type='password'],
+  input[type='date'],
+  select,
+  textarea {
+    height:50px;
+    border-radius:25px;
+    background:#fff;
+    color:#000;
+    box-shadow:none;
+    border:1px solid $lightGray;
+    outline:none;
+    width:100%;
+    padding-top:12px;
+    font:400 16px/1.5em $defaultSansSerif;
+    padding-left:25px;
+    padding-right:25px;
 
-  &:focus {
-    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    &:focus {
+      box-shadow: 0 0 2px rgba(0,0,0,0.5);
 
-    &.vs-text-white {
-      color:#fff;
-    }
-  }
-
-  &:focus,
-  &.vs-has-input,
-  &.vs-sticky-label {
-
-    & ~ label {
-      transform:scale(.7) translateY(-8px) translateX(15px)!important;
-      color:$primary;
-
-      @each $key, $value in $brand_colors {
-        &.#{$key} {
-          color: $value;
-        }
-      }
-
-      @each $key, $value in $content_colors {
-        &.#{$key} {
-          color: $value;
-        }
-        &.#{$key}s {
-          color: $value;
-        }
+      &.vs-text-white {
+        color:#fff;
       }
     }
-  }
 
-  &:disabled {
-    background-color:#f2f2f2;
-    color:nth(nth($greys, 3), 2);;
-  }
+    &:focus,
+    &.vs-has-input,
+    &.vs-sticky-label {
 
-  &.vs-has-error {
-    border-color:$errorRed;
+      & ~ label {
+        transform:scale(.7) translateY(-8px) translateX(15px)!important;
+        color:$primary;
 
-    & ~ label {
-      color: $errorRed!important;
+        @each $key, $value in $brand_colors {
+          &.#{$key} {
+            color: $value;
+          }
+        }
+
+        @each $key, $value in $content_colors {
+          &.#{$key} {
+            color: $value;
+          }
+          &.#{$key}s {
+            color: $value;
+          }
+        }
+      }
     }
-  }
 
-  &.vs-no-label {
-    padding-top:0;
-  }
-
-  &.vs-borderless {
-    border-top:none;
-    border-left:none;
-    border-right:none;
-    border-bottom:1px solid #d1d1d1;
-    background:none;
-    border-radius:0;
-    outline:none;
-    box-shadow:none;
-    padding-left:0;
-
-    & ~ label {
-      left:0;
-      transform:scale(.7) translateY(-8px) translateX(0)!important;
+    &:disabled {
+      background-color:#f2f2f2;
+      color:nth(nth($greys, 3), 2);;
     }
-  }
 
-  &.vs-solo {
-    border:none;
-    background:none;
-    border-radius:0;
-    outline:none;
-    box-shadow:none;
-    padding-left:0;
-    padding-top:0;
-  }
+    &.vs-has-error {
+      border-color:$errorRed;
 
-  &:-moz-focusring {
-    color: transparent;
-    text-shadow: 0 0 0 #000;
+      & ~ label {
+        color: $errorRed!important;
+      }
+    }
+
+    &.vs-no-label {
+      padding-top:0;
+    }
+
+    &.vs-borderless {
+      border-top:none;
+      border-left:none;
+      border-right:none;
+      border-bottom:1px solid #d1d1d1;
+      background:none;
+      border-radius:0;
+      outline:none;
+      box-shadow:none;
+      padding-left:0;
+
+      & ~ label {
+        left:0;
+        transform:scale(.7) translateY(-8px) translateX(0)!important;
+      }
+    }
+
+    &.vs-solo {
+      border:none;
+      background:none;
+      border-radius:0;
+      outline:none;
+      box-shadow:none;
+      padding-left:0;
+      padding-top:0;
+    }
+
+    &:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000;
+    }
   }
 }
 
@@ -195,8 +196,7 @@ textarea {
   }
 }
 
-// todo - check for conflicts
-select {
+.vs select {
   background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmlld0JveD0iMCAtMjU2IDE3OTIgMTc5MiIKICAgaWQ9InN2ZzI5ODkiCiAgIHZlcnNpb249IjEuMSIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC40OC4zLjEgcjk4ODYiCiAgIHdpZHRoPSIxMDAlIgogICBoZWlnaHQ9IjEwMCUiCiAgIHNvZGlwb2RpOmRvY25hbWU9ImNhcmV0X2Rvd25fZm9udF9hd2Vzb21lLnN2ZyI+CiAgPG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhMjk5OSI+CiAgICA8cmRmOlJERj4KICAgICAgPGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPgogICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PgogICAgICAgIDxkYzp0eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz4KICAgICAgPC9jYzpXb3JrPgogICAgPC9yZGY6UkRGPgogIDwvbWV0YWRhdGE+CiAgPGRlZnMKICAgICBpZD0iZGVmczI5OTciIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxIgogICAgIG9iamVjdHRvbGVyYW5jZT0iMTAiCiAgICAgZ3JpZHRvbGVyYW5jZT0iMTAiCiAgICAgZ3VpZGV0b2xlcmFuY2U9IjEwIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwIgogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSI2NDAiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNDgwIgogICAgIGlkPSJuYW1lZHZpZXcyOTk1IgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSIwLjEzMTY5NjQzIgogICAgIGlua3NjYXBlOmN4PSI4OTYiCiAgICAgaW5rc2NhcGU6Y3k9Ijg5NiIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iMCIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iMjUiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJzdmcyOTg5IiAvPgogIDxnCiAgICAgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsLTEsNDAyLjQ0MDY4LDEyMzkuODY0NCkiCiAgICAgaWQ9ImcyOTkxIj4KICAgIDxwYXRoCiAgICAgICBkPSJtIDEwMjQsODMyIHEgMCwtMjYgLTE5LC00NSBMIDU1NywzMzkgcSAtMTksLTE5IC00NSwtMTkgLTI2LDAgLTQ1LDE5IEwgMTksNzg3IHEgLTE5LDE5IC0xOSw0NSAwLDI2IDE5LDQ1IDE5LDE5IDQ1LDE5IGggODk2IHEgMjYsMCA0NSwtMTkgMTksLTE5IDE5LC00NSB6IgogICAgICAgaWQ9InBhdGgyOTkzIgogICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgIHN0eWxlPSJmaWxsOmN1cnJlbnRDb2xvciIgLz4KICA8L2c+Cjwvc3ZnPgo=) no-repeat calc(100% - 10px) 50%;
   background-size:15px;
   -moz-appearance: none;
@@ -346,7 +346,7 @@ select {
   }
 }
 
-textarea {
+.vs textarea {
   resize:none;
   height:150px;
   padding-top:15px;

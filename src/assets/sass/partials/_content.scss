@@ -699,7 +699,7 @@
 .vs-four-cards-row {
 
   @include smallOnly {
-    .catalogue-card:nth-child(n+4) {
+    .vs-catalogue-card:nth-child(n+4) {
       display:none;
     }
   }
@@ -710,7 +710,7 @@
     }
   }
 
-  content-catalogue, transition {
+  vs-content-catalogue, transition {
     width:100%;
   }
 }
@@ -730,6 +730,6 @@
 //  }
 //}
 
-content-catalogue, transition {
+vs-content-catalogue, transition {
   width:100%;
 }

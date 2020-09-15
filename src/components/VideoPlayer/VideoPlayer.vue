@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="vs">
         <div
             ref="videoWrap"
             class="vs-video-wrap"

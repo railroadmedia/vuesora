@@ -7,11 +7,11 @@ export default {
     },
     computed: {
         brandBgClass() {
-            return `bg-${this.brand}`;
+            return `vs-bg-${this.brand}`;
         },
 
         brandTextClass() {
-            return `text-${this.brand}`;
+            return `vs-text-${this.brand}`;
         },
     },
 };

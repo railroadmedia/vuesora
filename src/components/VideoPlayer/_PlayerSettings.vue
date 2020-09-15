@@ -18,7 +18,7 @@
                     >
                         {{ currentSourceLabel }}
                         <i
-                            class="fas ml-1"
+                            class="fas vs-ml-1"
                             :class="qualitiesDropdown ? 'fa-caret-down' : 'fa-caret-up'"
                         ></i>
                     </p>

@@ -1,7 +1,7 @@
-@import '~normalize.css/normalize.css';
-@import "~noty/src/noty.scss";
-@import "~flatpickr/dist/themes/airbnb.css";
-//@import './partials/_tooltip.scss';
+/* @import '~normalize.css/normalize.css';  */
+/* @import "~noty/src/noty.scss"; */
+/* @import "~flatpickr/dist/themes/airbnb.css"; */
+/* import './partials/_tooltip.scss'; */
 @import './partials/_flags.scss';
 @import './partials/_grid.scss';
 @import './partials/_typography.scss';
@@ -28,9 +28,9 @@
 @import './partials/_darkmode.scss';
 @import './partials/_images.scss';
 
-@import '~@musora/icons/dist/icons.css';
+/* @import '~@musora/icons/dist/icons.css'; */
 
-html {
+html.vs {
   box-sizing: border-box;
   height:100%;
 
@@ -43,11 +43,11 @@ html {
   }
 }
 
-*, *:before, *:after {
+.vs *, *:before, *:after {
   box-sizing: inherit;
 }
 
-body {
+body.vs {
   font-family: $defaultSansSerif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -86,11 +86,11 @@ body {
   }
 }
 
-iframe {
+.vs iframe {
   border:none;
 }
 
-a {
+.vs a {
   color:#0b76db;
 
   &.vs-no-decoration {
@@ -98,13 +98,13 @@ a {
   }
 }
 
-img {
+.vs img {
   max-width:100%;
   height:auto;
-  min-height:1px; // This line fixes some height:auto; issues on IE
+  min-height:1px; /* This line fixes some height:auto; issues on IE */
 }
 
-ul {
+.vs ul {
   margin:0;
 }
 

@@ -20,42 +20,42 @@ export default {
     computed: {
         themeBgClass() {
             if (this.useThemeColor) {
-                return `bg-${this.themeColor}`;
+                return `vs-bg-${this.themeColor}`;
             }
 
             const type = Utils.getThemeColorByContentType(this.contentType);
 
-            return `bg-${type}`;
+            return `vs-bg-${type}`;
         },
 
         themeTextClass() {
             if (this.useThemeColor) {
-                return `text-${this.themeColor}`;
+                return `vs-text-${this.themeColor}`;
             }
 
             const type = Utils.getThemeColorByContentType(this.contentType);
 
-            return `text-${type}`;
+            return `vs-text-${type}`;
         },
 
         themeHoverBgClass() {
             if (this.useThemeColor) {
-                return `hover-bg-${this.themeColor}`;
+                return `vs-hover-bg-${this.themeColor}`;
             }
 
             const type = Utils.getThemeColorByContentType(this.contentType);
 
-            return `hover-bg-${type}`;
+            return `vs-hover-bg-${type}`;
         },
 
         themeHoverTextClass() {
             if (this.useThemeColor) {
-                return `hover-text-${this.themeColor}`;
+                return `vs-hover-text-${this.themeColor}`;
             }
 
             const type = Utils.getThemeColorByContentType(this.contentType);
 
-            return `hover-text-${type}`;
+            return `vs-hover-text-${type}`;
         },
     },
 };

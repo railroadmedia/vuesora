@@ -1,7 +1,7 @@
 @import './_variables.scss';
 @import './_animations.scss';
 
-body {
+body.vs {
   padding-top:50px;
   padding-bottom:120px;
 
@@ -497,7 +497,7 @@ body {
   }
 }
 
-footer {
+.vs footer {
   position:absolute;
   bottom:0;
   left:0;

@@ -262,7 +262,7 @@
 }
 
 
-.item-description {
+.vs-item-description {
   transition:max-height .1s ease-in-out, height .1s ease-in-out;
   will-change:max-height;
   position:relative;
@@ -278,7 +278,7 @@
     @include topToBottomGradient(transparent, #fff);
   }
 
-  &.always-truncate {
+  &.vs-always-truncate {
     max-height:3em;
     overflow:hidden;
     display: -webkit-box;
@@ -286,7 +286,7 @@
     -webkit-box-orient: vertical;
     text-overflow:ellipsis;
 
-    &.active {
+    &.vs-active {
       overflow:visible;
       -webkit-line-clamp:initial;
 
@@ -296,7 +296,7 @@
     }
   }
 
-  &.font-compressed {
+  &.vs-font-compressed {
     max-height:2.5em;
   }
 
@@ -308,34 +308,34 @@
     -webkit-box-orient: vertical;
     text-overflow:ellipsis;
 
-    &.active {
+    &.vs-active {
       overflow:visible;
       -webkit-line-clamp:initial;
     }
   }
 }
 
-.thumbnail-col {
+.vs-thumbnail-col {
   flex:0 0 75px;
 
-  &.large-thumbnail {
+  &.vs-large-thumbnail {
     flex:0 0 320px;
   }
 
-  &.song .thumb-img {
+  &.vs-song .thumb-img {
     background-size:contain;
   }
 
-  &.book-thumbnail {
+  &.vs-book-thumbnail {
     @include xSmallOnly{
       flex:0 0 100%;
     }
 
     flex:0 0 200px;
 
-    .thumb-wrap {
+    .vs-thumb-wrap {
 
-      .thumb-hover {
+      .vs-thumb-hover {
 
         i {
           font-size:24px;
@@ -345,7 +345,7 @@
   }
 }
 
-.thumb-img {
+.vs-thumb-img {
   background-size:cover;
   background-position:center 16%;
   background-repeat:no-repeat;
@@ -354,11 +354,11 @@
   transition:transform .2s ease-in-out;
   will-change:transform;
 
-  &.no-bg {
+  &.vs-no-bg {
     background-color:transparent;
   }
 
-  .thumb-title {
+  .vs-thumb-title {
     position:absolute;
     top:0;
     left:0;
@@ -384,14 +384,14 @@
   }
 }
 
-.thumb-wrap {
+.vs-thumb-wrap {
   position:relative;
   overflow:hidden;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
 
-  .bundle-complete, .thumb-hover {
+  .vs-bundle-complete, .vs-thumb-hover {
     position:absolute;
     top:0;
     left:0;
@@ -405,7 +405,7 @@
       color:#fff;
     }
   }
-  .thumb-hover {
+  .vs-thumb-hover {
     visibility:hidden;
     opacity:0;
     transition:all .2s ease-in-out;
@@ -414,7 +414,7 @@
   }
 }
 
-.new-badge {
+.vs-new-badge {
   position:absolute;
   top:0;
   left:0;
@@ -430,11 +430,11 @@
   }
 }
 
-.sheet-music-col {
+.vs-sheet-music-col {
   flex:0 0 200px;
 }
 
-.login-col {
+.vs-login-col {
   @include xSmallOnly {
     flex:0 0 100%;
   }
@@ -442,12 +442,12 @@
   flex:0 0 200px;
 }
 
-.avatar-col {
+.vs-avatar-col {
   flex:0 0 50px;
   max-width:50px;
 }
 
-.buy-col {
+.vs-buy-col {
   flex:0 0 100%;
   max-width:100%;
 
@@ -457,12 +457,12 @@
   }
 }
 
-.basic-col {
+.vs-basic-col {
   flex:0 0 100px;
   transition:color .2s ease-in-out;
 }
 
-.icon-col {
+.vs-icon-col {
   flex:0 0 50px;
 
   i {
@@ -470,16 +470,16 @@
     transition:color .1s ease-in-out, transform .1s ease-in-out;
     will-change: color, transform;
 
-    &.reset {
+    &.vs-reset {
       font-size:20px;
     }
 
-    &.is-added {
+    &.vs-is-added {
       transform:rotate(45deg);
     }
   }
 
-  .read-icon {
+  .vs-read-icon {
     transition:color .1s ease-in-out;
     pointer-events:none;
 
@@ -489,11 +489,11 @@
   }
 }
 
-.number-col {
+.vs-number-col {
   flex:0 0 50px;
 }
 
-.button-col {
+.vs-button-col {
   flex:0 0 100%;
   margin-left:0;
   margin-top:$gutterWidth / 2;
@@ -505,16 +505,16 @@
   }
 }
 
-.item-title {
+.vs-item-title {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow:hidden;
 }
 
-.filter-tabs {
+.vs-filter-tabs {
 
-  .heading-tab {
+  .vs-heading-tab {
 
     @include xSmallOnly {
       width:100%;
@@ -532,16 +532,16 @@
 $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
 
 
-.scheduled {
+.vs-scheduled {
   position:relative;
 
-  &.show-month {
-    .month-col {
+  &.vs-show-month {
+    .vs-month-col {
       visibility:visible;
     }
   }
 
-  .month-col {
+  .vs-month-col {
     position:absolute;
     top:0;
     left:0;
@@ -558,7 +558,7 @@ $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
     visibility:hidden;
   }
 
-  .release-day {
+  .vs-release-day {
     position:absolute;
     width:100%;
     top:50%;
@@ -571,14 +571,14 @@ $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
   }
 }
 
-.related-lessons {
-  .thumbnail-col {
+.vs-related-lessons {
+  .vs-thumbnail-col {
     flex:0 0 150px;
     max-width:150px;
     min-width:150px;
   }
 
-  .thumbnail-title {
+  .vs-thumbnail-title {
     position:absolute;
     bottom:0;
     left:0;
@@ -588,7 +588,7 @@ $months: jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
   }
 }
 
-.dashboard-new-lessons {
+.vs-dashboard-new-lessons {
 
   //@include large {
   //  .catalogue-card:last-of-type {

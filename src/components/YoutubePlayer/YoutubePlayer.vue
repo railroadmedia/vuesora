@@ -1,13 +1,13 @@
 <template>
     <div
         ref="videoWrap"
-        class="video-wrap"
-        :class="{'picture-in-picture': isPipEnabled}"
+        class="vs-video-wrap"
+        :class="{'vs-picture-in-picture': isPipEnabled}"
     >
-        <div class="widescreen">
+        <div class="vs-widescreen">
             <div
                 ref="youtubeIframe"
-                class="iframe"
+                class="vs-iframe"
             ></div>
         </div>
     </div>

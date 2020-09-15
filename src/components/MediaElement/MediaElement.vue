@@ -1,9 +1,9 @@
 <template>
-    <div class="flex flex-column">
-        <div class="widescreen">
+    <div class="vs vs-flex vs-flex-column">
+        <div class="vs-widescreen">
             <div
                 :id="themeColor + 'Theme'"
-                class="media-element"
+                class="vs-media-element"
             >
                 <video
                     v-if="sortedSourcesArray.length"
@@ -27,22 +27,22 @@
 
                 <div
                     v-else
-                    id="errorContainer"
-                    class="flex flex-row pv-5"
+                    id="vs-errorContainer"
+                    class="vs-flex vs-flex-row vs-pv-5"
                 >
-                    <div class="flex flex-column align-center text-center">
+                    <div class="vs-flex vs-flex-column vs-align-center vs-text-center">
                         <img
                             src="https://dmmior4id2ysr.cloudfront.net/icons/emoji-doh.svg"
-                            class="error-icon mb-2"
+                            class="vs-error-icon vs-mb-2"
                         >
-                        <h1 class="title text-white">
+                        <h1 class="vs-title vs-text-white">
                             Oops, something went wrong!<br>
                             Please refresh or contact support.
                         </h1>
-                        <h6 class="tiny text-white">
+                        <h6 class="vs-tiny vs-text-white">
                             to contact support click the chat widget on the bottom of your screen,<br>
                             or send an email to
-                            <a :href="'mailto:support@' + brand + '.com'" class="text-white">support@{{ brand }}.com</a>.
+                            <a :href="'mailto:support@' + brand + '.com'" class="vs-text-white">support@{{ brand }}.com</a>.
                         </h6>
                     </div>
                 </div>
@@ -490,7 +490,7 @@ export default {
         }
     }
 
-    #errorContainer {
+    #vs-errorContainer {
         position:absolute;
         top:0;
         left:0;
@@ -503,7 +503,7 @@ export default {
             }
         }
 
-        .error-icon {
+        .vs-error-icon {
             height:50px;
             min-height:50px;
             width:auto;
@@ -515,7 +515,7 @@ export default {
         }
     }
 
-    .media-element {
+    .vs-media-element {
 
         .mejs__controls {
             height:96px;
@@ -684,7 +684,7 @@ export default {
         }
     }
 
-    #currentTimeInSeconds {
+    #vs-currentTimeInSeconds {
         opacity:0;
         position:absolute;
         top:-9999px;
