@@ -51,6 +51,7 @@
 
             <order-form-payment-plan
                 v-if="canAcceptPaymentPlans"
+                ref="paymentForm"
                 :brand="brand"
                 :number-of-payments="cartData.number_of_payments"
                 :payment-plan-options="cartData.payment_plan_options"
@@ -357,6 +358,7 @@ export default {
                         .then(({ token, error }) => {
                             if (error) {
                                 this.loading = false;
+                                window.scrollTo({ top: (this.$refs.paymentForm.$el.offsetTop - 100), behavior: 'smooth' });
                                 return;
                             }
 
