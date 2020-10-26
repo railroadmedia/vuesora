@@ -2,7 +2,7 @@
     <div id="cart-sidebar-overlay" @click.stop.prevent="closeCartSidebar" :class="{active: active}">
         <section id="cart-sidebar">
             <div class="inner-container">
-                <div class="top">
+                <div class="top flex-item">
                     <h5 class="">Your cart</h5>
                     <a
                         href="#"
@@ -10,12 +10,24 @@
                         @click.stop.prevent="closeCartSidebar"
                     ><i class="fal fa-times fa-2x"></i></a>
                 </div>
-                <div class="guarantee">
-                    <i class="fas fa-check-circle"></i>
+                <div class="guarantee flex-item">
+                    <i class="fas fa-check-circle" :class="brand"></i>
                     <span>All of our drum lessons are backed by a 90-day guarantee.</span>
                 </div>
-                <div id="csb-products-container">products</div>
-                <div class="summary-container">
+                <div id="csb-products-container">
+                    <div class="border-top"></div>
+                    <div class="csb-products-inner" data-simplebar data-simplebar-auto-hide="false">
+                        <simplebar>
+                            <cart-item
+                                v-for="item in products"
+                                :key="item.id"
+                                :item="item"
+                            ></cart-item>
+                        </simplebar>
+                    </div>
+                    <div class="border-bottom"></div>
+                </div>
+                <div class="summary-container flex-item">
                     <div class="clearfix">
                         <div class="summary">Subtotal</div>
                         <div class="float-right due">$391</div><!-- todo: update -->
@@ -29,66 +41,81 @@
                         <div class="float-right deferred">Calculated at checkout</div>
                     </div>
                 </div>
-                <div class="checkout">
-                    <a href="#"><i class="fas fa-lock"></i>checkout</a>
+                <div class="checkout flex-item">
+                    <a href="#" :class="brand"><i class="fas fa-lock"></i>checkout</a>
                 </div>
-                <div class="recommended-title">customers also liked</div>
-                <div>products</div>
+                <div class="recommended-title flex-item">customers also liked</div>
+                <div class="flex-item">products</div>
             </div>
         </section>
     </div>
 </template>
 
 <script>
+import CartItem from './_CartItem.vue';
+import simplebar from 'simplebar-vue';
+import 'simplebar/dist/simplebar.min.css';
+
 export default {
+    components: {
+        'cart-item': CartItem,
+        simplebar
+    },
     name: 'CartSidebar',
     props: {
+        brand: {
+            type: String,
+            default: () => 'drumeo',
+        },
     },
     data() {
         return {
             active: false,
             products: [
                 {
+                    id: 1,
                     title: 'Rock Drumming Masterclass',
                     price: 197,
                     isDigital: true,
-                    background: 'https://d1923uyy6spedc.cloudfront.net/rdm-card-comp.jpg',
+                    thumbnail: 'https://d1923uyy6spedc.cloudfront.net/rdm-card-comp.jpg',
                     logo: 'https://dpwjbsxqtam5n.cloudfront.net/rock-drumming-masterclass/logo-white.png',
                 },
                 {
+                    id: 2,
                     title: 'Drum Technique Made Easy',
                     price: 197,
                     isDigital: true,
-                    background: 'https://dz5i3s4prcfun.cloudfront.net/drum-technique-made-easy/dtme-pack-card-thumb-w-o-logo.png',
+                    thumbnail: 'https://dz5i3s4prcfun.cloudfront.net/drum-technique-made-easy/dtme-pack-card-thumb-w-o-logo.png',
                     logo: 'https://dpwjbsxqtam5n.cloudfront.net/drum-technique-made-easy/logo-white.png',
                 },
                 {
+                    id: 3,
                     title: 'Successful Drumming',
                     price: 197,
                     isDigital: true,
-                    background: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/successful-drumming.jpg',
+                    thumbnail: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/successful-drumming.jpg',
                     logo: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/successful-drumming.png',
                 },
                 {
+                    id: 4,
                     title: 'Drumeo Gab T-Shirt',
                     price: 19,
                     isDigital: false,
                     quantity: 1,
                     size: 'L',
-                    background: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/drumeo-gab-shirt.jpg',
+                    thumbnail: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/drumeo-gab-shirt.jpg',
                 },
                 {
+                    id: 5,
                     title: "The Drummer's Toolbox",
                     price: 197,
                     isDigital: true,
-                    background: 'https://dpwjbsxqtam5n.cloudfront.net/books/drummers-toolbox/sales/cart-image.png',
+                    thumbnail: 'https://dpwjbsxqtam5n.cloudfront.net/books/drummers-toolbox/sales/cart-image.png',
                 },
             ],
         };
     },
     mounted() {
-        console.log('CartSidebar::mounted');
-
         let cartButtonElement = document.getElementById('nav-cart-button');
 
         if (cartButtonElement) {
@@ -160,10 +187,12 @@ export default {
     .inner-container {
         border-left: 1px solid #CCD3D3;
         height:100vh;
-        padding: 20px;
+        padding: 20px 5px 20px 20px;
+        display: flex;
+        flex-direction: column;
     }
     .top {
-        padding: 10px 0;
+        padding: 10px 15px 10px 0;
         position: relative;
         .close {
             position: absolute;
@@ -181,8 +210,12 @@ export default {
     }
     .guarantee {
         padding-bottom: 18px;
-        i {
+        padding-right: 14px;
+        i.drumeo {
             color: #0b76db;
+        }
+        i.pianote {
+            color: #ff383f;
         }
         span {
             padding-left: 3px;
@@ -191,7 +224,7 @@ export default {
         }
     }
     .summary-container {
-        padding: 18px 0;
+        padding: 18px 15px 18px 0;
     }
     .summary {
         font-size: 14px;
@@ -206,9 +239,9 @@ export default {
         font-style: italic;
     }
     .checkout {
+        margin-right: 15px;
         text-align: center;
         a {
-            background: #0b76db;
             color: #FFF;
             padding: 12px;
             font: 700 17px "Roboto Condensed",sans-serif;
@@ -221,8 +254,17 @@ export default {
             box-shadow: 0 0 0 rgba(0,0,0,0.35);
             display: inline-block;
             width: 100%;
-            &:hover {
-                background: #258ff4;
+            &.drumeo {
+                background: #0b76db;
+                &:hover {
+                    background: #258ff4;
+                }
+            }
+            &.pianote {
+                background: #ff383f;
+                &:hover {
+                    background: #ff6b70;
+                }
             }
             i {
                 padding-right: 5px;
@@ -231,14 +273,12 @@ export default {
     }
     .recommended-title {
         padding-top: 15px;
+        padding-right: 15px;
         text-transform: uppercase;
         font-size: 14px;
         color: #8B929A;
     }
 }
 #csb-products-container {
-    border: 1px solid #CCD3D3;
-    border-left-width: 0;
-    border-right-width: 0;
 }
 </style>
