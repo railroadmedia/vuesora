@@ -33,7 +33,8 @@
                 </div>
             </li>
             <li
-                v-for="(paymentMethod, i) in paymentMethodsData.data"
+                v-for="(paymentMethod, i) in paymentMethodsData.data" 
+                :key="i"
                 class="flex flex-row align-v-center"
             >
                 <div class="flex flex-column default-col text-center body hide-xs-only">

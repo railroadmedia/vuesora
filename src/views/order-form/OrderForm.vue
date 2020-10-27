@@ -21,63 +21,124 @@
                 @updateAccountData="updateAccountData"
             />
 
-            <div
-                v-if="cartRequiresShippingAddress"
-                class="flex flex-row mb-1"
-            >
-                <h3 class="title uppercase font-bold">
-                    Shipping Information
-                </h3>
-            </div>
-            <order-form-shipping
-                v-if="cartRequiresShippingAddress"
-                ref="shippingForm"
-                :brand="brand"
-                :shipping-data="shippingStateFactory"
-                :countries="countries"
-                :banned-countries="bannedCountries"
-                :provinces="provinces"
-                @updateShippingData="updateShippingData"
-            />
+            <!-- Shipping Section -->
+            <section v-if="cartRequiresShippingAddress">
+                <!-- Section Heading -->
+                <div class="flex flex-row mb-1">
+                    <h3 class="title uppercase font-bold">
+                        Shipping Information
+                    </h3>
+                </div>
+                <!-- Saved Address -->
+                <template v-if="recentAddresses">
+                    <h5 class="title mb-1">Recent Addresses</h5>
+                    <div class="flex flex-row card-wrapper">
+                        <div 
+                            class="flex flex-column card mb-3 mr-2 corners-5"
+                            v-for="(address, i) in recentAddresses.data"
+                            :key="i"
+                        > 
+                            <p class="font-bold tiny">
+                                <span>{{ address.attributes.first_name }}</span>
+                                <span>{{ address.attributes.last_name }}</span>
+                            <p class="tiny">{{ address.attributes.street_line_1 }}</p>
+                            <p class="tiny">{{ address.attributes.street_line_2 }}</p>
+                            <p class="tiny">{{ address.attributes.city }}</p>
+                            <p class="tiny">
+                                <span>{{ address.attributes.region }}, </span>
+                                <span>{{ address.attributes.zip }}</span>
+                            </p>
+                            <p class="tiny">{{ address.attributes.country }}</p>
+                            <div class="flex mt-1 flex-end">
+                                <button class="tiny font-bold mb-1">Edit</button>
+                                <button class="tiny font-bold mb-1 ml-1">Remove</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-column card mb-3 mr-2 corners-5">
+                            <p class="font-bold tiny">Add a new shipping address</p>
+                        </div>
+                    </div>
+                </template>
+                <!-- Shipping Component -->
+                
+                <order-form-shipping
+                    ref="shippingForm"
+                    :brand="brand"
+                    :shipping-data="shippingStateFactory"
+                    :countries="countries"
+                    :banned-countries="bannedCountries"
+                    :provinces="provinces"
+                    @updateShippingData="updateShippingData"
+                />
+                
+            </section>
 
-            <div
-                v-if="canAcceptPaymentPlans"
-                class="flex flex-row mb-1"
-            >
-                <h3 class="title uppercase font-bold">
-                    Payment Plan
-                </h3>
-            </div>
+            <!-- Plan Section -->
+            <section v-if="canAcceptPaymentPlans">
+                <!-- Section Heading -->
+                <div class="flex flex-row mb-1">
+                    <h3 class="title uppercase font-bold">
+                        Payment Plan
+                    </h3>
+                </div>
+                <!-- Plan Component -->
+                <order-form-payment-plan
+                    :brand="brand"
+                    :number-of-payments="cartData.number_of_payments"
+                    :payment-plan-options="cartData.payment_plan_options"
+                    @updateCartData="updateCart"
+                />
+            </section>
 
-            <order-form-payment-plan
-                v-if="canAcceptPaymentPlans"
-                :brand="brand"
-                :number-of-payments="cartData.number_of_payments"
-                :payment-plan-options="cartData.payment_plan_options"
-                @updateCartData="updateCart"
-            />
-            <div
-                v-if="cartData.items.length"
-                class="flex flex-row mb-1"
-            >
-                <h3 class="title uppercase font-bold">
-                    Payment Details
-                </h3>
-            </div>
-            <order-form-payment
-                v-if="cartData.items.length"
-                ref="paymentForm"
-                :theme-color="themeColor"
-                :brand="brand"
-                :payment-details="paymentStateFactory"
-                :stripe-publishable-key="stripePublishableKey"
-                :totals="cartData.totals"
-                :discounts="cartData.discounts"
-                :stripe-token="stripeToken"
-                :countries="countries"
-                :provinces="provinces"
-                @updatePaymentData="updatePaymentData"
-            />
+            <!-- Payment Section -->
+            <section v-if="cartData.items.length">
+                <!-- Section Heading -->
+                <div class="flex flex-row mb-1">
+                    <h3 class="title uppercase font-bold">
+                        Payment Details
+                    </h3>
+                </div>
+                <template v-if="paymentMethods">
+                    <h5 class="title mb-1">Recent Payment Methods</h5>
+                    <div class="flex flex-row card-wrapper">
+                        <div 
+                            class="flex flex-column card mb-3 mr-2 corners-5"
+                            v-for="(method, i) in paymentMethods.data"
+                            :key="i"
+                        >   
+                            <p class="tiny">type</p>
+                            <p class="tiny">Card</p>
+                            <p class="tiny">ending in</p>
+                            <p class="tiny">
+                                <span class="font-bold">Added:</span> 
+                                {{ method.attributes.created_at }}
+                            </p>
+                            <div class="flex mt-1 flex-end">
+                                <button class="tiny font-bold mb-1">Edit</button>
+                                <button class="tiny font-bold mb-1 ml-1">Remove</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-column card mb-3 mr-2 corners-5">
+                            <p class="font-bold tiny">Add a new payment method</p>
+                        </div>
+                    </div>   
+                </template>
+                <!-- Order Component -->
+                <order-form-payment
+                    ref="paymentForm"
+                    :theme-color="themeColor"
+                    :brand="brand"
+                    :payment-details="paymentStateFactory"
+                    :stripe-publishable-key="stripePublishableKey"
+                    :totals="cartData.totals"
+                    :discounts="cartData.discounts"
+                    :stripe-token="stripeToken"
+                    :countries="countries"
+                    :provinces="provinces"
+                    @updatePaymentData="updatePaymentData"
+                />
+                
+            </section>
         </div>
 
         <div class="flex flex-column xs-12 md-3 ph-1 totals-col">
@@ -85,7 +146,6 @@
                 :totals="cartData.totals"
                 :discounts="cartData.discounts"
             />
-
             <button
                 class="btn"
                 @click.stop="submitForm"
@@ -97,14 +157,12 @@
                     Place Order
                 </span>
             </button>
-
             <p class="tiny disclaimer mt-1 text-grey-3">
                 By completing your order you agree to the <a href="/terms">terms of service</a>. All payments
                 in US dollars. You can cancel your subscription at any time by emailing
                 <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>.
             </p>
         </div>
-
 
         <transition name="grow-fade">
             <div
@@ -115,18 +173,15 @@
                 <div class="square">
                     <loading-animation :theme-color="themeColor" />
                 </div>
-
                 <p class="body mt-3">
                     Loading Please Wait...
                 </p>
-
                 <transition name="grow-fade">
                     <div
                         v-show="formSuccess"
                         class="success-message flex flex-column flex-center bg-white pa-3"
                     >
                         <i class="fas fa-check-circle text-success"></i>
-
                         <h4 class="title mb-2">
                             Success!
                         </h4>
@@ -137,12 +192,14 @@
                 </transition>
             </div>
         </transition>
+
         <div
             v-show="loading"
             class="loading-overlay"
         ></div>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
 import EcommerceService from '../../assets/js/services/ecommerce';
@@ -170,6 +227,16 @@ export default {
     mixins: [ThemeClasses],
     props: {
         billingAddress: {
+            type: Object,
+            default: () => null,
+        },
+
+        recentAddresses: {
+            type: Object,
+            default: () => null,
+        },
+
+        paymentMethods: {
             type: Object,
             default: () => null,
         },
@@ -254,6 +321,11 @@ export default {
             formSuccess: false,
             updateTimeout: null,
         };
+    },
+    beforeCreate() {
+        axios.get('/ecommerce/json/order-form').then((resp) => {
+            console.log(resp.data);
+        });
     },
     computed: {
         cartContainsSubscription() {
@@ -456,6 +528,27 @@ export default {
 
 <style lang="scss">
 @import '../../assets/sass/partials/variables';
+
+    .flex-end {
+        justify-content: flex-end;
+    }
+
+    .card-wrapper {
+        flex-wrap: wrap;
+        margin-right: -30px;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        padding: 10px;
+        border: 1px solid #ccc;
+        max-width: calc(33.333% - 20px);
+        width: 100%;
+
+        h5 {
+            font-size: 14px;
+        }
+    }
 
     .form-loading {
         position:fixed;
