@@ -1,8 +1,10 @@
 <template>
-    <div id="cart-sidebar-overlay" @click.stop.prevent="closeCartSidebar" :class="{active: active}">
-        <section id="cart-sidebar">
+    <div>
+        <div id="cart-sidebar-overlay" @click.stop.prevent="closeCartSidebar" :class="{active: active}">
+        </div>
+        <section id="cart-sidebar" :class="{active: active}">
             <div class="inner-container">
-                <div class="top flex-item">
+                <div class="top">
                     <h5 class="">Your cart</h5>
                     <a
                         href="#"
@@ -10,42 +12,42 @@
                         @click.stop.prevent="closeCartSidebar"
                     ><i class="fal fa-times fa-2x"></i></a>
                 </div>
-                <div class="guarantee flex-item">
+                <div class="guarantee">
                     <i class="fas fa-check-circle" :class="brand"></i>
                     <span>All of our drum lessons are backed by a 90-day guarantee.</span>
                 </div>
-                <div id="csb-products-container">
+                <div id="csb-products-container" v-if="cartItems">
                     <div class="border-top"></div>
                     <div class="csb-products-inner" data-simplebar data-simplebar-auto-hide="false">
                         <simplebar>
                             <cart-item
-                                v-for="item in products"
-                                :key="item.id"
+                                v-for="item in cartItems"
+                                :key="item.sku"
                                 :item="item"
                             ></cart-item>
                         </simplebar>
                     </div>
                     <div class="border-bottom"></div>
                 </div>
-                <div class="summary-container flex-item">
-                    <div class="clearfix">
+                <div class="summary-container">
+                    <div class="summary-row">
                         <div class="summary">Subtotal</div>
-                        <div class="float-right due">$391</div><!-- todo: update -->
+                        <div class="due"><span v-if="cartTotals">${{ cartTotals.due }}</span></div>
                     </div>
-                    <div class="clearfix">
+                    <div class="summary-row">
                         <div class="summary">Shipping</div>
-                        <div class="float-right deferred">Calculated at checkout</div>
+                        <div class="deferred">Calculated at checkout</div>
                     </div>
-                    <div class="clearfix">
+                    <div class="summary-row">
                         <div class="summary">Tax</div>
-                        <div class="float-right deferred">Calculated at checkout</div>
+                        <div class="deferred">Calculated at checkout</div>
                     </div>
                 </div>
-                <div class="checkout flex-item">
-                    <a href="#" :class="brand"><i class="fas fa-lock"></i>checkout</a>
+                <div class="checkout">
+                    <a href="/order" :class="brand"><i class="fas fa-lock"></i>checkout</a>
                 </div>
-                <div class="recommended-title flex-item">customers also liked</div>
-                <div class="flex-item">products</div>
+                <div class="recommended-title">customers also liked</div>
+                <div class="recommended-products">products</div>
             </div>
         </section>
     </div>
@@ -67,50 +69,55 @@ export default {
             type: String,
             default: () => 'drumeo',
         },
+        cartData: {
+            item: String,
+        },
     },
     data() {
         return {
             active: false,
+            cartItems: null,
+            cartTotals: null,
             products: [
                 {
-                    id: 1,
-                    title: 'Rock Drumming Masterclass',
-                    price: 197,
-                    isDigital: true,
-                    thumbnail: 'https://d1923uyy6spedc.cloudfront.net/rdm-card-comp.jpg',
+                    sku: 1,
+                    name: 'Rock Drumming Masterclass',
+                    price_after_discounts: 197,
+                    is_digital: true,
+                    thumbnail_url: 'https://d1923uyy6spedc.cloudfront.net/rdm-card-comp.jpg',
                     logo: 'https://dpwjbsxqtam5n.cloudfront.net/rock-drumming-masterclass/logo-white.png',
                 },
                 {
-                    id: 2,
-                    title: 'Drum Technique Made Easy',
-                    price: 197,
-                    isDigital: true,
-                    thumbnail: 'https://dz5i3s4prcfun.cloudfront.net/drum-technique-made-easy/dtme-pack-card-thumb-w-o-logo.png',
+                    sku: 2,
+                    name: 'Drum Technique Made Easy',
+                    price_after_discounts: 197,
+                    is_digital: true,
+                    thumbnail_url: 'https://dz5i3s4prcfun.cloudfront.net/drum-technique-made-easy/dtme-pack-card-thumb-w-o-logo.png',
                     logo: 'https://dpwjbsxqtam5n.cloudfront.net/drum-technique-made-easy/logo-white.png',
                 },
                 {
-                    id: 3,
-                    title: 'Successful Drumming',
-                    price: 197,
-                    isDigital: true,
-                    thumbnail: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/successful-drumming.jpg',
+                    sku: 3,
+                    name: 'Successful Drumming',
+                    price_after_discounts: 197,
+                    is_digital: true,
+                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/successful-drumming.jpg',
                     logo: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/successful-drumming.png',
                 },
                 {
-                    id: 4,
-                    title: 'Drumeo Gab T-Shirt',
-                    price: 19,
-                    isDigital: false,
+                    sku: 4,
+                    name: 'Drumeo Gab T-Shirt',
+                    price_after_discounts: 19,
+                    is_digital: false,
                     quantity: 1,
                     size: 'L',
-                    thumbnail: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/drumeo-gab-shirt.jpg',
+                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/drumeo-gab-shirt.jpg',
                 },
                 {
-                    id: 5,
-                    title: "The Drummer's Toolbox",
-                    price: 197,
-                    isDigital: true,
-                    thumbnail: 'https://dpwjbsxqtam5n.cloudfront.net/books/drummers-toolbox/sales/cart-image.png',
+                    sku: 5,
+                    name: "The Drummer's Toolbox",
+                    price_after_discounts: 197,
+                    is_digital: true,
+                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/books/drummers-toolbox/sales/cart-image.png',
                 },
             ],
         };
@@ -123,6 +130,10 @@ export default {
             cartButtonElement = null;
         }
 
+        let cartData = JSON.parse(this.cartData);
+
+        this.cartItems = cartData.meta.cart.items;
+        this.cartTotals = cartData.meta.cart.totals;
     },
     beforeDestroy() {
         let cartButtonElement = document.getElementById('nav-cart-button');
@@ -166,10 +177,6 @@ export default {
         z-index: 140;
         opacity: 1;
         visibility: visible;
-        #cart-sidebar {
-            z-index: 150;
-            opacity: 1;
-        }
     }
 }
 #cart-sidebar {
@@ -184,6 +191,10 @@ export default {
     -webkit-transition: visibility 0.3s ease-in-out, opacity 0.5s ease-in-out;
     -moz-transition: visibility 0.3s ease-in-out, opacity 0.5s ease-in-out;
     -o-transition: visibility 0.3s ease-in-out, opacity 0.5s ease-in-out;
+    &.active {
+        z-index: 150;
+        opacity: 1;
+    }
     .inner-container {
         border-left: 1px solid #CCD3D3;
         height:100vh;
@@ -225,18 +236,22 @@ export default {
     }
     .summary-container {
         padding: 18px 15px 18px 0;
-    }
-    .summary {
-        font-size: 14px;
-        display: inline-block;
-    }
-    .due {
-        font-weight: 700;
-        font-size: 14px;
-    }
-    .deferred {
-        font-size: 14px;
-        font-style: italic;
+        .summary-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .summary {
+                font-size: 14px;
+            }
+            .due {
+                font-weight: 700;
+                font-size: 14px;
+            }
+            .deferred {
+                font-size: 14px;
+                font-style: italic;
+            }
+        }
     }
     .checkout {
         margin-right: 15px;
@@ -278,7 +293,30 @@ export default {
         font-size: 14px;
         color: #8B929A;
     }
+    .recommended-products {
+        height: 250px;
+    }
 }
 #csb-products-container {
+    overflow: hidden;
+    position: relative;
+
+    .border-top {
+        border-top: 1px solid #CCD3D3;
+        margin-right: 15px;
+    }
+
+    .csb-products-inner {
+        max-height: 100%;
+        padding-right: 15px;
+    }
+
+    .border-bottom {
+        border-bottom: 1px solid #CCD3D3;
+        position: absolute;
+        bottom: 0;
+        right: 15px;
+        left: 0;
+    }
 }
 </style>
