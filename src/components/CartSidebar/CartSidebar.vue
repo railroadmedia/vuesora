@@ -12,7 +12,7 @@
                         @click.stop.prevent="closeCartSidebar"
                     ><i class="fal fa-times fa-2x"></i></a>
                 </div>
-                <div class="guarantee">
+                <div class="csb-guarantee">
                     <i class="fas fa-check-circle" :class="brand"></i>
                     <span>All of our drum lessons are backed by a 90-day guarantee.</span>
                 </div>
@@ -78,82 +78,59 @@ export default {
             active: false,
             cartItems: null,
             cartTotals: null,
-            products: [
-                {
-                    sku: 1,
-                    name: 'Rock Drumming Masterclass',
-                    price_after_discounts: 197,
-                    is_digital: true,
-                    thumbnail_url: 'https://d1923uyy6spedc.cloudfront.net/rdm-card-comp.jpg',
-                    logo: 'https://dpwjbsxqtam5n.cloudfront.net/rock-drumming-masterclass/logo-white.png',
-                },
-                {
-                    sku: 2,
-                    name: 'Drum Technique Made Easy',
-                    price_after_discounts: 197,
-                    is_digital: true,
-                    thumbnail_url: 'https://dz5i3s4prcfun.cloudfront.net/drum-technique-made-easy/dtme-pack-card-thumb-w-o-logo.png',
-                    logo: 'https://dpwjbsxqtam5n.cloudfront.net/drum-technique-made-easy/logo-white.png',
-                },
-                {
-                    sku: 3,
-                    name: 'Successful Drumming',
-                    price_after_discounts: 197,
-                    is_digital: true,
-                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/successful-drumming.jpg',
-                    logo: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/successful-drumming.png',
-                },
-                {
-                    sku: 4,
-                    name: 'Drumeo Gab T-Shirt',
-                    price_after_discounts: 19,
-                    is_digital: false,
-                    quantity: 1,
-                    size: 'L',
-                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/drumeo-gab-shirt.jpg',
-                },
-                {
-                    sku: 5,
-                    name: "The Drummer's Toolbox",
-                    price_after_discounts: 197,
-                    is_digital: true,
-                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/books/drummers-toolbox/sales/cart-image.png',
-                },
-            ],
         };
     },
     mounted() {
-        let cartButtonElement = document.getElementById('nav-cart-button');
-
-        if (cartButtonElement) {
-            cartButtonElement.addEventListener('click', this.openCartSidebar);
-            cartButtonElement = null;
-        }
-
         let cartData = JSON.parse(this.cartData);
 
-        this.cartItems = cartData.meta.cart.items;
-        this.cartTotals = cartData.meta.cart.totals;
+        this.updateCartData(cartData);
+
+        this.$root.$on('openCartSidebar', this.openCartSidebar);
+
+        this.attachAddToCartListeners();
     },
     beforeDestroy() {
-        let cartButtonElement = document.getElementById('nav-cart-button');
-
-        if (cartButtonElement) {
-            cartButtonElement.removeEventListener('click', this.openCartSidebar);
-            cartButtonElement = null;
-        }
     },
     methods: {
-        openCartSidebar(event) {
+        openCartSidebar() {
             this.active = true;
-            event.stopPropagation();
-            event.preventDefault();
         },
 
-        closeCartSidebar(event) {
+        closeCartSidebar() {
             this.active = false;
-            event.stopPropagation();
-            event.preventDefault();
+        },
+
+        updateCartData(cartData) {
+            this.cartItems = cartData.meta.cart.items;
+            this.cartTotals = cartData.meta.cart.totals;
+        },
+
+        attachAddToCartListeners() {
+            let buttons = document.querySelectorAll('.vue-add-to-cart');
+
+            if (buttons.length) {
+                Array.from(buttons).forEach((element) => {
+                    let sku = element.getAttribute('data-sku');
+
+                    if (!sku) {
+                        console.error('Vue CartSidebar found vue-add-to-cart class on an element without data-sku attribute set, element: %s', element);
+                    } else {
+                        element.addEventListener('click', (event) => {
+                            this.addToCart(sku);
+                            event.preventDefault();
+                            event.stopPropagation();
+                        });
+                    }
+                });
+            }
+        },
+
+        detachAddToCartListeners() {
+        },
+
+        addToCart(sku) {
+            console.log("CartSidebar::addToCart sku: %s", sku);
+            // todo add request to backend to add product to cart
         },
     },
 }
@@ -219,7 +196,7 @@ export default {
             color: #CCD3D3;
         }
     }
-    .guarantee {
+    .csb-guarantee {
         padding-bottom: 18px;
         padding-right: 14px;
         i.drumeo {
