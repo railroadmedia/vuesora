@@ -58,6 +58,8 @@ import CartItem from './_CartItem.vue';
 import simplebar from 'simplebar-vue';
 import 'simplebar/dist/simplebar.min.css';
 
+import EcommerceService from '../../assets/js/services/ecommerce.js';
+
 export default {
     components: {
         'cart-item': CartItem,
@@ -110,27 +112,38 @@ export default {
 
             if (buttons.length) {
                 Array.from(buttons).forEach((element) => {
-                    let sku = element.getAttribute('data-sku');
 
-                    if (!sku) {
-                        console.error('Vue CartSidebar found vue-add-to-cart class on an element without data-sku attribute set, element: %s', element);
-                    } else {
-                        element.addEventListener('click', (event) => {
-                            this.addToCart(sku);
+                    element.addEventListener('click', (event) => {
+
+                        let isValid = element.hasAttribute('data-product-json');
+
+                        if (isValid && element.classList.contains('selected-pack')) {
+                            isValid = element.classList.contains('active')
+                        }
+                        
+                        if (isValid) {
+                            let productsObject = JSON.parse(element.getAttribute('data-product-json'));
+
+                            this.addToCart(productsObject);
+
                             event.preventDefault();
                             event.stopPropagation();
-                        });
-                    }
+                        }
+                    });
                 });
             }
         },
 
-        detachAddToCartListeners() {
-        },
+        addToCart(products) {
 
-        addToCart(sku) {
-            console.log("CartSidebar::addToCart sku: %s", sku);
-            // todo add request to backend to add product to cart
+            this.openCartSidebar();
+
+            EcommerceService
+                .addCartItems({products: products})
+                .then(response => {
+                    this.updateCartData(response.data);
+                    this.$root.$emit('updateCartData', response.data);
+                });
         },
     },
 }
@@ -238,6 +251,7 @@ export default {
             padding: 12px;
             font: 700 17px "Roboto Condensed",sans-serif;
             text-transform: uppercase;
+            text-decoration: none;
             border-radius: 50px;
             outline: none;
             text-align: center;

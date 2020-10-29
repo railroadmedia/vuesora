@@ -26,6 +26,8 @@ export default {
         let cartData = JSON.parse(this.cartData);
 
         this.updateCartData(cartData);
+
+        this.$root.$on('updateCartData', this.updateCartData);
     },
     methods: {
         updateCartData(cartData) {
