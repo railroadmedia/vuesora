@@ -117,31 +117,42 @@ export default {
 
                         let isValid = element.hasAttribute('data-product-json');
 
-                        if (isValid && element.classList.contains('selected-pack')) {
+                        if (isValid && (element.classList.contains('selected-pack') || element.classList.contains('merch'))) {
                             isValid = element.classList.contains('active')
                         }
                         
                         if (isValid) {
                             let productsObject = JSON.parse(element.getAttribute('data-product-json'));
+                            let promoCode = element.hasAttribute('data-promocode') ? element.getAttribute('data-promocode') : null;
+                            let lockedCart = element.hasAttribute('data-locked-cart') ? element.getAttribute('data-locked-cart') : null;
 
-                            this.addToCart(productsObject);
+                            this.addToCart(productsObject, promoCode, lockedCart);
 
                             event.preventDefault();
-                            event.stopPropagation();
+                            // event.stopPropagation();
                         }
                     });
                 });
             }
         },
 
-        addToCart(products) {
+        addToCart(products, promoCode, lockedCart) {
 
-            this.openCartSidebar();
+            let payload = {products: products};
+
+            if (promoCode) {
+                payload['promo-code'] = promoCode;
+            }
+
+            if (lockedCart) {
+                payload['locked'] = lockedCart;
+            }
 
             EcommerceService
-                .addCartItems({products: products})
+                .addCartItems(payload)
                 .then(response => {
                     this.updateCartData(response.data);
+                    this.openCartSidebar();
                     this.$root.$emit('updateCartData', response.data);
                 });
         },
