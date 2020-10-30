@@ -28,19 +28,23 @@
 
                 <div class="flex flex-column xs-12 sm-6 mb-2 overflow">
                     <div class="flex flex-row">
-                        <div class="ph-1">
+                        <div class="pl-2">
                             <i class="fab fa-cc-visa cc-icon"></i>
                         </div>
 
-                        <div class="ph-1">
+                        <div class="pl-2">
                             <i class="fab fa-cc-mastercard cc-icon"></i>
                         </div>
 
-                        <div class="ph-1">
+                        <div class="pl-2">
+                            <i class="fab fa-cc-discover cc-icon"></i>
+                        </div>
+
+                        <div class="pl-2">
                             <i class="fab fa-cc-amex cc-icon"></i>
                         </div>
 
-                        <div class="ph-1">
+                        <div class="pl-2">
                             <i class="fab fa-cc-paypal cc-icon"></i>
                         </div>
                     </div>
