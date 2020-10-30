@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-column mb-2">
-        <div class="flex flex-column">
-            <div class="flex flex-row flex-wrap align-v-center nmh-1">
+        <div class="flex flex-column bg-white shadow corners-5 pt-3 ph-2">
+            <div class="flex flex-row flex-wrap align-v-center">
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
                         <select
@@ -50,7 +50,7 @@
             <!-- v-show is used to keep the stripe elements iframes loaded but hidden, using v-if would require re-initialization -->
             <div
                 v-show="$_paymentMethod === 'credit_card'"
-                class="flex flex-row flex-wrap nmh-1"
+                class="flex flex-row flex-wrap"
             >
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
@@ -135,7 +135,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-row flex-wrap nmh-1 mb-2">
+            <div class="flex flex-row flex-wrap mb-2">
                 <div
                     class="flex flex-column xs-12 ph-1 mb-2"
                     :class="$_billingCountry === 'Canada' ? 'sm-6' : ''"
@@ -222,6 +222,69 @@
             </div>
 
             <div
+                v-if="isOrder"
+                class="flex flex-row mb-1"
+            >
+                <div class="flex flex-column">
+                    <div class="flex flex-row reverse flex-wrap">
+                        <div class="flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2">
+                            <div v-if="discounts.length">
+                                <div
+                                    v-for="item in discounts"
+                                    :key="item.id"
+                                    class="body font-bold"
+                                >
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                            <div
+                                v-if="totals.shipping"
+                                class="body font-bold"
+                            >
+                                Shipping: ${{ totalShipping }}
+                            </div>
+
+                            <div class="body font-bold">
+                                Tax: ${{ totalTax }}
+                            </div>
+
+                            <div class="body font-bold">
+                                <span class="display">${{ totalDue }}</span> USD
+                            </div>
+
+                            <div class="body font-bold">
+                                Due Today
+                            </div>
+                        </div>
+
+                        <div class="flex flex-column xs-12 sm-6 align-v-bottom ph-1 mb-2">
+                            <button
+                                class="btn"
+                                @click.stop.prevent="submitForm"
+                            >
+                                <span
+                                    class="text-white bg-success"
+                                    :class="themeBgClass"
+                                >
+                                    Buy Now
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row mb-2">
+                        <div class="flex flex-column md-6 ph-1">
+                            <h5 class="tiny disclaimer">
+                                By completing your order you agree to the terms of service. All payments
+                                in US dollars. You can cancel your subscription at any time by emailing
+                                <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>.
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
                 v-if="!isOrder"
                 class="flex flex-row mb-1"
             >
@@ -290,7 +353,7 @@
                     </div>
 
                     <div class="flex flex-row flex-wrap align-h-right align-v-center">
-                        <div class="flex flex-column xs-6 sm-4 pr-1">
+                        <div class="flex flex-column xs-6 sm-4 mb-2 pr-1">
                             <button
                                 class="btn short close-modal"
                                 @click="cancelForm"
@@ -301,7 +364,7 @@
                             </button>
                         </div>
 
-                        <div class="flex flex-column xs-6 sm-4 pl-1">
+                        <div class="flex flex-column xs-6 sm-4 mb-2 pl-1">
                             <button
                                 class="btn"
                                 @click="submitForm"
@@ -331,7 +394,6 @@ export default {
     props: {
         brand: {
             type: String,
-            default: () => 'drumeo',
         },
 
         paymentDetails: {

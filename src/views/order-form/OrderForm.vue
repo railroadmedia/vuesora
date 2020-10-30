@@ -31,46 +31,47 @@
                 </div>
                 <!-- Saved Address -->
                 <template v-if="recentAddresses">
-                    <h5 class="title mb-1">Recent Addresses</h5>
                     <div class="flex flex-row card-wrapper">
-                        <div 
-                            class="flex flex-column card mb-3 mr-2 corners-5"
-                            v-for="(address, i) in recentAddresses.data"
-                            :key="i"
-                        > 
+                        <div class="flex flex-column xs-12 sm-4 mb-2 bg-white shadow corners-5 pt-2 pb-2 ph-2">
                             <p class="font-bold tiny">
-                                <span>{{ address.attributes.first_name }}</span>
-                                <span>{{ address.attributes.last_name }}</span>
-                            <p class="tiny">{{ address.attributes.street_line_1 }}</p>
-                            <p class="tiny">{{ address.attributes.street_line_2 }}</p>
-                            <p class="tiny">{{ address.attributes.city }}</p>
-                            <p class="tiny">
-                                <span>{{ address.attributes.region }}, </span>
-                                <span>{{ address.attributes.zip }}</span>
+                                Recent Shipping Address
                             </p>
-                            <p class="tiny">{{ address.attributes.country }}</p>
-                            <div class="flex mt-1 flex-end">
-                                <button class="tiny font-bold mb-1">Edit</button>
-                                <button class="tiny font-bold mb-1 ml-1">Remove</button>
+                            <p class="tiny">
+                                <span>{{ recentAddresses.data[0].attributes.first_name }}</span>
+                                <span>{{ recentAddresses.data[0].attributes.last_name }}</span>
+                            </p>
+                            <p class="tiny">{{ recentAddresses.data[0].attributes.street_line_1 }}</p>
+                            <p class="tiny">{{ recentAddresses.data[0].attributes.street_line_2 }}</p>
+                            <p class="tiny">{{ recentAddresses.data[0].attributes.city }}</p>
+                            <p class="tiny">
+                                <span>{{ recentAddresses.data[0].attributes.region }}, </span>
+                                <span>{{ recentAddresses.data[0].attributes.zip }}</span>
+                            </p>
+                            <p class="tiny">{{ recentAddresses.data[0].attributes.country }}</p>
+                            <div class="flex mt-2">
+                                <a 
+                                    href="/members/settings/payments" 
+                                    title="Go to Payment Method Page" 
+                                    class="btn bg-white outline outline-drumeo text-drumeo"
+                                >
+                                    Change Address
+                                </a>
                             </div>
-                        </div>
-                        <div class="flex flex-column card mb-3 mr-2 corners-5">
-                            <p class="font-bold tiny">Add a new shipping address</p>
                         </div>
                     </div>
                 </template>
                 <!-- Shipping Component -->
-                
-                <order-form-shipping
-                    ref="shippingForm"
-                    :brand="brand"
-                    :shipping-data="shippingStateFactory"
-                    :countries="countries"
-                    :banned-countries="bannedCountries"
-                    :provinces="provinces"
-                    @updateShippingData="updateShippingData"
-                />
-                
+                <template v-else>
+                    <order-form-shipping
+                        ref="shippingForm"
+                        :brand="brand"
+                        :shipping-data="shippingStateFactory"
+                        :countries="countries"
+                        :banned-countries="bannedCountries"
+                        :provinces="provinces"
+                        @updateShippingData="updateShippingData"
+                    />
+                </template>
             </section>
 
             <!-- Plan Section -->
@@ -98,46 +99,43 @@
                         Payment Details
                     </h3>
                 </div>
-                <template v-if="paymentMethods">
-                    <h5 class="title mb-1">Recent Payment Methods</h5>
-                    <div class="flex flex-row card-wrapper">
-                        <div 
-                            class="flex flex-column card mb-3 mr-2 corners-5"
-                            v-for="(method, i) in paymentMethods.data"
-                            :key="i"
-                        >   
-                            <p class="tiny">type</p>
-                            <p class="tiny">Card</p>
-                            <p class="tiny">ending in</p>
+                <template v-if="primaryPaymentMethod">        
+                    <div class="flex flex-row">
+                        <div class="flex flex-column xs-12 sm-4 mb-2 bg-white shadow corners-5 pt-2 pb-2 ph-2">
+                            <p class="tiny font-bold">Default Payment Method</p>
+                            <p class="tiny">type: {{ primaryPaymentMethod.relationships.method.data.type}} </p>
                             <p class="tiny">
-                                <span class="font-bold">Added:</span> 
-                                {{ method.attributes.created_at }}
-                            </p>
-                            <div class="flex mt-1 flex-end">
-                                <button class="tiny font-bold mb-1">Edit</button>
-                                <button class="tiny font-bold mb-1 ml-1">Remove</button>
+                                Card:{{ getRelatedAttributesByTypeAndId( primaryPaymentMethod.relationships.method.data).attributes.company_name || 'N/A' }}</p>
+                            <p class="tiny">ending in: {{ getRelatedAttributesByTypeAndId(primaryPaymentMethod.relationships.method.data).attributes.last_four_digits || 'N/A' }}</p>
+                            <div class="flex mt-2">
+                                <a 
+                                    href="/members/settings/payments" 
+                                    title="Go to Payment Method Page" 
+                                    class="btn bg-white outline text-drumeo outline-drumeo"
+                                >
+                                    Change Payment Method
+                                </a>
                             </div>
                         </div>
-                        <div class="flex flex-column card mb-3 mr-2 corners-5">
-                            <p class="font-bold tiny">Add a new payment method</p>
-                        </div>
-                    </div>   
+                    </div>     
                 </template>
                 <!-- Order Component -->
-                <order-form-payment
-                    ref="paymentForm"
-                    :theme-color="themeColor"
-                    :brand="brand"
-                    :payment-details="paymentStateFactory"
-                    :stripe-publishable-key="stripePublishableKey"
-                    :totals="cartData.totals"
-                    :discounts="cartData.discounts"
-                    :stripe-token="stripeToken"
-                    :countries="countries"
-                    :provinces="provinces"
-                    @updatePaymentData="updatePaymentData"
-                />
-                
+                <template v-else>
+                    <!-- Order Component -->
+                    <order-form-payment
+                        ref="paymentForm"
+                        :theme-color="themeColor"
+                        :brand="brand"
+                        :payment-details="paymentStateFactory"
+                        :stripe-publishable-key="stripePublishableKey"
+                        :totals="cartData.totals"
+                        :discounts="cartData.discounts"
+                        :stripe-token="stripeToken"
+                        :countries="countries"
+                        :provinces="provinces"
+                        @updatePaymentData="updatePaymentData"
+                    />
+                </template>
             </section>
         </div>
 
@@ -310,6 +308,7 @@ export default {
                 accountPasswordConfirm: null,
             },
             shippingStateFactory: this.shippingAddress,
+            primaryPaymentMethod: null,
             paymentStateFactory: {
                 cardToken: null,
                 methodType: 'credit_card',
@@ -321,11 +320,6 @@ export default {
             formSuccess: false,
             updateTimeout: null,
         };
-    },
-    beforeCreate() {
-        axios.get('/ecommerce/json/order-form').then((resp) => {
-            console.log(resp.data);
-        });
     },
     computed: {
         cartContainsSubscription() {
@@ -348,7 +342,28 @@ export default {
             return this.cartData.payment_plan_options.length > 0 && !this.cartContainsSubscription;
         },
     },
+    beforeMount() {
+        // Get Primary Payment Method
+        if (this.paymentMethods) {
+            this.paymentMethods.data.forEach((method) => {
+                if (this.isPrimaryPaymentMethod(method)) {
+                    this.primaryPaymentMethod = method;
+                }
+            });
+        }
+    },
     methods: {
+        isPrimaryPaymentMethod(paymentMethod) {
+            return this.getRelatedAttributesByTypeAndId(
+                paymentMethod.relationships.userPaymentMethod.data,
+            ).attributes.is_primary;
+        },
+        
+        getRelatedAttributesByTypeAndId({ id, type }) {
+            const data = this.paymentMethods.included.find(data => data.id === id && data.type === type);
+            return data || { id: 'N/A', attributes: {} };
+        },
+
         updateCart(payload) {
             this.cartData = payload.meta.cart;
         },
@@ -409,33 +424,40 @@ export default {
                     if (!this.$refs.accountForm.formValid) {
                         window.scrollTo({ top: (this.$refs.accountForm.$el.offsetTop - 100), behavior: 'smooth' });
                         return;
-                    }
+                    }                                                                                                                                                                                                                       
                 }
-
+                
                 if (this.cartRequiresShippingAddress) {
-                    this.$refs.shippingForm.validateForm();
-                    if (!this.$refs.shippingForm.formValid) {
-                        window.scrollTo({ top: (this.$refs.shippingForm.$el.offsetTop - 100), behavior: 'smooth' });
-                        return;
+                    if (!this.recentAddresses) {
+                        this.$refs.shippingForm.validateForm();
+                        if (!this.$refs.shippingForm.formValid) {
+                            window.scrollTo({ top: (this.$refs.shippingForm.$el.offsetTop - 100), behavior: 'smooth' });
+                            return;
+                        }
                     }
                 }
 
                 this.loading = true;
 
-                if (this.paymentStateFactory.methodType === 'paypal') {
+                if (this.primaryPaymentMethod) {
                     this.submitOrder();
-                } else {
-                    this.$refs.paymentForm.fetchStripeToken()
-                        .then(({ token, error }) => {
-                            if (error) {
-                                this.loading = false;
-                                return;
-                            }
+                }
+                if (!this.primaryPaymentMethod) {
+                    if (this.paymentStateFactory.methodType === 'paypal') {
+                        this.submitOrder();
+                    } else {
+                        this.$refs.paymentForm.fetchStripeToken()
+                            .then(({ token, error }) => {
+                                if (error) {
+                                    this.loading = false;
+                                    return;
+                                }
 
-                            this.stripeToken = token;
-
-                            this.submitOrder();
-                        });
+                                this.stripeToken = token;
+                                
+                                this.submitOrder();
+                            });
+                    }
                 }
             }, 250);
         },
@@ -451,10 +473,17 @@ export default {
         createOrderPayload() {
             const payload = {
                 gateway: this.brand,
-                payment_method_type: this.paymentStateFactory.methodType,
                 billing_country: this.paymentStateFactory.billingCountry,
                 billing_region: this.paymentStateFactory.billingRegion,
             };
+
+            if (!this.primaryPaymentMethod) {
+                payload.payment_method_type = this.paymentStateFactory.methodType;
+            }
+            
+            if (this.primaryPaymentMethod) {
+                payload.payment_method_id = '164040';
+            }
 
             if (this.canAcceptPaymentPlans) {
                 payload.payment_plan_number_of_payments = this.cartData.number_of_payments;
@@ -471,20 +500,32 @@ export default {
             }
 
             if (this.cartRequiresShippingAddress) {
-                payload.shipping_first_name = this.shippingStateFactory.first_name;
-                payload.shipping_last_name = this.shippingStateFactory.last_name;
-                payload.shipping_address_line_1 = this.shippingStateFactory.street_line_one;
-                payload.shipping_address_line_2 = this.shippingStateFactory.street_line_two;
-                payload.shipping_zip_or_postal_code = this.shippingStateFactory.zip_or_postal_code;
-                payload.shipping_city = this.shippingStateFactory.city;
-                payload.shipping_region = this.shippingStateFactory.state;
-                payload.shipping_country = this.shippingStateFactory.country;
+                if (this.recentAddresses) {
+                    payload.shipping_first_name = this.recentAddresses.data[0].attributes.first_name;
+                    payload.shipping_last_name = this.recentAddresses.data[0].attributes.last_name;
+                    payload.shipping_address_line_1 = this.recentAddresses.data[0].attributes.street_line_1;
+                    payload.shipping_address_line_2 = this.recentAddresses.data[0].attributes.street_line_2;
+                    payload.shipping_zip_or_postal_code = this.recentAddresses.data[0].attributes.zip;
+                    payload.shipping_city = this.recentAddresses.data[0].attributes.city;
+                    payload.shipping_region = this.recentAddresses.data[0].attributes.region;
+                    payload.shipping_country = this.recentAddresses.data[0].attributes.country;
+                } else {
+                    payload.shipping_first_name = this.shippingStateFactory.first_name;
+                    payload.shipping_last_name = this.shippingStateFactory.last_name;
+                    payload.shipping_address_line_1 = this.shippingStateFactory.street_line_one;
+                    payload.shipping_address_line_2 = this.shippingStateFactory.street_line_two;
+                    payload.shipping_zip_or_postal_code = this.shippingStateFactory.zip_or_postal_code;
+                    payload.shipping_city = this.shippingStateFactory.city;
+                    payload.shipping_region = this.shippingStateFactory.state;
+                    payload.shipping_country = this.shippingStateFactory.country;
+                }        
             }
 
-            if (this.paymentStateFactory.methodType === 'credit_card') {
+            if (this.paymentStateFactory.methodType === 'credit_card' && !this.primaryPaymentMethod) {
                 payload.card_token = this.stripeToken.id;
             }
 
+            console.log(payload);
             return payload;
         },
 
@@ -528,6 +569,10 @@ export default {
 
 <style lang="scss">
 @import '../../assets/sass/partials/variables';
+    a.btn.outline-drumeo {
+        border: 2px solid #0B76DB;
+        box-shadow: none;
+    }
 
     .flex-end {
         justify-content: flex-end;
@@ -540,11 +585,6 @@ export default {
     }
 
     .card {
-        padding: 10px;
-        border: 1px solid #ccc;
-        max-width: calc(33.333% - 20px);
-        width: 100%;
-
         h5 {
             font-size: 14px;
         }
