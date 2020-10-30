@@ -6,8 +6,8 @@
             </h4>
         </div>
 
-        <ul class="body list-style-none mb-3">
-            <li class="flex flex-row align-v-center">
+        <ul class="body list-style-none mb-3 flex-column md-6">
+            <li class="flex flex-row align-v-center mb-2">
                 <div class="flex flex-column default-col text-center hide-xs-only">
                     <h6 class="tiny font-bold dense">
                         Default
@@ -35,6 +35,7 @@
             <li
                 v-for="(paymentMethod, i) in paymentMethodsData.data"
                 class="flex flex-row align-v-center"
+                style="border-top: 1px solid #ddd;"
             >
                 <div class="flex flex-column default-col text-center body hide-xs-only">
                     <i
@@ -263,6 +264,8 @@ export default {
                 methodType: 'credit_card',
                 billingCountry: this.cart.billing_address ? this.cart.billing_address.country : null,
                 billingRegion: this.cart.billing_address ? this.cart.billing_address.state : null,
+                renewDueSubscription: !this.isActive && this.hasSubscription,
+                updateActiveSubscriptions: true,
             };
         },
 
@@ -307,6 +310,8 @@ export default {
                 method_type: this.editingPaymentMethod.methodType,
                 billing_country: this.editingPaymentMethod.billingCountry,
                 billing_region: this.editingPaymentMethod.billingRegion,
+                renew_due_subscription: this.editingPaymentMethod.renewDueSubscription,
+                update_active_subscriptions: this.editingPaymentMethod.updateActiveSubscriptions,
             })
                 .then((response) => {
                     if (response) {
