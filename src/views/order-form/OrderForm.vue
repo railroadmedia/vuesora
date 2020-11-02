@@ -37,17 +37,17 @@
                                 Recent Shipping Address
                             </p>
                             <p class="tiny">
-                                <span>{{ recentAddresses.data[0].attributes.first_name }}</span>
-                                <span>{{ recentAddresses.data[0].attributes.last_name }}</span>
+                                <span>{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.first_name }}</span>
+                                <span>{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.last_name }}</span>
                             </p>
-                            <p class="tiny">{{ recentAddresses.data[0].attributes.street_line_1 }}</p>
-                            <p class="tiny">{{ recentAddresses.data[0].attributes.street_line_2 }}</p>
-                            <p class="tiny">{{ recentAddresses.data[0].attributes.city }}</p>
+                            <p class="tiny">{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.street_line_1 }}</p>
+                            <p class="tiny">{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.street_line_2 }}</p>
+                            <p class="tiny">{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.city }}</p>
                             <p class="tiny">
-                                <span>{{ recentAddresses.data[0].attributes.region }}, </span>
-                                <span>{{ recentAddresses.data[0].attributes.zip }}</span>
+                                <span>{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.region }}, </span>
+                                <span>{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.zip }}</span>
                             </p>
-                            <p class="tiny">{{ recentAddresses.data[0].attributes.country }}</p>
+                            <p class="tiny">{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.country }}</p>
                             <div class="flex mt-2">
                                 <a 
                                     href="/members/settings/payments" 
@@ -458,7 +458,7 @@ export default {
                 }
                 
                 if (this.cartRequiresShippingAddress) {
-                    if (!this.recentAddresses) {
+                    if (!this.recentAddresses || this.newAddress) {
                         this.$refs.shippingForm.validateForm();
                         if (!this.$refs.shippingForm.formValid) {
                             window.scrollTo({ top: (this.$refs.shippingForm.$el.offsetTop - 100), behavior: 'smooth' });
@@ -492,6 +492,7 @@ export default {
 
         submitOrder() {
             const payload = this.createOrderPayload();
+            console.log(payload);
             axios.put('/ecommerce/json/order-form/submit', payload)
                 .then(this.orderSuccess)
                 .catch(this.orderFailure);
@@ -527,15 +528,16 @@ export default {
             }
 
             if (this.cartRequiresShippingAddress) {
-                if (this.recentAddresses || !this.newAddress) {
-                    payload.shipping_first_name = this.recentAddresses.data[0].attributes.first_name;
-                    payload.shipping_last_name = this.recentAddresses.data[0].attributes.last_name;
-                    payload.shipping_address_line_1 = this.recentAddresses.data[0].attributes.street_line_1;
-                    payload.shipping_address_line_2 = this.recentAddresses.data[0].attributes.street_line_2;
-                    payload.shipping_zip_or_postal_code = this.recentAddresses.data[0].attributes.zip;
-                    payload.shipping_city = this.recentAddresses.data[0].attributes.city;
-                    payload.shipping_region = this.recentAddresses.data[0].attributes.region;
-                    payload.shipping_country = this.recentAddresses.data[0].attributes.country;
+                if (!this.newAddress) {
+                    console.log('new Address boolean ', !this.newAddress);
+                    payload.shipping_first_name = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.first_name;
+                    payload.shipping_last_name = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.last_name;
+                    payload.shipping_address_line_1 = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.street_line_1;
+                    payload.shipping_address_line_2 = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.street_line_2;
+                    payload.shipping_zip_or_postal_code = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.zip;
+                    payload.shipping_city = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.city;
+                    payload.shipping_region = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.region;
+                    payload.shipping_country = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.country;
                 } else {
                     payload.shipping_first_name = this.shippingStateFactory.first_name;
                     payload.shipping_last_name = this.shippingStateFactory.last_name;
