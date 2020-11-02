@@ -32,7 +32,7 @@
                 <!-- Saved Address -->
                 <template v-if="recentAddresses">
                     <div class="flex flex-row card-wrapper">
-                        <div class="flex flex-column xs-12 sm-4 mb-2 bg-white shadow corners-5 pt-2 pb-2 ph-2">
+                        <div class="flex flex-column xs-12 sm-4 mb-1 bg-white shadow corners-5 pt-2 pb-2 ph-2">
                             <p class="font-bold tiny">
                                 Recent Shipping Address
                             </p>
@@ -57,11 +57,19 @@
                                     Change Address
                                 </a>
                             </div>
+                            <div class="flex mt-1">
+                                <button
+                                    class="btn" 
+                                    @click='newAddress = !newAddress' 
+                                >
+                                    <span class="text-white bg-drumeo"> Add New Address </span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </template>
                 <!-- Shipping Component -->
-                <template v-else>
+                <template v-if="!recentAddresses || newAddress">
                     <order-form-shipping
                         ref="shippingForm"
                         :brand="brand"
@@ -101,12 +109,13 @@
                 </div>
                 <template v-if="primaryPaymentMethod">        
                     <div class="flex flex-row">
-                        <div class="flex flex-column xs-12 sm-4 mb-2 bg-white shadow corners-5 pt-2 pb-2 ph-2">
+                        <div class="flex flex-column xs-12 sm-4 mb-1 bg-white shadow corners-5 pt-2 pb-2 ph-2">
                             <p class="tiny font-bold">Default Payment Method</p>
-                            <p class="tiny">type: {{ primaryPaymentMethod.relationships.method.data.type}} </p>
+                            <p class="tiny">Payment Type: {{ primaryPaymentMethod.relationships.method.data.type}} </p>
                             <p class="tiny">
-                                Card:{{ getRelatedAttributesByTypeAndId( primaryPaymentMethod.relationships.method.data).attributes.company_name || 'N/A' }}</p>
-                            <p class="tiny">ending in: {{ getRelatedAttributesByTypeAndId(primaryPaymentMethod.relationships.method.data).attributes.last_four_digits || 'N/A' }}</p>
+                                Card: {{ getRelatedAttributesByTypeAndId( primaryPaymentMethod.relationships.method.data).attributes.company_name || 'N/A' }}</p>
+                            <p class="tiny">Ending In: {{ getRelatedAttributesByTypeAndId(primaryPaymentMethod.relationships.method.data).attributes.last_four_digits || 'N/A' }}</p>
+                            <p class="tiny">Expires On: {{ getExpirationDate( primaryPaymentMethod ) }}</p>
                             <div class="flex mt-2">
                                 <a 
                                     href="/members/settings/payments" 
@@ -116,11 +125,19 @@
                                     Change Payment Method
                                 </a>
                             </div>
+                            <div class="flex mt-1">
+                                <button
+                                    class="btn" 
+                                    @click='newPayment = !newPayment' 
+                                >
+                                    <span class="text-white bg-drumeo"> Add New Payment </span>
+                                </button>
+                            </div>
                         </div>
                     </div>     
                 </template>
                 <!-- Order Component -->
-                <template v-else>
+                <template v-if="!primaryPaymentMethod || newPayment">
                     <!-- Order Component -->
                     <order-form-payment
                         ref="paymentForm"
@@ -200,6 +217,7 @@
 
 <script>
 import axios from 'axios';
+import { DateTime } from 'luxon';
 import EcommerceService from '../../assets/js/services/ecommerce';
 import OrderFormAccount from './_OrderFormAccount.vue';
 import OrderFormCart from './_OrderFormCart.vue';
@@ -296,6 +314,8 @@ export default {
     },
     data() {
         return {
+            newAddress: false,
+            newPayment: false,
             loading: false,
             cartData: this.cart,
             requiresAccount: false,
@@ -357,6 +377,16 @@ export default {
             return this.getRelatedAttributesByTypeAndId(
                 paymentMethod.relationships.userPaymentMethod.data,
             ).attributes.is_primary;
+        },
+
+        getExpirationDate(paymentMethod) {
+            const date = this.getRelatedAttributesByTypeAndId(
+                paymentMethod.relationships.method.data,
+            ).attributes.expiration_date;
+            if (date) {
+                return DateTime.fromSQL(date).toFormat('MM/yy');
+            }
+            return 'N/A';
         },
         
         getRelatedAttributesByTypeAndId({ id, type }) {
@@ -439,10 +469,10 @@ export default {
 
                 this.loading = true;
 
-                if (this.primaryPaymentMethod) {
+                if (this.primaryPaymentMethod || !this.newPayment) {
                     this.submitOrder();
                 }
-                if (!this.primaryPaymentMethod) {
+                if (!this.primaryPaymentMethod || this.newPayment) {
                     if (this.paymentStateFactory.methodType === 'paypal') {
                         this.submitOrder();
                     } else {
@@ -452,9 +482,7 @@ export default {
                                     this.loading = false;
                                     return;
                                 }
-
                                 this.stripeToken = token;
-                                
                                 this.submitOrder();
                             });
                     }
@@ -464,7 +492,6 @@ export default {
 
         submitOrder() {
             const payload = this.createOrderPayload();
-
             axios.put('/ecommerce/json/order-form/submit', payload)
                 .then(this.orderSuccess)
                 .catch(this.orderFailure);
@@ -477,12 +504,12 @@ export default {
                 billing_region: this.paymentStateFactory.billingRegion,
             };
 
-            if (!this.primaryPaymentMethod) {
+            if (!this.primaryPaymentMethod || this.newPayment) {
                 payload.payment_method_type = this.paymentStateFactory.methodType;
             }
             
-            if (this.primaryPaymentMethod) {
-                payload.payment_method_id = '164040';
+            if (this.primaryPaymentMethod || !this.newPayment) {
+                payload.payment_method_id = this.primaryPaymentMethod.id;
             }
 
             if (this.canAcceptPaymentPlans) {
@@ -500,7 +527,7 @@ export default {
             }
 
             if (this.cartRequiresShippingAddress) {
-                if (this.recentAddresses) {
+                if (this.recentAddresses || !this.newAddress) {
                     payload.shipping_first_name = this.recentAddresses.data[0].attributes.first_name;
                     payload.shipping_last_name = this.recentAddresses.data[0].attributes.last_name;
                     payload.shipping_address_line_1 = this.recentAddresses.data[0].attributes.street_line_1;
@@ -521,11 +548,11 @@ export default {
                 }        
             }
 
-            if (this.paymentStateFactory.methodType === 'credit_card' && !this.primaryPaymentMethod) {
+            if (this.paymentStateFactory.methodType === 'credit_card' && (!this.primaryPaymentMethod || this.newPayment)) {
+                console.log(this.stripeToken);
                 payload.card_token = this.stripeToken.id;
             }
 
-            console.log(payload);
             return payload;
         },
 
