@@ -24,6 +24,8 @@
                                 v-for="item in cartItems"
                                 :key="item.sku"
                                 :item="item"
+                                @removeCartItem="removeCartItem"
+                                @updateCartItemQuantity="updateCartItemQuantity"
                             ></cart-item>
                         </simplebar>
                     </div>
@@ -129,7 +131,6 @@ export default {
                             this.addToCart(productsObject, promoCode, lockedCart);
 
                             event.preventDefault();
-                            // event.stopPropagation();
                         }
                     });
                 });
@@ -150,11 +151,30 @@ export default {
 
             EcommerceService
                 .addCartItems(payload)
-                .then(response => {
-                    this.updateCartData(response.data);
-                    this.openCartSidebar();
-                    this.$root.$emit('updateCartData', response.data);
-                });
+                .then(this.handleCartUpdate);
+        },
+
+        removeCartItem(cartItem) {
+            EcommerceService
+                .removeCartItem({productSku: cartItem.sku})
+                .then(this.handleCartUpdate);
+        },
+
+        updateCartItemQuantity({cartItem, quantity}) {
+            EcommerceService
+                .updateCartItemQuantity({productSku: cartItem.sku, quantity})
+                .then(this.handleCartUpdate);
+        },
+
+        handleCartUpdate(response) {
+            this.updateCartData(response.data);
+            this.$root.$emit('updateCartData', response.data);
+
+            if (!this.cartItems.length) {
+                this.closeCartSidebar();
+            } else if (!this.active) {
+                this.openCartSidebar();
+            }
         },
     },
 }

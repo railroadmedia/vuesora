@@ -12,15 +12,15 @@
                 <div class="csb-quantity" v-if="!item.is_digital && item.quantity">
                     <div class="csb-quantity-label">Qty:</div>
                     <div class="csb-quantity-control">
-                        <div class="csb-quantity-dec"><i class="fal fa-minus"></i></div>
-                        <div class="csb-quantity-input"><input type="text" v-model="item.quantity"></div>
-                        <div class="csb-quantity-inc"><i class="fal fa-plus"></i></div>
+                        <div class="csb-quantity-dec" @click.stop.prevent="decQuantity"><i class="fal fa-minus"></i></div>
+                        <div class="csb-quantity-input"><input type="text" v-model="$_quantity"></div>
+                        <div class="csb-quantity-inc" @click.stop.prevent="incQuantity"><i class="fal fa-plus"></i></div>
                     </div>
                 </div>
                 <div class="csb-size" v-if="item.size">Size: {{ item.size }}</div>
                 <div class="csb-price">${{ item.price_after_discounts }}</div>
             </div>
-            <div class="item-remove"><a href="#">Remove</a></div>
+            <div class="item-remove"><a href="#" @click.stop.prevent="remove">Remove</a></div>
         </div>
     </div>
 </template>
@@ -29,6 +29,64 @@
 export default {
     props: {
         item: Object,
+    },
+    data() {
+        return {
+            quantity: 0,
+            quantityTimeout: null,
+        };
+    },
+    mounted() {
+        if (this.item && this.item.quantity) {
+            this.quantity = this.item.quantity;
+        }
+    },
+    watch: {
+        item() {
+            if (this.item && this.item.quantity) {
+                this.quantity = this.item.quantity;
+            }
+        }
+    },
+    computed: {
+        $_quantity: {
+            get() {
+                return this.quantity;
+            },
+            set(value) {
+                this.quantity = value;
+                this.updateQuantity();
+            },
+        },
+    },
+    methods: {
+        remove() {
+            this.$emit('removeCartItem', this.item);
+        },
+
+        updateQuantity() {
+            clearTimeout(this.quantityTimeout);
+
+            this.quantityTimeout = setTimeout(() => {
+                this.$emit(
+                    'updateCartItemQuantity',
+                    {
+                        cartItem: this.item,
+                        quantity: this.quantity,
+                    }
+                );
+            }, 500);
+        },
+
+        incQuantity() {
+            this.$_quantity = this.$_quantity + 1;
+        },
+
+        decQuantity() {
+            if (this.$_quantity > 0) {
+                this.$_quantity = this.$_quantity - 1;
+            }
+        },
     },
 }
 </script>
