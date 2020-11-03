@@ -49,7 +49,14 @@
                     <a href="/order" :class="brand"><i class="fas fa-lock"></i>checkout</a>
                 </div>
                 <div class="recommended-title">customers also liked</div>
-                <div class="recommended-products">products</div>
+                <div class="recommended-products">
+                    <recommended-product
+                        v-for="item in recommendedProducts"
+                        :key="item.sku"
+                        :item="item"
+                        @addToCart="addRecommendedProductToCart"
+                    ></recommended-product>
+                </div>
             </div>
         </section>
     </div>
@@ -57,6 +64,7 @@
 
 <script>
 import CartItem from './_CartItem.vue';
+import RecommendedProduct from './_RecommendedProduct.vue';
 import simplebar from 'simplebar-vue';
 import 'simplebar/dist/simplebar.min.css';
 
@@ -65,6 +73,7 @@ import EcommerceService from '../../assets/js/services/ecommerce.js';
 export default {
     components: {
         'cart-item': CartItem,
+        'recommended-product': RecommendedProduct,
         simplebar
     },
     name: 'CartSidebar',
@@ -82,6 +91,26 @@ export default {
             active: false,
             cartItems: null,
             cartTotals: null,
+            recommendedProducts: [
+                {
+                    sku: 'practicepad',
+                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/p4.jpg',
+                    name: 'Drumeo P4 Practice Pad',
+                    price_after_discounts: 59,
+                },
+                {
+                    sku: 'Drumeo-VaterSticks',
+                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/vater-sticks/cart-image.jpg',
+                    name: 'Drumeo Drumsticks',
+                    price_after_discounts: 12.95,
+                },
+                {
+                    sku: 'stick-bag',
+                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/promos/black-friday/stick-bag.png',
+                    name: 'Drumeo Leather Stick Bag',
+                    price_after_discounts: 99,
+                },
+            ],
         };
     },
     mounted() {
@@ -175,6 +204,9 @@ export default {
             } else if (!this.active) {
                 this.openCartSidebar();
             }
+        },
+
+        addRecommendedProductToCart() {
         },
     },
 }
@@ -316,7 +348,9 @@ export default {
         color: #8B929A;
     }
     .recommended-products {
-        height: 250px;
+        display: flex;
+        flex-direction: row;
+        padding-top: 10px;
     }
 }
 #csb-products-container {
