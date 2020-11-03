@@ -24,52 +24,160 @@
             <!-- Shipping Section -->
             <section v-if="cartRequiresShippingAddress">
                 <!-- Section Heading -->
-                <div class="flex flex-row mb-1">
+                <div
+                    class="flex flex-row mb-1"
+                >
                     <h3 class="title uppercase font-bold">
                         Shipping Information
                     </h3>
                 </div>
-                <!-- Saved Address -->
-                <template v-if="recentAddresses">
-                    <div class="flex flex-row card-wrapper">
-                        <div class="flex flex-column xs-12 sm-4 mb-1 bg-white shadow corners-5 pt-2 pb-2 ph-2">
-                            <p class="font-bold tiny">
-                                Recent Shipping Address
-                            </p>
-                            <p class="tiny">
-                                <span>{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.first_name }}</span>
-                                <span>{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.last_name }}</span>
-                            </p>
-                            <p class="tiny">{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.street_line_1 }}</p>
-                            <p class="tiny">{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.street_line_2 }}</p>
-                            <p class="tiny">{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.city }}</p>
-                            <p class="tiny">
-                                <span>{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.region }}, </span>
-                                <span>{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.zip }}</span>
-                            </p>
-                            <p class="tiny">{{ recentAddresses.data[recentAddresses.data.length - 1].attributes.country }}</p>
-                            <div class="flex mt-2">
-                                <a 
-                                    href="/members/settings/payments" 
-                                    title="Go to Payment Method Page" 
-                                    class="btn bg-white outline outline-drumeo text-drumeo"
+
+<!--                &lt;!&ndash; Saved Address &ndash;&gt;-->
+<!--                <template v-if="shippingAddresses">-->
+<!--                    <div class="flex flex-row card-wrapper">-->
+<!--                        <div class="flex flex-column xs-12 sm-4 mb-1 bg-white shadow corners-5 pt-2 pb-2 ph-2">-->
+<!--                            <p class="font-bold tiny">-->
+<!--                                Recent Shipping Address-->
+<!--                            </p>-->
+<!--                            <p class="tiny">-->
+<!--                                <span>{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.first_name }}</span>-->
+<!--                                <span>{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.last_name }}</span>-->
+<!--                            </p>-->
+<!--                            <p class="tiny">{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.street_line_1 }}</p>-->
+<!--                            <p class="tiny">{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.street_line_2 }}</p>-->
+<!--                            <p class="tiny">{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.city }}</p>-->
+<!--                            <p class="tiny">-->
+<!--                                <span>{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.region }}, </span>-->
+<!--                                <span>{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.zip }}</span>-->
+<!--                            </p>-->
+<!--                            <p class="tiny">{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.country }}</p>-->
+<!--                            <div class="flex mt-2">-->
+<!--                                <a -->
+<!--                                    href="/members/settings/payments" -->
+<!--                                    title="Go to Payment Method Page" -->
+<!--                                    class="btn bg-white outline outline-drumeo text-drumeo"-->
+<!--                                >-->
+<!--                                    Change Address-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="flex mt-1">-->
+<!--                                <button-->
+<!--                                    class="btn" -->
+<!--                                    @click='newAddress = !newAddress' -->
+<!--                                >-->
+<!--                                    <span class="text-white bg-drumeo"> Add New Address </span>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </template>-->
+
+                <!-- Select a payment method -->
+                <template v-if="shippingAddresses.data.length > 0">
+                    <div
+                        class="flex flex-row flex-wrap"
+                    >
+                        <!-- Create New Default -->
+                        <div
+                            class="flex flex-col sm-6 xs-12"
+                        >
+                            <div
+                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                style="border: 1px solid #ddd;"
+                            >
+                                <div
+                                    class="flex flex-column xs-1 align-center align-v-center"
                                 >
-                                    Change Address
-                                </a>
+                                    <input
+                                        v-model="newAddress"
+                                        type="radio"
+                                        name="shippingAddressOption"
+                                        value="true"
+                                    >
+                                </div>
+
+                                <div
+                                    class="flex flex-column xs-11 align-left align-v-center text-left"
+                                >
+                                    <p class="tiny">
+                                        <span class="font-bold">
+                                            Create a new shipping address.
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="flex mt-1">
-                                <button
-                                    class="btn" 
-                                    @click='newAddress = !newAddress' 
+                        </div>
+
+                        <!-- Use An Existing -->
+                        <div
+                            v-for="thisShippingAddress in shippingAddresses.data"
+                            class="flex flex-col sm-6 xs-12"
+                        >
+                            <div
+                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                style="border: 1px solid #ddd;"
+                            >
+                                <div
+                                    class="flex flex-column xs-1 align-center align-v-center"
                                 >
-                                    <span class="text-white bg-drumeo"> Add New Address </span>
-                                </button>
+                                    <input
+                                        v-model="newAddress"
+                                        type="radio"
+                                        name="shippingAddressOption"
+                                        :value="shippingAddress.id"
+                                    >
+                                </div>
+
+                                <div
+                                    class="flex flex-column xs-7 mr-2 align-left text-left"
+                                    style="border-right: 1px solid #ddd;"
+                                >
+                                    <p class="tiny">
+                                        <span class="font-bold">
+                                            {{ thisShippingAddress.attributes.first_name }}
+                                            {{ thisShippingAddress.attributes.last_name }}
+                                        </span>
+                                    </p>
+                                    <p class="tiny">
+                                        {{ thisShippingAddress.attributes.street_line_1 }}<span
+                                            v-if="thisShippingAddress.attributes.street_line_2.length > 0"
+                                        >, {{ thisShippingAddress.attributes.street_line_2 }}
+                                        </span>
+                                    </p>
+                                    <p class="tiny">
+                                        {{ thisShippingAddress.attributes.zip.toUpperCase() }}
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="flex flex-column xs-4 align-left text-left"
+                                >
+                                    <p class="tiny">
+                                        <span class="font-bold">
+                                            {{ thisShippingAddress.attributes.city }}
+                                        </span>
+                                    </p>
+                                    <p class="tiny">
+                                        {{ thisShippingAddress.attributes.region }}
+                                    </p>
+                                    <p class="tiny">
+                                        {{ thisShippingAddress.attributes.country }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </template>
+
                 <!-- Shipping Component -->
-                <template v-if="!recentAddresses || newAddress">
+                <template v-if="newAddress">
+                    <p
+                        v-if="shippingAddresses.data.length > 0"
+                        class="body font-bold uppercase pt-2"
+                    >
+                        create a new shipping address
+                    </p>
+
                     <order-form-shipping
                         ref="shippingForm"
                         :brand="brand"
@@ -85,7 +193,10 @@
             <!-- Plan Section -->
             <section v-if="canAcceptPaymentPlans">
                 <!-- Section Heading -->
-                <div class="flex flex-row mb-1">
+                <div
+                    class="flex flex-row mb-1 pt-2"
+                    style="border-top: 1px solid #ddd;"
+                >
                     <h3 class="title uppercase font-bold">
                         Payment Plan
                     </h3>
@@ -102,42 +213,147 @@
             <!-- Payment Section -->
             <section v-if="cartData.items.length">
                 <!-- Section Heading -->
-                <div class="flex flex-row mb-1">
+                <div
+                    class="flex flex-row mb-1 pt-2"
+                    style="border-top: 1px solid #ddd;"
+                >
                     <h3 class="title uppercase font-bold">
                         Payment Details
                     </h3>
                 </div>
-                <template v-if="primaryPaymentMethod">        
-                    <div class="flex flex-row">
-                        <div class="flex flex-column xs-12 sm-4 mb-1 bg-white shadow corners-5 pt-2 pb-2 ph-2">
-                            <p class="tiny font-bold">Default Payment Method</p>
-                            <p class="tiny">Payment Type: {{ primaryPaymentMethod.relationships.method.data.type}} </p>
-                            <p class="tiny">
-                                Card: {{ getRelatedAttributesByTypeAndId( primaryPaymentMethod.relationships.method.data).attributes.company_name || 'N/A' }}</p>
-                            <p class="tiny">Ending In: {{ getRelatedAttributesByTypeAndId(primaryPaymentMethod.relationships.method.data).attributes.last_four_digits || 'N/A' }}</p>
-                            <p class="tiny">Expires On: {{ getExpirationDate( primaryPaymentMethod ) }}</p>
-                            <div class="flex mt-2">
-                                <a 
-                                    href="/members/settings/payments" 
-                                    title="Go to Payment Method Page" 
-                                    class="btn bg-white outline text-drumeo outline-drumeo"
+
+<!--                <template v-if="primaryPaymentMethod">-->
+<!--                    <div class="flex flex-row">-->
+<!--                        <div class="flex flex-column xs-12 sm-4 mb-1 bg-white shadow corners-5 pt-2 pb-2 ph-2">-->
+<!--                            <p class="tiny font-bold">Default Payment Method</p>-->
+<!--                            <p class="tiny">Payment Type: {{ primaryPaymentMethod.relationships.method.data.type}} </p>-->
+<!--                            <p class="tiny">-->
+<!--                                Card: {{ getRelatedAttributesByTypeAndId( primaryPaymentMethod.relationships.method.data).attributes.company_name || 'N/A' }}</p>-->
+<!--                            <p class="tiny">Ending In: {{ getRelatedAttributesByTypeAndId(primaryPaymentMethod.relationships.method.data).attributes.last_four_digits || 'N/A' }}</p>-->
+<!--                            <p class="tiny">Expires On: {{ getExpirationDate( primaryPaymentMethod ) }}</p>-->
+<!--                            <div class="flex mt-2">-->
+<!--                                <a-->
+<!--                                    href="/members/settings/payments"-->
+<!--                                    title="Go to Payment Method Page"-->
+<!--                                    class="btn bg-white outline text-drumeo outline-drumeo"-->
+<!--                                >-->
+<!--                                    Change Payment Method-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="flex mt-1">-->
+<!--                                <button-->
+<!--                                    class="btn"-->
+<!--                                    @click='newPayment = !newPayment'-->
+<!--                                >-->
+<!--                                    <span class="text-white bg-drumeo"> Add New Payment </span>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </template>-->
+
+                <!-- Select a payment method -->
+                <template v-if="paymentMethods.data.length > 0">
+                    <div
+                        class="flex flex-row flex-wrap"
+                    >
+                        <!-- Create New Default -->
+                        <div
+                            class="flex flex-col sm-6 xs-12"
+                        >
+                            <div
+                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                style="border: 1px solid #ddd;"
+                            >
+                                <div
+                                    class="flex flex-column xs-1 align-center align-v-center"
                                 >
-                                    Change Payment Method
-                                </a>
-                            </div>
-                            <div class="flex mt-1">
-                                <button
-                                    class="btn" 
-                                    @click='newPayment = !newPayment' 
+                                    <input type="radio">
+                                </div>
+
+                                <div
+                                    class="flex flex-column xs-11 align-left align-v-center text-left"
                                 >
-                                    <span class="text-white bg-drumeo"> Add New Payment </span>
-                                </button>
+                                    <p class="tiny">
+                                        <span class="font-bold">
+                                            Create a new payment method.
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>     
+
+                        <!-- Use An Existing -->
+                        <div
+                            v-for="paymentMethod in paymentMethods.data"
+                            class="flex flex-col sm-6 xs-12"
+                        >
+                            <div
+                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                style="border: 1px solid #ddd;"
+                            >
+                                <div
+                                    class="flex flex-column xs-1 align-center align-v-center"
+                                >
+                                    <input type="radio">
+                                </div>
+
+                                <div
+                                    class="flex flex-column xs-2 align-center text-center"
+                                >
+                                    <p>
+                                        <i :class="['fab', getPaymentMethodIcon(paymentMethod), 'cc-icon']"></i>
+                                    </p>
+                                </div>
+
+                                <div
+                                    v-if="paymentMethod.relationships.method.data.type === 'creditCard'"
+                                    class="flex flex-column xs-9 align-v-center"
+                                >
+                                    <p class="tiny">
+                                        <span class="font-bold">
+                                            {{ getRelatedAttributesByTypeAndId(paymentMethod.relationships.method.data).attributes.company_name || 'N/A' }}
+                                            {{ getPaymentMethodType(paymentMethod) }}
+                                        </span>
+                                    </p>
+                                    <p class="tiny">
+                                        Last Four: <span class="font-bold">{{
+                                            getRelatedAttributesByTypeAndId(paymentMethod.relationships.method.data).attributes.last_four_digits || 'N/A'
+                                        }}</span>
+                                    </p>
+                                    <p class="tiny">
+                                        Expires: <span class="font-bold">{{ getExpirationDate(paymentMethod) }}</span>
+                                    </p>
+                                </div>
+
+                                <div
+                                    v-if="paymentMethod.relationships.method.data.type === 'paypalBillingAgreement'"
+                                    class="flex flex-column xs-9 align-v-center"
+                                >
+                                    <p class="tiny">
+                                        <span class="font-bold">{{ getPaymentMethodType(paymentMethod) }}</span>
+                                    </p>
+
+                                    <p class="tiny">
+                                        Billing Agreement ID: <span class="font-bold">{{
+                                            getRelatedAttributesByTypeAndId(paymentMethod.relationships.method.data).attributes.external_id || 'N/A'
+                                        }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </template>
+
                 <!-- Order Component -->
-                <template v-if="!primaryPaymentMethod || newPayment">
+                <template>
+                    <p
+                        v-if="paymentMethods.data.length > 0"
+                        class="body font-bold uppercase mb-2 pt-3"
+                    >
+                        create a new payment method
+                    </p>
+
                     <!-- Order Component -->
                     <order-form-payment
                         ref="paymentForm"
@@ -150,6 +366,7 @@
                         :stripe-token="stripeToken"
                         :countries="countries"
                         :provinces="provinces"
+                        :is-order="true"
                         @updatePaymentData="updatePaymentData"
                     />
                 </template>
@@ -247,7 +464,7 @@ export default {
             default: () => null,
         },
 
-        recentAddresses: {
+        shippingAddresses: {
             type: Object,
             default: () => null,
         },
@@ -314,7 +531,7 @@ export default {
     },
     data() {
         return {
-            newAddress: false,
+            newAddress: true,
             newPayment: false,
             loading: false,
             cartData: this.cart,
@@ -388,10 +605,43 @@ export default {
             }
             return 'N/A';
         },
-        
+
         getRelatedAttributesByTypeAndId({ id, type }) {
             const data = this.paymentMethods.included.find(data => data.id === id && data.type === type);
             return data || { id: 'N/A', attributes: {} };
+        },
+
+        getPaymentMethodType(paymentMethod) {
+            if (paymentMethod.relationships.method.data.type === 'creditCard') {
+                return 'Credit Card';
+            } else if (paymentMethod.relationships.method.data.type === 'paypalBillingAgreement') {
+                return 'PayPal Account';
+            }
+
+            return 'N/A';
+        },
+
+        getPaymentMethodIcon(paymentMethod) {
+            const method = this.getRelatedAttributesByTypeAndId(paymentMethod.relationships.method.data);
+
+            if (paymentMethod.relationships.method.data.type === 'creditCard') {
+                switch (method.attributes.company_name.toLowerCase()) {
+                    case 'visa':
+                        return 'fa-cc-visa';
+                    case 'mastercard':
+                        return 'fa-cc-mastercard';
+                    case 'discover':
+                        return 'fa-cc-discover';
+                    case 'american Express':
+                        return 'fa-cc-amex';
+                    default:
+                        return '';
+                }
+            } else if (paymentMethod.relationships.method.data.type === 'paypalBillingAgreement') {
+                return 'fa-cc-paypal';
+            }
+
+            return '';
         },
 
         updateCart(payload) {
@@ -458,7 +708,7 @@ export default {
                 }
                 
                 if (this.cartRequiresShippingAddress) {
-                    if (!this.recentAddresses || this.newAddress) {
+                    if (!this.shippingAddresses || this.newAddress) {
                         this.$refs.shippingForm.validateForm();
                         if (!this.$refs.shippingForm.formValid) {
                             window.scrollTo({ top: (this.$refs.shippingForm.$el.offsetTop - 100), behavior: 'smooth' });
@@ -530,14 +780,14 @@ export default {
             if (this.cartRequiresShippingAddress) {
                 if (!this.newAddress) {
                     console.log('new Address boolean ', !this.newAddress);
-                    payload.shipping_first_name = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.first_name;
-                    payload.shipping_last_name = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.last_name;
-                    payload.shipping_address_line_1 = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.street_line_1;
-                    payload.shipping_address_line_2 = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.street_line_2;
-                    payload.shipping_zip_or_postal_code = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.zip;
-                    payload.shipping_city = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.city;
-                    payload.shipping_region = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.region;
-                    payload.shipping_country = this.recentAddresses.data[this.recentAddresses.data.length - 1].attributes.country;
+                    payload.shipping_first_name = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.first_name;
+                    payload.shipping_last_name = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.last_name;
+                    payload.shipping_address_line_1 = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.street_line_1;
+                    payload.shipping_address_line_2 = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.street_line_2;
+                    payload.shipping_zip_or_postal_code = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.zip;
+                    payload.shipping_city = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.city;
+                    payload.shipping_region = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.region;
+                    payload.shipping_country = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.country;
                 } else {
                     payload.shipping_first_name = this.shippingStateFactory.first_name;
                     payload.shipping_last_name = this.shippingStateFactory.last_name;

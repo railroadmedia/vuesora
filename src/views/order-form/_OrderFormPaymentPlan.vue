@@ -29,9 +29,11 @@
                 <h4 class="tiny text-grey-3">
                     * Payment plans are billed monthly.
                 </h4>
-                <h4 class="tiny text-grey-3">
-                    * Shipping is charged on the first payment.
-                </h4>
+
+                <!-- We no longer allow payment plans for orders with physical items. (now now) -->
+<!--                <h4 class="tiny text-grey-3">-->
+<!--                    * Shipping is charged on the first payment.-->
+<!--                </h4>-->
             </div>
         </div>
     </div>
