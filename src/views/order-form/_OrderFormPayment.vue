@@ -28,19 +28,23 @@
 
                 <div class="flex flex-column xs-12 sm-6 mb-2 overflow">
                     <div class="flex flex-row">
-                        <div class="ph-1">
+                        <div class="pl-2">
                             <i class="fab fa-cc-visa cc-icon"></i>
                         </div>
 
-                        <div class="ph-1">
+                        <div class="pl-2">
                             <i class="fab fa-cc-mastercard cc-icon"></i>
                         </div>
 
-                        <div class="ph-1">
+                        <div class="pl-2">
+                            <i class="fab fa-cc-discover cc-icon"></i>
+                        </div>
+
+                        <div class="pl-2">
                             <i class="fab fa-cc-amex cc-icon"></i>
                         </div>
 
-                        <div class="ph-1">
+                        <div class="pl-2">
                             <i class="fab fa-cc-paypal cc-icon"></i>
                         </div>
                     </div>
@@ -289,68 +293,122 @@
                 class="flex flex-row mb-1"
             >
                 <div class="flex flex-column ph-1">
-                    <!--                    <div v-if="showCheckbox"-->
-                    <!--                         class="flex flex-row form-group align-v-center mb-2">-->
+                    <!--                    <div-->
+                    <!--                        v-if="showCheckbox"-->
+                    <!--                        class="flex flex-row form-group align-v-center mb-2"-->
+                    <!--                    >-->
                     <!--                        <span class="toggle-input mr-1">-->
-                    <!--                            <input id="subscriptionCheck"-->
-                    <!--                                   name="subscription-check"-->
-                    <!--                                   v-model="$_subscriptionCheck"-->
-                    <!--                                   type="checkbox">-->
+                    <!--                            <input-->
+                    <!--                                id="subscriptionCheck"-->
+                    <!--                                name="subscription-check"-->
+                    <!--                                v-model="$_subscriptionCheck"-->
+                    <!--                                type="checkbox"-->
+                    <!--                            >-->
 
                     <!--                            <span class="toggle">-->
                     <!--                                <span class="handle"></span>-->
                     <!--                            </span>-->
                     <!--                        </span>-->
 
-                    <!--                        <label for="subscriptionCheck"-->
-                    <!--                               class="toggle-label capitalize">-->
+                    <!--                        <label-->
+                    <!--                            for="subscriptionCheck"-->
+                    <!--                               class="toggle-label capitalize"-->
+                    <!--                        >-->
                     <!--                            Set as default payment method-->
                     <!--                        </label>-->
                     <!--                    </div>-->
 
                     <div
                         v-if="hasSubscription"
-                        class="flex flex-row mb-2"
+                        class="flex flex-row form-group align-v-center mb-2"
                     >
-                        <div class="flex flex-column">
-                            <p class="tiny font-italic text-grey-3">
-                                * Submitting this form will create a new default payment method for you.
-                                Your current subscription will be billed to this payment method when it's due.
-                            </p>
-                        </div>
+                        <span class="toggle-input mr-1">
+                            <input
+                                id="updateActiveSubscriptions"
+                                v-model="paymentDetails.updateActiveSubscriptions"
+                                name="update-active-subscriptions"
+                                type="checkbox"
+                            >
+  
+                            <span class="toggle">
+                                <span class="handle"></span>
+                            </span>
+                        </span>
+
+                        <label
+                            for="updateActiveSubscriptions"
+                            class="toggle-label font-bold"
+                        >
+                            Update my existing active subscriptions to use this payment method.
+                        </label>
                     </div>
 
                     <div
                         v-if="hasSubscription && !isActive"
-                        class="flex flex-row flex-wrap"
+                        class="flex flex-row form-group align-v-center mb-2 pt-2"
+                        style="border-top: 1px solid #ddd;"
                     >
-                        <div class="flex flex-column xs-12 sm-6 mb-2">
-                            <p class="tiny font-italic text-grey-3">
-                                * Payment for inactive subscriptions is due today.
-                            </p>
+                        <span class="toggle-input mr-1">
+                            <input
+                                id="renewDueSubscription"
+                                v-model="paymentDetails.renewDueSubscription"
+                                name="renew-due-subscription"
+                                type="checkbox"
+                            >
+
+                            <span class="toggle">
+                                <span class="handle"></span>
+                            </span>
+                        </span>
+
+                        <label
+                            for="renewDueSubscription"
+                            class="toggle-label font-bold"
+                        >
+                            Renew my subscription now.
+                        </label>
+                    </div>
+
+                    <div
+                        v-if="paymentDetails.renewDueSubscription && hasSubscription && !isActive"
+                    >
+                        <div
+                            class="flex flex-row mb-2"
+                        >
+                            <div class="flex flex-column">
+                                <p class="tiny font-italic text-grey-3">
+                                    * Submitting this form will create a new default payment method for you.
+                                    Your current subscription will be billed to this payment method when it's due.
+                                </p>
+                            </div>
                         </div>
 
-                        <div class="flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2">
-                            <div
-                                v-if="totals.shipping"
-                                class="body font-bold"
-                            >
-                                Shipping: ${{ totalShipping }}
-                            </div>
+                        <div
+                            class="flex flex-row flex-wrap"
+                        >
+                            <div class="flex flex-column xs-12 sm-12 ph-1 align-h-right mb-2">
+                                <div
+                                    v-if="totals.shipping"
+                                    class="body font-bold"
+                                >
+                                    Shipping: ${{ totalShipping }}
+                                </div>
 
-                            <div class="body font-bold">
-                                Tax: ${{ totalTax }}
-                            </div>
+                                <div class="body font-bold">
+                                    Tax: ${{ totalTax }}
+                                </div>
 
-                            <div class="body font-bold">
-                                <span class="display">${{ totalDue }}</span> USD
-                            </div>
+                                <div class="body font-bold">
+                                    <span class="display">${{ totalDue }}</span> USD
+                                </div>
 
-                            <div class="body font-bold">
-                                Due Today
+                                <div class="body font-bold">
+                                    Due Today
+                                </div>
                             </div>
                         </div>
                     </div>
+                  
 
                     <div class="flex flex-row flex-wrap align-h-right align-v-center">
                         <div class="flex flex-column xs-6 sm-4 mb-2 pr-1">

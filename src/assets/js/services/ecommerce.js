@@ -141,6 +141,8 @@ export default {
      * @param {String} currency
      * @param {String} billing_country
      * @param {String} billing_region
+     * @param {String} renew_due_subscription
+     * @param {String} update_active_subscriptions
      * @returns {Promise}
      */
     updatePaymentMethod({
@@ -150,6 +152,8 @@ export default {
         currency = 'USD',
         billing_country,
         billing_region,
+        renew_due_subscription,
+        update_active_subscriptions,
     }) {
         return axios.put('/update-payment-method', {
             card_token,
@@ -158,6 +162,8 @@ export default {
             currency,
             billing_country,
             billing_region,
+            renew_due_subscription,
+            update_active_subscriptions,
         })
             .then(response => response)
             .catch(ErrorHandler);
