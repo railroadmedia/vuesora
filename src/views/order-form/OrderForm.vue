@@ -542,7 +542,6 @@ export default {
                 billingEmail: null,
                 accountEmail: null,
                 accountPassword: null,
-                accountPasswordConfirm: null,
             },
             shippingStateFactory: this.shippingAddress,
             primaryPaymentMethod: null,
@@ -771,7 +770,6 @@ export default {
                 if (this.cartContainsDigitalItems) {
                     payload.account_creation_email = this.accountStateFactory.accountEmail;
                     payload.account_creation_password = this.accountStateFactory.accountPassword;
-                    payload.account_creation_password_confirmation = this.accountStateFactory.accountPasswordConfirm;
                 } else {
                     payload.billing_email = this.accountStateFactory.accountEmail;
                 }
