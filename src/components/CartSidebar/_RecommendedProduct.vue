@@ -5,12 +5,17 @@
         </div>
         <div class="recommended-product-title">{{ item.name }}</div>
         <div class="recommended-product-atc">
-            <a href="#" @click.stop.prevent="addToCart" :class="brand">Add To Cart: ${{ item.price_after_discounts }}</a>
+            <a href="#" @click.stop.prevent="addToCart" :class="brand" class="csb-price">
+                <span>Add To Cart:</span>
+                <product-price :item="item" :brand="brand"></product-price>
+            </a>
         </div>
     </div>
 </template>
 
 <script>
+import ProductPrice from './_ProductPrice.vue';
+
 export default {
     props: {
         item: Object,
@@ -19,14 +24,12 @@ export default {
             default: () => 'drumeo',
         },
     },
-    data() {
-        return {
-        };
-    },
-    mounted() {
+    components: {
+        'product-price': ProductPrice,
     },
     methods: {
         addToCart() {
+            this.$emit('addToCart', this.item);
         },
     },
 }
@@ -34,15 +37,15 @@ export default {
 
 <style lang="scss">
 .recommended-product-container {
+    height: 150px;
     width: 109px;
-    height: 130px;
     border: 1px solid #CCD3D3;
     ~ .recommended-product-container {
         margin-left: 10px;
     }
     .image-container {
         height: 65px;
-        padding: 5px 0;
+        margin-top: 7px;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -54,10 +57,12 @@ export default {
         }
     }
     .recommended-product-title {
+        height: 50px;
         font-size: 10px;
         display: flex;
+        align-items: center;
         text-align: center;
-        padding: 0 15px 5px;
+        padding: 5px 15px 5px;
     }
     .recommended-product-atc {
         display: flex;
@@ -71,6 +76,9 @@ export default {
             }
             .pianote {
                 color: #ff383f;
+            }
+            .csb-product-price {
+                text-decoration: underline;
             }
         }
     }

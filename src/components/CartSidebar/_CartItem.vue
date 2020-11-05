@@ -18,7 +18,9 @@
                     </div>
                 </div>
                 <div class="csb-size" v-if="item.size">Size: {{ item.size }}</div>
-                <div class="csb-price">${{ item.price_after_discounts }}</div>
+                <div>
+                    <product-price :item="item" :brand="brand"></product-price>
+                </div>
             </div>
             <div class="item-remove"><a href="#" @click.stop.prevent="remove">Remove</a></div>
         </div>
@@ -26,9 +28,18 @@
 </template>
 
 <script>
+import ProductPrice from './_ProductPrice.vue';
+
 export default {
     props: {
         item: Object,
+        brand: {
+            type: String,
+            default: () => 'drumeo',
+        },
+    },
+    components: {
+        'product-price': ProductPrice,
     },
     data() {
         return {

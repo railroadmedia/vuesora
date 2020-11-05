@@ -18,8 +18,8 @@
                 </div>
                 <div id="csb-products-container" v-if="cartItems">
                     <div class="border-top"></div>
-                    <div class="csb-products-inner" data-simplebar data-simplebar-auto-hide="false">
-                        <simplebar>
+                    <div class="csb-products-inner">
+                        <simplebar data-simplebar-auto-hide="false" ref="simplebar">
                             <cart-item
                                 v-for="item in cartItems"
                                 :key="item.sku"
@@ -49,11 +49,12 @@
                     <a href="/order" :class="brand"><i class="fas fa-lock"></i>checkout</a>
                 </div>
                 <div class="recommended-title">customers also liked</div>
-                <div class="recommended-products">
+                <div class="recommended-products" v-if="cartItems">
                     <recommended-product
                         v-for="item in recommendedProducts"
                         :key="item.sku"
                         :item="item"
+                        :brand="brand"
                         @addToCart="addRecommendedProductToCart"
                     ></recommended-product>
                 </div>
@@ -91,26 +92,7 @@ export default {
             active: false,
             cartItems: null,
             cartTotals: null,
-            recommendedProducts: [
-                {
-                    sku: 'practicepad',
-                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/card-thumbs/p4.jpg',
-                    name: 'Drumeo P4 Practice Pad',
-                    price_after_discounts: 59,
-                },
-                {
-                    sku: 'Drumeo-VaterSticks',
-                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/drum-shop/vater-sticks/cart-image.jpg',
-                    name: 'Drumeo Drumsticks',
-                    price_after_discounts: 12.95,
-                },
-                {
-                    sku: 'stick-bag',
-                    thumbnail_url: 'https://dpwjbsxqtam5n.cloudfront.net/promos/black-friday/stick-bag.png',
-                    name: 'Drumeo Leather Stick Bag',
-                    price_after_discounts: 99,
-                },
-            ],
+            recommendedProducts: null,
         };
     },
     mounted() {
@@ -121,8 +103,6 @@ export default {
         this.$root.$on('openCartSidebar', this.openCartSidebar);
 
         this.attachAddToCartListeners();
-    },
-    beforeDestroy() {
     },
     methods: {
         openCartSidebar() {
@@ -135,10 +115,16 @@ export default {
 
         updateCartData(cartData) {
             this.cartItems = cartData.meta.cart.items;
+            this.recommendedProducts = cartData.meta.cart.recommendedProducts;
             this.cartTotals = cartData.meta.cart.totals;
+            setTimeout(() => {
+                this.$refs.simplebar.SimpleBar.recalculate();
+            }, 10);
         },
 
         attachAddToCartListeners() {
+            // todo - when drumshop page will be refactored with vue, remove/replace this logic
+
             let buttons = document.querySelectorAll('.vue-add-to-cart');
 
             if (buttons.length) {
@@ -206,7 +192,12 @@ export default {
             }
         },
 
-        addRecommendedProductToCart() {
+        addRecommendedProductToCart(cartItem) {
+            let product = {};
+
+            product[cartItem.sku] = cartItem.quantity;
+
+            this.addToCart(product);
         },
     },
 }
