@@ -19,7 +19,7 @@
                 <div id="csb-products-container" v-if="cartItems">
                     <div class="border-top"></div>
                     <div class="csb-products-inner">
-                        <simplebar data-simplebar-auto-hide="false" ref="simplebar">
+                        <simplebar ref="simplebar">
                             <cart-item
                                 v-for="item in cartItems"
                                 :key="item.sku"
@@ -34,7 +34,9 @@
                 <div class="summary-container">
                     <div class="summary-row">
                         <div class="summary">Subtotal</div>
-                        <div class="due"><span v-if="cartTotals">${{ cartTotals.due }}</span></div>
+                        <div class="due">
+                            <span v-if="cartTotals">${{ parseTotal(cartTotals.due - cartTotals.tax + sumOfDiscounts() - cartTotals.shipping) }}</span>
+                        </div>
                     </div>
                     <div class="summary-row">
                         <div class="summary">Shipping</div>
@@ -93,6 +95,7 @@ export default {
             cartItems: null,
             cartTotals: null,
             recommendedProducts: null,
+            discounts: [],
         };
     },
     mounted() {
@@ -117,8 +120,19 @@ export default {
             this.cartItems = cartData.meta.cart.items;
             this.recommendedProducts = cartData.meta.cart.recommendedProducts;
             this.cartTotals = cartData.meta.cart.totals;
+            this.discounts = cartData.meta.cart.discounts;
+
+            console.log("CartSidebar::updateCartData this.cartTotals: %s", JSON.stringify(this.cartTotals));
+            console.log("CartSidebar::updateCartData cartData: %s", JSON.stringify(cartData));
             setTimeout(() => {
                 this.$refs.simplebar.SimpleBar.recalculate();
+
+                // console.log("CartSidebar::updateCartData SimpleBar.recalculate");
+
+                // console.log("CartSidebar::updateCartData SimpleBar: %s", JSON.stringify(Object.keys(this.$refs.simplebar.SimpleBar)));
+
+
+                // console.log("CartSidebar::updateCartData SimpleBar.recalculate: %s", JSON.stringify(typeof this.$refs.simplebar.SimpleBar.recalculate));
             }, 10);
         },
 
@@ -199,6 +213,20 @@ export default {
 
             this.addToCart(product);
         },
+
+        parseTotal(total) {
+            return (total || 0).toFixed(2);
+        },
+
+        sumOfDiscounts() {
+            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+            if (this.discounts.length) {
+                return this.discounts.reduce(reducer);
+            }
+
+            return 0;
+        },
     },
 }
 </script>
@@ -214,9 +242,9 @@ export default {
     visibility: hidden;
     z-index: -1;
     opacity: 0;
-    -webkit-transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    -moz-transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    -o-transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    -webkit-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    -moz-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    -o-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     &.active {
         z-index: 140;
         opacity: 1;
@@ -232,9 +260,9 @@ export default {
     background: #FFF;
     padding-left: 2px;
     right: 0;
-    -webkit-transition: visibility 0.3s ease-in-out, opacity 0.5s ease-in-out;
-    -moz-transition: visibility 0.3s ease-in-out, opacity 0.5s ease-in-out;
-    -o-transition: visibility 0.3s ease-in-out, opacity 0.5s ease-in-out;
+    -webkit-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    -moz-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    -o-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     &.active {
         z-index: 150;
         opacity: 1;

@@ -44,6 +44,12 @@ Example of product that fails **active** class existance check and will **not** 
 
 The click event listener is attached to all elements with **vue-add-to-cart** class and the check for the classes **selected-pack**, **merch** and **active** existance is performed when the event is emited (the **selected-pack**, **merch** and **active** may be added/removed after the event listener is attached).
 
+
+## Disable cart sidebar functionality
+
+For any html element that triggers unwanted *cart sidebar / add to cart* functionality, remove the **vue-add-to-cart** css class.
+
+
 ## Setup
 
 ### JS assets compilation
