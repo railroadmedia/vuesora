@@ -24,106 +24,57 @@
             <!-- Shipping Section -->
             <section v-if="cartRequiresShippingAddress">
                 <!-- Section Heading -->
-                <div
-                    class="flex flex-row mb-1"
-                >
+                <div class="flex flex-row mb-1">
                     <h3 class="title uppercase font-bold">
                         Shipping Information
                     </h3>
                 </div>
 
-<!--                &lt;!&ndash; Saved Address &ndash;&gt;-->
-<!--                <template v-if="shippingAddresses">-->
-<!--                    <div class="flex flex-row card-wrapper">-->
-<!--                        <div class="flex flex-column xs-12 sm-4 mb-1 bg-white shadow corners-5 pt-2 pb-2 ph-2">-->
-<!--                            <p class="font-bold tiny">-->
-<!--                                Recent Shipping Address-->
-<!--                            </p>-->
-<!--                            <p class="tiny">-->
-<!--                                <span>{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.first_name }}</span>-->
-<!--                                <span>{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.last_name }}</span>-->
-<!--                            </p>-->
-<!--                            <p class="tiny">{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.street_line_1 }}</p>-->
-<!--                            <p class="tiny">{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.street_line_2 }}</p>-->
-<!--                            <p class="tiny">{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.city }}</p>-->
-<!--                            <p class="tiny">-->
-<!--                                <span>{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.region }}, </span>-->
-<!--                                <span>{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.zip }}</span>-->
-<!--                            </p>-->
-<!--                            <p class="tiny">{{ shippingAddresses.data[shippingAddresses.data.length - 1].attributes.country }}</p>-->
-<!--                            <div class="flex mt-2">-->
-<!--                                <a -->
-<!--                                    href="/members/settings/payments" -->
-<!--                                    title="Go to Payment Method Page" -->
-<!--                                    class="btn bg-white outline outline-drumeo text-drumeo"-->
-<!--                                >-->
-<!--                                    Change Address-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="flex mt-1">-->
-<!--                                <button-->
-<!--                                    class="btn" -->
-<!--                                    @click='newAddress = !newAddress' -->
-<!--                                >-->
-<!--                                    <span class="text-white bg-drumeo"> Add New Address </span>-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </template>-->
-
                 <!-- Select a payment method -->
                 <template v-if="shippingAddresses.data.length > 0">
-                    <div
-                        class="flex flex-row flex-wrap"
-                    >
+                    <div class="flex flex-row flex-wrap">
                         <!-- Create New Default -->
-                        <div
-                            class="flex flex-col sm-6 xs-12"
-                        >
-                            <div
+                        <div class="flex flex-col sm-6 xs-12">
+                            <label
                                 class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
                                 style="border: 1px solid #ddd;"
                             >
-                                <div
-                                    class="flex flex-column xs-1 align-center align-v-center"
-                                >
+                                <div class="flex flex-column xs-1 align-center align-v-center">
                                     <input
                                         v-model="newAddress"
                                         type="radio"
+                                        id="address-0"
                                         name="shippingAddressOption"
                                         value="true"
                                     >
                                 </div>
-
-                                <div
-                                    class="flex flex-column xs-11 align-left align-v-center text-left"
-                                >
+                                <div class="flex flex-column xs-11 align-left align-v-center text-left">
                                     <p class="tiny">
                                         <span class="font-bold">
                                             Create a new shipping address.
                                         </span>
                                     </p>
                                 </div>
-                            </div>
+                            </label>
                         </div>
 
                         <!-- Use An Existing -->
                         <div
-                            v-for="thisShippingAddress in shippingAddresses.data"
+                            v-for="(thisShippingAddress, index) in shippingAddresses.data"
+                            :key="index"
                             class="flex flex-col sm-6 xs-12"
                         >
-                            <div
+                            <label
                                 class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                :for="`address-${index + 1}`"
                                 style="border: 1px solid #ddd;"
                             >
-                                <div
-                                    class="flex flex-column xs-1 align-center align-v-center"
-                                >
+                                <div class="flex flex-column xs-1 align-center align-v-center">
                                     <input
                                         v-model="newAddress"
                                         type="radio"
                                         name="shippingAddressOption"
+                                        :id="`address-${index + 1}`"
                                         :value="shippingAddress.id"
                                     >
                                 </div>
@@ -164,7 +115,7 @@
                                         {{ thisShippingAddress.attributes.country }}
                                     </p>
                                 </div>
-                            </div>
+                            </label>
                         </div>
                     </div>
                 </template>
@@ -223,86 +174,57 @@
                     </h3>
                 </div>
 
-<!--                <template v-if="primaryPaymentMethod">-->
-<!--                    <div class="flex flex-row">-->
-<!--                        <div class="flex flex-column xs-12 sm-4 mb-1 bg-white shadow corners-5 pt-2 pb-2 ph-2">-->
-<!--                            <p class="tiny font-bold">Default Payment Method</p>-->
-<!--                            <p class="tiny">Payment Type: {{ primaryPaymentMethod.relationships.method.data.type}} </p>-->
-<!--                            <p class="tiny">-->
-<!--                                Card: {{ getRelatedAttributesByTypeAndId( primaryPaymentMethod.relationships.method.data).attributes.company_name || 'N/A' }}</p>-->
-<!--                            <p class="tiny">Ending In: {{ getRelatedAttributesByTypeAndId(primaryPaymentMethod.relationships.method.data).attributes.last_four_digits || 'N/A' }}</p>-->
-<!--                            <p class="tiny">Expires On: {{ getExpirationDate( primaryPaymentMethod ) }}</p>-->
-<!--                            <div class="flex mt-2">-->
-<!--                                <a-->
-<!--                                    href="/members/settings/payments"-->
-<!--                                    title="Go to Payment Method Page"-->
-<!--                                    class="btn bg-white outline text-drumeo outline-drumeo"-->
-<!--                                >-->
-<!--                                    Change Payment Method-->
-<!--                                </a>-->
-<!--                            </div>-->
-<!--                            <div class="flex mt-1">-->
-<!--                                <button-->
-<!--                                    class="btn"-->
-<!--                                    @click='newPayment = !newPayment'-->
-<!--                                >-->
-<!--                                    <span class="text-white bg-drumeo"> Add New Payment </span>-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </template>-->
-
                 <!-- Select a payment method -->
                 <template v-if="paymentMethods.data.length > 0">
-                    <div
-                        class="flex flex-row flex-wrap"
-                    >
+                    <div class="flex flex-row flex-wrap">
                         <!-- Create New Default -->
-                        <div
-                            class="flex flex-col sm-6 xs-12"
-                        >
-                            <div
+                        <div class="flex flex-col sm-6 xs-12">
+                            <label
                                 class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
                                 style="border: 1px solid #ddd;"
                             >
-                                <div
-                                    class="flex flex-column xs-1 align-center align-v-center"
-                                >
-                                    <input type="radio">
+                                <div class="flex flex-column xs-1 align-center align-v-center">
+                                    <input 
+                                        id="paymentMethod-0"
+                                        type="radio" 
+                                        name="paymentMethods"
+                                        v-model="newPayment"
+                                        :value="true"
+                                    >
                                 </div>
-
-                                <div
-                                    class="flex flex-column xs-11 align-left align-v-center text-left"
-                                >
+                                <div class="flex flex-column xs-11 align-left align-v-center text-left">
                                     <p class="tiny">
                                         <span class="font-bold">
                                             Create a new payment method.
                                         </span>
                                     </p>
                                 </div>
-                            </div>
+                            </label>
                         </div>
 
                         <!-- Use An Existing -->
                         <div
-                            v-for="paymentMethod in paymentMethods.data"
+                            v-for="(paymentMethod, index) in paymentMethods.data"
+                            :key="index"
                             class="flex flex-col sm-6 xs-12"
                         >
-                            <div
+                            <label
                                 class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
                                 style="border: 1px solid #ddd;"
+                                :for="`paymentMethod-${index + 1}`"
                             >
-                                <div
-                                    class="flex flex-column xs-1 align-center align-v-center"
-                                >
-                                    <input type="radio">
+                                <div class="flex flex-column xs-1 align-center align-v-center">
+                                    <input 
+                                        :id="`paymentMethod-${index + 1}`"
+                                        type="radio" 
+                                        name="paymentMethods"
+                                        v-model="newPayment"
+                                        :value="false"
+                                    >
                                 </div>
 
-                                <div
-                                    class="flex flex-column xs-2 align-center text-center"
-                                >
-                                    <p>
+                                <div class="flex flex-column xs-2 align-center text-center">
+                                    <p class="mr-1">
                                         <i :class="['fab', getPaymentMethodIcon(paymentMethod), 'cc-icon']"></i>
                                     </p>
                                 </div>
@@ -341,13 +263,13 @@
                                         }}</span>
                                     </p>
                                 </div>
-                            </div>
+                            </label>
                         </div>
                     </div>
                 </template>
 
                 <!-- Order Component -->
-                <template>
+                <template v-if="newPayment">
                     <p
                         v-if="paymentMethods.data.length > 0"
                         class="body font-bold uppercase mb-2 pt-3"
@@ -632,7 +554,7 @@ export default {
                         return 'fa-cc-mastercard';
                     case 'discover':
                         return 'fa-cc-discover';
-                    case 'american Express':
+                    case 'american express':
                         return 'fa-cc-amex';
                     default:
                         return '';
@@ -743,7 +665,6 @@ export default {
 
         submitOrder() {
             const payload = this.createOrderPayload();
-            console.log(payload);
             axios.put('/ecommerce/json/order-form/submit', payload)
                 .then(this.orderSuccess)
                 .catch(this.orderFailure);
