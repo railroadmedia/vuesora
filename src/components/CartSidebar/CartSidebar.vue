@@ -16,18 +16,19 @@
                     <i class="fas fa-check-circle" :class="brand"></i>
                     <span>All of our drum lessons are backed by a 90-day guarantee.</span>
                 </div>
-                <div id="csb-products-container" v-if="cartItems">
+                <div id="csb-products-container" v-show="cartItems">
                     <div class="border-top"></div>
-                    <div class="csb-products-inner">
-                        <simplebar ref="simplebar">
+                    <div class="csb-products-inner" ref="simplebar">
+                        <div class="csb-products-wrapper">
                             <cart-item
                                 v-for="item in cartItems"
+                                v-if="cartItems"
                                 :key="item.sku"
                                 :item="item"
                                 @removeCartItem="removeCartItem"
                                 @updateCartItemQuantity="updateCartItemQuantity"
                             ></cart-item>
-                        </simplebar>
+                        </div>
                     </div>
                     <div class="border-bottom"></div>
                 </div>
@@ -68,7 +69,7 @@
 <script>
 import CartItem from './_CartItem.vue';
 import RecommendedProduct from './_RecommendedProduct.vue';
-import simplebar from 'simplebar-vue';
+import SimpleBar from 'simplebar';
 import 'simplebar/dist/simplebar.min.css';
 
 import EcommerceService from '../../assets/js/services/ecommerce.js';
@@ -77,7 +78,6 @@ export default {
     components: {
         'cart-item': CartItem,
         'recommended-product': RecommendedProduct,
-        simplebar
     },
     name: 'CartSidebar',
     props: {
@@ -96,6 +96,7 @@ export default {
             cartTotals: null,
             recommendedProducts: null,
             discounts: [],
+            simpleBar: null,
         };
     },
     mounted() {
@@ -104,6 +105,8 @@ export default {
         this.updateCartData(cartData);
 
         this.$root.$on('openCartSidebar', this.openCartSidebar);
+
+        this.simpleBar = new SimpleBar(this.$refs.simplebar, {autoHide: false});
 
         this.attachAddToCartListeners();
     },
@@ -122,17 +125,8 @@ export default {
             this.cartTotals = cartData.meta.cart.totals;
             this.discounts = cartData.meta.cart.discounts;
 
-            console.log("CartSidebar::updateCartData this.cartTotals: %s", JSON.stringify(this.cartTotals));
-            console.log("CartSidebar::updateCartData cartData: %s", JSON.stringify(cartData));
             setTimeout(() => {
-                this.$refs.simplebar.SimpleBar.recalculate();
-
-                // console.log("CartSidebar::updateCartData SimpleBar.recalculate");
-
-                // console.log("CartSidebar::updateCartData SimpleBar: %s", JSON.stringify(Object.keys(this.$refs.simplebar.SimpleBar)));
-
-
-                // console.log("CartSidebar::updateCartData SimpleBar.recalculate: %s", JSON.stringify(typeof this.$refs.simplebar.SimpleBar.recalculate));
+                this.simpleBar.recalculate();
             }, 10);
         },
 
@@ -254,18 +248,18 @@ export default {
 #cart-sidebar {
     position: fixed;
     top: 0;
-    right: 0;
+    right: -600px;
     z-index: -1;
     opacity: 0;
     background: #FFF;
     padding-left: 2px;
-    right: 0;
     -webkit-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     -moz-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     -o-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     &.active {
         z-index: 150;
         opacity: 1;
+        right: 0;
     }
     .inner-container {
         border-left: 1px solid #CCD3D3;
@@ -384,6 +378,10 @@ export default {
     .csb-products-inner {
         max-height: 100%;
         padding-right: 15px;
+
+        .csb-products-wrapper {
+            max-height: 100%;
+        }
     }
 
     .border-bottom {
