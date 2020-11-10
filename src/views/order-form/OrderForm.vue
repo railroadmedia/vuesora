@@ -192,7 +192,7 @@
                                         type="radio" 
                                         name="paymentMethods"
                                         :checked="newPayment"
-                                        @change.stop="newPayment=true; selectedPaymentMethod=null"
+                                        @change.stop="newPayment=true; selectedPaymentMethod=null;"
                                     >
                                 </div>
                                 <div class="flex flex-column xs-11 align-left align-v-center text-left">
@@ -462,7 +462,6 @@ export default {
             newPayment: false,
             selectedPaymentMethod: null,
             selectedAddress: null,
-            lastPaymentUsed: null,
             lastAddressUsed: null,
             loading: false,
             cartData: this.cart,
@@ -510,9 +509,21 @@ export default {
     },
     // Get Primary Payment Method
     beforeMount() {
-
+        if (this.paymentMethods) {
+            this.paymentMethods.data.forEach((method) => {
+                if (this.isPrimaryPaymentMethod(method)) {
+                    this.selectedPaymentMethod = method;
+                }
+            });
+        }
     },
     methods: {
+        isPrimaryPaymentMethod(paymentMethod) {
+            return this.getRelatedAttributesByTypeAndId(
+                paymentMethod.relationships.userPaymentMethod.data,
+            ).attributes.is_primary;
+        },
+
         selectAddress(address) {
             this.selectedAddress = address;
         },
@@ -524,12 +535,14 @@ export default {
         },
 
         selectPayment(paymentMethod) {
-            this.selectedPaymentMethod = paymentMethod.id;
+            this.selectedPaymentMethod = paymentMethod;
         },
 
         isSelectedPayment(paymentMethod) {
-            if (!this.newPayment && this.selectedPaymentMethod === paymentMethod.id) {
-                return true;
+            if (!this.newPayment) {
+                if (this.selectedPaymentMethod.id === paymentMethod.id) {
+                    return true;
+                }
             }
         },
 
