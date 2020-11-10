@@ -37,15 +37,16 @@
                         <div class="flex flex-col sm-6 xs-12">
                             <label
                                 class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                :class="{ selected: newAddress }"
                                 style="border: 1px solid #ddd;"
                             >
                                 <div class="flex flex-column xs-1 align-center align-v-center">
-                                    <input
-                                        v-model="newAddress"
-                                        type="radio"
+                                    <input  
                                         id="address-0"
+                                        type="radio"
                                         name="shippingAddressOption"
-                                        value="true"
+                                        :checked="newAddress"
+                                        @change.stop="newAddress=true;"
                                     >
                                 </div>
                                 <div class="flex flex-column xs-11 align-left align-v-center text-left">
@@ -66,16 +67,17 @@
                         >
                             <label
                                 class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                :class="{selected: isSelectedAddress(thisShippingAddress)}"
                                 :for="`address-${index + 1}`"
                                 style="border: 1px solid #ddd;"
                             >
                                 <div class="flex flex-column xs-1 align-center align-v-center">
                                     <input
-                                        v-model="newAddress"
+                                        :id="`address-${index + 1}`"
                                         type="radio"
                                         name="shippingAddressOption"
-                                        :id="`address-${index + 1}`"
                                         :value="shippingAddress.id"
+                                        @change.stop="newAddress=false; selectAddress(thisShippingAddress)"
                                     >
                                 </div>
 
@@ -154,8 +156,8 @@
                 </div>
                 <!-- Plan Component -->
                 <order-form-payment-plan
-                    :brand="brand"
                     ref="paymentForm"
+                    :brand="brand"
                     :number-of-payments="cartData.number_of_payments"
                     :payment-plan-options="cartData.payment_plan_options"
                     @updateCartData="updateCart"
@@ -181,6 +183,7 @@
                         <div class="flex flex-col sm-6 xs-12">
                             <label
                                 class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                :class="{ selected: newPayment }"
                                 style="border: 1px solid #ddd;"
                             >
                                 <div class="flex flex-column xs-1 align-center align-v-center">
@@ -188,8 +191,8 @@
                                         id="paymentMethod-0"
                                         type="radio" 
                                         name="paymentMethods"
-                                        v-model="newPayment"
-                                        :value="true"
+                                        @change.stop="newPayment=true"
+                                        :checked="newPayment"
                                     >
                                 </div>
                                 <div class="flex flex-column xs-11 align-left align-v-center text-left">
@@ -210,6 +213,7 @@
                         >
                             <label
                                 class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                :class="{selected: isSelectedPayment(paymentMethod)}"
                                 style="border: 1px solid #ddd;"
                                 :for="`paymentMethod-${index + 1}`"
                             >
@@ -218,8 +222,8 @@
                                         :id="`paymentMethod-${index + 1}`"
                                         type="radio" 
                                         name="paymentMethods"
-                                        v-model="newPayment"
-                                        :value="false"
+                                        :checked="isSelectedPayment(paymentMethod)"
+                                        @change.stop="newPayment=false; selectPayment(paymentMethod)"
                                     >
                                 </div>
 
@@ -454,8 +458,10 @@ export default {
     },
     data() {
         return {
-            newAddress: true,
+            newAddress: false,
             newPayment: false,
+            selectedPaymentMethod: null,
+            selectedAddress: null,
             loading: false,
             cartData: this.cart,
             requiresAccount: false,
@@ -501,21 +507,26 @@ export default {
             return this.cartData.payment_plan_options.length > 0 && !this.cartContainsSubscription;
         },
     },
-    beforeMount() {
-        // Get Primary Payment Method
-        if (this.paymentMethods) {
-            this.paymentMethods.data.forEach((method) => {
-                if (this.isPrimaryPaymentMethod(method)) {
-                    this.primaryPaymentMethod = method;
-                }
-            });
-        }
-    },
+
     methods: {
-        isPrimaryPaymentMethod(paymentMethod) {
-            return this.getRelatedAttributesByTypeAndId(
-                paymentMethod.relationships.userPaymentMethod.data,
-            ).attributes.is_primary;
+        selectAddress(address) {
+            this.selectedAddress = address.id;
+        },
+
+        isSelectedAddress(address) {
+            if (!this.newAddress && this.selectedAddress === address.id) {
+                return true;
+            }
+        },
+
+        selectPayment(paymentMethod) {
+            this.selectedPaymentMethod = paymentMethod.id;
+        },
+
+        isSelectedPayment(paymentMethod) {
+            if (!this.newPayment && this.selectedPaymentMethod === paymentMethod.id) {
+                return true;
+            }
         },
 
         getExpirationDate(paymentMethod) {
@@ -700,7 +711,6 @@ export default {
 
             if (this.cartRequiresShippingAddress) {
                 if (!this.newAddress) {
-                    console.log('new Address boolean ', !this.newAddress);
                     payload.shipping_first_name = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.first_name;
                     payload.shipping_last_name = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.last_name;
                     payload.shipping_address_line_1 = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.street_line_1;
@@ -722,7 +732,6 @@ export default {
             }
 
             if (this.paymentStateFactory.methodType === 'credit_card' && (!this.primaryPaymentMethod || this.newPayment)) {
-                console.log(this.stripeToken);
                 payload.card_token = this.stripeToken.id;
             }
 
@@ -769,6 +778,12 @@ export default {
 
 <style lang="scss">
 @import '../../assets/sass/partials/variables';
+    .selected {
+        background-color: #efefef;
+        box-shadow: 2px 5px 10px rgba(100,100,100,.5);
+        transition: .25s linear all;
+    }
+
     a.btn.outline-drumeo {
         border: 2px solid #0B76DB;
         box-shadow: none;
