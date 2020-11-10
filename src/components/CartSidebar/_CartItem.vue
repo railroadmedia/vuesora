@@ -177,6 +177,7 @@ export default {
                             justify-content: center;
                             align-items: center;
                             text-align: center;
+                            color: #8B929A;
                         }
                     }
                 }

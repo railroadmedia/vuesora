@@ -3,64 +3,62 @@
         <div id="cart-sidebar-overlay" @click.stop.prevent="closeCartSidebar" :class="{active: active}">
         </div>
         <section id="cart-sidebar" :class="{active: active}">
-            <div class="inner-container">
-                <div class="top">
-                    <h5 class="">Your cart</h5>
-                    <a
-                        href="#"
-                        class="close"
-                        @click.stop.prevent="closeCartSidebar"
-                    ><i class="fal fa-times fa-2x"></i></a>
-                </div>
-                <div class="csb-guarantee">
-                    <i class="fas fa-check-circle" :class="brand"></i>
-                    <span>All of our drum lessons are backed by a 90-day guarantee.</span>
-                </div>
-                <div id="csb-products-container" v-show="cartItems">
-                    <div class="border-top"></div>
-                    <div class="csb-products-inner" ref="simplebar">
-                        <div class="csb-products-wrapper">
-                            <cart-item
-                                v-for="item in cartItems"
-                                v-if="cartItems"
-                                :key="item.sku"
-                                :item="item"
-                                @removeCartItem="removeCartItem"
-                                @updateCartItemQuantity="updateCartItemQuantity"
-                            ></cart-item>
-                        </div>
-                    </div>
-                    <div class="border-bottom"></div>
-                </div>
-                <div class="summary-container">
-                    <div class="summary-row">
-                        <div class="summary">Subtotal</div>
-                        <div class="due">
-                            <span v-if="cartTotals">${{ parseTotal(cartTotals.due - cartTotals.tax + sumOfDiscounts() - cartTotals.shipping) }}</span>
-                        </div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary">Shipping</div>
-                        <div class="deferred">Calculated at checkout</div>
-                    </div>
-                    <div class="summary-row">
-                        <div class="summary">Tax</div>
-                        <div class="deferred">Calculated at checkout</div>
+            <div class="top">
+                <h5 class="">Your Cart</h5>
+                <a
+                    href="#"
+                    class="close"
+                    @click.stop.prevent="closeCartSidebar"
+                ><i class="fal fa-times fa-2x"></i></a>
+            </div>
+            <div class="csb-guarantee">
+                <i class="fas fa-check-circle" :class="brand"></i>
+                <span>All of our drum lessons are backed by a 90-day guarantee.</span>
+            </div>
+            <div id="csb-products-container" v-show="cartItems">
+                <div class="border-top"></div>
+                <div class="csb-products-inner" ref="simplebar">
+                    <div class="csb-products-wrapper">
+                        <cart-item
+                            v-for="item in cartItems"
+                            v-if="cartItems"
+                            :key="item.sku"
+                            :item="item"
+                            @removeCartItem="removeCartItem"
+                            @updateCartItemQuantity="updateCartItemQuantity"
+                        ></cart-item>
                     </div>
                 </div>
-                <div class="checkout">
-                    <a href="/order" :class="brand"><i class="fas fa-lock"></i>checkout</a>
+                <div class="border-bottom"></div>
+            </div>
+            <div class="summary-container">
+                <div class="summary-row">
+                    <div class="summary">Subtotal</div>
+                    <div class="due">
+                        <span v-if="cartTotals">${{ parseTotal(cartTotals.due - cartTotals.tax + sumOfDiscounts() - cartTotals.shipping) }}</span>
+                    </div>
                 </div>
-                <div class="recommended-title">customers also liked</div>
-                <div class="recommended-products" v-if="cartItems">
-                    <recommended-product
-                        v-for="item in recommendedProducts"
-                        :key="item.sku"
-                        :item="item"
-                        :brand="brand"
-                        @addToCart="addRecommendedProductToCart"
-                    ></recommended-product>
+                <div class="summary-row">
+                    <div class="summary">Shipping</div>
+                    <div class="deferred">Calculated at checkout</div>
                 </div>
+                <div class="summary-row">
+                    <div class="summary">Tax</div>
+                    <div class="deferred">Calculated at checkout</div>
+                </div>
+            </div>
+            <div class="checkout">
+                <a href="/order" :class="brand"><i class="fas fa-lock"></i>checkout</a>
+            </div>
+            <div class="recommended-title">customers also liked</div>
+            <div class="recommended-products" v-if="cartItems">
+                <recommended-product
+                    v-for="item in recommendedProducts"
+                    :key="item.sku"
+                    :item="item"
+                    :brand="brand"
+                    @addToCart="addRecommendedProductToCart"
+                ></recommended-product>
             </div>
         </section>
     </div>
@@ -113,14 +111,20 @@ export default {
     methods: {
         openCartSidebar() {
             this.active = true;
+
+            // todo - refactor when drumshop & product pages are created with vue, used for removing page scroll bar on mobiles
+            document.body.classList.add('cart-sidebar-active');
         },
 
         closeCartSidebar() {
             this.active = false;
+
+            // todo - refactor when drumshop & product pages are created with vue, used for adding back page scroll bar on mobiles
+            document.body.classList.remove('cart-sidebar-active');
         },
 
         updateCartData(cartData) {
-            this.cartItems = cartData.meta.cart.items;
+            this.cartItems = cartData.meta.cart.items.reverse();
             this.recommendedProducts = cartData.meta.cart.recommendedProducts;
             this.cartTotals = cartData.meta.cart.totals;
             this.discounts = cartData.meta.cart.discounts;
@@ -226,6 +230,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../assets/sass/partials/_variables.scss';
+
 #cart-sidebar-overlay {
     position: fixed;
     top: 0;
@@ -240,7 +246,7 @@ export default {
     -moz-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     -o-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     &.active {
-        z-index: 140;
+        z-index: 2147483005;
         opacity: 1;
         visibility: visible;
     }
@@ -249,24 +255,24 @@ export default {
     position: fixed;
     top: 0;
     right: -600px;
-    z-index: -1;
+    z-index: 2147483006;
     opacity: 0;
-    background: #FFF;
     padding-left: 2px;
     -webkit-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     -moz-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
     -o-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    height:100vh;
+    overflow: auto;
+    padding: 20px 5px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    background: #FCFCFC;
+    @include xSmallOnly {
+        width: 95%;
+    }
     &.active {
-        z-index: 150;
         opacity: 1;
         right: 0;
-    }
-    .inner-container {
-        border-left: 1px solid #CCD3D3;
-        height:100vh;
-        padding: 20px 5px 20px 20px;
-        display: flex;
-        flex-direction: column;
     }
     .top {
         padding: 10px 15px 10px 0;
@@ -288,11 +294,18 @@ export default {
     .csb-guarantee {
         padding-bottom: 18px;
         padding-right: 14px;
-        i.drumeo {
-            color: #0b76db;
-        }
-        i.pianote {
-            color: #ff383f;
+        line-height: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        i {
+            margin-right: 3px;
+            &.drumeo {
+                color: #0b76db;
+            }
+            &.pianote {
+                color: #ff383f;
+            }
         }
         span {
             padding-left: 3px;
@@ -337,15 +350,15 @@ export default {
             display: inline-block;
             width: 100%;
             &.drumeo {
-                background: #0b76db;
+                background: #0B76DB;
                 &:hover {
-                    background: #258ff4;
+                    background: #258FF4;
                 }
             }
             &.pianote {
-                background: #ff383f;
+                background: #FF383F;
                 &:hover {
-                    background: #ff6b70;
+                    background: #FF6B70;
                 }
             }
             i {
@@ -364,11 +377,13 @@ export default {
         display: flex;
         flex-direction: row;
         padding-top: 10px;
+        padding-bottom: 20px;
     }
 }
 #csb-products-container {
     overflow: hidden;
     position: relative;
+    min-height: 200px;
 
     .border-top {
         border-top: 1px solid #CCD3D3;

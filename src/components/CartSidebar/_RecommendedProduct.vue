@@ -37,9 +37,10 @@ export default {
 
 <style lang="scss">
 .recommended-product-container {
-    height: 150px;
+    height: 160px;
     width: 109px;
     border: 1px solid #CCD3D3;
+    border-radius: 10px;
     ~ .recommended-product-container {
         margin-left: 10px;
     }
@@ -57,12 +58,12 @@ export default {
         }
     }
     .recommended-product-title {
-        height: 50px;
+        height: 60px;
         font-size: 10px;
         display: flex;
         align-items: center;
         text-align: center;
-        padding: 5px 15px 5px;
+        padding: 10px 15px;
     }
     .recommended-product-atc {
         display: flex;
