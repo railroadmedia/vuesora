@@ -539,11 +539,13 @@ export default {
         },
 
         isSelectedPayment(paymentMethod) {
-            if (!this.newPayment) {
+            if (!this.newPayment && this.selectedPaymentMethod) {
                 if (this.selectedPaymentMethod.id === paymentMethod.id) {
                     return true;
                 }
             }
+
+            return false;
         },
 
         getExpirationDate(paymentMethod) {
