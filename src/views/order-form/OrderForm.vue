@@ -228,7 +228,7 @@
                                 </div>
 
                                 <div class="flex flex-column xs-2 align-center text-center">
-                                    <p class="mr-1">
+                                    <p class="mr-2">
                                         <i :class="['fab', getPaymentMethodIcon(paymentMethod), 'cc-icon']"></i>
                                     </p>
                                 </div>
@@ -473,7 +473,6 @@ export default {
                 accountPassword: null,
             },
             shippingStateFactory: this.shippingAddress,
-            primaryPaymentMethod: null,
             paymentStateFactory: {
                 cardToken: null,
                 methodType: 'credit_card',
@@ -510,11 +509,11 @@ export default {
 
     methods: {
         selectAddress(address) {
-            this.selectedAddress = address.id;
+            this.selectedAddress = address;
         },
 
         isSelectedAddress(address) {
-            if (!this.newAddress && this.selectedAddress === address.id) {
+            if (!this.newAddress && this.selectedAddress === address) {
                 return true;
             }
         },
@@ -652,10 +651,10 @@ export default {
 
                 this.loading = true;
 
-                if (this.primaryPaymentMethod || !this.newPayment) {
+                if (this.selectedPaymentMethod || !this.newPayment) {
                     this.submitOrder();
                 }
-                if (!this.primaryPaymentMethod || this.newPayment) {
+                if (!this.selectedPaymentMethod || this.newPayment) {
                     if (this.paymentStateFactory.methodType === 'paypal') {
                         this.submitOrder();
                     } else {
@@ -688,12 +687,12 @@ export default {
                 billing_region: this.paymentStateFactory.billingRegion,
             };
 
-            if (!this.primaryPaymentMethod || this.newPayment) {
+            if (!this.selectedPaymentMethod || this.newPayment) {
                 payload.payment_method_type = this.paymentStateFactory.methodType;
             }
             
-            if (this.primaryPaymentMethod || !this.newPayment) {
-                payload.payment_method_id = this.primaryPaymentMethod.id;
+            if (this.selectedPaymentMethod || !this.newPayment) {
+                payload.payment_method_id = this.selectedPaymentMethod;
             }
 
             if (this.canAcceptPaymentPlans) {
@@ -711,14 +710,14 @@ export default {
 
             if (this.cartRequiresShippingAddress) {
                 if (!this.newAddress) {
-                    payload.shipping_first_name = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.first_name;
-                    payload.shipping_last_name = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.last_name;
-                    payload.shipping_address_line_1 = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.street_line_1;
-                    payload.shipping_address_line_2 = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.street_line_2;
-                    payload.shipping_zip_or_postal_code = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.zip;
-                    payload.shipping_city = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.city;
-                    payload.shipping_region = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.region;
-                    payload.shipping_country = this.shippingAddresses.data[this.shippingAddresses.data.length - 1].attributes.country;
+                    payload.shipping_first_name = this.selectedAddress.attributes.first_name;
+                    payload.shipping_last_name = this.selectedAddress.attributes.last_name;
+                    payload.shipping_address_line_1 = this.selectedAddress.attributes.street_line_1;
+                    payload.shipping_address_line_2 = this.selectedAddress.attributes.street_line_2;
+                    payload.shipping_zip_or_postal_code = this.selectedAddress.attributes.zip;
+                    payload.shipping_city = this.selectedAddress.attributes.city;
+                    payload.shipping_region = this.selectedAddress.attributes.region;
+                    payload.shipping_country = this.selectedAddress.attributes.country;
                 } else {
                     payload.shipping_first_name = this.shippingStateFactory.first_name;
                     payload.shipping_last_name = this.shippingStateFactory.last_name;
@@ -731,7 +730,7 @@ export default {
                 }        
             }
 
-            if (this.paymentStateFactory.methodType === 'credit_card' && (!this.primaryPaymentMethod || this.newPayment)) {
+            if (this.paymentStateFactory.methodType === 'credit_card' && (!this.selectedPaymentMethod || this.newPayment)) {
                 payload.card_token = this.stripeToken.id;
             }
 
