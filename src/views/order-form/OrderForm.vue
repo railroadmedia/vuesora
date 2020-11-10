@@ -46,7 +46,7 @@
                                         type="radio"
                                         name="shippingAddressOption"
                                         :checked="newAddress"
-                                        @change.stop="newAddress=true;"
+                                        @change.stop="newAddress=true; selectedAddress=null"
                                     >
                                 </div>
                                 <div class="flex flex-column xs-11 align-left align-v-center text-left">
@@ -191,8 +191,8 @@
                                         id="paymentMethod-0"
                                         type="radio" 
                                         name="paymentMethods"
-                                        @change.stop="newPayment=true"
                                         :checked="newPayment"
+                                        @change.stop="newPayment=true; selectedPaymentMethod=null"
                                     >
                                 </div>
                                 <div class="flex flex-column xs-11 align-left align-v-center text-left">
@@ -462,6 +462,8 @@ export default {
             newPayment: false,
             selectedPaymentMethod: null,
             selectedAddress: null,
+            lastPaymentUsed: null,
+            lastAddressUsed: null,
             loading: false,
             cartData: this.cart,
             requiresAccount: false,
@@ -506,7 +508,10 @@ export default {
             return this.cartData.payment_plan_options.length > 0 && !this.cartContainsSubscription;
         },
     },
+    // Get Primary Payment Method
+    beforeMount() {
 
+    },
     methods: {
         selectAddress(address) {
             this.selectedAddress = address;
