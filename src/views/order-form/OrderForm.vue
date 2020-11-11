@@ -523,18 +523,24 @@ export default {
                     this.selectedPaymentMethod = method;
                     return true;
                 } 
-                this.selectedPaymentMethod = firstPayment;
-                return false;
             });
+            if (!this.isPrimaryPaymentMethod(this.selectedPaymentMethod)) {
+                this.selectedPaymentMethod = firstPayment;
+            }
         }
-        
+
         // Get Last Address
-        if (this.shippingAddresses && localStorage.getItem('lastAddress') !== null) { 
-            this.shippingAddresses.data.forEach((address) => { 
+        if (this.shippingAddresses && localStorage.getItem('lastAddress') !== null) {
+            const firstAddress = this.shippingAddresses.data[0]; 
+            this.shippingAddresses.data.some((address) => { 
                 if (address.id === localStorage.getItem('lastAddressId')) {
                     this.selectedAddress = address;
+                    return true;
                 }
-            });  
+            });
+            if (this.selectedAddress.id !== localStorage.getItem('lastAddressId')) {
+                this.selectedAddress = firstAddress;
+            }
         }
     },
 
