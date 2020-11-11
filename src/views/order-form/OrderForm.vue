@@ -530,15 +530,17 @@ export default {
         }
 
         // Get Last Address
-        if (this.shippingAddresses && localStorage.getItem('lastAddress') !== null) {
-            const firstAddress = this.shippingAddresses.data[0]; 
-            this.shippingAddresses.data.some((address) => { 
-                if (address.id === localStorage.getItem('lastAddressId')) {
-                    this.selectedAddress = address;
-                    return true;
-                }
-            });
-            if (this.selectedAddress.id !== localStorage.getItem('lastAddressId')) {
+        if (this.shippingAddresses) {
+            const firstAddress = this.shippingAddresses.data[0];
+            // check if last address was stored
+            if (localStorage.getItem('lastAddress') !== null) {
+                this.shippingAddresses.data.some((address) => { 
+                    if (address.id === localStorage.getItem('lastAddressId')) {
+                        this.selectedAddress = address;
+                        return true;
+                    }
+                });
+            } else {
                 this.selectedAddress = firstAddress;
             }
         }
