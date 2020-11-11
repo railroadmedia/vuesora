@@ -22,7 +22,10 @@
             />
 
             <!-- Shipping Section -->
-            <section v-if="cartRequiresShippingAddress">
+            <section 
+                v-if="cartRequiresShippingAddress"
+                class="mb-2"
+            >
                 <!-- Section Heading -->
                 <div class="flex flex-row mb-1">
                     <h3 class="title uppercase font-bold">
@@ -36,7 +39,7 @@
                         <!-- Create New Default -->
                         <div class="flex flex-col sm-6 xs-12">
                             <label
-                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer"
                                 :class="{ selected: newAddress }"
                                 style="border: 1px solid #ddd;"
                             >
@@ -66,7 +69,7 @@
                             class="flex flex-col sm-6 xs-12"
                         >
                             <label
-                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer"
                                 :class="{selected: isSelectedAddress(thisShippingAddress)}"
                                 :for="`address-${index + 1}`"
                                 style="border: 1px solid #ddd;"
@@ -77,6 +80,7 @@
                                         type="radio"
                                         name="shippingAddressOption"
                                         :value="shippingAddress.id"
+                                        :checked="isSelectedAddress(thisShippingAddress)"
                                         @change.stop="newAddress=false; selectAddress(thisShippingAddress)"
                                     >
                                 </div>
@@ -165,7 +169,10 @@
             </section>
 
             <!-- Payment Section -->
-            <section v-if="cartData.items.length">
+            <section 
+                v-if="cartData.items.length"
+                class="mb-3"
+            >
                 <!-- Section Heading -->
                 <div
                     class="flex flex-row mb-1 pt-2"
@@ -182,7 +189,7 @@
                         <!-- Create New Default -->
                         <div class="flex flex-col sm-6 xs-12">
                             <label
-                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer"
                                 :class="{ selected: newPayment }"
                                 style="border: 1px solid #ddd;"
                             >
@@ -212,7 +219,7 @@
                             class="flex flex-col sm-6 xs-12"
                         >
                             <label
-                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10"
+                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer"
                                 :class="{selected: isSelectedPayment(paymentMethod)}"
                                 style="border: 1px solid #ddd;"
                                 :for="`paymentMethod-${index + 1}`"
@@ -462,7 +469,6 @@ export default {
             newPayment: false,
             selectedPaymentMethod: null,
             selectedAddress: null,
-            lastAddressUsed: null,
             loading: false,
             cartData: this.cart,
             requiresAccount: false,
@@ -507,8 +513,9 @@ export default {
             return this.cartData.payment_plan_options.length > 0 && !this.cartContainsSubscription;
         },
     },
-    // Get Primary Payment Method
+
     beforeMount() {
+        // Get Primary Payment Method
         if (this.paymentMethods) {
             this.paymentMethods.data.forEach((method) => {
                 if (this.isPrimaryPaymentMethod(method)) {
@@ -516,7 +523,16 @@ export default {
                 }
             });
         }
+        // Get Last Address
+        if (this.shippingAddresses && localStorage.getItem('lastAddress') !== null) { 
+            this.shippingAddresses.data.forEach((address) => { 
+                if (address.id === localStorage.getItem('lastAddressId')) {
+                    this.selectedAddress = address;
+                }
+            });  
+        }
     },
+
     methods: {
         isPrimaryPaymentMethod(paymentMethod) {
             return this.getRelatedAttributesByTypeAndId(
@@ -529,8 +545,10 @@ export default {
         },
 
         isSelectedAddress(address) {
-            if (!this.newAddress && this.selectedAddress === address) {
-                return true;
+            if (!this.newAddress) {
+                if (this.selectedAddress === address) {
+                    return true;
+                }
             }
         },
 
@@ -710,7 +728,7 @@ export default {
             }
             
             if (this.selectedPaymentMethod || !this.newPayment) {
-                payload.payment_method_id = this.selectedPaymentMethod;
+                payload.payment_method_id = this.selectedPaymentMethod.id;
             }
 
             if (this.canAcceptPaymentPlans) {
@@ -763,6 +781,10 @@ export default {
             setTimeout(() => {
                 window.location.href = response.data.meta.redirect;
             }, 500);
+
+            if (this.selectedAddress) {
+                localStorage.setItem('lastAddressId', this.selectedAddress.id);
+            }
         },
 
         orderFailure({ response }) {
@@ -794,32 +816,26 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/sass/partials/variables';
+    @import '../../assets/sass/partials/variables';
     .selected {
         background-color: #efefef;
         box-shadow: 2px 5px 10px rgba(100,100,100,.5);
         transition: .25s linear all;
     }
 
+    .cursor-pointer { cursor: pointer; }
+
     a.btn.outline-drumeo {
         border: 2px solid #0B76DB;
         box-shadow: none;
     }
 
-    .flex-end {
-        justify-content: flex-end;
-    }
+    .flex-end { justify-content: flex-end; }
 
     .card-wrapper {
         flex-wrap: wrap;
         margin-right: -30px;
         margin-bottom: 30px;
-    }
-
-    .card {
-        h5 {
-            font-size: 14px;
-        }
     }
 
     .form-loading {
