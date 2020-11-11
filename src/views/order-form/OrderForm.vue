@@ -517,12 +517,17 @@ export default {
     beforeMount() {
         // Get Primary Payment Method
         if (this.paymentMethods) {
-            this.paymentMethods.data.forEach((method) => {
+            const firstPayment = this.paymentMethods.data[0];
+            this.paymentMethods.data.some((method) => {
                 if (this.isPrimaryPaymentMethod(method)) {
                     this.selectedPaymentMethod = method;
-                }
+                    return true;
+                } 
+                this.selectedPaymentMethod = firstPayment;
+                return false;
             });
         }
+        
         // Get Last Address
         if (this.shippingAddresses && localStorage.getItem('lastAddress') !== null) { 
             this.shippingAddresses.data.forEach((address) => { 
