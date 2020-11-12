@@ -7,7 +7,7 @@
                         <select
                             id="paymentMethodType"
                             v-model.lazy="$_paymentMethod"
-                            class="order-form-input"
+                            class="order-form-input has-input"
                         >
                             <option value="credit_card">
                                 Credit Card
