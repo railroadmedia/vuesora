@@ -1,13 +1,16 @@
 <template>
     <div class="recommended-product-container">
         <div class="image-container">
-            <img :src="item.thumbnail_url" class="item-thumbnail">
+            <a :href="this.item.product_page_url"><img :src="item.thumbnail_url" class="item-thumbnail"></a>
         </div>
-        <div class="recommended-product-title">{{ item.name }}</div>
-        <div class="recommended-product-atc">
-            <a href="#" @click.stop.prevent="addToCart" :class="brand" class="csb-price">
-                <span>Add To Cart:</span>
-                <product-price :item="item" :brand="brand"></product-price>
+        <div class="recommended-product-title"><a :href="this.item.product_page_url">{{ item.name }}</a></div>
+        <div class="recommended-product-cta">
+            <a :href="$_ctaUrl" @click.stop="cta($event)" :class="brand" class="csb-price">
+                <div v-if="!item.cta" class="atc-label">
+                    <span>Add To Cart:</span>
+                    <product-price :item="item" :brand="brand"></product-price>
+                </div>
+                <div v-if="item.cta" class="cta-label">{{ item.cta }}</div>
             </a>
         </div>
     </div>
@@ -27,9 +30,25 @@ export default {
     components: {
         'product-price': ProductPrice,
     },
+    computed: {
+        $_ctaUrl: {
+            get() {
+                return this.item.add_directly_to_cart ?
+                    '' : this.item.product_page_url;
+            },
+        },
+    },
     methods: {
         addToCart() {
             this.$emit('addToCart', this.item);
+        },
+        cta(event) {
+            if (this.item.add_directly_to_cart) {
+                if (event) {
+                    event.preventDefault();
+                }
+                this.addToCart();
+            }
         },
     },
 }
@@ -44,28 +63,35 @@ export default {
     ~ .recommended-product-container {
         margin-left: 10px;
     }
-    .image-container {
+    .image-container a {
         height: 65px;
         margin-top: 7px;
+        margin-bottom: 10px;
         display: flex;
         flex-direction: row;
         justify-content: center;
+        text-decoration: none;
         img {
             object-fit: cover;
             object-position: center;
             max-height: 100%;
             width: auto;
+            border-radius: 5px;
         }
     }
     .recommended-product-title {
-        height: 60px;
+        height: 45px;
         font-size: 10px;
         display: flex;
         align-items: center;
         text-align: center;
-        padding: 10px 15px;
+        padding: 0 15px;
+        a {
+            text-decoration: none;
+            color: #0A0A0A;
+        }
     }
-    .recommended-product-atc {
+    .recommended-product-cta {
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -80,6 +106,18 @@ export default {
             }
             .csb-product-price {
                 text-decoration: underline;
+            }
+            .atc-label {
+                min-height: 20px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+            }
+            .cta-label {
+                padding: 0 15px;
+                display: flex;
+                align-items: center;
+                text-align: center;
             }
         }
     }
