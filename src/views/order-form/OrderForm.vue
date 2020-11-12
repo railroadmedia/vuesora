@@ -86,7 +86,7 @@
                                 </div>
 
                                 <div
-                                    class="flex flex-column xs-7 mr-2 align-left text-left"
+                                    class="flex flex-column xs-7 align-left text-left pr-1"
                                     style="border-right: 1px solid #ddd;"
                                 >
                                     <p class="tiny">
@@ -107,7 +107,7 @@
                                 </div>
 
                                 <div
-                                    class="flex flex-column xs-4 align-left text-left"
+                                    class="flex flex-column xs-4 align-left text-left pl-2"
                                 >
                                     <p class="tiny">
                                         <span class="font-bold">
@@ -235,14 +235,14 @@
                                 </div>
 
                                 <div class="flex flex-column xs-2 align-center text-center">
-                                    <p class="mr-2">
+                                    <p>
                                         <i :class="['fab', getPaymentMethodIcon(paymentMethod), 'cc-icon']"></i>
                                     </p>
                                 </div>
 
                                 <div
                                     v-if="paymentMethod.relationships.method.data.type === 'creditCard'"
-                                    class="flex flex-column xs-9 align-v-center"
+                                    class="flex flex-column xs-9 align-v-center ml-2"
                                 >
                                     <p class="tiny">
                                         <span class="font-bold">
@@ -262,7 +262,7 @@
 
                                 <div
                                     v-if="paymentMethod.relationships.method.data.type === 'paypalBillingAgreement'"
-                                    class="flex flex-column xs-9 align-v-center"
+                                    class="flex flex-column xs-9 align-v-center ml-2"
                                 >
                                     <p class="tiny">
                                         <span class="font-bold">{{ getPaymentMethodType(paymentMethod) }}</span>
