@@ -1,5 +1,7 @@
 <template>
     <div class="flex flex-column mb-2">
+        <payment-svg></payment-svg>
+
         <div class="flex flex-column bg-white corners-5 pt-1 ph-2">
             <div class="flex flex-row flex-wrap align-v-center">
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
@@ -29,23 +31,19 @@
                 <div class="flex flex-column xs-12 sm-6 mb-2 overflow">
                     <div class="flex flex-row">
                         <div class="pl-2">
-                            <i class="fab fa-cc-visa cc-icon"></i>
+                            <svg-icon icon-name="visa"></svg-icon>
                         </div>
-
                         <div class="pl-2">
-                            <i class="fab fa-cc-mastercard cc-icon"></i>
+                            <svg-icon icon-name="mastercard"></svg-icon>
                         </div>
-
                         <div class="pl-2">
-                            <i class="fab fa-cc-discover cc-icon"></i>
+                            <svg-icon icon-name="discover"></svg-icon>
                         </div>
-
                         <div class="pl-2">
-                            <i class="fab fa-cc-amex cc-icon"></i>
+                            <svg-icon icon-name="american-express"></svg-icon>
                         </div>
-
                         <div class="pl-2">
-                            <i class="fab fa-cc-paypal cc-icon"></i>
+                            <svg-icon icon-name="paypal"></svg-icon>
                         </div>
                     </div>
                 </div>
@@ -225,99 +223,11 @@
                 </h3>
             </div>
 
-<!--            <div-->
-<!--                v-if="isOrder"-->
-<!--                class="flex flex-row mb-1"-->
-<!--            >-->
-<!--                <div class="flex flex-column">-->
-<!--                    <div class="flex flex-row reverse flex-wrap">-->
-<!--                        <div class="flex flex-column xs-12 sm-6 ph-1 align-h-right mb-2">-->
-<!--                            <div v-if="discounts.length">-->
-<!--                                <div-->
-<!--                                    v-for="item in discounts"-->
-<!--                                    :key="item.id"-->
-<!--                                    class="body font-bold"-->
-<!--                                >-->
-<!--                                    {{ item.name }}-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div-->
-<!--                                v-if="totals.shipping"-->
-<!--                                class="body font-bold"-->
-<!--                            >-->
-<!--                                Shipping: ${{ totalShipping }}-->
-<!--                            </div>-->
-
-<!--                            <div class="body font-bold">-->
-<!--                                Tax: ${{ totalTax }}-->
-<!--                            </div>-->
-
-<!--                            <div class="body font-bold">-->
-<!--                                <span class="display">${{ totalDue }}</span> USD-->
-<!--                            </div>-->
-
-<!--                            <div class="body font-bold">-->
-<!--                                Due Today-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--                        <div class="flex flex-column xs-12 sm-6 align-v-bottom ph-1 mb-2">-->
-<!--                            <button-->
-<!--                                class="btn"-->
-<!--                                @click.stop.prevent="submitForm"-->
-<!--                            >-->
-<!--                                <span-->
-<!--                                    class="text-white bg-success"-->
-<!--                                    :class="themeBgClass"-->
-<!--                                >-->
-<!--                                    Buy Now-->
-<!--                                </span>-->
-<!--                            </button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-<!--                    <div class="flex flex-row mb-2">-->
-<!--                        <div class="flex flex-column md-6 ph-1">-->
-<!--                            <h5 class="tiny disclaimer">-->
-<!--                                By completing your order you agree to the terms of service. All payments-->
-<!--                                in US dollars. You can cancel your subscription at any time by emailing-->
-<!--                                <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>.-->
-<!--                            </h5>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
             <div
                 v-if="!isOrder"
                 class="flex flex-row mb-1"
             >
                 <div class="flex flex-column ph-1">
-                    <!--                    <div-->
-                    <!--                        v-if="showCheckbox"-->
-                    <!--                        class="flex flex-row form-group align-v-center mb-2"-->
-                    <!--                    >-->
-                    <!--                        <span class="toggle-input mr-1">-->
-                    <!--                            <input-->
-                    <!--                                id="subscriptionCheck"-->
-                    <!--                                name="subscription-check"-->
-                    <!--                                v-model="$_subscriptionCheck"-->
-                    <!--                                type="checkbox"-->
-                    <!--                            >-->
-
-                    <!--                            <span class="toggle">-->
-                    <!--                                <span class="handle"></span>-->
-                    <!--                            </span>-->
-                    <!--                        </span>-->
-
-                    <!--                        <label-->
-                    <!--                            for="subscriptionCheck"-->
-                    <!--                               class="toggle-label capitalize"-->
-                    <!--                        >-->
-                    <!--                            Set as default payment method-->
-                    <!--                        </label>-->
-                    <!--                    </div>-->
-
                     <div
                         v-if="hasSubscription"
                         class="flex flex-row form-group align-v-center mb-2"
@@ -445,9 +355,15 @@
 import Utils from '@musora/helper-functions/modules/utils';
 import Validation from './_validation';
 import ThemeClasses from '../../mixins/ThemeClasses';
+import PaymentSVG from '../../components/SVGSprites/_PaymentSVG.vue';
+import SVGIcon from '../../components/SVGIcon/_SVGIcon.vue';
 
 export default {
     name: 'OrderFormPayment',
+    components: {
+        'payment-svg': PaymentSVG,
+        'svg-icon': SVGIcon,
+    },
     mixins: [Validation, ThemeClasses],
     props: {
         brand: {

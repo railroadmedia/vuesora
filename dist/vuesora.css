@@ -115,6 +115,11 @@ button.btn.page-button > span {
   max-width: 100px;
   min-width: 100px;
 }
+
+svg[data-v-83ec86c0]:not(:root) {
+    overflow: visible;
+}
+
 .cc-icon {
   font-size: 55px;
   line-height: 50px;

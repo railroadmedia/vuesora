@@ -7,7 +7,12 @@
         :viewBox="viewBox"
     >
         <title lang="en">{{ iconName }}</title>
-        <use :xlink:href="iconID" x="0" y="-95"></use>
+        <use 
+            :xlink:href="iconID" 
+            x="0" 
+            y="-105"
+        >
+        </use>
     </svg>
 </template>
 <script>

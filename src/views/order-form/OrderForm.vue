@@ -1,5 +1,8 @@
 <template>
     <div class="flex flex-row flex-wrap align-v-top nmh-1">
+        <!-- Payment SVG -->
+        <payment-svg></payment-svg>
+
         <div class="flex flex-column order-form xs-12 md-9 ph-1">
             <order-form-cart
                 :theme-color="themeColor"
@@ -236,7 +239,7 @@
 
                                 <div class="flex flex-column xs-2 align-center text-center">
                                     <p>
-                                        <i :class="['fab', getPaymentMethodIcon(paymentMethod), 'cc-icon']"></i>
+                                        <svg-icon :icon-name="getPaymentMethodIcon(paymentMethod)"></svg-icon>
                                     </p>
                                 </div>
 
@@ -379,6 +382,8 @@ import OrderFormTotals from './_OrderFormTotals.vue';
 import ThemeClasses from '../../mixins/ThemeClasses';
 import Toasts from '../../assets/js/classes/toasts';
 import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation.vue';
+import PaymentSVG from '../../components/SVGSprites/_PaymentSVG.vue';
+import SVGIcon from '../../components/SVGIcon/_SVGIcon.vue';
 
 export default {
     name: 'OrderForm',
@@ -390,6 +395,8 @@ export default {
         'order-form-payment-plan': OrderFormPaymentPlan,
         'loading-animation': LoadingAnimation,
         'order-form-totals': OrderFormTotals,
+        'payment-svg': PaymentSVG,
+        'svg-icon': SVGIcon,
     },
     mixins: [ThemeClasses],
     props: {
@@ -610,18 +617,18 @@ export default {
             if (paymentMethod.relationships.method.data.type === 'creditCard') {
                 switch (method.attributes.company_name.toLowerCase()) {
                     case 'visa':
-                        return 'fa-cc-visa';
+                        return 'visa';
                     case 'mastercard':
-                        return 'fa-cc-mastercard';
+                        return 'mastercard';
                     case 'discover':
-                        return 'fa-cc-discover';
+                        return 'discover';
                     case 'american express':
-                        return 'fa-cc-amex';
+                        return 'american-express';
                     default:
                         return '';
                 }
             } else if (paymentMethod.relationships.method.data.type === 'paypalBillingAgreement') {
-                return 'fa-cc-paypal';
+                return 'paypal';
             }
 
             return '';
