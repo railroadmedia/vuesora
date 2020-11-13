@@ -24,6 +24,7 @@
                             v-if="cartItems"
                             :key="item.sku"
                             :item="item"
+                            :loading="loading"
                             @removeCartItem="removeCartItem"
                             @updateCartItemQuantity="updateCartItemQuantity"
                         ></cart-item>
@@ -57,6 +58,7 @@
                     :key="item.sku"
                     :item="item"
                     :brand="brand"
+                    :loading="loading"
                     @addToCart="addRecommendedProductToCart"
                 ></recommended-product>
             </div>
@@ -95,6 +97,7 @@ export default {
             recommendedProducts: null,
             discounts: [],
             simpleBar: null,
+            loading: false,
         };
     },
     mounted() {
@@ -105,6 +108,7 @@ export default {
         this.$root.$on('openCartSidebar', this.openCartSidebar);
 
         this.simpleBar = new SimpleBar(this.$refs.simplebar, {autoHide: false});
+        this.loading = false;
 
         this.attachAddToCartListeners();
     },
@@ -131,6 +135,10 @@ export default {
 
             setTimeout(() => {
                 this.simpleBar.recalculate();
+                this.simpleBar.getScrollElement().scroll({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }, 10);
         },
 
@@ -144,20 +152,30 @@ export default {
 
                     element.addEventListener('click', (event) => {
 
-                        let isValid = element.hasAttribute('data-product-json');
+                        event.preventDefault();
+
+                        let isValid = !this.loading && element.hasAttribute('data-product-json');
 
                         if (isValid && (element.classList.contains('selected-pack') || element.classList.contains('merch'))) {
                             isValid = element.classList.contains('active')
                         }
                         
                         if (isValid) {
+                            event.stopPropagation();
+
+                            element.classList.add('loading');
+
+                            this.openCartSidebar();
+
                             let productsObject = JSON.parse(element.getAttribute('data-product-json'));
                             let promoCode = element.hasAttribute('data-promocode') ? element.getAttribute('data-promocode') : null;
                             let lockedCart = element.hasAttribute('data-locked-cart') ? element.getAttribute('data-locked-cart') : null;
 
-                            this.addToCart(productsObject, promoCode, lockedCart);
-
-                            event.preventDefault();
+                            this
+                                .addToCart(productsObject, promoCode, lockedCart)
+                                .then(() => {
+                                    element.classList.remove('loading');
+                                });
                         }
                     });
                 });
@@ -165,37 +183,53 @@ export default {
         },
 
         addToCart(products, promoCode, lockedCart) {
+            if (!this.loading) {
+                this.loading = true;
 
-            let payload = {products: products};
+                let payload = {products: products};
 
-            if (promoCode) {
-                payload['promo-code'] = promoCode;
+                if (promoCode) {
+                    payload['promo-code'] = promoCode;
+                }
+
+                if (lockedCart) {
+                    payload['locked'] = lockedCart;
+                }
+
+                return EcommerceService
+                    .addCartItems(payload)
+                    .then(this.handleCartUpdate)
+                    .catch(this.handleError);
             }
-
-            if (lockedCart) {
-                payload['locked'] = lockedCart;
-            }
-
-            EcommerceService
-                .addCartItems(payload)
-                .then(this.handleCartUpdate);
         },
 
         removeCartItem(cartItem) {
-            EcommerceService
-                .removeCartItem({productSku: cartItem.sku})
-                .then(this.handleCartUpdate);
+            if (!this.loading) {
+                this.loading = true;
+
+                EcommerceService
+                    .removeCartItem({productSku: cartItem.sku})
+                    .then(this.handleCartUpdate)
+                    .catch(this.handleError);
+            }
         },
 
         updateCartItemQuantity({cartItem, quantity}) {
-            EcommerceService
-                .updateCartItemQuantity({productSku: cartItem.sku, quantity})
-                .then(this.handleCartUpdate);
+            if (!this.loading) {
+                this.loading = true;
+
+                EcommerceService
+                    .updateCartItemQuantity({productSku: cartItem.sku, quantity})
+                    .then(this.handleCartUpdate)
+                    .catch(this.handleError);
+            }
         },
 
         handleCartUpdate(response) {
             this.updateCartData(response.data);
             this.$root.$emit('updateCartData', response.data);
+
+            this.loading = false;
 
             if (!this.cartItems.length) {
                 this.closeCartSidebar();
@@ -225,6 +259,16 @@ export default {
 
             return 0;
         },
+
+        handleError() {
+            this.loading = false;
+            this.$toasted.error(
+                'Something went wrong! Please try again or contact support using the chat widget at the bottom of the page.',
+                {
+                    icon: 'fal fa-meh-rolling-eyes fa-3x toasted-icon',
+                }
+            );
+        }
     },
 }
 </script>
@@ -232,6 +276,22 @@ export default {
 <style lang="scss">
 @import '../../assets/sass/partials/_variables.scss';
 
+.toasted-container.custom-toast {
+    z-index: 2147483010;
+    &.top-left {
+        left: 2%;
+    }
+    .toasted {
+        max-width: 400px;
+        .toasted-icon {
+            margin-right: 20px;
+        }
+        .toasted-close-icon {
+            color: #8B929A;
+            font-size: 18px;
+        }
+    }
+}
 #cart-sidebar-overlay {
     position: fixed;
     top: 0;

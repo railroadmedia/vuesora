@@ -13,7 +13,7 @@
                     <div class="csb-quantity-label">Qty:</div>
                     <div class="csb-quantity-control">
                         <div class="csb-quantity-dec" @click.stop.prevent="decQuantity"><i class="fal fa-minus"></i></div>
-                        <div class="csb-quantity-input"><input type="text" v-model="$_quantity"></div>
+                        <div class="csb-quantity-input"><input type="text" v-model="$_quantity" :disabled="loading"></div>
                         <div class="csb-quantity-inc" @click.stop.prevent="incQuantity"><i class="fal fa-plus"></i></div>
                     </div>
                 </div>
@@ -36,6 +36,10 @@ export default {
         brand: {
             type: String,
             default: () => 'drumeo',
+        },
+        loading: {
+            type: Boolean,
+            default: () => false,
         },
     },
     components: {
@@ -72,7 +76,9 @@ export default {
     },
     methods: {
         remove() {
-            this.$emit('removeCartItem', this.item);
+            if (!this.loading) {
+                this.$emit('removeCartItem', this.item);
+            }
         },
 
         updateQuantity() {
@@ -90,11 +96,13 @@ export default {
         },
 
         incQuantity() {
-            this.$_quantity = this.$_quantity + 1;
+            if (!this.loading) {
+                this.$_quantity = this.$_quantity + 1;
+            }
         },
 
         decQuantity() {
-            if (this.$_quantity > 0) {
+            if (!this.loading && this.$_quantity > 0) {
                 this.$_quantity = this.$_quantity - 1;
             }
         },

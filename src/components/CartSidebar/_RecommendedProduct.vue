@@ -26,6 +26,10 @@ export default {
             type: String,
             default: () => 'drumeo',
         },
+        loading: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     components: {
         'product-price': ProductPrice,
@@ -40,7 +44,9 @@ export default {
     },
     methods: {
         addToCart() {
-            this.$emit('addToCart', this.item);
+            if (!this.loading) {
+                this.$emit('addToCart', this.item);
+            }
         },
         cta(event) {
             if (this.item.add_directly_to_cart) {
