@@ -606,9 +606,9 @@ export default {
                 return 'Credit Card';
             } else if (paymentMethod.relationships.method.data.type === 'paypalBillingAgreement') {
                 return 'PayPal Account';
+            } else {
+                return 'N/A';
             }
-
-            return 'N/A';
         },
 
         getPaymentMethodIcon(paymentMethod) {
@@ -616,16 +616,16 @@ export default {
 
             if (paymentMethod.relationships.method.data.type === 'creditCard') {
                 switch (method.attributes.company_name.toLowerCase()) {
-                    case 'visa':
-                        return 'visa';
-                    case 'mastercard':
-                        return 'mastercard';
-                    case 'discover':
-                        return 'discover';
-                    case 'american express':
-                        return 'american-express';
-                    default:
-                        return '';
+                case 'visa':
+                    return 'visa';
+                case 'mastercard':
+                    return 'mastercard';
+                case 'discover':
+                    return 'discover';
+                case 'american express':
+                    return 'american-express';
+                default:
+                    return '';
                 }
             } else if (paymentMethod.relationships.method.data.type === 'paypalBillingAgreement') {
                 return 'paypal';

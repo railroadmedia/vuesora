@@ -10,7 +10,7 @@
         <use 
             :xlink:href="iconID" 
             x="0" 
-            y="-105"
+            y="0"
         >
         </use>
     </svg>
@@ -26,15 +26,15 @@ export default {
         },
         width: {
             type: [Number, String],
-            default: '62',
+            default: '100%',
         },
         height: {
             type: [Number, String],
-            default: '50',
+            default: 'auto',
         },
         viewBox: {
             type: [Number, String],
-            default: '0 0 512 300',
+            default: '0 0 32 32',
         },
     },
     computed: {
