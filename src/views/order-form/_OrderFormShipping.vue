@@ -100,6 +100,7 @@
                             type="text"
                             name="address-line2"
                             class="order-form-input"
+                            :class="{ 'has-input': $_street_line_two != null }"
                         >
 
                         <label
