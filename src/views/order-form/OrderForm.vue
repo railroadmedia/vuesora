@@ -533,7 +533,7 @@ export default {
         if (this.shippingAddresses) {
             const firstAddress = this.shippingAddresses.data[0];
             // check if last address was stored
-            if (localStorage.getItem('lastAddress') !== null) {
+            if (localStorage.getItem('lastAddressId') !== null) {
                 this.shippingAddresses.data.some((address) => { 
                     if (address.id === localStorage.getItem('lastAddressId')) {
                         this.selectedAddress = address;
