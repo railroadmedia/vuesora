@@ -472,8 +472,8 @@ export default {
     },
     data() {
         return {
-            newAddress: false,
-            newPayment: false,
+            newAddress: true,
+            newPayment: true,
             selectedPaymentMethod: null,
             selectedAddress: null,
             loading: false,
@@ -555,9 +555,13 @@ export default {
 
     methods: {
         isPrimaryPaymentMethod(paymentMethod) {
-            return this.getRelatedAttributesByTypeAndId(
-                paymentMethod.relationships.userPaymentMethod.data,
-            ).attributes.is_primary;
+            if (paymentMethod) {
+                return this.getRelatedAttributesByTypeAndId(
+                    paymentMethod.relationships.userPaymentMethod.data,
+                ).attributes.is_primary;
+            }
+
+            return false;
         },
 
         selectAddress(address) {
