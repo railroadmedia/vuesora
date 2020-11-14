@@ -30,7 +30,7 @@ export default {
         },
         height: {
             type: [Number, String],
-            default: 'auto',
+            default: '100%',
         },
         viewBox: {
             type: [Number, String],
