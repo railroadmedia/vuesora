@@ -26,7 +26,7 @@ export default {
         },
         width: {
             type: [Number, String],
-            default: '100%',
+            default: '65px',
         },
         height: {
             type: [Number, String],

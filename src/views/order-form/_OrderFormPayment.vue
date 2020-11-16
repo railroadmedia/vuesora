@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 sm-6 mb-2 overflow">
+                <div class="flex flex-column xs-12 sm-6 mb-2 credit-card-row">
                     <div class="flex flex-row">
                         <div class="pl-2">
                             <svg-icon icon-name="visa"></svg-icon>
@@ -610,5 +610,8 @@ export default {
     .cc-icon {
         font-size: 55px;
         line-height: 50px;
+    }
+    .credit-card-row {
+        max-width: none;
     }
 </style>
