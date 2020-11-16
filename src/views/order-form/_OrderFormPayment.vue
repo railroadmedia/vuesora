@@ -4,7 +4,7 @@
 
         <div class="flex flex-column bg-white corners-5 pt-1 ph-2">
             <div class="flex flex-row flex-wrap align-v-center">
-                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+                <div class="flex flex-column xs-12 sm-6 ph-1 mb-1">
                     <div class="form-group">
                         <select
                             id="paymentMethodType"
@@ -28,22 +28,34 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 sm-6 mb-2 credit-card-row">
+                <div class="flex flex-column xs-12 sm-6 mb-1 credit-card-row">
                     <div class="flex flex-row">
                         <div class="pl-2">
-                            <svg-icon icon-name="visa"></svg-icon>
+                            <svg-icon 
+                                icon-name="visa" 
+                                width="78px"
+                            ></svg-icon>
                         </div>
                         <div class="pl-2">
-                            <svg-icon icon-name="mastercard"></svg-icon>
+                            <svg-icon 
+                                icon-name="mastercard" 
+                                width="78px"
+                            ></svg-icon>
                         </div>
                         <div class="pl-2">
-                            <svg-icon icon-name="discover"></svg-icon>
+                            <svg-icon 
+                                icon-name="discover" 
+                                width="78px"
+                            ></svg-icon>
                         </div>
                         <div class="pl-2">
-                            <svg-icon icon-name="american-express"></svg-icon>
+                            <svg-icon 
+                                icon-name="american-express" 
+                                width="78px"
+                            ></svg-icon>
                         </div>
                         <div class="pl-2">
-                            <svg-icon icon-name="paypal"></svg-icon>
+                            <svg-icon icon-name="paypal" width="78px"></svg-icon>
                         </div>
                     </div>
                 </div>
