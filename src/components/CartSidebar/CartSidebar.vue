@@ -314,13 +314,12 @@ export default {
 #cart-sidebar {
     position: fixed;
     top: 0;
-    right: -600px;
+    right: -500px;
     z-index: 2147483006;
-    opacity: 0;
     padding-left: 2px;
-    -webkit-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
-    -moz-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
-    -o-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    -o-transition: all 0.1s;
     height:100vh;
     overflow: auto;
     padding: 20px 5px 20px 20px;
@@ -331,7 +330,6 @@ export default {
         width: 95%;
     }
     &.active {
-        opacity: 1;
         right: 0;
     }
     .top {
