@@ -130,7 +130,7 @@
                 </template>
 
                 <!-- Shipping Component -->
-                <template v-if="newAddress">
+                <template v-if="newAddress || shippingAddresses.data.length === 0">
                     <p
                         v-if="shippingAddresses.data.length > 0"
                         class="body font-bold uppercase pt-2"
@@ -283,7 +283,7 @@
                 </template>
 
                 <!-- Order Component -->
-                <template v-if="newPayment">
+                <template v-if="newPayment || paymentMethods.data.length === 0">
                     <p
                         v-if="paymentMethods.data.length > 0"
                         class="body font-bold uppercase mb-2 pt-3"
@@ -472,8 +472,8 @@ export default {
     },
     data() {
         return {
-            newAddress: true,
-            newPayment: true,
+            newAddress: false,
+            newPayment: false,
             selectedPaymentMethod: null,
             selectedAddress: null,
             loading: false,
@@ -560,7 +560,6 @@ export default {
                     paymentMethod.relationships.userPaymentMethod.data,
                 ).attributes.is_primary;
             }
-
             return false;
         },
 
@@ -606,13 +605,15 @@ export default {
         },
 
         getPaymentMethodType(paymentMethod) {
+            let type;
             if (paymentMethod.relationships.method.data.type === 'creditCard') {
-                return 'Credit Card';
+                type = 'Credit Card';
             } else if (paymentMethod.relationships.method.data.type === 'paypalBillingAgreement') {
-                return 'PayPal Account';
+                type = 'PayPal Account';
             } else {
-                return 'N/A';
+                type = 'N/A';
             }
+            return type;
         },
 
         getPaymentMethodIcon(paymentMethod) {
@@ -666,6 +667,13 @@ export default {
             clearTimeout(this.updateTimeout);
 
             this.updateTimeout = setTimeout(() => {
+                if (this.cartRequiresShippingAddress) { 
+                    this.$refs.shippingForm.validateForm();
+                    if (!this.$refs.shippingForm.formValid) {
+                        return;
+                    }
+                }
+                
                 EcommerceService.updateAddressesInSession({
                     shippingAddressLine1: this.shippingStateFactory.street_line_one,
                     shippingAddressLine2: this.shippingStateFactory.street_line_two,
