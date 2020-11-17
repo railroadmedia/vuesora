@@ -469,11 +469,6 @@ export default {
             type: Array,
             default: () => [],
         },
-
-        currentUser: {
-            type: Object,
-            default: () => null,
-        },
     },
     data() {
         return {
@@ -526,7 +521,7 @@ export default {
         },
 
         isSignedIn() {
-            return this.currentUser != null;
+            return this.user != null;
         },
     },
 
@@ -815,7 +810,6 @@ export default {
             }
 
             if (this.paymentStateFactory.methodType === 'credit_card' && (!this.selectedPaymentMethod || this.newPayment)) {
-                console.log(this.stripeToken);
                 payload.card_token = this.stripeToken.id;
             }
 
