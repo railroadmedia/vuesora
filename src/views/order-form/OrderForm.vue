@@ -469,6 +469,11 @@ export default {
             type: Array,
             default: () => [],
         },
+
+        currentUser: {
+            type: Object,
+            default: () => null,
+        },
     },
     data() {
         return {
@@ -519,9 +524,18 @@ export default {
         canAcceptPaymentPlans() {
             return this.cartData.payment_plan_options.length > 0 && !this.cartContainsSubscription;
         },
+
+        isSignedIn() {
+            return this.currentUser != null;
+        },
     },
 
     beforeMount() {
+        if (!this.isSignedIn) {
+            this.newAddress = true;
+            this.newPayment = true;
+        }
+
         // Get Primary Payment Method
         if (this.paymentMethods) {
             const firstPayment = this.paymentMethods.data[0];
@@ -801,6 +815,7 @@ export default {
             }
 
             if (this.paymentStateFactory.methodType === 'credit_card' && (!this.selectedPaymentMethod || this.newPayment)) {
+                console.log(this.stripeToken);
                 payload.card_token = this.stripeToken.id;
             }
 
@@ -892,6 +907,7 @@ export default {
             right:0;
         }
     }
+    
     .loading-overlay {
         content: '';
         position:fixed;
