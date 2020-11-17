@@ -1,13 +1,13 @@
 <template>
     <div class="cart-item-container">
         <div class="image-container">
-            <img :src="item.thumbnail_url" class="item-thumbnail">
+            <a :href="this.item.sales_page_url"><img :src="item.thumbnail_url" class="item-thumbnail"></a>
             <div class="item-logo" v-if="item.logo">
                 <img :src="item.logo">
             </div>
         </div>
         <div class="csb-details">
-            <div class="csb-title">{{ item.name }}</div>
+            <div class="csb-title"><a :href="this.item.sales_page_url">{{ item.name }}</a></div>
             <div class="middle-container">
                 <div class="csb-quantity" v-if="!item.is_digital && item.quantity">
                     <div class="csb-quantity-label">Qty:</div>
@@ -125,8 +125,10 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        .csb-title {
+        .csb-title a {
+            color: #333;
             font-weight: 700;
+            text-decoration: none;
         }
         .item-remove a {
             color: #8B929A;
@@ -199,12 +201,18 @@ export default {
         position: relative;
         width: 80px;
         height: 80px;
-        .item-thumbnail {
-            object-fit: cover;
-            object-position: center;
-            border-radius: 5px;
-            max-width: 100%;
-            height: auto;
+        a {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            text-decoration: none;
+            .item-thumbnail {
+                object-fit: cover;
+                object-position: center;
+                border-radius: 5px;
+                max-width: 100%;
+                height: auto;
+            }
         }
         .item-logo {
             position: absolute;
