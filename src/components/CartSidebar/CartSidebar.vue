@@ -28,6 +28,15 @@
                             @removeCartItem="removeCartItem"
                             @updateCartItemQuantity="updateCartItemQuantity"
                         ></cart-item>
+
+                        <cart-item
+                            v-for="item in bonusItems"
+                            v-if="bonusItems"
+                            :key="item.sku"
+                            :item="item"
+                            :loading="loading"
+                            :is-bonus="true"
+                        ></cart-item>
                     </div>
                 </div>
                 <div class="border-bottom"></div>
@@ -93,6 +102,7 @@ export default {
         return {
             active: false,
             cartItems: null,
+            bonusItems: null,
             cartTotals: null,
             recommendedProducts: null,
             discounts: [],
@@ -102,6 +112,8 @@ export default {
     },
     mounted() {
         let cartData = JSON.parse(this.cartData);
+
+        // console.log('cart data: %s', JSON.stringify(cartData));
 
         this.updateCartData(cartData);
 
@@ -132,6 +144,7 @@ export default {
             this.recommendedProducts = cartData.meta.cart.recommendedProducts;
             this.cartTotals = cartData.meta.cart.totals;
             this.discounts = cartData.meta.cart.discounts;
+            this.bonusItems = cartData.meta.cart.bonuses ? cartData.meta.cart.bonuses : [];
 
             setTimeout(() => {
                 this.simpleBar.recalculate();

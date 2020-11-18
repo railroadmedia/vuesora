@@ -9,7 +9,7 @@
         <div class="csb-details">
             <div class="csb-title"><a :href="this.item.sales_page_url">{{ item.name }}</a></div>
             <div class="middle-container">
-                <div class="csb-quantity" v-if="!item.is_digital && item.quantity">
+                <div class="csb-quantity" v-if="!item.is_digital && !isBonus && item.quantity">
                     <div class="csb-quantity-label">Qty:</div>
                     <div class="csb-quantity-control">
                         <div class="csb-quantity-dec" @click.stop.prevent="decQuantity"><i class="fal fa-minus"></i></div>
@@ -22,7 +22,7 @@
                     <product-price :item="item" :brand="brand"></product-price>
                 </div>
             </div>
-            <div class="item-remove"><a href="#" @click.stop.prevent="remove">Remove</a></div>
+            <div class="item-remove" v-if="!isBonus"><a href="#" @click.stop.prevent="remove">Remove</a></div>
         </div>
     </div>
 </template>
@@ -38,6 +38,10 @@ export default {
             default: () => 'drumeo',
         },
         loading: {
+            type: Boolean,
+            default: () => false,
+        },
+        isBonus: {
             type: Boolean,
             default: () => false,
         },
