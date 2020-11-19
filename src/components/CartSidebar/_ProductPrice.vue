@@ -1,7 +1,7 @@
 <template>
     <div class="csb-product-price">
-        <span class="csb-original-price" v-if="$_originalPrice">${{ $_originalPrice }}</span>
-        <span>${{ item.price_after_discounts }}</span>
+        <span class="csb-original-price" v-if="$_originalPrice">${{ parsePrice($_originalPrice) }}</span>
+        <span>${{ parsePrice(item.price_after_discounts) }}</span>
         <span v-if="$_isFree">-</span>
         <span class="csb-free-bonus" :class="brand" v-if="$_isFree">FREE BONUS</span>
         <span v-if="$_recurringPeriod">/ {{ $_recurringPeriod }}</span>
@@ -48,6 +48,10 @@ export default {
                 this.item.subscription_interval_count.toString() : '';
 
             return productIntervalCount + productInterval;
+        },
+
+        parsePrice(price) {
+            return (price || 0).toFixed(2);
         },
     }
 };

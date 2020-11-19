@@ -7,7 +7,7 @@
         <div class="recommended-product-cta">
             <a :href="$_ctaUrl" @click.stop="cta($event)" :class="brand" class="csb-price">
                 <div v-if="!item.cta" class="atc-label">
-                    <span>Add To Cart:</span>
+                    <span>Add To Cart:&nbsp;</span>
                     <product-price :item="item" :brand="brand"></product-price>
                 </div>
                 <div v-if="item.cta" class="cta-label">{{ item.cta }}</div>

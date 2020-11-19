@@ -12,8 +12,10 @@
                 ><i class="fal fa-times fa-2x"></i></a>
             </div>
             <div class="csb-guarantee">
-                <i class="fas fa-check-circle" :class="brand"></i>
-                <span>All of our drum lessons are backed by a 90-day guarantee.</span>
+                <div>
+                    <i class="fas fa-check-circle" :class="brand"></i>
+                    <span>All of our drum lessons are backed by a 90-day guarantee.</span>
+                </div>
             </div>
             <div id="csb-products-container" v-show="cartItems">
                 <div class="border-top"></div>
@@ -42,34 +44,40 @@
                 <div class="border-bottom"></div>
             </div>
             <div class="summary-container">
-                <div class="summary-row">
-                    <div class="summary">Subtotal</div>
-                    <div class="due">
-                        <span v-if="cartTotals">${{ parseTotal(cartTotals.due - cartTotals.tax + sumOfDiscounts() - cartTotals.shipping) }}</span>
+                <div class="summary-container-inner">
+                    <div class="summary-row">
+                        <div class="summary">Subtotal</div>
+                        <div class="due">
+                            <span v-if="cartTotals">${{ parseTotal(cartTotals.due - cartTotals.tax + sumOfDiscounts() - cartTotals.shipping) }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="summary-row">
-                    <div class="summary">Shipping</div>
-                    <div class="deferred">Calculated at checkout</div>
-                </div>
-                <div class="summary-row">
-                    <div class="summary">Tax</div>
-                    <div class="deferred">Calculated at checkout</div>
+                    <div class="summary-row">
+                        <div class="summary">Shipping</div>
+                        <div class="deferred">Calculated at checkout</div>
+                    </div>
+                    <div class="summary-row">
+                        <div class="summary">Tax</div>
+                        <div class="deferred">Calculated at checkout</div>
+                    </div>
                 </div>
             </div>
             <div class="checkout">
                 <a href="/order" :class="brand"><i class="fas fa-lock"></i>checkout</a>
             </div>
-            <div class="recommended-title">customers also liked</div>
+            <div class="recommended-title">
+                <div>customers also liked</div>
+            </div>
             <div class="recommended-products" v-if="cartItems">
-                <recommended-product
-                    v-for="item in recommendedProducts"
-                    :key="item.sku"
-                    :item="item"
-                    :brand="brand"
-                    :loading="loading"
-                    @addToCart="addRecommendedProductToCart"
-                ></recommended-product>
+                <div class="recommended-products-wrapper">
+                    <recommended-product
+                        v-for="item in recommendedProducts"
+                        :key="item.sku"
+                        :item="item"
+                        :brand="brand"
+                        :loading="loading"
+                        @addToCart="addRecommendedProductToCart"
+                    ></recommended-product>
+                </div>
             </div>
         </section>
     </div>
@@ -113,8 +121,6 @@ export default {
     mounted() {
         let cartData = JSON.parse(this.cartData);
 
-        // console.log('cart data: %s', JSON.stringify(cartData));
-
         this.updateCartData(cartData);
 
         this.$root.$on('openCartSidebar', this.openCartSidebar);
@@ -147,7 +153,9 @@ export default {
             this.bonusItems = cartData.meta.cart.bonuses ? cartData.meta.cart.bonuses : [];
 
             setTimeout(() => {
+                // console.log('before recalculate');
                 this.simpleBar.recalculate();
+                // console.log('after recalculate');
                 this.simpleBar.getScrollElement().scroll({
                     top: 0,
                     behavior: 'smooth'
@@ -336,8 +344,6 @@ export default {
     height:100vh;
     overflow: auto;
     padding: 20px 5px 20px 20px;
-    display: flex;
-    flex-direction: column;
     background: #FCFCFC;
     @include xSmallOnly {
         width: 95%;
@@ -365,41 +371,45 @@ export default {
     .csb-guarantee {
         padding-bottom: 18px;
         padding-right: 14px;
-        line-height: 1;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        i {
-            margin-right: 3px;
-            &.drumeo {
-                color: #0b76db;
+        div {
+            line-height: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            i {
+                margin-right: 3px;
+                &.drumeo {
+                    color: #0b76db;
+                }
+                &.pianote {
+                    color: #ff383f;
+                }
             }
-            &.pianote {
-                color: #ff383f;
+            span {
+                padding-left: 3px;
+                color: #8B929A;
+                font-size: 12px;
             }
-        }
-        span {
-            padding-left: 3px;
-            color: #8B929A;
-            font-size: 12px;
         }
     }
     .summary-container {
         padding: 18px 15px 18px 0;
-        .summary-row {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            .summary {
-                font-size: 14px;
-            }
-            .due {
-                font-weight: 700;
-                font-size: 14px;
-            }
-            .deferred {
-                font-size: 14px;
-                font-style: italic;
+        .summary-container-inner {
+            .summary-row {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .summary {
+                    font-size: 14px;
+                }
+                .due {
+                    font-weight: 700;
+                    font-size: 14px;
+                }
+                .deferred {
+                    font-size: 14px;
+                    font-style: italic;
+                }
             }
         }
     }
@@ -440,21 +450,25 @@ export default {
     .recommended-title {
         padding-top: 15px;
         padding-right: 15px;
-        text-transform: uppercase;
-        font-size: 14px;
-        color: #8B929A;
+        div {
+            text-transform: uppercase;
+            font-size: 14px;
+            color: #8B929A;
+        }
     }
     .recommended-products {
-        display: flex;
-        flex-direction: row;
         padding-top: 10px;
-        padding-bottom: 20px;
+        margin-bottom: 40px;
+        .recommended-products-wrapper {
+            display: flex;
+            flex-direction: row;
+        }
     }
 }
 #csb-products-container {
     overflow: hidden;
     position: relative;
-    min-height: 200px;
+    height: 300px;
 
     .border-top {
         border-top: 1px solid #CCD3D3;
@@ -462,7 +476,7 @@ export default {
     }
 
     .csb-products-inner {
-        max-height: 100%;
+        height: 300px;
         padding-right: 15px;
 
         .csb-products-wrapper {

@@ -13,7 +13,14 @@
                     <div class="csb-quantity-label">Qty:</div>
                     <div class="csb-quantity-control">
                         <div class="csb-quantity-dec" @click.stop.prevent="decQuantity"><i class="fal fa-minus"></i></div>
-                        <div class="csb-quantity-input"><input type="text" v-model="$_quantity" :disabled="loading"></div>
+                        <div class="csb-quantity-input">
+                            <input
+                                type="text"
+                                v-model="$_quantity"
+                                :disabled="loading"
+                                @change="restoreEmptyQuantityValue"
+                            >
+                        </div>
                         <div class="csb-quantity-inc" @click.stop.prevent="incQuantity"><i class="fal fa-plus"></i></div>
                     </div>
                 </div>
@@ -53,6 +60,7 @@ export default {
         return {
             quantity: 0,
             quantityTimeout: null,
+            quantityValueRejected: false,
         };
     },
     mounted() {
@@ -73,8 +81,17 @@ export default {
                 return this.quantity;
             },
             set(value) {
-                this.quantity = value;
-                this.updateQuantity();
+                value = parseInt(value);
+                if (isNaN(value)) {
+                    this.quantityValueRejected = true;
+                } else {
+                    this.quantityValueRejected = false;
+                    let queUpdate = this.quantity != value;
+                    this.quantity = value;
+                    if (queUpdate) {
+                        this.updateQuantity();
+                    }
+                }
             },
         },
     },
@@ -108,6 +125,13 @@ export default {
         decQuantity() {
             if (!this.loading && this.$_quantity > 0) {
                 this.$_quantity = this.$_quantity - 1;
+            }
+        },
+
+        restoreEmptyQuantityValue() {
+            if (this.quantityValueRejected) {
+                this.quantityValueRejected = false;
+                this.$forceUpdate();
             }
         },
     },
