@@ -120,6 +120,19 @@ svg[data-v-83ec86c0]:not(:root) {
     overflow: visible;
 }
 
+.payment-type {
+  cursor: pointer;
+  -webkit-transition: 0.1s linear opacity;
+  transition: 0.1s linear opacity;
+}
+.payment-types.payment-selected .payment-type,
+.payment-types:hover .payment-type {
+  opacity: 0.3;
+}
+.payment-types.payment-selected .payment-type.type-selected,
+.payment-types:hover .payment-type:hover {
+  opacity: 1;
+}
 .cc-icon {
   font-size: 55px;
   line-height: 50px;

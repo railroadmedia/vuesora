@@ -29,33 +29,21 @@
                 </div>
 
                 <div class="flex flex-column xs-12 sm-6 mb-1 credit-card-row">
-                    <div class="flex flex-row">
-                        <div class="pl-2">
+                    <div 
+                        class="flex flex-row payment-types"
+                        :class="{ 'payment-selected': paymentSelected }"
+                    >
+                        <div 
+                            v-for="(type,i) in paymentTypes"
+                            :key="i"
+                            class="ml-2 payment-type"
+                            :class="{ 'type-selected': type.selected }"
+                            @click="selectPaymentType(i)"
+                        >
                             <svg-icon 
-                                icon-name="visa" 
+                                :icon-name="type.name" 
                                 width="78px"
                             ></svg-icon>
-                        </div>
-                        <div class="pl-2">
-                            <svg-icon 
-                                icon-name="mastercard" 
-                                width="78px"
-                            ></svg-icon>
-                        </div>
-                        <div class="pl-2">
-                            <svg-icon 
-                                icon-name="discover" 
-                                width="78px"
-                            ></svg-icon>
-                        </div>
-                        <div class="pl-2">
-                            <svg-icon 
-                                icon-name="american-express" 
-                                width="78px"
-                            ></svg-icon>
-                        </div>
-                        <div class="pl-2">
-                            <svg-icon icon-name="paypal" width="78px"></svg-icon>
                         </div>
                     </div>
                 </div>
@@ -330,8 +318,6 @@
                             </div>
                         </div>
                     </div>
-                  
-
                     <div class="flex flex-row flex-wrap align-h-right align-v-center">
                         <div class="flex flex-column xs-6 sm-4 mb-2 pr-1">
                             <button
@@ -343,7 +329,6 @@
                                 </span>
                             </button>
                         </div>
-
                         <div class="flex flex-column xs-6 sm-4 mb-2 pl-1">
                             <button
                                 class="btn"
@@ -445,6 +430,7 @@ export default {
             cardNumberElement: null,
             cardExpiryElement: null,
             cardCvcElement: null,
+            paymentSelected: false,
             errors: {
                 methodType: [],
                 billingCountry: [],
@@ -453,6 +439,13 @@ export default {
                 cardExpiry: [],
                 cardCvc: [],
             },
+            paymentTypes: [
+                { name: 'visa', type: 'credit_card', selected: false },
+                { name: 'mastercard', type: 'credit_card', selected: false },
+                { name: 'discover', type: 'credit_card', selected: false },
+                { name: 'american-express', type: 'credit_card', selected: false },
+                { name: 'paypal', type: 'paypal', selected: false },
+            ],
             rules: {
                 methodType: [
                     v => !!v || 'Payment Method Type is required',
@@ -562,6 +555,15 @@ export default {
             }, 200);
         },
 
+        selectPaymentType(i) {
+            this.paymentSelected = true;
+            this.paymentTypes.forEach((type) => {
+                type.selected = false;
+            });
+            this.paymentTypes[i].selected = true;
+            this.$_paymentMethod = this.paymentTypes[i].type;
+        },
+
         initStripeElements() {
             this.stripe = Stripe(this.stripePublishableKey);
 
@@ -619,6 +621,18 @@ export default {
 };
 </script>
 <style lang="scss">
+    .payment-type {
+      cursor: pointer; 
+      transition: .1s linear opacity; 
+    }
+    .payment-types.payment-selected .payment-type,
+    .payment-types:hover .payment-type {
+        opacity: .3;
+    }
+    .payment-types.payment-selected .payment-type.type-selected,
+    .payment-types:hover .payment-type:hover {
+        opacity: 1;
+    }
     .cc-icon {
         font-size: 55px;
         line-height: 50px;

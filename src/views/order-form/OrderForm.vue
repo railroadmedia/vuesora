@@ -36,98 +36,16 @@
                     </h3>
                 </div>
 
-                <!-- Select a payment method -->
-                <template v-if="shippingAddresses.data.length > 0">
-                    <div class="flex flex-row flex-wrap">
-                        <!-- Create New Default -->
-                        <div class="flex flex-col sm-6 xs-12">
-                            <label
-                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer"
-                                :class="{ selected: newAddress }"
-                                style="border: 1px solid #ddd;"
-                            >
-                                <div class="flex flex-column xs-1 align-center align-v-center">
-                                    <input  
-                                        id="address-0"
-                                        type="radio"
-                                        name="shippingAddressOption"
-                                        :checked="newAddress"
-                                        @change.stop="newAddress=true; selectedAddress=null"
-                                    >
-                                </div>
-                                <div class="flex flex-column xs-11 align-left align-v-center text-left">
-                                    <p class="tiny">
-                                        <span class="font-bold">
-                                            Create a new shipping address.
-                                        </span>
-                                    </p>
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- Use An Existing -->
-                        <div
-                            v-for="(thisShippingAddress, index) in shippingAddresses.data"
-                            :key="index"
-                            class="flex flex-col sm-6 xs-12"
-                        >
-                            <label
-                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer"
-                                :class="{selected: isSelectedAddress(thisShippingAddress)}"
-                                :for="`address-${index + 1}`"
-                                style="border: 1px solid #ddd;"
-                            >
-                                <div class="flex flex-column xs-1 align-center align-v-center">
-                                    <input
-                                        :id="`address-${index + 1}`"
-                                        type="radio"
-                                        name="shippingAddressOption"
-                                        :value="shippingAddress.id"
-                                        :checked="isSelectedAddress(thisShippingAddress)"
-                                        @change.stop="newAddress=false; selectAddress(thisShippingAddress)"
-                                    >
-                                </div>
-
-                                <div
-                                    class="flex flex-column xs-7 align-left text-left pr-1"
-                                    style="border-right: 1px solid #ddd;"
-                                >
-                                    <p class="tiny">
-                                        <span class="font-bold">
-                                            {{ thisShippingAddress.attributes.first_name }}
-                                            {{ thisShippingAddress.attributes.last_name }}
-                                        </span>
-                                    </p>
-                                    <p class="tiny">
-                                        {{ thisShippingAddress.attributes.street_line_1 }}<span
-                                            v-if="thisShippingAddress.attributes.street_line_2.length > 0"
-                                        >, {{ thisShippingAddress.attributes.street_line_2 }}
-                                        </span>
-                                    </p>
-                                    <p class="tiny">
-                                        {{ thisShippingAddress.attributes.zip.toUpperCase() }}
-                                    </p>
-                                </div>
-
-                                <div
-                                    class="flex flex-column xs-4 align-left text-left pl-2"
-                                >
-                                    <p class="tiny">
-                                        <span class="font-bold">
-                                            {{ thisShippingAddress.attributes.city }}
-                                        </span>
-                                    </p>
-                                    <p class="tiny">
-                                        {{ thisShippingAddress.attributes.region }}
-                                    </p>
-                                    <p class="tiny">
-                                        {{ thisShippingAddress.attributes.country }}
-                                    </p>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </template>
+                <!-- Select an Address -->
+                <shipping-address-cards
+                    :shipping-addresses="shippingAddresses"
+                    :shipping-address="shippingAddress"
+                    :new-address="newAddress"
+                    :selected-address="selectedAddress"
+                    @selectedAddressUpdated="updateSelectedAddress($event)"
+                    @selectAddressEvent="selectAddress($event)"
+                    @newAddressEvent="addNewAddress()"
+                />
 
                 <!-- Shipping Component -->
                 <template v-if="newAddress || shippingAddresses.data.length === 0">
@@ -153,14 +71,12 @@
             <!-- Plan Section -->
             <section v-if="canAcceptPaymentPlans">
                 <!-- Section Heading -->
-                <div
-                    class="flex flex-row mb-1 pt-2"
-                    style="border-top: 1px solid #ddd;"
-                >
+                <div class="flex flex-row mb-1 pt-2 section-border">
                     <h3 class="title uppercase font-bold">
                         Payment Plan
                     </h3>
                 </div>
+
                 <!-- Plan Component -->
                 <order-form-payment-plan
                     ref="paymentForm"
@@ -177,110 +93,21 @@
                 class="mb-3"
             >
                 <!-- Section Heading -->
-                <div
-                    class="flex flex-row mb-1 pt-2"
-                    style="border-top: 1px solid #ddd;"
-                >
+                <div class="flex flex-row mb-1 pt-2 section-border">
                     <h3 class="title uppercase font-bold">
                         Payment Details
                     </h3>
                 </div>
 
                 <!-- Select a payment method -->
-                <template v-if="paymentMethods.data.length > 0">
-                    <div class="flex flex-row flex-wrap">
-                        <!-- Create New Default -->
-                        <div class="flex flex-col sm-6 xs-12">
-                            <label
-                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer"
-                                :class="{ selected: newPayment }"
-                                style="border: 1px solid #ddd;"
-                            >
-                                <div class="flex flex-column xs-1 align-center align-v-center">
-                                    <input 
-                                        id="paymentMethod-0"
-                                        type="radio" 
-                                        name="paymentMethods"
-                                        :checked="newPayment"
-                                        @change.stop="newPayment=true; selectedPaymentMethod=null;"
-                                    >
-                                </div>
-                                <div class="flex flex-column xs-11 align-left align-v-center text-left">
-                                    <p class="tiny">
-                                        <span class="font-bold">
-                                            Create a new payment method.
-                                        </span>
-                                    </p>
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- Use An Existing -->
-                        <div
-                            v-for="(paymentMethod, index) in paymentMethods.data"
-                            :key="index"
-                            class="flex flex-col sm-6 xs-12"
-                        >
-                            <label
-                                class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer"
-                                :class="{selected: isSelectedPayment(paymentMethod)}"
-                                style="border: 1px solid #ddd;"
-                                :for="`paymentMethod-${index + 1}`"
-                            >
-                                <div class="flex flex-column xs-1 align-center align-v-center">
-                                    <input 
-                                        :id="`paymentMethod-${index + 1}`"
-                                        type="radio" 
-                                        name="paymentMethods"
-                                        :checked="isSelectedPayment(paymentMethod)"
-                                        @change.stop="newPayment=false; selectPayment(paymentMethod)"
-                                    >
-                                </div>
-
-                                <div class="flex flex-column xs-2 align-center text-center">
-                                    <p>
-                                        <svg-icon :icon-name="getPaymentMethodIcon(paymentMethod)"></svg-icon>
-                                    </p>
-                                </div>
-
-                                <div
-                                    v-if="paymentMethod.relationships.method.data.type === 'creditCard'"
-                                    class="flex flex-column xs-9 align-v-center ml-2"
-                                >
-                                    <p class="tiny">
-                                        <span class="font-bold">
-                                            {{ getRelatedAttributesByTypeAndId(paymentMethod.relationships.method.data).attributes.company_name || 'N/A' }}
-                                            {{ getPaymentMethodType(paymentMethod) }}
-                                        </span>
-                                    </p>
-                                    <p class="tiny">
-                                        Last Four: <span class="font-bold">{{
-                                            getRelatedAttributesByTypeAndId(paymentMethod.relationships.method.data).attributes.last_four_digits || 'N/A'
-                                        }}</span>
-                                    </p>
-                                    <p class="tiny">
-                                        Expires: <span class="font-bold">{{ getExpirationDate(paymentMethod) }}</span>
-                                    </p>
-                                </div>
-
-                                <div
-                                    v-if="paymentMethod.relationships.method.data.type === 'paypalBillingAgreement'"
-                                    class="flex flex-column xs-9 align-v-center ml-2"
-                                >
-                                    <p class="tiny">
-                                        <span class="font-bold">{{ getPaymentMethodType(paymentMethod) }}</span>
-                                    </p>
-
-                                    <p class="tiny">
-                                        Billing Agreement ID: <span class="font-bold">{{
-                                            getRelatedAttributesByTypeAndId(paymentMethod.relationships.method.data).attributes.external_id || 'N/A'
-                                        }}</span>
-                                    </p>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </template>
+                <payment-method-cards
+                    :payment-methods="paymentMethods"
+                    :new-payment="newPayment"
+                    :selected-payment-method="selectedPaymentMethod"
+                    @selectedPaymentUpdated="updateSelectedPayment($event)"
+                    @selectPaymentEvent="selectPayment($event)"
+                    @newPaymentEvent="addNewPayment()"
+                />
 
                 <!-- Order Component -->
                 <template v-if="newPayment || paymentMethods.data.length === 0">
@@ -371,7 +198,6 @@
 
 <script>
 import axios from 'axios';
-import { DateTime } from 'luxon';
 import EcommerceService from '../../assets/js/services/ecommerce';
 import OrderFormAccount from './_OrderFormAccount.vue';
 import OrderFormCart from './_OrderFormCart.vue';
@@ -383,7 +209,8 @@ import ThemeClasses from '../../mixins/ThemeClasses';
 import Toasts from '../../assets/js/classes/toasts';
 import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation.vue';
 import PaymentSVG from '../../components/SVGSprites/_PaymentSVG.vue';
-import SVGIcon from '../../components/SVGIcon/_SVGIcon.vue';
+import ShippingAddressCards from './_ShippingAddressCards.vue';
+import PaymentMethodCards from './_PaymentMethodCards.vue';
 
 export default {
     name: 'OrderForm',
@@ -396,7 +223,8 @@ export default {
         'loading-animation': LoadingAnimation,
         'order-form-totals': OrderFormTotals,
         'payment-svg': PaymentSVG,
-        'svg-icon': SVGIcon,
+        'shipping-address-cards': ShippingAddressCards,
+        'payment-method-cards': PaymentMethodCards,
     },
     mixins: [ThemeClasses],
     props: {
@@ -499,6 +327,7 @@ export default {
             updateTimeout: null,
         };
     },
+
     computed: {
         cartContainsSubscription() {
             return this.cartData.items.filter(item => !!item.subscription_interval_type).length > 0;
@@ -530,122 +359,35 @@ export default {
             this.newAddress = true;
             this.newPayment = true;
         }
-
-        // Get Primary Payment Method
-        if (this.paymentMethods) {
-            const firstPayment = this.paymentMethods.data[0];
-            this.paymentMethods.data.some((method) => {
-                if (this.isPrimaryPaymentMethod(method)) {
-                    this.selectedPaymentMethod = method;
-                    return true;
-                } 
-            });
-            if (!this.isPrimaryPaymentMethod(this.selectedPaymentMethod)) {
-                this.selectedPaymentMethod = firstPayment;
-            }
-        }
-
-        // Get Last Address
-        if (this.shippingAddresses) {
-            const firstAddress = this.shippingAddresses.data[0];
-            // check if last address was stored
-            if (localStorage.getItem('lastAddressId') !== null) {
-                this.shippingAddresses.data.some((address) => { 
-                    if (address.id === localStorage.getItem('lastAddressId')) {
-                        this.selectedAddress = address;
-                        return true;
-                    }
-                });
-            } else {
-                this.selectedAddress = firstAddress;
-            }
-        }
     },
 
     methods: {
-        isPrimaryPaymentMethod(paymentMethod) {
-            if (paymentMethod) {
-                return this.getRelatedAttributesByTypeAndId(
-                    paymentMethod.relationships.userPaymentMethod.data,
-                ).attributes.is_primary;
-            }
-            return false;
+        updateSelectedPayment(method) {
+            this.selectedPaymentMethod = method;
         },
 
-        selectAddress(address) {
+        updateSelectedAddress(address) {
             this.selectedAddress = address;
         },
 
-        isSelectedAddress(address) {
-            if (!this.newAddress) {
-                if (this.selectedAddress === address) {
-                    return true;
-                }
-            }
+        selectAddress(address) {
+            this.newAddress = false;
+            this.selectedAddress = address;
         },
 
-        selectPayment(paymentMethod) {
-            this.selectedPaymentMethod = paymentMethod;
+        addNewAddress() {
+            this.newAddress = true; 
+            this.selectedAddress = null;
         },
 
-        isSelectedPayment(paymentMethod) {
-            if (!this.newPayment && this.selectedPaymentMethod) {
-                if (this.selectedPaymentMethod.id === paymentMethod.id) {
-                    return true;
-                }
-            }
-
-            return false;
+        selectPayment(payment) {
+            this.newPayment = false;
+            this.selectedPaymentMethod = payment;
         },
 
-        getExpirationDate(paymentMethod) {
-            const date = this.getRelatedAttributesByTypeAndId(
-                paymentMethod.relationships.method.data,
-            ).attributes.expiration_date;
-            if (date) {
-                return DateTime.fromSQL(date).toFormat('MM/yy');
-            }
-            return 'N/A';
-        },
-
-        getRelatedAttributesByTypeAndId({ id, type }) {
-            const data = this.paymentMethods.included.find(data => data.id === id && data.type === type);
-            return data || { id: 'N/A', attributes: {} };
-        },
-
-        getPaymentMethodType(paymentMethod) {
-            let type;
-            if (paymentMethod.relationships.method.data.type === 'creditCard') {
-                type = 'Credit Card';
-            } else if (paymentMethod.relationships.method.data.type === 'paypalBillingAgreement') {
-                type = 'PayPal Account';
-            } else {
-                type = 'N/A';
-            }
-            return type;
-        },
-
-        getPaymentMethodIcon(paymentMethod) {
-            const method = this.getRelatedAttributesByTypeAndId(paymentMethod.relationships.method.data);
-
-            if (paymentMethod.relationships.method.data.type === 'creditCard') {
-                switch (method.attributes.company_name.toLowerCase()) {
-                case 'visa':
-                    return 'visa';
-                case 'mastercard':
-                    return 'mastercard';
-                case 'discover':
-                    return 'discover';
-                case 'american express':
-                    return 'american-express';
-                default:
-                    return '';
-                }
-            } else if (paymentMethod.relationships.method.data.type === 'paypalBillingAgreement') {
-                return 'paypal';
-            }
-
-            return '';
+        addNewPayment() {
+            this.newPayment = true; 
+            this.selectedPaymentMethod = null;
         },
 
         updateCart(payload) {
@@ -676,7 +418,7 @@ export default {
             clearTimeout(this.updateTimeout);
 
             this.updateTimeout = setTimeout(() => {
-                if (this.cartRequiresShippingAddress) { 
+                if (this.cartRequiresShippingAddress && this.newAddress) { 
                     this.$refs.shippingForm.validateForm();
                     if (!this.$refs.shippingForm.formValid) {
                         return;
@@ -860,10 +602,8 @@ export default {
 
 <style lang="scss">
     @import '../../assets/sass/partials/variables';
-    .selected {
-        background-color: #efefef;
-        box-shadow: 2px 5px 10px rgba(100,100,100,.5);
-        transition: .25s linear all;
+    .section-border {
+        border-top: 1px solid #ddd;
     }
 
     .cursor-pointer { cursor: pointer; }
@@ -874,12 +614,6 @@ export default {
     }
 
     .flex-end { justify-content: flex-end; }
-
-    .card-wrapper {
-        flex-wrap: wrap;
-        margin-right: -30px;
-        margin-bottom: 30px;
-    }
 
     .form-loading {
         position:fixed;
