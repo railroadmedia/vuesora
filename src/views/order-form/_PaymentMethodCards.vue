@@ -33,7 +33,7 @@
                 class="flex flex-col sm-6 xs-12"
             >
                 <label
-                    class="flex mb-1 mh-1 pb-1 pt-1 corners-10 cursor-pointer border-gray"
+                    class="flex mb-1 mh-1 corners-10 cursor-pointer border-gray"
                     :class="{ 'card-selected': isSelectedPayment(paymentMethod)}"
                     :for="`paymentMethod-${index + 1}`"
                 >
@@ -47,15 +47,18 @@
                         >
                     </div>
 
-                    <div class="flex flex-column xs-2 align-center text-center">
+                    <div class="flex flex-column align-left pr-1">
                         <p>
-                            <svg-icon :icon-name="getPaymentMethodIcon(paymentMethod)"></svg-icon>
+                            <svg-icon 
+                                :icon-name="getPaymentMethodIcon(paymentMethod)"
+                                width="78px"
+                            />
                         </p>
                     </div>
 
                     <div
                         v-if="paymentMethod.relationships.method.data.type === 'creditCard'"
-                        class="flex flex-column xs-9 align-v-center ml-2"
+                        class="flex flex-column xs-8 align-v-center"
                     >
                         <p class="tiny">
                             <span class="font-bold">
@@ -75,7 +78,7 @@
 
                     <div
                         v-if="paymentMethod.relationships.method.data.type === 'paypalBillingAgreement'"
-                        class="flex flex-column xs-9 align-v-center ml-2"
+                        class="flex flex-column xs-8 align-v-center ml-2"
                     >
                         <p class="tiny">
                             <span class="font-bold">{{ getPaymentMethodType(paymentMethod) }}</span>
