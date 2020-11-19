@@ -104,23 +104,23 @@ export default {
         notificationTypeString() {
             switch (this.notificationType) {
             case 'comment-reply':
-                return 'replied to your comment on:';
+                return 'replied to your lesson comment on:';
             case 'comment-like':
                 if (this.userName == '1') {
-                    return 'person liked your comment on:';
+                    return 'person liked your lesson comment on:';
                 } 
-                return ' liked your comment on:';
+                return ' liked your lesson comment on:';
                         
             case 'forum-reply':
-                return 'replied to your post in:';
+                return 'replied to your forum post in:';
             case 'forum-like':
                 if (this.userName == '1') {
-                    return 'person liked your post in:';
+                    return 'person liked your forum post in:';
                 } 
-                return ' liked your post in:';
+                return ' liked your forum post in:';
                         
             case 'thread-reply':
-                return 'replied to a thread you follow:';
+                return 'posted in a forum thread you follow:';
             }
         },
     },
