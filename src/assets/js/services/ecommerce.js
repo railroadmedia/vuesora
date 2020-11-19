@@ -30,6 +30,17 @@ export default {
     },
 
     /**
+     * Request to add cart items
+     *
+     * @param {Object} payload
+     *
+     * @returns {Promise}
+     */
+    addCartItems(payload) {
+        return axios.put('/ecommerce/json/add-to-cart', payload);
+    },
+
+    /**
      * Updates the cart item quantity
      *
      * @param {String} productSku
