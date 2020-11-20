@@ -91,7 +91,7 @@ export default {
         display: flex;
         align-items: center;
         text-align: center;
-        padding: 0 15px;
+        padding: 0 10px;
         a {
             text-decoration: none;
             color: #0A0A0A;
@@ -104,12 +104,7 @@ export default {
         a {
             font-size: 10px;
             text-decoration: underline;
-            .drumeo {
-                color: #0b76db;
-            }
-            .pianote {
-                color: #ff383f;
-            }
+            color: #0b76db;
             .csb-product-price {
                 text-decoration: underline;
             }

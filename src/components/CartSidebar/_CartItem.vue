@@ -216,6 +216,7 @@ export default {
                             align-items: center;
                             text-align: center;
                             color: #8B929A;
+                            box-shadow: none;
                         }
                     }
                 }
