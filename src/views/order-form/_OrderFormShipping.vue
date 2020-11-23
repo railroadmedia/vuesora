@@ -459,13 +459,13 @@ export default {
 
         $_state: {
             get() {
-                return this.shippingData.state;
+                return this.shippingData.region;
             },
             set(value) {
                 this.validateInput('state', value);
 
                 this.$emit('updateShippingData', {
-                    key: 'state',
+                    key: 'region',
                     value,
                 });
             },

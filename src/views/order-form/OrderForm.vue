@@ -434,7 +434,7 @@ export default {
                     shippingCountry: this.shippingStateFactory.country,
                     shippingFirstName: this.shippingStateFactory.first_name,
                     shippingLastName: this.shippingStateFactory.last_name,
-                    shippingState: this.shippingStateFactory.state,
+                    shippingState: this.shippingStateFactory.region,
                     shippingZip: this.shippingStateFactory.zip_or_postal_code,
                     billingCountry: this.paymentStateFactory.billingCountry,
                     billingState: this.paymentStateFactory.billingRegion,
