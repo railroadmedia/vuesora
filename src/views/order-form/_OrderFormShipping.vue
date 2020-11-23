@@ -100,7 +100,8 @@
                             type="text"
                             name="address-line2"
                             class="order-form-input"
-                            :class="{ 'has-input': $_street_line_two != null }"
+                            :class="{ 'has-error': errors.street_line_two.length,
+                                      'has-input': $_street_line_two != null }"
                         >
 
                         <label
@@ -109,6 +110,15 @@
                         >
                             Address - Line 2
                         </label>
+                        <ul class="errors tiny">
+                            <li
+                                v-for="(error, i) in errors.street_line_two"
+                                :key="'streetLineTwoError' + i"
+                            >
+                                {{ error || null }}
+                            </li>
+                        </ul>
+
                     </div>
                 </div>
 
@@ -324,30 +334,41 @@ export default {
             rules: {
                 first_name: [
                     v => !!v || 'First Name is required',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
                 ],
                 last_name: [
                     v => !!v || 'Last Name is required',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
                 ],
                 street_line_one: [
                     v => !!v || 'Address is required',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                ],
+                street_line_two: [
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
                 ],
                 state: [
                     v => !!v || 'State/Province is required',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
                 ],
                 city: [
                     v => !!v || 'City is required',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
                 ],
                 country: [
                     v => !!v || 'Country is required',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
                 ],
                 zip_or_postal_code: [
                     v => !!v || 'Zip or Postal Code is required',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
                 ],
             },
             errors: {
                 first_name: [],
                 last_name: [],
                 street_line_one: [],
+                street_line_two: [],
                 state: [],
                 city: [],
                 country: [],
@@ -404,6 +425,8 @@ export default {
                 return this.shippingData.street_line_two;
             },
             set(value) {
+                this.validateInput('street_line_two', value);
+
                 this.$emit('updateShippingData', {
                     key: 'street_line_two',
                     value,
