@@ -29,7 +29,16 @@
                 <span class="font-bold">{{ linkedContent.title }}</span>
             </p>
 
-            <p class="tiny text-grey-3 uppercase font-italic">
+            <p
+                v-html="subContent"
+                class="tiny text-black mt-1"
+            >
+            </p>
+
+            <p
+                class="tiny text-grey-3 font-italic mt-1"
+                style="font-size: 8pt;"
+            >
                 {{ createdOn }}
             </p>
         </div>
@@ -56,6 +65,10 @@ export default {
     name: 'NotificatonsTableRow',
     props: {
         createdOn: {
+            type: String,
+            default: () => '',
+        },
+        subContent: {
             type: String,
             default: () => '',
         },
@@ -91,23 +104,23 @@ export default {
         notificationTypeString() {
             switch (this.notificationType) {
             case 'comment-reply':
-                return 'replied to your comment on:';
+                return 'replied to your lesson comment on:';
             case 'comment-like':
                 if (this.userName == '1') {
-                    return 'person liked your comment on:';
+                    return 'person liked your lesson comment on:';
                 } 
-                return 'people liked your comment on:';
+                return ' liked your lesson comment on:';
                         
             case 'forum-reply':
-                return 'replied to your post in:';
+                return 'replied to your forum post in:';
             case 'forum-like':
                 if (this.userName == '1') {
-                    return 'person liked your post in:';
+                    return 'person liked your forum post in:';
                 } 
-                return 'people liked your post in:';
+                return ' liked your forum post in:';
                         
             case 'thread-reply':
-                return 'replied to a thread you follow:';
+                return 'posted in a forum thread you follow:';
             }
         },
     },
