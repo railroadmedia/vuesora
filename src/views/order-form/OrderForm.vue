@@ -240,7 +240,9 @@ export default {
 
         paymentMethods: {
             type: Object,
-            default: () => null,
+            default: () => {
+                return {data: []}
+            },
         },
 
         shippingAddress: {
