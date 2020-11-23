@@ -23,7 +23,7 @@
                                name="billing-email"
                                class="order-form-input"
                                :class="{ 'has-error': errors.accountEmail.length,
-                               'has-input': $_accountEmail != null }"
+                                         'has-input': $_accountEmail != null }"
                                v-model.lazy="$_accountEmail">
 
                         <label for="billingEmail"
@@ -104,7 +104,10 @@
                                 name="account-creation-password"
                                 class="order-form-input"
                                 :class="{ 'has-error': errors.accountPassword.length,
-                                          'has-input': $_accountPassword != null }"
+                                          'has-input': $_accountPassword != null, 
+                                          'soft-error': password_focussed }"
+                                @focus="password_focussed = true"
+                                @blur="password_focussed = false"
                             >
                             <label
                                 for="newAccountPassword"
@@ -205,6 +208,7 @@ export default {
     },
     data() {
         return {
+            password_focussed: false,
             rules: {
                 accountEmail: [
                     v => !!v || 'Email is required.',
@@ -270,3 +274,13 @@ export default {
     },
 };
 </script>
+<style lang="scss"> 
+    input[type='password'].has-error.soft-error,
+    input[type='password'].has-error.soft-error ~ .errors {
+        border-color: #0B76DB;
+    }
+    input[type='password'].has-error.soft-error ~ label.drumeo,
+    input[type='password'].has-error.soft-error ~ .errors {
+        color: #0B76DB !important;
+    }
+</style>
