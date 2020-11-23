@@ -357,8 +357,11 @@ export default {
     },
 
     beforeMount() {
-        if (!this.isSignedIn) {
+        if (!this.isSignedIn || !this.shippingAddresses || this.shippingAddresses.data.length === 0) {
             this.newAddress = true;
+        }
+
+        if (!this.isSignedIn || !this.paymentMethods || this.paymentMethods.data.length === 0) {
             this.newPayment = true;
         }
     },
@@ -548,7 +551,7 @@ export default {
                     payload.shipping_address_line_2 = this.shippingStateFactory.street_line_two;
                     payload.shipping_zip_or_postal_code = this.shippingStateFactory.zip_or_postal_code;
                     payload.shipping_city = this.shippingStateFactory.city;
-                    payload.shipping_region = this.shippingStateFactory.state;
+                    payload.shipping_region = this.shippingStateFactory.region;
                     payload.shipping_country = this.shippingStateFactory.country;
                 }        
             }
