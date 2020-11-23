@@ -9,6 +9,7 @@
                             v-model.lazy="$_first_name"
                             type="text"
                             name="first-name"
+                            autocomplete="shipping given-name"
                             class="order-form-input"
                             :class="{ 'has-error': errors.first_name.length,
                                       'has-input': $_first_name != null }"
@@ -39,6 +40,7 @@
                             v-model.lazy="$_last_name"
                             type="text"
                             name="last-name"
+                            autocomplete="shipping family-name"
                             class="order-form-input"
                             :class="{ 'has-error': errors.last_name.length,
                                       'has-input': $_last_name != null }"
@@ -69,6 +71,7 @@
                             v-model.lazy="$_street_line_one"
                             type="text"
                             name="address-line1"
+                            autocomplete="shipping address-line1"
                             class="order-form-input"
                             :class="{ 'has-error': errors.street_line_one.length,
                                       'has-input': $_street_line_one != null }"
@@ -99,6 +102,7 @@
                             v-model.lazy="$_street_line_two"
                             type="text"
                             name="address-line2"
+                            autocomplete="shipping address-line2"
                             class="order-form-input"
                             :class="{ 'has-error': errors.street_line_two.length,
                                       'has-input': $_street_line_two != null }"
@@ -127,6 +131,7 @@
                         <select
                             id="shippingCountry"
                             v-model.lazy="$_country"
+                            autocomplete="shipping country"
                             class="order-form-input"
                             :class="{ 'has-error': errors.country.length,
                                       'has-input': $_country != null }"
@@ -166,6 +171,7 @@
                         <select
                             id="shippingState"
                             v-model.lazy="$_state"
+                            autocomplete="shipping address-level1"
                             class="order-form-input"
                             :class="{ 'has-error': errors.country.length,
                                       'has-input': $_state != null }"
@@ -207,6 +213,7 @@
                             v-model.lazy="$_state"
                             type="text"
                             name="state"
+                            autocomplete="shipping address-level1"
                             class="order-form-input"
                             :class="{ 'has-error': errors.state.length,
                                       'has-input': this.$_state != null }"
@@ -237,6 +244,7 @@
                             v-model.lazy="$_city"
                             type="text"
                             name="city"
+                            autocomplete="shipping address-level2"
                             class="order-form-input"
                             :class="{ 'has-error': errors.city.length,
                                       'has-input': $_city != null }"
@@ -267,6 +275,7 @@
                             v-model.lazy="$_zip_or_postal_code"
                             type="text"
                             name="zip"
+                            autocomplete="shipping postal-code"
                             class="order-form-input"
                             :class="{ 'has-error': errors.zip_or_postal_code.length,
                                       'has-input': $_zip_or_postal_code != null }"
