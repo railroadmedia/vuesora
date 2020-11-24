@@ -1,0 +1,105 @@
+body.sidebar {
+  @include small {
+    margin-left: 320px;
+  }
+
+  @include xLarge {
+    .container:not(.fluid) {
+      margin: 0 50px;
+    }
+  }
+}
+
+#sidebar {
+  display: none;
+  position: fixed;
+  top: 65px;
+  height: calc(100% - 65px);
+  left: 0;
+  width: 320px;
+  z-index: 99;
+  background: #FCFCFC;
+  padding-top: 10px;
+  padding-left: 35px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.13), 0 0 15px rgba(0,0,0,0.11), 0 0 20px rgba(0,0,0,0.10);
+  clip-path: inset(0px -20px 0px 0px);
+
+  @include small {
+    display: block;
+  }
+
+  .member-section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+    .member-avatar {
+      max-width: 60px;
+      min-width: 60px;
+      position: relative;
+
+      img {
+        border: 2px solid #0B76DB;
+
+        &:hover {
+          border: 3px solid #0B76DB;
+        }
+      }
+    }
+
+    .member-details {
+      padding-left: 20px;
+
+      h5 {
+        font-size: 18px;
+      }
+
+      .member-stats {
+        font-size: 14px;
+
+        .member-stats-xp {
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+
+  .user-links-section {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .sidebar-link {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #181B1B;
+
+    .sidebar-link-icon {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 22px;
+      line-height: 1em;
+      width: 50px;
+    }
+
+    .sidebar-link-title {
+      vertical-align: middle;
+      font-size: 14px;
+      line-height: 1em;
+    }
+
+    &:hover,
+    &.active {
+      color: #0B76DB;
+
+      .sidebar-link-title {
+        font-weight: 550;
+      }
+    }
+  }
+
+  .edge-links-section h5 {
+    padding-top: 30px;
+    padding-bottom: 10px;
+    font-size: 18px;
+  }
+}

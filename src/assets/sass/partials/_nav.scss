@@ -38,6 +38,12 @@ body {
   width:100%;
   padding:0;
 
+  @include medium {
+    .nav-inner {
+      padding: 0 20px;
+    }
+  }
+
   @include large {
     height:65px;
   }
@@ -161,6 +167,10 @@ body {
   .nav-page-links {
     transition:all .1s;
     max-width:100%;
+
+    @include large {
+      padding: 0 100px;
+    }
 
     &.inactive {
       //flex:0 0 0;
