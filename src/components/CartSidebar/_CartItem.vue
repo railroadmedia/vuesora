@@ -228,12 +228,14 @@ export default {
     }
     .image-container {
         position: relative;
-        width: 80px;
-        height: 80px;
-        a {
-            display: inline-block;
+        width: 70px;
+        height: 70px;
+        @include medium {
             width: 80px;
             height: 80px;
+        }
+        a {
+            display: inline-block;
             text-decoration: none;
             .item-thumbnail {
                 object-fit: cover;
