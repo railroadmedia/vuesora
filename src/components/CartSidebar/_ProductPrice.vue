@@ -62,6 +62,7 @@ export default {
     display: inline-block;
     .csb-original-price {
         text-decoration: line-through;
+        opacity: 0.4;
     }
     .csb-free-bonus {
         &.drumeo {
