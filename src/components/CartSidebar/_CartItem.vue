@@ -1,0 +1,258 @@
+<template>
+    <div class="cart-item-container">
+        <div class="image-container">
+            <a :href="this.item.sales_page_url"><img :src="item.thumbnail_url" class="item-thumbnail"></a>
+            <div class="item-logo" v-if="item.logo">
+                <img :src="item.logo">
+            </div>
+        </div>
+        <div class="csb-details">
+            <div class="csb-title"><a :href="this.item.sales_page_url">{{ item.name }}</a></div>
+            <div class="middle-container">
+                <div class="csb-quantity" v-if="!item.is_digital && !isBonus && item.quantity">
+                    <div class="csb-quantity-label">Qty:</div>
+                    <div class="csb-quantity-control">
+                        <div class="csb-quantity-dec" @click.stop.prevent="decQuantity"><i class="fal fa-minus"></i></div>
+                        <div class="csb-quantity-input">
+                            <input
+                                type="text"
+                                v-model="$_quantity"
+                                :disabled="loading"
+                                @change="restoreEmptyQuantityValue"
+                            >
+                        </div>
+                        <div class="csb-quantity-inc" @click.stop.prevent="incQuantity"><i class="fal fa-plus"></i></div>
+                    </div>
+                </div>
+                <div class="csb-size" v-if="item.size">Size: {{ item.size }}</div>
+                <div>
+                    <product-price :item="item" :brand="brand"></product-price>
+                </div>
+            </div>
+            <div class="item-remove" v-if="!isBonus"><a href="#" @click.stop.prevent="remove">Remove</a></div>
+        </div>
+    </div>
+</template>
+
+<script>
+import ProductPrice from './_ProductPrice.vue';
+
+export default {
+    props: {
+        item: Object,
+        brand: {
+            type: String,
+            default: () => 'drumeo',
+        },
+        loading: {
+            type: Boolean,
+            default: () => false,
+        },
+        isBonus: {
+            type: Boolean,
+            default: () => false,
+        },
+    },
+    components: {
+        'product-price': ProductPrice,
+    },
+    data() {
+        return {
+            quantity: 0,
+            quantityTimeout: null,
+            quantityValueRejected: false,
+        };
+    },
+    mounted() {
+        if (this.item && this.item.quantity) {
+            this.quantity = this.item.quantity;
+        }
+    },
+    watch: {
+        item() {
+            if (this.item && this.item.quantity) {
+                this.quantity = this.item.quantity;
+            }
+        }
+    },
+    computed: {
+        $_quantity: {
+            get() {
+                return this.quantity;
+            },
+            set(value) {
+                value = parseInt(value);
+                if (isNaN(value)) {
+                    this.quantityValueRejected = true;
+                } else {
+                    this.quantityValueRejected = false;
+                    let queUpdate = this.quantity != value;
+                    this.quantity = value;
+                    if (queUpdate) {
+                        this.updateQuantity();
+                    }
+                }
+            },
+        },
+    },
+    methods: {
+        remove() {
+            if (!this.loading) {
+                this.$emit('removeCartItem', this.item);
+            }
+        },
+
+        updateQuantity() {
+            clearTimeout(this.quantityTimeout);
+
+            this.quantityTimeout = setTimeout(() => {
+                this.$emit(
+                    'updateCartItemQuantity',
+                    {
+                        cartItem: this.item,
+                        quantity: this.quantity,
+                    }
+                );
+            }, 500);
+        },
+
+        incQuantity() {
+            if (!this.loading) {
+                this.$_quantity = this.$_quantity + 1;
+            }
+        },
+
+        decQuantity() {
+            if (!this.loading && this.$_quantity > 0) {
+                this.$_quantity = this.$_quantity - 1;
+            }
+        },
+
+        restoreEmptyQuantityValue() {
+            if (this.quantityValueRejected) {
+                this.quantityValueRejected = false;
+                this.$forceUpdate();
+            }
+        },
+    },
+}
+</script>
+
+<style lang="scss">
+.cart-item-container {
+    display: flex;
+    flex-direction: row;
+    font-size: 13px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    ~ .cart-item-container {
+        border-top: 1px solid #CCD3D3;
+    }
+    .csb-details {
+        padding-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .csb-title a {
+            color: #333;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .item-remove a {
+            color: #8B929A;
+            text-decoration: underline;
+        }
+        .middle-container {
+            display: flex;
+            flex-direction: row;
+            .csb-quantity {
+                display: flex;
+                flex-direction: row;
+                padding-right: 15px;
+                .csb-quantity-control {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    padding-left: 5px;
+                    .csb-quantity-dec {
+                        width: 20px;
+                        height: 20px;
+                        color: #8B929A;
+                        border-radius: 3px 0 0 3px;
+                        border: 1px solid #CCD3D3;
+                        border-right: none;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                    }
+                    .csb-quantity-inc {
+                        width: 20px;
+                        height: 20px;
+                        color: #8B929A;
+                        border-radius: 0 3px 3px 0;
+                        border: 1px solid #CCD3D3;
+                        border-left: none;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                    }
+                    .csb-quantity-input {
+                        width: 20px;
+                        height: 20px;
+                        border: 1px solid #CCD3D3;
+                        input {
+                            max-width: 100%;
+                            max-height: 100%;
+                            font-size: 13px;
+                            padding: 0;
+                            border: none;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                            text-align: center;
+                            color: #8B929A;
+                            box-shadow: none;
+                        }
+                    }
+                }
+            }
+            .csb-size {
+                padding-right: 15px;
+            }
+        }
+    }
+    .image-container {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        a {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            text-decoration: none;
+            .item-thumbnail {
+                object-fit: cover;
+                object-position: center;
+                border-radius: 5px;
+                max-width: 100%;
+                height: auto;
+            }
+        }
+        .item-logo {
+            position: absolute;
+            bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+</style>
