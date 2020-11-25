@@ -14,7 +14,7 @@
             <div class="csb-guarantee">
                 <div>
                     <i class="fas fa-check-circle" :class="brand"></i>
-                    <span>All of our drum lessons are backed by a 90-day guarantee.</span>
+                    <span>All of our lessons are backed by a 90-day guarantee.</span>
                 </div>
             </div>
             <div id="csb-products-container" v-show="cartItems">
