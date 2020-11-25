@@ -1,6 +1,6 @@
 <template>
     <section v-if="paymentMethods.data.length > 0">
-        <div class="flex flex-row flex-wrap">
+        <div class="flex flex-row flex-wrap nmh-1">
             <!-- Create New Default -->
             <div class="flex flex-col sm-6 xs-12">
                 <label

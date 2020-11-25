@@ -113,7 +113,7 @@
                 <template v-if="newPayment || paymentMethods.data.length === 0">
                     <p
                         v-if="paymentMethods.data.length > 0"
-                        class="body font-bold uppercase mb-2 pt-3"
+                        class="body font-bold uppercase mb-1 pt-3"
                     >
                         create a new payment method
                     </p>

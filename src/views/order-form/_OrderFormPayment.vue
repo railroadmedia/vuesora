@@ -2,9 +2,9 @@
     <div class="flex flex-column mb-2">
         <payment-svg></payment-svg>
 
-        <div class="flex flex-column bg-white corners-5 pt-1 ph-2">
+        <div class="flex flex-column bg-white corners-5 pt-1 nmh-1">
             <div class="flex flex-row flex-wrap align-v-center">
-                <div class="flex flex-column xs-12 sm-6 ph-1 mb-1">
+                <div class="flex flex-column xs-12 sm-6 ph-1 pr-2 mb-1">
                     <div class="form-group">
                         <select
                             id="paymentMethodType"
@@ -36,7 +36,7 @@
                         <div 
                             v-for="(type,i) in paymentTypes"
                             :key="i"
-                            class="ml-2 payment-type"
+                            class="mr-2 payment-type"
                             :class="{ 'type-selected': type.selected }"
                             @click="selectPaymentType(i)"
                         >
