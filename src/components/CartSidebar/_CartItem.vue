@@ -139,6 +139,7 @@ export default {
 </script>
 
 <style lang="scss">
+    @import '../../assets/sass/partials/_variables.scss';
 .cart-item-container {
     display: flex;
     flex-direction: row;
