@@ -47,13 +47,11 @@
                         >
                     </div>
 
-                    <div class="flex flex-column align-left pr-1">
-                        <p>
-                            <svg-icon 
-                                :icon-name="getPaymentMethodIcon(paymentMethod)"
-                                width="78px"
-                            />
-                        </p>
+                    <div class="pr-2">   
+                        <svg-icon 
+                            :icon-name="getPaymentMethodIcon(paymentMethod)"
+                            width="78px"
+                        />
                     </div>
 
                     <div
@@ -78,7 +76,7 @@
 
                     <div
                         v-if="paymentMethod.relationships.method.data.type === 'paypalBillingAgreement'"
-                        class="flex flex-column xs-8 align-v-center ml-2"
+                        class="flex flex-column xs-8 align-v-center"
                     >
                         <p class="tiny">
                             <span class="font-bold">{{ getPaymentMethodType(paymentMethod) }}</span>

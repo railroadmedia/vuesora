@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 sm-6 mb-1 credit-card-row">
+                <div class="flex flex-column xs-12 sm-6 ph-1 pr-2 mb-1">
                     <div 
                         class="flex flex-row payment-types"
                         :class="{ 'payment-selected': paymentSelected }"
@@ -36,7 +36,7 @@
                         <div 
                             v-for="(type,i) in paymentTypes"
                             :key="i"
-                            class="mr-2 payment-type"
+                            class="mr-1 payment-type"
                             :class="{ 'type-selected': type.selected }"
                             @click="selectPaymentType(i)"
                         >
@@ -636,8 +636,5 @@ export default {
     .cc-icon {
         font-size: 55px;
         line-height: 50px;
-    }
-    .credit-card-row {
-        max-width: none;
     }
 </style>
