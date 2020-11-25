@@ -369,30 +369,36 @@ export default {
     methods: {
         updateSelectedPayment(method) {
             this.selectedPaymentMethod = method;
+            this.updateAddressesInSession();
         },
 
         updateSelectedAddress(address) {
             this.selectedAddress = address;
+            this.updateAddressesInSession();
         },
 
         selectAddress(address) {
             this.newAddress = false;
             this.selectedAddress = address;
+            this.updateAddressesInSession();
         },
 
         addNewAddress() {
             this.newAddress = true; 
             this.selectedAddress = null;
+            this.updateAddressesInSession();
         },
 
         selectPayment(payment) {
             this.newPayment = false;
             this.selectedPaymentMethod = payment;
+            this.updateAddressesInSession();
         },
 
         addNewPayment() {
             this.newPayment = true; 
             this.selectedPaymentMethod = null;
+            this.updateAddressesInSession();
         },
 
         updateCart(payload) {
@@ -429,8 +435,8 @@ export default {
                         return;
                     }
                 }
-                
-                EcommerceService.updateAddressesInSession({
+
+                const payload = {
                     shippingAddressLine1: this.shippingStateFactory.street_line_one,
                     shippingAddressLine2: this.shippingStateFactory.street_line_two,
                     shippingCity: this.shippingStateFactory.city,
@@ -442,7 +448,16 @@ export default {
                     billingCountry: this.paymentStateFactory.billingCountry,
                     billingState: this.paymentStateFactory.billingRegion,
                     billingEmail: this.accountStateFactory.billingEmail,
-                })
+                };
+
+                if (this.selectedPaymentMethod && !this.newPayment) {
+                    payload.paymentMethodId = this.selectedPaymentMethod.id;
+                }
+                if (this.selectedAddress && !this.newAddress) {
+                    payload.shippingAddressId = this.selectedAddress.id;
+                }
+
+                EcommerceService.updateAddressesInSession(payload)
                     .then((response) => {
                         if (response) {
                             this.updateCart(response.data);
