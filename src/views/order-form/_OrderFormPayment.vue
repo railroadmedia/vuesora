@@ -448,13 +448,13 @@ export default {
             ],
             rules: {
                 methodType: [
-                    v => !!v || 'Payment Method Type is required',
+                    v => !!v || 'Payment Method Type is required.',
                 ],
                 billingCountry: [
-                    v => !!v || 'Country is required',
+                    v => !!v || 'Country is required.',
                 ],
                 billingRegion: [
-                    v => !!v || 'State/Province is required',
+                    v => !!v || 'State/Province is required.',
                 ],
             },
             subscriptionCheck: false,

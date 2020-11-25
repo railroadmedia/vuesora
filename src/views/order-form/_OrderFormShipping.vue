@@ -334,34 +334,34 @@ export default {
             rules: {
                 first_name: [
                     v => !!v || 'First Name is required',
-                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters.',
                 ],
                 last_name: [
                     v => !!v || 'Last Name is required',
-                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters.',
                 ],
                 street_line_one: [
                     v => !!v || 'Address is required',
-                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters.',
                 ],
                 street_line_two: [
-                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters.',
                 ],
                 state: [
                     v => !!v || 'State/Province is required',
-                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters.',
                 ],
                 city: [
                     v => !!v || 'City is required',
-                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters.',
                 ],
                 country: [
                     v => !!v || 'Country is required',
-                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters.',
                 ],
                 zip_or_postal_code: [
                     v => !!v || 'Zip or Postal Code is required',
-                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters',
+                    v => /[\x00-\x7F]+/.test(v) || 'Must use English characters.',
                 ],
             },
             errors: {
