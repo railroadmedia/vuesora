@@ -1,11 +1,27 @@
 body.sidebar {
-  @include small {
+  @include medium {
     margin-left: 320px;
   }
 
   @include xLarge {
     .container:not(.fluid) {
       margin: 0 50px;
+    }
+  }
+}
+
+#nav {
+  .nav-inner {
+    max-width: 100%;
+
+    @include medium {
+      padding: 0 20px;
+    }
+
+    .nav-page-links {
+      @include large {
+        padding: 0 100px;
+      }
     }
   }
 }
@@ -24,7 +40,7 @@ body.sidebar {
   box-shadow: 0 0 10px rgba(0,0,0,0.13), 0 0 15px rgba(0,0,0,0.11), 0 0 20px rgba(0,0,0,0.10);
   clip-path: inset(0px -20px 0px 0px);
 
-  @include small {
+  @include medium {
     display: block;
   }
 
@@ -38,10 +54,19 @@ body.sidebar {
       position: relative;
 
       img {
-        border: 2px solid #0B76DB;
+        &.drumeo {
+          border: 2px solid $drumeoBlue;
 
-        &:hover {
-          border: 3px solid #0B76DB;
+          &:hover {
+            border: 3px solid $drumeoBlue;
+          }
+        }
+        &.pianote {
+          border: 2px solid $pianoteRed;
+
+          &:hover {
+            border: 3px solid $pianoteRed;
+          }
         }
       }
     }
@@ -89,7 +114,18 @@ body.sidebar {
 
     &:hover,
     &.active {
-      color: #0B76DB;
+      &.drumeo {
+        color: $drumeoBlue;
+      }
+      &.drumeo svg {
+        fill: $drumeoBlue;
+      }
+      &.pianote {
+        color: $pianoteRed;
+      }
+      &.pianote svg {
+        fill: $pianoteRed;
+      }
 
       .sidebar-link-title {
         font-weight: 550;
@@ -97,9 +133,13 @@ body.sidebar {
     }
   }
 
-  .edge-links-section h5 {
-    padding-top: 30px;
-    padding-bottom: 10px;
-    font-size: 18px;
+  .membership-links-section {
+    padding-top: 10px;
+
+    h5 {
+      margin-top: 20px;
+      padding-bottom: 10px;
+      font-size: 18px;
+    }
   }
 }
