@@ -77,17 +77,26 @@ export default {
             type: Array,
             default: () => [],
         },
+
+        cartData: {
+            type: Object,
+            default: () => {},
+        },
+    },
+
+    data() {
+        return {
+            totalDiscounted: 0,
+        }
     },
 
     computed: {
         sumOfDiscounts() {
-            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+            this.cartData.items.forEach((item) => {
+                this.totalDiscounted += (item.price_before_discounts - item.price_after_discounts);
+            });
 
-            if (this.discounts.length) {
-                return this.discounts.reduce(reducer);
-            }
-
-            return 0;
+            return this.totalDiscounted;
         },
 
         totalSubtotal() {
