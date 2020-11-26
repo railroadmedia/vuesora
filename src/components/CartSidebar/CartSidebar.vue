@@ -47,8 +47,20 @@
                 <div class="summary-container-inner">
                     <div class="summary-row">
                         <div class="summary">Subtotal</div>
-                        <div class="due">
-                            <span v-if="cartTotals">${{ parseTotal(cartTotals.due - cartTotals.tax + sumOfDiscounts() - cartTotals.shipping) }}</span>
+                        <div v-if="subTotalBeforeDiscounts() !== subTotalAfterDiscounts()" class="due">
+                            <span v-if="cartTotals">
+                                <s style="font-weight: normal; color: #666;">${{ parseTotal(subTotalBeforeDiscounts()) }}</s>
+                                <span>&nbsp;&nbsp; ${{ parseTotal(subTotalAfterDiscounts()) }}</span>
+                            </span>
+                        </div>
+                        <div v-if="subTotalBeforeDiscounts() === subTotalAfterDiscounts()" class="due">
+                            <span v-if="cartTotals">${{ parseTotal(subTotalAfterDiscounts()) }}</span>
+                        </div>
+                    </div>
+                    <div v-if="sumOfDiscounts() > 0" class="summary-row">
+                        <div class="summary">My Savings</div>
+                        <div class="savings">
+                            <span v-if="cartTotals">-${{ parseTotal(sumOfDiscounts()) }}</span>
                         </div>
                     </div>
                     <div class="summary-row">
@@ -272,13 +284,43 @@ export default {
         },
 
         sumOfDiscounts() {
-            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+            return this.subTotalBeforeDiscounts() - this.subTotalAfterDiscounts();
+        },
 
-            if (this.discounts.length) {
-                return this.discounts.reduce(reducer);
+        subTotalBeforeDiscounts() {
+            let subTotalBeforeDiscounts = 0;
+
+            if (this.cartItems) {
+                this.cartItems.forEach((item) => {
+                    subTotalBeforeDiscounts += item.price_before_discounts;
+                });
             }
 
-            return 0;
+            if (this.bonusItems) {
+                this.bonusItems.forEach((item) => {
+                    subTotalBeforeDiscounts += item.price_before_discounts;
+                });
+            }
+
+            return subTotalBeforeDiscounts;
+        },
+
+        subTotalAfterDiscounts() {
+            let subTotalAfterDiscounts = 0;
+
+            if (this.cartItems) {
+                this.cartItems.forEach((item) => {
+                    subTotalAfterDiscounts += item.price_after_discounts;
+                });
+            }
+
+            if (this.bonusItems) {
+                this.bonusItems.forEach((item) => {
+                    subTotalAfterDiscounts += item.price_after_discounts;
+                });
+            }
+
+            return subTotalAfterDiscounts;
         },
 
         handleError() {
@@ -407,6 +449,10 @@ export default {
                 }
                 .due {
                     font-weight: 700;
+                    font-size: 14px;
+                }
+                .savings {
+                    color: #F71B26;
                     font-size: 14px;
                 }
                 .deferred {
