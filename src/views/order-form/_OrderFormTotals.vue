@@ -92,6 +92,8 @@ export default {
 
     computed: {
         sumOfDiscounts() {
+            this.totalDiscounted = 0;
+            
             this.cartData.items.forEach((item) => {
                 this.totalDiscounted += (item.price_before_discounts - item.price_after_discounts);
             });
