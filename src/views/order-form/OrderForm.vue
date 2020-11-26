@@ -235,7 +235,9 @@ export default {
 
         shippingAddresses: {
             type: Object,
-            default: () => null,
+            default: () => {
+                return {data: []}
+            },
         },
 
         paymentMethods: {
@@ -427,12 +429,6 @@ export default {
             clearTimeout(this.updateTimeout);
 
             this.updateTimeout = setTimeout(() => {
-                if (this.cartRequiresShippingAddress && this.newAddress) { 
-                    this.$refs.shippingForm.validateForm();
-                    if (!this.$refs.shippingForm.formValid) {
-                        return;
-                    }
-                }
 
                 const payload = {
                     shippingAddressLine1: this.shippingStateFactory.street_line_one,
