@@ -123,15 +123,32 @@ export default {
         // Get Primary Payment Method
         if (this.paymentMethods) {
             const firstPayment = this.paymentMethods.data[0];
-            this.paymentMethods.data.some((method) => {
-                if (this.isPrimaryPaymentMethod(method)) {
-                    this.updateSelectedPaymentMethod(method);
+
+            if (localStorage.getItem('lastPaymentMethodId') !== null) {
+
+                if (localStorage.getItem('lastPaymentMethodId') === 'new') {
+                    this.emitNewPayment();
                     return true;
-                } 
-            });
-            if (!this.isPrimaryPaymentMethod(this.selectedPaymentMethod)) {
-                this.updateSelectedPaymentMethod(firstPayment);
+                }
+
+                this.paymentMethods.data.some((method) => {
+                    if (method.id === localStorage.getItem('lastPaymentMethodId')) {
+                        this.updateSelectedPaymentMethod(method);
+                        return true;
+                    }
+                });
+            } else {
+                this.paymentMethods.data.some((method) => {
+                    if (this.isPrimaryPaymentMethod(method)) {
+                        this.updateSelectedPaymentMethod(method);
+                        return true;
+                    }
+                });
+                if (!this.isPrimaryPaymentMethod(this.selectedPaymentMethod)) {
+                    this.updateSelectedPaymentMethod(firstPayment);
+                }
             }
+
         }
     },
 

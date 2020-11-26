@@ -369,12 +369,10 @@ export default {
     methods: {
         updateSelectedPayment(method) {
             this.selectedPaymentMethod = method;
-            this.updateAddressesInSession();
         },
 
         updateSelectedAddress(address) {
             this.selectedAddress = address;
-            this.updateAddressesInSession();
         },
 
         selectAddress(address) {
@@ -452,9 +450,16 @@ export default {
 
                 if (this.selectedPaymentMethod && !this.newPayment) {
                     payload.paymentMethodId = this.selectedPaymentMethod.id;
+                    localStorage.setItem('lastPaymentMethodId', this.selectedPaymentMethod.id);
+                } else {
+                    localStorage.setItem('lastPaymentMethodId', 'new');
                 }
+
                 if (this.selectedAddress && !this.newAddress) {
                     payload.shippingAddressId = this.selectedAddress.id;
+                    localStorage.setItem('lastAddressId', this.selectedAddress.id);
+                } else {
+                    localStorage.setItem('lastAddressId', 'new');
                 }
 
                 EcommerceService.updateAddressesInSession(payload)

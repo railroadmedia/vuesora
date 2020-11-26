@@ -113,8 +113,15 @@ export default {
         // Get Last Address
         if (this.shippingAddresses) {
             const firstAddress = this.shippingAddresses.data[0];
+
             // check if last address was stored
             if (localStorage.getItem('lastAddressId') !== null) {
+
+                if (localStorage.getItem('lastAddressId') === 'new') {
+                    this.emitNewAddress();
+                    return true;
+                }
+
                 this.shippingAddresses.data.some((address) => { 
                     if (address.id === localStorage.getItem('lastAddressId')) {
                         this.updateSelectedAddress(address);
