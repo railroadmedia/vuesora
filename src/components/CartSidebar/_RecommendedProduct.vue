@@ -5,7 +5,7 @@
         </div>
         <div class="recommended-product-title"><a :href="this.item.sales_page_url">{{ item.name }}</a></div>
         <div class="recommended-product-cta">
-            <a :href="$_ctaUrl" @click.stop="cta($event)" :class="brand" class="csb-price">
+            <a :href="this.item.sales_page_url" @click.stop="cta($event)" :class="brand" class="csb-price">
                 <div v-if="!item.cta" class="atc-label">
                     <span>Add To Cart:&nbsp;</span>
                     <product-price :item="item" :brand="brand"></product-price>
@@ -38,7 +38,7 @@ export default {
         $_ctaUrl: {
             get() {
                 return this.item.add_directly_to_cart ?
-                    '' : this.item.product_page_url;
+                    '' : this.item.sales_page_url;
             },
         },
     },
