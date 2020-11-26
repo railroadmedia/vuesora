@@ -229,6 +229,24 @@ $borderDirections: (
   }
 }
 
+.block {
+  position:relative;
+  height:0;
+  padding-bottom:177.25%;
+
+  & > iframe, & > img {
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+  }
+
+  & > img {
+    object-fit: cover;
+  }
+}
+
 .box-4-by-3 {
   position:relative;
   height:0!important;
