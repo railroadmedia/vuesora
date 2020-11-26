@@ -173,7 +173,7 @@
                             v-model.lazy="$_state"
                             autocomplete="shipping address-level1"
                             class="order-form-input"
-                            :class="{ 'has-error': errors.country.length,
+                            :class="{ 'has-error': errors.state.length,
                                       'has-input': $_state != null }"
                         >
                             <option
@@ -470,15 +470,16 @@ export default {
             set(value) {
                 this.validateInput('country', value);
 
+                if ((this.shippingData.country === 'Canada' && value !== 'Canada') ||
+                    (this.shippingData.country !== 'Canada' && value === 'Canada')) {
+                    this.$_state = null;
+                    this.errors.state = [];
+                }
+
                 this.$emit('updateShippingData', {
                     key: 'country',
                     value,
                 });
-
-                if (value !== 'Canada') {
-                    this.$_state = null;
-                    this.errors.state = [];
-                }
             },
         },
 
