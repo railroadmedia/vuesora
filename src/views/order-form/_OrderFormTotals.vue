@@ -96,6 +96,12 @@ export default {
                 this.totalDiscounted += (item.price_before_discounts - item.price_after_discounts);
             });
 
+            if (this.cartData.bonuses) {
+                this.cartData.bonuses.forEach((item) => {
+                    this.totalDiscounted += (item.price_before_discounts - item.price_after_discounts);
+                });
+            }
+
             return this.totalDiscounted;
         },
 
