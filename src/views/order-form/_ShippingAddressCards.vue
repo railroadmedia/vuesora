@@ -116,7 +116,6 @@ export default {
 
             // check if last address was stored
             if (localStorage.getItem('lastAddressId') !== null) {
-
                 if (localStorage.getItem('lastAddressId') === 'new') {
                     this.emitNewAddress();
                     return true;

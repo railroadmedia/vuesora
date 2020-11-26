@@ -61,14 +61,12 @@
                             class="stripe-element-container order-form-input"
                         >
                         </div>
-
                         <label
                             for="card-number"
                             :class="brand"
                         >
                             Card Number
                         </label>
-
                         <ul class="errors tiny">
                             <li
                                 v-for="(error, i) in errors.cardNumber"
@@ -89,14 +87,12 @@
                                     class="stripe-element-container order-form-input"
                                 >
                                 </div>
-
                                 <label
                                     for="card-number"
                                     :class="brand"
                                 >
                                     Expiry (MM / YY)
                                 </label>
-
                                 <ul class="errors tiny">
                                     <li
                                         v-for="(error, i) in errors.cardExpiry"
@@ -115,14 +111,12 @@
                                     class="stripe-element-container order-form-input"
                                 >
                                 </div>
-
                                 <label
                                     for="card-number"
                                     :class="brand"
                                 >
                                     CVC
                                 </label>
-
                                 <ul class="errors tiny">
                                     <li
                                         v-for="(error, i) in errors.cardCvc"
@@ -139,7 +133,7 @@
 
             <div class="flex flex-row flex-wrap mb-2">
                 <div
-                    class="flex flex-column xs-12 ph-1 mb-2"
+                    class="flex flex-column xs-12 ph-1"
                     :class="$_billingCountry === 'Canada' ? 'sm-6' : ''"
                 >
                     <div class="form-group">
@@ -156,14 +150,12 @@
                                 {{ country }}
                             </option>
                         </select>
-
                         <label
                             for="billingCountry"
                             :class="brand"
                         >
                             Country
                         </label>
-
                         <ul class="errors tiny">
                             <li
                                 v-for="(error, i) in errors.billingCountry"
@@ -194,14 +186,12 @@
                                 {{ toCapitalCase(province) }}
                             </option>
                         </select>
-
                         <label
                             for="billingRegion"
                             :class="brand"
                         >
                             State/Province
                         </label>
-
                         <ul class="errors tiny">
                             <li
                                 v-for="(error, i) in errors.billingRegion"
@@ -558,6 +548,7 @@ export default {
         selectPaymentType(i) {
             this.paymentSelected = true;
             this.paymentTypes.forEach((type) => {
+                // clear all first
                 type.selected = false;
             });
             this.paymentTypes[i].selected = true;
@@ -636,5 +627,8 @@ export default {
     .cc-icon {
         font-size: 55px;
         line-height: 50px;
+    }
+    .stripe-element-container.StripeElement--invalid + label.drumeo{
+        color: #F71B26;
     }
 </style>

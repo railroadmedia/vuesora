@@ -125,7 +125,6 @@ export default {
             const firstPayment = this.paymentMethods.data[0];
 
             if (localStorage.getItem('lastPaymentMethodId') !== null) {
-
                 if (localStorage.getItem('lastPaymentMethodId') === 'new') {
                     this.emitNewPayment();
                     return true;
@@ -148,7 +147,6 @@ export default {
                     this.updateSelectedPaymentMethod(firstPayment);
                 }
             }
-
         }
     },
 

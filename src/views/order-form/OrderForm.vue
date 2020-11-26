@@ -504,6 +504,15 @@ export default {
                             .then(({ token, error }) => {
                                 if (error) {
                                     this.loading = false;
+
+                                    Toasts.push({
+                                        icon: 'sad',
+                                        themeColor: this.themeColor,
+                                        title: 'Payment Error',
+                                        message: error.message,
+                                        timeout: 7500,
+                                    });
+                                    
                                     window.scrollTo({ top: (this.$refs.paymentForm.$el.offsetTop - 100), behavior: 'smooth' });
                                     return;
                                 }
