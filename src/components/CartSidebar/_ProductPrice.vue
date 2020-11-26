@@ -3,7 +3,7 @@
         <span class="csb-original-price" v-if="$_originalPrice">${{ parsePrice($_originalPrice) }}</span>
         <span>${{ parsePrice(item.price_after_discounts) }}</span>
         <span v-if="$_isFree">-</span>
-        <span class="csb-free-bonus" :class="brand" v-if="$_isFree">FREE BONUS</span>
+        <span class="csb-free-bonus" :class="brand" v-if="$_isFree">FREE</span>
         <span v-if="$_recurringPeriod">/ {{ $_recurringPeriod }}</span>
     </div>
 </template>
