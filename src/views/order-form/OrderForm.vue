@@ -141,6 +141,7 @@
             <order-form-totals
                 :totals="cartData.totals"
                 :discounts="cartData.discounts"
+                :cartData="cartData"
             />
             <button
                 class="btn"
