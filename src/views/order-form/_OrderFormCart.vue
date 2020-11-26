@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column pv-2 mb-3">
+    <div class="flex flex-column pv-2 mb-1">
         <order-form-cart-item
             v-for="item in cartItems"
             :key="item.sku"

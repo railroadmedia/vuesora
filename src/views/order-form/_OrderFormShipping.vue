@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-column mb-3">
-        <div class="flex flex-column">
+    <div class="flex flex-column mb-1">
+        <div class="flex flex-column bg-white pt-2">
             <div class="flex flex-row flex-wrap pv-1 nmh-1">
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
@@ -9,6 +9,7 @@
                             v-model.lazy="$_first_name"
                             type="text"
                             name="first-name"
+                            autocomplete="shipping given-name"
                             class="order-form-input"
                             :class="{ 'has-error': errors.first_name.length,
                                       'has-input': $_first_name != null }"
@@ -39,6 +40,7 @@
                             v-model.lazy="$_last_name"
                             type="text"
                             name="last-name"
+                            autocomplete="shipping family-name"
                             class="order-form-input"
                             :class="{ 'has-error': errors.last_name.length,
                                       'has-input': $_last_name != null }"
@@ -69,6 +71,7 @@
                             v-model.lazy="$_street_line_one"
                             type="text"
                             name="address-line1"
+                            autocomplete="shipping address-line1"
                             class="order-form-input"
                             :class="{ 'has-error': errors.street_line_one.length,
                                       'has-input': $_street_line_one != null }"
@@ -99,7 +102,10 @@
                             v-model.lazy="$_street_line_two"
                             type="text"
                             name="address-line2"
+                            autocomplete="shipping address-line2"
                             class="order-form-input"
+                            :class="{ 'has-error': errors.street_line_two.length,
+                                      'has-input': $_street_line_two != null }"
                         >
 
                         <label
@@ -108,6 +114,15 @@
                         >
                             Address - Line 2
                         </label>
+                        <ul class="errors tiny">
+                            <li
+                                v-for="(error, i) in errors.street_line_two"
+                                :key="'streetLineTwoError' + i"
+                            >
+                                {{ error || null }}
+                            </li>
+                        </ul>
+
                     </div>
                 </div>
 
@@ -116,6 +131,7 @@
                         <select
                             id="shippingCountry"
                             v-model.lazy="$_country"
+                            autocomplete="shipping country"
                             class="order-form-input"
                             :class="{ 'has-error': errors.country.length,
                                       'has-input': $_country != null }"
@@ -155,8 +171,9 @@
                         <select
                             id="shippingState"
                             v-model.lazy="$_state"
+                            autocomplete="shipping address-level1"
                             class="order-form-input"
-                            :class="{ 'has-error': errors.country.length,
+                            :class="{ 'has-error': errors.state.length,
                                       'has-input': $_state != null }"
                         >
                             <option
@@ -196,6 +213,7 @@
                             v-model.lazy="$_state"
                             type="text"
                             name="state"
+                            autocomplete="shipping address-level1"
                             class="order-form-input"
                             :class="{ 'has-error': errors.state.length,
                                       'has-input': this.$_state != null }"
@@ -226,6 +244,7 @@
                             v-model.lazy="$_city"
                             type="text"
                             name="city"
+                            autocomplete="shipping address-level2"
                             class="order-form-input"
                             :class="{ 'has-error': errors.city.length,
                                       'has-input': $_city != null }"
@@ -256,6 +275,7 @@
                             v-model.lazy="$_zip_or_postal_code"
                             type="text"
                             name="zip"
+                            autocomplete="shipping postal-code"
                             class="order-form-input"
                             :class="{ 'has-error': errors.zip_or_postal_code.length,
                                       'has-input': $_zip_or_postal_code != null }"
@@ -277,16 +297,6 @@
                             </li>
                         </ul>
                     </div>
-                </div>
-
-                <div
-                    v-if="bannedCountries.includes($_country)"
-                    class="flex flex-column ph-1 mb-2"
-                >
-                    <p class="flex flex-column tiny text-center font-bold text-error">
-                        Shipping to this country is currently suspended due to COVID-19.<br class="hide-xs-only">
-                        Any physical items in this order will be delayed.
-                    </p>
                 </div>
             </div>
         </div>
@@ -323,11 +333,6 @@ export default {
             default: () => [],
         },
 
-        bannedCountries: {
-            type: Array,
-            default: () => [],
-        },
-
         provinces: {
             type: Array,
             default: () => [],
@@ -337,31 +342,34 @@ export default {
         return {
             rules: {
                 first_name: [
-                    v => !!v || 'First Name is required',
+                    v => !!v || 'First Name is required.',
                 ],
                 last_name: [
-                    v => !!v || 'Last Name is required',
+                    v => !!v || 'Last Name is required.',
                 ],
                 street_line_one: [
-                    v => !!v || 'Address is required',
+                    v => !!v || 'Address is required.',
+                ],
+                street_line_two: [
                 ],
                 state: [
-                    v => !!v || 'State/Province is required',
+                    v => !!v || 'State/Province is required.',
                 ],
                 city: [
-                    v => !!v || 'City is required',
+                    v => !!v || 'City is required.',
                 ],
                 country: [
-                    v => !!v || 'Country is required',
+                    v => !!v || 'Country is required.',
                 ],
                 zip_or_postal_code: [
-                    v => !!v || 'Zip or Postal Code is required',
+                    v => !!v || 'Zip or Postal Code is required.',
                 ],
             },
             errors: {
                 first_name: [],
                 last_name: [],
                 street_line_one: [],
+                street_line_two: [],
                 state: [],
                 city: [],
                 country: [],
@@ -418,6 +426,8 @@ export default {
                 return this.shippingData.street_line_two;
             },
             set(value) {
+                this.validateInput('street_line_two', value);
+
                 this.$emit('updateShippingData', {
                     key: 'street_line_two',
                     value,
@@ -441,10 +451,15 @@ export default {
 
         $_state: {
             get() {
-                return this.shippingData.state;
+                return this.shippingData.region;
             },
             set(value) {
                 this.validateInput('state', value);
+
+                this.$emit('updateShippingData', {
+                    key: 'region',
+                    value,
+                });
 
                 this.$emit('updateShippingData', {
                     key: 'state',
@@ -460,15 +475,16 @@ export default {
             set(value) {
                 this.validateInput('country', value);
 
+                if ((this.shippingData.country === 'Canada' && value !== 'Canada') ||
+                    (this.shippingData.country !== 'Canada' && value === 'Canada')) {
+                    this.$_state = null;
+                    this.errors.state = [];
+                }
+
                 this.$emit('updateShippingData', {
                     key: 'country',
                     value,
                 });
-
-                if (value !== 'Canada') {
-                    this.$_state = null;
-                    this.errors.state = [];
-                }
             },
         },
 

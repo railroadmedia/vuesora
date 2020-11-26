@@ -351,6 +351,9 @@ export default {
     &.active {
         right: 0;
     }
+    h5 {
+        font-family: 'Open Sans', sans-serif;
+    }
     .top {
         padding: 10px 15px 10px 0;
         position: relative;
@@ -468,7 +471,7 @@ export default {
 #csb-products-container {
     overflow: hidden;
     position: relative;
-    height: 300px;
+    height: 345px;
 
     .border-top {
         border-top: 1px solid #CCD3D3;
@@ -476,7 +479,7 @@ export default {
     }
 
     .csb-products-inner {
-        height: 300px;
+        height: 345px;
         padding-right: 15px;
 
         .csb-products-wrapper {

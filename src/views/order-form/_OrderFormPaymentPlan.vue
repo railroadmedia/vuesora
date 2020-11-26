@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-column mb-3">
+    <div class="flex flex-column mb-1">
         <div class="flex flex-row flex-wrap nmh-1 align-v-center">
-            <div class="flex flex-column ph-1 xs-12 sm-6 mb-2">
+            <div class="flex flex-column ph-1 xs-12 sm-6 mb-1 pt-1">
                 <div class="form-group">
                     <select
                         id="paymentPlans"
@@ -16,7 +16,6 @@
                             {{ item.label }}
                         </option>
                     </select>
-
                     <label
                         for="paymentPlans"
                         :class="brand"
@@ -28,9 +27,6 @@
             <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                 <h4 class="tiny text-grey-3">
                     * Payment plans are billed monthly.
-                </h4>
-                <h4 class="tiny text-grey-3">
-                    * Shipping is charged on the first payment.
                 </h4>
             </div>
         </div>
