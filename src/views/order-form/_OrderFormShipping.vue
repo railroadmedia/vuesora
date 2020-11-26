@@ -460,6 +460,11 @@ export default {
                     key: 'region',
                     value,
                 });
+
+                this.$emit('updateShippingData', {
+                    key: 'state',
+                    value,
+                });
             },
         },
 
