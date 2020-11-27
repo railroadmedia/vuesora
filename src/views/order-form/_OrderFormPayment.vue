@@ -133,7 +133,7 @@
 
             <div class="flex flex-row flex-wrap mb-2">
                 <div
-                    class="flex flex-column xs-12 ph-1"
+                    class="flex flex-column xs-12 ph-1 pb-2"
                     :class="$_billingCountry === 'Canada' ? 'sm-6' : ''"
                 >
                     <div class="form-group">
