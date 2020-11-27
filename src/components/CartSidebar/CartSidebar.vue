@@ -130,6 +130,7 @@ export default {
             discounts: [],
             simpleBar: null,
             loading: false,
+            scrollTop: false,
         };
     },
     mounted() {
@@ -168,13 +169,14 @@ export default {
             this.locked = cartData.meta.cart.locked;
 
             setTimeout(() => {
-                // console.log('before recalculate');
                 this.simpleBar.recalculate();
-                // console.log('after recalculate');
-                this.simpleBar.getScrollElement().scroll({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                if (this.scrollTop) {
+                    this.scrollTop = false;
+                    this.simpleBar.getScrollElement().scroll({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
             }, 10);
         },
 
@@ -231,6 +233,8 @@ export default {
                 if (lockedCart) {
                     payload['locked'] = lockedCart;
                 }
+
+                this.scrollTop = true;
 
                 return EcommerceService
                     .addCartItems(payload)
