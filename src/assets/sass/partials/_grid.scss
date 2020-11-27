@@ -196,18 +196,6 @@
   }
 }
 
-@include medium {
-  @for $i from 1 through 10 {
-    .dmd-#{$i} {
-      flex: 0 0 #{$i / 10 * 100%};
-      max-width:#{$i / 10 * 100%};
-    }
-    .dmd-offset-#{$i} {
-      margin-left:#{$i / 10 * 100%};
-    }
-  }
-}
-
 @include large {
   @for $i from 1 through 12 {
     .lg-#{$i} {
