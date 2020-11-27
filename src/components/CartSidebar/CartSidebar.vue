@@ -27,6 +27,7 @@
                             :key="item.sku"
                             :item="item"
                             :loading="loading"
+                            :locked="locked"
                             @removeCartItem="removeCartItem"
                             @updateCartItemQuantity="updateCartItemQuantity"
                         ></cart-item>
@@ -121,6 +122,7 @@ export default {
     data() {
         return {
             active: false,
+            locked: false,
             cartItems: null,
             bonusItems: null,
             cartTotals: null,
@@ -163,6 +165,7 @@ export default {
             this.cartTotals = cartData.meta.cart.totals;
             this.discounts = cartData.meta.cart.discounts;
             this.bonusItems = cartData.meta.cart.bonuses ? cartData.meta.cart.bonuses : [];
+            this.locked = cartData.meta.cart.locked;
 
             setTimeout(() => {
                 // console.log('before recalculate');
