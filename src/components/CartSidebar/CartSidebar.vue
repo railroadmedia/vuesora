@@ -77,10 +77,10 @@
             <div class="checkout">
                 <a href="/order" :class="brand"><i class="fas fa-lock"></i>checkout</a>
             </div>
-            <div class="recommended-title">
+            <div v-if="!locked" class="recommended-title">
                 <div>customers also liked</div>
             </div>
-            <div class="recommended-products" v-if="cartItems">
+            <div class="recommended-products" v-if="cartItems && !locked">
                 <div class="recommended-products-wrapper">
                     <recommended-product
                         v-for="item in recommendedProducts"
