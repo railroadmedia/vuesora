@@ -468,6 +468,7 @@ export default {
     .checkout {
         margin-right: 15px;
         text-align: center;
+        margin-bottom: 60px;
         a {
             color: #FFF;
             padding: 12px;
