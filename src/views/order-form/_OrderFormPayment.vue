@@ -30,7 +30,7 @@
 
                 <div class="flex flex-column xs-12 sm-6 ph-1 pr-2 mb-1">
                     <div 
-                        class="flex flex-row payment-types"
+                        class="flex flex-row payment-types flex-wrap"
                         :class="{ 'payment-selected': paymentSelected }"
                     >
                         <div 
@@ -42,7 +42,7 @@
                         >
                             <svg-icon 
                                 :icon-name="type.name" 
-                                width="78px"
+                                width="60px"
                             ></svg-icon>
                         </div>
                     </div>
