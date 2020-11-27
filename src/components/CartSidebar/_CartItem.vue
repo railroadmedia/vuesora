@@ -29,7 +29,7 @@
                     <product-price :item="item" :brand="brand"></product-price>
                 </div>
             </div>
-            <div class="item-remove" v-if="!isBonus"><a href="#" @click.stop.prevent="remove">Remove</a></div>
+            <div class="item-remove" v-if="!isBonus && !locked"><a href="#" @click.stop.prevent="remove">Remove</a></div>
         </div>
     </div>
 </template>
