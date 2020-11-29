@@ -1,12 +1,10 @@
 <template>
     <div class="flex flex-column mb-3">
         <div v-if="!isSignedIn">
-
             <div v-if="!requiresAccountInfo">
                 <div class="flex flex-row align-v-center mb-2">
                     <div class="flex flex-column">
                         <h3 class="heading">Billing Email</h3>
-
                         <span class="flex flex-auto">
                             <a :href="loginUrl"
                                class="body font-underline">
@@ -15,8 +13,7 @@
                         </span>
                     </div>
                 </div>
-
-                <div class="flex flex-column bg-white shadow corners-5 pa-3">
+                <div class="flex flex-column xs-12 mb-1 pt-1">
                     <div class="form-group">
                         <input type="email"
                                id="billingEmail"

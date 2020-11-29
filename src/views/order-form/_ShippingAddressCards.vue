@@ -66,9 +66,7 @@
                         </p>
                     </div>
 
-                    <div
-                        class="flex flex-column xs-4 align-left text-left pl-2"
-                    >
+                    <div class="flex flex-column xs-4 align-left text-left pl-2">
                         <p class="tiny">
                             <span class="font-bold">
                                 {{ thisShippingAddress.attributes.city }}
