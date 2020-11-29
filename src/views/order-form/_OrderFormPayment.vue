@@ -616,6 +616,12 @@ export default {
       cursor: pointer; 
       transition: .1s linear opacity; 
     }
+    .payment-types {
+        margin-right: auto;
+    }
+    .payment-type:last-of-type {
+        margin-right: 0;
+    }
     .payment-types.payment-selected .payment-type,
     .payment-types:hover .payment-type {
         opacity: .3;
