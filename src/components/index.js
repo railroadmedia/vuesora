@@ -12,6 +12,7 @@ import LegacyLoops from './LegacyLoops/LegacyLoops.vue';
 import VideoResources from './VideoResources/VideoResources.vue';
 import ContentLessonActionButtons from './VideoResources/ContentLessonActionButtons.vue';
 import YoutubePlayer from './YoutubePlayer/YoutubePlayer.vue';
+import CoachEvent from './Coaches/CoachEvent.vue';
 
 const Components = {
     EmailForm,
@@ -28,6 +29,7 @@ const Components = {
     VideoResources,
     ContentLessonActionButtons,
     YoutubePlayer,
+    CoachEvent,
 };
 
 export default Components;
