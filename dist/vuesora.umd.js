@@ -44021,12 +44021,12 @@ var YoutubePlayer_component = normalizeComponent(
 )
 
 /* harmony default export */ var YoutubePlayer = (YoutubePlayer_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0c05a55e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Coaches/CoachEvent.vue?vue&type=template&id=6f76946c&
-var CoachEventvue_type_template_id_6f76946c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event container mt-4"},[_c('div',{staticClass:"flex flex-row"},[_vm._m(0),_c('div',{staticClass:"coach-event-data flex flex-column align-v-center"},[_vm._m(1),_vm._m(2),_vm._m(3),_c('content-schedule',{attrs:{"subscription-calendar-id":"{{ config('add-event.content-type-to-id-map')['brand-overview'] }}","theme-color":_vm.brand}})],1)])])}
-var CoachEventvue_type_template_id_6f76946c_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event-image relative"},[_c('img',{attrs:{"src":"https://d1923uyy6spedc.cloudfront.net/Randy_Cooke_4K.jpg"}}),_c('div',{staticClass:"coach-event-upcoming uppercase dense font-bold text-white"},[_vm._v("upcoming event")]),_c('div',{staticClass:"coach-event-counter flex flex-row align-center"},[_c('div',{staticClass:"coach-event-counter-inner text-white flex flex-row align-center"},[_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v("02")])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("hours")])])]),_c('div',[_c('div',{staticClass:"event-counter-number dense font-bold"},[_vm._v(":")]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v(" ")])]),_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v("23")])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("minutes")])])]),_c('div',[_c('div',{staticClass:"event-counter-number dense font-bold"},[_vm._v(":")]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v(" ")])]),_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v("52")])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("seconds")])])])])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"mv-2"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"coach-avatar"},[_c('img',{staticClass:"bg-grey-2 rounded drumeo",attrs:{"src":"https://s3.amazonaws.com/pianote/defaults/avatar.png"}})]),_c('h4',{staticClass:"sans coach-name font-bold text-drumeo uppercase"},[_vm._v("aaron edgar")])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event-details mv-2"},[_c('h3',{staticClass:"sans font-bold capitalize"},[_vm._v("this is the video title")]),_c('div',{staticClass:"coach-event-description mv-2"},[_vm._v("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event-subscribe"},[_c('button',{staticClass:"btn",attrs:{"data-open-modal":"scheduleAddToCalendarModal"}},[_c('span',{staticClass:"text-white bg-drumeo"},[_c('i',{staticClass:"fas fa-calendar-plus mr-1"}),_vm._v("\n                        Subscribe to Calendar\n                    ")])])])}]
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0c05a55e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Coaches/CoachEvent.vue?vue&type=template&id=45627f1b&
+var CoachEventvue_type_template_id_45627f1b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event container mt-4"},[(_vm.content)?_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"coach-event-image relative"},[_c('img',{attrs:{"src":_vm.content.thumbnail_url}}),(!_vm.eventIsLive)?_c('div',{staticClass:"coach-event-upcoming uppercase dense font-bold text-white"},[_vm._v("upcoming event")]):_vm._e(),(!_vm.eventIsLive)?_c('div',{staticClass:"coach-event-counter flex flex-row align-center"},[_c('div',{staticClass:"coach-event-counter-inner text-white flex flex-row align-center"},[_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v(_vm._s(_vm.$_hours))])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("hours")])])]),_vm._m(0),_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v(_vm._s(_vm.$_minutes))])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("minutes")])])]),_vm._m(1),_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v(_vm._s(_vm.$_seconds))])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("seconds")])])])])]):_vm._e()]),_c('div',{staticClass:"coach-event-data flex flex-column align-v-center"},[_vm._m(2),_c('div',{staticClass:"mv-2"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_vm._m(3),_c('h4',{staticClass:"sans coach-name font-bold text-drumeo uppercase"},[_vm._v(_vm._s(_vm.instructor.name))])])]),_c('div',{staticClass:"coach-event-details mv-2"},[_c('h3',{staticClass:"sans font-bold capitalize"},[_vm._v(_vm._s(_vm.content.title))]),_c('div',{staticClass:"coach-event-description mv-2"},[_vm._v(_vm._s(_vm.content.description))])]),(!_vm.eventIsLive)?_c('div',[_vm._m(4),_c('content-schedule',{attrs:{"subscription-calendar-id":_vm.subscriptionCalendarId,"theme-color":_vm.brand}})],1):_vm._e(),(_vm.eventIsLive)?_c('div',{staticClass:"flex flex-row"},[_vm._m(5),_vm._m(6)]):_vm._e()])]):_vm._e()])}
+var CoachEventvue_type_template_id_45627f1b_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"event-counter-number dense font-bold"},[_vm._v(":")]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v(" ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"event-counter-number dense font-bold"},[_vm._v(":")]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v(" ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"flex-center corners-5 bg-live text-white uppercase live-badge sans"},[_vm._v("live")]),_c('div',{staticClass:"flex flex-row align-center ml-1 corners-5 bg-grey-4 text-white viewer-count sans"},[_c('i',{staticClass:"fas fa-eye"}),_vm._v(" 143")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-avatar"},[_c('img',{staticClass:"bg-grey-2 rounded drumeo",attrs:{"src":"https://s3.amazonaws.com/pianote/defaults/avatar.png","data-test-src":"instructor.thumbnail_url"}})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event-subscribe"},[_c('button',{staticClass:"btn",attrs:{"data-open-modal":"scheduleAddToCalendarModal"}},[_c('span',{staticClass:"text-white bg-drumeo"},[_c('i',{staticClass:"fas fa-calendar-plus mr-1"}),_vm._v("\n                            Subscribe to Calendar\n                        ")])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event-cta"},[_c('button',{staticClass:"btn"},[_c('span',{staticClass:"text-white bg-drumeo uppercase"},[_vm._v("\n                            watch\n                        ")])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event-cta"},[_c('button',{staticClass:"btn"},[_c('span',{staticClass:"text-drumeo bg-drumeo inverted uppercase"},[_c('i',{staticClass:"far fa-plus mr-1"}),_vm._v("\n                            my list\n                        ")])])])}]
 
 
-// CONCATENATED MODULE: ./src/components/Coaches/CoachEvent.vue?vue&type=template&id=6f76946c&
+// CONCATENATED MODULE: ./src/components/Coaches/CoachEvent.vue?vue&type=template&id=45627f1b&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Coaches/CoachEvent.vue?vue&type=script&lang=js&
 //
@@ -44099,6 +44099,36 @@ var CoachEventvue_type_template_id_6f76946c_staticRenderFns = [function () {var 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ var CoachEventvue_type_script_lang_js_ = ({
   components: {
@@ -44111,6 +44141,100 @@ var CoachEventvue_type_template_id_6f76946c_staticRenderFns = [function () {var 
       default: function _default() {
         return 'drumeo';
       }
+    },
+    preloadedContent: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    currentDateString: {
+      type: String
+    },
+    subscriptionCalendarId: {
+      type: String,
+      default: ''
+    }
+  },
+  data: function data() {
+    return {
+      content: null,
+      instructor: null,
+      currentDate: luxon["DateTime"].fromSQL(this.currentDateString, {
+        zone: 'UTC'
+      }),
+      counterValue: 0,
+      eventIsLive: false
+    };
+  },
+  mounted: function mounted() {
+    // console.log("CoachEvent::mounted content: %s", JSON.stringify(this.content));
+    // console.log("CoachEvent::mounted subscriptionCalendarId: %s", JSON.stringify(this.subscriptionCalendarId));
+    // console.log(
+    //     "CoachEvent::mounted parsed currentDate: %s, currentDateString: %s",
+    //     JSON.stringify(this.currentDate.toISO({ includeOffset: false })),
+    //     JSON.stringify(this.currentDateString)
+    // );
+    // console.log(
+    //     "CoachEvent::mounted live_event_start_time_in_timezone: %s, type: %s",
+    //     JSON.stringify(this.content.live_event_start_time_in_timezone),
+    //     JSON.stringify(typeof this.content.live_event_start_time_in_timezone)
+    // );
+    // console.log(
+    //     "CoachEvent::mounted live_event_start_time: %s, type: %s",
+    //     JSON.stringify(this.content.live_event_start_time),
+    //     JSON.stringify(typeof this.content.live_event_start_time)
+    // );
+    // console.log("CoachEvent::mounted content is live: %s", JSON.stringify(this.isLive()));
+    if (this.preloadedContent && this.preloadedContent.data && this.preloadedContent.data[0]) {
+      this.content = modules_content.flattenContentObject(this.preloadedContent.data[0], true);
+      this.instructor = this.content.instructor[0];
+
+      if (this.content.live_event_start_time < this.currentDate) {
+        this.eventIsLive = true;
+      } else {
+        this.eventIsLive = false;
+        var eventStartDate = luxon["DateTime"].fromSQL(this.content.live_event_start_time, {
+          zone: 'UTC'
+        });
+        this.counterValue = eventStartDate.diff(this.currentDate, 'seconds').toObject().seconds;
+        this.startCounter();
+      }
+    }
+  },
+  computed: {
+    $_hours: function $_hours() {
+      return this.padTwoDigits(Math.floor(this.counterValue / 3600));
+    },
+    $_minutes: function $_minutes() {
+      var hours = Math.floor(this.counterValue / 3600);
+      var secondsForMinutes = this.counterValue - hours * 3600;
+      return this.padTwoDigits(Math.floor(secondsForMinutes / 60));
+    },
+    $_seconds: function $_seconds() {
+      var hours = Math.floor(this.counterValue / 3600);
+      var secondsForMinutes = this.counterValue - hours * 3600;
+      var minutes = Math.floor(secondsForMinutes / 60);
+      return this.padTwoDigits(secondsForMinutes - minutes * 60);
+    }
+  },
+  methods: {
+    startCounter: function startCounter() {
+      var _this = this;
+
+      this.$nextTick(function () {
+        var interval = setInterval(function () {
+          this.counterValue -= 1;
+
+          if (this.counterValue <= 0) {
+            this.eventIsLive = true;
+            clearInterval(interval);
+          }
+        }.bind(_this), 1000);
+      });
+    },
+    padTwoDigits: function padTwoDigits(number) {
+      return ('0' + number).slice(-2);
     }
   }
 });
@@ -44126,8 +44250,8 @@ var CoachEventvue_type_template_id_6f76946c_staticRenderFns = [function () {var 
 
 var CoachEvent_component = normalizeComponent(
   Coaches_CoachEventvue_type_script_lang_js_,
-  CoachEventvue_type_template_id_6f76946c_render,
-  CoachEventvue_type_template_id_6f76946c_staticRenderFns,
+  CoachEventvue_type_template_id_45627f1b_render,
+  CoachEventvue_type_template_id_45627f1b_staticRenderFns,
   false,
   null,
   null,

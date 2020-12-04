@@ -105,6 +105,15 @@
   }
 }
 
+.bg-live {
+  background-color: $liveRed;
+
+  &.inverted {
+    background-color:transparent;
+    border:2px solid $liveRed;
+  }
+}
+
 
 [class*='hover-bg-'] {
   transition:background-color .1s ease;

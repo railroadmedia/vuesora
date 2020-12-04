@@ -1,17 +1,17 @@
 <template>
     <div class="coach-event container mt-4">
-        <div class="flex flex-row">
+        <div class="flex flex-row" v-if="content">
             <div class="coach-event-image relative">
                 <img
                     class=""
-                    src="https://d1923uyy6spedc.cloudfront.net/Randy_Cooke_4K.jpg"
+                    :src="content.thumbnail_url"
                 >
-                <div class="coach-event-upcoming uppercase dense font-bold text-white">upcoming event</div>
-                <div class="coach-event-counter flex flex-row align-center">
+                <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
+                <div class="coach-event-counter flex flex-row align-center" v-if="!eventIsLive">
                     <div class="coach-event-counter-inner text-white flex flex-row align-center">
                         <div class="ph-1">
                             <div class="flex flex-column align-center">
-                                <div class="event-counter-number dense font-bold"><span>02</span></div>
+                                <div class="event-counter-number dense font-bold"><span>{{ $_hours }}</span></div>
                                 <div class="event-counter-label sans font-bold uppercase">hours</div>
                             </div>
                         </div>
@@ -21,7 +21,7 @@
                         </div>
                         <div class="ph-1">
                             <div class="flex flex-column align-center">
-                                <div class="event-counter-number dense font-bold"><span>23</span></div>
+                                <div class="event-counter-number dense font-bold"><span>{{ $_minutes }}</span></div>
                                 <div class="event-counter-label sans font-bold uppercase">minutes</div>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                         </div>
                         <div class="ph-1">
                             <div class="flex flex-column align-center">
-                                <div class="event-counter-number dense font-bold"><span>52</span></div>
+                                <div class="event-counter-number dense font-bold"><span>{{ $_seconds }}</span></div>
                                 <div class="event-counter-label sans font-bold uppercase">seconds</div>
                             </div>
                         </div>
@@ -39,37 +39,67 @@
                 </div>
             </div>
             <div class="coach-event-data flex flex-column align-v-center">
+                <div class="flex flex-row">
+                    <div class="flex-center corners-5 bg-live text-white uppercase live-badge sans">live</div>
+                    <div class="flex flex-row align-center ml-1 corners-5 bg-grey-4 text-white viewer-count sans"><i class="fas fa-eye"></i> 143</div>
+                </div>
                 <div class="mv-2">
                     <div class="flex flex-row align-v-center">
                         <div class="coach-avatar">
-                            <img class="bg-grey-2 rounded drumeo" src="https://s3.amazonaws.com/pianote/defaults/avatar.png">
+                            <img
+                                class="bg-grey-2 rounded drumeo"
+                                src="https://s3.amazonaws.com/pianote/defaults/avatar.png"
+                                data-test-src="instructor.thumbnail_url"
+                            >
                         </div>
-                        <h4 class="sans coach-name font-bold text-drumeo uppercase">aaron edgar</h4>
+                        <h4 class="sans coach-name font-bold text-drumeo uppercase">{{ instructor.name }}</h4>
                     </div>
                 </div>
                 <div class="coach-event-details mv-2">
-                    <h3 class="sans font-bold capitalize">this is the video title</h3>
-                    <div class="coach-event-description mv-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                    <h3 class="sans font-bold capitalize">{{ content.title }}</h3>
+                    <div class="coach-event-description mv-2">{{ content.description }}</div>
                 </div>
-                <div class="coach-event-subscribe">
-                    <button class="btn" data-open-modal="scheduleAddToCalendarModal">
-                        <span class="text-white bg-drumeo">
-                            <i class="fas fa-calendar-plus mr-1"></i>
-                            Subscribe to Calendar
-                        </span>
-                    </button>
-                </div>
+                <div v-if="!eventIsLive">
+                    <div class="coach-event-subscribe">
+                        <button class="btn" data-open-modal="scheduleAddToCalendarModal">
+                            <span class="text-white bg-drumeo">
+                                <i class="fas fa-calendar-plus mr-1"></i>
+                                Subscribe to Calendar
+                            </span>
+                        </button>
+                    </div>
 
-                <content-schedule
-                              subscription-calendar-id="{{ config('add-event.content-type-to-id-map')['brand-overview'] }}"
-                              :theme-color="brand"></content-schedule>
+                    <content-schedule
+                        :subscription-calendar-id="subscriptionCalendarId"
+                        :theme-color="brand"
+                    ></content-schedule>
+                </div>
+                <div class="flex flex-row" v-if="eventIsLive">
+                    <div class="coach-event-cta">
+                        <button class="btn">
+                            <span class="text-white bg-drumeo uppercase">
+                                watch
+                            </span>
+                        </button>
+                    </div>
+                    <div class="coach-event-cta">
+                        <button class="btn">
+                            <span class="text-drumeo bg-drumeo inverted uppercase">
+                                <i class="far fa-plus mr-1"></i>
+                                my list
+                            </span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { Content as ContentHelpers } from '@musora/helper-functions';
 import ContentSchedule from '../../views/schedule/Schedule.vue';
+import { DateTime } from 'luxon';
 
 export default {
     components: {
@@ -80,6 +110,80 @@ export default {
         brand: {
             type: String,
             default: () => 'drumeo',
+        },
+        preloadedContent: {
+            type: Object,
+            default: () => ({}),
+        },
+        currentDateString: {
+            type: String,
+        },
+        subscriptionCalendarId: {
+            type: String,
+            default: '',
+        },
+    },
+    data() {
+        return {
+            content: null,
+            instructor: null,
+            currentDate: DateTime.fromSQL(this.currentDateString, { zone: 'UTC' }),
+            counterValue: 0,
+            eventIsLive: false,
+        }
+    },
+    mounted() {
+        if (this.preloadedContent && this.preloadedContent.data && this.preloadedContent.data[0]) {
+
+            this.content = ContentHelpers.flattenContentObject(this.preloadedContent.data[0], true);
+            this.instructor = this.content.instructor[0];
+
+            if (this.content.live_event_start_time < this.currentDate) {
+                this.eventIsLive = true;
+            } else {
+                this.eventIsLive = false;
+
+                const eventStartDate = DateTime.fromSQL(this.content.live_event_start_time, { zone: 'UTC' });
+
+                this.counterValue = eventStartDate.diff(this.currentDate, 'seconds').toObject().seconds;
+
+                this.startCounter();
+            }
+        }
+    },
+    computed: {
+        $_hours() {
+            return this.padTwoDigits(Math.floor(this.counterValue / 3600));
+        },
+        $_minutes() {
+            let hours = Math.floor(this.counterValue / 3600);
+            let secondsForMinutes = this.counterValue - hours * 3600;
+
+            return this.padTwoDigits(Math.floor(secondsForMinutes / 60));
+        },
+        $_seconds() {
+            let hours = Math.floor(this.counterValue / 3600);
+            let secondsForMinutes = this.counterValue - hours * 3600;
+            let minutes = Math.floor(secondsForMinutes / 60);
+
+            return this.padTwoDigits(secondsForMinutes - minutes * 60);
+        },
+    },
+    methods: {
+        startCounter() {
+            this.$nextTick(() => {
+                const interval = setInterval(function () {
+                    this.counterValue -= 1;
+                    if(this.counterValue <= 0) {
+                        this.eventIsLive = true;
+                        clearInterval(interval);
+                    }
+                }.bind(this), 1000);
+            });
+        },
+
+        padTwoDigits(number) {
+            return ('0' + number).slice(-2)
         },
     },
 }
