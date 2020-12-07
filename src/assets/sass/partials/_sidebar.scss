@@ -1,6 +1,6 @@
 body.sidebar {
   @include medium {
-    margin-left: 320px;
+    margin-left: 240px;
   }
 
   @include xLarge {
@@ -33,11 +33,9 @@ body.sidebar {
   top: 65px;
   height: calc(100% - 65px);
   left: 0;
-  width: 320px;
+  width: 240px;
   z-index: 99;
   background: #FCFCFC;
-  padding-top: 10px;
-  padding-left: 35px;
   box-shadow: 0 0 10px rgba(0,0,0,0.13), 0 0 15px rgba(0,0,0,0.11), 0 0 20px rgba(0,0,0,0.10);
   clip-path: inset(0px -20px 0px 0px);
   overflow-y: auto;
@@ -46,9 +44,13 @@ body.sidebar {
     display: block;
   }
 
+  .sidebar-section {
+    padding-left: 25px;
+  }
+
   .member-section {
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-top: 35px;
+    padding-bottom: 35px;
 
     .member-avatar {
       max-width: 60px;
@@ -84,7 +86,7 @@ body.sidebar {
         font-size: 14px;
 
         .member-stats-xp {
-          margin-left: 15px;
+          margin-left: 10px;
         }
       }
     }
@@ -105,7 +107,7 @@ body.sidebar {
       vertical-align: middle;
       font-size: 22px;
       line-height: 1em;
-      width: 50px;
+      width: 40px;
     }
 
     .sidebar-link-title {
@@ -141,7 +143,12 @@ body.sidebar {
     h5 {
       margin-top: 20px;
       padding-bottom: 10px;
-      font-size: 18px;
+
+      a {
+        font-size: 18px;
+        text-decoration: none;
+        color: #000;
+      }
     }
   }
 }

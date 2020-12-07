@@ -39,9 +39,11 @@
                 </div>
             </div>
             <div class="coach-event-data flex flex-column align-v-center">
-                <div class="flex flex-row">
-                    <div class="flex-center corners-5 bg-live text-white uppercase live-badge sans">live</div>
-                    <div class="flex flex-row align-center ml-1 corners-5 bg-grey-4 text-white viewer-count sans"><i class="fas fa-eye"></i> 143</div>
+                <div class="mb-2" v-if="eventIsLive">
+                    <div class="flex flex-row">
+                        <div class="flex-center corners-5 bg-live text-white uppercase live-badge sans"><span>live</span></div>
+                        <div class="flex flex-row align-center ml-1 corners-5 bg-grey-4 text-white viewer-count sans"><i class="fas fa-eye"></i> <span>143</span></div>
+                    </div>
                 </div>
                 <div class="mv-2">
                     <div class="flex flex-row align-v-center">
@@ -56,7 +58,7 @@
                     </div>
                 </div>
                 <div class="coach-event-details mv-2">
-                    <h3 class="sans font-bold capitalize">{{ content.title }}</h3>
+                    <h3 class="heading sans font-bold capitalize">{{ content.title }}</h3>
                     <div class="coach-event-description mv-2">{{ content.description }}</div>
                 </div>
                 <div v-if="!eventIsLive">
@@ -74,21 +76,23 @@
                         :theme-color="brand"
                     ></content-schedule>
                 </div>
-                <div class="flex flex-row" v-if="eventIsLive">
-                    <div class="coach-event-cta">
-                        <button class="btn">
-                            <span class="text-white bg-drumeo uppercase">
-                                watch
-                            </span>
-                        </button>
-                    </div>
-                    <div class="coach-event-cta">
-                        <button class="btn">
-                            <span class="text-drumeo bg-drumeo inverted uppercase">
-                                <i class="far fa-plus mr-1"></i>
-                                my list
-                            </span>
-                        </button>
+                <div class="mt-2" v-if="eventIsLive">
+                    <div class="flex flex-row">
+                        <div class="coach-event-cta">
+                            <button class="btn">
+                                <span class="text-white bg-drumeo uppercase">
+                                    watch
+                                </span>
+                            </button>
+                        </div>
+                        <div class="coach-event-cta">
+                            <button class="btn">
+                                <span class="text-drumeo bg-drumeo inverted uppercase">
+                                    <i class="far fa-plus mr-1"></i>
+                                    my list
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
