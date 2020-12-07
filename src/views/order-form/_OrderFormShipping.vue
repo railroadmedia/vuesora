@@ -131,11 +131,13 @@
                         <select
                             id="shippingCountry"
                             v-model.lazy="$_country"
+                            name="country"
                             autocomplete="shipping country"
                             class="order-form-input"
                             :class="{ 'has-error': errors.country.length,
                                       'has-input': $_country != null }"
                         >
+                            <option value=""></option>
                             <option
                                 v-for="country in countries"
                                 :key="country"
