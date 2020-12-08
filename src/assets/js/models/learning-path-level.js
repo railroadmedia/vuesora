@@ -15,7 +15,7 @@ export default class LearningPathLevelContentModel extends ContentModel {
         this.list.grey_title = `with ${this.parseInstructors()}`;
         this.list.column_data = [
             this.postChildLessonCount,
-            `${this.getPostField('xp')} xp`,
+            `${this.post.total_xp} xp`,
         ];
         this.list.description = this.getPostDatum('description');
     }
