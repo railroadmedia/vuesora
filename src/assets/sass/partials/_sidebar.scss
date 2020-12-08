@@ -5,8 +5,8 @@ body.sidebar {
 
   @include xLarge {
     .container:not(.fluid) {
-      margin-left: 50px;
-      margin-right: 50px;
+      padding-left: 50px;
+      padding-right: 50px;
     }
   }
 }
@@ -15,8 +15,11 @@ body.sidebar {
   .nav-inner {
     max-width: 100%;
 
-    @include medium {
-      padding: 0 20px;
+    > .flex-row {
+      @include medium {
+        padding-left: 10px;
+        padding-right: 15px;
+      }
     }
 
     .nav-page-links {

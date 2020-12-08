@@ -1,5 +1,5 @@
 <template>
-    <div class="coach-event container mt-4">
+    <div class="coach-event container mv-4">
         <div class="flex flex-row" v-if="content">
             <div class="coach-event-image relative">
                 <img
@@ -192,3 +192,97 @@ export default {
     },
 }
 </script>
+
+<style lang="scss">
+.coach-event {
+    margin-bottom: 100px;
+
+    .coach-event-image {
+        max-width: 915px;
+        cursor: pointer;
+
+        .coach-event-upcoming {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            font-size: 24px;
+            padding: 15px 90px 15px 15px;
+            background: -webkit-gradient(linear, right top, left top, from(transparent), to(rgba(8, 85, 160, 1)));
+            background: linear-gradient(to left, transparent 0%, rgba(8, 85, 160, 1) 100%);
+        }
+
+        .coach-event-counter {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
+            .event-counter-number {
+                font-size: 50px;
+            }
+
+            .event-counter-label {
+                font-size: 12px;
+            }
+        }
+    }
+
+    .coach-event-data {
+        margin-left: 50px;
+
+        .live-badge,
+        .viewer-count {
+            font-size: 15px;
+            line-height: 15px;
+            font-weight: 600;
+            height: 25px;
+            border-radius: 5px;
+        }
+
+        .live-badge {
+            width: 48px;
+        }
+
+        .viewer-count {
+            max-width: 54px;
+            width: 54px;
+
+            i {
+                margin-right: 3px;
+            }
+        }
+
+        .coach-avatar {
+            max-width: 50px;
+            max-height: 50px;
+
+            img.drumeo {
+                border: 3px solid #0B76DB;
+            }
+        }
+
+        .coach-name {
+            font-size: 24px;
+            margin-left: 10px;
+        }
+
+        .coach-event-details .coach-event-description {
+            font-size: 18px;
+            line-height: 30px;
+        }
+
+        .coach-event-subscribe {
+            max-width: 300px;
+        }
+
+        .coach-event-cta {
+            width: 217px;
+        }
+
+        .coach-event-cta + .coach-event-cta {
+            margin-left: 20px;
+        }
+    }
+}
+</style>
