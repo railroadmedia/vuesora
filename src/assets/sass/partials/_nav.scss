@@ -326,23 +326,69 @@ body {
 
 #navSideBar {
   position:fixed;
-  top:50px;
-  height:calc(100% - 50px);
-  right:0;
+  height:100%;
+  left:0;
+  top: 0;
   width:320px;
+  max-width: 90%;
   z-index:99;
-  transform:translateX(100%);
+  transform:translateX(-100%);
   will-change:transform;
   transition:transform .3s ease-in-out;
   overflow-y:auto;
+
+  .sidebar-member-section {
+    padding-left: 25px;
+
+    padding-top: 35px;
+    padding-bottom: 35px;
+
+    .member-avatar {
+      max-width: 60px;
+      min-width: 60px;
+      position: relative;
+
+      img {
+        &.drumeo {
+          border: 2px solid $drumeoBlue;
+
+          &:hover {
+            border: 3px solid $drumeoBlue;
+          }
+        }
+        &.pianote {
+          border: 2px solid $pianoteRed;
+
+          &:hover {
+            border: 3px solid $pianoteRed;
+          }
+        }
+      }
+    }
+
+    .member-details {
+      padding-left: 20px;
+
+      h5 {
+        font-size: 18px;
+      }
+
+      .member-stats {
+        font-size: 14px;
+
+        .member-stats-xp {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
 
   &.active {
     transform:translateX(0);
   }
 
   @include large {
-    top:65px;
-    height:calc(100% - 65px);
+    height:100%;
   }
 
   #userInfo {
@@ -407,6 +453,7 @@ body {
       i {
         width:25px;
         text-align:center;
+        font-size: 18px;
       }
     }
 

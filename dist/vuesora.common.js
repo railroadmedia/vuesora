@@ -32252,7 +32252,7 @@ function (_ContentModel) {
     _this.list.thumb_logo = _this.getThumbLogo();
     _this.list.color_title = null;
     _this.list.grey_title = "with ".concat(_this.parseInstructors());
-    _this.list.column_data = [_this.postChildLessonCount, "".concat(_this.getPostField('xp'), " xp")];
+    _this.list.column_data = [_this.postChildLessonCount, "".concat(_this.post.total_xp, " xp")];
     _this.list.description = _this.getPostDatum('description');
     return _this;
   }
@@ -32260,6 +32260,10 @@ function (_ContentModel) {
   _createClass(LearningPathLevelContentModel, [{
     key: "getThumbLogo",
     value: function getThumbLogo() {
+      if (this.brand === 'pianote') {
+        return 'https://d2vyvo0tyx8ig5.cloudfront.net/icons/pianote-method.png';
+      }
+
       return 'https://dpwjbsxqtam5n.cloudfront.net/pack-logos/drumeo-method-logo.png';
     }
   }, {
@@ -32305,7 +32309,7 @@ function (_ContentModel) {
     }));
     _this.card.grey_title = _this.postChildLessonCount;
     _this.list.color_title = null;
-    _this.list.column_data = [_this.postChildLessonCount, "".concat(_this.getPostField('xp'), " xp")];
+    _this.list.column_data = [_this.postChildLessonCount, "".concat(_this.post.total_xp, " xp")];
     _this.list.description = _this.getPostDatum('description');
     return _this;
   }
@@ -32344,7 +32348,7 @@ function (_ContentModel) {
     _this.card.grey_title = _this.getPostDifficulty();
     _this.list.color_title = null;
     _this.list.description = _this.getPostDatum('description');
-    _this.list.column_data = [_this.getPostDuration(), "".concat(_this.getPostField('xp'), " XP")];
+    _this.list.column_data = [_this.getPostDuration(), "".concat(_this.post.total_xp, " XP")];
 
     if (_this.brand === 'guitareo' || _this.brand === 'pianote') {
       _this.list.description = _this.getPostDatum('description');
