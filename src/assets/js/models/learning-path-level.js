@@ -29,6 +29,10 @@ export default class LearningPathLevelContentModel extends ContentModel {
     }
 
     getThumbLogo() {
+        if (this.brand === 'pianote') {
+            return 'https://d2vyvo0tyx8ig5.cloudfront.net/icons/pianote-method.png';
+        }
+
         return 'https://dpwjbsxqtam5n.cloudfront.net/pack-logos/drumeo-method-logo.png';
     }
 }
