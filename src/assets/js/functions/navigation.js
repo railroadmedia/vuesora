@@ -6,6 +6,7 @@ export default (function () {
     document.addEventListener('DOMContentLoaded', () => {
         const menuButton = document.getElementById('menuButton');
         const navSideBar = document.getElementById('navSideBar');
+        const navSidebarClose = document.getElementById('nav-sidebar-close');
         const pageLinksContainer = document.getElementById('pageLinks');
         const searchButtons = document.querySelectorAll('.search-button');
         const searchBox = document.getElementById('searchColumn');
@@ -43,6 +44,7 @@ export default (function () {
             navSideBar.addEventListener('click', (event) => {
                 event.stopPropagation();
             });
+            navSidebarClose.addEventListener('click', toggleSideBar);
         }
 
         if (searchButtons.length) {
