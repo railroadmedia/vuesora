@@ -124,7 +124,11 @@ export default {
         },
         subscriptionCalendarId: {
             type: String,
-            default: '',
+            default: () => '',
+        },
+        timeCutoffMinutes: {
+            type: Number,
+            default: () => 0,
         },
     },
     data() {
@@ -142,14 +146,16 @@ export default {
             this.content = ContentHelpers.flattenContentObject(this.preloadedContent.data[0], true);
             this.instructor = this.content.instructor[0];
 
-            if (this.content.live_event_start_time < this.currentDate) {
+            let startTimeCutoff = DateTime
+                                    .fromSQL(this.content.live_event_start_time, { zone: 'UTC' })
+                                    .minus({ minutes: this.timeCutoffMinutes });
+
+            if (startTimeCutoff < this.currentDate) {
                 this.eventIsLive = true;
             } else {
                 this.eventIsLive = false;
 
-                const eventStartDate = DateTime.fromSQL(this.content.live_event_start_time, { zone: 'UTC' });
-
-                this.counterValue = eventStartDate.diff(this.currentDate, 'seconds').toObject().seconds;
+                this.counterValue = startTimeCutoff.diff(this.currentDate, 'seconds').toObject().seconds;
 
                 this.startCounter();
             }
