@@ -48,7 +48,6 @@ body.sidebar {
   }
 
   .sidebar-section {
-    padding-left: 25px;
   }
 
   .member-section {
@@ -87,10 +86,10 @@ body.sidebar {
 
       .member-stats {
         font-size: 14px;
+      }
 
-        .member-stats-xp {
-          margin-left: 10px;
-        }
+      .sidebar-member-username {
+        font-size: 14px;
       }
     }
   }
@@ -101,8 +100,8 @@ body.sidebar {
   }
 
   .sidebar-link {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    width: 100%;
+    display: inline-block;
     color: #181B1B;
 
     .sidebar-link-icon {
@@ -119,16 +118,43 @@ body.sidebar {
       line-height: 1em;
     }
 
-    &:hover,
+    &.pianote {
+      padding-top: 21px;
+      height: 75px;
+    }
+    &.drumeo {
+      padding-top: 14px;
+      height: 55px;
+    }
+
+    &:hover {
+      &.drumeo {
+        background-color: #F2F3F3;
+      }
+      &.drumeo svg {
+      }
+      &.pianote {
+        background-color: #F2F3F3;
+      }
+      &.pianote svg {
+      }
+
+      .sidebar-link-title {
+        font-weight: 550;
+      }
+    }
+
     &.active {
       &.drumeo {
         color: $drumeoBlue;
+        background-color: #CCD0D3;
       }
       &.drumeo svg {
         fill: $drumeoBlue;
       }
       &.pianote {
         color: $pianoteRed;
+        background-color: #CCD0D3;
       }
       &.pianote svg {
         fill: $pianoteRed;
