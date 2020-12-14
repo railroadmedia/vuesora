@@ -180,11 +180,11 @@ export default {
             if (this.forceWideThumbs) {
                 return 'widescreen';
             }
-            
+
             return {
                 drumeo: ['song', 'learning-path-level'],
                 guitareo: ['song', 'chord-and-scale'],
-                pianote: ['song', 'unit'],
+                pianote: ['song', 'unit', 'learning-path-level'],
             }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
         },
     },

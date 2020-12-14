@@ -81,8 +81,10 @@ export default (function () {
                 // pageLinksContainer.classList.toggle('inactive');
 
                 if (searchBox.classList.contains('active')) {
+                    searchBox.getElementsByTagName('form')[0].style.display = 'block';
                     searchInput.focus();
                 } else {
+                    searchBox.getElementsByTagName('form')[0].style.display = 'none';
                     searchInput.blur();
                 }
             }
