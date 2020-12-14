@@ -1,4 +1,5 @@
 import ChordsAndScalesModel from './chords-and-scales';
+import CoachStreamModel from './coach-stream';
 import CourseModel from './course';
 import CoursePartModel from './course-part';
 import LearningPathModel from './learning-path';
@@ -61,6 +62,7 @@ export default class ContentTypeModel {
         case 'question-and-answer': return new QnaModel({ brand, post });
         case 'unit': return new UnitContentModel({ brand, post });
         case 'unit-part': return new UnitPartModel({ brand, post });
+        case 'coach-stream': return new CoachStreamModel({ brand, post });
         default: return new ContentModel({ brand, post });
         }
     }

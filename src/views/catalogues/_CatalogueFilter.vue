@@ -48,6 +48,10 @@ export default {
             type: String,
             default: () => '',
         },
+        filtersLabels:{
+            type: Object,
+            default: () => ({}),
+        },
         item: {
             type: Array,
             default: () => [],
@@ -104,7 +108,7 @@ export default {
                 key_pitch_type: 'Choose a Type...',
             };
 
-            return labelMap[this.filterName];
+            return this.filtersLabels[this.filterName] || labelMap[this.filterName];
         },
     },
     methods: {

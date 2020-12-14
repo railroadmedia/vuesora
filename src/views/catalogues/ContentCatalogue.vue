@@ -22,6 +22,7 @@
             v-if="filterableValues.length"
             :filters="filters"
             :filterable-values="filterableValues"
+            :filters-labels="filtersLabels"
             :required-user-states="required_user_states"
             :filter-params="filter_params"
             :loading="loading"
@@ -196,6 +197,10 @@ export default {
         filterableValues: {
             type: Array,
             default: () => [],
+        },
+        filtersLabels:{
+            type: Object,
+            default: () => ({}),
         },
         paginate: {
             type: Boolean,

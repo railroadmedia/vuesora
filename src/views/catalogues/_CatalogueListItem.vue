@@ -176,6 +176,7 @@
             v-if="!is_search"
             :key="`${item.id}-mappedData-${i}`"
             class="flex flex-column uppercase align-center basic-col text-center x-tiny font-compressed hide-sm-down"
+            :data-test="column_data"
         >
             {{ column_data }}
         </div>
@@ -318,6 +319,9 @@ export default {
 
             return this.index;
         },
+    },
+    mounted() {
+        console.log("CatalogueListItem::mounted contentModel: %s", JSON.stringify(this.contentModel));
     },
     beforeDestroy() {
         this.contentModel = null;

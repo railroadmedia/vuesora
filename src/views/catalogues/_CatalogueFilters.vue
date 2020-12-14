@@ -4,6 +4,7 @@
             v-for="item in filterableValues.filter(item => item !== 'progress')"
             :key="item.key"
             :filter-name="item"
+            :filters-labels="filtersLabels"
             :item="filters[item]"
             :theme-color="themeColor"
             :loading="loading"
@@ -42,6 +43,10 @@ export default {
         filterableValues: {
             type: Array,
             default: () => [],
+        },
+        filtersLabels:{
+            type: Object,
+            default: () => ({}),
         },
         themeColor: {
             type: String,
