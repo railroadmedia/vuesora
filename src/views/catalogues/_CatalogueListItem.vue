@@ -320,9 +320,6 @@ export default {
             return this.index;
         },
     },
-    mounted() {
-        console.log("CatalogueListItem::mounted contentModel: %s", JSON.stringify(this.contentModel));
-    },
     beforeDestroy() {
         this.contentModel = null;
     },

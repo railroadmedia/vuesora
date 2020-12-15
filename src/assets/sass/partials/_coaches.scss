@@ -1,0 +1,103 @@
+@import './_variables.scss';
+
+.svg-icon.text-drumeo {
+  fill: $drumeoBlue;
+}
+
+.coaches-subscribe {
+  max-width: 325px;
+}
+
+.coaches-cards-container {
+  justify-content: center;
+}
+
+.coach-card {
+  width: 280px;
+  height: 497px;
+  margin: 3px;
+}
+
+.coach-card-inner {
+  overflow: hidden;
+
+  .coach-card-overlay {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    -moz-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    -o-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    background: rgba(0,0,0,0.5);
+  }
+
+  &:hover .coach-card-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .coach-data {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(8, 85, 160, 1)));
+    background: linear-gradient(to bottom, transparent 0%, rgba(8, 85, 160, 1) 100%);
+    transition: max-height 0.2s ease-in-out;
+    max-height: 130px;
+    z-index: 10;
+
+    .coach-name {
+      margin-top: 30px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      h5 {
+        word-spacing: 9999rem;
+        font-size: 28px;
+      }
+    }
+
+    .coach-short {
+      line-height: 27px;
+      font-size: 12px;
+    }
+
+    .coach-next-event {
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .coach-cta {
+      padding-top: 10px;
+    }
+
+    button.btn {
+      width: 150px;
+
+      > span {
+        height: 35px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  &:hover .coach-data {
+    max-height: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
