@@ -12,7 +12,7 @@
         <!-- LESSON NUMBERS -->
         <div
             v-if="showNumbers"
-            class="flex flex-column align-left number-col title text-black hide-sm-down"
+            class="flex flex-column align-left align-v-center number-col title text-black hide-sm-down"
         >
             {{ lesson_number }}
         </div>
