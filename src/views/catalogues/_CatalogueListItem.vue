@@ -1,6 +1,6 @@
 <template>
     <a
-        class="flex flex-row bb-grey-1-1 no-decoration ph-1 hover-bg-grey-7 relative text-grey-3 hover-text-black"
+        class="flex flex-row bb-grey-1-1 no-decoration hover-bg-grey-7 relative text-grey-3 hover-text-black"
         :class="class_object"
         :href="renderLink ? item.url : false"
     >
@@ -12,7 +12,7 @@
         <!-- LESSON NUMBERS -->
         <div
             v-if="showNumbers"
-            class="flex flex-column align-center number-col title text-black hide-sm-down"
+            class="flex flex-column align-left number-col title text-black hide-sm-down"
         >
             {{ lesson_number }}
         </div>

@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column">
-        <div class="flex flex-row flex-wrap mb-1">
+        <div class="flex flex-row flex-wrap mb nmh-1">
             <div
                 v-if="includedTypes.length"
                 class="flex flex-column xs-12 sm-4"
