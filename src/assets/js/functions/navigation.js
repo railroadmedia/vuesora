@@ -5,6 +5,8 @@ export default (function () {
 
     document.addEventListener('DOMContentLoaded', () => {
         const menuButton = document.getElementById('menuButton');
+        const colapseButton = document.getElementById('colapseButton');
+        const sideBar = document.getElementById('sidebar');
         const navSideBar = document.getElementById('navSideBar');
         const navSidebarClose = document.getElementById('nav-sidebar-close');
         const pageLinksContainer = document.getElementById('pageLinks');
@@ -45,6 +47,23 @@ export default (function () {
                 event.stopPropagation();
             });
             navSidebarClose.addEventListener('click', toggleSideBar);
+        }
+
+        if (colapseButton && sideBar) {
+            colapseButton.addEventListener(
+                'click',
+                function(event) {
+                    event.stopPropagation();
+                    sideBar.classList.toggle('collapsed');
+                    if (sideBar.classList.contains('collapsed')) {
+                        document.body.classList.add('collapsed');
+                        document.cookie = 'collapsed=true;path=/;max-age=31536000;';
+                    } else {
+                        document.body.classList.remove('collapsed');
+                        document.cookie = 'collapsed=false;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+                    }
+                }
+            );
         }
 
         if (searchButtons.length) {
