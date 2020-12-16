@@ -107,8 +107,10 @@
                     <span
                             v-html="mappedData.content_type"
                     ></span>
-                    &nbsp;-&nbsp;
-                    {{ mappedData.grey_title }}
+                    <span v-if="mappedData.grey_title && mappedData.grey_title !== ''">
+                        - {{ mappedData.grey_title }}
+                    </span>
+                    &nbsp;
                 </h6>
             </div>
         </a>
