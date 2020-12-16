@@ -118,7 +118,7 @@ export default class ContentModel {
         const icon = ContentHelpers.getContentTypeIcon(this.post.type);
         const type = this.postType;
 
-        if (type === 'song') {
+        if (type === 'song' && this.post.brand !== 'guitareo') {
             return `${this.getPostField('artist')}`;
         }
 
