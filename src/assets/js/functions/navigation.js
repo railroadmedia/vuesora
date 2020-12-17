@@ -80,14 +80,15 @@ export default (function () {
 
         function toggleSideBar(event) {
             event.stopPropagation();
+            sideBar.classList.remove('collapsed');
 
-            if (navSideBar.classList.contains('active')) {
+            if (sideBar.classList.contains('mobile')) {
                 menuButton.classList.remove('active');
-                navSideBar.classList.remove('active');
+                sideBar.classList.remove('mobile');
                 backgroundOverlay.classList.remove('active');
             } else {
                 menuButton.classList.add('active');
-                navSideBar.classList.add('active');
+                sideBar.classList.add('mobile');
                 backgroundOverlay.classList.add('active');
             }
         }
@@ -118,7 +119,7 @@ export default (function () {
             }
 
             menuButton.classList.remove('active');
-            navSideBar.classList.remove('active');
+            sideBar.classList.remove('mobile');
             backgroundOverlay.classList.remove('active');
         }
 

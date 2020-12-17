@@ -48,17 +48,30 @@ body.sidebar {
   clip-path: inset(0px -20px 0px 0px);
   overflow-y: auto;
 
+  &.mobile {
+    display: block;
+    height: 100%;
+    top: 0;
+  }
+
   @include medium {
     display: block;
   }
 
-  .main-links-section {
+  .sidebar-section {
     padding-top: 10px;
     padding-bottom: 10px;
-  }
 
-  .user-links-section {
-    padding-top: 10px;
+    h5 {
+      margin-top: 20px;
+      padding-bottom: 10px;
+
+      a {
+        font-size: 18px;
+        text-decoration: none;
+        color: #000;
+      }
+    }
   }
 
   .sidebar-link {
@@ -132,31 +145,23 @@ body.sidebar {
     }
   }
 
-  .membership-links-section {
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    h5 {
-      margin-top: 20px;
-      padding-bottom: 10px;
-
-      a {
-        font-size: 18px;
-        text-decoration: none;
-        color: #000;
-      }
-    }
-  }
-
   &.collapsed {
     width: 83px;
 
-    .main-links-section {
+    .sidebar-section {
       border-bottom: none;
+
+      &:not(:first-child) {
+        padding-top: 0;
+      }
+
+      &:not(:last-child) {
+        padding-bottom: 0;
+      }
     }
 
-    .user-links-section,
-    .membership-links-section {
+    .sidebar-link-container:not(.collapsed),
+    .sidebar-section .sidebar-section-title {
       display: none;
     }
 
