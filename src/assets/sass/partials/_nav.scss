@@ -37,6 +37,7 @@ body {
   left:0;
   width:100%;
   padding:0;
+  background-color: #00101D;
 
   @include large {
     height:65px;
@@ -63,13 +64,13 @@ body {
       width:100%;
       height:auto;
       min-height:1px;
+      filter: sepia(1) brightness(0.35) hue-rotate(140deg) saturate(37);
     }
   }
 
   .header-button {
     position:relative;
     z-index:10;
-    background:#000;
     flex:0 0 50px;
     max-width:50px;
     max-height:49px;
@@ -129,7 +130,6 @@ body {
       left:0;
       bottom:0;
       z-index:3;
-      background:#000;
       transform:translateX(0);
       //transition:transform .2s ease-in-out;
       will-change:transform;
@@ -156,6 +156,17 @@ body {
       flex:0 0 35px;
       max-width:35px;
     }
+  }
+
+  #searchInput {
+    border: 1px solid #93979C;
+    font-size: 16px;
+    color: #93979C;
+    width: 625px;
+    height: 35px;
+    text-align: center;
+    border-radius: 10px;
+    font-family: 'FontAwesome', $defaultSansSerif;
   }
 
   .nav-page-links {
@@ -216,7 +227,6 @@ body {
     outline:none;
     position:relative;
     z-index:10;
-    background-color:#000;
 
     @include medium {
       flex:0 0 50px;

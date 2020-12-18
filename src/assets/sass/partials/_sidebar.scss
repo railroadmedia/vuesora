@@ -43,19 +43,45 @@ body.sidebar {
   left: 0;
   width: 250px;
   z-index: 99;
-  background: #FCFCFC;
+  background: #FFFFFF;
   box-shadow: 0 0 10px rgba(0,0,0,0.13), 0 0 15px rgba(0,0,0,0.11), 0 0 20px rgba(0,0,0,0.10);
   clip-path: inset(0px -20px 0px 0px);
   overflow-y: auto;
+
+  @include medium {
+    display: block;
+  }
+
+  .sidebar-header {
+    display: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    #sidebar-close {
+      font-size: 22px;
+      line-height: 0.8;
+      padding-left: 20px;
+      padding-right: 20px;
+      cursor: pointer;
+    }
+
+    .sidebar-header-inner {
+      width: 125px;
+
+      img {
+        filter: sepia(1) brightness(0.35) hue-rotate(140deg) saturate(37);
+      }
+    }
+  }
 
   &.mobile {
     display: block;
     height: 100%;
     top: 0;
-  }
 
-  @include medium {
-    display: block;
+    .sidebar-header {
+      display: flex;
+    }
   }
 
   .sidebar-section {

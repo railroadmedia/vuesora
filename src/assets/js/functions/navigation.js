@@ -8,7 +8,7 @@ export default (function () {
         const colapseButton = document.getElementById('colapseButton');
         const sideBar = document.getElementById('sidebar');
         const navSideBar = document.getElementById('navSideBar');
-        const navSidebarClose = document.getElementById('nav-sidebar-close');
+        const sidebarClose = document.getElementById('sidebar-close');
         const pageLinksContainer = document.getElementById('pageLinks');
         const searchButtons = document.querySelectorAll('.search-button');
         const searchBox = document.getElementById('searchColumn');
@@ -46,7 +46,7 @@ export default (function () {
             navSideBar.addEventListener('click', (event) => {
                 event.stopPropagation();
             });
-            navSidebarClose.addEventListener('click', toggleSideBar);
+            sidebarClose.addEventListener('click', toggleSideBar);
         }
 
         if (colapseButton && sideBar) {
