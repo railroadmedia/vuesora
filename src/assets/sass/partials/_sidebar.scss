@@ -89,13 +89,13 @@ body.sidebar {
     padding-bottom: 10px;
 
     h5 {
-      margin-top: 20px;
+      margin-top: 4px;
       padding-bottom: 10px;
 
       a {
-        font-size: 18px;
+        font-size: 15px;
         text-decoration: none;
-        color: #000;
+        color: #181B1B;
       }
     }
   }
@@ -112,7 +112,7 @@ body.sidebar {
     .sidebar-link-icon {
       display: inline-block;
       vertical-align: middle;
-      font-size: 22px;
+      font-size: 16px;
       line-height: 1em;
       width: 40px;
     }
@@ -124,12 +124,12 @@ body.sidebar {
     }
 
     &.pianote {
-      padding-top: 18px;
-      height: 66px;
+      padding-top: 8px;
+      height: 45px;
     }
     &.drumeo {
-      padding-top: 14px;
-      height: 55px;
+      padding-top: 8px;
+      height: 45px;
     }
 
     &:hover {
