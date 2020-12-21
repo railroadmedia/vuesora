@@ -149,14 +149,19 @@ body {
   }
 
   #searchInput {
-    border: 1px solid #93979C;
+    border: 1px solid #7E9AB1;
     font-size: 16px;
-    color: #93979C;
+    color: #7E9AB1;
     width: 625px;
     height: 35px;
-    text-align: center;
+    text-align: left;
+    padding-left: 40px;
     border-radius: 10px;
     font-family: 'FontAwesome', $defaultSansSerif;
+    background-color: #000;
+  }
+  #searchInput::placeholder {
+    color: #7E9AB1;
   }
 
   .nav-page-links {
