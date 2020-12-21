@@ -44,7 +44,7 @@ body {
   }
 
   & > .container {
-    overflow:hidden;
+    // overflow:hidden;
   }
 
   .flex-row {
@@ -71,6 +71,7 @@ body {
   .header-button {
     position:relative;
     z-index:10;
+    background-color: #00101D;
     flex:0 0 50px;
     max-width:50px;
     max-height:49px;
@@ -91,7 +92,7 @@ body {
 
   .search-column {
     flex:0 1 100%;
-    max-width:50px;
+    max-width:35px;
     transition:all .1s;
     z-index:9;
     max-height:49px;
@@ -104,7 +105,7 @@ body {
     &.active {
 
       .search-row {
-        transform:translateX(calc(-#{100%} + 50px));
+        transform:translateX(calc(-#{100%} + 35px));
 
         @include small {
           transform:translateX(calc(-#{100%} + 50px));
@@ -134,21 +135,10 @@ body {
       //transition:transform .2s ease-in-out;
       will-change:transform;
       width:calc(100vw - 100px);
+      background-color: #00101D;
 
-      @include small {
-        width:calc(100vw - 50px);
-      }
-
-      @include medium {
-        width:calc(#{$medium} - 65px);
-      }
-
-      @include large {
-        width:calc(#{$large} - 85px);
-      }
-
-      @include xLarge {
-        width:calc(#{$xLarge} - 85px);
+      input {
+        color: #93979C;
       }
     }
 
@@ -314,6 +304,55 @@ body {
       animation-name: growShrink;
       animation-duration: 1.25s;
       animation-iteration-count: infinite
+    }
+  }
+
+  .profile-nav-info {
+    display: none;
+    position: absolute;
+    bottom: -94px;
+    right: 10px;
+    background-color: #FFF;
+    padding: 15px 25px;
+
+    h3 {
+      white-space: nowrap;
+      margin-bottom: 3px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+
+    h3 + p {
+      margin-bottom: 5px;
+    }
+
+    .profile-nav-tip {
+      position: absolute;
+      top: -19px;
+      right: -5px;
+      width: 7px;
+      height: 7px;
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+      background-color: #FFF;
+    }
+  }
+
+  .profile-nav-link {
+    img {
+      border: 2px solid #00101D;
+    }
+
+    &:hover {
+      img {
+        border: 2px solid #fff;
+      }
+
+      + .profile-nav-info {
+        display: block;
+      }
     }
   }
 }

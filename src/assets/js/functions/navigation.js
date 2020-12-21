@@ -11,7 +11,8 @@ export default (function () {
         const sidebarClose = document.getElementById('sidebar-close');
         const pageLinksContainer = document.getElementById('pageLinks');
         const searchButtons = document.querySelectorAll('.search-button');
-        const searchBox = document.getElementById('searchColumn');
+        const searchColumn = document.getElementById('searchColumn');
+        const searchBox = document.getElementById('searchBox');
         const searchInput = document.getElementById('searchInput');
         const parentLinks = document.querySelectorAll('.parent-button');
         const subNavWrap = document.getElementById('subNavWrap');
@@ -96,15 +97,15 @@ export default (function () {
         function toggleSearchBar(event) {
             event.stopPropagation();
 
-            if (searchBox) {
-                searchBox.classList.toggle('active');
+            if (searchColumn) {
+                searchColumn.classList.toggle('active');
                 // pageLinksContainer.classList.toggle('inactive');
 
-                if (searchBox.classList.contains('active')) {
-                    searchBox.getElementsByTagName('form')[0].style.display = 'block';
+                if (searchColumn.classList.contains('active')) {
+                    searchBox.classList.remove('hide-xs-only');
                     searchInput.focus();
                 } else {
-                    searchBox.getElementsByTagName('form')[0].style.display = 'none';
+                    searchBox.classList.add('hide-xs-only');
                     searchInput.blur();
                 }
             }
@@ -113,8 +114,8 @@ export default (function () {
         function closeEverything(event) {
             event.stopPropagation();
 
-            if (searchBox) {
-                searchBox.classList.remove('active');
+            if (searchColumn) {
+                searchColumn.classList.remove('active');
                 // pageLinksContainer.classList.remove('inactive');
             }
 
