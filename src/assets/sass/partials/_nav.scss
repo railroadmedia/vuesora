@@ -148,7 +148,7 @@ body {
     }
   }
 
-  #searchInput {
+  #search-input {
     border: 1px solid #7E9AB1;
     font-size: 16px;
     color: #7E9AB1;
@@ -160,7 +160,7 @@ body {
     font-family: 'FontAwesome', $defaultSansSerif;
     background-color: #000;
   }
-  #searchInput::placeholder {
+  #search-input::placeholder {
     color: #7E9AB1;
   }
 

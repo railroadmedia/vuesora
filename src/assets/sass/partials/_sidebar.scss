@@ -3,7 +3,7 @@
 body.sidebar {
   @include medium {
     margin-left: 250px;
-    &.collapsed {
+    &.sidebar-collapsed {
       margin-left: 83px;
     }
   }
@@ -171,7 +171,7 @@ body.sidebar {
     }
   }
 
-  &.collapsed {
+  &.sidebar-collapsed {
     width: 83px;
 
     .sidebar-section {
@@ -186,7 +186,7 @@ body.sidebar {
       }
     }
 
-    .sidebar-link-container:not(.collapsed),
+    .sidebar-link-container:not(.show-collapsed),
     .sidebar-section .sidebar-section-title {
       display: none;
     }

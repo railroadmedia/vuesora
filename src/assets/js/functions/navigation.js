@@ -13,7 +13,8 @@ export default (function () {
         const searchButtons = document.querySelectorAll('.search-button');
         const searchColumn = document.getElementById('searchColumn');
         const searchBox = document.getElementById('searchBox');
-        const searchInput = document.getElementById('searchInput');
+        const searchInput = document.getElementById('search-input');
+        const toggledSearchInput = document.getElementById('toggled-search-input');
         const parentLinks = document.querySelectorAll('.parent-button');
         const subNavWrap = document.getElementById('subNavWrap');
         const scrollSubNavRight = document.getElementById('scrollSubNavRight');
@@ -55,14 +56,44 @@ export default (function () {
                 'click',
                 function(event) {
                     event.stopPropagation();
-                    sideBar.classList.toggle('collapsed');
-                    if (sideBar.classList.contains('collapsed')) {
-                        document.body.classList.add('collapsed');
+                    sideBar.classList.toggle('sidebar-collapsed');
+                    if (sideBar.classList.contains('sidebar-collapsed')) {
+                        document.body.classList.add('sidebar-collapsed');
                         document.cookie = 'collapsed=true;path=/;max-age=31536000;';
                     } else {
-                        document.body.classList.remove('collapsed');
+                        document.body.classList.remove('sidebar-collapsed');
                         document.cookie = 'collapsed=false;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
                     }
+                }
+            );
+        }
+
+        if (searchInput && toggledSearchInput) {
+            searchInput.addEventListener(
+                'change',
+                function(event) {
+                    if (searchInput.value != toggledSearchInput.value) {
+                        toggledSearchInput.value = searchInput.value;
+                    }
+                    console.log(
+                        "searchInput::[change] searchInput value: %s, toggledSearchInput value: %s",
+                        JSON.stringify(searchInput.value),
+                        JSON.stringify(toggledSearchInput.value)
+                    );
+                }
+            );
+
+            toggledSearchInput.addEventListener(
+                'change',
+                function(event) {
+                    if (toggledSearchInput.value != searchInput.value) {
+                        searchInput.value = toggledSearchInput.value;
+                    }
+                    console.log(
+                        "toggledSearchInput::[change] searchInput value: %s, toggledSearchInput value: %s",
+                        JSON.stringify(searchInput.value),
+                        JSON.stringify(toggledSearchInput.value)
+                    );
                 }
             );
         }
@@ -81,7 +112,7 @@ export default (function () {
 
         function toggleSideBar(event) {
             event.stopPropagation();
-            sideBar.classList.remove('collapsed');
+            sideBar.classList.remove('sidebar-collapsed');
 
             if (sideBar.classList.contains('mobile')) {
                 menuButton.classList.remove('active');
@@ -103,10 +134,10 @@ export default (function () {
 
                 if (searchColumn.classList.contains('active')) {
                     searchBox.classList.remove('hide-xs-only');
-                    searchInput.focus();
+                    toggledSearchInput.focus();
                 } else {
                     searchBox.classList.add('hide-xs-only');
-                    searchInput.blur();
+                    toggledSearchInput.blur();
                 }
             }
         }
