@@ -1,6 +1,6 @@
 <template>
-    <div class="coach-event container mv-4">
-        <div class="flex flex-row" v-if="content">
+    <div class="coach-event container mv-2">
+        <div class="flex flex-row flex-wrap-md" v-if="content">
             <div class="coach-event-image relative">
                 <img
                     class=""
@@ -77,7 +77,7 @@
                     ></content-schedule>
                 </div>
                 <div class="mt-2" v-if="eventIsLive">
-                    <div class="flex flex-row">
+                    <div class="flex flex-row flex-wrap-md">
                         <div class="coach-event-cta">
                             <button class="btn">
                                 <span class="text-white bg-drumeo uppercase">
@@ -200,6 +200,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../assets/sass/partials/variables';
+
 .coach-event {
     margin-bottom: 100px;
 
@@ -235,7 +237,12 @@ export default {
     }
 
     .coach-event-data {
-        margin-left: 50px;
+        margin-top: 25px;
+
+        @include medium {
+            margin-left: 50px;
+            margin-top: 0px;
+        }
 
         .live-badge,
         .viewer-count {
@@ -283,7 +290,8 @@ export default {
         }
 
         .coach-event-cta {
-            width: 217px;
+            width: 40%;
+            min-width: 145px;
         }
 
         .coach-event-cta + .coach-event-cta {

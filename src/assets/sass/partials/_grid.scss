@@ -96,6 +96,14 @@
   }
 }
 
+.flex-wrap-md {
+  flex-wrap:wrap;
+
+  @include medium {
+    flex-wrap:nowrap;
+  }
+}
+
 .flex-center {
   display:flex;
   flex-direction:column;
