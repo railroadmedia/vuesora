@@ -1,10 +1,10 @@
 <template>
     <div class="coach-event container mv-2">
         <div class="flex flex-row flex-wrap-md" v-if="content">
-            <div class="coach-event-image relative">
+            <div class="coach-event-image flex flex-column relative" v-if="!eventIsLive">
                 <img
                     class=""
-                    :src="content.thumbnail_url"
+                    :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + content.thumbnail_url"
                 >
                 <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
                 <div class="coach-event-counter flex flex-row align-center" v-if="!eventIsLive">
@@ -38,11 +38,16 @@
                     </div>
                 </div>
             </div>
+            <div class="coach-event-video flex flex-column" v-if="eventIsLive">
+                <div style="width: 100%; padding-bottom: 56.25%; position: relative;">
+                    <iframe id="player"
+                            frameborder="0" allowfullscreen="1" allow="autoplay; encrypted-media" title="YouTube video player" :src="$_iframeSource"></iframe>
+                </div>
+            </div>
             <div class="coach-event-data flex flex-column align-v-center">
                 <div class="mb-2" v-if="eventIsLive">
                     <div class="flex flex-row">
                         <div class="flex-center corners-5 bg-live text-white uppercase live-badge sans"><span>live</span></div>
-                        <div class="flex flex-row align-center ml-1 corners-5 bg-grey-4 text-white viewer-count sans"><i class="fas fa-eye"></i> <span>143</span></div>
                     </div>
                 </div>
                 <div class="mv-2">
@@ -79,19 +84,13 @@
                 <div class="mt-2" v-if="eventIsLive">
                     <div class="flex flex-row flex-wrap-md">
                         <div class="coach-event-cta">
-                            <button class="btn">
-                                <span class="text-white bg-drumeo uppercase">
-                                    watch
-                                </span>
-                            </button>
-                        </div>
-                        <div class="coach-event-cta">
-                            <button class="btn">
-                                <span class="text-drumeo bg-drumeo inverted uppercase">
-                                    <i class="far fa-plus mr-1"></i>
-                                    my list
-                                </span>
-                            </button>
+                            <a href="/members/live">
+                                <button class="btn">
+                                    <span class="text-white bg-drumeo uppercase">
+                                        watch
+                                    </span>
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -121,6 +120,7 @@ export default {
         },
         currentDateString: {
             type: String,
+            default: () => '',
         },
         subscriptionCalendarId: {
             type: String,
@@ -129,6 +129,10 @@ export default {
         timeCutoffMinutes: {
             type: Number,
             default: () => 0,
+        },
+        youtubeEventId: {
+            type: String,
+            default: () => '',
         },
     },
     data() {
@@ -145,6 +149,9 @@ export default {
 
             this.content = ContentHelpers.flattenContentObject(this.preloadedContent.data[0], true);
             this.instructor = this.content.instructor[0];
+
+            console.log(this.content.live_event_start_time);
+            console.log(this.currentDate);
 
             let startTimeCutoff = DateTime
                                     .fromSQL(this.content.live_event_start_time, { zone: 'UTC' })
@@ -178,6 +185,9 @@ export default {
 
             return this.padTwoDigits(secondsForMinutes - minutes * 60);
         },
+        $_iframeSource() {
+            return `https://www.youtube.com/embed/${  this.youtubeEventId  }?rel=0&autoplay=1&playsinline=1&modestthemeColoring=1`;
+        },
     },
     methods: {
         startCounter() {
@@ -205,9 +215,35 @@ export default {
 .coach-event {
     margin-bottom: 100px;
 
+    #player {
+        width: 100%;
+    }
+
+    .coach-event-video {
+        max-width: 915px;
+        height: 100%;
+
+        iframe {
+            height: 100%;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+
+        @include medium {
+            flex: 0 0 60%;
+        }
+
+        width: 100%;
+    }
+
     .coach-event-image {
         max-width: 915px;
         cursor: pointer;
+
+        @include medium {
+            flex: 0 0 60%;
+        }
 
         .coach-event-upcoming {
             position: absolute;
