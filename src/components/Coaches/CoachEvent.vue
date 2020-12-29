@@ -55,7 +55,7 @@
                         <div class="coach-avatar">
                             <img
                                 class="bg-grey-2 rounded drumeo"
-                                src="https://s3.amazonaws.com/pianote/defaults/avatar.png"
+                                :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,f_auto,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
                                 data-test-src="instructor.thumbnail_url"
                             >
                         </div>
