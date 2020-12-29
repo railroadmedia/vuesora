@@ -8,8 +8,8 @@ export default class CoachStreamModel extends ContentModel {
         });
 
         this.list.column_data = [
-            ContentModel.mapDifficulty(this.post),
-            this.getPostDuration(),
+            // ContentModel.mapDifficulty(this.post),
+            // this.getPostDuration(),
             this.postPublisedOn, // todo - may be remaped to live event start
         ];
     }
