@@ -200,7 +200,11 @@ export default {
         },
 
         padTwoDigits(number) {
-            return ('0' + number).slice(-2)
+            if (number < 100) {
+                return ('0' + number).slice(-2);
+            } else {
+                return number;
+            }
         },
     },
 }
