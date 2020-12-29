@@ -4,7 +4,7 @@
             <div class="coach-event-image flex flex-column relative" v-if="!eventIsLive">
                 <img
                     class=""
-                    :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + (content.thumbnail_url ? content.thumbnail_url : instructor.thumbnail_url)"
+                    :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
                 >
                 <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
                 <div class="coach-event-counter flex flex-row align-center" v-if="!eventIsLive">
