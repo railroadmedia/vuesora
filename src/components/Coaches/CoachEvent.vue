@@ -4,7 +4,7 @@
             <div class="coach-event-image flex flex-column relative" v-if="!eventIsLive">
                 <img
                     class=""
-                    :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + content.thumbnail_url"
+                    :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + (content.thumbnail_url ? content.thumbnail_url : instructor.thumbnail_url)"
                 >
                 <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
                 <div class="coach-event-counter flex flex-row align-center" v-if="!eventIsLive">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="coach-event-details mv-2">
                     <h3 class="heading sans font-bold capitalize">{{ content.title }}</h3>
-                    <div class="coach-event-description mv-2">{{ content.description }}</div>
+                    <div class="coach-event-description mv-2" v-html="content.description"></div>
                 </div>
                 <div v-if="!eventIsLive">
                     <div class="coach-event-subscribe">
@@ -149,9 +149,6 @@ export default {
 
             this.content = ContentHelpers.flattenContentObject(this.preloadedContent.data[0], true);
             this.instructor = this.content.instructor[0];
-
-            console.log(this.content.live_event_start_time);
-            console.log(this.currentDate);
 
             let startTimeCutoff = DateTime
                                     .fromSQL(this.content.live_event_start_time, { zone: 'UTC' })
