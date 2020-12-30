@@ -121,6 +121,8 @@ $secondary:#42b983;
 // Brand Colors
 $drumeoBlue:#0B76DB;
 $guitareoGreen:#00C9AC;
+$guitareoGuitarQuestYellow:#FFB500;
+$guitareoGuitarQuestGray:#313131;
 $pianoteRed:#F61A30;
 $pianoteGreen:#232e31;
 $recordeoYellow:#FFAE00;
@@ -128,6 +130,7 @@ $recordeoYellow:#FFAE00;
 $brand_colors: (
   drumeo: $drumeoBlue,
   guitareo: $guitareoGreen,
+  guitareoGuitarQuest: $guitareoGuitarQuestYellow,
   pianote: $pianoteRed,
   recordeo: $recordeoYellow
 );
