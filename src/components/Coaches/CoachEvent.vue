@@ -8,7 +8,10 @@
                 >
                 <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
                 <div class="coach-event-counter flex flex-row align-center" v-if="!eventIsLive">
-                    <div class="coach-event-counter-inner text-white flex flex-row align-center">
+                    <div
+                        class="coach-event-counter-inner text-white flex flex-row align-center"
+                        style="background-color:rgba(0, 0, 0, 0.5); padding: 10px;"
+                    >
                         <div class="ph-1">
                             <div class="flex flex-column align-center">
                                 <div class="event-counter-number dense font-bold"><span>{{ $_hours }}</span></div>
@@ -100,9 +103,9 @@
 </template>
 
 <script>
-import { Content as ContentHelpers } from '@musora/helper-functions';
+import {Content as ContentHelpers} from '@musora/helper-functions';
 import ContentSchedule from '../../views/schedule/Schedule.vue';
-import { DateTime } from 'luxon';
+import {DateTime} from 'luxon';
 
 export default {
     components: {
