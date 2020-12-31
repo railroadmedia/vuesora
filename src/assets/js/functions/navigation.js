@@ -42,7 +42,7 @@ export default (function () {
             }
         });
 
-        if (menuButton) {
+        if (menuButton && sidebarClose) {
             menuButton.addEventListener('click', toggleSideBar);
             backgroundOverlay.addEventListener('click', closeEverything);
             navSideBar.addEventListener('click', (event) => {
