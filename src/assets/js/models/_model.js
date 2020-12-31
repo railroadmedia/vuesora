@@ -1,10 +1,12 @@
 import ChordsAndScalesModel from './chords-and-scales';
+import CoachStreamModel from './coach-stream';
 import CourseModel from './course';
 import CoursePartModel from './course-part';
 import LearningPathModel from './learning-path';
 import LearningPathLevelModel from './learning-path-level';
 import LearningPathCourseModel from './learning-path-course';
 import LearningPathPartModel from './learning-path-part';
+import LearningPathLessonModel from './learning-path-lesson';
 import PackBundleModel from './pack-bundle';
 import PackBundleLessonModel from './pack-bundle-lesson';
 import PlayAlongModel from './play-along';
@@ -43,7 +45,7 @@ export default class ContentTypeModel {
         case 'learning-path': return new LearningPathModel({ brand, post });
         case 'learning-path-level': return new LearningPathLevelModel({ brand, post });
         case 'learning-path-course': return new LearningPathCourseModel({ brand, post });
-        case 'learning-path-lesson': return new LearningPathPartModel({ brand, post });
+        case 'learning-path-lesson': return new LearningPathLessonModel({ brand, post });
         case 'learning-path-part': return new LearningPathPartModel({ brand, post });
         case 'pack-bundle': return new PackBundleModel({ brand, post });
         case 'pack-bundle-lesson': return new PackBundleLessonModel({ brand, post });
@@ -61,6 +63,7 @@ export default class ContentTypeModel {
         case 'question-and-answer': return new QnaModel({ brand, post });
         case 'unit': return new UnitContentModel({ brand, post });
         case 'unit-part': return new UnitPartModel({ brand, post });
+        case 'coach-stream': return new CoachStreamModel({ brand, post });
         default: return new ContentModel({ brand, post });
         }
     }

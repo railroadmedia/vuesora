@@ -12,7 +12,7 @@ export default class LearningPathCourseContentModel extends ContentModel {
         this.list.color_title = null;
         this.list.column_data = [
             this.postChildLessonCount,
-            `${this.getPostField('xp')} xp`,
+            `${this.post.total_xp} xp`,
         ];
         this.list.description = this.getPostDatum('description');
     }

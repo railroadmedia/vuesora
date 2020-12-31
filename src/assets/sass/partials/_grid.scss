@@ -96,6 +96,14 @@
   }
 }
 
+.flex-wrap-md {
+  flex-wrap:wrap;
+
+  @include medium {
+    flex-wrap:nowrap;
+  }
+}
+
 .flex-center {
   display:flex;
   flex-direction:column;
@@ -105,6 +113,10 @@
 
 .flex-auto {
   flex:0 0 auto;
+}
+
+.flex-none {
+  flex: none;
 }
 
 .spacer {

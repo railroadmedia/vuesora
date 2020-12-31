@@ -15,7 +15,7 @@ export default class LearningPathLevelContentModel extends ContentModel {
         this.list.grey_title = `with ${this.parseInstructors()}`;
         this.list.column_data = [
             this.postChildLessonCount,
-            `${this.getPostField('xp')} xp`,
+            `${this.post.total_xp} xp`,
         ];
         this.list.description = this.getPostDatum('description');
     }
@@ -29,6 +29,10 @@ export default class LearningPathLevelContentModel extends ContentModel {
     }
 
     getThumbLogo() {
+        if (this.brand === 'pianote') {
+            return 'https://d2vyvo0tyx8ig5.cloudfront.net/icons/pianote-method.png';
+        }
+
         return 'https://dpwjbsxqtam5n.cloudfront.net/pack-logos/drumeo-method-logo.png';
     }
 }

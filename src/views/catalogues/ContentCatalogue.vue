@@ -22,6 +22,7 @@
             v-if="filterableValues.length"
             :filters="filters"
             :filterable-values="filterableValues"
+            :filters-labels="filtersLabels"
             :required-user-states="required_user_states"
             :filter-params="filter_params"
             :loading="loading"
@@ -34,7 +35,7 @@
 
         <div
             v-if="content.length === 0 && noResultsMessage.length > 0"
-            class="flex flex-row ph pv-3 align-v-center"
+            class="flex flex-row pv-3 align-v-center"
         >
             <div class="flex flex-column icon-col face-icon mr-1">
                 <div
@@ -196,6 +197,10 @@ export default {
         filterableValues: {
             type: Array,
             default: () => [],
+        },
+        filtersLabels:{
+            type: Object,
+            default: () => ({}),
         },
         paginate: {
             type: Boolean,

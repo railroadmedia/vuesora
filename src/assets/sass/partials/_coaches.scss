@@ -1,0 +1,72 @@
+@import './_variables.scss';
+
+.svg-icon.text-drumeo {
+  fill: $drumeoBlue;
+}
+
+.coaches-subscribe {
+  max-width: 325px;
+}
+
+.coaches-cards-container {
+  justify-content: left;
+}
+
+.coach-card {
+  width: 358px;
+  height: 202px;
+  margin: 3px;
+}
+
+.coach-card-inner {
+  overflow: hidden;
+
+  .coach-card-overlay {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    -moz-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    -o-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    background: rgba(0,0,0,0.5);
+  }
+
+  &:hover .coach-card-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .coach-data {
+    position: absolute;
+    top: 41%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    background-color: rgba(50, 50, 50, .1) ;
+    transition: max-height 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    max-height: 130px;
+    z-index: 10;
+    opacity: 0;
+
+    button.btn {
+      width: 150px;
+
+      > span {
+        height: 35px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  &:hover .coach-data {
+    opacity: 100;
+    display: flex;
+    flex-direction: column;
+  }
+}

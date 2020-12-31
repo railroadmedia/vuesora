@@ -118,7 +118,7 @@ export default class ContentModel {
         const icon = ContentHelpers.getContentTypeIcon(this.post.type);
         const type = this.postType;
 
-        if (type === 'song') {
+        if (type === 'song' && this.post.brand !== 'guitareo') {
             return `${this.getPostField('artist')}`;
         }
 
@@ -161,6 +161,10 @@ export default class ContentModel {
         const difficultyField = post.fields.find(field => field.key === 'difficulty');
         const difficulty = difficultyField ? difficultyField.value : null;
 
+        if (!difficulty) {
+            return '';
+        }
+
         if (difficulty <= 3) {
             return `beginner ${difficulty}`;
         }
@@ -172,7 +176,7 @@ export default class ContentModel {
         }
         // Some content has difficulty already parsed as a word so we return that,
         // if its falsey, just default it to 'TBD'
-        return difficulty || 'TBD';
+        return difficulty || '';
     }
 
     parseInstructors() {

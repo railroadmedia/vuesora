@@ -15,7 +15,7 @@ export default class LearningPathPartContentModel extends ContentModel {
         this.list.description = this.getPostDatum('description');
         this.list.column_data = [
             this.getPostDuration(),
-            `${this.getPostField('xp')} XP`,
+            `${this.post.total_xp} XP`,
         ];
 
         if (this.brand === 'guitareo' || this.brand === 'pianote') {
