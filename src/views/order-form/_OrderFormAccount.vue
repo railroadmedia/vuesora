@@ -23,7 +23,7 @@
                                name="billing-email"
                                class="order-form-input"
                                :class="{ 'has-error': errors.accountEmail.length,
-                               'has-input': $_accountEmail != null }"
+                                         'has-input': $_accountEmail != null }"
                                v-model.lazy="$_accountEmail">
 
                         <label for="billingEmail"
@@ -95,7 +95,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-column xs-12 sm-6 ph-1 mb-1">
+                    <div class="flex flex-column xs-12 ph-1 mb-1">
                         <div class="form-group">
                             <input
                                 id="newAccountPassword"
@@ -104,16 +104,17 @@
                                 name="account-creation-password"
                                 class="order-form-input"
                                 :class="{ 'has-error': errors.accountPassword.length,
-                                          'has-input': $_accountPassword != null }"
+                                          'has-input': $_accountPassword != null, 
+                                          'soft-error': password_focussed }"
+                                @focus="password_focussed = true"
+                                @blur="password_focussed = false"
                             >
-
                             <label
                                 for="newAccountPassword"
                                 :class="brand"
                             >
                                 Password
                             </label>
-
                             <ul class="errors tiny">
                                 <li
                                     v-for="(error, i) in errors.accountPassword"
@@ -124,42 +125,7 @@
                             </ul>
                         </div>
                     </div>
-
-                    <div class="flex flex-column xs-12 sm-6 ph-1 mb-1">
-                        <div class="form-group">
-                            <input
-                                id="newAccountPasswordConfirm"
-                                v-model="$_accountPasswordConfirm"
-                                type="password"
-                                class="order-form-input"
-                                :class="{ 'has-error': errors.accountPasswordConfirm.length,
-                                          'has-input': $_accountPasswordConfirm != null }"
-                            >
-
-                            <label
-                                for="newAccountPasswordConfirm"
-                                :class="brand"
-                            >
-                                Confirm Password
-                            </label>
-
-                            <ul class="errors tiny">
-                                <li
-                                    v-for="(error, i) in errors.accountPasswordConfirm"
-                                    :key="'accountPasswordConfirmError' + i"
-                                >
-                                    {{ error || null }}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
-
-                <!--                <a :href="loginUrl"-->
-                <!--                   title="Forgot your password"-->
-                <!--                   class="tiny color-blue font-underline text-grey-3">-->
-                <!--                    Forgot your password?-->
-                <!--                </a>-->
             </div>
         </div>
 
@@ -222,7 +188,6 @@ export default {
                 billingEmail: null,
                 accountEmail: null,
                 accountPassword: null,
-                accountPasswordConfirm: null,
             }),
         },
 
@@ -243,25 +208,20 @@ export default {
     },
     data() {
         return {
+            password_focussed: false, 
             rules: {
                 accountEmail: [
                     v => !!v || 'Email is required.',
-                    v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Must be a valid email',
+                    v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Must be a valid email.',
                 ],
                 accountPassword: [
                     v => !!v || 'Password is required.',
                     v => !!v && v.length >= 8 || 'Password must be 8 characters or more.',
-                    v => v === this.$_accountPasswordConfirm || 'Passwords must match.',
-                ],
-                accountPasswordConfirm: [
-                    v => !!v || 'Password is required.',
-                    v => v === this.$_accountPassword || 'Passwords must match.',
                 ],
             },
             errors: {
                 accountEmail: [],
                 accountPassword: [],
-                accountPasswordConfirm: [],
             },
         };
     },
@@ -309,32 +269,18 @@ export default {
                     key: 'accountPassword',
                     value,
                 });
-
-                // If the other password input has a value - validate it at the same time
-                if (this.$_accountPasswordConfirm != null) {
-                    this.validateInput('accountPasswordConfirm', this.$_accountPasswordConfirm);
-                }
-            },
-        },
-
-        $_accountPasswordConfirm: {
-            get() {
-                return this.accountDetails.accountPasswordConfirm;
-            },
-            set(value) {
-                this.validateInput('accountPasswordConfirm', value);
-
-                this.$emit('updateAccountData', {
-                    key: 'accountPasswordConfirm',
-                    value,
-                });
-
-                // If the other password input has a value - validate it at the same time
-                if (this.$_accountPassword != null) {
-                    this.validateInput('accountPassword', this.$_accountPassword);
-                }
             },
         },
     },
 };
 </script>
+<style lang="scss"> 
+    input[type='password'].has-error.soft-error,
+    input[type='password'].has-error.soft-error ~ .errors {
+        border-color: #0B76DB;
+    }
+    input[type='password'].has-error.soft-error ~ label.drumeo,
+    input[type='password'].has-error.soft-error ~ .errors {
+        color: #0B76DB !important;
+    }
+</style>

@@ -1,13 +1,15 @@
 <template>
     <div class="flex flex-column mb-2">
-        <div class="flex flex-column">
-            <div class="flex flex-row flex-wrap align-v-center nmh-1">
-                <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
+        <payment-svg></payment-svg>
+
+        <div class="flex flex-column bg-white corners-5 pt-1 nmh-1">
+            <div class="flex flex-row flex-wrap align-v-center">
+                <div class="flex flex-column xs-12 sm-6 ph-1 pr-2 mb-1">
                     <div class="form-group">
                         <select
                             id="paymentMethodType"
                             v-model.lazy="$_paymentMethod"
-                            class="order-form-input"
+                            class="order-form-input has-input"
                         >
                             <option value="credit_card">
                                 Credit Card
@@ -26,22 +28,22 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column xs-12 sm-6 mb-2 overflow">
-                    <div class="flex flex-row">
-                        <div class="ph-1">
-                            <i class="fab fa-cc-visa cc-icon"></i>
-                        </div>
-
-                        <div class="ph-1">
-                            <i class="fab fa-cc-mastercard cc-icon"></i>
-                        </div>
-
-                        <div class="ph-1">
-                            <i class="fab fa-cc-amex cc-icon"></i>
-                        </div>
-
-                        <div class="ph-1">
-                            <i class="fab fa-cc-paypal cc-icon"></i>
+                <div class="flex flex-column xs-12 sm-6 ph-1 pr-2 mb-1">
+                    <div 
+                        class="flex flex-row payment-types flex-wrap"
+                        :class="{ 'payment-selected': paymentSelected }"
+                    >
+                        <div 
+                            v-for="(type,i) in paymentTypes"
+                            :key="i"
+                            class="mr-1 payment-type"
+                            :class="{ 'type-selected': type.selected }"
+                            @click="selectPaymentType(i)"
+                        >
+                            <svg-icon 
+                                :icon-name="type.name" 
+                                width="60px"
+                            ></svg-icon>
                         </div>
                     </div>
                 </div>
@@ -50,7 +52,7 @@
             <!-- v-show is used to keep the stripe elements iframes loaded but hidden, using v-if would require re-initialization -->
             <div
                 v-show="$_paymentMethod === 'credit_card'"
-                class="flex flex-row flex-wrap nmh-1"
+                class="flex flex-row flex-wrap"
             >
                 <div class="flex flex-column xs-12 sm-6 ph-1 mb-2">
                     <div class="form-group">
@@ -59,14 +61,12 @@
                             class="stripe-element-container order-form-input"
                         >
                         </div>
-
                         <label
                             for="card-number"
                             :class="brand"
                         >
                             Card Number
                         </label>
-
                         <ul class="errors tiny">
                             <li
                                 v-for="(error, i) in errors.cardNumber"
@@ -87,14 +87,12 @@
                                     class="stripe-element-container order-form-input"
                                 >
                                 </div>
-
                                 <label
                                     for="card-number"
                                     :class="brand"
                                 >
                                     Expiry (MM / YY)
                                 </label>
-
                                 <ul class="errors tiny">
                                     <li
                                         v-for="(error, i) in errors.cardExpiry"
@@ -113,14 +111,12 @@
                                     class="stripe-element-container order-form-input"
                                 >
                                 </div>
-
                                 <label
                                     for="card-number"
                                     :class="brand"
                                 >
                                     CVC
                                 </label>
-
                                 <ul class="errors tiny">
                                     <li
                                         v-for="(error, i) in errors.cardCvc"
@@ -135,9 +131,9 @@
                 </div>
             </div>
 
-            <div class="flex flex-row flex-wrap nmh-1 mb-2">
+            <div class="flex flex-row flex-wrap mb-2">
                 <div
-                    class="flex flex-column xs-12 ph-1 mb-2"
+                    class="flex flex-column xs-12 ph-1 pb-2"
                     :class="$_billingCountry === 'Canada' ? 'sm-6' : ''"
                 >
                     <div class="form-group">
@@ -154,14 +150,12 @@
                                 {{ country }}
                             </option>
                         </select>
-
                         <label
                             for="billingCountry"
                             :class="brand"
                         >
                             Country
                         </label>
-
                         <ul class="errors tiny">
                             <li
                                 v-for="(error, i) in errors.billingCountry"
@@ -192,14 +186,12 @@
                                 {{ toCapitalCase(province) }}
                             </option>
                         </select>
-
                         <label
                             for="billingRegion"
                             :class="brand"
                         >
                             State/Province
                         </label>
-
                         <ul class="errors tiny">
                             <li
                                 v-for="(error, i) in errors.billingRegion"
@@ -226,31 +218,6 @@
                 class="flex flex-row mb-1"
             >
                 <div class="flex flex-column ph-1">
-                    <!--                    <div-->
-                    <!--                        v-if="showCheckbox"-->
-                    <!--                        class="flex flex-row form-group align-v-center mb-2"-->
-                    <!--                    >-->
-                    <!--                        <span class="toggle-input mr-1">-->
-                    <!--                            <input-->
-                    <!--                                id="subscriptionCheck"-->
-                    <!--                                name="subscription-check"-->
-                    <!--                                v-model="$_subscriptionCheck"-->
-                    <!--                                type="checkbox"-->
-                    <!--                            >-->
-
-                    <!--                            <span class="toggle">-->
-                    <!--                                <span class="handle"></span>-->
-                    <!--                            </span>-->
-                    <!--                        </span>-->
-
-                    <!--                        <label-->
-                    <!--                            for="subscriptionCheck"-->
-                    <!--                               class="toggle-label capitalize"-->
-                    <!--                        >-->
-                    <!--                            Set as default payment method-->
-                    <!--                        </label>-->
-                    <!--                    </div>-->
-
                     <div
                         v-if="hasSubscription"
                         class="flex flex-row form-group align-v-center mb-2"
@@ -341,10 +308,8 @@
                             </div>
                         </div>
                     </div>
-                  
-
                     <div class="flex flex-row flex-wrap align-h-right align-v-center">
-                        <div class="flex flex-column xs-6 sm-4 pr-1">
+                        <div class="flex flex-column xs-6 sm-4 mb-2 pr-1">
                             <button
                                 class="btn short close-modal"
                                 @click="cancelForm"
@@ -354,8 +319,7 @@
                                 </span>
                             </button>
                         </div>
-
-                        <div class="flex flex-column xs-6 sm-4 pl-1">
+                        <div class="flex flex-column xs-6 sm-4 mb-2 pl-1">
                             <button
                                 class="btn"
                                 @click="submitForm"
@@ -378,14 +342,19 @@
 import Utils from '@musora/helper-functions/modules/utils';
 import Validation from './_validation';
 import ThemeClasses from '../../mixins/ThemeClasses';
+import PaymentSVG from '../../components/SVGSprites/_PaymentSVG.vue';
+import SVGIcon from '../../components/SVGIcon/_SVGIcon.vue';
 
 export default {
     name: 'OrderFormPayment',
+    components: {
+        'payment-svg': PaymentSVG,
+        'svg-icon': SVGIcon,
+    },
     mixins: [Validation, ThemeClasses],
     props: {
         brand: {
             type: String,
-            default: () => 'drumeo',
         },
 
         paymentDetails: {
@@ -451,6 +420,7 @@ export default {
             cardNumberElement: null,
             cardExpiryElement: null,
             cardCvcElement: null,
+            paymentSelected: false,
             errors: {
                 methodType: [],
                 billingCountry: [],
@@ -459,15 +429,22 @@ export default {
                 cardExpiry: [],
                 cardCvc: [],
             },
+            paymentTypes: [
+                { name: 'visa', type: 'credit_card', selected: false },
+                { name: 'mastercard', type: 'credit_card', selected: false },
+                { name: 'discover', type: 'credit_card', selected: false },
+                { name: 'american-express', type: 'credit_card', selected: false },
+                { name: 'paypal', type: 'paypal', selected: false },
+            ],
             rules: {
                 methodType: [
-                    v => !!v || 'Payment Method Type is required',
+                    v => !!v || 'Payment Method Type is required.',
                 ],
                 billingCountry: [
-                    v => !!v || 'Country is required',
+                    v => !!v || 'Country is required.',
                 ],
                 billingRegion: [
-                    v => !!v || 'State/Province is required',
+                    v => !!v || 'State/Province is required.',
                 ],
             },
             subscriptionCheck: false,
@@ -568,6 +545,16 @@ export default {
             }, 200);
         },
 
+        selectPaymentType(i) {
+            this.paymentSelected = true;
+            this.paymentTypes.forEach((type) => {
+                // clear all first
+                type.selected = false;
+            });
+            this.paymentTypes[i].selected = true;
+            this.$_paymentMethod = this.paymentTypes[i].type;
+        },
+
         initStripeElements() {
             this.stripe = Stripe(this.stripePublishableKey);
 
@@ -625,8 +612,23 @@ export default {
 };
 </script>
 <style lang="scss">
+    .payment-type {
+      cursor: pointer; 
+      transition: .1s linear opacity; 
+    }
+    .payment-types.payment-selected .payment-type,
+    .payment-types:hover .payment-type {
+        opacity: .3;
+    }
+    .payment-types.payment-selected .payment-type.type-selected,
+    .payment-types:hover .payment-type:hover {
+        opacity: 1;
+    }
     .cc-icon {
         font-size: 55px;
         line-height: 50px;
+    }
+    .stripe-element-container.StripeElement--invalid + label.drumeo{
+        color: #F71B26;
     }
 </style>

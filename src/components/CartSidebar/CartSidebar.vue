@@ -14,7 +14,7 @@
             <div class="csb-guarantee">
                 <div>
                     <i class="fas fa-check-circle" :class="brand"></i>
-                    <span>All of our drum lessons are backed by a 90-day guarantee.</span>
+                    <span>All of our lessons are backed by a 90-day guarantee.</span>
                 </div>
             </div>
             <div id="csb-products-container" v-show="cartItems">
@@ -27,6 +27,7 @@
                             :key="item.sku"
                             :item="item"
                             :loading="loading"
+                            :locked="locked"
                             @removeCartItem="removeCartItem"
                             @updateCartItemQuantity="updateCartItemQuantity"
                         ></cart-item>
@@ -47,8 +48,20 @@
                 <div class="summary-container-inner">
                     <div class="summary-row">
                         <div class="summary">Subtotal</div>
-                        <div class="due">
-                            <span v-if="cartTotals">${{ parseTotal(cartTotals.due - cartTotals.tax + sumOfDiscounts() - cartTotals.shipping) }}</span>
+                        <div v-if="subTotalBeforeDiscounts() !== subTotalAfterDiscounts()" class="due">
+                            <span v-if="cartTotals">
+                                <s style="font-weight: normal; color: #666;">${{ parseTotal(subTotalBeforeDiscounts()) }}</s>
+                                <span>&nbsp;&nbsp; ${{ parseTotal(subTotalAfterDiscounts()) }}</span>
+                            </span>
+                        </div>
+                        <div v-if="subTotalBeforeDiscounts() === subTotalAfterDiscounts()" class="due">
+                            <span v-if="cartTotals">${{ parseTotal(subTotalAfterDiscounts()) }}</span>
+                        </div>
+                    </div>
+                    <div v-if="sumOfDiscounts() > 0" class="summary-row">
+                        <div class="summary">My Savings</div>
+                        <div class="savings">
+                            <span v-if="cartTotals">-${{ parseTotal(sumOfDiscounts()) }}</span>
                         </div>
                     </div>
                     <div class="summary-row">
@@ -64,10 +77,10 @@
             <div class="checkout">
                 <a href="/order" :class="brand"><i class="fas fa-lock"></i>checkout</a>
             </div>
-            <div class="recommended-title">
+            <div v-if="!locked" class="recommended-title">
                 <div>customers also liked</div>
             </div>
-            <div class="recommended-products" v-if="cartItems">
+            <div class="recommended-products" v-if="cartItems && !locked">
                 <div class="recommended-products-wrapper">
                     <recommended-product
                         v-for="item in recommendedProducts"
@@ -109,6 +122,7 @@ export default {
     data() {
         return {
             active: false,
+            locked: false,
             cartItems: null,
             bonusItems: null,
             cartTotals: null,
@@ -116,6 +130,7 @@ export default {
             discounts: [],
             simpleBar: null,
             loading: false,
+            scrollTop: false,
         };
     },
     mounted() {
@@ -151,15 +166,17 @@ export default {
             this.cartTotals = cartData.meta.cart.totals;
             this.discounts = cartData.meta.cart.discounts;
             this.bonusItems = cartData.meta.cart.bonuses ? cartData.meta.cart.bonuses : [];
+            this.locked = cartData.meta.cart.locked;
 
             setTimeout(() => {
-                // console.log('before recalculate');
                 this.simpleBar.recalculate();
-                // console.log('after recalculate');
-                this.simpleBar.getScrollElement().scroll({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                if (this.scrollTop) {
+                    this.scrollTop = false;
+                    this.simpleBar.getScrollElement().scroll({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
             }, 10);
         },
 
@@ -217,6 +234,8 @@ export default {
                     payload['locked'] = lockedCart;
                 }
 
+                this.scrollTop = true;
+
                 return EcommerceService
                     .addCartItems(payload)
                     .then(this.handleCartUpdate)
@@ -272,13 +291,43 @@ export default {
         },
 
         sumOfDiscounts() {
-            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+            return this.subTotalBeforeDiscounts() - this.subTotalAfterDiscounts();
+        },
 
-            if (this.discounts.length) {
-                return this.discounts.reduce(reducer);
+        subTotalBeforeDiscounts() {
+            let subTotalBeforeDiscounts = 0;
+
+            if (this.cartItems) {
+                this.cartItems.forEach((item) => {
+                    subTotalBeforeDiscounts += item.price_before_discounts;
+                });
             }
 
-            return 0;
+            if (this.bonusItems) {
+                this.bonusItems.forEach((item) => {
+                    subTotalBeforeDiscounts += item.price_before_discounts;
+                });
+            }
+
+            return subTotalBeforeDiscounts;
+        },
+
+        subTotalAfterDiscounts() {
+            let subTotalAfterDiscounts = 0;
+
+            if (this.cartItems) {
+                this.cartItems.forEach((item) => {
+                    subTotalAfterDiscounts += item.price_after_discounts;
+                });
+            }
+
+            if (this.bonusItems) {
+                this.bonusItems.forEach((item) => {
+                    subTotalAfterDiscounts += item.price_after_discounts;
+                });
+            }
+
+            return subTotalAfterDiscounts;
         },
 
         handleError() {
@@ -351,6 +400,9 @@ export default {
     &.active {
         right: 0;
     }
+    h5 {
+        font-family: 'Open Sans', sans-serif;
+    }
     .top {
         padding: 10px 15px 10px 0;
         position: relative;
@@ -406,6 +458,10 @@ export default {
                     font-weight: 700;
                     font-size: 14px;
                 }
+                .savings {
+                    color: #F71B26;
+                    font-size: 14px;
+                }
                 .deferred {
                     font-size: 14px;
                     font-style: italic;
@@ -416,6 +472,7 @@ export default {
     .checkout {
         margin-right: 15px;
         text-align: center;
+        margin-bottom: 60px;
         a {
             color: #FFF;
             padding: 12px;
@@ -468,7 +525,7 @@ export default {
 #csb-products-container {
     overflow: hidden;
     position: relative;
-    height: 300px;
+    height: 345px;
 
     .border-top {
         border-top: 1px solid #CCD3D3;
@@ -476,7 +533,7 @@ export default {
     }
 
     .csb-products-inner {
-        height: 300px;
+        height: 345px;
         padding-right: 15px;
 
         .csb-products-wrapper {

@@ -5,8 +5,17 @@
                 <p class="flex flex-column body text-left">
                     Subtotal
                 </p>
-                <p class="flex flex-column body text-right">
-                    ${{ parseTotal(totals.due - totals.tax + sumOfDiscounts - totals.shipping) }}
+                <p
+                   v-if="subTotalBeforeDiscounts !== subTotalAfterDiscounts"
+                   class="flex flex-column body text-right"
+                >
+                    <span><s style="font-weight: normal; color: #666;">${{ parseTotal(subTotalBeforeDiscounts) }}</s><span class="font-bold">&nbsp;&nbsp; ${{ parseTotal(subTotalAfterDiscounts) }}</span></span>
+                </p>
+                <p
+                   v-if="subTotalBeforeDiscounts === subTotalAfterDiscounts"
+                   class="flex flex-column body text-right"
+                >
+                    ${{ parseTotal(subTotalAfterDiscounts) }}
                 </p>
             </div>
 
@@ -77,22 +86,53 @@ export default {
             type: Array,
             default: () => [],
         },
+
+        cartData: {
+            type: Object,
+            default: () => {},
+        },
     },
 
     computed: {
+
         sumOfDiscounts() {
-            const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
-            if (this.discounts.length) {
-                return this.discounts.reduce(reducer);
-            }
-
-            return 0;
+            return this.subTotalBeforeDiscounts - this.subTotalAfterDiscounts;
         },
 
-        totalSubtotal() {
-            const total = this.totals.subtotal || 0;
-            return this.totals.subtotal.toFixed(2);
+        subTotalBeforeDiscounts() {
+            let subTotalBeforeDiscounts = 0;
+
+            if (this.cartData.items) {
+                this.cartData.items.forEach((item) => {
+                    subTotalBeforeDiscounts += item.price_before_discounts;
+                });
+            }
+
+            if (this.cartData.bonuses) {
+                this.cartData.bonuses.forEach((item) => {
+                    subTotalBeforeDiscounts += item.price_before_discounts;
+                });
+            }
+
+            return subTotalBeforeDiscounts;
+        },
+
+        subTotalAfterDiscounts() {
+            let subTotalAfterDiscounts = 0;
+
+            if (this.cartData.items) {
+                this.cartData.items.forEach((item) => {
+                    subTotalAfterDiscounts += item.price_after_discounts;
+                });
+            }
+
+            if (this.cartData.bonuses) {
+                this.cartData.bonuses.forEach((item) => {
+                    subTotalAfterDiscounts += item.price_after_discounts;
+                });
+            }
+
+            return subTotalAfterDiscounts;
         },
 
         totalDue() {

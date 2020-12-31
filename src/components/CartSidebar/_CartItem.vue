@@ -9,7 +9,7 @@
         <div class="csb-details">
             <div class="csb-title"><a :href="this.item.sales_page_url">{{ item.name }}</a></div>
             <div class="middle-container">
-                <div class="csb-quantity" v-if="!item.is_digital && !isBonus && item.quantity">
+                <div class="csb-quantity" v-if="!item.is_digital && !isBonus && item.quantity && !locked">
                     <div class="csb-quantity-label">Qty:</div>
                     <div class="csb-quantity-control">
                         <div class="csb-quantity-dec" @click.stop.prevent="decQuantity"><i class="fal fa-minus"></i></div>
@@ -29,7 +29,7 @@
                     <product-price :item="item" :brand="brand"></product-price>
                 </div>
             </div>
-            <div class="item-remove" v-if="!isBonus"><a href="#" @click.stop.prevent="remove">Remove</a></div>
+            <div class="item-remove" v-if="!isBonus && !locked"><a href="#" @click.stop.prevent="remove">Remove</a></div>
         </div>
     </div>
 </template>
@@ -49,6 +49,10 @@ export default {
             default: () => false,
         },
         isBonus: {
+            type: Boolean,
+            default: () => false,
+        },
+        locked: {
             type: Boolean,
             default: () => false,
         },
@@ -139,6 +143,7 @@ export default {
 </script>
 
 <style lang="scss">
+    @import '../../assets/sass/partials/_variables.scss';
 .cart-item-container {
     display: flex;
     flex-direction: row;
@@ -216,6 +221,7 @@ export default {
                             align-items: center;
                             text-align: center;
                             color: #8B929A;
+                            box-shadow: none;
                         }
                     }
                 }
@@ -227,12 +233,14 @@ export default {
     }
     .image-container {
         position: relative;
-        width: 80px;
-        height: 80px;
-        a {
-            display: inline-block;
+        width: 70px;
+        height: 70px;
+        @include medium {
             width: 80px;
             height: 80px;
+        }
+        a {
+            display: inline-block;
             text-decoration: none;
             .item-thumbnail {
                 object-fit: cover;

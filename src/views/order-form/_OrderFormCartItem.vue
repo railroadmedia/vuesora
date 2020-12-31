@@ -37,7 +37,7 @@
                                 min="1"
                                 max="99"
                                 class="no-label text-center"
-                                style="border:none;background:none;"
+                                style="border:none;background:none;padding: 0px 15px 0px 15px"
                             >
                         </div>
 
