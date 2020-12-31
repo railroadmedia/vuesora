@@ -642,6 +642,10 @@ export default {
         bottom:0;
         z-index:97;
 
+        @include medium {
+            left:250px;
+        }
+
         @include large {
             top:65px;
         }
