@@ -392,12 +392,52 @@ button.btn.page-button > span {
     min-width: 100px;
 }
 }
+/**
+* Make a horizontal gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+/**
+* Make a vertical gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
 .coach-event {
   margin-bottom: 100px;
+}
+.coach-event #player {
+  width: 100%;
+}
+.coach-event .coach-event-video {
+  max-width: 915px;
+  height: 100%;
+  width: 100%;
+}
+.coach-event .coach-event-video iframe {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+@media screen and (min-width: 64rem) {
+.coach-event .coach-event-video {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 60%;
+            flex: 0 0 60%;
+}
 }
 .coach-event .coach-event-image {
   max-width: 915px;
   cursor: pointer;
+}
+@media screen and (min-width: 64rem) {
+.coach-event .coach-event-image {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 60%;
+            flex: 0 0 60%;
+}
 }
 .coach-event .coach-event-image .coach-event-upcoming {
   position: absolute;
@@ -422,7 +462,13 @@ button.btn.page-button > span {
   font-size: 12px;
 }
 .coach-event .coach-event-data {
-  margin-left: 50px;
+  margin-top: 25px;
+}
+@media screen and (min-width: 64rem) {
+.coach-event .coach-event-data {
+    margin-left: 50px;
+    margin-top: 0px;
+}
 }
 .coach-event .coach-event-data .live-badge,
 .coach-event .coach-event-data .viewer-count {
@@ -461,7 +507,8 @@ button.btn.page-button > span {
   max-width: 300px;
 }
 .coach-event .coach-event-data .coach-event-cta {
-  width: 217px;
+  width: 40%;
+  min-width: 145px;
 }
 .coach-event .coach-event-data .coach-event-cta + .coach-event-cta {
   margin-left: 20px;
