@@ -6,6 +6,7 @@ import LearningPathModel from './learning-path';
 import LearningPathLevelModel from './learning-path-level';
 import LearningPathCourseModel from './learning-path-course';
 import LearningPathPartModel from './learning-path-part';
+import LearningPathLessonModel from './learning-path-lesson';
 import PackBundleModel from './pack-bundle';
 import PackBundleLessonModel from './pack-bundle-lesson';
 import PlayAlongModel from './play-along';
@@ -44,7 +45,7 @@ export default class ContentTypeModel {
         case 'learning-path': return new LearningPathModel({ brand, post });
         case 'learning-path-level': return new LearningPathLevelModel({ brand, post });
         case 'learning-path-course': return new LearningPathCourseModel({ brand, post });
-        case 'learning-path-lesson': return new LearningPathPartModel({ brand, post });
+        case 'learning-path-lesson': return new LearningPathLessonModel({ brand, post });
         case 'learning-path-part': return new LearningPathPartModel({ brand, post });
         case 'pack-bundle': return new PackBundleModel({ brand, post });
         case 'pack-bundle-lesson': return new PackBundleLessonModel({ brand, post });
