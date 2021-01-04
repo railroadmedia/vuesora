@@ -5,6 +5,9 @@ body.sidebar {
     margin-left: 250px;
     &.sidebar-collapsed {
       margin-left: 83px;
+      &.pianote {
+        margin-left: 100px;
+      }
     }
   }
 
@@ -38,7 +41,7 @@ body.sidebar {
 #sidebar {
   display: none;
   position: fixed;
-  top: 65px;
+  top: 50px;
   height: calc(100% - 65px);
   left: 0;
   width: 250px;
@@ -50,6 +53,10 @@ body.sidebar {
 
   @include medium {
     display: block;
+  }
+
+  @include large {
+    top: 65px;
   }
 
   .sidebar-header {
@@ -169,6 +176,10 @@ body.sidebar {
 
   &.sidebar-collapsed {
     width: 83px;
+
+    &.pianote {
+      width: 100px;
+    }
 
     .sidebar-section {
       border-bottom: none;
