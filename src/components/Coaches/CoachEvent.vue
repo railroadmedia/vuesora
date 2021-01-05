@@ -154,8 +154,7 @@ export default {
             this.instructor = this.content.instructor[0];
 
             let startTimeCutoff = DateTime
-                                    .fromSQL(this.content.live_event_start_time, { zone: 'UTC' })
-                                    .minus({ minutes: this.timeCutoffMinutes });
+                                    .fromSQL(this.content.live_event_start_time, { zone: 'UTC' });
 
             if (startTimeCutoff < this.currentDate) {
                 this.eventIsLive = true;
