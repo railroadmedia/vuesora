@@ -32122,6 +32122,7 @@ function (_ContentModel) {
 
 
 
+
 var coach_stream_CoachStreamModel =
 /*#__PURE__*/
 function (_ContentModel) {
@@ -32140,9 +32141,7 @@ function (_ContentModel) {
       brand: brand,
       post: post
     }));
-    _this.list.column_data = [// ContentModel.mapDifficulty(this.post),
-    // this.getPostDuration(),
-    _this.postPublisedOn];
+    _this.list.column_data = [luxon["DateTime"].fromSQL(_this.post.live_event_start_time_in_timezone).toFormat('LLL d/yy'), luxon["DateTime"].fromSQL(_this.post.live_event_start_time_in_timezone).toFormat('h:mm a')];
     return _this;
   }
 
