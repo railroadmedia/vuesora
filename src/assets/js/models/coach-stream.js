@@ -1,4 +1,5 @@
 import ContentModel from './_default';
+import {DateTime} from "luxon";
 
 export default class CoachStreamModel extends ContentModel {
     constructor({ brand = 'drumeo', post }) {
@@ -8,9 +9,8 @@ export default class CoachStreamModel extends ContentModel {
         });
 
         this.list.column_data = [
-            // ContentModel.mapDifficulty(this.post),
-            // this.getPostDuration(),
-            this.postPublisedOn, // todo - may be remaped to live event start
+            DateTime.fromSQL(this.post.live_event_start_time_in_timezone).toFormat('LLL d/yy'),
+            DateTime.fromSQL(this.post.live_event_start_time_in_timezone).toFormat('h:mm a'),
         ];
     }
 }
