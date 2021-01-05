@@ -7,11 +7,8 @@
                     :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
                 >
                 <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
-                <div class="coach-event-counter flex flex-row align-v-bottom" v-if="!eventIsLive" style="margin-bottom: 25px;">
-                    <div
-                        class="coach-event-counter-inner text-white flex flex-row align-center"
-                        style="background-color:rgba(0, 0, 0, 0.5); padding: 10px;"
-                    >
+                <div class="coach-event-counter flex flex-row align-v-bottom" v-if="!eventIsLive">
+                    <div class="coach-event-counter-inner text-white flex flex-row align-center">
                         <div class="ph-1">
                             <div class="flex flex-column align-center">
                                 <div class="event-counter-number dense font-bold"><span>{{ $_hours }}</span></div>
@@ -69,8 +66,8 @@
                     <h3 class="heading sans font-bold capitalize">{{ content.title }}</h3>
                     <div class="coach-event-description mv-2" v-html="content.description"></div>
                 </div>
-                <div v-if="!eventIsLive">
-                    <div class="coach-event-subscribe">
+                <div class="coach-event-subscribe" v-if="!eventIsLive">
+                    <div>
                         <button class="btn" data-open-modal="scheduleAddToCalendarModal">
                             <span class="text-white bg-drumeo">
                                 <i class="fas fa-calendar-plus mr-1"></i>
@@ -252,10 +249,14 @@ export default {
             position: absolute;
             top: 20px;
             left: 0;
-            font-size: 24px;
+            font-size: 13px;
             padding: 15px 90px 15px 15px;
             background: -webkit-gradient(linear, right top, left top, from(transparent), to(rgba(8, 85, 160, 1)));
             background: linear-gradient(to left, transparent 0%, rgba(8, 85, 160, 1) 100%);
+
+            @include small {
+                font-size: 24px;
+            }
         }
 
         .coach-event-counter {
@@ -265,18 +266,37 @@ export default {
             bottom: 0;
             left: 0;
 
+            @include small {
+                margin-bottom: 25px;
+            }
+
+            .coach-event-counter-inner {
+                background-color: rgba(0, 0, 0, 0.5);
+                padding: 10px;
+            }
+
             .event-counter-number {
-                font-size: 50px;
+                font-size: 18px;
+
+                @include small {
+                    font-size: 50px;
+                }
             }
 
             .event-counter-label {
-                font-size: 12px;
+                font-size: 9px;
+
+                @include small {
+                    font-size: 12px;
+                }
             }
         }
     }
 
     .coach-event-data {
-        margin-top: 25px;
+        @include small {
+            margin-top: 25px;
+        }
 
         @include medium {
             margin-left: 50px;
@@ -315,17 +335,40 @@ export default {
         }
 
         .coach-name {
-            font-size: 24px;
+            font-size: 18px;
             margin-left: 10px;
+
+            @include small {
+                font-size: 24px;
+            }
         }
 
-        .coach-event-details .coach-event-description {
-            font-size: 18px;
-            line-height: 30px;
+        .coach-event-details {
+            @include xSmallOnly {
+                margin-top: 0;
+            }
+
+            .coach-event-description {
+                font-size: 16px;
+                line-height: 24px;
+
+                @include small {
+                    font-size: 18px;
+                    line-height: 30px;
+                }
+            }
         }
 
         .coach-event-subscribe {
-            max-width: 300px;
+            margin: 0 auto;
+
+            @include medium {
+                margin: 0;
+            }
+
+            &> div {
+                width: 300px;
+            }
         }
 
         .coach-event-cta {

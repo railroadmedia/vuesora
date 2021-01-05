@@ -10,12 +10,18 @@
 
 .coaches-cards-container {
   justify-content: left;
+
+  &.flex-row {
+    @include xSmallOnly {
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+    }
+  }
 }
 
 .coach-card {
-  width: 358px;
-  height: 202px;
-  margin: 3px;
+  padding: 3px;
 }
 
 .coach-card-inner {
