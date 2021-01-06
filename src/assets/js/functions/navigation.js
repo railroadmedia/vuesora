@@ -15,6 +15,7 @@ export default (function () {
         const searchBox = document.getElementById('searchBox');
         const searchInput = document.getElementById('search-input');
         const toggledSearchInput = document.getElementById('toggled-search-input');
+        const searchInputClear = document.getElementById('search-input-clear');
         const parentLinks = document.querySelectorAll('.parent-button');
         const subNavWrap = document.getElementById('subNavWrap');
         const scrollSubNavRight = document.getElementById('scrollSubNavRight');
@@ -68,18 +69,37 @@ export default (function () {
             );
         }
 
-        if (searchInput && toggledSearchInput) {
+        if (searchInput && toggledSearchInput && searchInputClear) {
+
+            if (searchInput.value) {
+                searchInputClear.classList.remove('hide');
+            } else {
+                searchInputClear.classList.add('hide');
+            }
+
             searchInput.addEventListener(
                 'change',
                 function(event) {
                     if (searchInput.value != toggledSearchInput.value) {
                         toggledSearchInput.value = searchInput.value;
                     }
-                    console.log(
-                        "searchInput::[change] searchInput value: %s, toggledSearchInput value: %s",
-                        JSON.stringify(searchInput.value),
-                        JSON.stringify(toggledSearchInput.value)
-                    );
+
+                    if (searchInput.value) {
+                        searchInputClear.classList.remove('hide');
+                    } else {
+                        searchInputClear.classList.add('hide');
+                    }
+                }
+            );
+
+            searchInput.addEventListener(
+                'keyup',
+                function(event) {
+                    if (searchInput.value) {
+                        searchInputClear.classList.remove('hide');
+                    } else {
+                        searchInputClear.classList.add('hide');
+                    }
                 }
             );
 
@@ -89,11 +109,20 @@ export default (function () {
                     if (toggledSearchInput.value != searchInput.value) {
                         searchInput.value = toggledSearchInput.value;
                     }
-                    console.log(
-                        "toggledSearchInput::[change] searchInput value: %s, toggledSearchInput value: %s",
-                        JSON.stringify(searchInput.value),
-                        JSON.stringify(toggledSearchInput.value)
-                    );
+
+                    if (searchInput.value) {
+                        searchInputClear.classList.remove('hide');
+                    } else {
+                        searchInputClear.classList.add('hide');
+                    }
+                }
+            );
+
+            searchInputClear.addEventListener(
+                'click',
+                function(event) {
+                    searchInput.value = '';
+                    searchInputClear.classList.add('hide');
                 }
             );
         }

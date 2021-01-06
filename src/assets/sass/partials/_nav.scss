@@ -47,7 +47,7 @@ body {
     // overflow:hidden;
   }
 
-  .flex-row {
+  .flex-row:not(.search-input-container) {
     height:100%;
   }
 
@@ -147,14 +147,39 @@ body {
     }
   }
 
-  #search-input {
-    border: 1px solid #7E9AB1;
-    font-size: 16px;
-    color: #7E9AB1;
+  .search-input-container {
+    flex-grow: 0;
     width: 625px;
     height: 35px;
+    overflow: hidden;
+    border: 1px solid #7E9AB1;
+    border-radius: 10px;
+    background-color: #000;
+  }
+
+  .search-input-icon {
+    padding-left: 10px;
+    font-size: 17px;
+    i {
+      font-weight: 400;
+    }
+  }
+
+  #search-input-clear {
+    padding: 3px 10px;
+    cursor: pointer;
+    font-size: 17px;
+    color: #7E9AB1;
+  }
+
+  #search-input {
+    font-size: 16px;
+    color: #7E9AB1;
+    width: 565px;
+    height: 35px;
     text-align: left;
-    padding-left: 40px;
+    padding-left: 13px;
+    padding-right: 0;
     border-radius: 10px;
     font-family: 'FontAwesome', $defaultSansSerif;
     background-color: #000;
