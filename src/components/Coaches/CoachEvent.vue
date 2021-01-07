@@ -1,38 +1,40 @@
 <template>
     <div class="coach-event container mv-2">
         <div class="flex flex-row flex-wrap-md" v-if="content">
-            <div class="coach-event-image flex flex-column relative" v-if="!eventIsLive">
-                <img
-                    class=""
-                    :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
-                >
-                <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
-                <div class="coach-event-counter flex flex-row align-v-bottom" v-if="!eventIsLive">
-                    <div class="coach-event-counter-inner text-white flex flex-row align-center">
-                        <div class="ph-1">
-                            <div class="flex flex-column align-center">
-                                <div class="event-counter-number dense font-bold"><span>{{ $_hours }}</span></div>
-                                <div class="event-counter-label sans font-bold uppercase">hours</div>
+            <div class="coach-event-image flex flex-column align-v-center" v-if="!eventIsLive">
+                <div class="relative">
+                    <img
+                        class=""
+                        :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
+                    >
+                    <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
+                    <div class="coach-event-counter flex flex-row align-v-bottom" v-if="!eventIsLive">
+                        <div class="coach-event-counter-inner text-white flex flex-row align-center">
+                            <div class="ph-1">
+                                <div class="flex flex-column align-center">
+                                    <div class="event-counter-number dense font-bold"><span>{{ $_hours }}</span></div>
+                                    <div class="event-counter-label sans font-bold uppercase">hours</div>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="event-counter-number dense font-bold">:</div>
-                            <div class="event-counter-label sans font-bold uppercase">&nbsp;</div>
-                        </div>
-                        <div class="ph-1">
-                            <div class="flex flex-column align-center">
-                                <div class="event-counter-number dense font-bold"><span>{{ $_minutes }}</span></div>
-                                <div class="event-counter-label sans font-bold uppercase">minutes</div>
+                            <div>
+                                <div class="event-counter-number dense font-bold">:</div>
+                                <div class="event-counter-label sans font-bold uppercase">&nbsp;</div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="event-counter-number dense font-bold">:</div>
-                            <div class="event-counter-label sans font-bold uppercase">&nbsp;</div>
-                        </div>
-                        <div class="ph-1">
-                            <div class="flex flex-column align-center">
-                                <div class="event-counter-number dense font-bold"><span>{{ $_seconds }}</span></div>
-                                <div class="event-counter-label sans font-bold uppercase">seconds</div>
+                            <div class="ph-1">
+                                <div class="flex flex-column align-center">
+                                    <div class="event-counter-number dense font-bold"><span>{{ $_minutes }}</span></div>
+                                    <div class="event-counter-label sans font-bold uppercase">minutes</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="event-counter-number dense font-bold">:</div>
+                                <div class="event-counter-label sans font-bold uppercase">&nbsp;</div>
+                            </div>
+                            <div class="ph-1">
+                                <div class="flex flex-column align-center">
+                                    <div class="event-counter-number dense font-bold"><span>{{ $_seconds }}</span></div>
+                                    <div class="event-counter-label sans font-bold uppercase">seconds</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,6 +94,18 @@
                                 </button>
                             </a>
                         </div>
+
+                        <div class="coach-event-cta my-list">
+                            <button class="btn" @click.stop.prevent="toggleMyList">
+                                <span
+                                    class="text-drumeo bg-drumeo inverted"
+                                    :class="is_added ? 'is-added' : ''"
+                                >
+                                    <i class="fal fa-plus"></i>
+                                    My List
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,6 +116,7 @@
 <script>
 import {Content as ContentHelpers} from '@musora/helper-functions';
 import ContentSchedule from '../../views/schedule/Schedule.vue';
+import ContentService from '../../assets/js/services/content';
 import {DateTime} from 'luxon';
 
 export default {
@@ -184,6 +199,12 @@ export default {
         $_iframeSource() {
             return `https://www.youtube.com/embed/${  this.youtubeEventId  }?rel=0&autoplay=1&playsinline=1&modestthemeColoring=1`;
         },
+        is_added: {
+            cache: false,
+            get() {
+                return this.content.is_added_to_primary_playlist;
+            },
+        },
     },
     methods: {
         startCounter() {
@@ -204,6 +225,14 @@ export default {
             } else {
                 return number;
             }
+        },
+
+        toggleMyList() {
+            ContentService
+                .addOrRemoveContentFromList(this.content.id, this.content.is_added_to_primary_playlist)
+                .then((response) => {
+                    this.content.is_added_to_primary_playlist = !this.content.is_added_to_primary_playlist;
+                });
         },
     },
 }
@@ -255,6 +284,14 @@ export default {
             background: linear-gradient(to left, transparent 0%, rgba(8, 85, 160, 1) 100%);
 
             @include small {
+                font-size: 17px;
+            }
+
+            @include medium {
+                font-size: 20px;
+            }
+
+            @include large {
                 font-size: 24px;
             }
         }
@@ -266,7 +303,7 @@ export default {
             bottom: 0;
             left: 0;
 
-            @include small {
+            @include xLarge {
                 margin-bottom: 25px;
             }
 
@@ -279,6 +316,14 @@ export default {
                 font-size: 18px;
 
                 @include small {
+                    font-size: 22px;
+                }
+
+                @include medium {
+                    font-size: 30px;
+                }
+
+                @include large {
                     font-size: 50px;
                 }
             }
@@ -287,6 +332,14 @@ export default {
                 font-size: 9px;
 
                 @include small {
+                    font-size: 10px;
+                }
+
+                @include medium {
+                    font-size: 11px;
+                }
+
+                @include large {
                     font-size: 12px;
                 }
             }
@@ -374,6 +427,18 @@ export default {
         .coach-event-cta {
             width: 40%;
             min-width: 145px;
+
+            &.my-list {
+                span i {
+                    transition: transform .1s ease-in-out;
+                    margin-right: 5px;
+                    font-size: 18px;
+                }
+
+                span.is-added i {
+                    transform: rotate(45deg);
+                }
+            }
         }
 
         .coach-event-cta + .coach-event-cta {

@@ -462,7 +462,7 @@ export default {
 
         openExercise() {
             this.open = true;
-            document.body.classList.add('no-scroll');
+            document.body.classList.add('no-scroll', 'dim-sidebar');
 
             this.progressTracker = new ProgressTracker();
 
@@ -475,7 +475,7 @@ export default {
         closeExercise() {
             this.loading = true;
             this.open = false;
-            document.body.classList.remove('no-scroll');
+            document.body.classList.remove('no-scroll', 'dim-sidebar');
 
             this.progressTracker.sendAsync({
                 mediaId: this.id,
@@ -641,10 +641,6 @@ export default {
         right:0;
         bottom:0;
         z-index:97;
-
-        @include medium {
-            left:250px;
-        }
 
         @include large {
             top:65px;

@@ -1,21 +1,27 @@
 @import './_variables.scss';
 
-body.sidebar {
-  @include medium {
-    margin-left: 250px;
-    &.sidebar-collapsed {
-      margin-left: 83px;
-      &.pianote {
-        margin-left: 100px;
+body {
+  &.sidebar {
+    @include medium {
+      margin-left: 250px;
+      &.sidebar-collapsed {
+        margin-left: 83px;
+        &.pianote {
+          margin-left: 100px;
+        }
+      }
+    }
+
+    @include xLarge {
+      .container:not(.fluid) {
+        padding-left: 50px;
+        padding-right: 50px;
       }
     }
   }
 
-  @include xLarge {
-    .container:not(.fluid) {
-      padding-left: 50px;
-      padding-right: 50px;
-    }
+  &.dim-sidebar #sidebar {
+    z-index: 96;
   }
 }
 
