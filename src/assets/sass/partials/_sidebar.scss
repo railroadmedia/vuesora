@@ -23,6 +23,10 @@ body {
   &.dim-sidebar #sidebar {
     z-index: 96;
   }
+
+  &.live #sidebar #sidebar-live-badge {
+    display: inline-block;
+  }
 }
 
 #nav {
@@ -177,6 +181,17 @@ body {
       .sidebar-link-title {
         font-weight: 550;
       }
+    }
+
+    #sidebar-live-badge {
+      display: none;
+      vertical-align: middle;
+      font-size: 10px;
+      line-height: 1em;
+      background: #F71B26;
+      padding: 4px;
+      margin-left: 5px;
+      font-weight: 600;
     }
   }
 

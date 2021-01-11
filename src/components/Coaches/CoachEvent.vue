@@ -169,7 +169,7 @@ export default {
                                     .fromSQL(this.content.live_event_start_time, { zone: 'UTC' });
 
             if (startTimeCutoff < this.currentDate) {
-                this.eventIsLive = true;
+                this.setLiveState();
             } else {
                 this.eventIsLive = false;
 
@@ -212,7 +212,7 @@ export default {
                 const interval = setInterval(function () {
                     this.counterValue -= 1;
                     if(this.counterValue <= 0) {
-                        this.eventIsLive = true;
+                        this.setLiveState();
                         clearInterval(interval);
                     }
                 }.bind(this), 1000);
@@ -233,6 +233,11 @@ export default {
                 .then((response) => {
                     this.content.is_added_to_primary_playlist = !this.content.is_added_to_primary_playlist;
                 });
+        },
+
+        setLiveState() {
+            this.eventIsLive = true;
+            document.body.classList.add('live');
         },
     },
 }
