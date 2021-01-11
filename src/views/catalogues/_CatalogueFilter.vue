@@ -119,6 +119,11 @@ export default {
         },
         toTitleCase: phrase => Utils.toTitleCase(phrase),
     },
+    mounted() {
+        // console.log("_CatalogueFilter::mounted filterName: %s", JSON.stringify(this.filterName));
+        // console.log("_CatalogueFilter::mounted filtersLabels: %s", JSON.stringify(this.filtersLabels));
+        // console.log("_CatalogueFilter::mounted sortedOptions: %s", JSON.stringify(this.sortedOptions));
+    },
 };
 </script>
 <style>

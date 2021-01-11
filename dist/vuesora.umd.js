@@ -34731,19 +34731,19 @@ var ListCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var ListCatalogue = (ListCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0a705a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=0b312f47&
-var _CatalogueFiltersvue_type_template_id_0b312f47_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row flex-wrap mb nmh-1"},[_vm._l((_vm.filterableValues.filter(function (item) { return item !== 'progress'; })),function(item){return _c('catalogue-filter',{key:item.key,attrs:{"filter-name":item,"filters-labels":_vm.filtersLabels,"item":_vm.filters[item],"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.filterParams[item]},on:{"filterChange":_vm.handleFilterChange}})}),(_vm.hasProgressFilter)?_c('catalogue-filter',{attrs:{"filter-name":"progress","item":_vm.progressOptions,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.user_state},on:{"filterChange":_vm.handleProgressChange}}):_vm._e()],2)}
-var _CatalogueFiltersvue_type_template_id_0b312f47_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0a705a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=28ef9134&
+var _CatalogueFiltersvue_type_template_id_28ef9134_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row flex-wrap mb nmh-1"},[_vm._l((_vm.filterableValues.filter(function (item) { return item !== 'progress' && item !== 'event'; })),function(item){return _c('catalogue-filter',{key:item.key,attrs:{"filter-name":item,"filters-labels":_vm.filtersLabels,"item":_vm.filters[item],"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.filterParams[item]},on:{"filterChange":_vm.handleFilterChange}})}),(_vm.hasProgressFilter)?_c('catalogue-filter',{attrs:{"filter-name":"progress","item":_vm.progressOptions,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.user_state},on:{"filterChange":_vm.handleProgressChange}}):_vm._e(),(_vm.hasEventTypeFilter)?_c('catalogue-filter',{attrs:{"filter-name":"event","filters-labels":_vm.filtersLabels,"item":_vm.eventTypeOptions,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.event_type},on:{"filterChange":_vm.handleEventChange}}):_vm._e()],2)}
+var _CatalogueFiltersvue_type_template_id_28ef9134_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=0b312f47&
+// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=28ef9134&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0a705a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilter.vue?vue&type=template&id=101c8962&
-var _CatalogueFiltervue_type_template_id_101c8962_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column ph-1 catalogue-filter"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],staticClass:"no-label",class:{'is-clearable': _vm.valueInterface},attrs:{"id":_vm.filterName + 'Filter',"disabled":_vm.valueInterface},on:{"keydown":function($event){$event.preventDefault();},"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.valueInterface=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"selected":"","disabled":""},domProps:{"value":null}},[_vm._v("\n                "+_vm._s(_vm.placeholderLabel)+"\n            ")]),_vm._l((_vm.sortedOptions),function(filter){return _c('option',{key:filter.key,domProps:{"value":filter.value}},[_vm._v("\n                "+_vm._s(filter.key)+"\n            ")])})],2),(_vm.valueInterface)?_c('span',{staticClass:"cancel-filter",on:{"click":function($event){$event.stopPropagation();return _vm.cancelFilter($event)}}},[_c('i',{staticClass:"fas fa-times",class:'text-' + _vm.themeColor})]):_vm._e()])])}
-var _CatalogueFiltervue_type_template_id_101c8962_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3e0a705a-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilter.vue?vue&type=template&id=0b488f6c&
+var _CatalogueFiltervue_type_template_id_0b488f6c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column ph-1 catalogue-filter"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],staticClass:"no-label",class:{'is-clearable': _vm.valueInterface},attrs:{"id":_vm.filterName + 'Filter',"disabled":_vm.valueInterface},on:{"keydown":function($event){$event.preventDefault();},"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.valueInterface=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"selected":"","disabled":""},domProps:{"value":null}},[_vm._v("\n                "+_vm._s(_vm.placeholderLabel)+"\n            ")]),_vm._l((_vm.sortedOptions),function(filter){return _c('option',{key:filter.key,domProps:{"value":filter.value}},[_vm._v("\n                "+_vm._s(filter.key)+"\n            ")])})],2),(_vm.valueInterface)?_c('span',{staticClass:"cancel-filter",on:{"click":function($event){$event.stopPropagation();return _vm.cancelFilter($event)}}},[_c('i',{staticClass:"fas fa-times",class:'text-' + _vm.themeColor})]):_vm._e()])])}
+var _CatalogueFiltervue_type_template_id_0b488f6c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueFilter.vue?vue&type=template&id=101c8962&
+// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueFilter.vue?vue&type=template&id=0b488f6c&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilter.vue?vue&type=script&lang=js&
 
@@ -34875,6 +34875,10 @@ var _CatalogueFiltervue_type_template_id_101c8962_staticRenderFns = []
     toTitleCase: function toTitleCase(phrase) {
       return classes_utils.toTitleCase(phrase);
     }
+  },
+  mounted: function mounted() {// console.log("_CatalogueFilter::mounted filterName: %s", JSON.stringify(this.filterName));
+    // console.log("_CatalogueFilter::mounted filtersLabels: %s", JSON.stringify(this.filtersLabels));
+    // console.log("_CatalogueFilter::mounted sortedOptions: %s", JSON.stringify(this.sortedOptions));
   }
 });
 // CONCATENATED MODULE: ./src/views/catalogues/_CatalogueFilter.vue?vue&type=script&lang=js&
@@ -34889,8 +34893,8 @@ var _CatalogueFiltervue_type_template_id_101c8962_staticRenderFns = []
 
 var _CatalogueFilter_component = normalizeComponent(
   catalogues_CatalogueFiltervue_type_script_lang_js_,
-  _CatalogueFiltervue_type_template_id_101c8962_render,
-  _CatalogueFiltervue_type_template_id_101c8962_staticRenderFns,
+  _CatalogueFiltervue_type_template_id_0b488f6c_render,
+  _CatalogueFiltervue_type_template_id_0b488f6c_staticRenderFns,
   false,
   null,
   null,
@@ -34925,6 +34929,18 @@ var _CatalogueFilter_component = normalizeComponent(
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ var _CatalogueFiltersvue_type_script_lang_js_ = ({
   name: 'CatalogueFilters',
@@ -35003,8 +35019,14 @@ var _CatalogueFilter_component = normalizeComponent(
     user_state: function user_state() {
       return this.requiredUserStates.length ? this.requiredUserStates[0] : null;
     },
+    event_type: function event_type() {
+      return null;
+    },
     hasProgressFilter: function hasProgressFilter() {
       return this.filterableValues.indexOf('progress') !== -1;
+    },
+    hasEventTypeFilter: function hasEventTypeFilter() {
+      return this.filterableValues.indexOf('event') !== -1;
     },
     progressOptions: function progressOptions() {
       if (this.contentTypes[0] === 'song' && this.contentTypes.length === 1 && this.brand === 'drumeo') {
@@ -35021,17 +35043,47 @@ var _CatalogueFilter_component = normalizeComponent(
         key: 'Completed',
         value: 'completed'
       }];
+    },
+    eventTypeOptions: function eventTypeOptions() {
+      return [{
+        key: 'All',
+        value: 'all'
+      }, {
+        key: 'Upcoming Live Events',
+        value: 'upcoming'
+      }, {
+        key: 'Video Lessons',
+        value: 'lessons'
+      }];
     }
   },
   methods: {
     handleFilterChange: function handleFilterChange(payload) {
+      console.log("_CatalogueFilters::handleFilterChange payload: %s", JSON.stringify(this.payload));
       this.$emit('filterChange', payload);
     },
     handleProgressChange: function handleProgressChange(payload) {
       this.$emit('progressChange', {
         type: payload.value
       });
+    },
+    handleEventChange: function handleEventChange(payload) {
+      console.log("_CatalogueFilters::handleEventChange payload: %s", JSON.stringify(payload));
+      var currentDate = luxon["DateTime"].utc().toFormat('yyyy-LL-dd');
+      var valueMap = {
+        all: '',
+        upcoming: currentDate + ',string,>',
+        lessons: currentDate + ',string,<='
+      };
+      var eventChangeData = {
+        key: 'live_event_start_time',
+        value: valueMap[payload.value]
+      };
+      this.$emit('filterChange', eventChangeData);
     }
+  },
+  mounted: function mounted() {// console.log("_CatalogueFilters::mounted filterableValues: %s", JSON.stringify(this.filterableValues));
+    // console.log("_CatalogueFilters::mounted filters: %s", JSON.stringify(this.filters));
   }
 });
 // CONCATENATED MODULE: ./src/views/catalogues/_CatalogueFilters.vue?vue&type=script&lang=js&
@@ -35046,8 +35098,8 @@ var _CatalogueFilter_component = normalizeComponent(
 
 var _CatalogueFilters_component = normalizeComponent(
   catalogues_CatalogueFiltersvue_type_script_lang_js_,
-  _CatalogueFiltersvue_type_template_id_0b312f47_render,
-  _CatalogueFiltersvue_type_template_id_0b312f47_staticRenderFns,
+  _CatalogueFiltersvue_type_template_id_28ef9134_render,
+  _CatalogueFiltersvue_type_template_id_28ef9134_staticRenderFns,
   false,
   null,
   null,
