@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-column ph-1 catalogue-filter">
-        <div class="form-group">
+    <div class="flex flex-column ph-1 catalogue-filter" :class="{'short-filter-container': shortFilterContainer}">
+        <div class="form-group" :data-test="valueInterface">
             <select
                 :id="filterName + 'Filter'"
                 v-model="valueInterface"
@@ -68,6 +68,10 @@ export default {
             type: Boolean,
             default: () => false,
         },
+        shortFilterContainer: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {
@@ -119,13 +123,10 @@ export default {
         },
         toTitleCase: phrase => Utils.toTitleCase(phrase),
     },
-    mounted() {
-        // console.log("_CatalogueFilter::mounted filterName: %s", JSON.stringify(this.filterName));
-        // console.log("_CatalogueFilter::mounted filtersLabels: %s", JSON.stringify(this.filtersLabels));
-        // console.log("_CatalogueFilter::mounted sortedOptions: %s", JSON.stringify(this.sortedOptions));
-    },
 };
 </script>
 <style>
-
+.short-filter-container {
+    max-width: 400px;
+}
 </style>

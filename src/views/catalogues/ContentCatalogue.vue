@@ -25,6 +25,7 @@
             :filters-labels="filtersLabels"
             :required-user-states="required_user_states"
             :filter-params="filter_params"
+            :event-type="eventType"
             :loading="loading"
             :theme-color="themeColor"
             :content-types="selectedTypes"
@@ -340,23 +341,27 @@ export default {
                 title: '',
                 date: '',
             },
+            eventType: null,
         };
     },
     computed: {
 
-        required_fields() {
-            const filterKeys = Object.keys(this.filter_params);
-            const includedFields = [];
+        required_fields: {
+            cache: false,
+            get() {
+                const filterKeys = Object.keys(this.filter_params);
+                const includedFields = [];
 
-            filterKeys.forEach((filter) => {
-                if (this.filter_params[filter] != null) {
-                    includedFields.push(
-                        `${filter},${this.filter_params[filter]}`,
-                    );
-                }
-            });
+                filterKeys.forEach((filter) => {
+                    if (this.filter_params[filter] != null) {
+                        includedFields.push(
+                            `${filter},${this.filter_params[filter]}`,
+                        );
+                    }
+                });
 
-            return includedFields;
+                return includedFields;
+            }
         },
 
         selectedTypes() {
@@ -367,15 +372,18 @@ export default {
             return this.includedTypes;
         },
 
-        request_params() {
-            return {
-                required_fields: this.required_fields,
-                statuses: this.statuses,
-                required_user_states: this.required_user_states,
-                term: this.search_term,
-                included_types: this.selectedTypes,
-                page: this.page,
-            };
+        request_params: {
+            cache: false,
+            get() {
+                return {
+                    required_fields: this.required_fields,
+                    statuses: this.statuses,
+                    required_user_states: this.required_user_states,
+                    term: this.search_term,
+                    included_types: this.selectedTypes,
+                    page: this.page,
+                };
+            }
         },
 
         $_contentEndpoint() {
@@ -442,12 +450,20 @@ export default {
                     }
                 } else if (key === 'required_fields') {
                     if (!Array.isArray(query_object[key])) {
-                        const this_val = query_object[key].split(',');
-                        this.filter_params[this_val[0]] = this_val[1];
+                        let this_val = query_object[key].split(',');
+                        let this_key = this_val.shift();
+                        this.filter_params[this_key] = this_val.toString();
+                        if (this_key == 'live_event_start_time') {
+                            this.eventType = this_val.pop() == '>' ? 'upcoming' : 'lessons';
+                        }
                     } else {
                         query_object[key].forEach((param) => {
-                            const this_val = param.split(',');
-                            this.filter_params[this_val[0]] = this_val[1];
+                            let this_val = param.split(',');
+                            let this_key = this_val.shift();
+                            this.filter_params[this_key] = this_val.toString();
+                            if (this_key == 'live_event_start_time') {
+                                this.eventType = this_val.pop() == '>' ? 'upcoming' : 'lessons';
+                            }
                         });
                     }
                 } else if (key === 'included_types' && this.searchBar) {
@@ -616,6 +632,7 @@ export default {
             if (this.useUrlParams) {
                 this.setUrlParams();
             }
+
             this.getContent();
         },
 
@@ -644,8 +661,6 @@ export default {
         },
 
         handleSearch(payload) {
-            console.log(payload);
-
             this.search_term = payload.term || undefined;
             this.page = 1;
 

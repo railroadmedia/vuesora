@@ -68,7 +68,36 @@
                     <h3 class="heading sans font-bold capitalize">{{ content.title }}</h3>
                     <div class="coach-event-description mv-2" v-html="content.description"></div>
                 </div>
-                <div class="coach-event-subscribe" v-if="!eventIsLive">
+                <div :class="{'mt-2': eventIsLive}" v-if="eventIsLive || showWatch">
+                    <div class="flex flex-row flex-wrap-md">
+                        <div class="coach-event-cta">
+                            <a href="/members/live">
+                                <button class="btn">
+                                    <span class="text-white bg-drumeo uppercase">
+                                        watch
+                                    </span>
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="coach-event-cta my-list" v-if="eventIsLive">
+                            <button class="btn" @click.stop.prevent="toggleMyList">
+                                <span
+                                    class="text-drumeo bg-drumeo inverted"
+                                    :class="is_added ? 'is-added' : ''"
+                                >
+                                    <i class="fal fa-plus"></i>
+                                    My List
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="coach-event-subscribe"
+                    :class="{'pt-2': showWatch}"
+                    v-if="!eventIsLive"
+                >
                     <div>
                         <button class="btn" data-open-modal="scheduleAddToCalendarModal">
                             <span class="text-white bg-drumeo">
@@ -82,31 +111,6 @@
                         :subscription-calendar-id="subscriptionCalendarId"
                         :theme-color="brand"
                     ></content-schedule>
-                </div>
-                <div class="mt-2" v-if="eventIsLive">
-                    <div class="flex flex-row flex-wrap-md">
-                        <div class="coach-event-cta">
-                            <a href="/members/live">
-                                <button class="btn">
-                                    <span class="text-white bg-drumeo uppercase">
-                                        watch
-                                    </span>
-                                </button>
-                            </a>
-                        </div>
-
-                        <div class="coach-event-cta my-list">
-                            <button class="btn" @click.stop.prevent="toggleMyList">
-                                <span
-                                    class="text-drumeo bg-drumeo inverted"
-                                    :class="is_added ? 'is-added' : ''"
-                                >
-                                    <i class="fal fa-plus"></i>
-                                    My List
-                                </span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -157,6 +161,8 @@ export default {
             currentDate: DateTime.fromSQL(this.currentDateString, { zone: 'UTC' }),
             counterValue: 0,
             eventIsLive: false,
+            showWatch: false,
+            showWatchSecondsBeforeLive: 60*15,
         }
     },
     mounted() {
@@ -165,15 +171,24 @@ export default {
             this.content = ContentHelpers.flattenContentObject(this.preloadedContent.data[0], true);
             this.instructor = this.content.instructor[0];
 
-            let startTimeCutoff = DateTime
+            let startTime = DateTime
                                     .fromSQL(this.content.live_event_start_time, { zone: 'UTC' });
 
-            if (startTimeCutoff < this.currentDate) {
+            if (startTime < this.currentDate) {
                 this.setLiveState();
             } else {
                 this.eventIsLive = false;
+                let secondsToStart = startTime.diff(this.currentDate, 'seconds').toObject().seconds;
 
-                this.counterValue = startTimeCutoff.diff(this.currentDate, 'seconds').toObject().seconds;
+                if (secondsToStart < this.showWatchSecondsBeforeLive) {
+                    this.showWatch = true;
+                } else {
+                    setTimeout(() => {
+                        this.showWatch = true;
+                    }, (secondsToStart - this.showWatchSecondsBeforeLive) * 1000);
+                }
+
+                this.counterValue = secondsToStart;
 
                 this.startCounter();
             }

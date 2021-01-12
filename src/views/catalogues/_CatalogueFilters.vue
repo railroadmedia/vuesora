@@ -30,6 +30,7 @@
             :theme-color="themeColor"
             :loading="loading"
             :initial-value="event_type"
+            :short-filter-container="true"
             @filterChange="handleEventChange"
         ></catalogue-filter>
     </div>
@@ -83,6 +84,10 @@ export default {
                 };
             },
         },
+        eventType: {
+            type: String,
+            default: () => '',
+        },
         contentTypes: {
             type: Array,
             default() {
@@ -96,7 +101,15 @@ export default {
     },
     data() {
         return {
+            eventTypeValue: this.eventType,
         };
+    },
+    watch: {
+        eventType(val) {
+            if (val) {
+                this.eventTypeValue = val;
+            }
+        },
     },
     computed: {
         user_state() {
@@ -104,7 +117,7 @@ export default {
         },
 
         event_type() {
-            return null;
+            return this.eventTypeValue;
         },
 
         hasProgressFilter() {
@@ -130,7 +143,6 @@ export default {
 
         eventTypeOptions() {
             return [
-                { key: 'All', value: 'all' },
                 { key: 'Upcoming Live Events', value: 'upcoming' },
                 { key: 'Video Lessons', value: 'lessons' },
             ];
@@ -139,7 +151,6 @@ export default {
     methods: {
 
         handleFilterChange(payload) {
-            console.log("_CatalogueFilters::handleFilterChange payload: %s", JSON.stringify(this.payload));
             this.$emit('filterChange', payload);
         },
 
@@ -150,7 +161,6 @@ export default {
         },
 
         handleEventChange(payload) {
-            console.log("_CatalogueFilters::handleEventChange payload: %s", JSON.stringify(payload));
             let currentDate = DateTime.utc().toFormat('yyyy-LL-dd');
             let valueMap = {
                 all: '',
@@ -161,12 +171,9 @@ export default {
                 key: 'live_event_start_time',
                 value: valueMap[payload.value],
             };
+            this.eventTypeValue = payload.value;
             this.$emit('filterChange', eventChangeData);
         },
-    },
-    mounted() {
-        // console.log("_CatalogueFilters::mounted filterableValues: %s", JSON.stringify(this.filterableValues));
-        // console.log("_CatalogueFilters::mounted filters: %s", JSON.stringify(this.filters));
     },
 };
 </script>
