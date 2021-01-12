@@ -73,7 +73,7 @@
                         <button class="btn" data-open-modal="scheduleAddToCalendarModal">
                             <span class="text-white bg-drumeo">
                                 <i class="fas fa-calendar-plus mr-1"></i>
-                                Subscribe to {{ instructor.name }}s Calendar
+                                Subscribe to {{ instructor.name.split(' ')[0] }}'s Calendar
                             </span>
                         </button>
                     </div>
