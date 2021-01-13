@@ -1,7 +1,7 @@
 <template>
     <div class="coach-event container mv-2">
         <div class="flex flex-row flex-wrap-md" v-if="content">
-            <div class="coach-event-image flex flex-column align-v-center" v-if="!eventIsLive">
+            <a :href="eventCoachProfileUrl" class="coach-event-image flex flex-column align-v-center" v-if="!eventIsLive">
                 <div class="relative">
                     <img
                         class=""
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
             <div class="coach-event-video flex flex-column" v-if="eventIsLive">
                 <div style="width: 100%; padding-bottom: 56.25%; position: relative;">
                     <iframe id="player"
@@ -53,16 +53,15 @@
                     </div>
                 </div>
                 <div class="mv-2">
-                    <div class="flex flex-row align-v-center">
+                    <a :href="eventCoachProfileUrl" class="flex flex-row align-v-center font-no-underline">
                         <div class="coach-avatar">
                             <img
                                 class="bg-grey-2 rounded drumeo"
                                 :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,f_auto,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
-                                data-test-src="instructor.thumbnail_url"
                             >
                         </div>
                         <h4 class="sans coach-name font-bold text-drumeo uppercase">{{ instructor.name }}</h4>
-                    </div>
+                    </a>
                 </div>
                 <div class="coach-event-details mv-2">
                     <h3 class="heading sans font-bold capitalize">{{ content.title }}</h3>
@@ -153,6 +152,10 @@ export default {
             type: String,
             default: () => '',
         },
+        eventCoachProfileUrl: {
+            type: String,
+            default: () => '',
+        },
     },
     data() {
         return {
@@ -166,6 +169,7 @@ export default {
         }
     },
     mounted() {
+        console.log("CoachEvent::mounted eventCoachProfileUrl: %s", JSON.stringify(this.eventCoachProfileUrl));
         if (this.preloadedContent && this.preloadedContent.data && this.preloadedContent.data[0]) {
 
             this.content = ContentHelpers.flattenContentObject(this.preloadedContent.data[0], true);

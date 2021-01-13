@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column ph-1 catalogue-filter" :class="{'short-filter-container': shortFilterContainer}">
-        <div class="form-group" :data-test="valueInterface">
+        <div class="form-group">
             <select
                 :id="filterName + 'Filter'"
                 v-model="valueInterface"
