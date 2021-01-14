@@ -1,4 +1,5 @@
 import Utils from '../classes/utils';
+import Player from '@vimeo/player';
 
 export default (function () {
     document.addEventListener('DOMContentLoaded', () => {
@@ -71,6 +72,17 @@ export default (function () {
             Array.from(modalDialogs).forEach((dialog) => {
                 dialog.classList.remove('active');
                 dialog.classList.remove('displayed');
+
+                if (dialog.classList.contains('vimeo-embedded-player')) {
+                    const iframe = document.getElementById('vimeo-iframe');
+
+                    if (iframe) {
+                        const player = new Player(iframe);
+                        player.pause();
+                    } else {
+                        console.log('A dialog was declared to have embedded vimeo video player, but iframe with id "vimeo-iframe" was not found!');
+                    }
+                }
             });
 
             // window.modalSimpleBar = null;
