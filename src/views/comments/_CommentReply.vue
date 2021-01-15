@@ -257,8 +257,9 @@ export default {
     computed: {
         avatarClassObject() {
             return {
-                subscriber: ['edge', 'lifetime', 'team', 'guitar', 'piano']
+                subscriber: ['coach', 'edge', 'lifetime', 'team', 'guitar', 'piano']
                     .indexOf(this.comment.user.access_level) !== -1,
+                coach: this.comment.user.access_level === 'coach',
                 edge: this.comment.user.access_level === 'edge',
                 pack: this.comment.user.access_level === 'pack',
                 team: this.comment.user.access_level === 'team',
@@ -286,6 +287,10 @@ export default {
         },
 
         userExpRank() {
+            if (this.comment.user.access_level === 'coach') {
+                return 'Coach';
+            }
+
             if (this.comment.user.access_level === 'team') {
                 return `${this.brand} Team`;
             }
