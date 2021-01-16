@@ -182,7 +182,7 @@ export default (function () {
             const isRemoving = element.classList.contains('is-complete');
             const brand = element.dataset.brand || 'drumeo';
 
-            Utils.triggerEvent(window, 'requesting-completion');
+            Utils.triggerEvent(window, 'requesting-completion'); 
 
             if (!clickTimeout && !isRequesting) {
                 if (isRemoving) {
@@ -218,6 +218,18 @@ export default (function () {
                     });
                 } else {
                     element.classList.add('is-complete');
+
+                    //for Alpine JS Template Data
+                    if(document.querySelector('[x-data]').__x.$data) {
+                        //Trigger Modals if complete
+                        if(element.classList.contains('lesson-complete')) {
+                            document.querySelector('[x-data]').__x.$data.modalOpen = 'lessonComplete';
+                        } else if (element.classList.contains('quest-complete')) {
+                            document.querySelector('[x-data]').__x.$data.modalOpen = 'questComplete';
+                        } else {
+                            document.querySelector('[x-data]').__x.$data.modalOpen = 'levelComplete';
+                        }
+                    }
 
                     window.recalculateProgress(!isRemoving, true, brand);
 
