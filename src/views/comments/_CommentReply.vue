@@ -2,7 +2,7 @@
     <div class="flex flex-row comment-post pv mv-1">
         <div class="flex flex-column avatar-column pr">
             <div
-                v-if="hasPublicProfiles"
+                v-if="hasPublicProfiles && comment.user.access_level != 'lifetime'"
                 class="user-avatar smaller"
                 :class="[avatarClassObject, brand]"
             >
@@ -19,8 +19,32 @@
                     >
                 </a>
             </div>
+            <div
+                class="lifetime-user-avatar-wrapper rounded"
+                v-if="hasPublicProfiles && comment.user.access_level == 'lifetime'"
+            >
+                <a
+                    :href="profileRoute"
+                    target="_blank"
+                    class="no-decoration"
+                >
+                    <div
+                        class="lifetime-user-avatar"
+                        :style="lifetimeUserAvatar"
+                    ></div>
+                </a>
+            </div>
+            <div
+                class="lifetime-user-avatar-wrapper smaller rounded"
+                v-if="!hasPublicProfiles && comment.user.access_level == 'lifetime'"
+            >
+                <div
+                    class="lifetime-user-avatar"
+                    :style="{ 'background-image': lifetimeUserAvatarQuoted() }"
+                ></div>
+            </div>
             <img
-                v-if="!hasPublicProfiles"
+                v-if="!hasPublicProfiles && comment.user.access_level != 'lifetime'"
                 :src="comment.user['fields.profile_picture_image_url']"
                 class="rounded"
             >
@@ -410,6 +434,10 @@ export default {
                     text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>',
                 },
             });
+        },
+
+        lifetimeUserAvatar() {
+            return `background-image: url("${this.comment.user['fields.profile_picture_image_url']}");`;
         },
     },
 };

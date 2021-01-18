@@ -6,7 +6,7 @@
     >
         <div class="flex flex-column avatar-column pr">
             <div
-                v-if="hasPublicProfiles"
+                v-if="hasPublicProfiles && comment.user.access_level != 'lifetime'"
                 class="user-avatar smaller"
                 :class="[avatarClassObject, brand]"
             >
@@ -23,8 +23,32 @@
                     >
                 </a>
             </div>
+            <div
+                class="lifetime-user-avatar-wrapper smaller rounded"
+                v-if="hasPublicProfiles && comment.user.access_level == 'lifetime'"
+            >
+                <a
+                    :href="profileRoute"
+                    target="_blank"
+                    class="no-decoration"
+                >
+                    <div
+                        class="lifetime-user-avatar"
+                        :style="{ 'background-image': lifetimeUserAvatarQuoted() }"
+                    ></div>
+                </a>
+            </div>
+            <div
+                class="lifetime-user-avatar-wrapper smaller rounded"
+                v-if="!hasPublicProfiles && comment.user.access_level == 'lifetime'"
+            >
+                <div
+                    class="lifetime-user-avatar"
+                    :style="{ 'background-image': lifetimeUserAvatarQuoted() }"
+                ></div>
+            </div>
             <img
-                v-if="!hasPublicProfiles"
+                v-if="!hasPublicProfiles && comment.user.access_level != 'lifetime'"
                 :src="comment.user['fields.profile_picture_image_url']"
                 class="rounded"
             >
@@ -415,6 +439,8 @@ export default {
                 this.replying = false;
             }
         });
+
+        console.log("test: %s", JSON.stringify(this.lifetimeUserAvatar()));
     },
     methods: {
         replyToComment() {
@@ -531,6 +557,16 @@ export default {
             setTimeout(() => {
                 commentId.blur();
             }, 50);
+        },
+
+        lifetimeUserAvatar() {
+            let imageUrl = this.comment.user['fields.profile_picture_image_url'];
+            return {backgroundImage: `url("${imageUrl}")`};
+        },
+
+        lifetimeUserAvatarQuoted() {
+            let imageUrl = this.comment.user['fields.profile_picture_image_url'];
+            return `url("${imageUrl}")`;
         },
     },
 };
