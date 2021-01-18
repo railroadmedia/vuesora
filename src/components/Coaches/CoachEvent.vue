@@ -5,7 +5,7 @@
                 <div class="relative">
                     <img
                         class=""
-                        :src="'http://cdn.musora.com/image/fetch/w_915,q_515,f_auto/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
+                        :src="'http://cdn.musora.com/image/fetch/w_915,q_515,q_auto:best/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
                     >
                     <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
                     <div class="coach-event-counter flex flex-row align-v-bottom" v-if="!eventIsLive">
@@ -57,7 +57,7 @@
                         <div class="coach-avatar">
                             <img
                                 class="bg-grey-2 rounded drumeo"
-                                :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,f_auto,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
+                                :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,q_auto:best,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
                             >
                         </div>
                         <h4 class="sans coach-name font-bold text-drumeo uppercase">{{ instructor.name }}</h4>
