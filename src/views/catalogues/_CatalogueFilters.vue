@@ -144,7 +144,7 @@ export default {
         eventTypeOptions() {
             return [
                 { key: 'Upcoming Live Events', value: 'upcoming' },
-                { key: 'Video Lessons', value: 'lessons' },
+                { key: 'Recorded Events', value: 'lessons' },
             ];
         },
     },

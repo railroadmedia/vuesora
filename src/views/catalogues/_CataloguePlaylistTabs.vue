@@ -111,7 +111,7 @@ export default {
         },
         parsedTypes() {
             return this.includedTypes.map(type => ({
-                key: type,
+                key: this.formatOption(type),
                 value: type,
             }));
         },
@@ -168,6 +168,10 @@ export default {
 
             window.location.href = `${location.protocol}//${location.host 
             }${location.pathname}?${QueryString.stringify(query_object)}`;
+        },
+
+        formatOption(option) {
+            return option.replace(/-/g, ' ').replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
         },
     },
 };
