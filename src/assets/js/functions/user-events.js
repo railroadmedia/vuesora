@@ -220,7 +220,9 @@ export default (function () {
                     element.classList.add('is-complete');
 
                     //for Alpine JS Template Data
-                    if(document.querySelector('[x-data]') && document.querySelector('[x-data]').__x.$data) {
+                    if(document.querySelector('[x-data]') &&
+                        document.querySelector('[x-data]').__x &&
+                        document.querySelector('[x-data]').__x.$data) {
                         //Trigger Modals if complete
                         if(element.classList.contains('lesson-complete')) {
                             document.querySelector('[x-data]').__x.$data.modalOpen = 'lessonComplete';
