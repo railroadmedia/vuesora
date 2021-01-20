@@ -191,6 +191,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        requiredFields: {
+            type: Array,
+            default: () => [],
+        },
         requiredUserStates: {
             type: Array,
             default: () => [],
@@ -376,7 +380,7 @@ export default {
             cache: false,
             get() {
                 return {
-                    required_fields: this.required_fields,
+                    required_fields: this.required_fields.concat(this.requiredFields),
                     statuses: this.statuses,
                     required_user_states: this.required_user_states,
                     term: this.search_term,

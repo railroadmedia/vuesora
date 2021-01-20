@@ -121,6 +121,7 @@
                                         :style="pageScrollPosition"
                                     >
                                         <img
+                                            class="sheet-music-image"
                                             :src="page"
                                         >
                                     </div>
