@@ -405,7 +405,7 @@ export default {
                 },
                 {
                     key: 'learning-path-lesson',
-                    brand: ['drumeo'],
+                    brand: ['drumeo', 'pianote'],
                     value: ['learning-path-lesson'],
                     icon: 'icon-packs',
                     active: true,
