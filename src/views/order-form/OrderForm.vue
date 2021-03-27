@@ -153,11 +153,16 @@
                     Place Order
                 </span>
             </button>
-            <p class="tiny disclaimer mt-1 text-grey-3">
-                By completing your order you agree to the <a href="/terms">terms of service</a>. All payments
-                in US dollars. You can cancel your subscription at any time by emailing
-                <a :href="`mailto:support@${brand}.com`">support@{{ brand }}.com</a>.
-            </p>
+
+            <tos-message 
+                :brand = "brand"
+                :cartData="cartData"
+                :all-membership-product-skus = "allMembershipProductSkus"
+                :lifetime-membership-product-skus = "lifetimeMembershipProductSkus"
+                :containsDigitalItem = "cartContainsDigitalItems"
+                :containsSubscriptionIntervalCount = "containsSubscriptionIntervalCount"
+                :cartContainsSubscription = "cartContainsSubscription"
+            />
         </div>
 
         <transition name="grow-fade">
@@ -211,6 +216,7 @@ import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation
 import PaymentSVG from '../../components/SVGSprites/_PaymentSVG.vue';
 import ShippingAddressCards from './_ShippingAddressCards.vue';
 import PaymentMethodCards from './_PaymentMethodCards.vue';
+import TOSMessage from './_TOSMessage.vue';
 
 export default {
     name: 'OrderForm',
@@ -224,6 +230,7 @@ export default {
         'order-form-totals': OrderFormTotals,
         'payment-svg': PaymentSVG,
         'shipping-address-cards': ShippingAddressCards,
+        'tos-message': TOSMessage,
         'payment-method-cards': PaymentMethodCards,
     },
     mixins: [ThemeClasses],
@@ -301,6 +308,16 @@ export default {
             type: Array,
             default: () => [],
         },
+
+        allMembershipProductSkus: {
+            type: Array,
+            default: () => [],
+        },
+
+        lifetimeMembershipProductSkus: {
+            type: Array,
+            default: () => [],
+        }
     },
     data() {
         return {
@@ -335,6 +352,10 @@ export default {
     computed: {
         cartContainsSubscription() {
             return this.cartData.items.filter(item => !!item.subscription_interval_type).length > 0;
+        },
+
+        containsSubscriptionIntervalCount() {
+            return this.cartData.items.filter(item => !!item.subscription_interval_count).length > 0;
         },
 
         cartContainsDigitalItems() {
