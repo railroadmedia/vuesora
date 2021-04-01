@@ -204,7 +204,7 @@
                         <div class="flex flex-column relative">
                             <iframe
                                 id="ssEmbed"
-                                :src="'https://www.soundslice.com/' + scoreOrSlice() + '/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0'"
+                                :src="'https://www.soundslice.com/' + scoreOrSlice() + '/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&u=' + userId"
                                 frameBorder="0"
                                 allowfullscreen
                                 @load="loading = false"
@@ -281,6 +281,10 @@ export default {
         completed: {
             type: Boolean,
             default: false,
+        },
+        userId: {
+          type: [Number, String],
+          default: () => 0,
         },
     },
     data() {
