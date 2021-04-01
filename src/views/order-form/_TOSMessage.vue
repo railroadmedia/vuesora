@@ -1,15 +1,18 @@
 <template>
     <section>
-        <!-- <p class="tiny">Has Sub: {{ cartContainsSubscription }}</p>
-        <p class="tiny"> Has Life Time Sku: {{ hasLifetimeMembershipSku }}</p>
-        <p class="tiny"> Has Interval: {{ containsSubscriptionIntervalCount }}</p>
-        <p class="tiny">New Trial: {{ isNewTrial }} </p>
-        <p class="tiny">Pack: {{ isPack }} </p> -->
+        <!-- Test Data 
+            <p class="tiny">Has Membership Sku: {{hasMembershipSku}} </p>
+            <p class="tiny"> Has Lifetime Sku: {{ hasLifetimeMembershipSku }}</p>
+            <p class="tiny">Has Interval Type: {{ cartContainsSubscription }}</p>
+            <p class="tiny"> Has Interval Count: {{ containsSubscriptionIntervalCount }}</p>
+            <p class="tiny">Has Digital Item: {{ containsDigitalItem }} </p> 
+        -->
+
         <p class="tiny disclaimer mt-1 text-grey-3">
 
             <!-- If New Recurring Subscription -->
             <template v-if="isNewRecurringSub">
-                <b>New Recurring Sub</b><br>
+                <!-- <b>New Recurring Sub</b><br> -->
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a>, 
                 <a href="/privacy">Privacy Statement</a>, and that {{ brand }} will automatically continue your 
                 membership and charge the membership fee (currently ${{ subPrice }}) to your payment plan on 
@@ -20,7 +23,7 @@
 
             <!-- Else If Lifetime -->
             <template v-else-if="isNewLifeTimeSub">
-                <b>New Lifetime Sub</b><br>
+                <!-- <b>New Lifetime Sub</b><br> -->
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a>, 
                 <a href="/terms">Privacy Statement</a>, and that {{ brand }} will give you lifetime access to this 
                 service, or in situations where the service agreement ends you will have the 
@@ -31,16 +34,16 @@
 
             <!-- Else If New Trial NOT Recurring -->
             <template v-else-if="isNewTrial">
-                <b>New Trial</b><br>
+                <!-- <b>New Trial</b><br> -->
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a> 
-                and <a href="/terms">Privacy Statement</a>. As a trial user, you will have access for ___ days. After 
+                and <a href="/terms">Privacy Statement</a>. As a trial user, you will have access for {{ trialDuration }} days. After 
                 that, you will have the option to continue your membership at your own discretion 
                 by choosing one of our membership service agreements.
             </template>    
 
             <!-- Else If Pack -->
             <template v-else-if="isPack">
-                <b>Pack</b><br>
+                <!-- <b>Pack</b><br> -->
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a>, 
                 <a href="/terms">Privacy Statement</a>, and that {{ brand }} will give you lifetime access to this 
                 digital product(s), or in situations where the service is terminated you will 
@@ -51,7 +54,7 @@
 
             <!-- Else (leave empty) --> 
             <template v-else>
-                <b>Blank</b><br>
+                <!-- <b>Blank</b><br> -->
             </template>   
 
         </p>
@@ -66,6 +69,7 @@ export default {
         return {
             subPrice: '',
             subInterval: '',
+            trialDuration: 'the specified number of',
         }
     },
     
@@ -83,6 +87,11 @@ export default {
         allMembershipProductSkus: {
             type: Array,
             default: () => [],
+        },
+
+        membershipsNumberOfFreeDays: {
+            type: Array,
+            default: () => [],   
         },
 
         lifetimeMembershipProductSkus: {
@@ -108,15 +117,17 @@ export default {
 
     computed: {
 
-        //Sku is in the 'all membership product skus' array --> boolean
+        //Cart has sku in the 'all membership product skus' array --> boolean
         hasMembershipSku() {
             return this.cartData.items.some(item => this.allMembershipProductSkus.includes(item.sku));
         },
 
-        //sku is in the 'all lifetime membership product skus' array --> boolean
+        //Cart has sku in the 'all lifetime membership product skus' array --> boolean
         hasLifetimeMembershipSku() {
             return this.cartData.items.some(item => this.lifetimeMembershipProductSkus.includes(item.sku));
         },
+
+        
 
         //is new recurring subscription --> boolean
         isNewRecurringSub() {
@@ -128,14 +139,14 @@ export default {
             return (this.hasLifetimeMembershipSku && !this.containsSubscriptionIntervalCount && !this.cartContainsSubscription);
         },
 
-        //is new trial NOT recurring --> boolean
+        //is new trial membership --> boolean
         isNewTrial() {
-            return ( !this.hasLifetimeMembershipSku && !this.containsSubscriptionIntervalCount && !this.cartContainsSubscription);
+            return ( this.hasMembershipSku && !this.containsSubscriptionIntervalCount && !this.cartContainsSubscription);
         },
 
         //is Pack --> boolean
         isPack() {
-            return ( !this.hasLifetimeMembershipSku && this.containsDigitalItem );
+            return ( !this.hasMembershipSku && this.containsDigitalItem );
         }
     },
 
@@ -144,7 +155,8 @@ export default {
         if(this.hasMembershipSku) {
             this.cartData.items.forEach((item) => {
                 this.allMembershipProductSkus.forEach((sku) => {
-                    if( item.sku === sku)  this.subPrice = item.subscription_renewal_price.toString();
+                    if( item.sku === sku && item.subscription_renewal_price !== null)  
+                        this.subPrice = item.subscription_renewal_price.toString();
                 })
             });
         }
@@ -153,12 +165,20 @@ export default {
         if(this.hasMembershipSku) {
             this.cartData.items.forEach((item) => {
                 this.allMembershipProductSkus.forEach((sku) => {
-                    if( item.sku === sku)  this.subInterval = item.subscription_interval_type.toString() + 'ly';
+                    if( item.sku === sku && item.subscription_interval_type !== null)  
+                        this.subInterval = item.subscription_interval_type.toString() + 'ly';
                 })
             });
         }
 
         //Get Trial Duration
+        if(this.isNewTrial) {
+            this.cartData.items.forEach((item) => {
+                if( this.membershipsNumberOfFreeDays[item.sku] ) {
+                    this.trialDuration = this.membershipsNumberOfFreeDays[item.sku].toString();
+                }
+            });
+        }
     }
 }
 </script>

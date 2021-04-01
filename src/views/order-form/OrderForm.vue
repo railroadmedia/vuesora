@@ -158,6 +158,7 @@
                 :brand = "brand"
                 :cartData="cartData"
                 :all-membership-product-skus = "allMembershipProductSkus"
+                :memberships-number-of-free-days = "membershipsNumberOfFreeDays"
                 :lifetime-membership-product-skus = "lifetimeMembershipProductSkus"
                 :containsDigitalItem = "cartContainsDigitalItems"
                 :containsSubscriptionIntervalCount = "containsSubscriptionIntervalCount"
@@ -310,6 +311,11 @@ export default {
         },
 
         allMembershipProductSkus: {
+            type: Array,
+            default: () => [],
+        },
+
+        membershipsNumberOfFreeDays: {
             type: Array,
             default: () => [],
         },
