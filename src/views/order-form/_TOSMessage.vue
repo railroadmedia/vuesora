@@ -16,9 +16,9 @@
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a>, 
                 <a href="/privacy">Privacy Statement</a>, and that {{ brand }} will automatically continue your 
                 membership and charge the membership fee (currently ${{ subPrice }}) to your payment plan on 
-                a {{ subInterval }} basis until you cancel. You can cancel your subscription at any time 
-                by emailing support@{{ brand }}.com. You have a 90-day guarantee on your subscription, 
-                but following that there are no refunds or credits for partial months. 
+                a {{ subInterval }} basis until you cancel. You can cancel your subscription at any time by going 
+                to Settings, Account Details, and then clicking the Cancel Membership button. You have a 90-day 
+                guarantee on your subscription, but following that there are no refunds or credits for partial months. 
             </template>
 
             <!-- Else If Lifetime -->
@@ -52,9 +52,9 @@
                 refunds or credits given.
             </template>    
 
-            <!-- Else (leave empty) --> 
+            <!-- Else Fallback --> 
             <template v-else>
-                <!-- <b>Blank</b><br> -->
+                By completing your order you agree to our <a href="/privacy">Privacy Statement</a>.
             </template>   
 
         </p>
