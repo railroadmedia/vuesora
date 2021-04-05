@@ -28,7 +28,7 @@
                 <a href="/terms">Privacy Statement</a>, and that {{ brand }} will give you lifetime access to this 
                 service, or in situations where the service agreement ends you will have the 
                 option to download all available media including videos and sheet music. You 
-                have a 90-day guarantee on your subscription, but following that there are no 
+                have a 90-day guarantee on your order, but following that there are no
                 refunds or credits for partial months.
             </template>
 
