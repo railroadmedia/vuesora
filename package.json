@@ -49,6 +49,7 @@
     "shaka-player": "^2.5.7",
     "simplebar": "^5.2.0",
     "smoothscroll-polyfill": "^0.4.3",
+    "tinymce": "^5.7.1",
     "vue": "^2.6.10",
     "vue-lazyload": "^1.3.3",
     "vue-router": "^3.0.3",

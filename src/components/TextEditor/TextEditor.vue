@@ -9,6 +9,8 @@
         <tinymce-editor
             v-model="contentInterface"
             api-key="g84168rl7b45du7fji2nive374o541mhtmzogyolgqng97xc"
+            plugins= 'emoticons'
+            emoticons_database = "emojis"
             :init="initObject"
             @input="handleInput"
         ></tinymce-editor>
