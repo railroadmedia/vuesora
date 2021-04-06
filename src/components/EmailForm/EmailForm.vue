@@ -152,6 +152,16 @@ export default {
             type: String,
             default: () => '/mailora/public/send',
         },
+
+        enableEvent: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        eventName: {
+            type: String,
+            default: () => 'emailFom',
+        },
     },
     data() {
         return {
@@ -184,6 +194,10 @@ export default {
         submitForm() {
             if (this.value) {
                 this.loading = true;
+
+                if (this.enableEvent) {
+                    this.$root.$emit(this.eventName, {text: this.value});
+                }
 
                 UserService.sendEmail({
                     type: this.emailType,
