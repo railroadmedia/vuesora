@@ -35,7 +35,7 @@ export default {
         },
         toolbar: {
             type: String,
-            default: () => 'bold italic underline | bullist numlist | link image media',
+            default: () => 'bold italic underline | bullist numlist | link image media | emoticons',
         },
         imageUploadEndpoint: {
             type: String,
