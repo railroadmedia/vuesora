@@ -250,10 +250,7 @@ export default {
 
         @include medium {
             left:250px;
-        }
-
-        @include large {
-            top:65px;
+            top:56px;
         }
 
         .loading-exercise {

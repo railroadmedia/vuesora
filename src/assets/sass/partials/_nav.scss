@@ -6,11 +6,8 @@ body {
   padding-bottom:120px;
 
   @include medium {
+    padding-top:56px;
     padding-bottom:70px;
-  }
-
-  @include large {
-    padding-top:65px;
   }
 
   &.has-public-footer {
@@ -42,8 +39,8 @@ body {
   padding:0;
   background-color: #00101D;
 
-  @include large {
-    height:65px;
+  @include medium {
+    height:56px;
   }
 
   & > .container {
@@ -57,10 +54,10 @@ body {
   .logo {
     position:relative;
     z-index:8;
-    flex:0 0 125px;
+    flex:0 0 110px;
 
     @include medium {
-      flex:0 0 175px;
+      flex:0 0 140px;
     }
 
     img {
@@ -78,10 +75,10 @@ body {
     max-width:50px;
     max-height:49px;
 
-    @include large {
-      flex:0 0 65px;
-      max-width:65px;
-      max-height:64px;
+    @include medium {
+      flex:0 0 56px;
+      max-width:56px;
+      max-height:56px;
     }
 
     &.live-button {
@@ -100,9 +97,9 @@ body {
     z-index:9;
     max-height:49px;
 
-    @include large {
-      max-width:65px;
-      max-height:64px;
+    @include medium {
+      max-width:56px;
+      max-height:56px;
     }
 
     &.active {
@@ -256,11 +253,7 @@ body {
     z-index:10;
 
     @include medium {
-      flex:0 0 50px;
-    }
-
-    @include large {
-      flex:0 0 65px;
+      flex:0 0 56px;
     }
 
     &:focus {
@@ -398,8 +391,8 @@ body {
   position:absolute;
   top:8px;
   right:8px;
-  height:16px;
-  width:16px;
+  height:13px;
+  width:13px;
   background:$errorRed;
 
   &.smaller {
