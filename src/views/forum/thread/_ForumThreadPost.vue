@@ -33,6 +33,16 @@
             >
                 {{ userExpValue }} XP
             </p>
+          <p
+              class="x-tiny dense text-center font-bold"
+          >
+            Total Forums Posts {{ post.authorTotalPosts }}
+          </p>
+          <p
+              class="x-tiny dense text-center font-bold"
+          >
+            Days as a Member {{ post.authorDaysAsMember }}
+          </p>
         </div>
         <div class="flex flex-column ph">
             <div class="flex flex-row align-v-center mb-1">
