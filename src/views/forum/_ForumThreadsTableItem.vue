@@ -5,7 +5,8 @@
     >
         <div class="flex flex-column avatar-col align-v-center">
             <div
-                class="thumb-img square rounded bg-center"
+                class="thumb-img square rounded bg-center user-avatar"
+                :class="[avatarClassObject, themeColor]"
                 :style="'background-image:url(' + thread.authorAvatar + ');'"
             ></div>
         </div>
@@ -94,6 +95,17 @@ export default {
 
             return topics[this.thread.topic];
         },
+      avatarClassObject() {
+        return {
+          subscriber: ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.thread.access_level) !== -1,
+          edge: this.thread.access_level === 'edge',
+          pack: this.thread.access_level === 'pack',
+          team: ['team', 'admin'].indexOf(this.thread.access_level) !== -1,
+          guitar: this.thread.access_level === 'guitar',
+          piano: this.thread.access_level === 'piano',
+          lifetime: this.thread.access_level === 'lifetime',
+        };
+      },
     },
     methods: {
     },
