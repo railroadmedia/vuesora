@@ -6,7 +6,7 @@
         <div class="flex flex-row flex-wrap pt-3 align-v-center">
             <div class="flex flex-column xs-12 sm-9 mb-3">
                 <h1 class="heading">
-                    {{ totalComments }} Comments
+                    {{ totalCommentsAndReplies }} Comments
                 </h1>
             </div>
 
@@ -286,7 +286,7 @@ export default {
 
                     if (resolved) {
                         this.totalComments = resolved.meta ? resolved.meta.totalResults : resolved.total_results;
-                        // this.totalCommentsAndReplies = resolved['meta']['totalCommentsAndReplies'];
+                        this.totalCommentsAndReplies = resolved.meta ? resolved.meta.totalCommentsAndReplies : this.totalComments;
 
                         if (replace) {
                             this.comments = resolved.data || resolved.results;
