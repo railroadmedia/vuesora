@@ -8,17 +8,17 @@ do
     case $opt in
         "drumeo")
             echo "Symlinking Vuesora with Drumeo!"
-            npm install; npm run lib:watch & npm link; cd /app/drumeo/laravel; npm link vuesora; npm run watch;
+            yarn install; yarn lib:watch & yarn link; cd /app/drumeo/laravel; yarn link vuesora; yarn watch;
             echo "Watching Drumeo For Changes..."
             ;;
         "pianote")
             echo "Symlinking Vuesora with Pianote!"
-            npm install; npm run lib:watch & npm link; cd /app/pianote; npm link vuesora; npm run watch;
+            yarn install; yarn lib:watch & yarn link; cd /app/pianote; yarn link vuesora; yarn watch;
             echo "Watching Pianote For Changes..."
             ;;
         "guitareo")
             echo "Symlinking Vuesora with Guitareo!"
-            npm install; npm run lib:watch & npm link; cd /app/guitareo; npm link vuesora; npm run watch;
+            yarn install; yarn lib:watch & yarn link; cd /app/guitareo; yarn link vuesora; yarn watch;
             ;;
         *)
           echo "Invalid option $REPLY"
