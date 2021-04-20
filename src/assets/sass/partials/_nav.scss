@@ -321,29 +321,6 @@ body {
     }
   }
 
-  #liveIndicator {
-    position:relative;
-    z-index:2;
-    padding:0 3px;
-
-    &:before {
-      content:'';
-      position:absolute;
-      top:0;
-      left:0;
-      right:0;
-      bottom:0;
-      transform-origin:50% 50%;
-      transform:scale(1.25);
-      background:$errorRed;
-      filter:blur(4px);
-      z-index:-1;
-      animation-name: growShrink;
-      animation-duration: 1.25s;
-      animation-iteration-count: infinite
-    }
-  }
-
   .profile-nav-info {
     display: none;
     position: absolute;
@@ -391,6 +368,29 @@ body {
         display: block;
       }
     }
+  }
+}
+
+#liveIndicator {
+  position:relative;
+  z-index:2;
+  padding:0 3px;
+
+  &:before {
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    transform-origin:50% 50%;
+    transform:scale(1.25);
+    background:$errorRed;
+    filter:blur(4px);
+    z-index:-1;
+    animation-name: growShrink;
+    animation-duration: 1.25s;
+    animation-iteration-count: infinite
   }
 }
 
