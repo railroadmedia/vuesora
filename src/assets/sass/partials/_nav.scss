@@ -76,9 +76,9 @@ body {
     max-height:49px;
 
     @include medium {
-      flex:0 0 56px;
-      max-width:56px;
-      max-height:56px;
+      flex:0 0 55px;
+      max-width:55px;
+      max-height:55px;
     }
 
     &.live-button {
@@ -98,8 +98,8 @@ body {
     max-height:49px;
 
     @include medium {
-      max-width:56px;
-      max-height:56px;
+      max-width:55px;
+      max-height:55px;
     }
 
     &.active {
