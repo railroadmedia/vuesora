@@ -105,22 +105,22 @@ body {
     &.active {
 
       .search-row {
-        transform:translateX(calc(-#{100%} + 35px));
+        transform:translateX(calc(-#{100%} + 45px));
 
         @include small {
-          transform:translateX(calc(-#{100%} + 50px));
+          transform:translateX(calc(-#{100%} - 5px));
         }
 
         @include medium {
-          transform:translateX(calc(-#{$medium} + 115px));
+          transform:translateX(calc(-#{$medium} + 127px));
         }
 
         @include large {
-          transform:translateX(calc(-#{$large} + 145px));
+          transform:translateX(calc(-#{$large} + 127px));
         }
 
         @include xLarge {
-          transform:translateX(calc(-#{$xLarge} + 145px));
+          transform:translateX(calc(-#{$xLarge} + 127px));
         }
       }
     }
