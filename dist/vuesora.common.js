@@ -500,6 +500,24 @@ module.exports.f = function getOwnPropertyNames(it) {
 
 /***/ }),
 
+/***/ "044b":
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+
+/***/ }),
+
 /***/ "061b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -873,7 +891,7 @@ function _setPrototypeOf(o, p) {
   return _setPrototypeOf(o, p);
 }
 
-function _isNativeReflectConstruct() {
+function isNativeReflectConstruct() {
   if (typeof Reflect === "undefined" || !Reflect.construct) return false;
   if (Reflect.construct.sham) return false;
   if (typeof Proxy === "function") return true;
@@ -887,7 +905,7 @@ function _isNativeReflectConstruct() {
 }
 
 function _construct(Parent, args, Class) {
-  if (_isNativeReflectConstruct()) {
+  if (isNativeReflectConstruct()) {
     _construct = Reflect.construct;
   } else {
     _construct = function _construct(Parent, args, Class) {
@@ -941,64 +959,14 @@ function _wrapNativeSuper(Class) {
   return _wrapNativeSuper(Class);
 }
 
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(n);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
-
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-  return arr2;
-}
-
-function _createForOfIteratorHelperLoose(o) {
-  var i = 0;
-
-  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-    if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) return function () {
-      if (i >= o.length) return {
-        done: true
-      };
-      return {
-        done: false,
-        value: o[i++]
-      };
-    };
-    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-
-  i = o[Symbol.iterator]();
-  return i.next.bind(i);
-}
-
 // these aren't really private, but nor are they really useful to document
 
 /**
  * @private
  */
-var LuxonError = /*#__PURE__*/function (_Error) {
+var LuxonError =
+/*#__PURE__*/
+function (_Error) {
   _inheritsLoose(LuxonError, _Error);
 
   function LuxonError() {
@@ -1006,13 +974,15 @@ var LuxonError = /*#__PURE__*/function (_Error) {
   }
 
   return LuxonError;
-}( /*#__PURE__*/_wrapNativeSuper(Error));
+}(_wrapNativeSuper(Error));
 /**
  * @private
  */
 
 
-var InvalidDateTimeError = /*#__PURE__*/function (_LuxonError) {
+var InvalidDateTimeError =
+/*#__PURE__*/
+function (_LuxonError) {
   _inheritsLoose(InvalidDateTimeError, _LuxonError);
 
   function InvalidDateTimeError(reason) {
@@ -1025,7 +995,9 @@ var InvalidDateTimeError = /*#__PURE__*/function (_LuxonError) {
  * @private
  */
 
-var InvalidIntervalError = /*#__PURE__*/function (_LuxonError2) {
+var InvalidIntervalError =
+/*#__PURE__*/
+function (_LuxonError2) {
   _inheritsLoose(InvalidIntervalError, _LuxonError2);
 
   function InvalidIntervalError(reason) {
@@ -1038,7 +1010,9 @@ var InvalidIntervalError = /*#__PURE__*/function (_LuxonError2) {
  * @private
  */
 
-var InvalidDurationError = /*#__PURE__*/function (_LuxonError3) {
+var InvalidDurationError =
+/*#__PURE__*/
+function (_LuxonError3) {
   _inheritsLoose(InvalidDurationError, _LuxonError3);
 
   function InvalidDurationError(reason) {
@@ -1051,7 +1025,9 @@ var InvalidDurationError = /*#__PURE__*/function (_LuxonError3) {
  * @private
  */
 
-var ConflictingSpecificationError = /*#__PURE__*/function (_LuxonError4) {
+var ConflictingSpecificationError =
+/*#__PURE__*/
+function (_LuxonError4) {
   _inheritsLoose(ConflictingSpecificationError, _LuxonError4);
 
   function ConflictingSpecificationError() {
@@ -1064,7 +1040,9 @@ var ConflictingSpecificationError = /*#__PURE__*/function (_LuxonError4) {
  * @private
  */
 
-var InvalidUnitError = /*#__PURE__*/function (_LuxonError5) {
+var InvalidUnitError =
+/*#__PURE__*/
+function (_LuxonError5) {
   _inheritsLoose(InvalidUnitError, _LuxonError5);
 
   function InvalidUnitError(unit) {
@@ -1077,7 +1055,9 @@ var InvalidUnitError = /*#__PURE__*/function (_LuxonError5) {
  * @private
  */
 
-var InvalidArgumentError = /*#__PURE__*/function (_LuxonError6) {
+var InvalidArgumentError =
+/*#__PURE__*/
+function (_LuxonError6) {
   _inheritsLoose(InvalidArgumentError, _LuxonError6);
 
   function InvalidArgumentError() {
@@ -1090,7 +1070,9 @@ var InvalidArgumentError = /*#__PURE__*/function (_LuxonError6) {
  * @private
  */
 
-var ZoneIsAbstractError = /*#__PURE__*/function (_LuxonError7) {
+var ZoneIsAbstractError =
+/*#__PURE__*/
+function (_LuxonError7) {
   _inheritsLoose(ZoneIsAbstractError, _LuxonError7);
 
   function ZoneIsAbstractError() {
@@ -1099,180 +1081,6 @@ var ZoneIsAbstractError = /*#__PURE__*/function (_LuxonError7) {
 
   return ZoneIsAbstractError;
 }(LuxonError);
-
-/**
- * @private
- */
-var n = "numeric",
-    s = "short",
-    l = "long";
-var DATE_SHORT = {
-  year: n,
-  month: n,
-  day: n
-};
-var DATE_MED = {
-  year: n,
-  month: s,
-  day: n
-};
-var DATE_MED_WITH_WEEKDAY = {
-  year: n,
-  month: s,
-  day: n,
-  weekday: s
-};
-var DATE_FULL = {
-  year: n,
-  month: l,
-  day: n
-};
-var DATE_HUGE = {
-  year: n,
-  month: l,
-  day: n,
-  weekday: l
-};
-var TIME_SIMPLE = {
-  hour: n,
-  minute: n
-};
-var TIME_WITH_SECONDS = {
-  hour: n,
-  minute: n,
-  second: n
-};
-var TIME_WITH_SHORT_OFFSET = {
-  hour: n,
-  minute: n,
-  second: n,
-  timeZoneName: s
-};
-var TIME_WITH_LONG_OFFSET = {
-  hour: n,
-  minute: n,
-  second: n,
-  timeZoneName: l
-};
-var TIME_24_SIMPLE = {
-  hour: n,
-  minute: n,
-  hour12: false
-};
-/**
- * {@link toLocaleString}; format like '09:30:23', always 24-hour.
- */
-
-var TIME_24_WITH_SECONDS = {
-  hour: n,
-  minute: n,
-  second: n,
-  hour12: false
-};
-/**
- * {@link toLocaleString}; format like '09:30:23 EDT', always 24-hour.
- */
-
-var TIME_24_WITH_SHORT_OFFSET = {
-  hour: n,
-  minute: n,
-  second: n,
-  hour12: false,
-  timeZoneName: s
-};
-/**
- * {@link toLocaleString}; format like '09:30:23 Eastern Daylight Time', always 24-hour.
- */
-
-var TIME_24_WITH_LONG_OFFSET = {
-  hour: n,
-  minute: n,
-  second: n,
-  hour12: false,
-  timeZoneName: l
-};
-/**
- * {@link toLocaleString}; format like '10/14/1983, 9:30 AM'. Only 12-hour if the locale is.
- */
-
-var DATETIME_SHORT = {
-  year: n,
-  month: n,
-  day: n,
-  hour: n,
-  minute: n
-};
-/**
- * {@link toLocaleString}; format like '10/14/1983, 9:30:33 AM'. Only 12-hour if the locale is.
- */
-
-var DATETIME_SHORT_WITH_SECONDS = {
-  year: n,
-  month: n,
-  day: n,
-  hour: n,
-  minute: n,
-  second: n
-};
-var DATETIME_MED = {
-  year: n,
-  month: s,
-  day: n,
-  hour: n,
-  minute: n
-};
-var DATETIME_MED_WITH_SECONDS = {
-  year: n,
-  month: s,
-  day: n,
-  hour: n,
-  minute: n,
-  second: n
-};
-var DATETIME_MED_WITH_WEEKDAY = {
-  year: n,
-  month: s,
-  day: n,
-  weekday: s,
-  hour: n,
-  minute: n
-};
-var DATETIME_FULL = {
-  year: n,
-  month: l,
-  day: n,
-  hour: n,
-  minute: n,
-  timeZoneName: s
-};
-var DATETIME_FULL_WITH_SECONDS = {
-  year: n,
-  month: l,
-  day: n,
-  hour: n,
-  minute: n,
-  second: n,
-  timeZoneName: s
-};
-var DATETIME_HUGE = {
-  year: n,
-  month: l,
-  day: n,
-  weekday: l,
-  hour: n,
-  minute: n,
-  timeZoneName: l
-};
-var DATETIME_HUGE_WITH_SECONDS = {
-  year: n,
-  month: l,
-  day: n,
-  weekday: l,
-  hour: n,
-  minute: n,
-  second: n,
-  timeZoneName: l
-};
 
 /*
   This is just a junk drawer, containing anything used across multiple classes.
@@ -1360,17 +1168,11 @@ function padStart(input, n) {
     n = 2;
   }
 
-  var minus = input < 0 ? "-" : "";
-  var target = minus ? input * -1 : input;
-  var result;
-
-  if (target.toString().length < n) {
-    result = ("0".repeat(n) + target).slice(-n);
+  if (input.toString().length < n) {
+    return ("0".repeat(n) + input).slice(-n);
   } else {
-    result = target.toString();
+    return input.toString();
   }
-
-  return "" + minus + result;
 }
 function parseInteger(string) {
   if (isUndefined(string) || string === null || string === "") {
@@ -1495,6 +1297,7 @@ function asNumber(value) {
   if (typeof value === "boolean" || value === "" || Number.isNaN(numericValue)) throw new InvalidArgumentError("Invalid unit value " + value);
   return numericValue;
 }
+
 function normalizeObject(obj, normalizer, nonUnitKeys) {
   var normalized = {};
 
@@ -1510,19 +1313,20 @@ function normalizeObject(obj, normalizer, nonUnitKeys) {
   return normalized;
 }
 function formatOffset(offset, format) {
-  var hours = Math.trunc(Math.abs(offset / 60)),
-      minutes = Math.trunc(Math.abs(offset % 60)),
-      sign = offset >= 0 ? "+" : "-";
+  var hours = Math.trunc(offset / 60),
+      minutes = Math.abs(offset % 60),
+      sign = hours >= 0 && !Object.is(hours, -0) ? "+" : "-",
+      base = "" + sign + Math.abs(hours);
 
   switch (format) {
     case "short":
-      return "" + sign + padStart(hours, 2) + ":" + padStart(minutes, 2);
+      return "" + sign + padStart(Math.abs(hours), 2) + ":" + padStart(minutes, 2);
 
     case "narrow":
-      return "" + sign + hours + (minutes > 0 ? ":" + minutes : "");
+      return minutes > 0 ? base + ":" + minutes : base;
 
     case "techie":
-      return "" + sign + padStart(hours, 2) + padStart(minutes, 2);
+      return "" + sign + padStart(Math.abs(hours), 2) + padStart(minutes, 2);
 
     default:
       throw new RangeError("Value format " + format + " is out of range for property format");
@@ -1532,6 +1336,175 @@ function timeObject(obj) {
   return pick(obj, ["hour", "minute", "second", "millisecond"]);
 }
 var ianaRegex = /[A-Za-z_+-]{1,256}(:?\/[A-Za-z_+-]{1,256}(\/[A-Za-z_+-]{1,256})?)?/;
+
+/**
+ * @private
+ */
+var n = "numeric",
+    s = "short",
+    l = "long",
+    d2 = "2-digit";
+var DATE_SHORT = {
+  year: n,
+  month: n,
+  day: n
+};
+var DATE_MED = {
+  year: n,
+  month: s,
+  day: n
+};
+var DATE_FULL = {
+  year: n,
+  month: l,
+  day: n
+};
+var DATE_HUGE = {
+  year: n,
+  month: l,
+  day: n,
+  weekday: l
+};
+var TIME_SIMPLE = {
+  hour: n,
+  minute: d2
+};
+var TIME_WITH_SECONDS = {
+  hour: n,
+  minute: d2,
+  second: d2
+};
+var TIME_WITH_SHORT_OFFSET = {
+  hour: n,
+  minute: d2,
+  second: d2,
+  timeZoneName: s
+};
+var TIME_WITH_LONG_OFFSET = {
+  hour: n,
+  minute: d2,
+  second: d2,
+  timeZoneName: l
+};
+var TIME_24_SIMPLE = {
+  hour: n,
+  minute: d2,
+  hour12: false
+};
+/**
+ * {@link toLocaleString}; format like '09:30:23', always 24-hour.
+ */
+
+var TIME_24_WITH_SECONDS = {
+  hour: n,
+  minute: d2,
+  second: d2,
+  hour12: false
+};
+/**
+ * {@link toLocaleString}; format like '09:30:23 EDT', always 24-hour.
+ */
+
+var TIME_24_WITH_SHORT_OFFSET = {
+  hour: n,
+  minute: d2,
+  second: d2,
+  hour12: false,
+  timeZoneName: s
+};
+/**
+ * {@link toLocaleString}; format like '09:30:23 Eastern Daylight Time', always 24-hour.
+ */
+
+var TIME_24_WITH_LONG_OFFSET = {
+  hour: n,
+  minute: d2,
+  second: d2,
+  hour12: false,
+  timeZoneName: l
+};
+/**
+ * {@link toLocaleString}; format like '10/14/1983, 9:30 AM'. Only 12-hour if the locale is.
+ */
+
+var DATETIME_SHORT = {
+  year: n,
+  month: n,
+  day: n,
+  hour: n,
+  minute: d2
+};
+/**
+ * {@link toLocaleString}; format like '10/14/1983, 9:30:33 AM'. Only 12-hour if the locale is.
+ */
+
+var DATETIME_SHORT_WITH_SECONDS = {
+  year: n,
+  month: n,
+  day: n,
+  hour: n,
+  minute: d2,
+  second: d2
+};
+var DATETIME_MED = {
+  year: n,
+  month: s,
+  day: n,
+  hour: n,
+  minute: d2
+};
+var DATETIME_MED_WITH_SECONDS = {
+  year: n,
+  month: s,
+  day: n,
+  hour: n,
+  minute: d2,
+  second: d2
+};
+var DATETIME_MED_WITH_WEEKDAY = {
+  year: n,
+  month: s,
+  day: n,
+  weekday: s,
+  hour: n,
+  minute: d2
+};
+var DATETIME_FULL = {
+  year: n,
+  month: l,
+  day: n,
+  hour: n,
+  minute: d2,
+  timeZoneName: s
+};
+var DATETIME_FULL_WITH_SECONDS = {
+  year: n,
+  month: l,
+  day: n,
+  hour: n,
+  minute: d2,
+  second: d2,
+  timeZoneName: s
+};
+var DATETIME_HUGE = {
+  year: n,
+  month: l,
+  day: n,
+  weekday: l,
+  hour: n,
+  minute: d2,
+  timeZoneName: l
+};
+var DATETIME_HUGE_WITH_SECONDS = {
+  year: n,
+  month: l,
+  day: n,
+  weekday: l,
+  hour: n,
+  minute: d2,
+  second: d2,
+  timeZoneName: l
+};
 
 function stringify(obj) {
   return JSON.stringify(obj, Object.keys(obj).sort());
@@ -1651,6 +1624,8 @@ function formatRelativeTime(unit, count, numeric, narrow) {
       case 0:
         return isDay ? "today" : "this " + units[unit][0];
 
+      default: // fall through
+
     }
   }
 
@@ -1674,9 +1649,6 @@ function formatString(knownFormat) {
 
     case stringify(DATE_MED):
       return "LLL d, yyyy";
-
-    case stringify(DATE_MED_WITH_WEEKDAY):
-      return "EEE, LLL d, yyyy";
 
     case stringify(DATE_FULL):
       return "LLLL d, yyyy";
@@ -1740,11 +1712,842 @@ function formatString(knownFormat) {
   }
 }
 
+/**
+ * @interface
+ */
+
+var Zone =
+/*#__PURE__*/
+function () {
+  function Zone() {}
+
+  var _proto = Zone.prototype;
+
+  /**
+   * Returns the offset's common name (such as EST) at the specified timestamp
+   * @abstract
+   * @param {number} ts - Epoch milliseconds for which to get the name
+   * @param {Object} opts - Options to affect the format
+   * @param {string} opts.format - What style of offset to return. Accepts 'long' or 'short'.
+   * @param {string} opts.locale - What locale to return the offset name in.
+   * @return {string}
+   */
+  _proto.offsetName = function offsetName(ts, opts) {
+    throw new ZoneIsAbstractError();
+  }
+  /**
+   * Returns the offset's value as a string
+   * @abstract
+   * @param {number} ts - Epoch milliseconds for which to get the offset
+   * @param {string} format - What style of offset to return.
+   *                          Accepts 'narrow', 'short', or 'techie'. Returning '+6', '+06:00', or '+0600' respectively
+   * @return {string}
+   */
+  ;
+
+  _proto.formatOffset = function formatOffset(ts, format) {
+    throw new ZoneIsAbstractError();
+  }
+  /**
+   * Return the offset in minutes for this zone at the specified timestamp.
+   * @abstract
+   * @param {number} ts - Epoch milliseconds for which to compute the offset
+   * @return {number}
+   */
+  ;
+
+  _proto.offset = function offset(ts) {
+    throw new ZoneIsAbstractError();
+  }
+  /**
+   * Return whether this Zone is equal to another zone
+   * @abstract
+   * @param {Zone} otherZone - the zone to compare
+   * @return {boolean}
+   */
+  ;
+
+  _proto.equals = function equals(otherZone) {
+    throw new ZoneIsAbstractError();
+  }
+  /**
+   * Return whether this Zone is valid.
+   * @abstract
+   * @type {boolean}
+   */
+  ;
+
+  _createClass(Zone, [{
+    key: "type",
+
+    /**
+     * The type of zone
+     * @abstract
+     * @type {string}
+     */
+    get: function get() {
+      throw new ZoneIsAbstractError();
+    }
+    /**
+     * The name of this zone.
+     * @abstract
+     * @type {string}
+     */
+
+  }, {
+    key: "name",
+    get: function get() {
+      throw new ZoneIsAbstractError();
+    }
+    /**
+     * Returns whether the offset is known to be fixed for the whole year.
+     * @abstract
+     * @type {boolean}
+     */
+
+  }, {
+    key: "universal",
+    get: function get() {
+      throw new ZoneIsAbstractError();
+    }
+  }, {
+    key: "isValid",
+    get: function get() {
+      throw new ZoneIsAbstractError();
+    }
+  }]);
+
+  return Zone;
+}();
+
+var singleton = null;
+/**
+ * Represents the local zone for this Javascript environment.
+ * @implements {Zone}
+ */
+
+var LocalZone =
+/*#__PURE__*/
+function (_Zone) {
+  _inheritsLoose(LocalZone, _Zone);
+
+  function LocalZone() {
+    return _Zone.apply(this, arguments) || this;
+  }
+
+  var _proto = LocalZone.prototype;
+
+  /** @override **/
+  _proto.offsetName = function offsetName(ts, _ref) {
+    var format = _ref.format,
+        locale = _ref.locale;
+    return parseZoneInfo(ts, format, locale);
+  }
+  /** @override **/
+  ;
+
+  _proto.formatOffset = function formatOffset$1(ts, format) {
+    return formatOffset(this.offset(ts), format);
+  }
+  /** @override **/
+  ;
+
+  _proto.offset = function offset(ts) {
+    return -new Date(ts).getTimezoneOffset();
+  }
+  /** @override **/
+  ;
+
+  _proto.equals = function equals(otherZone) {
+    return otherZone.type === "local";
+  }
+  /** @override **/
+  ;
+
+  _createClass(LocalZone, [{
+    key: "type",
+
+    /** @override **/
+    get: function get() {
+      return "local";
+    }
+    /** @override **/
+
+  }, {
+    key: "name",
+    get: function get() {
+      if (hasIntl()) {
+        return new Intl.DateTimeFormat().resolvedOptions().timeZone;
+      } else return "local";
+    }
+    /** @override **/
+
+  }, {
+    key: "universal",
+    get: function get() {
+      return false;
+    }
+  }, {
+    key: "isValid",
+    get: function get() {
+      return true;
+    }
+  }], [{
+    key: "instance",
+
+    /**
+     * Get a singleton instance of the local zone
+     * @return {LocalZone}
+     */
+    get: function get() {
+      if (singleton === null) {
+        singleton = new LocalZone();
+      }
+
+      return singleton;
+    }
+  }]);
+
+  return LocalZone;
+}(Zone);
+
+var matchingRegex = RegExp("^" + ianaRegex.source + "$");
+var dtfCache = {};
+
+function makeDTF(zone) {
+  if (!dtfCache[zone]) {
+    dtfCache[zone] = new Intl.DateTimeFormat("en-US", {
+      hour12: false,
+      timeZone: zone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
+  }
+
+  return dtfCache[zone];
+}
+
+var typeToPos = {
+  year: 0,
+  month: 1,
+  day: 2,
+  hour: 3,
+  minute: 4,
+  second: 5
+};
+
+function hackyOffset(dtf, date) {
+  var formatted = dtf.format(date).replace(/\u200E/g, ""),
+      parsed = /(\d+)\/(\d+)\/(\d+),? (\d+):(\d+):(\d+)/.exec(formatted),
+      fMonth = parsed[1],
+      fDay = parsed[2],
+      fYear = parsed[3],
+      fHour = parsed[4],
+      fMinute = parsed[5],
+      fSecond = parsed[6];
+  return [fYear, fMonth, fDay, fHour, fMinute, fSecond];
+}
+
+function partsOffset(dtf, date) {
+  var formatted = dtf.formatToParts(date),
+      filled = [];
+
+  for (var i = 0; i < formatted.length; i++) {
+    var _formatted$i = formatted[i],
+        type = _formatted$i.type,
+        value = _formatted$i.value,
+        pos = typeToPos[type];
+
+    if (!isUndefined(pos)) {
+      filled[pos] = parseInt(value, 10);
+    }
+  }
+
+  return filled;
+}
+
+var ianaZoneCache = {};
+/**
+ * A zone identified by an IANA identifier, like America/New_York
+ * @implements {Zone}
+ */
+
+var IANAZone =
+/*#__PURE__*/
+function (_Zone) {
+  _inheritsLoose(IANAZone, _Zone);
+
+  /**
+   * @param {string} name - Zone name
+   * @return {IANAZone}
+   */
+  IANAZone.create = function create(name) {
+    if (!ianaZoneCache[name]) {
+      ianaZoneCache[name] = new IANAZone(name);
+    }
+
+    return ianaZoneCache[name];
+  }
+  /**
+   * Reset local caches. Should only be necessary in testing scenarios.
+   * @return {void}
+   */
+  ;
+
+  IANAZone.resetCache = function resetCache() {
+    ianaZoneCache = {};
+    dtfCache = {};
+  }
+  /**
+   * Returns whether the provided string is a valid specifier. This only checks the string's format, not that the specifier identifies a known zone; see isValidZone for that.
+   * @param {string} s - The string to check validity on
+   * @example IANAZone.isValidSpecifier("America/New_York") //=> true
+   * @example IANAZone.isValidSpecifier("Fantasia/Castle") //=> true
+   * @example IANAZone.isValidSpecifier("Sport~~blorp") //=> false
+   * @return {boolean}
+   */
+  ;
+
+  IANAZone.isValidSpecifier = function isValidSpecifier(s) {
+    return !!(s && s.match(matchingRegex));
+  }
+  /**
+   * Returns whether the provided string identifies a real zone
+   * @param {string} zone - The string to check
+   * @example IANAZone.isValidZone("America/New_York") //=> true
+   * @example IANAZone.isValidZone("Fantasia/Castle") //=> false
+   * @example IANAZone.isValidZone("Sport~~blorp") //=> false
+   * @return {boolean}
+   */
+  ;
+
+  IANAZone.isValidZone = function isValidZone(zone) {
+    try {
+      new Intl.DateTimeFormat("en-US", {
+        timeZone: zone
+      }).format();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  } // Etc/GMT+8 -> -480
+
+  /** @ignore */
+  ;
+
+  IANAZone.parseGMTOffset = function parseGMTOffset(specifier) {
+    if (specifier) {
+      var match = specifier.match(/^Etc\/GMT([+-]\d{1,2})$/i);
+
+      if (match) {
+        return -60 * parseInt(match[1]);
+      }
+    }
+
+    return null;
+  };
+
+  function IANAZone(name) {
+    var _this;
+
+    _this = _Zone.call(this) || this;
+    /** @private **/
+
+    _this.zoneName = name;
+    /** @private **/
+
+    _this.valid = IANAZone.isValidZone(name);
+    return _this;
+  }
+  /** @override **/
+
+
+  var _proto = IANAZone.prototype;
+
+  /** @override **/
+  _proto.offsetName = function offsetName(ts, _ref) {
+    var format = _ref.format,
+        locale = _ref.locale;
+    return parseZoneInfo(ts, format, locale, this.name);
+  }
+  /** @override **/
+  ;
+
+  _proto.formatOffset = function formatOffset$1(ts, format) {
+    return formatOffset(this.offset(ts), format);
+  }
+  /** @override **/
+  ;
+
+  _proto.offset = function offset(ts) {
+    var date = new Date(ts),
+        dtf = makeDTF(this.name),
+        _ref2 = dtf.formatToParts ? partsOffset(dtf, date) : hackyOffset(dtf, date),
+        year = _ref2[0],
+        month = _ref2[1],
+        day = _ref2[2],
+        hour = _ref2[3],
+        minute = _ref2[4],
+        second = _ref2[5];
+
+    var asUTC = objToLocalTS({
+      year: year,
+      month: month,
+      day: day,
+      hour: hour,
+      minute: minute,
+      second: second,
+      millisecond: 0
+    });
+    var asTS = date.valueOf();
+    asTS -= asTS % 1000;
+    return (asUTC - asTS) / (60 * 1000);
+  }
+  /** @override **/
+  ;
+
+  _proto.equals = function equals(otherZone) {
+    return otherZone.type === "iana" && otherZone.name === this.name;
+  }
+  /** @override **/
+  ;
+
+  _createClass(IANAZone, [{
+    key: "type",
+    get: function get() {
+      return "iana";
+    }
+    /** @override **/
+
+  }, {
+    key: "name",
+    get: function get() {
+      return this.zoneName;
+    }
+    /** @override **/
+
+  }, {
+    key: "universal",
+    get: function get() {
+      return false;
+    }
+  }, {
+    key: "isValid",
+    get: function get() {
+      return this.valid;
+    }
+  }]);
+
+  return IANAZone;
+}(Zone);
+
+var singleton$1 = null;
+/**
+ * A zone with a fixed offset (i.e. no DST)
+ * @implements {Zone}
+ */
+
+var FixedOffsetZone =
+/*#__PURE__*/
+function (_Zone) {
+  _inheritsLoose(FixedOffsetZone, _Zone);
+
+  /**
+   * Get an instance with a specified offset
+   * @param {number} offset - The offset in minutes
+   * @return {FixedOffsetZone}
+   */
+  FixedOffsetZone.instance = function instance(offset) {
+    return offset === 0 ? FixedOffsetZone.utcInstance : new FixedOffsetZone(offset);
+  }
+  /**
+   * Get an instance of FixedOffsetZone from a UTC offset string, like "UTC+6"
+   * @param {string} s - The offset string to parse
+   * @example FixedOffsetZone.parseSpecifier("UTC+6")
+   * @example FixedOffsetZone.parseSpecifier("UTC+06")
+   * @example FixedOffsetZone.parseSpecifier("UTC-6:00")
+   * @return {FixedOffsetZone}
+   */
+  ;
+
+  FixedOffsetZone.parseSpecifier = function parseSpecifier(s) {
+    if (s) {
+      var r = s.match(/^utc(?:([+-]\d{1,2})(?::(\d{2}))?)?$/i);
+
+      if (r) {
+        return new FixedOffsetZone(signedOffset(r[1], r[2]));
+      }
+    }
+
+    return null;
+  };
+
+  _createClass(FixedOffsetZone, null, [{
+    key: "utcInstance",
+
+    /**
+     * Get a singleton instance of UTC
+     * @return {FixedOffsetZone}
+     */
+    get: function get() {
+      if (singleton$1 === null) {
+        singleton$1 = new FixedOffsetZone(0);
+      }
+
+      return singleton$1;
+    }
+  }]);
+
+  function FixedOffsetZone(offset) {
+    var _this;
+
+    _this = _Zone.call(this) || this;
+    /** @private **/
+
+    _this.fixed = offset;
+    return _this;
+  }
+  /** @override **/
+
+
+  var _proto = FixedOffsetZone.prototype;
+
+  /** @override **/
+  _proto.offsetName = function offsetName() {
+    return this.name;
+  }
+  /** @override **/
+  ;
+
+  _proto.formatOffset = function formatOffset$1(ts, format) {
+    return formatOffset(this.fixed, format);
+  }
+  /** @override **/
+  ;
+
+  /** @override **/
+  _proto.offset = function offset() {
+    return this.fixed;
+  }
+  /** @override **/
+  ;
+
+  _proto.equals = function equals(otherZone) {
+    return otherZone.type === "fixed" && otherZone.fixed === this.fixed;
+  }
+  /** @override **/
+  ;
+
+  _createClass(FixedOffsetZone, [{
+    key: "type",
+    get: function get() {
+      return "fixed";
+    }
+    /** @override **/
+
+  }, {
+    key: "name",
+    get: function get() {
+      return this.fixed === 0 ? "UTC" : "UTC" + formatOffset(this.fixed, "narrow");
+    }
+  }, {
+    key: "universal",
+    get: function get() {
+      return true;
+    }
+  }, {
+    key: "isValid",
+    get: function get() {
+      return true;
+    }
+  }]);
+
+  return FixedOffsetZone;
+}(Zone);
+
+/**
+ * A zone that failed to parse. You should never need to instantiate this.
+ * @implements {Zone}
+ */
+
+var InvalidZone =
+/*#__PURE__*/
+function (_Zone) {
+  _inheritsLoose(InvalidZone, _Zone);
+
+  function InvalidZone(zoneName) {
+    var _this;
+
+    _this = _Zone.call(this) || this;
+    /**  @private */
+
+    _this.zoneName = zoneName;
+    return _this;
+  }
+  /** @override **/
+
+
+  var _proto = InvalidZone.prototype;
+
+  /** @override **/
+  _proto.offsetName = function offsetName() {
+    return null;
+  }
+  /** @override **/
+  ;
+
+  _proto.formatOffset = function formatOffset() {
+    return "";
+  }
+  /** @override **/
+  ;
+
+  _proto.offset = function offset() {
+    return NaN;
+  }
+  /** @override **/
+  ;
+
+  _proto.equals = function equals() {
+    return false;
+  }
+  /** @override **/
+  ;
+
+  _createClass(InvalidZone, [{
+    key: "type",
+    get: function get() {
+      return "invalid";
+    }
+    /** @override **/
+
+  }, {
+    key: "name",
+    get: function get() {
+      return this.zoneName;
+    }
+    /** @override **/
+
+  }, {
+    key: "universal",
+    get: function get() {
+      return false;
+    }
+  }, {
+    key: "isValid",
+    get: function get() {
+      return false;
+    }
+  }]);
+
+  return InvalidZone;
+}(Zone);
+
+/**
+ * @private
+ */
+function normalizeZone(input, defaultZone) {
+  var offset;
+
+  if (isUndefined(input) || input === null) {
+    return defaultZone;
+  } else if (input instanceof Zone) {
+    return input;
+  } else if (isString(input)) {
+    var lowered = input.toLowerCase();
+    if (lowered === "local") return defaultZone;else if (lowered === "utc" || lowered === "gmt") return FixedOffsetZone.utcInstance;else if ((offset = IANAZone.parseGMTOffset(input)) != null) {
+      // handle Etc/GMT-4, which V8 chokes on
+      return FixedOffsetZone.instance(offset);
+    } else if (IANAZone.isValidSpecifier(lowered)) return IANAZone.create(input);else return FixedOffsetZone.parseSpecifier(lowered) || new InvalidZone(input);
+  } else if (isNumber(input)) {
+    return FixedOffsetZone.instance(input);
+  } else if (typeof input === "object" && input.offset && typeof input.offset === "number") {
+    // This is dumb, but the instanceof check above doesn't seem to really work
+    // so we're duck checking it
+    return input;
+  } else {
+    return new InvalidZone(input);
+  }
+}
+
+var now = function now() {
+  return Date.now();
+},
+    defaultZone = null,
+    // not setting this directly to LocalZone.instance bc loading order issues
+defaultLocale = null,
+    defaultNumberingSystem = null,
+    defaultOutputCalendar = null,
+    throwOnInvalid = false;
+/**
+ * Settings contains static getters and setters that control Luxon's overall behavior. Luxon is a simple library with few options, but the ones it does have live here.
+ */
+
+
+var Settings =
+/*#__PURE__*/
+function () {
+  function Settings() {}
+
+  /**
+   * Reset Luxon's global caches. Should only be necessary in testing scenarios.
+   * @return {void}
+   */
+  Settings.resetCaches = function resetCaches() {
+    Locale.resetCache();
+    IANAZone.resetCache();
+  };
+
+  _createClass(Settings, null, [{
+    key: "now",
+
+    /**
+     * Get the callback for returning the current timestamp.
+     * @type {function}
+     */
+    get: function get() {
+      return now;
+    }
+    /**
+     * Set the callback for returning the current timestamp.
+     * The function should return a number, which will be interpreted as an Epoch millisecond count
+     * @type {function}
+     * @example Settings.now = () => Date.now() + 3000 // pretend it is 3 seconds in the future
+     * @example Settings.now = () => 0 // always pretend it's Jan 1, 1970 at midnight in UTC time
+     */
+    ,
+    set: function set(n) {
+      now = n;
+    }
+    /**
+     * Get the default time zone to create DateTimes in.
+     * @type {string}
+     */
+
+  }, {
+    key: "defaultZoneName",
+    get: function get() {
+      return Settings.defaultZone.name;
+    }
+    /**
+     * Set the default time zone to create DateTimes in. Does not affect existing instances.
+     * @type {string}
+     */
+    ,
+    set: function set(z) {
+      if (!z) {
+        defaultZone = null;
+      } else {
+        defaultZone = normalizeZone(z);
+      }
+    }
+    /**
+     * Get the default time zone object to create DateTimes in. Does not affect existing instances.
+     * @type {Zone}
+     */
+
+  }, {
+    key: "defaultZone",
+    get: function get() {
+      return defaultZone || LocalZone.instance;
+    }
+    /**
+     * Get the default locale to create DateTimes with. Does not affect existing instances.
+     * @type {string}
+     */
+
+  }, {
+    key: "defaultLocale",
+    get: function get() {
+      return defaultLocale;
+    }
+    /**
+     * Set the default locale to create DateTimes with. Does not affect existing instances.
+     * @type {string}
+     */
+    ,
+    set: function set(locale) {
+      defaultLocale = locale;
+    }
+    /**
+     * Get the default numbering system to create DateTimes with. Does not affect existing instances.
+     * @type {string}
+     */
+
+  }, {
+    key: "defaultNumberingSystem",
+    get: function get() {
+      return defaultNumberingSystem;
+    }
+    /**
+     * Set the default numbering system to create DateTimes with. Does not affect existing instances.
+     * @type {string}
+     */
+    ,
+    set: function set(numberingSystem) {
+      defaultNumberingSystem = numberingSystem;
+    }
+    /**
+     * Get the default output calendar to create DateTimes with. Does not affect existing instances.
+     * @type {string}
+     */
+
+  }, {
+    key: "defaultOutputCalendar",
+    get: function get() {
+      return defaultOutputCalendar;
+    }
+    /**
+     * Set the default output calendar to create DateTimes with. Does not affect existing instances.
+     * @type {string}
+     */
+    ,
+    set: function set(outputCalendar) {
+      defaultOutputCalendar = outputCalendar;
+    }
+    /**
+     * Get whether Luxon will throw when it encounters invalid DateTimes, Durations, or Intervals
+     * @type {boolean}
+     */
+
+  }, {
+    key: "throwOnInvalid",
+    get: function get() {
+      return throwOnInvalid;
+    }
+    /**
+     * Set whether Luxon will throw when it encounters invalid DateTimes, Durations, or Intervals
+     * @type {boolean}
+     */
+    ,
+    set: function set(t) {
+      throwOnInvalid = t;
+    }
+  }]);
+
+  return Settings;
+}();
+
 function stringifyTokens(splits, tokenToString) {
   var s = "";
 
-  for (var _iterator = _createForOfIteratorHelperLoose(splits), _step; !(_step = _iterator()).done;) {
-    var token = _step.value;
+  for (var _iterator = splits, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+    var _ref;
+
+    if (_isArray) {
+      if (_i >= _iterator.length) break;
+      _ref = _iterator[_i++];
+    } else {
+      _i = _iterator.next();
+      if (_i.done) break;
+      _ref = _i.value;
+    }
+
+    var token = _ref;
 
     if (token.literal) {
       s += token.val;
@@ -1782,7 +2585,9 @@ var _macroTokenToFormatOpts = {
  * @private
  */
 
-var Formatter = /*#__PURE__*/function () {
+var Formatter =
+/*#__PURE__*/
+function () {
   Formatter.create = function create(locale, opts) {
     if (opts === void 0) {
       opts = {};
@@ -1958,7 +2763,7 @@ var Formatter = /*#__PURE__*/function () {
       }, "era");
     },
         tokenToString = function tokenToString(token) {
-      // Where possible: http://cldr.unicode.org/translation/date-time-1/date-time#TOC-Standalone-vs.-Format-Styles
+      // Where possible: http://cldr.unicode.org/translation/date-time#TOC-Stand-Alone-vs.-Format-Styles
       switch (token) {
         // ms
         case "S":
@@ -2015,7 +2820,7 @@ var Formatter = /*#__PURE__*/function () {
           // like +0600
           return formatOffset({
             format: "techie",
-            allowZ: _this.opts.allowZ
+            allowZ: false
           });
 
         case "ZZZZ":
@@ -2257,9 +3062,9 @@ var Formatter = /*#__PURE__*/function () {
       };
     },
         tokens = Formatter.parseFormat(fmt),
-        realTokens = tokens.reduce(function (found, _ref) {
-      var literal = _ref.literal,
-          val = _ref.val;
+        realTokens = tokens.reduce(function (found, _ref2) {
+      var literal = _ref2.literal,
+          val = _ref2.val;
       return literal ? found : found.concat(val);
     }, []),
         collapsed = dur.shiftTo.apply(dur, realTokens.map(tokenToField).filter(function (t) {
@@ -2270,835 +3075,6 @@ var Formatter = /*#__PURE__*/function () {
   };
 
   return Formatter;
-}();
-
-var Invalid = /*#__PURE__*/function () {
-  function Invalid(reason, explanation) {
-    this.reason = reason;
-    this.explanation = explanation;
-  }
-
-  var _proto = Invalid.prototype;
-
-  _proto.toMessage = function toMessage() {
-    if (this.explanation) {
-      return this.reason + ": " + this.explanation;
-    } else {
-      return this.reason;
-    }
-  };
-
-  return Invalid;
-}();
-
-/**
- * @interface
- */
-
-var Zone = /*#__PURE__*/function () {
-  function Zone() {}
-
-  var _proto = Zone.prototype;
-
-  /**
-   * Returns the offset's common name (such as EST) at the specified timestamp
-   * @abstract
-   * @param {number} ts - Epoch milliseconds for which to get the name
-   * @param {Object} opts - Options to affect the format
-   * @param {string} opts.format - What style of offset to return. Accepts 'long' or 'short'.
-   * @param {string} opts.locale - What locale to return the offset name in.
-   * @return {string}
-   */
-  _proto.offsetName = function offsetName(ts, opts) {
-    throw new ZoneIsAbstractError();
-  }
-  /**
-   * Returns the offset's value as a string
-   * @abstract
-   * @param {number} ts - Epoch milliseconds for which to get the offset
-   * @param {string} format - What style of offset to return.
-   *                          Accepts 'narrow', 'short', or 'techie'. Returning '+6', '+06:00', or '+0600' respectively
-   * @return {string}
-   */
-  ;
-
-  _proto.formatOffset = function formatOffset(ts, format) {
-    throw new ZoneIsAbstractError();
-  }
-  /**
-   * Return the offset in minutes for this zone at the specified timestamp.
-   * @abstract
-   * @param {number} ts - Epoch milliseconds for which to compute the offset
-   * @return {number}
-   */
-  ;
-
-  _proto.offset = function offset(ts) {
-    throw new ZoneIsAbstractError();
-  }
-  /**
-   * Return whether this Zone is equal to another zone
-   * @abstract
-   * @param {Zone} otherZone - the zone to compare
-   * @return {boolean}
-   */
-  ;
-
-  _proto.equals = function equals(otherZone) {
-    throw new ZoneIsAbstractError();
-  }
-  /**
-   * Return whether this Zone is valid.
-   * @abstract
-   * @type {boolean}
-   */
-  ;
-
-  _createClass(Zone, [{
-    key: "type",
-
-    /**
-     * The type of zone
-     * @abstract
-     * @type {string}
-     */
-    get: function get() {
-      throw new ZoneIsAbstractError();
-    }
-    /**
-     * The name of this zone.
-     * @abstract
-     * @type {string}
-     */
-
-  }, {
-    key: "name",
-    get: function get() {
-      throw new ZoneIsAbstractError();
-    }
-    /**
-     * Returns whether the offset is known to be fixed for the whole year.
-     * @abstract
-     * @type {boolean}
-     */
-
-  }, {
-    key: "universal",
-    get: function get() {
-      throw new ZoneIsAbstractError();
-    }
-  }, {
-    key: "isValid",
-    get: function get() {
-      throw new ZoneIsAbstractError();
-    }
-  }]);
-
-  return Zone;
-}();
-
-var singleton = null;
-/**
- * Represents the local zone for this JavaScript environment.
- * @implements {Zone}
- */
-
-var LocalZone = /*#__PURE__*/function (_Zone) {
-  _inheritsLoose(LocalZone, _Zone);
-
-  function LocalZone() {
-    return _Zone.apply(this, arguments) || this;
-  }
-
-  var _proto = LocalZone.prototype;
-
-  /** @override **/
-  _proto.offsetName = function offsetName(ts, _ref) {
-    var format = _ref.format,
-        locale = _ref.locale;
-    return parseZoneInfo(ts, format, locale);
-  }
-  /** @override **/
-  ;
-
-  _proto.formatOffset = function formatOffset$1(ts, format) {
-    return formatOffset(this.offset(ts), format);
-  }
-  /** @override **/
-  ;
-
-  _proto.offset = function offset(ts) {
-    return -new Date(ts).getTimezoneOffset();
-  }
-  /** @override **/
-  ;
-
-  _proto.equals = function equals(otherZone) {
-    return otherZone.type === "local";
-  }
-  /** @override **/
-  ;
-
-  _createClass(LocalZone, [{
-    key: "type",
-
-    /** @override **/
-    get: function get() {
-      return "local";
-    }
-    /** @override **/
-
-  }, {
-    key: "name",
-    get: function get() {
-      if (hasIntl()) {
-        return new Intl.DateTimeFormat().resolvedOptions().timeZone;
-      } else return "local";
-    }
-    /** @override **/
-
-  }, {
-    key: "universal",
-    get: function get() {
-      return false;
-    }
-  }, {
-    key: "isValid",
-    get: function get() {
-      return true;
-    }
-  }], [{
-    key: "instance",
-
-    /**
-     * Get a singleton instance of the local zone
-     * @return {LocalZone}
-     */
-    get: function get() {
-      if (singleton === null) {
-        singleton = new LocalZone();
-      }
-
-      return singleton;
-    }
-  }]);
-
-  return LocalZone;
-}(Zone);
-
-var matchingRegex = RegExp("^" + ianaRegex.source + "$");
-var dtfCache = {};
-
-function makeDTF(zone) {
-  if (!dtfCache[zone]) {
-    dtfCache[zone] = new Intl.DateTimeFormat("en-US", {
-      hour12: false,
-      timeZone: zone,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    });
-  }
-
-  return dtfCache[zone];
-}
-
-var typeToPos = {
-  year: 0,
-  month: 1,
-  day: 2,
-  hour: 3,
-  minute: 4,
-  second: 5
-};
-
-function hackyOffset(dtf, date) {
-  var formatted = dtf.format(date).replace(/\u200E/g, ""),
-      parsed = /(\d+)\/(\d+)\/(\d+),? (\d+):(\d+):(\d+)/.exec(formatted),
-      fMonth = parsed[1],
-      fDay = parsed[2],
-      fYear = parsed[3],
-      fHour = parsed[4],
-      fMinute = parsed[5],
-      fSecond = parsed[6];
-  return [fYear, fMonth, fDay, fHour, fMinute, fSecond];
-}
-
-function partsOffset(dtf, date) {
-  var formatted = dtf.formatToParts(date),
-      filled = [];
-
-  for (var i = 0; i < formatted.length; i++) {
-    var _formatted$i = formatted[i],
-        type = _formatted$i.type,
-        value = _formatted$i.value,
-        pos = typeToPos[type];
-
-    if (!isUndefined(pos)) {
-      filled[pos] = parseInt(value, 10);
-    }
-  }
-
-  return filled;
-}
-
-var ianaZoneCache = {};
-/**
- * A zone identified by an IANA identifier, like America/New_York
- * @implements {Zone}
- */
-
-var IANAZone = /*#__PURE__*/function (_Zone) {
-  _inheritsLoose(IANAZone, _Zone);
-
-  /**
-   * @param {string} name - Zone name
-   * @return {IANAZone}
-   */
-  IANAZone.create = function create(name) {
-    if (!ianaZoneCache[name]) {
-      ianaZoneCache[name] = new IANAZone(name);
-    }
-
-    return ianaZoneCache[name];
-  }
-  /**
-   * Reset local caches. Should only be necessary in testing scenarios.
-   * @return {void}
-   */
-  ;
-
-  IANAZone.resetCache = function resetCache() {
-    ianaZoneCache = {};
-    dtfCache = {};
-  }
-  /**
-   * Returns whether the provided string is a valid specifier. This only checks the string's format, not that the specifier identifies a known zone; see isValidZone for that.
-   * @param {string} s - The string to check validity on
-   * @example IANAZone.isValidSpecifier("America/New_York") //=> true
-   * @example IANAZone.isValidSpecifier("Fantasia/Castle") //=> true
-   * @example IANAZone.isValidSpecifier("Sport~~blorp") //=> false
-   * @return {boolean}
-   */
-  ;
-
-  IANAZone.isValidSpecifier = function isValidSpecifier(s) {
-    return !!(s && s.match(matchingRegex));
-  }
-  /**
-   * Returns whether the provided string identifies a real zone
-   * @param {string} zone - The string to check
-   * @example IANAZone.isValidZone("America/New_York") //=> true
-   * @example IANAZone.isValidZone("Fantasia/Castle") //=> false
-   * @example IANAZone.isValidZone("Sport~~blorp") //=> false
-   * @return {boolean}
-   */
-  ;
-
-  IANAZone.isValidZone = function isValidZone(zone) {
-    try {
-      new Intl.DateTimeFormat("en-US", {
-        timeZone: zone
-      }).format();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  } // Etc/GMT+8 -> -480
-
-  /** @ignore */
-  ;
-
-  IANAZone.parseGMTOffset = function parseGMTOffset(specifier) {
-    if (specifier) {
-      var match = specifier.match(/^Etc\/GMT([+-]\d{1,2})$/i);
-
-      if (match) {
-        return -60 * parseInt(match[1]);
-      }
-    }
-
-    return null;
-  };
-
-  function IANAZone(name) {
-    var _this;
-
-    _this = _Zone.call(this) || this;
-    /** @private **/
-
-    _this.zoneName = name;
-    /** @private **/
-
-    _this.valid = IANAZone.isValidZone(name);
-    return _this;
-  }
-  /** @override **/
-
-
-  var _proto = IANAZone.prototype;
-
-  /** @override **/
-  _proto.offsetName = function offsetName(ts, _ref) {
-    var format = _ref.format,
-        locale = _ref.locale;
-    return parseZoneInfo(ts, format, locale, this.name);
-  }
-  /** @override **/
-  ;
-
-  _proto.formatOffset = function formatOffset$1(ts, format) {
-    return formatOffset(this.offset(ts), format);
-  }
-  /** @override **/
-  ;
-
-  _proto.offset = function offset(ts) {
-    var date = new Date(ts),
-        dtf = makeDTF(this.name),
-        _ref2 = dtf.formatToParts ? partsOffset(dtf, date) : hackyOffset(dtf, date),
-        year = _ref2[0],
-        month = _ref2[1],
-        day = _ref2[2],
-        hour = _ref2[3],
-        minute = _ref2[4],
-        second = _ref2[5],
-        adjustedHour = hour === 24 ? 0 : hour;
-
-    var asUTC = objToLocalTS({
-      year: year,
-      month: month,
-      day: day,
-      hour: adjustedHour,
-      minute: minute,
-      second: second,
-      millisecond: 0
-    });
-    var asTS = +date;
-    var over = asTS % 1000;
-    asTS -= over >= 0 ? over : 1000 + over;
-    return (asUTC - asTS) / (60 * 1000);
-  }
-  /** @override **/
-  ;
-
-  _proto.equals = function equals(otherZone) {
-    return otherZone.type === "iana" && otherZone.name === this.name;
-  }
-  /** @override **/
-  ;
-
-  _createClass(IANAZone, [{
-    key: "type",
-    get: function get() {
-      return "iana";
-    }
-    /** @override **/
-
-  }, {
-    key: "name",
-    get: function get() {
-      return this.zoneName;
-    }
-    /** @override **/
-
-  }, {
-    key: "universal",
-    get: function get() {
-      return false;
-    }
-  }, {
-    key: "isValid",
-    get: function get() {
-      return this.valid;
-    }
-  }]);
-
-  return IANAZone;
-}(Zone);
-
-var singleton$1 = null;
-/**
- * A zone with a fixed offset (meaning no DST)
- * @implements {Zone}
- */
-
-var FixedOffsetZone = /*#__PURE__*/function (_Zone) {
-  _inheritsLoose(FixedOffsetZone, _Zone);
-
-  /**
-   * Get an instance with a specified offset
-   * @param {number} offset - The offset in minutes
-   * @return {FixedOffsetZone}
-   */
-  FixedOffsetZone.instance = function instance(offset) {
-    return offset === 0 ? FixedOffsetZone.utcInstance : new FixedOffsetZone(offset);
-  }
-  /**
-   * Get an instance of FixedOffsetZone from a UTC offset string, like "UTC+6"
-   * @param {string} s - The offset string to parse
-   * @example FixedOffsetZone.parseSpecifier("UTC+6")
-   * @example FixedOffsetZone.parseSpecifier("UTC+06")
-   * @example FixedOffsetZone.parseSpecifier("UTC-6:00")
-   * @return {FixedOffsetZone}
-   */
-  ;
-
-  FixedOffsetZone.parseSpecifier = function parseSpecifier(s) {
-    if (s) {
-      var r = s.match(/^utc(?:([+-]\d{1,2})(?::(\d{2}))?)?$/i);
-
-      if (r) {
-        return new FixedOffsetZone(signedOffset(r[1], r[2]));
-      }
-    }
-
-    return null;
-  };
-
-  _createClass(FixedOffsetZone, null, [{
-    key: "utcInstance",
-
-    /**
-     * Get a singleton instance of UTC
-     * @return {FixedOffsetZone}
-     */
-    get: function get() {
-      if (singleton$1 === null) {
-        singleton$1 = new FixedOffsetZone(0);
-      }
-
-      return singleton$1;
-    }
-  }]);
-
-  function FixedOffsetZone(offset) {
-    var _this;
-
-    _this = _Zone.call(this) || this;
-    /** @private **/
-
-    _this.fixed = offset;
-    return _this;
-  }
-  /** @override **/
-
-
-  var _proto = FixedOffsetZone.prototype;
-
-  /** @override **/
-  _proto.offsetName = function offsetName() {
-    return this.name;
-  }
-  /** @override **/
-  ;
-
-  _proto.formatOffset = function formatOffset$1(ts, format) {
-    return formatOffset(this.fixed, format);
-  }
-  /** @override **/
-  ;
-
-  /** @override **/
-  _proto.offset = function offset() {
-    return this.fixed;
-  }
-  /** @override **/
-  ;
-
-  _proto.equals = function equals(otherZone) {
-    return otherZone.type === "fixed" && otherZone.fixed === this.fixed;
-  }
-  /** @override **/
-  ;
-
-  _createClass(FixedOffsetZone, [{
-    key: "type",
-    get: function get() {
-      return "fixed";
-    }
-    /** @override **/
-
-  }, {
-    key: "name",
-    get: function get() {
-      return this.fixed === 0 ? "UTC" : "UTC" + formatOffset(this.fixed, "narrow");
-    }
-  }, {
-    key: "universal",
-    get: function get() {
-      return true;
-    }
-  }, {
-    key: "isValid",
-    get: function get() {
-      return true;
-    }
-  }]);
-
-  return FixedOffsetZone;
-}(Zone);
-
-/**
- * A zone that failed to parse. You should never need to instantiate this.
- * @implements {Zone}
- */
-
-var InvalidZone = /*#__PURE__*/function (_Zone) {
-  _inheritsLoose(InvalidZone, _Zone);
-
-  function InvalidZone(zoneName) {
-    var _this;
-
-    _this = _Zone.call(this) || this;
-    /**  @private */
-
-    _this.zoneName = zoneName;
-    return _this;
-  }
-  /** @override **/
-
-
-  var _proto = InvalidZone.prototype;
-
-  /** @override **/
-  _proto.offsetName = function offsetName() {
-    return null;
-  }
-  /** @override **/
-  ;
-
-  _proto.formatOffset = function formatOffset() {
-    return "";
-  }
-  /** @override **/
-  ;
-
-  _proto.offset = function offset() {
-    return NaN;
-  }
-  /** @override **/
-  ;
-
-  _proto.equals = function equals() {
-    return false;
-  }
-  /** @override **/
-  ;
-
-  _createClass(InvalidZone, [{
-    key: "type",
-    get: function get() {
-      return "invalid";
-    }
-    /** @override **/
-
-  }, {
-    key: "name",
-    get: function get() {
-      return this.zoneName;
-    }
-    /** @override **/
-
-  }, {
-    key: "universal",
-    get: function get() {
-      return false;
-    }
-  }, {
-    key: "isValid",
-    get: function get() {
-      return false;
-    }
-  }]);
-
-  return InvalidZone;
-}(Zone);
-
-/**
- * @private
- */
-function normalizeZone(input, defaultZone) {
-  var offset;
-
-  if (isUndefined(input) || input === null) {
-    return defaultZone;
-  } else if (input instanceof Zone) {
-    return input;
-  } else if (isString(input)) {
-    var lowered = input.toLowerCase();
-    if (lowered === "local") return defaultZone;else if (lowered === "utc" || lowered === "gmt") return FixedOffsetZone.utcInstance;else if ((offset = IANAZone.parseGMTOffset(input)) != null) {
-      // handle Etc/GMT-4, which V8 chokes on
-      return FixedOffsetZone.instance(offset);
-    } else if (IANAZone.isValidSpecifier(lowered)) return IANAZone.create(input);else return FixedOffsetZone.parseSpecifier(lowered) || new InvalidZone(input);
-  } else if (isNumber(input)) {
-    return FixedOffsetZone.instance(input);
-  } else if (typeof input === "object" && input.offset && typeof input.offset === "number") {
-    // This is dumb, but the instanceof check above doesn't seem to really work
-    // so we're duck checking it
-    return input;
-  } else {
-    return new InvalidZone(input);
-  }
-}
-
-var now = function now() {
-  return Date.now();
-},
-    defaultZone = null,
-    // not setting this directly to LocalZone.instance bc loading order issues
-defaultLocale = null,
-    defaultNumberingSystem = null,
-    defaultOutputCalendar = null,
-    throwOnInvalid = false;
-/**
- * Settings contains static getters and setters that control Luxon's overall behavior. Luxon is a simple library with few options, but the ones it does have live here.
- */
-
-
-var Settings = /*#__PURE__*/function () {
-  function Settings() {}
-
-  /**
-   * Reset Luxon's global caches. Should only be necessary in testing scenarios.
-   * @return {void}
-   */
-  Settings.resetCaches = function resetCaches() {
-    Locale.resetCache();
-    IANAZone.resetCache();
-  };
-
-  _createClass(Settings, null, [{
-    key: "now",
-
-    /**
-     * Get the callback for returning the current timestamp.
-     * @type {function}
-     */
-    get: function get() {
-      return now;
-    }
-    /**
-     * Set the callback for returning the current timestamp.
-     * The function should return a number, which will be interpreted as an Epoch millisecond count
-     * @type {function}
-     * @example Settings.now = () => Date.now() + 3000 // pretend it is 3 seconds in the future
-     * @example Settings.now = () => 0 // always pretend it's Jan 1, 1970 at midnight in UTC time
-     */
-    ,
-    set: function set(n) {
-      now = n;
-    }
-    /**
-     * Get the default time zone to create DateTimes in.
-     * @type {string}
-     */
-
-  }, {
-    key: "defaultZoneName",
-    get: function get() {
-      return Settings.defaultZone.name;
-    }
-    /**
-     * Set the default time zone to create DateTimes in. Does not affect existing instances.
-     * @type {string}
-     */
-    ,
-    set: function set(z) {
-      if (!z) {
-        defaultZone = null;
-      } else {
-        defaultZone = normalizeZone(z);
-      }
-    }
-    /**
-     * Get the default time zone object to create DateTimes in. Does not affect existing instances.
-     * @type {Zone}
-     */
-
-  }, {
-    key: "defaultZone",
-    get: function get() {
-      return defaultZone || LocalZone.instance;
-    }
-    /**
-     * Get the default locale to create DateTimes with. Does not affect existing instances.
-     * @type {string}
-     */
-
-  }, {
-    key: "defaultLocale",
-    get: function get() {
-      return defaultLocale;
-    }
-    /**
-     * Set the default locale to create DateTimes with. Does not affect existing instances.
-     * @type {string}
-     */
-    ,
-    set: function set(locale) {
-      defaultLocale = locale;
-    }
-    /**
-     * Get the default numbering system to create DateTimes with. Does not affect existing instances.
-     * @type {string}
-     */
-
-  }, {
-    key: "defaultNumberingSystem",
-    get: function get() {
-      return defaultNumberingSystem;
-    }
-    /**
-     * Set the default numbering system to create DateTimes with. Does not affect existing instances.
-     * @type {string}
-     */
-    ,
-    set: function set(numberingSystem) {
-      defaultNumberingSystem = numberingSystem;
-    }
-    /**
-     * Get the default output calendar to create DateTimes with. Does not affect existing instances.
-     * @type {string}
-     */
-
-  }, {
-    key: "defaultOutputCalendar",
-    get: function get() {
-      return defaultOutputCalendar;
-    }
-    /**
-     * Set the default output calendar to create DateTimes with. Does not affect existing instances.
-     * @type {string}
-     */
-    ,
-    set: function set(outputCalendar) {
-      defaultOutputCalendar = outputCalendar;
-    }
-    /**
-     * Get whether Luxon will throw when it encounters invalid DateTimes, Durations, or Intervals
-     * @type {boolean}
-     */
-
-  }, {
-    key: "throwOnInvalid",
-    get: function get() {
-      return throwOnInvalid;
-    }
-    /**
-     * Set whether Luxon will throw when it encounters invalid DateTimes, Durations, or Intervals
-     * @type {boolean}
-     */
-    ,
-    set: function set(t) {
-      throwOnInvalid = t;
-    }
-  }]);
-
-  return Settings;
 }();
 
 var intlDTCache = {};
@@ -3121,7 +3097,7 @@ function getCachedDTF(locString, opts) {
 
 var intlNumCache = {};
 
-function getCachedINF(locString, opts) {
+function getCachendINF(locString, opts) {
   if (opts === void 0) {
     opts = {};
   }
@@ -3139,17 +3115,12 @@ function getCachedINF(locString, opts) {
 
 var intlRelCache = {};
 
-function getCachedRTF(locString, opts) {
+function getCachendRTF(locString, opts) {
   if (opts === void 0) {
     opts = {};
   }
 
-  var _opts = opts,
-      base = _opts.base,
-      cacheKeyOpts = _objectWithoutPropertiesLoose(_opts, ["base"]); // exclude `base` from the options
-
-
-  var key = JSON.stringify([locString, cacheKeyOpts]);
+  var key = JSON.stringify([locString, opts]);
   var inf = intlRelCache[key];
 
   if (!inf) {
@@ -3273,7 +3244,9 @@ function supportsFastNumbers(loc) {
  */
 
 
-var PolyNumberFormatter = /*#__PURE__*/function () {
+var PolyNumberFormatter =
+/*#__PURE__*/
+function () {
   function PolyNumberFormatter(intl, forceSimple, opts) {
     this.padTo = opts.padTo || 0;
     this.floor = opts.floor || false;
@@ -3283,7 +3256,7 @@ var PolyNumberFormatter = /*#__PURE__*/function () {
         useGrouping: false
       };
       if (opts.padTo > 0) intlOpts.minimumIntegerDigits = opts.padTo;
-      this.inf = getCachedINF(intl, intlOpts);
+      this.inf = getCachendINF(intl, intlOpts);
     }
   }
 
@@ -3308,37 +3281,30 @@ var PolyNumberFormatter = /*#__PURE__*/function () {
  */
 
 
-var PolyDateFormatter = /*#__PURE__*/function () {
+var PolyDateFormatter =
+/*#__PURE__*/
+function () {
   function PolyDateFormatter(dt, intl, opts) {
     this.opts = opts;
     this.hasIntl = hasIntl();
     var z;
 
     if (dt.zone.universal && this.hasIntl) {
-      // UTC-8 or Etc/UTC-8 are not part of tzdata, only Etc/GMT+8 and the like.
-      // That is why fixed-offset TZ is set to that unless it is:
-      // 1. Outside of the supported range Etc/GMT-14 to Etc/GMT+12.
-      // 2. Not a whole hour, e.g. UTC+4:30.
-      var gmtOffset = -1 * (dt.offset / 60);
+      // Chromium doesn't support fixed-offset zones like Etc/GMT+8 in its formatter,
+      // See https://bugs.chromium.org/p/chromium/issues/detail?id=364374.
+      // So we have to make do. Two cases:
+      // 1. The format options tell us to show the zone. We can't do that, so the best
+      // we can do is format the date in UTC.
+      // 2. The format options don't tell us to show the zone. Then we can adjust them
+      // the time and tell the formatter to show it to us in UTC, so that the time is right
+      // and the bad zone doesn't show up.
+      // We can clean all this up when Chrome fixes this.
+      z = "UTC";
 
-      if (gmtOffset >= -14 && gmtOffset <= 12 && gmtOffset % 1 === 0) {
-        z = gmtOffset >= 0 ? "Etc/GMT+" + gmtOffset : "Etc/GMT" + gmtOffset;
+      if (opts.timeZoneName) {
         this.dt = dt;
       } else {
-        // Not all fixed-offset zones like Etc/+4:30 are present in tzdata.
-        // So we have to make do. Two cases:
-        // 1. The format options tell us to show the zone. We can't do that, so the best
-        // we can do is format the date in UTC.
-        // 2. The format options don't tell us to show the zone. Then we can adjust them
-        // the time and tell the formatter to show it to us in UTC, so that the time is right
-        // and the bad zone doesn't show up.
-        z = "UTC";
-
-        if (opts.timeZoneName) {
-          this.dt = dt;
-        } else {
-          this.dt = dt.offset === 0 ? dt : DateTime.fromMillis(dt.ts + dt.offset * 60 * 1000);
-        }
+        this.dt = dt.offset === 0 ? dt : DateTime.fromMillis(dt.ts + dt.offset * 60 * 1000);
       }
     } else if (dt.zone.type === "local") {
       this.dt = dt;
@@ -3399,14 +3365,16 @@ var PolyDateFormatter = /*#__PURE__*/function () {
  */
 
 
-var PolyRelFormatter = /*#__PURE__*/function () {
+var PolyRelFormatter =
+/*#__PURE__*/
+function () {
   function PolyRelFormatter(intl, isEnglish, opts) {
     this.opts = Object.assign({
       style: "long"
     }, opts);
 
     if (!isEnglish && hasRelative()) {
-      this.rtf = getCachedRTF(intl, opts);
+      this.rtf = getCachendRTF(intl, opts);
     }
   }
 
@@ -3435,7 +3403,9 @@ var PolyRelFormatter = /*#__PURE__*/function () {
  */
 
 
-var Locale = /*#__PURE__*/function () {
+var Locale =
+/*#__PURE__*/
+function () {
   Locale.fromOpts = function fromOpts(opts) {
     return Locale.create(opts.locale, opts.numberingSystem, opts.outputCalendar, opts.defaultToEN);
   };
@@ -3640,7 +3610,7 @@ var Locale = /*#__PURE__*/function () {
     return listStuff(this, length, defaultOK, eras, function () {
       var intl = {
         era: length
-      }; // This is problematic. Different calendars are going to define eras totally differently. What I need is the minimum set of dates
+      }; // This is utter bullshit. Different calendars are going to define eras totally differently. What I need is the minimum set of dates
       // to definitely enumerate them.
 
       if (!_this4.eraCache[length]) {
@@ -3794,7 +3764,7 @@ function simpleParse() {
 
 
 var offsetRegex = /(?:(Z)|([+-]\d\d)(?::?(\d\d))?)/,
-    isoTimeBaseRegex = /(\d\d)(?::?(\d\d)(?::?(\d\d)(?:[.,](\d{1,30}))?)?)?/,
+    isoTimeBaseRegex = /(\d\d)(?::?(\d\d)(?::?(\d\d)(?:[.,](\d{1,9}))?)?)?/,
     isoTimeRegex = RegExp("" + isoTimeBaseRegex.source + offsetRegex.source + "?"),
     isoTimeExtensionRegex = RegExp("(?:T" + isoTimeRegex.source + ")?"),
     isoYmdRegex = /([+-]\d{6}|\d{4})(?:-?(\d\d)(?:-?(\d\d))?)?/,
@@ -3823,10 +3793,10 @@ function extractISOYmd(match, cursor) {
 
 function extractISOTime(match, cursor) {
   var item = {
-    hours: int(match, cursor, 0),
-    minutes: int(match, cursor + 1, 0),
-    seconds: int(match, cursor + 2, 0),
-    milliseconds: parseMillis(match[cursor + 3])
+    hour: int(match, cursor, 0),
+    minute: int(match, cursor + 1, 0),
+    second: int(match, cursor + 2, 0),
+    millisecond: parseMillis(match[cursor + 3])
   };
   return [item, null, cursor + 4];
 }
@@ -3841,16 +3811,13 @@ function extractISOOffset(match, cursor) {
 function extractIANAZone(match, cursor) {
   var zone = match[cursor] ? IANAZone.create(match[cursor]) : null;
   return [{}, zone, cursor + 1];
-} // ISO time parsing
+} // ISO duration parsing
 
 
-var isoTimeOnly = RegExp("^T?" + isoTimeBaseRegex.source + "$"); // ISO duration parsing
-
-var isoDuration = /^-?P(?:(?:(-?\d{1,9})Y)?(?:(-?\d{1,9})M)?(?:(-?\d{1,9})W)?(?:(-?\d{1,9})D)?(?:T(?:(-?\d{1,9})H)?(?:(-?\d{1,9})M)?(?:(-?\d{1,20})(?:[.,](-?\d{1,9}))?S)?)?)$/;
+var isoDuration = /^P(?:(?:(-?\d{1,9})Y)?(?:(-?\d{1,9})M)?(?:(-?\d{1,9})W)?(?:(-?\d{1,9})D)?(?:T(?:(-?\d{1,9})H)?(?:(-?\d{1,9})M)?(?:(-?\d{1,9})(?:[.,](-?\d{1,9}))?S)?)?)$/;
 
 function extractISODuration(match) {
-  var s = match[0],
-      yearStr = match[1],
+  var yearStr = match[1],
       monthStr = match[2],
       weekStr = match[3],
       dayStr = match[4],
@@ -3858,21 +3825,15 @@ function extractISODuration(match) {
       minuteStr = match[6],
       secondStr = match[7],
       millisecondsStr = match[8];
-  var hasNegativePrefix = s[0] === "-";
-
-  var maybeNegate = function maybeNegate(num) {
-    return num && hasNegativePrefix ? -num : num;
-  };
-
   return [{
-    years: maybeNegate(parseInteger(yearStr)),
-    months: maybeNegate(parseInteger(monthStr)),
-    weeks: maybeNegate(parseInteger(weekStr)),
-    days: maybeNegate(parseInteger(dayStr)),
-    hours: maybeNegate(parseInteger(hourStr)),
-    minutes: maybeNegate(parseInteger(minuteStr)),
-    seconds: maybeNegate(parseInteger(secondStr)),
-    milliseconds: maybeNegate(parseMillis(millisecondsStr))
+    years: parseInteger(yearStr),
+    months: parseInteger(monthStr),
+    weeks: parseInteger(weekStr),
+    days: parseInteger(dayStr),
+    hours: parseInteger(hourStr),
+    minutes: parseInteger(minuteStr),
+    seconds: parseInteger(secondStr),
+    milliseconds: parseMillis(millisecondsStr)
   }];
 } // These are a little braindead. EDT *should* tell us that we're in, say, America/New_York
 // and not just that we're in -240 *right now*. But since I don't think these are used that often
@@ -3995,10 +3956,6 @@ function parseHTTPDate(s) {
 function parseISODuration(s) {
   return parse(s, [isoDuration, extractISODuration]);
 }
-var extractISOTimeOnly = combineExtractors(extractISOTime);
-function parseISOTimeOnly(s) {
-  return parse(s, [isoTimeOnly, extractISOTimeOnly]);
-}
 var sqlYmdWithTimeExtensionRegex = combineRegexes(sqlYmdRegex, sqlTimeExtensionRegex);
 var sqlTimeCombinedRegex = combineRegexes(sqlTimeRegex);
 var extractISOYmdTimeOffsetAndIANAZone = combineExtractors(extractISOYmd, extractISOTime, extractISOOffset, extractIANAZone);
@@ -4006,6 +3963,27 @@ var extractISOTimeOffsetAndIANAZone = combineExtractors(extractISOTime, extractI
 function parseSQL(s) {
   return parse(s, [sqlYmdWithTimeExtensionRegex, extractISOYmdTimeOffsetAndIANAZone], [sqlTimeCombinedRegex, extractISOTimeOffsetAndIANAZone]);
 }
+
+var Invalid =
+/*#__PURE__*/
+function () {
+  function Invalid(reason, explanation) {
+    this.reason = reason;
+    this.explanation = explanation;
+  }
+
+  var _proto = Invalid.prototype;
+
+  _proto.toMessage = function toMessage() {
+    if (this.explanation) {
+      return this.reason + ": " + this.explanation;
+    } else {
+      return this.reason;
+    }
+  };
+
+  return Invalid;
+}();
 
 var INVALID = "Invalid Duration"; // unit conversion constants
 
@@ -4038,7 +4016,6 @@ var lowOrderMatrix = {
 },
     casualMatrix = Object.assign({
   years: {
-    quarters: 4,
     months: 12,
     weeks: 52,
     days: 365,
@@ -4053,7 +4030,6 @@ var lowOrderMatrix = {
     days: 91,
     hours: 91 * 24,
     minutes: 91 * 24 * 60,
-    seconds: 91 * 24 * 60 * 60,
     milliseconds: 91 * 24 * 60 * 60 * 1000
   },
   months: {
@@ -4069,7 +4045,6 @@ var lowOrderMatrix = {
     daysInMonthAccurate = 146097.0 / 4800,
     accurateMatrix = Object.assign({
   years: {
-    quarters: 4,
     months: 12,
     weeks: daysInYearAccurate / 7,
     days: daysInYearAccurate,
@@ -4158,7 +4133,9 @@ function normalizeValues(matrix, vals) {
  */
 
 
-var Duration = /*#__PURE__*/function () {
+var Duration =
+/*#__PURE__*/
+function () {
   /**
    * @private
    */
@@ -4212,7 +4189,7 @@ var Duration = /*#__PURE__*/function () {
     }, opts));
   }
   /**
-   * Create a Duration from a JavaScript object with keys like 'years' and 'hours.
+   * Create a Duration from a Javascript object with keys like 'years' and 'hours.
    * If this object is empty then a zero milliseconds duration is returned.
    * @param {Object} obj - the object to create the DateTime from
    * @param {number} obj.years
@@ -4261,34 +4238,6 @@ var Duration = /*#__PURE__*/function () {
   Duration.fromISO = function fromISO(text, opts) {
     var _parseISODuration = parseISODuration(text),
         parsed = _parseISODuration[0];
-
-    if (parsed) {
-      var obj = Object.assign(parsed, opts);
-      return Duration.fromObject(obj);
-    } else {
-      return Duration.invalid("unparsable", "the input \"" + text + "\" can't be parsed as ISO 8601");
-    }
-  }
-  /**
-   * Create a Duration from an ISO 8601 time string.
-   * @param {string} text - text to parse
-   * @param {Object} opts - options for parsing
-   * @param {string} [opts.locale='en-US'] - the locale to use
-   * @param {string} opts.numberingSystem - the numbering system to use
-   * @param {string} [opts.conversionAccuracy='casual'] - the conversion system to use
-   * @see https://en.wikipedia.org/wiki/ISO_8601#Times
-   * @example Duration.fromISOTime('11:22:33.444').toObject() //=> { hours: 11, minutes: 22, seconds: 33, milliseconds: 444 }
-   * @example Duration.fromISOTime('11:00').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
-   * @example Duration.fromISOTime('T11:00').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
-   * @example Duration.fromISOTime('1100').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
-   * @example Duration.fromISOTime('T1100').toObject() //=> { hours: 11, minutes: 0, seconds: 0 }
-   * @return {Duration}
-   */
-  ;
-
-  Duration.fromISOTime = function fromISOTime(text, opts) {
-    var _parseISOTimeOnly = parseISOTimeOnly(text),
-        parsed = _parseISOTimeOnly[0];
 
     if (parsed) {
       var obj = Object.assign(parsed, opts);
@@ -4403,7 +4352,7 @@ var Duration = /*#__PURE__*/function () {
     return this.isValid ? Formatter.create(this.loc, fmtOpts).formatDurationFromString(this, fmt) : INVALID;
   }
   /**
-   * Returns a JavaScript object with this Duration's values.
+   * Returns a Javascript object with this Duration's values.
    * @param opts - options for generating the object
    * @param {boolean} [opts.includeConfig=false] - include configuration attributes in the output
    * @example Duration.fromObject({ years: 1, days: 6, seconds: 2 }).toObject() //=> { years: 1, days: 6, seconds: 2 }
@@ -4450,62 +4399,9 @@ var Duration = /*#__PURE__*/function () {
     if (this.hours !== 0 || this.minutes !== 0 || this.seconds !== 0 || this.milliseconds !== 0) s += "T";
     if (this.hours !== 0) s += this.hours + "H";
     if (this.minutes !== 0) s += this.minutes + "M";
-    if (this.seconds !== 0 || this.milliseconds !== 0) // this will handle "floating point madness" by removing extra decimal places
-      // https://stackoverflow.com/questions/588004/is-floating-point-math-broken
-      s += roundTo(this.seconds + this.milliseconds / 1000, 3) + "S";
+    if (this.seconds !== 0 || this.milliseconds !== 0) s += this.seconds + this.milliseconds / 1000 + "S";
     if (s === "P") s += "T0S";
     return s;
-  }
-  /**
-   * Returns an ISO 8601-compliant string representation of this Duration, formatted as a time of day.
-   * Note that this will return null if the duration is invalid, negative, or equal to or greater than 24 hours.
-   * @see https://en.wikipedia.org/wiki/ISO_8601#Times
-   * @param {Object} opts - options
-   * @param {boolean} [opts.suppressMilliseconds=false] - exclude milliseconds from the format if they're 0
-   * @param {boolean} [opts.suppressSeconds=false] - exclude seconds from the format if they're 0
-   * @param {boolean} [opts.includePrefix=false] - include the `T` prefix
-   * @param {string} [opts.format='extended'] - choose between the basic and extended format
-   * @example Duration.fromObject({ hours: 11 }).toISOTime() //=> '11:00:00.000'
-   * @example Duration.fromObject({ hours: 11 }).toISOTime({ suppressMilliseconds: true }) //=> '11:00:00'
-   * @example Duration.fromObject({ hours: 11 }).toISOTime({ suppressSeconds: true }) //=> '11:00'
-   * @example Duration.fromObject({ hours: 11 }).toISOTime({ includePrefix: true }) //=> 'T11:00:00.000'
-   * @example Duration.fromObject({ hours: 11 }).toISOTime({ format: 'basic' }) //=> '110000.000'
-   * @return {string}
-   */
-  ;
-
-  _proto.toISOTime = function toISOTime(opts) {
-    if (opts === void 0) {
-      opts = {};
-    }
-
-    if (!this.isValid) return null;
-    var millis = this.toMillis();
-    if (millis < 0 || millis >= 86400000) return null;
-    opts = Object.assign({
-      suppressMilliseconds: false,
-      suppressSeconds: false,
-      includePrefix: false,
-      format: "extended"
-    }, opts);
-    var value = this.shiftTo("hours", "minutes", "seconds", "milliseconds");
-    var fmt = opts.format === "basic" ? "hhmm" : "hh:mm";
-
-    if (!opts.suppressSeconds || value.seconds !== 0 || value.milliseconds !== 0) {
-      fmt += opts.format === "basic" ? "ss" : ":ss";
-
-      if (!opts.suppressMilliseconds || value.milliseconds !== 0) {
-        fmt += ".SSS";
-      }
-    }
-
-    var str = value.toFormat(fmt);
-
-    if (opts.includePrefix) {
-      str = "T" + str;
-    }
-
-    return str;
   }
   /**
    * Returns an ISO 8601 representation of this Duration appropriate for use in JSON.
@@ -4531,17 +4427,8 @@ var Duration = /*#__PURE__*/function () {
    */
   ;
 
-  _proto.toMillis = function toMillis() {
-    return this.as("milliseconds");
-  }
-  /**
-   * Returns an milliseconds value of this Duration. Alias of {@link toMillis}
-   * @return {number}
-   */
-  ;
-
   _proto.valueOf = function valueOf() {
-    return this.toMillis();
+    return this.as("milliseconds");
   }
   /**
    * Make this Duration longer by the specified amount. Return a newly-constructed Duration.
@@ -4555,8 +4442,8 @@ var Duration = /*#__PURE__*/function () {
     var dur = friendlyDuration(duration),
         result = {};
 
-    for (var _iterator = _createForOfIteratorHelperLoose(orderedUnits), _step; !(_step = _iterator()).done;) {
-      var k = _step.value;
+    for (var _i = 0, _orderedUnits = orderedUnits; _i < _orderedUnits.length; _i++) {
+      var k = _orderedUnits[_i];
 
       if (hasOwnProperty(dur.values, k) || hasOwnProperty(this.values, k)) {
         result[k] = dur.get(k) + this.get(k);
@@ -4578,28 +4465,6 @@ var Duration = /*#__PURE__*/function () {
     if (!this.isValid) return this;
     var dur = friendlyDuration(duration);
     return this.plus(dur.negate());
-  }
-  /**
-   * Scale this Duration by the specified amount. Return a newly-constructed Duration.
-   * @param {function} fn - The function to apply to each unit. Arity is 1 or 2: the value of the unit and, optionally, the unit name. Must return a number.
-   * @example Duration.fromObject({ hours: 1, minutes: 30 }).mapUnit(x => x * 2) //=> { hours: 2, minutes: 60 }
-   * @example Duration.fromObject({ hours: 1, minutes: 30 }).mapUnit((x, u) => u === "hour" ? x * 2 : x) //=> { hours: 2, minutes: 30 }
-   * @return {Duration}
-   */
-  ;
-
-  _proto.mapUnits = function mapUnits(fn) {
-    if (!this.isValid) return this;
-    var result = {};
-
-    for (var _i = 0, _Object$keys = Object.keys(this.values); _i < _Object$keys.length; _i++) {
-      var k = _Object$keys[_i];
-      result[k] = asNumber(fn(this.values[k], k));
-    }
-
-    return clone(this, {
-      values: result
-    }, true);
   }
   /**
    * Get the value of unit.
@@ -4711,9 +4576,10 @@ var Duration = /*#__PURE__*/function () {
         accumulated = {},
         vals = this.toObject();
     var lastUnit;
+    normalizeValues(this.matrix, vals);
 
-    for (var _iterator2 = _createForOfIteratorHelperLoose(orderedUnits), _step2; !(_step2 = _iterator2()).done;) {
-      var k = _step2.value;
+    for (var _i2 = 0, _orderedUnits2 = orderedUnits; _i2 < _orderedUnits2.length; _i2++) {
+      var k = _orderedUnits2[_i2];
 
       if (units.indexOf(k) >= 0) {
         lastUnit = k;
@@ -4768,8 +4634,8 @@ var Duration = /*#__PURE__*/function () {
     if (!this.isValid) return this;
     var negated = {};
 
-    for (var _i2 = 0, _Object$keys2 = Object.keys(this.values); _i2 < _Object$keys2.length; _i2++) {
-      var k = _Object$keys2[_i2];
+    for (var _i3 = 0, _Object$keys = Object.keys(this.values); _i3 < _Object$keys.length; _i3++) {
+      var k = _Object$keys[_i3];
       negated[k] = -this.values[k];
     }
 
@@ -4798,16 +4664,10 @@ var Duration = /*#__PURE__*/function () {
       return false;
     }
 
-    function eq(v1, v2) {
-      // Consider 0 and undefined as equal
-      if (v1 === undefined || v1 === 0) return v2 === undefined || v2 === 0;
-      return v1 === v2;
-    }
+    for (var _i4 = 0, _orderedUnits3 = orderedUnits; _i4 < _orderedUnits3.length; _i4++) {
+      var u = _orderedUnits3[_i4];
 
-    for (var _iterator3 = _createForOfIteratorHelperLoose(orderedUnits), _step3; !(_step3 = _iterator3()).done;) {
-      var u = _step3.value;
-
-      if (!eq(this.values[u], other.values[u])) {
+      if (this.values[u] !== other.values[u]) {
         return false;
       }
     }
@@ -4985,12 +4845,14 @@ function validateStartEnd(start, end) {
  * * **Accessors** Use {@link start} and {@link end} to get the start and end.
  * * **Interrogation** To analyze the Interval, use {@link count}, {@link length}, {@link hasSame}, {@link contains}, {@link isAfter}, or {@link isBefore}.
  * * **Transformation** To create other Intervals out of this one, use {@link set}, {@link splitAt}, {@link splitBy}, {@link divideEqually}, {@link merge}, {@link xor}, {@link union}, {@link intersection}, or {@link difference}.
- * * **Comparison** To compare this Interval to another one, use {@link equals}, {@link overlaps}, {@link abutsStart}, {@link abutsEnd}, {@link engulfs}.
- * * **Output** To convert the Interval into other representations, see {@link toString}, {@link toISO}, {@link toISODate}, {@link toISOTime}, {@link toFormat}, and {@link toDuration}.
+ * * **Comparison** To compare this Interval to another one, use {@link equals}, {@link overlaps}, {@link abutsStart}, {@link abutsEnd}, {@link engulfs}
+ * * **Output*** To convert the Interval into other representations, see {@link toString}, {@link toISO}, {@link toFormat}, and {@link toDuration}.
  */
 
 
-var Interval = /*#__PURE__*/function () {
+var Interval =
+/*#__PURE__*/
+function () {
   /**
    * @private
    */
@@ -5106,35 +4968,20 @@ var Interval = /*#__PURE__*/function () {
         e = _split[1];
 
     if (s && e) {
-      var start, startIsValid;
+      var start = DateTime.fromISO(s, opts),
+          end = DateTime.fromISO(e, opts);
 
-      try {
-        start = DateTime.fromISO(s, opts);
-        startIsValid = start.isValid;
-      } catch (e) {
-        startIsValid = false;
-      }
-
-      var end, endIsValid;
-
-      try {
-        end = DateTime.fromISO(e, opts);
-        endIsValid = end.isValid;
-      } catch (e) {
-        endIsValid = false;
-      }
-
-      if (startIsValid && endIsValid) {
+      if (start.isValid && end.isValid) {
         return Interval.fromDateTimes(start, end);
       }
 
-      if (startIsValid) {
+      if (start.isValid) {
         var dur = Duration.fromISO(e, opts);
 
         if (dur.isValid) {
           return Interval.after(start, dur);
         }
-      } else if (endIsValid) {
+      } else if (end.isValid) {
         var _dur = Duration.fromISO(s, opts);
 
         if (_dur.isValid) {
@@ -5143,7 +4990,7 @@ var Interval = /*#__PURE__*/function () {
       }
     }
 
-    return Interval.invalid("unparsable", "the input \"" + text + "\" can't be parsed as ISO 8601");
+    return Interval.invalid("unparsable", "the input \"" + text + "\" can't be parsed asISO 8601");
   }
   /**
    * Check if an object is an Interval. Works across context boundaries
@@ -5202,7 +5049,7 @@ var Interval = /*#__PURE__*/function () {
   ;
 
   _proto.hasSame = function hasSame(unit) {
-    return this.isValid ? this.isEmpty() || this.e.minus(1).hasSame(this.s, unit) : false;
+    return this.isValid ? this.e.minus(1).hasSame(this.s, unit) : false;
   }
   /**
    * Return whether this Interval has the same start and end DateTimes.
@@ -5396,7 +5243,7 @@ var Interval = /*#__PURE__*/function () {
   /**
    * Return an Interval representing the intersection of this Interval and the specified Interval.
    * Specifically, the resulting Interval has the maximum start time and the minimum end time of the two Intervals.
-   * Returns null if the intersection is empty, meaning, the intervals don't intersect.
+   * Returns null if the intersection is empty, i.e., the intervals don't intersect.
    * @param {Interval} other
    * @return {Interval}
    */
@@ -5487,8 +5334,19 @@ var Interval = /*#__PURE__*/function () {
       return a.time - b.time;
     });
 
-    for (var _iterator = _createForOfIteratorHelperLoose(arr), _step; !(_step = _iterator()).done;) {
-      var i = _step.value;
+    for (var _iterator = arr, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+      var _ref3;
+
+      if (_isArray) {
+        if (_i >= _iterator.length) break;
+        _ref3 = _iterator[_i++];
+      } else {
+        _i = _iterator.next();
+        if (_i.done) break;
+        _ref3 = _i.value;
+      }
+
+      var i = _ref3;
       currentCount += i.type === "s" ? 1 : -1;
 
       if (currentCount === 1) {
@@ -5547,31 +5405,6 @@ var Interval = /*#__PURE__*/function () {
     return this.s.toISO(opts) + "/" + this.e.toISO(opts);
   }
   /**
-   * Returns an ISO 8601-compliant string representation of date of this Interval.
-   * The time components are ignored.
-   * @see https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
-   * @return {string}
-   */
-  ;
-
-  _proto.toISODate = function toISODate() {
-    if (!this.isValid) return INVALID$1;
-    return this.s.toISODate() + "/" + this.e.toISODate();
-  }
-  /**
-   * Returns an ISO 8601-compliant string representation of time of this Interval.
-   * The date components are ignored.
-   * @see https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
-   * @param {Object} opts - The same options as {@link DateTime.toISO}
-   * @return {string}
-   */
-  ;
-
-  _proto.toISOTime = function toISOTime(opts) {
-    if (!this.isValid) return INVALID$1;
-    return this.s.toISOTime(opts) + "/" + this.e.toISOTime(opts);
-  }
-  /**
    * Returns a string representation of this Interval formatted according to the specified format string.
    * @param {string} dateFormat - the format string. This string formats the start and end time. See {@link DateTime.toFormat} for details.
    * @param {Object} opts - options
@@ -5581,9 +5414,9 @@ var Interval = /*#__PURE__*/function () {
   ;
 
   _proto.toFormat = function toFormat(dateFormat, _temp2) {
-    var _ref3 = _temp2 === void 0 ? {} : _temp2,
-        _ref3$separator = _ref3.separator,
-        separator = _ref3$separator === void 0 ? " – " : _ref3$separator;
+    var _ref4 = _temp2 === void 0 ? {} : _temp2,
+        _ref4$separator = _ref4.separator,
+        separator = _ref4$separator === void 0 ? " – " : _ref4$separator;
 
     if (!this.isValid) return INVALID$1;
     return "" + this.s.toFormat(dateFormat) + separator + this.e.toFormat(dateFormat);
@@ -5638,7 +5471,7 @@ var Interval = /*#__PURE__*/function () {
       return this.isValid ? this.e : null;
     }
     /**
-     * Returns whether this Interval's end is at least its start, meaning that the Interval isn't 'backwards'.
+     * Returns whether this Interval's end is at least its start, i.e. that the Interval isn't 'backwards'.
      * @type {boolean}
      */
 
@@ -5676,7 +5509,9 @@ var Interval = /*#__PURE__*/function () {
  * The Info class contains static methods for retrieving general time and date related data. For example, it has methods for finding out if a time zone has a DST, for listing the months in any supported locale, and for discovering which of Luxon features are available in the current environment.
  */
 
-var Info = /*#__PURE__*/function () {
+var Info =
+/*#__PURE__*/
+function () {
   function Info() {}
 
   /**
@@ -5689,7 +5524,7 @@ var Info = /*#__PURE__*/function () {
       zone = Settings.defaultZone;
     }
 
-    var proto = DateTime.now().setZone(zone).set({
+    var proto = DateTime.local().setZone(zone).set({
       month: 12
     });
     return !zone.universal && proto.offset !== proto.set({
@@ -5790,7 +5625,7 @@ var Info = /*#__PURE__*/function () {
   /**
    * Return an array of standalone week names.
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-   * @param {string} [length='long'] - the length of the weekday representation, such as "narrow", "short", "long".
+   * @param {string} [length='long'] - the length of the month representation, such as "narrow", "short", "long".
    * @param {Object} opts - options
    * @param {string} [opts.locale] - the locale code
    * @param {string} [opts.numberingSystem=null] - the numbering system
@@ -5820,7 +5655,7 @@ var Info = /*#__PURE__*/function () {
    * Format weekdays differ from standalone weekdays in that they're meant to appear next to more date information. In some languages, that
    * changes the string.
    * See {@link weekdays}
-   * @param {string} [length='long'] - the length of the weekday representation, such as "narrow", "short", "long".
+   * @param {string} [length='long'] - the length of the month representation, such as "narrow", "short", "long".
    * @param {Object} opts - options
    * @param {string} [opts.locale=null] - the locale code
    * @param {string} [opts.numberingSystem=null] - the numbering system
@@ -5939,8 +5774,6 @@ function dayDiff(earlier, later) {
 function highOrderDiffs(cursor, later, units) {
   var differs = [["years", function (a, b) {
     return b.year - a.year;
-  }], ["quarters", function (a, b) {
-    return b.quarter - a.quarter;
   }], ["months", function (a, b) {
     return b.month - a.month + (b.year - a.year) * 12;
   }], ["weeks", function (a, b) {
@@ -6116,20 +5949,13 @@ function intUnit(regex, post) {
   };
 }
 
-var NBSP = String.fromCharCode(160);
-var spaceOrNBSP = "( |" + NBSP + ")";
-var spaceOrNBSPRegExp = new RegExp(spaceOrNBSP, "g");
-
 function fixListRegex(s) {
   // make dots optional and also make them literal
-  // make space and non breakable space characters interchangeable
-  return s.replace(/\./g, "\\.?").replace(spaceOrNBSPRegExp, spaceOrNBSP);
+  return s.replace(/\./, "\\.?");
 }
 
 function stripInsensitivities(s) {
-  return s.replace(/\./g, "") // ignore dots that were made optional
-  .replace(spaceOrNBSPRegExp, " ") // interchange space and nbsp
-  .toLowerCase();
+  return s.replace(/\./, "").toLowerCase();
 }
 
 function oneOf(strings, startIndex) {
@@ -6284,12 +6110,6 @@ function unitForToken(token, loc) {
       case "m":
         return intUnit(oneOrTwo);
 
-      case "q":
-        return intUnit(oneOrTwo);
-
-      case "qq":
-        return intUnit(two);
-
       case "s":
         return intUnit(oneOrTwo);
 
@@ -6385,7 +6205,6 @@ var partTypeStyleToTokenVal = {
     long: "EEEE"
   },
   dayperiod: "a",
-  dayPeriod: "a",
   hour: {
     numeric: "h",
     "2-digit": "hh"
@@ -6502,9 +6321,6 @@ function dateTimeFromMatches(matches) {
       case "k":
         return "weekYear";
 
-      case "q":
-        return "quarter";
-
       default:
         return null;
     }
@@ -6518,10 +6334,6 @@ function dateTimeFromMatches(matches) {
     zone = IANAZone.create(matches.z);
   } else {
     zone = null;
-  }
-
-  if (!isUndefined(matches.q)) {
-    matches.M = (matches.q - 1) * 3 + 1;
   }
 
   if (!isUndefined(matches.h)) {
@@ -6624,10 +6436,6 @@ function explainFromTokens(locale, input, format) {
         _ref6 = matches ? dateTimeFromMatches(matches) : [null, null],
         result = _ref6[0],
         zone = _ref6[1];
-
-    if (hasOwnProperty(matches, "a") && hasOwnProperty(matches, "H")) {
-      throw new ConflictingSpecificationError("Can't include meridiem when specifying 24-hour format");
-    }
 
     return {
       input: input,
@@ -6894,20 +6702,24 @@ function objToTS(obj, offset, zone) {
 
 
 function adjustTime(inst, dur) {
+  var _dur;
+
+  var keys = Object.keys(dur.values);
+
+  if (keys.indexOf("milliseconds") === -1) {
+    keys.push("milliseconds");
+  }
+
+  dur = (_dur = dur).shiftTo.apply(_dur, keys);
   var oPre = inst.o,
-      year = inst.c.year + Math.trunc(dur.years),
-      month = inst.c.month + Math.trunc(dur.months) + Math.trunc(dur.quarters) * 3,
+      year = inst.c.year + dur.years,
+      month = inst.c.month + dur.months + dur.quarters * 3,
       c = Object.assign({}, inst.c, {
     year: year,
     month: month,
-    day: Math.min(inst.c.day, daysInMonth(year, month)) + Math.trunc(dur.days) + Math.trunc(dur.weeks) * 7
+    day: Math.min(inst.c.day, daysInMonth(year, month)) + dur.days + dur.weeks * 7
   }),
       millisToAdd = Duration.fromObject({
-    years: dur.years - Math.trunc(dur.years),
-    quarters: dur.quarters - Math.trunc(dur.quarters),
-    months: dur.months - Math.trunc(dur.months),
-    weeks: dur.weeks - Math.trunc(dur.weeks),
-    days: dur.days - Math.trunc(dur.days),
     hours: dur.hours,
     minutes: dur.minutes,
     seconds: dur.seconds,
@@ -6952,13 +6764,9 @@ function parseDataToDateTime(parsed, parsedZone, opts, format, text) {
 // helps handle the details
 
 
-function toTechFormat(dt, format, allowZ) {
-  if (allowZ === void 0) {
-    allowZ = true;
-  }
-
+function toTechFormat(dt, format) {
   return dt.isValid ? Formatter.create(Locale.create("en-US"), {
-    allowZ: allowZ,
+    allowZ: true,
     forceSimple: true
   }).formatDateTimeFromString(dt, format) : null;
 } // technical time formats (e.g. the time part of ISO 8601), take some options
@@ -6971,18 +6779,14 @@ function toTechTimeFormat(dt, _ref) {
       _ref$suppressMillisec = _ref.suppressMilliseconds,
       suppressMilliseconds = _ref$suppressMillisec === void 0 ? false : _ref$suppressMillisec,
       includeOffset = _ref.includeOffset,
-      _ref$includePrefix = _ref.includePrefix,
-      includePrefix = _ref$includePrefix === void 0 ? false : _ref$includePrefix,
       _ref$includeZone = _ref.includeZone,
       includeZone = _ref$includeZone === void 0 ? false : _ref$includeZone,
       _ref$spaceZone = _ref.spaceZone,
-      spaceZone = _ref$spaceZone === void 0 ? false : _ref$spaceZone,
-      _ref$format = _ref.format,
-      format = _ref$format === void 0 ? "extended" : _ref$format;
-  var fmt = format === "basic" ? "HHmm" : "HH:mm";
+      spaceZone = _ref$spaceZone === void 0 ? false : _ref$spaceZone;
+  var fmt = "HH:mm";
 
   if (!suppressSeconds || dt.second !== 0 || dt.millisecond !== 0) {
-    fmt += format === "basic" ? "ss" : ":ss";
+    fmt += ":ss";
 
     if (!suppressMilliseconds || dt.millisecond !== 0) {
       fmt += ".SSS";
@@ -6996,16 +6800,10 @@ function toTechTimeFormat(dt, _ref) {
   if (includeZone) {
     fmt += "z";
   } else if (includeOffset) {
-    fmt += format === "basic" ? "ZZZ" : "ZZ";
+    fmt += "ZZ";
   }
 
-  var str = toTechFormat(dt, fmt);
-
-  if (includePrefix) {
-    str = "T" + str;
-  }
-
-  return str;
+  return toTechFormat(dt, fmt);
 } // defaults for unspecified units in the supported calendars
 
 
@@ -7049,8 +6847,6 @@ function normalizeUnit(unit) {
     hours: "hour",
     minute: "minute",
     minutes: "minute",
-    quarter: "quarter",
-    quarters: "quarter",
     second: "second",
     seconds: "second",
     millisecond: "millisecond",
@@ -7073,8 +6869,8 @@ function normalizeUnit(unit) {
 
 function quickDT(obj, zone) {
   // assume we have the higher-order units
-  for (var _iterator = _createForOfIteratorHelperLoose(orderedUnits$1), _step; !(_step = _iterator()).done;) {
-    var u = _step.value;
+  for (var _i = 0, _orderedUnits = orderedUnits$1; _i < _orderedUnits.length; _i++) {
+    var u = _orderedUnits[_i];
 
     if (isUndefined(obj[u])) {
       obj[u] = defaultUnitValues[u];
@@ -7121,8 +6917,19 @@ function diffRelative(start, end, opts) {
     return format(differ(opts.unit), opts.unit);
   }
 
-  for (var _iterator2 = _createForOfIteratorHelperLoose(opts.units), _step2; !(_step2 = _iterator2()).done;) {
-    var unit = _step2.value;
+  for (var _iterator = opts.units, _isArray = Array.isArray(_iterator), _i2 = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+    var _ref2;
+
+    if (_isArray) {
+      if (_i2 >= _iterator.length) break;
+      _ref2 = _iterator[_i2++];
+    } else {
+      _i2 = _iterator.next();
+      if (_i2.done) break;
+      _ref2 = _i2.value;
+    }
+
+    var unit = _ref2;
     var count = differ(unit);
 
     if (Math.abs(count) >= 1) {
@@ -7154,7 +6961,9 @@ function diffRelative(start, end, opts) {
  */
 
 
-var DateTime = /*#__PURE__*/function () {
+var DateTime =
+/*#__PURE__*/
+function () {
   /**
    * @access private
    */
@@ -7173,15 +6982,14 @@ var DateTime = /*#__PURE__*/function () {
       var unchanged = config.old && config.old.ts === this.ts && config.old.zone.equals(zone);
 
       if (unchanged) {
-        var _ref2 = [config.old.c, config.old.o];
-        c = _ref2[0];
-        o = _ref2[1];
+        var _ref3 = [config.old.c, config.old.o];
+        c = _ref3[0];
+        o = _ref3[1];
       } else {
-        var ot = zone.offset(this.ts);
-        c = tsToObj(this.ts, ot);
+        c = tsToObj(this.ts, zone.offset(this.ts));
         invalid = Number.isNaN(c.year) ? new Invalid("invalid input") : null;
         c = invalid ? null : c;
-        o = invalid ? null : ot;
+        o = invalid ? null : zone.offset(this.ts);
       }
     }
     /**
@@ -7223,26 +7031,14 @@ var DateTime = /*#__PURE__*/function () {
   } // CONSTRUCT
 
   /**
-   * Create a DateTime for the current instant, in the system's time zone.
-   *
-   * Use Settings to override these default values if needed.
-   * @example DateTime.now().toISO() //~> now in the ISO format
-   * @return {DateTime}
-   */
-
-
-  DateTime.now = function now() {
-    return new DateTime({});
-  }
-  /**
    * Create a local DateTime
    * @param {number} [year] - The calendar year. If omitted (as in, call `local()` with no arguments), the current time will be used
    * @param {number} [month=1] - The month, 1-indexed
-   * @param {number} [day=1] - The day of the month, 1-indexed
+   * @param {number} [day=1] - The day of the month
    * @param {number} [hour=0] - The hour of the day, in 24-hour time
-   * @param {number} [minute=0] - The minute of the hour, meaning a number between 0 and 59
-   * @param {number} [second=0] - The second of the minute, meaning a number between 0 and 59
-   * @param {number} [millisecond=0] - The millisecond of the second, meaning a number between 0 and 999
+   * @param {number} [minute=0] - The minute of the hour, i.e. a number between 0 and 59
+   * @param {number} [second=0] - The second of the minute, i.e. a number between 0 and 59
+   * @param {number} [millisecond=0] - The millisecond of the second, i.e. a number between 0 and 999
    * @example DateTime.local()                            //~> now
    * @example DateTime.local(2017)                        //~> 2017-01-01T00:00:00
    * @example DateTime.local(2017, 3)                     //~> 2017-03-01T00:00:00
@@ -7253,11 +7049,13 @@ var DateTime = /*#__PURE__*/function () {
    * @example DateTime.local(2017, 3, 12, 5, 45, 10, 765) //~> 2017-03-12T05:45:10.765
    * @return {DateTime}
    */
-  ;
+
 
   DateTime.local = function local(year, month, day, hour, minute, second, millisecond) {
     if (isUndefined(year)) {
-      return new DateTime({});
+      return new DateTime({
+        ts: Settings.now()
+      });
     } else {
       return quickDT({
         year: year,
@@ -7276,9 +7074,9 @@ var DateTime = /*#__PURE__*/function () {
    * @param {number} [month=1] - The month, 1-indexed
    * @param {number} [day=1] - The day of the month
    * @param {number} [hour=0] - The hour of the day, in 24-hour time
-   * @param {number} [minute=0] - The minute of the hour, meaning a number between 0 and 59
-   * @param {number} [second=0] - The second of the minute, meaning a number between 0 and 59
-   * @param {number} [millisecond=0] - The millisecond of the second, meaning a number between 0 and 999
+   * @param {number} [minute=0] - The minute of the hour, i.e. a number between 0 and 59
+   * @param {number} [second=0] - The second of the minute, i.e. a number between 0 and 59
+   * @param {number} [millisecond=0] - The millisecond of the second, i.e. a number between 0 and 999
    * @example DateTime.utc()                            //~> now
    * @example DateTime.utc(2017)                        //~> 2017-01-01T00:00:00Z
    * @example DateTime.utc(2017, 3)                     //~> 2017-03-01T00:00:00Z
@@ -7310,8 +7108,8 @@ var DateTime = /*#__PURE__*/function () {
     }
   }
   /**
-   * Create a DateTime from a JavaScript Date object. Uses the default zone.
-   * @param {Date} date - a JavaScript Date object
+   * Create a DateTime from a Javascript Date object. Uses the default zone.
+   * @param {Date} date - a Javascript Date object
    * @param {Object} options - configuration options for the DateTime
    * @param {string|Zone} [options.zone='local'] - the zone to place the DateTime into
    * @return {DateTime}
@@ -7342,7 +7140,7 @@ var DateTime = /*#__PURE__*/function () {
     });
   }
   /**
-   * Create a DateTime from a number of milliseconds since the epoch (meaning since 1 January 1970 00:00:00 UTC). Uses the default zone.
+   * Create a DateTime from a number of milliseconds since the epoch (i.e. since 1 January 1970 00:00:00 UTC). Uses the default zone.
    * @param {number} milliseconds - a number of milliseconds since 1970 UTC
    * @param {Object} options - configuration options for the DateTime
    * @param {string|Zone} [options.zone='local'] - the zone to place the DateTime into
@@ -7359,7 +7157,7 @@ var DateTime = /*#__PURE__*/function () {
     }
 
     if (!isNumber(milliseconds)) {
-      throw new InvalidArgumentError("fromMillis requires a numerical input, but received a " + typeof milliseconds + " with value " + milliseconds);
+      throw new InvalidArgumentError("fromMillis requires a numerical input");
     } else if (milliseconds < -MAX_DATE || milliseconds > MAX_DATE) {
       // this isn't perfect because because we can still end up out of range because of additional shifting, but it's a start
       return DateTime.invalid("Timestamp out of range");
@@ -7372,7 +7170,7 @@ var DateTime = /*#__PURE__*/function () {
     }
   }
   /**
-   * Create a DateTime from a number of seconds since the epoch (meaning since 1 January 1970 00:00:00 UTC). Uses the default zone.
+   * Create a DateTime from a number of seconds since the epoch (i.e. since 1 January 1970 00:00:00 UTC). Uses the default zone.
    * @param {number} seconds - a number of seconds since 1970 UTC
    * @param {Object} options - configuration options for the DateTime
    * @param {string|Zone} [options.zone='local'] - the zone to place the DateTime into
@@ -7399,7 +7197,7 @@ var DateTime = /*#__PURE__*/function () {
     }
   }
   /**
-   * Create a DateTime from a JavaScript object with keys like 'year' and 'hour' with reasonable defaults.
+   * Create a DateTime from a Javascript object with keys like 'year' and 'hour' with reasonable defaults.
    * @param {Object} obj - the object to create the DateTime from
    * @param {number} obj.year - a year, such as 1987
    * @param {number} obj.month - a month, 1-12
@@ -7478,8 +7276,19 @@ var DateTime = /*#__PURE__*/function () {
 
     var foundFirst = false;
 
-    for (var _iterator3 = _createForOfIteratorHelperLoose(units), _step3; !(_step3 = _iterator3()).done;) {
-      var u = _step3.value;
+    for (var _iterator2 = units, _isArray2 = Array.isArray(_iterator2), _i3 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
+      var _ref4;
+
+      if (_isArray2) {
+        if (_i3 >= _iterator2.length) break;
+        _ref4 = _iterator2[_i3++];
+      } else {
+        _i3 = _iterator2.next();
+        if (_i3.done) break;
+        _ref4 = _i3.value;
+      }
+
+      var u = _ref4;
       var v = normalized[u];
 
       if (!isUndefined(v)) {
@@ -7820,11 +7629,11 @@ var DateTime = /*#__PURE__*/function () {
   ;
 
   _proto.setZone = function setZone(zone, _temp) {
-    var _ref3 = _temp === void 0 ? {} : _temp,
-        _ref3$keepLocalTime = _ref3.keepLocalTime,
-        keepLocalTime = _ref3$keepLocalTime === void 0 ? false : _ref3$keepLocalTime,
-        _ref3$keepCalendarTim = _ref3.keepCalendarTime,
-        keepCalendarTime = _ref3$keepCalendarTim === void 0 ? false : _ref3$keepCalendarTim;
+    var _ref5 = _temp === void 0 ? {} : _temp,
+        _ref5$keepLocalTime = _ref5.keepLocalTime,
+        keepLocalTime = _ref5$keepLocalTime === void 0 ? false : _ref5$keepLocalTime,
+        _ref5$keepCalendarTim = _ref5.keepCalendarTime,
+        keepCalendarTime = _ref5$keepCalendarTim === void 0 ? false : _ref5$keepCalendarTim;
 
     zone = normalizeZone(zone, Settings.defaultZone);
 
@@ -7836,7 +7645,7 @@ var DateTime = /*#__PURE__*/function () {
       var newTS = this.ts;
 
       if (keepLocalTime || keepCalendarTime) {
-        var offsetGuess = zone.offset(this.ts);
+        var offsetGuess = this.o - zone.offset(this.ts);
         var asObj = this.toObject();
 
         var _objToTS3 = objToTS(asObj, offsetGuess, zone);
@@ -7859,10 +7668,10 @@ var DateTime = /*#__PURE__*/function () {
   ;
 
   _proto.reconfigure = function reconfigure(_temp2) {
-    var _ref4 = _temp2 === void 0 ? {} : _temp2,
-        locale = _ref4.locale,
-        numberingSystem = _ref4.numberingSystem,
-        outputCalendar = _ref4.outputCalendar;
+    var _ref6 = _temp2 === void 0 ? {} : _temp2,
+        locale = _ref6.locale,
+        numberingSystem = _ref6.numberingSystem,
+        outputCalendar = _ref6.outputCalendar;
 
     var loc = this.loc.clone({
       locale: locale,
@@ -7931,12 +7740,12 @@ var DateTime = /*#__PURE__*/function () {
    *
    * Adding hours, minutes, seconds, or milliseconds increases the timestamp by the right number of milliseconds. Adding days, months, or years shifts the calendar, accounting for DSTs and leap years along the way. Thus, `dt.plus({ hours: 24 })` may result in a different time than `dt.plus({ days: 1 })` if there's a DST shift in between.
    * @param {Duration|Object|number} duration - The amount to add. Either a Luxon Duration, a number of milliseconds, the object argument to Duration.fromObject()
-   * @example DateTime.now().plus(123) //~> in 123 milliseconds
-   * @example DateTime.now().plus({ minutes: 15 }) //~> in 15 minutes
-   * @example DateTime.now().plus({ days: 1 }) //~> this time tomorrow
-   * @example DateTime.now().plus({ days: -1 }) //~> this time yesterday
-   * @example DateTime.now().plus({ hours: 3, minutes: 13 }) //~> in 3 hr, 13 min
-   * @example DateTime.now().plus(Duration.fromObject({ hours: 3, minutes: 13 })) //~> in 3 hr, 13 min
+   * @example DateTime.local().plus(123) //~> in 123 milliseconds
+   * @example DateTime.local().plus({ minutes: 15 }) //~> in 15 minutes
+   * @example DateTime.local().plus({ days: 1 }) //~> this time tomorrow
+   * @example DateTime.local().plus({ days: -1 }) //~> this time yesterday
+   * @example DateTime.local().plus({ hours: 3, minutes: 13 }) //~> in 3 hr, 13 min
+   * @example DateTime.local().plus(Duration.fromObject({ hours: 3, minutes: 13 })) //~> in 3 hr, 13 min
    * @return {DateTime}
    */
   ;
@@ -7964,7 +7773,6 @@ var DateTime = /*#__PURE__*/function () {
    * @param {string} unit - The unit to go to the beginning of. Can be 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', or 'millisecond'.
    * @example DateTime.local(2014, 3, 3).startOf('month').toISODate(); //=> '2014-03-01'
    * @example DateTime.local(2014, 3, 3).startOf('year').toISODate(); //=> '2014-01-01'
-   * @example DateTime.local(2014, 3, 3).startOf('week').toISODate(); //=> '2014-03-03', weeks always start on Mondays
    * @example DateTime.local(2014, 3, 3, 5, 30).startOf('day').toISOTime(); //=> '00:00.000-05:00'
    * @example DateTime.local(2014, 3, 3, 5, 30).startOf('hour').toISOTime(); //=> '05:00:00.000-05:00'
    * @return {DateTime}
@@ -8002,6 +7810,9 @@ var DateTime = /*#__PURE__*/function () {
       case "seconds":
         o.millisecond = 0;
         break;
+
+      case "milliseconds":
+        break;
       // no default, invalid units throw in normalizeUnit()
     }
 
@@ -8017,11 +7828,10 @@ var DateTime = /*#__PURE__*/function () {
     return this.set(o);
   }
   /**
-   * "Set" this DateTime to the end (meaning the last millisecond) of a unit of time
-   * @param {string} unit - The unit to go to the end of. Can be 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', or 'millisecond'.
+   * "Set" this DateTime to the end (i.e. the last millisecond) of a unit of time
+   * @param {string} unit - The unit to go to the end of. Can be 'year', 'month', 'day', 'hour', 'minute', 'second', or 'millisecond'.
    * @example DateTime.local(2014, 3, 3).endOf('month').toISO(); //=> '2014-03-31T23:59:59.999-05:00'
    * @example DateTime.local(2014, 3, 3).endOf('year').toISO(); //=> '2014-12-31T23:59:59.999-05:00'
-   * @example DateTime.local(2014, 3, 3).endOf('week').toISO(); // => '2014-03-09T23:59:59.999-05:00', weeks start on Mondays
    * @example DateTime.local(2014, 3, 3, 5, 30).endOf('day').toISO(); //=> '2014-03-03T23:59:59.999-05:00'
    * @example DateTime.local(2014, 3, 3, 5, 30).endOf('hour').toISO(); //=> '2014-03-03T05:59:59.999-05:00'
    * @return {DateTime}
@@ -8041,10 +7851,10 @@ var DateTime = /*#__PURE__*/function () {
    * @see https://moment.github.io/luxon/docs/manual/formatting.html#table-of-tokens
    * @param {string} fmt - the format string
    * @param {Object} opts - opts to override the configuration options
-   * @example DateTime.now().toFormat('yyyy LLL dd') //=> '2017 Apr 22'
-   * @example DateTime.now().setLocale('fr').toFormat('yyyy LLL dd') //=> '2017 avr. 22'
-   * @example DateTime.now().toFormat('yyyy LLL dd', { locale: "fr" }) //=> '2017 avr. 22'
-   * @example DateTime.now().toFormat("HH 'hours and' mm 'minutes'") //=> '20 hours and 55 minutes'
+   * @example DateTime.local().toFormat('yyyy LLL dd') //=> '2017 Apr 22'
+   * @example DateTime.local().setLocale('fr').toFormat('yyyy LLL dd') //=> '2017 avr. 22'
+   * @example DateTime.local().toFormat('yyyy LLL dd', { locale: "fr" }) //=> '2017 avr. 22'
+   * @example DateTime.local().toFormat("HH 'hours and' mm 'minutes'") //=> '20 hours and 55 minutes'
    * @return {string}
    */
   ;
@@ -8063,15 +7873,15 @@ var DateTime = /*#__PURE__*/function () {
    * Defaults to the system's locale if no locale has been specified
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
    * @param opts {Object} - Intl.DateTimeFormat constructor options and configuration options
-   * @example DateTime.now().toLocaleString(); //=> 4/20/2017
-   * @example DateTime.now().setLocale('en-gb').toLocaleString(); //=> '20/04/2017'
-   * @example DateTime.now().toLocaleString({ locale: 'en-gb' }); //=> '20/04/2017'
-   * @example DateTime.now().toLocaleString(DateTime.DATE_FULL); //=> 'April 20, 2017'
-   * @example DateTime.now().toLocaleString(DateTime.TIME_SIMPLE); //=> '11:32 AM'
-   * @example DateTime.now().toLocaleString(DateTime.DATETIME_SHORT); //=> '4/20/2017, 11:32 AM'
-   * @example DateTime.now().toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' }); //=> 'Thursday, April 20'
-   * @example DateTime.now().toLocaleString({ weekday: 'short', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }); //=> 'Thu, Apr 20, 11:27 AM'
-   * @example DateTime.now().toLocaleString({ hour: '2-digit', minute: '2-digit', hour12: false }); //=> '11:32'
+   * @example DateTime.local().toLocaleString(); //=> 4/20/2017
+   * @example DateTime.local().setLocale('en-gb').toLocaleString(); //=> '20/04/2017'
+   * @example DateTime.local().toLocaleString({ locale: 'en-gb' }); //=> '20/04/2017'
+   * @example DateTime.local().toLocaleString(DateTime.DATE_FULL); //=> 'April 20, 2017'
+   * @example DateTime.local().toLocaleString(DateTime.TIME_SIMPLE); //=> '11:32 AM'
+   * @example DateTime.local().toLocaleString(DateTime.DATETIME_SHORT); //=> '4/20/2017, 11:32 AM'
+   * @example DateTime.local().toLocaleString({ weekday: 'long', month: 'long', day: '2-digit' }); //=> 'Thursday, April 20'
+   * @example DateTime.local().toLocaleString({ weekday: 'short', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }); //=> 'Thu, Apr 20, 11:27 AM'
+   * @example DateTime.local().toLocaleString({ hour: '2-digit', minute: '2-digit', hour12: false }); //=> '11:32'
    * @return {string}
    */
   ;
@@ -8084,17 +7894,17 @@ var DateTime = /*#__PURE__*/function () {
     return this.isValid ? Formatter.create(this.loc.clone(opts), opts).formatDateTime(this) : INVALID$2;
   }
   /**
-   * Returns an array of format "parts", meaning individual tokens along with metadata. This is allows callers to post-process individual sections of the formatted output.
+   * Returns an array of format "parts", i.e. individual tokens along with metadata. This is allows callers to post-process individual sections of the formatted output.
    * Defaults to the system's locale if no locale has been specified
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts
    * @param opts {Object} - Intl.DateTimeFormat constructor options, same as `toLocaleString`.
-   * @example DateTime.now().toLocaleParts(); //=> [
-   *                                   //=>   { type: 'day', value: '25' },
-   *                                   //=>   { type: 'literal', value: '/' },
-   *                                   //=>   { type: 'month', value: '05' },
-   *                                   //=>   { type: 'literal', value: '/' },
-   *                                   //=>   { type: 'year', value: '1982' }
-   *                                   //=> ]
+   * @example DateTime.local().toLocaleString(); //=> [
+   *                                    //=>   { type: 'day', value: '25' },
+   *                                    //=>   { type: 'literal', value: '/' },
+   *                                    //=>   { type: 'month', value: '05' },
+   *                                    //=>   { type: 'literal', value: '/' },
+   *                                    //=>   { type: 'year', value: '1982' }
+   *                                    //=> ]
    */
   ;
 
@@ -8111,11 +7921,9 @@ var DateTime = /*#__PURE__*/function () {
    * @param {boolean} [opts.suppressMilliseconds=false] - exclude milliseconds from the format if they're 0
    * @param {boolean} [opts.suppressSeconds=false] - exclude seconds from the format if they're 0
    * @param {boolean} [opts.includeOffset=true] - include the offset, such as 'Z' or '-04:00'
-   * @param {string} [opts.format='extended'] - choose between the basic and extended format
    * @example DateTime.utc(1982, 5, 25).toISO() //=> '1982-05-25T00:00:00.000Z'
-   * @example DateTime.now().toISO() //=> '2017-04-22T20:47:05.335-04:00'
-   * @example DateTime.now().toISO({ includeOffset: false }) //=> '2017-04-22T20:47:05.335'
-   * @example DateTime.now().toISO({ format: 'basic' }) //=> '20170422T204705.335-0400'
+   * @example DateTime.local().toISO() //=> '2017-04-22T20:47:05.335-04:00'
+   * @example DateTime.local().toISO({ includeOffset: false }) //=> '2017-04-22T20:47:05.335'
    * @return {string}
    */
   ;
@@ -8129,30 +7937,23 @@ var DateTime = /*#__PURE__*/function () {
       return null;
     }
 
-    return this.toISODate(opts) + "T" + this.toISOTime(opts);
+    return this.toISODate() + "T" + this.toISOTime(opts);
   }
   /**
    * Returns an ISO 8601-compliant string representation of this DateTime's date component
-   * @param {Object} opts - options
-   * @param {string} [opts.format='extended'] - choose between the basic and extended format
    * @example DateTime.utc(1982, 5, 25).toISODate() //=> '1982-05-25'
-   * @example DateTime.utc(1982, 5, 25).toISODate({ format: 'basic' }) //=> '19820525'
    * @return {string}
    */
   ;
 
-  _proto.toISODate = function toISODate(_temp3) {
-    var _ref5 = _temp3 === void 0 ? {} : _temp3,
-        _ref5$format = _ref5.format,
-        format = _ref5$format === void 0 ? "extended" : _ref5$format;
-
-    var fmt = format === "basic" ? "yyyyMMdd" : "yyyy-MM-dd";
+  _proto.toISODate = function toISODate() {
+    var format = "yyyy-MM-dd";
 
     if (this.year > 9999) {
-      fmt = "+" + fmt;
+      format = "+" + format;
     }
 
-    return toTechFormat(this, fmt);
+    return toTechFormat(this, format);
   }
   /**
    * Returns an ISO 8601-compliant string representation of this DateTime's week date
@@ -8170,35 +7971,25 @@ var DateTime = /*#__PURE__*/function () {
    * @param {boolean} [opts.suppressMilliseconds=false] - exclude milliseconds from the format if they're 0
    * @param {boolean} [opts.suppressSeconds=false] - exclude seconds from the format if they're 0
    * @param {boolean} [opts.includeOffset=true] - include the offset, such as 'Z' or '-04:00'
-   * @param {boolean} [opts.includePrefix=false] - include the `T` prefix
-   * @param {string} [opts.format='extended'] - choose between the basic and extended format
-   * @example DateTime.utc().set({ hour: 7, minute: 34 }).toISOTime() //=> '07:34:19.361Z'
-   * @example DateTime.utc().set({ hour: 7, minute: 34, seconds: 0, milliseconds: 0 }).toISOTime({ suppressSeconds: true }) //=> '07:34Z'
-   * @example DateTime.utc().set({ hour: 7, minute: 34 }).toISOTime({ format: 'basic' }) //=> '073419.361Z'
-   * @example DateTime.utc().set({ hour: 7, minute: 34 }).toISOTime({ includePrefix: true }) //=> 'T07:34:19.361Z'
+   * @example DateTime.utc().hour(7).minute(34).toISOTime() //=> '07:34:19.361Z'
+   * @example DateTime.utc().hour(7).minute(34).toISOTime({ suppressSeconds: true }) //=> '07:34Z'
    * @return {string}
    */
   ;
 
-  _proto.toISOTime = function toISOTime(_temp4) {
-    var _ref6 = _temp4 === void 0 ? {} : _temp4,
-        _ref6$suppressMillise = _ref6.suppressMilliseconds,
-        suppressMilliseconds = _ref6$suppressMillise === void 0 ? false : _ref6$suppressMillise,
-        _ref6$suppressSeconds = _ref6.suppressSeconds,
-        suppressSeconds = _ref6$suppressSeconds === void 0 ? false : _ref6$suppressSeconds,
-        _ref6$includeOffset = _ref6.includeOffset,
-        includeOffset = _ref6$includeOffset === void 0 ? true : _ref6$includeOffset,
-        _ref6$includePrefix = _ref6.includePrefix,
-        includePrefix = _ref6$includePrefix === void 0 ? false : _ref6$includePrefix,
-        _ref6$format = _ref6.format,
-        format = _ref6$format === void 0 ? "extended" : _ref6$format;
+  _proto.toISOTime = function toISOTime(_temp3) {
+    var _ref7 = _temp3 === void 0 ? {} : _temp3,
+        _ref7$suppressMillise = _ref7.suppressMilliseconds,
+        suppressMilliseconds = _ref7$suppressMillise === void 0 ? false : _ref7$suppressMillise,
+        _ref7$suppressSeconds = _ref7.suppressSeconds,
+        suppressSeconds = _ref7$suppressSeconds === void 0 ? false : _ref7$suppressSeconds,
+        _ref7$includeOffset = _ref7.includeOffset,
+        includeOffset = _ref7$includeOffset === void 0 ? true : _ref7$includeOffset;
 
     return toTechTimeFormat(this, {
       suppressSeconds: suppressSeconds,
       suppressMilliseconds: suppressMilliseconds,
-      includeOffset: includeOffset,
-      includePrefix: includePrefix,
-      format: format
+      includeOffset: includeOffset
     });
   }
   /**
@@ -8210,7 +8001,7 @@ var DateTime = /*#__PURE__*/function () {
   ;
 
   _proto.toRFC2822 = function toRFC2822() {
-    return toTechFormat(this, "EEE, dd LLL yyyy HH:mm:ss ZZZ", false);
+    return toTechFormat(this, "EEE, dd LLL yyyy HH:mm:ss ZZZ");
   }
   /**
    * Returns a string representation of this DateTime appropriate for use in HTTP headers.
@@ -8241,19 +8032,19 @@ var DateTime = /*#__PURE__*/function () {
    * @param {boolean} [opts.includeZone=false] - include the zone, such as 'America/New_York'. Overrides includeOffset.
    * @param {boolean} [opts.includeOffset=true] - include the offset, such as 'Z' or '-04:00'
    * @example DateTime.utc().toSQL() //=> '05:15:16.345'
-   * @example DateTime.now().toSQL() //=> '05:15:16.345 -04:00'
-   * @example DateTime.now().toSQL({ includeOffset: false }) //=> '05:15:16.345'
-   * @example DateTime.now().toSQL({ includeZone: false }) //=> '05:15:16.345 America/New_York'
+   * @example DateTime.local().toSQL() //=> '05:15:16.345 -04:00'
+   * @example DateTime.local().toSQL({ includeOffset: false }) //=> '05:15:16.345'
+   * @example DateTime.local().toSQL({ includeZone: false }) //=> '05:15:16.345 America/New_York'
    * @return {string}
    */
   ;
 
-  _proto.toSQLTime = function toSQLTime(_temp5) {
-    var _ref7 = _temp5 === void 0 ? {} : _temp5,
-        _ref7$includeOffset = _ref7.includeOffset,
-        includeOffset = _ref7$includeOffset === void 0 ? true : _ref7$includeOffset,
-        _ref7$includeZone = _ref7.includeZone,
-        includeZone = _ref7$includeZone === void 0 ? false : _ref7$includeZone;
+  _proto.toSQLTime = function toSQLTime(_temp4) {
+    var _ref8 = _temp4 === void 0 ? {} : _temp4,
+        _ref8$includeOffset = _ref8.includeOffset,
+        includeOffset = _ref8$includeOffset === void 0 ? true : _ref8$includeOffset,
+        _ref8$includeZone = _ref8.includeZone,
+        includeZone = _ref8$includeZone === void 0 ? false : _ref8$includeZone;
 
     return toTechTimeFormat(this, {
       includeOffset: includeOffset,
@@ -8340,10 +8131,10 @@ var DateTime = /*#__PURE__*/function () {
     return this.toJSDate();
   }
   /**
-   * Returns a JavaScript object with this DateTime's year, month, day, and so on.
+   * Returns a Javascript object with this DateTime's year, month, day, and so on.
    * @param opts - options for generating the object
    * @param {boolean} [opts.includeConfig=false] - include configuration attributes in the output
-   * @example DateTime.now().toObject() //=> { year: 2017, month: 4, day: 22, hour: 20, minute: 49, second: 42, millisecond: 268 }
+   * @example DateTime.local().toObject() //=> { year: 2017, month: 4, day: 22, hour: 20, minute: 49, second: 42, millisecond: 268 }
    * @return {Object}
    */
   ;
@@ -8365,7 +8156,7 @@ var DateTime = /*#__PURE__*/function () {
     return base;
   }
   /**
-   * Returns a JavaScript Date equivalent to this DateTime.
+   * Returns a Javascript Date equivalent to this DateTime.
    * @return {Date}
    */
   ;
@@ -8436,7 +8227,7 @@ var DateTime = /*#__PURE__*/function () {
       opts = {};
     }
 
-    return this.diff(DateTime.now(), unit, opts);
+    return this.diff(DateTime.local(), unit, opts);
   }
   /**
    * Return an Interval spanning between this DateTime and another DateTime
@@ -8449,23 +8240,23 @@ var DateTime = /*#__PURE__*/function () {
     return this.isValid ? Interval.fromDateTimes(this, otherDateTime) : this;
   }
   /**
-   * Return whether this DateTime is in the same unit of time as another DateTime.
-   * Higher-order units must also be identical for this function to return `true`.
-   * Note that time zones are **ignored** in this comparison, which compares the **local** calendar time. Use {@link setZone} to convert one of the dates if needed.
+   * Return whether this DateTime is in the same unit of time as another DateTime
    * @param {DateTime} otherDateTime - the other DateTime
    * @param {string} unit - the unit of time to check sameness on
-   * @example DateTime.now().hasSame(otherDT, 'day'); //~> true if otherDT is in the same current calendar day
+   * @example DateTime.local().hasSame(otherDT, 'day'); //~> true if both the same calendar day
    * @return {boolean}
    */
   ;
 
   _proto.hasSame = function hasSame(otherDateTime, unit) {
     if (!this.isValid) return false;
-    var inputMs = otherDateTime.valueOf();
-    var otherZoneDateTime = this.setZone(otherDateTime.zone, {
-      keepLocalTime: true
-    });
-    return otherZoneDateTime.startOf(unit) <= inputMs && inputMs <= otherZoneDateTime.endOf(unit);
+
+    if (unit === "millisecond") {
+      return this.valueOf() === otherDateTime.valueOf();
+    } else {
+      var inputMs = otherDateTime.valueOf();
+      return this.startOf(unit) <= inputMs && inputMs <= this.endOf(unit);
+    }
   }
   /**
    * Equality check
@@ -8483,19 +8274,19 @@ var DateTime = /*#__PURE__*/function () {
    * Returns a string representation of a this time relative to now, such as "in two days". Can only internationalize if your
    * platform supports Intl.RelativeTimeFormat. Rounds down by default.
    * @param {Object} options - options that affect the output
-   * @param {DateTime} [options.base=DateTime.now()] - the DateTime to use as the basis to which this time is compared. Defaults to now.
+   * @param {DateTime} [options.base=DateTime.local()] - the DateTime to use as the basis to which this time is compared. Defaults to now.
    * @param {string} [options.style="long"] - the style of units, must be "long", "short", or "narrow"
    * @param {string} options.unit - use a specific unit; if omitted, the method will pick the unit. Use one of "years", "quarters", "months", "weeks", "days", "hours", "minutes", or "seconds"
    * @param {boolean} [options.round=true] - whether to round the numbers in the output.
-   * @param {number} [options.padding=0] - padding in milliseconds. This allows you to round up the result if it fits inside the threshold. Don't use in combination with {round: false} because the decimal output will include the padding.
+   * @param {boolean} [options.padding=0] - padding in milliseconds. This allows you to round up the result if it fits inside the threshold. Don't use in combination with {round: false} because the decimal output will include the padding.
    * @param {string} options.locale - override the locale of this DateTime
    * @param {string} options.numberingSystem - override the numberingSystem of this DateTime. The Intl system may choose not to honor this
-   * @example DateTime.now().plus({ days: 1 }).toRelative() //=> "in 1 day"
-   * @example DateTime.now().setLocale("es").toRelative({ days: 1 }) //=> "dentro de 1 día"
-   * @example DateTime.now().plus({ days: 1 }).toRelative({ locale: "fr" }) //=> "dans 23 heures"
-   * @example DateTime.now().minus({ days: 2 }).toRelative() //=> "2 days ago"
-   * @example DateTime.now().minus({ days: 2 }).toRelative({ unit: "hours" }) //=> "48 hours ago"
-   * @example DateTime.now().minus({ hours: 36 }).toRelative({ round: false }) //=> "1.5 days ago"
+   * @example DateTime.local().plus({ days: 1 }).toRelative() //=> "in 1 day"
+   * @example DateTime.local().setLocale("es").toRelative({ days: 1 }) //=> "dentro de 1 día"
+   * @example DateTime.local().plus({ days: 1 }).toRelative({ locale: "fr" }) //=> "dans 23 heures"
+   * @example DateTime.local().minus({ days: 2 }).toRelative() //=> "2 days ago"
+   * @example DateTime.local().minus({ days: 2 }).toRelative({ unit: "hours" }) //=> "48 hours ago"
+   * @example DateTime.local().minus({ hours: 36 }).toRelative({ round: false }) //=> "1.5 days ago"
    */
   ;
 
@@ -8518,14 +8309,14 @@ var DateTime = /*#__PURE__*/function () {
    * Returns a string representation of this date relative to today, such as "yesterday" or "next month".
    * Only internationalizes on platforms that supports Intl.RelativeTimeFormat.
    * @param {Object} options - options that affect the output
-   * @param {DateTime} [options.base=DateTime.now()] - the DateTime to use as the basis to which this time is compared. Defaults to now.
+   * @param {DateTime} [options.base=DateTime.local()] - the DateTime to use as the basis to which this time is compared. Defaults to now.
    * @param {string} options.locale - override the locale of this DateTime
    * @param {string} options.unit - use a specific unit; if omitted, the method will pick the unit. Use one of "years", "quarters", "months", "weeks", or "days"
    * @param {string} options.numberingSystem - override the numberingSystem of this DateTime. The Intl system may choose not to honor this
-   * @example DateTime.now().plus({ days: 1 }).toRelativeCalendar() //=> "tomorrow"
-   * @example DateTime.now().setLocale("es").plus({ days: 1 }).toRelative() //=> ""mañana"
-   * @example DateTime.now().plus({ days: 1 }).toRelativeCalendar({ locale: "fr" }) //=> "demain"
-   * @example DateTime.now().minus({ days: 2 }).toRelativeCalendar() //=> "2 days ago"
+   * @example DateTime.local().plus({ days: 1 }).toRelativeCalendar() //=> "tomorrow"
+   * @example DateTime.local().setLocale("es").plus({ days: 1 }).toRelative() //=> ""mañana"
+   * @example DateTime.local().plus({ days: 1 }).toRelativeCalendar({ locale: "fr" }) //=> "demain"
+   * @example DateTime.local().minus({ days: 2 }).toRelativeCalendar() //=> "2 days ago"
    */
   ;
 
@@ -8833,7 +8624,7 @@ var DateTime = /*#__PURE__*/function () {
       return this.isValid ? possiblyCachedWeekData(this).weekday : NaN;
     }
     /**
-     * Get the ordinal (meaning the day of the year)
+     * Get the ordinal (i.e. the day of the year)
      * @example DateTime.local(2017, 5, 25).ordinal //=> 145
      * @type {number|DateTime}
      */
@@ -8901,7 +8692,7 @@ var DateTime = /*#__PURE__*/function () {
     }
     /**
      * Get the UTC offset of this DateTime in minutes
-     * @example DateTime.now().offset //=> -240
+     * @example DateTime.local().offset //=> -240
      * @example DateTime.utc().offset //=> 0
      * @type {number}
      */
@@ -9038,16 +8829,6 @@ var DateTime = /*#__PURE__*/function () {
     key: "DATE_MED",
     get: function get() {
       return DATE_MED;
-    }
-    /**
-     * {@link toLocaleString} format like 'Fri, Oct 14, 1983'
-     * @type {Object}
-     */
-
-  }, {
-    key: "DATE_MED_WITH_WEEKDAY",
-    get: function get() {
-      return DATE_MED_WITH_WEEKDAY;
     }
     /**
      * {@link toLocaleString} format like 'October 14, 1983'
@@ -9255,8 +9036,6 @@ function friendlyDateTime(dateTimeish) {
   }
 }
 
-var VERSION = "1.26.0";
-
 exports.DateTime = DateTime;
 exports.Duration = Duration;
 exports.FixedOffsetZone = FixedOffsetZone;
@@ -9266,7 +9045,6 @@ exports.Interval = Interval;
 exports.InvalidZone = InvalidZone;
 exports.LocalZone = LocalZone;
 exports.Settings = Settings;
-exports.VERSION = VERSION;
 exports.Zone = Zone;
 //# sourceMappingURL=luxon.js.map
 
@@ -9280,7 +9058,7 @@ exports.Zone = Zone;
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentMethods_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("a8bf");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentMethods_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentMethods_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentMethods_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -9721,60 +9499,6 @@ var is = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
-
-
-/***/ }),
-
-/***/ "2397":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
-var $export = __webpack_require__("5ca1");
-var create = __webpack_require__("2aeb");
-var aFunction = __webpack_require__("d8e8");
-var anObject = __webpack_require__("cb7c");
-var isObject = __webpack_require__("d3f4");
-var fails = __webpack_require__("79e5");
-var bind = __webpack_require__("f0c1");
-var rConstruct = (__webpack_require__("7726").Reflect || {}).construct;
-
-// MS Edge supports only 2 arguments and argumentsList argument is optional
-// FF Nightly sets third argument as `new.target`, but does not create `this` from it
-var NEW_TARGET_BUG = fails(function () {
-  function F() { /* empty */ }
-  return !(rConstruct(function () { /* empty */ }, [], F) instanceof F);
-});
-var ARGS_BUG = !fails(function () {
-  rConstruct(function () { /* empty */ });
-});
-
-$export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
-  construct: function construct(Target, args /* , newTarget */) {
-    aFunction(Target);
-    anObject(args);
-    var newTarget = arguments.length < 3 ? Target : aFunction(arguments[2]);
-    if (ARGS_BUG && !NEW_TARGET_BUG) return rConstruct(Target, args, newTarget);
-    if (Target == newTarget) {
-      // w/o altered newTarget, optimization for 0-4 arguments
-      switch (args.length) {
-        case 0: return new Target();
-        case 1: return new Target(args[0]);
-        case 2: return new Target(args[0], args[1]);
-        case 3: return new Target(args[0], args[1], args[2]);
-        case 4: return new Target(args[0], args[1], args[2], args[3]);
-      }
-      // w/o altered newTarget, lot of arguments case
-      var $args = [null];
-      $args.push.apply($args, args);
-      return new (bind.apply(Target, $args))();
-    }
-    // with altered newTarget, not support built-in constructors
-    var proto = newTarget.prototype;
-    var instance = create(isObject(proto) ? proto : Object.prototype);
-    var result = Function.apply.call(Target, instance, args);
-    return isObject(result) ? result : instance;
-  }
-});
 
 
 /***/ }),
@@ -10807,16 +10531,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "3e67":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
-
-
-/***/ }),
-
 /***/ "40c3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11161,7 +10875,7 @@ module.exports = function (exec, skipClosing) {
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CoachEvent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("c53b");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CoachEvent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CoachEvent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CoachEvent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -11422,6 +11136,16 @@ $export($export.S + $export.F * !__webpack_require__("4ee1")(function (iter) { A
     return result;
   }
 });
+
+
+/***/ }),
+
+/***/ "54a1":
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("6c1c");
+__webpack_require__("1654");
+module.exports = __webpack_require__("95d5");
 
 
 /***/ }),
@@ -11733,7 +11457,7 @@ var store = global[SHARED] || (global[SHARED] = {});
 })('versions', []).push({
   version: core.version,
   mode: __webpack_require__("2d00") ? 'pure' : 'global',
-  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
+  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 
 
@@ -11785,7 +11509,7 @@ $export($export.P + $export.F * (fails(function () {
 /***/ "584a":
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.12' };
+var core = module.exports = { version: '2.6.9' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -11962,7 +11686,7 @@ __webpack_require__("01f9")(String, 'String', function (iterated) {
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("5cb5");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -12154,6 +11878,16 @@ module.exports = $export;
 
 /***/ }),
 
+/***/ "6453":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
+
+
+/***/ }),
+
 /***/ "64d5":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12161,7 +11895,7 @@ module.exports = $export;
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CatalogueFilter_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("6985");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CatalogueFilter_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CatalogueFilter_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CatalogueFilter_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -12360,24 +12094,16 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-const strictUriEncode = __webpack_require__("3e67");
+const strictUriEncode = __webpack_require__("6453");
 const decodeComponent = __webpack_require__("f234");
 const splitOnFirst = __webpack_require__("f32c");
-const filterObject = __webpack_require__("7348");
-
-const isNullOrUndefined = value => value === null || value === undefined;
 
 function encoderForArrayFormat(options) {
 	switch (options.arrayFormat) {
 		case 'index':
 			return key => (result, value) => {
 				const index = result.length;
-
-				if (
-					value === undefined ||
-					(options.skipNull && value === null) ||
-					(options.skipEmptyString && value === '')
-				) {
+				if (value === undefined) {
 					return result;
 				}
 
@@ -12393,11 +12119,7 @@ function encoderForArrayFormat(options) {
 
 		case 'bracket':
 			return key => (result, value) => {
-				if (
-					value === undefined ||
-					(options.skipNull && value === null) ||
-					(options.skipEmptyString && value === '')
-				) {
+				if (value === undefined) {
 					return result;
 				}
 
@@ -12409,26 +12131,21 @@ function encoderForArrayFormat(options) {
 			};
 
 		case 'comma':
-		case 'separator':
-			return key => (result, value) => {
+			return key => (result, value, index) => {
 				if (value === null || value === undefined || value.length === 0) {
 					return result;
 				}
 
-				if (result.length === 0) {
+				if (index === 0) {
 					return [[encode(key, options), '=', encode(value, options)].join('')];
 				}
 
-				return [[result, encode(value, options)].join(options.arrayFormatSeparator)];
+				return [[result, encode(value, options)].join(',')];
 			};
 
 		default:
 			return key => (result, value) => {
-				if (
-					value === undefined ||
-					(options.skipNull && value === null) ||
-					(options.skipEmptyString && value === '')
-				) {
+				if (value === undefined) {
 					return result;
 				}
 
@@ -12482,12 +12199,9 @@ function parserForArrayFormat(options) {
 			};
 
 		case 'comma':
-		case 'separator':
 			return (key, value, accumulator) => {
-				const isArray = typeof value === 'string' && value.includes(options.arrayFormatSeparator);
-				const isEncodedArray = (typeof value === 'string' && !isArray && decode(value, options).includes(options.arrayFormatSeparator));
-				value = isEncodedArray ? decode(value, options) : value;
-				const newValue = isArray || isEncodedArray ? value.split(options.arrayFormatSeparator).map(item => decode(item, options)) : value === null ? value : decode(value, options);
+				const isArray = typeof value === 'string' && value.split('').indexOf(',') > -1;
+				const newValue = isArray ? value.split(',') : value;
 				accumulator[key] = newValue;
 			};
 
@@ -12500,12 +12214,6 @@ function parserForArrayFormat(options) {
 
 				accumulator[key] = [].concat(accumulator[key], value);
 			};
-	}
-}
-
-function validateArrayFormatSeparator(value) {
-	if (typeof value !== 'string' || value.length !== 1) {
-		throw new TypeError('arrayFormatSeparator must be single character string');
 	}
 }
 
@@ -12548,16 +12256,6 @@ function removeHash(input) {
 	return input;
 }
 
-function getHash(url) {
-	let hash = '';
-	const hashStart = url.indexOf('#');
-	if (hashStart !== -1) {
-		hash = url.slice(hashStart);
-	}
-
-	return hash;
-}
-
 function extract(input) {
 	input = removeHash(input);
 	const queryStart = input.indexOf('?');
@@ -12578,43 +12276,36 @@ function parseValue(value, options) {
 	return value;
 }
 
-function parse(query, options) {
+function parse(input, options) {
 	options = Object.assign({
 		decode: true,
 		sort: true,
 		arrayFormat: 'none',
-		arrayFormatSeparator: ',',
 		parseNumbers: false,
 		parseBooleans: false
 	}, options);
-
-	validateArrayFormatSeparator(options.arrayFormatSeparator);
 
 	const formatter = parserForArrayFormat(options);
 
 	// Create an object with no prototype
 	const ret = Object.create(null);
 
-	if (typeof query !== 'string') {
+	if (typeof input !== 'string') {
 		return ret;
 	}
 
-	query = query.trim().replace(/^[?#&]/, '');
+	input = input.trim().replace(/^[?#&]/, '');
 
-	if (!query) {
+	if (!input) {
 		return ret;
 	}
 
-	for (const param of query.split('&')) {
-		if (param === '') {
-			continue;
-		}
-
-		let [key, value] = splitOnFirst(options.decode ? param.replace(/\+/g, ' ') : param, '=');
+	for (const param of input.split('&')) {
+		let [key, value] = splitOnFirst(param.replace(/\+/g, ' '), '=');
 
 		// Missing `=` should be `null`:
 		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-		value = value === undefined ? null : ['comma', 'separator'].includes(options.arrayFormat) ? value : decode(value, options);
+		value = value === undefined ? null : decode(value, options);
 		formatter(decode(key, options), value, ret);
 	}
 
@@ -12657,28 +12348,11 @@ exports.stringify = (object, options) => {
 	options = Object.assign({
 		encode: true,
 		strict: true,
-		arrayFormat: 'none',
-		arrayFormatSeparator: ','
+		arrayFormat: 'none'
 	}, options);
 
-	validateArrayFormatSeparator(options.arrayFormatSeparator);
-
-	const shouldFilter = key => (
-		(options.skipNull && isNullOrUndefined(object[key])) ||
-		(options.skipEmptyString && object[key] === '')
-	);
-
 	const formatter = encoderForArrayFormat(options);
-
-	const objectCopy = {};
-
-	for (const key of Object.keys(object)) {
-		if (!shouldFilter(key)) {
-			objectCopy[key] = object[key];
-		}
-	}
-
-	const keys = Object.keys(objectCopy);
+	const keys = Object.keys(object);
 
 	if (options.sort !== false) {
 		keys.sort(options.sort);
@@ -12705,63 +12379,11 @@ exports.stringify = (object, options) => {
 	}).filter(x => x.length > 0).join('&');
 };
 
-exports.parseUrl = (url, options) => {
-	options = Object.assign({
-		decode: true
-	}, options);
-
-	const [url_, hash] = splitOnFirst(url, '#');
-
-	return Object.assign(
-		{
-			url: url_.split('?')[0] || '',
-			query: parse(extract(url), options)
-		},
-		options && options.parseFragmentIdentifier && hash ? {fragmentIdentifier: decode(hash, options)} : {}
-	);
-};
-
-exports.stringifyUrl = (object, options) => {
-	options = Object.assign({
-		encode: true,
-		strict: true
-	}, options);
-
-	const url = removeHash(object.url).split('?')[0] || '';
-	const queryFromUrl = exports.extract(object.url);
-	const parsedQueryFromUrl = exports.parse(queryFromUrl, {sort: false});
-
-	const query = Object.assign(parsedQueryFromUrl, object.query);
-	let queryString = exports.stringify(query, options);
-	if (queryString) {
-		queryString = `?${queryString}`;
-	}
-
-	let hash = getHash(object.url);
-	if (object.fragmentIdentifier) {
-		hash = `#${encode(object.fragmentIdentifier, options)}`;
-	}
-
-	return `${url}${queryString}${hash}`;
-};
-
-exports.pick = (input, filter, options) => {
-	options = Object.assign({
-		parseFragmentIdentifier: true
-	}, options);
-
-	const {url, query, fragmentIdentifier} = exports.parseUrl(input, options);
-	return exports.stringifyUrl({
-		url,
-		query: filterObject(query, filter),
-		fragmentIdentifier
-	}, options);
-};
-
-exports.exclude = (input, filter, options) => {
-	const exclusionFilter = Array.isArray(filter) ? key => !filter.includes(key) : (key, value) => !filter(key, value);
-
-	return exports.pick(input, exclusionFilter, options);
+exports.parseUrl = (input, options) => {
+	return {
+		url: removeHash(input).split('?')[0] || '',
+		query: parse(extract(input), options)
+	};
 };
 
 
@@ -15888,31 +15510,6 @@ module.exports = g;
 /******/ ]);
 });
 //# sourceMappingURL=noty.js.map
-
-/***/ }),
-
-/***/ "7348":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = function (obj, predicate) {
-	var ret = {};
-	var keys = Object.keys(obj);
-	var isArr = Array.isArray(predicate);
-
-	for (var i = 0; i < keys.length; i++) {
-		var key = keys[i];
-		var val = obj[key];
-
-		if (isArr ? predicate.indexOf(key) !== -1 : predicate(key, val, obj)) {
-			ret[key] = val;
-		}
-	}
-
-	return ret;
-};
-
 
 /***/ }),
 
@@ -19791,7 +19388,7 @@ module.exports = function () {
 /***/ "8378":
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.12' };
+var core = module.exports = { version: '2.6.9' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -19862,39 +19459,7 @@ exports.f = __webpack_require__("9e1e") ? Object.defineProperty : function defin
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LegacyLoops_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("df98");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LegacyLoops_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LegacyLoops_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
-
-/***/ }),
-
-/***/ "8993":
-/***/ (function(module, exports, __webpack_require__) {
-
-var _Symbol = __webpack_require__("67bb");
-
-var _Symbol$iterator = __webpack_require__("5d58");
-
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  if (typeof _Symbol === "function" && typeof _Symbol$iterator === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-
-    module.exports["default"] = module.exports, module.exports.__esModule = true;
-  } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof _Symbol === "function" && obj.constructor === _Symbol && obj !== _Symbol.prototype ? "symbol" : typeof obj;
-    };
-
-    module.exports["default"] = module.exports, module.exports.__esModule = true;
-  }
-
-  return _typeof(obj);
-}
-
-module.exports = _typeof;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LegacyLoops_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -20096,6 +19661,23 @@ module.exports = __webpack_require__("35e8");
 var $export = __webpack_require__("63b6");
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 $export($export.S, 'Object', { create: __webpack_require__("a159") });
+
+
+/***/ }),
+
+/***/ "95d5":
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof = __webpack_require__("40c3");
+var ITERATOR = __webpack_require__("5168")('iterator');
+var Iterators = __webpack_require__("481b");
+module.exports = __webpack_require__("584a").isIterable = function (it) {
+  var O = Object(it);
+  return O[ITERATOR] !== undefined
+    || '@@iterator' in O
+    // eslint-disable-next-line no-prototype-builtins
+    || Iterators.hasOwnProperty(classof(O));
+};
 
 
 /***/ }),
@@ -20436,7 +20018,7 @@ module.exports = __webpack_require__("f410");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CatalogueSearch_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ff81");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CatalogueSearch_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CatalogueSearch_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CatalogueSearch_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -20447,7 +20029,7 @@ module.exports = __webpack_require__("f410");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SVGIcon_vue_vue_type_style_index_0_id_0dcfaa63_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("61c5");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SVGIcon_vue_vue_type_style_index_0_id_0dcfaa63_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SVGIcon_vue_vue_type_style_index_0_id_0dcfaa63_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SVGIcon_vue_vue_type_style_index_0_id_0dcfaa63_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -20855,23 +20437,21 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
- * Cropper.js v1.5.11
+ * Cropper.js v1.5.6
  * https://fengyuanchen.github.io/cropperjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2021-02-17T11:53:27.572Z
+ * Date: 2019-10-04T04:33:48.372Z
  */
 
 (function (global, factory) {
    true ? module.exports = factory() :
   undefined;
-}(this, (function () { 'use strict';
+}(this, function () { 'use strict';
 
   function _typeof(obj) {
-    "@babel/helpers - typeof";
-
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -20941,13 +20521,13 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
       var source = arguments[i] != null ? arguments[i] : {};
 
       if (i % 2) {
-        ownKeys(Object(source), true).forEach(function (key) {
+        ownKeys(source, true).forEach(function (key) {
           _defineProperty(target, key, source[key]);
         });
       } else if (Object.getOwnPropertyDescriptors) {
         Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
       } else {
-        ownKeys(Object(source)).forEach(function (key) {
+        ownKeys(source).forEach(function (key) {
           Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
         });
       }
@@ -20957,41 +20537,28 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
   }
 
   function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
   }
 
   function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    }
   }
 
   function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
-  }
-
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-
-    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-    return arr2;
+    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
   }
 
   function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
   var IS_BROWSER = typeof window !== 'undefined' && typeof window.document !== 'undefined';
   var WINDOW = IS_BROWSER ? window : {};
-  var IS_TOUCH_DEVICE = IS_BROWSER && WINDOW.document.documentElement ? 'ontouchstart' in WINDOW.document.documentElement : false;
+  var IS_TOUCH_DEVICE = IS_BROWSER ? 'ontouchstart' in WINDOW.document.documentElement : false;
   var HAS_POINTER_EVENT = IS_BROWSER ? 'PointerEvent' in WINDOW : false;
   var NAMESPACE = 'cropper'; // Actions
 
@@ -21112,8 +20679,8 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
     minCanvasHeight: 0,
     minCropBoxWidth: 0,
     minCropBoxHeight: 0,
-    minContainerWidth: MIN_CONTAINER_WIDTH,
-    minContainerHeight: MIN_CONTAINER_HEIGHT,
+    minContainerWidth: 200,
+    minContainerHeight: 100,
     // Shortcuts of events
     ready: null,
     cropstart: null,
@@ -21256,7 +20823,7 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
   var REGEXP_DECIMALS = /\.\d*(?:0|9){12}\d*$/;
   /**
    * Normalize decimal number.
-   * Check out {@link https://0.30000000000000004.com/}
+   * Check out {@link http://0.30000000000000004.com/}
    * @param {number} value - The value to normalize.
    * @param {number} [times=100000000000] - The times for normalizing.
    * @returns {number} Returns the normalized number.
@@ -21661,7 +21228,7 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
   function getMaxZoomRatio(pointers) {
     var pointers2 = _objectSpread2({}, pointers);
 
-    var maxRatio = 0;
+    var ratios = [];
     forEach(pointers, function (pointer, pointerId) {
       delete pointers2[pointerId];
       forEach(pointers2, function (pointer2) {
@@ -21672,13 +21239,13 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
         var z1 = Math.sqrt(x1 * x1 + y1 * y1);
         var z2 = Math.sqrt(x2 * x2 + y2 * y2);
         var ratio = (z2 - z1) / z1;
-
-        if (Math.abs(ratio) > Math.abs(maxRatio)) {
-          maxRatio = ratio;
-        }
+        ratios.push(ratio);
       });
     });
-    return maxRatio;
+    ratios.sort(function (a, b) {
+      return Math.abs(a) < Math.abs(b);
+    });
+    return ratios[0];
   }
   /**
    * Get a pointer from an event object.
@@ -22057,6 +21624,8 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
       case 8:
         rotate = -90;
         break;
+
+      default:
     }
 
     return {
@@ -22082,13 +21651,11 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
           options = this.options,
           container = this.container,
           cropper = this.cropper;
-      var minWidth = Number(options.minContainerWidth);
-      var minHeight = Number(options.minContainerHeight);
       addClass(cropper, CLASS_HIDDEN);
       removeClass(element, CLASS_HIDDEN);
       var containerData = {
-        width: Math.max(container.offsetWidth, minWidth >= 0 ? minWidth : MIN_CONTAINER_WIDTH),
-        height: Math.max(container.offsetHeight, minHeight >= 0 ? minHeight : MIN_CONTAINER_HEIGHT)
+        width: Math.max(container.offsetWidth, Number(options.minContainerWidth) || 200),
+        height: Math.max(container.offsetHeight, Number(options.minContainerHeight) || 100)
       };
       this.containerData = containerData;
       setStyle(cropper, {
@@ -22129,15 +21696,14 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
         width: canvasWidth,
         height: canvasHeight
       };
+      canvasData.left = (containerData.width - canvasWidth) / 2;
+      canvasData.top = (containerData.height - canvasHeight) / 2;
+      canvasData.oldLeft = canvasData.left;
+      canvasData.oldTop = canvasData.top;
       this.canvasData = canvasData;
       this.limited = viewMode === 1 || viewMode === 2;
       this.limitCanvas(true, true);
-      canvasData.width = Math.min(Math.max(canvasData.width, canvasData.minWidth), canvasData.maxWidth);
-      canvasData.height = Math.min(Math.max(canvasData.height, canvasData.minHeight), canvasData.maxHeight);
-      canvasData.left = (containerData.width - canvasData.width) / 2;
-      canvasData.top = (containerData.height - canvasData.height) / 2;
-      canvasData.oldLeft = canvasData.left;
-      canvasData.oldTop = canvasData.top;
+      this.initialImageData = assign({}, imageData);
       this.initialCanvasData = assign({}, canvasData);
     },
     limitCanvas: function limitCanvas(sizeLimited, positionLimited) {
@@ -22664,13 +22230,16 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
 
   var handlers = {
     resize: function resize() {
-      if (this.disabled) {
-        return;
-      }
-
       var options = this.options,
           container = this.container,
           containerData = this.containerData;
+      var minContainerWidth = Number(options.minContainerWidth) || MIN_CONTAINER_WIDTH;
+      var minContainerHeight = Number(options.minContainerHeight) || MIN_CONTAINER_HEIGHT;
+
+      if (this.disabled || containerData.width <= minContainerWidth || containerData.height <= minContainerHeight) {
+        return;
+      }
+
       var ratio = container.offsetWidth / containerData.width; // Resize when width changed or height changed
 
       if (ratio !== 1 || container.offsetHeight !== containerData.height) {
@@ -22918,6 +22487,8 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
             }
 
             break;
+
+          default:
         }
       };
 
@@ -23282,6 +22853,8 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
           }
 
           break;
+
+        default:
       }
 
       if (renderable) {
@@ -24063,7 +23636,9 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
 
   var AnotherCropper = WINDOW.Cropper;
 
-  var Cropper = /*#__PURE__*/function () {
+  var Cropper =
+  /*#__PURE__*/
+  function () {
     /**
      * Create a new Cropper.
      * @param {Element} element - The target element for cropping.
@@ -24112,7 +23687,7 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
 
           if (!url) {
             return;
-          } // e.g.: "https://example.com/img/picture.jpg"
+          } // e.g.: "http://example.com/img/picture.jpg"
 
 
           url = element.src;
@@ -24193,10 +23768,9 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
 
         if (options.checkCrossOrigin && isCrossOriginURL(url) && element.crossOrigin) {
           url = addTimestamp(url);
-        } // The third parameter is required for avoiding side-effect (#682)
+        }
 
-
-        xhr.open('GET', url, true);
+        xhr.open('GET', url);
         xhr.responseType = 'arraybuffer';
         xhr.withCredentials = element.crossOrigin === 'use-credentials';
         xhr.send();
@@ -24287,7 +23861,6 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
             naturalHeight: naturalHeight,
             aspectRatio: naturalWidth / naturalHeight
           });
-          _this2.initialImageData = assign({}, _this2.imageData);
           _this2.sizing = false;
           _this2.sized = true;
 
@@ -24477,7 +24050,7 @@ module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /*
 
   return Cropper;
 
-})));
+}));
 
 
 /***/ }),
@@ -24746,7 +24319,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 var bind = __webpack_require__("1d2b");
-var isBuffer = __webpack_require__("c7ce");
+var isBuffer = __webpack_require__("044b");
 
 /*global toString:true*/
 
@@ -25144,24 +24717,6 @@ module.exports = !__webpack_require__("9e1e") && !__webpack_require__("79e5")(fu
 
 /***/ }),
 
-/***/ "c7ce":
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-module.exports = function isBuffer (obj) {
-  return obj != null && obj.constructor != null &&
-    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-
-/***/ }),
-
 /***/ "c8af":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25206,6 +24761,13 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+
+/***/ "c8bb":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("54a1");
 
 /***/ }),
 
@@ -25434,7 +24996,7 @@ module.exports = function (done, value) {
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsCatalogue_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("4500");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsCatalogue_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsCatalogue_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CommentsCatalogue_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -25544,7 +25106,7 @@ var store = global[SHARED] || (global[SHARED] = {});
 })('versions', []).push({
   version: core.version,
   mode: __webpack_require__("b8e3") ? 'pure' : 'global',
-  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
+  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 
 
@@ -25599,7 +25161,7 @@ module.exports = (
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderFormPayment_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("bfee");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderFormPayment_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderFormPayment_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderFormPayment_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -25610,7 +25172,7 @@ module.exports = (
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContentAssignment_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("bfff");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContentAssignment_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContentAssignment_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContentAssignment_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -26588,39 +26150,6 @@ exports[DATA_VIEW] = $DataView;
 
 /***/ }),
 
-/***/ "f0c1":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var aFunction = __webpack_require__("d8e8");
-var isObject = __webpack_require__("d3f4");
-var invoke = __webpack_require__("31f4");
-var arraySlice = [].slice;
-var factories = {};
-
-var construct = function (F, len, args) {
-  if (!(len in factories)) {
-    for (var n = [], i = 0; i < len; i++) n[i] = 'a[' + i + ']';
-    // eslint-disable-next-line no-new-func
-    factories[len] = Function('F,a', 'return new F(' + n.join(',') + ')');
-  } return factories[len](F, args);
-};
-
-module.exports = Function.bind || function bind(that /* , ...args */) {
-  var fn = aFunction(this);
-  var partArgs = arraySlice.call(arguments, 1);
-  var bound = function (/* args... */) {
-    var args = partArgs.concat(arraySlice.call(arguments));
-    return this instanceof bound ? construct(fn, args.length, args) : invoke(fn, args, that);
-  };
-  if (isObject(fn.prototype)) bound.prototype = fn.prototype;
-  return bound;
-};
-
-
-/***/ }),
-
 /***/ "f1ae":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -27136,7 +26665,6 @@ module.exports = document && document.documentElement;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
@@ -28975,7 +28503,7 @@ var vue_lazyload_esm_index = {
 
 /* harmony default export */ var vue_lazyload_esm = (vue_lazyload_esm_index);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/EmailForm/EmailForm.vue?vue&type=template&id=0d1201ca&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/EmailForm/EmailForm.vue?vue&type=template&id=0d1201ca&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row"},[(_vm.lessonPage)?_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"flex flex-column avatar-col hide-xs-only"},[_c('div',{staticClass:"square"},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.userAvatar}})])]),_c('div',{staticClass:"flex flex-column input-col ph"},[_c('div',{staticClass:"form-group"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],staticClass:"borderless text-white",class:{ 'has-input': _vm.value.length },attrs:{"id":"questionInput","type":"text"},domProps:{"value":(_vm.valueInterface)},on:{"input":function($event){if($event.target.composing){ return; }_vm.valueInterface=$event.target.value}}}),_c('label',{class:_vm.themeColor,attrs:{"for":"questionInput"}},[_vm._v(_vm._s(_vm.inputLabel))])])]),_c('div',{staticClass:"flex flex-column send-button-col"},[_c('a',{staticClass:"btn text-white",class:_vm.themeBgClass,on:{"click":_vm.submitForm}},[_c('i',{staticClass:"fas fa-envelope"}),_c('span',{staticClass:"hide-xs-only ml-1"},[_vm._v("Send Question")])])])]):_vm._e(),(!_vm.lessonPage)?_c('div',{staticClass:"flex flex-column relative"},[(_vm.loading)?_c('div',{staticClass:"email-loading",class:_vm.themeTextClass},[_c('i',{staticClass:"fas fa-spinner fa-spin"}),_c('p',{staticClass:"x-tiny font-italic"},[_vm._v("\n                Loading Please Wait...\n            ")])]):_vm._e(),_c('div',{staticClass:"form-group mb textarea"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],class:{ 'has-input': _vm.value.length },attrs:{"id":"questionBox"},domProps:{"value":(_vm.valueInterface)},on:{"input":function($event){if($event.target.composing){ return; }_vm.valueInterface=$event.target.value}}}),_c('label',{class:_vm.themeColor,attrs:{"for":"questionBox"}},[_vm._v(_vm._s(_vm.inputLabel))])]),_c('div',{staticClass:"form-group"},[_c('button',{staticClass:"btn",on:{"click":_vm.submitForm}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("\n                    Submit\n                ")])])])]):_vm._e()])}
 var staticRenderFns = []
 
@@ -29489,7 +29017,6 @@ var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
             'key_pitch_type',
             'style',
             'bpm',
-            'related_lesson',
         ].indexOf(key) !== -1;
     },
 
@@ -29500,18 +29027,6 @@ var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
      */
     topLevelContentTypes(){
         return [
-            {
-                type: 'coach',
-                label: 'Coaches',
-                icon: 'icon-student-focus',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'coach-stream',
-                label: 'Coach Stream',
-                icon: 'icon-student-focus',
-                brands: ['drumeo'],
-            },
             {
                 type: 'course',
                 label: 'Course',
@@ -29618,7 +29133,7 @@ var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
                 type: 'podcasts',
                 label: 'Podcasts',
                 icon: 'icon-shows',
-                brands: ['drumeo', 'pianote'],
+                brands: ['drumeo'],
             },
             {
                 type: 'on-the-road',
@@ -29761,8 +29276,7 @@ var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
      * @returns {array}
      */
     getTypesWithChildrenByBrand(brand = 'drumeo'){
-        const alwaysHasChildren = ['course', 'unit', 'learning-path', 'learning-path-level',
-            'learning-path-course', 'pack', 'pack-bundle', 'semester-pack'];
+        const alwaysHasChildren = ['course', 'unit', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'];
         const types =  {
             drumeo: alwaysHasChildren,
             guitareo: [...alwaysHasChildren, 'play-along', 'song'],
@@ -29788,9 +29302,6 @@ var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
             'pack-bundle-lesson': 'pack-bundle',
             'semester-pack-lesson': 'semester-pack',
             'unit-part': 'unit',
-            'learning-path-level': 'learning-path',
-            'learning-path-course': 'learning-path-level',
-            'learning-path-lesson': 'learning-path-course',
         }[childType];
     },
 
@@ -29816,8 +29327,6 @@ var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
         type = type
             .replace(/-part/g, '') // Remove the -part
             .replace(/-bundle/g, '') // Remove the -bundle
-            .replace(/-level/g, '') // Remove the -level
-            .replace(/-course/g, '') // Remove the -course
             .replace(/-lesson/g, '');  // Remove -lesson
         const contentType = this.topLevelContentTypes().filter(content =>
             content.type === type
@@ -29876,303 +29385,6 @@ var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
             'boot-camps',
         ];
     },
-
-    /**
-     * Get a list of all searchable content types
-     *
-     * @returns {array}
-     */
-    searchableContentTypes() {
-        return [
-            {
-                type: 'coach',
-                label: 'Coaches',
-                icon: 'icon-student-focus',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'coach-stream',
-                label: 'Coach Stream',
-                icon: 'icon-student-focus',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'recording',
-                label: 'Recording',
-                icon: 'icon-library',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'course',
-                label: 'Course',
-                icon: 'icon-courses',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'course-part',
-                label: 'Course Part',
-                icon: 'icon-library',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'play-along',
-                label: 'Play-Along',
-                icon: 'icon-play-alongs',
-                brands: ['drumeo', 'guitareo', 'pianote'],
-            },
-            {
-                type: 'song',
-                label: 'Song',
-                icon: 'icon-songs',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'student-focus',
-                label: 'Student Focus',
-                icon: 'icon-student-focus',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'learning-path',
-                label: 'Learning Path',
-                icon: 'icon-learning-paths',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'instructor',
-                label: 'Instructor',
-                icon: 'wc',
-                brands: ['drumeo', 'pianote', 'guitareo', 'recordeo'],
-            },
-            {
-                type: 'pack',
-                label: 'Pack',
-                icon: 'icon-packs',
-                brands: ['drumeo', 'pianote', 'guitareo'],
-            },
-            {
-                type: 'pack-bundle',
-                label: 'Pack Bundle',
-                icon: 'icon-shows',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'pack-bundle-lesson',
-                label: 'Pack Bundle Lesson',
-                icon: 'icon-shows',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'live',
-                label: 'Live',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'gear-guides',
-                label: 'Gear Guides',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'challenges',
-                label: 'Challenges',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'boot-camps',
-                label: 'Boot Camps',
-                icon: 'icon-shows',
-                brands: ['drumeo', 'pianote'],
-            },
-            {
-                type: 'quick-tips',
-                label: 'Quick Tips',
-                icon: 'icon-shows',
-                brands: ['drumeo', 'pianote'],
-            },
-            {
-                type: 'podcasts',
-                label: 'Podcasts',
-                icon: 'icon-shows',
-                brands: ['drumeo', 'pianote'],
-            },
-            {
-                type: 'on-the-road',
-                label: 'On the road',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'behind-the-scenes',
-                label: 'Behind the Scenes',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'study-the-greats',
-                label: 'Study the Greats',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'solos',
-                label: 'Solos',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'performances',
-                label: 'Performances',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'exploring-beats',
-                label: 'Exploring Beats',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'independence-made-easy',
-                label: 'Independence Made Easy',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'sonor-drums',
-                label: 'Sonor Drums',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: '25-days-of-christmas',
-                label: '25 Days of Christmas',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'rhythms-from-another-planet',
-                label: 'Rhythms from Another Planet',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'paiste-cymbals',
-                label: 'Paiste Cymbals',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'namm-2019',
-                label: 'NAMM 2019',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'tama-drums',
-                label: 'Tama Drums',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'collaboration',
-                label: 'Collaboration',
-                icon: 'icon-shows',
-                brands: ['drumeo'],
-            },
-            {
-                type: 'learning-path-lesson',
-                label: 'Learning Path Lesson',
-                icon: 'icon-learning-paths',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'learning-path-course',
-                label: 'Learning Path Course',
-                icon: 'icon-learning-paths',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-            {
-                type: 'learning-path-level',
-                label: 'Learning Path Level',
-                icon: 'icon-learning-paths',
-                brands: ['drumeo', 'guitareo', 'pianote', 'recordeo'],
-            },
-        ];
-    },
-
-    /**
-     * Get a list of searchable content types by brand
-     *
-     * @param {string} brand
-     * @returns {array}
-     */
-    getBrandSearchableContentTypes(brand) {
-        return this.searchableContentTypes().filter(type =>
-            type.brands.indexOf(brand) !== -1
-        );
-    },
-
-    /**
-     * Get a list of all content types that support statistics
-     *
-     * @returns {array}
-     */
-    statisticsContentTypes() {
-        return [
-            '25-days-of-christmas',
-            'behind-the-scenes',
-            'boot-camps',
-            'camp-drumeo-ah',
-            'challenges',
-            'chord-and-scale',
-            'course',
-            'course-part',
-            'diy-drum-experiments',
-            'edge-pack',
-            'entertainment',
-            'exploring-beats',
-            'gear-guides',
-            'ha-oemurd-pmac',
-            'in-rhythm',
-            'learning-path',
-            'learning-path-course',
-            'learning-path-lesson',
-            'learning-path-level',
-            'live',
-            'namm-2019',
-            'on-the-road',
-            'pack',
-            'pack-bundle',
-            'pack-bundle-lesson',
-            'paiste-cymbals',
-            'performances',
-            'play-along',
-            'play-along-part',
-            'podcasts',
-            'question-and-answer',
-            'quick-tips',
-            'recording',
-            'rhythmic-adventures-of-captain-carson',
-            'rhythms-from-another-planet',
-            'rudiment',
-            'semester-pack',
-            'semester-pack-lesson',
-            'solos',
-            'song',
-            'song-part',
-            'sonor-drums',
-            'student-collaborations',
-            'student-focus',
-            'student-review',
-            'study-the-greats',
-            'tama-drums',
-            'unit',
-            'unit-part',
-        ];
-    }
 });
 // CONCATENATED MODULE: ./node_modules/@musora/helper-functions/modules/utils.js
 
@@ -30470,7 +29682,7 @@ var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
             {name: 'Sweden', code: 'SE'},
             {name: 'Switzerland', code: 'CH'},
             {name: 'Syrian Arab Republic', code: 'SY'},
-            {name: 'Taiwan', code: 'TW'},
+            {name: 'Taiwan, Province of China', code: 'TW'},
             {name: 'Tajikistan', code: 'TJ'},
             {name: 'Tanzania, United Republic of', code: 'TZ'},
             {name: 'Thailand', code: 'TH'},
@@ -31340,12 +30552,7 @@ function normalizeComponent (
     options._ssrRegister = hook
   } else if (injectStyles) {
     hook = shadowMode
-      ? function () {
-        injectStyles.call(
-          this,
-          (options.functional ? this.parent : this).$root.$options.shadowRoot
-        )
-      }
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
       : injectStyles
   }
 
@@ -31354,7 +30561,7 @@ function normalizeComponent (
       // for template-only hot-reload because in that case the render fn doesn't
       // go through the normalizer
       options._injectStyles = hook
-      // register for functional component in vue file
+      // register for functioal component in vue file
       var originalRender = options.render
       options.render = function renderWithStyleInjection (h, context) {
         hook.call(context)
@@ -31395,7 +30602,7 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var EmailForm = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/UserExpBar/UserExpBar.vue?vue&type=template&id=0f624650&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/UserExpBar/UserExpBar.vue?vue&type=template&id=0f624650&
 var UserExpBarvue_type_template_id_0f624650_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"exp-wrap"},[_c('div',{staticClass:"exp flex flex-column align-v-center align-h-right",class:_vm.themeBgClass,style:('width:' + _vm.xpPercentage + '%;')},[_c('p',{staticClass:"body dense font-bold ph-2 nowrap",class:_vm.expBarClassObject},[_vm._v("\n                    "+_vm._s(_vm.formattedXp)+" XP\n                ")])])])]),_c('div',{staticClass:"flex flex-row ph mt-1"},[_c('p',{staticClass:"body dense text-center nowrap font-compressed uppercase"},[_c('strong',[_vm._v(_vm._s(_vm.userExpRank))]),_c('br'),_vm._v(_vm._s(_vm.userExpRankAmount)+" XP\n        ")]),_c('span',{staticClass:"flex flex-column grow"}),_c('p',{staticClass:"body dense text-center nowrap font-compressed uppercase"},[_c('strong',[_vm._v(_vm._s(_vm.nextUserExpRank))]),_c('br'),_vm._v(_vm._s(_vm.nextUserExpRankAmount)+" XP\n        ")])])])}
 var UserExpBarvue_type_template_id_0f624650_staticRenderFns = []
 
@@ -31508,77 +30715,64 @@ var es6_regexp_replace = __webpack_require__("a481");
 var is_array = __webpack_require__("a745");
 var is_array_default = /*#__PURE__*/__webpack_require__.n(is_array);
 
-// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/arrayLikeToArray.js
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
-  return arr2;
-}
 // CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/arrayWithoutHoles.js
 
-
 function _arrayWithoutHoles(arr) {
-  if (is_array_default()(arr)) return _arrayLikeToArray(arr);
+  if (is_array_default()(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
 }
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/symbol.js
-var symbol = __webpack_require__("67bb");
-var symbol_default = /*#__PURE__*/__webpack_require__.n(symbol);
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/symbol/iterator.js
-var iterator = __webpack_require__("5d58");
-var iterator_default = /*#__PURE__*/__webpack_require__.n(iterator);
-
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/array/from.js
 var from = __webpack_require__("774e");
 var from_default = /*#__PURE__*/__webpack_require__.n(from);
 
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/is-iterable.js
+var is_iterable = __webpack_require__("c8bb");
+var is_iterable_default = /*#__PURE__*/__webpack_require__.n(is_iterable);
+
 // CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/iterableToArray.js
 
 
-
 function _iterableToArray(iter) {
-  if (typeof symbol_default.a !== "undefined" && iter[iterator_default.a] != null || iter["@@iterator"] != null) return from_default()(iter);
-}
-// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/unsupportedIterableToArray.js
-
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return from_default()(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  if (is_iterable_default()(Object(iter)) || Object.prototype.toString.call(iter) === "[object Arguments]") return from_default()(iter);
 }
 // CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/nonIterableSpread.js
 function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
 }
 // CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray.js
 
 
 
-
 function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
 }
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/symbol/iterator.js
+var iterator = __webpack_require__("5d58");
+var iterator_default = /*#__PURE__*/__webpack_require__.n(iterator);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/symbol.js
+var symbol = __webpack_require__("67bb");
+var symbol_default = /*#__PURE__*/__webpack_require__.n(symbol);
+
 // CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/typeof.js
 
 
-function typeof_typeof(obj) {
-  "@babel/helpers - typeof";
 
-  if (typeof symbol_default.a === "function" && typeof iterator_default.a === "symbol") {
+function typeof_typeof2(obj) { if (typeof symbol_default.a === "function" && typeof iterator_default.a === "symbol") { typeof_typeof2 = function _typeof2(obj) { return typeof obj; }; } else { typeof_typeof2 = function _typeof2(obj) { return obj && typeof symbol_default.a === "function" && obj.constructor === symbol_default.a && obj !== symbol_default.a.prototype ? "symbol" : typeof obj; }; } return typeof_typeof2(obj); }
+
+function typeof_typeof(obj) {
+  if (typeof symbol_default.a === "function" && typeof_typeof2(iterator_default.a) === "symbol") {
     typeof_typeof = function _typeof(obj) {
-      return typeof obj;
+      return typeof_typeof2(obj);
     };
   } else {
     typeof_typeof = function _typeof(obj) {
-      return obj && typeof symbol_default.a === "function" && obj.constructor === symbol_default.a && obj !== symbol_default.a.prototype ? "symbol" : typeof obj;
+      return obj && typeof symbol_default.a === "function" && obj.constructor === symbol_default.a && obj !== symbol_default.a.prototype ? "symbol" : typeof_typeof2(obj);
     };
   }
 
@@ -32177,7 +31371,7 @@ var UserExpBar_component = normalizeComponent(
 )
 
 /* harmony default export */ var UserExpBar = (UserExpBar_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ContentCatalogue.vue?vue&type=template&id=5422f870&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ContentCatalogue.vue?vue&type=template&id=5422f870&
 var ContentCataloguevue_type_template_id_5422f870_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column grow align-v-center"},[(_vm.searchBar)?_c('catalogue-search',{attrs:{"theme-color":_vm.themeColor,"included-types":_vm.includedTypes,"selected-types":_vm.selected_types,"search-term":_vm.search_term,"current_page":_vm.page,"total-results":_vm.total_results},on:{"typeChange":_vm.handleTypeChange,"searchChange":_vm.handleSearch}}):_vm._e(),(_vm.isPlaylists)?_c('catalogue-playlist-tabs',{attrs:{"theme-color":_vm.themeColor,"included-types":_vm.includedTypes}}):_vm._e(),(_vm.filterableValues.length)?_c('catalogue-filters',{attrs:{"filters":_vm.filters,"filterable-values":_vm.filterableValues,"filters-labels":_vm.filtersLabels,"required-user-states":_vm.required_user_states,"filter-params":_vm.filter_params,"event-type":_vm.eventType,"loading":_vm.loading,"theme-color":_vm.themeColor,"content-types":_vm.selectedTypes,"brand":_vm.brand},on:{"filterChange":_vm.handleFilterChange,"progressChange":_vm.handleProgressChange}}):_vm._e(),(_vm.content.length === 0 && _vm.noResultsMessage.length > 0)?_c('div',{staticClass:"flex flex-row pv-3 align-v-center"},[_c('div',{staticClass:"flex flex-column icon-col face-icon mr-1"},[_c('div',{staticClass:"icon-wrap square",class:_vm.noResultsIcon})]),_c('div',{staticClass:"flex flex-column"},[_c('h4',{staticClass:"body",domProps:{"innerHTML":_vm._s(_vm.noResultsMessageWithProgress)}},[_vm._v("\n                "+_vm._s(_vm.noResultsMessageWithProgress)+"\n            ")])])]):_vm._e(),(_vm.catalogue_type === 'grid')?_c('grid-catalogue',{attrs:{"content":_vm.content,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"no-wrap":_vm.noWrapGrid,"user-id":_vm.userId,"is-admin":_vm.isAdmin,"lock-unowned":_vm.lockUnowned,"force-wide-thumbs":_vm.forceWideThumbs,"content-type-override":_vm.contentTypeOverride,"six-wide":_vm.sixWide,"display-inline":_vm.displayInline},on:{"addToList":_vm.addToListEventHandler}}):_vm._e(),(_vm.catalogue_type === 'list')?_c('list-catalogue',{attrs:{"content":_vm.content,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"card_type":_vm.catalogueType,"user-id":_vm.userId,"is-admin":_vm.isAdmin,"display-items-as-overview":_vm.displayItemsAsOverview,"display-user-interactions":_vm.displayUserInteractions,"content-type-override":_vm.contentTypeOverride,"lock-unowned":_vm.lockUnowned,"show-numbers":_vm.showNumbers,"is_search":_vm.searchBar || _vm.isPlaylists,"reset-progress":_vm.resetProgress,"force-wide-thumbs":_vm.forceWideThumbs,"destroy-on-list-removal":_vm.destroyOnListRemoval,"compact-layout":_vm.compactLayout,"subscription-calendar-id":_vm.subscriptionCalendarId},on:{"addToList":_vm.addToListEventHandler,"progressReset":_vm.resetProgressEventHandler}}):_vm._e(),(_vm.paginate && _vm.total_pages > 1 && !_vm.infiniteScroll)?_c('div',{staticClass:"flex flex-row pagination-row align-h-right"},[_c('pagination',{attrs:{"current-page":Number(_vm.page),"total-pages":_vm.total_pages},on:{"pageChange":_vm.handlePageChange}})],1):_vm._e(),_c('transition',{attrs:{"name":"show-from-bottom"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading && _vm.showLoadingAnimation),expression:"loading && showLoadingAnimation"}],staticClass:"flex flex-row align-center",attrs:{"id":"loadingDialog"}},[_c('div',{staticClass:"loading-spinner corners-5 shadow pa flex-center",class:_vm.themeBgClass},[_c('i',{staticClass:"fas fa-spinner fa-spin text-white"}),_c('p',{staticClass:"x-tiny text-white"},[_vm._v("\n                    Loading Please Wait...\n                ")])])])])],1)}
 var ContentCataloguevue_type_template_id_5422f870_staticRenderFns = []
 
@@ -32218,14 +31412,14 @@ var query_string = __webpack_require__("72bf");
 
 
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/GridCatalogue.vue?vue&type=template&id=3fc182fa&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/GridCatalogue.vue?vue&type=template&id=3fc182fa&
 var GridCataloguevue_type_template_id_3fc182fa_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row align-v-top",class:[_vm.noWrap ? 'overflow' : 'flex-wrap', {'nmh-1': !_vm.displayInline}]},_vm._l((_vm.content),function(item,i){return _c('catalogue-card',{key:'grid' + item.id,attrs:{"item":item,"content-type":item.type,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"user-id":_vm.userId,"is-admin":_vm.isAdmin,"lock-unowned":_vm.lockUnowned,"force-wide-thumbs":_vm.forceWideThumbs,"content-type-override":_vm.contentTypeOverride,"six-wide":_vm.sixWide,"display-inline":_vm.displayInline},on:{"addToList":_vm.emitAddToList}})}),1)}
 var GridCataloguevue_type_template_id_3fc182fa_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/catalogues/GridCatalogue.vue?vue&type=template&id=3fc182fa&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueCard.vue?vue&type=template&id=2090336a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueCard.vue?vue&type=template&id=2090336a&
 var _CatalogueCardvue_type_template_id_2090336a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column pa-1 catalogue-card",class:_vm.class_object},[_c('a',{staticClass:"no-decoration flex",class:_vm.displayInline ? 'flex-row' : 'flex-column',attrs:{"href":_vm.renderLink ? _vm.item.url : false}},[_c('div',{staticClass:"flex flex-column",class:[{'thumbnail-col': _vm.displayInline}, _vm.item.type + '-thumbnail']},[_c('div',{staticClass:"card-media bg-grey-2 active corners-10",class:[_vm.thumbnailType, {'mb-1': !_vm.displayInline}]},[_c('img',{staticClass:"bg-grey-2",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":""}}),(_vm.item.type !== 'pack-bundle')?_c('i',{staticClass:"add-to-list fas fa-plus",class:_vm.is_added ? 'is-added ' + _vm.themeTextClass : 'text-white',attrs:{"title":_vm.is_added ? 'Remove from list' : 'Add to list',"data-content-id":_vm.item.id,"data-content-type":_vm.item.type},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.addToList($event)}}}):_vm._e(),_c('div',{staticClass:"lesson-progress overflow"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),(_vm.showTrophy)?_c('span',{staticClass:"bundle-complete flex-center"},[_c('i',{staticClass:"fas fa-trophy"})]):_c('span',{staticClass:"thumb-hover flex-center"},[_c('i',{staticClass:"fas",class:_vm.thumbnailIcon}),(!_vm.isReleased)?_c('p',{staticClass:"tiny text-white font-bold"},[_vm._v("\n                            "+_vm._s(_vm.releaseDate)+"\n                        ")]):_vm._e()])])]),_c('div',{staticClass:"card-info flex flex-column",class:_vm.displayInline ? 'ph-1 align-v-center' : ''},[(!_vm.isGuitareoChordAndScale)?_c('h5',{staticClass:"x-tiny text-grey-4 uppercase",domProps:{"innerHTML":_vm._s(_vm.mappedData.color_title)}},[_vm._v("\n                    "+_vm._s(_vm.mappedData.color_title)+"\n                    ")]):_vm._e(),_c('h4',{staticClass:"tiny text-black font-compressed font-bold capitalize mb-1",class:{'text-center': _vm.isGuitareoChordAndScale}},[_vm._v("\n                    "+_vm._s(_vm.mappedData.black_title)+"\n                ")]),(_vm.mappedData.show_description)?_c('p',{staticClass:"x-tiny font-compressed text-grey-4 pb-1 mb-1 item-description always-truncate"},[_vm._v("\n                    "+_vm._s(_vm.mappedData.description.replace(/<[^>]+>/g, ''))+"\n                ")]):_vm._e(),_c('h6',{staticClass:"x-tiny text-grey-3 capitalize",class:{'text-center': _vm.isGuitareoChordAndScale}},[_c('span',{domProps:{"innerHTML":_vm._s(_vm.mappedData.content_type)}}),(_vm.mappedData.grey_title && _vm.mappedData.grey_title !== '')?_c('span',[_vm._v("\n                        - "+_vm._s(_vm.mappedData.grey_title)+"\n                    ")]):_vm._e(),_vm._v("\n                     \n                ")])])])])}
 var _CatalogueCardvue_type_template_id_2090336a_staticRenderFns = []
 
@@ -32575,16 +31769,44 @@ function _classCallCheck(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.reflect.construct.js
-var es6_reflect_construct = __webpack_require__("2397");
+// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/create.js
-var create = __webpack_require__("4aa6");
-var create_default = /*#__PURE__*/__webpack_require__.n(create);
+  return self;
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js
+
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js
+var get_prototype_of = __webpack_require__("061b");
+var get_prototype_of_default = /*#__PURE__*/__webpack_require__.n(get_prototype_of);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/set-prototype-of.js
 var set_prototype_of = __webpack_require__("4d16");
 var set_prototype_of_default = /*#__PURE__*/__webpack_require__.n(set_prototype_of);
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js
+
+
+function getPrototypeOf_getPrototypeOf(o) {
+  getPrototypeOf_getPrototypeOf = set_prototype_of_default.a ? get_prototype_of_default.a : function _getPrototypeOf(o) {
+    return o.__proto__ || get_prototype_of_default()(o);
+  };
+  return getPrototypeOf_getPrototypeOf(o);
+}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/create.js
+var create = __webpack_require__("4aa6");
+var create_default = /*#__PURE__*/__webpack_require__.n(create);
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/setPrototypeOf.js
 
@@ -32612,41 +31834,6 @@ function _inherits(subClass, superClass) {
     }
   });
   if (superClass) _setPrototypeOf(subClass, superClass);
-}
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/helpers/typeof.js
-var helpers_typeof = __webpack_require__("8993");
-var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js
-
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (typeof_default()(call) === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return _assertThisInitialized(self);
-}
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/get-prototype-of.js
-var get_prototype_of = __webpack_require__("061b");
-var get_prototype_of_default = /*#__PURE__*/__webpack_require__.n(get_prototype_of);
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js
-
-
-function getPrototypeOf_getPrototypeOf(o) {
-  getPrototypeOf_getPrototypeOf = set_prototype_of_default.a ? get_prototype_of_default.a : function _getPrototypeOf(o) {
-    return o.__proto__ || get_prototype_of_default()(o);
-  };
-  return getPrototypeOf_getPrototypeOf(o);
 }
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.find.js
 var es6_array_find = __webpack_require__("7514");
@@ -32680,7 +31867,9 @@ function _createClass(Constructor, protoProps, staticProps) {
 
 
 
-var _default_ContentModel = /*#__PURE__*/function () {
+var _default_ContentModel =
+/*#__PURE__*/
+function () {
   function ContentModel(_ref) {
     var _ref$brand = _ref.brand,
         brand = _ref$brand === void 0 ? 'drumeo' : _ref$brand,
@@ -32743,19 +31932,6 @@ var _default_ContentModel = /*#__PURE__*/function () {
       return datum ? datum.value : 'TBD';
     }
   }, {
-    key: "postInstructor",
-    get: function get() {
-      var instructor = this.getPostField('instructor');
-
-      if (typeof_typeof(instructor) === 'object' && instructor != null) {
-        return instructor.fields.find(function (field) {
-          return field.key === 'name';
-        }).value;
-      }
-
-      return 'TBD';
-    }
-  }, {
     key: "getInstructors",
     value: function getInstructors() {
       var instructors = this.getPostFieldMulti('instructor');
@@ -32801,16 +31977,6 @@ var _default_ContentModel = /*#__PURE__*/function () {
       return 'TBD';
     }
   }, {
-    key: "postPublisedOn",
-    get: function get() {
-      return luxon["DateTime"].fromSQL(this.post.published_on).toFormat('LLL d/yy');
-    }
-  }, {
-    key: "postType",
-    get: function get() {
-      return this.post.type.replace('bundle-', '').replace(/-/g, ' ');
-    }
-  }, {
     key: "getTypeWithIcon",
     value: function getTypeWithIcon() {
       var icon = modules_content.getContentTypeIcon(this.post.type);
@@ -32826,16 +31992,6 @@ var _default_ContentModel = /*#__PURE__*/function () {
     key: "getPostDifficulty",
     value: function getPostDifficulty() {
       return ContentModel.mapDifficulty(this.post);
-    }
-  }, {
-    key: "episodeNumber",
-    get: function get() {
-      return this.post.sort ? "Episode #".concat(this.post.sort) : 'TBD';
-    }
-  }, {
-    key: "postChildLessonCount",
-    get: function get() {
-      return this.post.lesson_count ? "".concat(this.post.lesson_count, " Lessons") : 'TBD';
     }
   }, {
     key: "getPostThumbnail",
@@ -32863,6 +32019,39 @@ var _default_ContentModel = /*#__PURE__*/function () {
     value: function parseInstructors() {
       var instructors = this.getInstructors();
       return instructors ? instructors.replace(/,(?=[^,]*$)/, ' &') : 'TBD';
+    }
+  }, {
+    key: "postInstructor",
+    get: function get() {
+      var instructor = this.getPostField('instructor');
+
+      if (typeof_typeof(instructor) === 'object' && instructor != null) {
+        return instructor.fields.find(function (field) {
+          return field.key === 'name';
+        }).value;
+      }
+
+      return 'TBD';
+    }
+  }, {
+    key: "postPublisedOn",
+    get: function get() {
+      return luxon["DateTime"].fromSQL(this.post.published_on).toFormat('LLL d/yy');
+    }
+  }, {
+    key: "postType",
+    get: function get() {
+      return this.post.type.replace('bundle-', '').replace(/-/g, ' ');
+    }
+  }, {
+    key: "episodeNumber",
+    get: function get() {
+      return this.post.sort ? "Episode #".concat(this.post.sort) : 'TBD';
+    }
+  }, {
+    key: "postChildLessonCount",
+    get: function get() {
+      return this.post.lesson_count ? "".concat(this.post.lesson_count, " Lessons") : 'TBD';
     }
   }], [{
     key: "mapDifficulty",
@@ -32905,16 +32094,10 @@ var _default_ContentModel = /*#__PURE__*/function () {
 
 
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var chords_and_scales_ChordsAndScalesContentModel = /*#__PURE__*/function (_ContentModel) {
+var chords_and_scales_ChordsAndScalesContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(ChordsAndScalesContentModel, _ContentModel);
-
-  var _super = _createSuper(ChordsAndScalesContentModel);
 
   function ChordsAndScalesContentModel(_ref) {
     var _this;
@@ -32925,10 +32108,10 @@ var chords_and_scales_ChordsAndScalesContentModel = /*#__PURE__*/function (_Cont
 
     _classCallCheck(this, ChordsAndScalesContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(ChordsAndScalesContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.postType;
     _this.card.grey_title = _this.post.chord_or_scale;
     _this.list.show_numbers = true;
@@ -32954,17 +32137,11 @@ var chords_and_scales_ChordsAndScalesContentModel = /*#__PURE__*/function (_Cont
 
 
 
-function coach_stream_createSuper(Derived) { var hasNativeReflectConstruct = coach_stream_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function coach_stream_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-
-var coach_stream_CoachStreamModel = /*#__PURE__*/function (_ContentModel) {
+var coach_stream_CoachStreamModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(CoachStreamModel, _ContentModel);
-
-  var _super = coach_stream_createSuper(CoachStreamModel);
 
   function CoachStreamModel(_ref) {
     var _this;
@@ -32975,10 +32152,10 @@ var coach_stream_CoachStreamModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, CoachStreamModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(CoachStreamModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.list.column_data = [luxon["DateTime"].fromSQL(_this.post.live_event_start_time_in_timezone).toFormat('LLL d/yy'), luxon["DateTime"].fromSQL(_this.post.live_event_start_time_in_timezone).toFormat('h:mm a')];
     return _this;
   }
@@ -32994,16 +32171,10 @@ var coach_stream_CoachStreamModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function course_createSuper(Derived) { var hasNativeReflectConstruct = course_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function course_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var course_CourseContentModel = /*#__PURE__*/function (_ContentModel) {
+var course_CourseContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(CourseContentModel, _ContentModel);
-
-  var _super = course_createSuper(CourseContentModel);
 
   function CourseContentModel(_ref) {
     var _this;
@@ -33014,10 +32185,10 @@ var course_CourseContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, CourseContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(CourseContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.postInstructor;
     _this.list.column_data = [_default_ContentModel.mapDifficulty(_this.post), _this.postChildLessonCount, _this.postPublisedOn];
 
@@ -33046,16 +32217,10 @@ var course_CourseContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function course_part_createSuper(Derived) { var hasNativeReflectConstruct = course_part_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function course_part_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var course_part_CoursePartContentModel = /*#__PURE__*/function (_ContentModel) {
+var course_part_CoursePartContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(CoursePartContentModel, _ContentModel);
-
-  var _super = course_part_createSuper(CoursePartContentModel);
 
   function CoursePartContentModel(_ref) {
     var _this;
@@ -33066,10 +32231,10 @@ var course_part_CoursePartContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, CoursePartContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(CoursePartContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.postInstructor;
     _this.card.content_type = 'Course Lesson';
     _this.list.show_numbers = true;
@@ -33094,16 +32259,10 @@ var course_part_CoursePartContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function learning_path_createSuper(Derived) { var hasNativeReflectConstruct = learning_path_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function learning_path_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var learning_path_LearningPathContentModel = /*#__PURE__*/function (_ContentModel) {
+var learning_path_LearningPathContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(LearningPathContentModel, _ContentModel);
-
-  var _super = learning_path_createSuper(LearningPathContentModel);
 
   function LearningPathContentModel(_ref) {
     var _this;
@@ -33114,10 +32273,10 @@ var learning_path_LearningPathContentModel = /*#__PURE__*/function (_ContentMode
 
     _classCallCheck(this, LearningPathContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(LearningPathContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.grey_title = _this.getPostField('difficulty_range');
     _this.list.color_title = null;
     _this.list.column_data = [_this.getPostField('difficulty_range')];
@@ -33141,16 +32300,10 @@ var learning_path_LearningPathContentModel = /*#__PURE__*/function (_ContentMode
 
 
 
-function learning_path_level_createSuper(Derived) { var hasNativeReflectConstruct = learning_path_level_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function learning_path_level_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var learning_path_level_LearningPathLevelContentModel = /*#__PURE__*/function (_ContentModel) {
+var learning_path_level_LearningPathLevelContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(LearningPathLevelContentModel, _ContentModel);
-
-  var _super = learning_path_level_createSuper(LearningPathLevelContentModel);
 
   function LearningPathLevelContentModel(_ref) {
     var _this;
@@ -33161,10 +32314,10 @@ var learning_path_level_LearningPathLevelContentModel = /*#__PURE__*/function (_
 
     _classCallCheck(this, LearningPathLevelContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(LearningPathLevelContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.grey_title = _this.postChildLessonCount;
     _this.list.thumb_title = _this.levelNumber;
     _this.list.thumb_logo = _this.getThumbLogo();
@@ -33176,6 +32329,15 @@ var learning_path_level_LearningPathLevelContentModel = /*#__PURE__*/function (_
   }
 
   _createClass(LearningPathLevelContentModel, [{
+    key: "getThumbLogo",
+    value: function getThumbLogo() {
+      if (this.brand === 'pianote') {
+        return 'https://d2vyvo0tyx8ig5.cloudfront.net/icons/pianote-method.png';
+      }
+
+      return 'https://dpwjbsxqtam5n.cloudfront.net/pack-logos/drumeo-method-logo.png';
+    }
+  }, {
     key: "postChildLessonCount",
     get: function get() {
       return this.post.lesson_count ? "".concat(this.post.lesson_count, " Courses") : 'TBD';
@@ -33184,15 +32346,6 @@ var learning_path_level_LearningPathLevelContentModel = /*#__PURE__*/function (_
     key: "levelNumber",
     get: function get() {
       return "Level ".concat(this.post.position);
-    }
-  }, {
-    key: "getThumbLogo",
-    value: function getThumbLogo() {
-      if (this.brand === 'pianote') {
-        return 'https://d2vyvo0tyx8ig5.cloudfront.net/icons/pianote-method.png';
-      }
-
-      return 'https://dpwjbsxqtam5n.cloudfront.net/pack-logos/drumeo-method-logo.png';
     }
   }]);
 
@@ -33207,16 +32360,10 @@ var learning_path_level_LearningPathLevelContentModel = /*#__PURE__*/function (_
 
 
 
-function learning_path_course_createSuper(Derived) { var hasNativeReflectConstruct = learning_path_course_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function learning_path_course_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var learning_path_course_LearningPathCourseContentModel = /*#__PURE__*/function (_ContentModel) {
+var learning_path_course_LearningPathCourseContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(LearningPathCourseContentModel, _ContentModel);
-
-  var _super = learning_path_course_createSuper(LearningPathCourseContentModel);
 
   function LearningPathCourseContentModel(_ref) {
     var _this;
@@ -33227,10 +32374,10 @@ var learning_path_course_LearningPathCourseContentModel = /*#__PURE__*/function 
 
     _classCallCheck(this, LearningPathCourseContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(LearningPathCourseContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.grey_title = _this.postChildLessonCount;
     _this.list.color_title = null;
     _this.list.column_data = [_this.postChildLessonCount, "".concat(_this.post.total_xp, " xp")];
@@ -33249,16 +32396,10 @@ var learning_path_course_LearningPathCourseContentModel = /*#__PURE__*/function 
 
 
 
-function learning_path_part_createSuper(Derived) { var hasNativeReflectConstruct = learning_path_part_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function learning_path_part_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var learning_path_part_LearningPathPartContentModel = /*#__PURE__*/function (_ContentModel) {
+var learning_path_part_LearningPathPartContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(LearningPathPartContentModel, _ContentModel);
-
-  var _super = learning_path_part_createSuper(LearningPathPartContentModel);
 
   function LearningPathPartContentModel(_ref) {
     var _this;
@@ -33269,10 +32410,10 @@ var learning_path_part_LearningPathPartContentModel = /*#__PURE__*/function (_Co
 
     _classCallCheck(this, LearningPathPartContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(LearningPathPartContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.description = _this.getPostDatum('learning_path_description');
     _this.card.color_title = _this.postInstructor;
     _this.card.grey_title = _this.getPostDifficulty();
@@ -33299,16 +32440,10 @@ var learning_path_part_LearningPathPartContentModel = /*#__PURE__*/function (_Co
 
 
 
-function learning_path_lesson_createSuper(Derived) { var hasNativeReflectConstruct = learning_path_lesson_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function learning_path_lesson_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var learning_path_lesson_LearningPathLessonContentModel = /*#__PURE__*/function (_ContentModel) {
+var learning_path_lesson_LearningPathLessonContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(LearningPathLessonContentModel, _ContentModel);
-
-  var _super = learning_path_lesson_createSuper(LearningPathLessonContentModel);
 
   function LearningPathLessonContentModel(_ref) {
     var _this;
@@ -33319,10 +32454,10 @@ var learning_path_lesson_LearningPathLessonContentModel = /*#__PURE__*/function 
 
     _classCallCheck(this, LearningPathLessonContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(LearningPathLessonContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.description = _this.getPostDatum('learning_path_description');
     _this.card.color_title = _this.postInstructor;
     _this.card.grey_title = _this.getPostDifficulty();
@@ -33343,16 +32478,10 @@ var learning_path_lesson_LearningPathLessonContentModel = /*#__PURE__*/function 
 
 
 
-function pack_bundle_createSuper(Derived) { var hasNativeReflectConstruct = pack_bundle_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function pack_bundle_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var pack_bundle_PackBundleContentModel = /*#__PURE__*/function (_ContentModel) {
+var pack_bundle_PackBundleContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(PackBundleContentModel, _ContentModel);
-
-  var _super = pack_bundle_createSuper(PackBundleContentModel);
 
   function PackBundleContentModel(_ref) {
     var _this;
@@ -33363,10 +32492,10 @@ var pack_bundle_PackBundleContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, PackBundleContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(PackBundleContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.show_description = true;
     _this.card.color_title = null;
     _this.card.grey_title = _this.postChildLessonCount;
@@ -33385,16 +32514,10 @@ var pack_bundle_PackBundleContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function pack_bundle_lesson_createSuper(Derived) { var hasNativeReflectConstruct = pack_bundle_lesson_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function pack_bundle_lesson_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var pack_bundle_lesson_PackBundleLessonContentModel = /*#__PURE__*/function (_ContentModel) {
+var pack_bundle_lesson_PackBundleLessonContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(PackBundleLessonContentModel, _ContentModel);
-
-  var _super = pack_bundle_lesson_createSuper(PackBundleLessonContentModel);
 
   function PackBundleLessonContentModel(_ref) {
     var _this;
@@ -33405,10 +32528,10 @@ var pack_bundle_lesson_PackBundleLessonContentModel = /*#__PURE__*/function (_Co
 
     _classCallCheck(this, PackBundleLessonContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(PackBundleLessonContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.grey_title = _this.getPostDuration();
     _this.list.color_title = null;
     _this.list.column_data = [_this.getPostDuration()];
@@ -33426,16 +32549,10 @@ var pack_bundle_lesson_PackBundleLessonContentModel = /*#__PURE__*/function (_Co
 
 
 
-function play_along_createSuper(Derived) { var hasNativeReflectConstruct = play_along_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function play_along_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var play_along_PlayAlongContentModel = /*#__PURE__*/function (_ContentModel) {
+var play_along_PlayAlongContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(PlayAlongContentModel, _ContentModel);
-
-  var _super = play_along_createSuper(PlayAlongContentModel);
 
   function PlayAlongContentModel(_ref) {
     var _this;
@@ -33446,10 +32563,10 @@ var play_along_PlayAlongContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, PlayAlongContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(PlayAlongContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.getPostFieldMulti('style').join(', ');
     _this.list.color_title = _this.getPostFieldMulti('style').join(', ');
     _this.list.column_data = [_default_ContentModel.mapDifficulty(_this.post), "".concat(_this.getPostFieldMulti('bpm').join(', '), " BPM")];
@@ -33475,16 +32592,10 @@ var play_along_PlayAlongContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function play_along_part_createSuper(Derived) { var hasNativeReflectConstruct = play_along_part_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function play_along_part_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var play_along_part_PlayAlongPartContentModel = /*#__PURE__*/function (_ContentModel) {
+var play_along_part_PlayAlongPartContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(PlayAlongPartContentModel, _ContentModel);
-
-  var _super = play_along_part_createSuper(PlayAlongPartContentModel);
 
   function PlayAlongPartContentModel(_ref) {
     var _this;
@@ -33495,10 +32606,10 @@ var play_along_part_PlayAlongPartContentModel = /*#__PURE__*/function (_ContentM
 
     _classCallCheck(this, PlayAlongPartContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(PlayAlongPartContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.list.column_data = [_this.getPostDuration()];
     return _this;
   }
@@ -33514,16 +32625,10 @@ var play_along_part_PlayAlongPartContentModel = /*#__PURE__*/function (_ContentM
 
 
 
-function recording_createSuper(Derived) { var hasNativeReflectConstruct = recording_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function recording_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var recording_RecordingContentModel = /*#__PURE__*/function (_ContentModel) {
+var recording_RecordingContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(RecordingContentModel, _ContentModel);
-
-  var _super = recording_createSuper(RecordingContentModel);
 
   function RecordingContentModel(_ref) {
     var _this;
@@ -33534,10 +32639,10 @@ var recording_RecordingContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, RecordingContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(RecordingContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.postInstructor;
     _this.list.color_title = _this.postInstructor;
     _this.list.column_data = [_default_ContentModel.mapDifficulty(_this.post), _this.getPostDuration(), _this.postPublisedOn];
@@ -33560,16 +32665,10 @@ var recording_RecordingContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function rudiment_createSuper(Derived) { var hasNativeReflectConstruct = rudiment_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function rudiment_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var rudiment_RudimentContentModel = /*#__PURE__*/function (_ContentModel) {
+var rudiment_RudimentContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(RudimentContentModel, _ContentModel);
-
-  var _super = rudiment_createSuper(RudimentContentModel);
 
   function RudimentContentModel(_ref) {
     var _this;
@@ -33580,10 +32679,10 @@ var rudiment_RudimentContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, RudimentContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(RudimentContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.sheet_music = _this.getPostDatum('sheet_music_thumbnail_url');
     _this.card.color_title = _this.getPostField('topic');
     _this.list.color_title = null;
@@ -33603,16 +32702,10 @@ var rudiment_RudimentContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function semester_pack_createSuper(Derived) { var hasNativeReflectConstruct = semester_pack_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function semester_pack_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var semester_pack_SemesterPackContentModel = /*#__PURE__*/function (_ContentModel) {
+var semester_pack_SemesterPackContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(SemesterPackContentModel, _ContentModel);
-
-  var _super = semester_pack_createSuper(SemesterPackContentModel);
 
   function SemesterPackContentModel(_ref) {
     var _this;
@@ -33623,10 +32716,10 @@ var semester_pack_SemesterPackContentModel = /*#__PURE__*/function (_ContentMode
 
     _classCallCheck(this, SemesterPackContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(SemesterPackContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.show_description = true;
     _this.card.grey_title = _this.postChildLessonCount;
     _this.list.column_data = [_this.postChildLessonCount];
@@ -33644,16 +32737,10 @@ var semester_pack_SemesterPackContentModel = /*#__PURE__*/function (_ContentMode
 
 
 
-function semester_pack_lesson_createSuper(Derived) { var hasNativeReflectConstruct = semester_pack_lesson_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function semester_pack_lesson_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var semester_pack_lesson_SemesterPackLessonContentModel = /*#__PURE__*/function (_ContentModel) {
+var semester_pack_lesson_SemesterPackLessonContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(SemesterPackLessonContentModel, _ContentModel);
-
-  var _super = semester_pack_lesson_createSuper(SemesterPackLessonContentModel);
 
   function SemesterPackLessonContentModel(_ref) {
     var _this;
@@ -33664,10 +32751,10 @@ var semester_pack_lesson_SemesterPackLessonContentModel = /*#__PURE__*/function 
 
     _classCallCheck(this, SemesterPackLessonContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(SemesterPackLessonContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.grey_title = _this.getPostDuration();
     _this.list.color_title = null;
     _this.list.column_data = [_this.getPostDuration()];
@@ -33687,16 +32774,10 @@ var semester_pack_lesson_SemesterPackLessonContentModel = /*#__PURE__*/function 
 
 
 
-function show_createSuper(Derived) { var hasNativeReflectConstruct = show_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function show_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var show_ShowContentModel = /*#__PURE__*/function (_ContentModel) {
+var show_ShowContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(ShowContentModel, _ContentModel);
-
-  var _super = show_createSuper(ShowContentModel);
 
   function ShowContentModel(_ref) {
     var _this;
@@ -33707,10 +32788,10 @@ var show_ShowContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, ShowContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(ShowContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.postInstructor;
     _this.list.column_data = [_default_ContentModel.mapDifficulty(_this.post), _this.getPostDuration(), _this.postPublisedOn];
 
@@ -33749,16 +32830,10 @@ var show_ShowContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function song_createSuper(Derived) { var hasNativeReflectConstruct = song_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function song_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var song_SongContentModel = /*#__PURE__*/function (_ContentModel) {
+var song_SongContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(SongContentModel, _ContentModel);
-
-  var _super = song_createSuper(SongContentModel);
 
   function SongContentModel(_ref) {
     var _this;
@@ -33769,10 +32844,10 @@ var song_SongContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, SongContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(SongContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.getPostField('artist');
     _this.card.grey_title = _default_ContentModel.mapDifficulty(_this.post);
     _this.list.color_title = _this.getPostField('artist');
@@ -33804,16 +32879,10 @@ var song_SongContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function song_part_createSuper(Derived) { var hasNativeReflectConstruct = song_part_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function song_part_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var song_part_SongPartContentModel = /*#__PURE__*/function (_ContentModel) {
+var song_part_SongPartContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(SongPartContentModel, _ContentModel);
-
-  var _super = song_part_createSuper(SongPartContentModel);
 
   function SongPartContentModel(_ref) {
     var _this;
@@ -33824,10 +32893,10 @@ var song_part_SongPartContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, SongPartContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(SongPartContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.getPostField('artist');
     _this.list.column_data = [_this.getPostDuration()];
 
@@ -33850,16 +32919,10 @@ var song_part_SongPartContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function student_focus_createSuper(Derived) { var hasNativeReflectConstruct = student_focus_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function student_focus_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var student_focus_StudentFocusContentModel = /*#__PURE__*/function (_ContentModel) {
+var student_focus_StudentFocusContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(StudentFocusContentModel, _ContentModel);
-
-  var _super = student_focus_createSuper(StudentFocusContentModel);
 
   function StudentFocusContentModel(_ref) {
     var _this;
@@ -33870,10 +32933,10 @@ var student_focus_StudentFocusContentModel = /*#__PURE__*/function (_ContentMode
 
     _classCallCheck(this, StudentFocusContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(StudentFocusContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.postInstructor;
     _this.card.grey_title = _this.postPublisedOn;
     _this.card.content_type = "".concat(_this.card.content_type, " Lesson");
@@ -33893,16 +32956,10 @@ var student_focus_StudentFocusContentModel = /*#__PURE__*/function (_ContentMode
 
 
 
-function student_review_createSuper(Derived) { var hasNativeReflectConstruct = student_review_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function student_review_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var student_review_StudentReviewContentModel = /*#__PURE__*/function (_ContentModel) {
+var student_review_StudentReviewContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(StudentReviewContentModel, _ContentModel);
-
-  var _super = student_review_createSuper(StudentReviewContentModel);
 
   function StudentReviewContentModel(_ref) {
     var _this;
@@ -33913,10 +32970,10 @@ var student_review_StudentReviewContentModel = /*#__PURE__*/function (_ContentMo
 
     _classCallCheck(this, StudentReviewContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(StudentReviewContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.grey_title = _this.getPostDuration();
     _this.list.column_data = [_this.postPublisedOn];
 
@@ -33938,16 +32995,10 @@ var student_review_StudentReviewContentModel = /*#__PURE__*/function (_ContentMo
 
 
 
-function question_and_answer_createSuper(Derived) { var hasNativeReflectConstruct = question_and_answer_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function question_and_answer_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var question_and_answer_QnaContentModel = /*#__PURE__*/function (_ContentModel) {
+var question_and_answer_QnaContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(QnaContentModel, _ContentModel);
-
-  var _super = question_and_answer_createSuper(QnaContentModel);
 
   function QnaContentModel(_ref) {
     var _this;
@@ -33958,10 +33009,10 @@ var question_and_answer_QnaContentModel = /*#__PURE__*/function (_ContentModel) 
 
     _classCallCheck(this, QnaContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(QnaContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.grey_title = _this.getPostDuration();
     _this.list.column_data = [_this.getPostDuration()];
 
@@ -33984,16 +33035,10 @@ var question_and_answer_QnaContentModel = /*#__PURE__*/function (_ContentModel) 
 
 
 
-function unit_createSuper(Derived) { var hasNativeReflectConstruct = unit_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function unit_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var unit_UnitContentModel = /*#__PURE__*/function (_ContentModel) {
+var unit_UnitContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(UnitContentModel, _ContentModel);
-
-  var _super = unit_createSuper(UnitContentModel);
 
   function UnitContentModel(_ref) {
     var _this;
@@ -34004,10 +33049,10 @@ var unit_UnitContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, UnitContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(UnitContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.postInstructor;
     _this.list.thumb_title = _this.levelNumber;
     _this.list.thumb_logo = _this.getThumbLogo();
@@ -34018,14 +33063,14 @@ var unit_UnitContentModel = /*#__PURE__*/function (_ContentModel) {
   }
 
   _createClass(UnitContentModel, [{
-    key: "levelNumber",
-    get: function get() {
-      return "Level ".concat(this.post.position);
-    }
-  }, {
     key: "getThumbLogo",
     value: function getThumbLogo() {
       return 'https://d2vyvo0tyx8ig5.cloudfront.net/books/foundations/foundations-logo-white.png';
+    }
+  }, {
+    key: "levelNumber",
+    get: function get() {
+      return "Level ".concat(this.post.position);
     }
   }]);
 
@@ -34040,16 +33085,10 @@ var unit_UnitContentModel = /*#__PURE__*/function (_ContentModel) {
 
 
 
-function unit_part_createSuper(Derived) { var hasNativeReflectConstruct = unit_part_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = getPrototypeOf_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = getPrototypeOf_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function unit_part_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-
-
-var unit_part_UnitPartContentModel = /*#__PURE__*/function (_ContentModel) {
+var unit_part_UnitPartContentModel =
+/*#__PURE__*/
+function (_ContentModel) {
   _inherits(UnitPartContentModel, _ContentModel);
-
-  var _super = unit_part_createSuper(UnitPartContentModel);
 
   function UnitPartContentModel(_ref) {
     var _this;
@@ -34060,10 +33099,10 @@ var unit_part_UnitPartContentModel = /*#__PURE__*/function (_ContentModel) {
 
     _classCallCheck(this, UnitPartContentModel);
 
-    _this = _super.call(this, {
+    _this = _possibleConstructorReturn(this, getPrototypeOf_getPrototypeOf(UnitPartContentModel).call(this, {
       brand: brand,
       post: post
-    });
+    }));
     _this.card.color_title = _this.postInstructor;
     _this.card.grey_title = _this.getPostDuration();
     _this.list.show_numbers = true;
@@ -34807,14 +33846,14 @@ var GridCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var GridCatalogue = (GridCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ListCatalogue.vue?vue&type=template&id=e566afdc&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/ListCatalogue.vue?vue&type=template&id=e566afdc&
 var ListCataloguevue_type_template_id_e566afdc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_vm._l((_vm.content),function(item,i){return _c('catalogue-list-item',{key:'list' + item.id,attrs:{"index":item.week || i + 1,"item":item,"content-type":item.type,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"overview":_vm.displayItemsAsOverview,"user-id":_vm.userId,"is-admin":_vm.isAdmin,"display-user-interactions":_vm.displayUserInteractions,"content-type-override":_vm.contentTypeOverride,"show-numbers":_vm.showNumbers,"no-link":_vm.lockUnowned && item.is_owned === false,"lock-unowned":_vm.lockUnowned,"is_search":_vm.is_search,"force-wide-thumbs":_vm.forceWideThumbs,"reset-progress":_vm.resetProgress,"destroy-on-list-removal":_vm.destroyOnListRemoval,"compact-layout":_vm.compactLayout},on:{"addToList":_vm.emitAddToList,"progressReset":_vm.emitResetProgress,"addEvent":_vm.addEventToDropdown}})}),_c('add-event-modal',{attrs:{"single-event":_vm.singleEvent,"brand":_vm.brand,"subscription-calendar-id":_vm.subscriptionCalendarId,"theme-color":_vm.themeColor},on:{"modalClose":_vm.handleModalClose}})],2)}
 var ListCataloguevue_type_template_id_e566afdc_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/catalogues/ListCatalogue.vue?vue&type=template&id=e566afdc&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueListItem.vue?vue&type=template&id=45f903ae&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueListItem.vue?vue&type=template&id=45f903ae&
 var _CatalogueListItemvue_type_template_id_45f903ae_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"flex flex-row bb-grey-1-1 no-decoration hover-bg-grey-7 relative text-grey-3 hover-text-black",class:_vm.class_object,attrs:{"href":_vm.renderLink ? _vm.item.url : false}},[(_vm.showNumbers)?_c('div',{staticClass:"flex flex-column align-left align-v-center number-col title text-black hide-sm-down"},[_vm._v("\n        "+_vm._s(_vm.lesson_number)+"\n    ")]):_vm._e(),(!_vm.showStudentReviewThumbsAsAvatar)?_c('div',{staticClass:"flex flex-column align-v-center",class:[_vm.thumbnailColumnClass, _vm.themeColor]},[_c('div',{staticClass:"thumb-wrap corners-10"},[_c('div',{staticClass:"thumb-img corners-10",class:_vm.thumbnailType},[_c('img',{attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":"","alt":"Lesson Thumbnail"}}),_c('div',{staticClass:"lesson-progress overflow"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),(_vm.mappedData.thumb_title && _vm.overview)?_c('div',{staticClass:"thumb-title flex-center text-center ph-1",class:_vm.brand},[(_vm.mappedData.thumb_logo)?_c('img',{staticStyle:{"max-width":"150px"},attrs:{"src":_vm.mappedData.thumb_logo,"alt":"Item Logo"}}):_vm._e(),(_vm.mappedData.thumb_title)?_c('h5',{staticClass:"large-display uppercase text-white"},[_vm._v("\n                        "+_vm._s(_vm.mappedData.thumb_title)+"\n                    ")]):_vm._e()]):_vm._e(),_c('span',{staticClass:"thumb-hover flex-center"},[_c('i',{staticClass:"fas",class:_vm.thumbnailIcon}),(!_vm.isReleased)?_c('p',{staticClass:"text-white font-bold",class:_vm.overview ? 'tiny' : 'x-tiny'},[_vm._v("\n                        "+_vm._s(_vm.releaseDate)+"\n                    ")]):_vm._e()])])])]):_vm._e(),(_vm.showStudentReviewThumbsAsAvatar)?_c('div',{staticClass:"flex flex-column align-v-center avatar-col"},[_c('div',{staticClass:"thumb-wrap rounded",staticStyle:{"border-radius":"50%"}},[_c('div',{staticClass:"thumb-img corners-3 square rounded",style:('background-image:url( ' + _vm.thumbnail + ' );')},[_c('span',{staticClass:"thumb-hover rounded flex-center",staticStyle:{"border-radius":"50%"}},[_c('i',{staticClass:"fas",class:_vm.thumbnailIcon}),(!_vm.isReleased)?_c('p',{staticClass:"x-tiny text-white font-bold"},[_vm._v("\n                        "+_vm._s(_vm.releaseDate)+"\n                    ")]):_vm._e()])])])]):_vm._e(),_c('div',{staticClass:"flex flex-column align-v-center title-column overflow"},[(_vm.brand !== 'guitareo')?_c('p',{staticClass:"tiny font-compressed uppercase text-truncate",class:[_vm.themeTextClass, _vm.overview ? 'dense font-bold' : 'font-compressed']},[_vm._v("\n            "+_vm._s(_vm.mappedData.color_title)+"\n        ")]):_vm._e(),_c('p',{staticClass:"text-black font-bold item-title",class:_vm.overview ? 'heading' : 'tiny font-compressed'},[_vm._v("\n            "+_vm._s(_vm.mappedData.black_title)+"\n        ")]),(_vm.mappedData.grey_title && _vm.overview)?_c('p',{staticClass:"text-grey-3 item-title body mv-2"},[_vm._v("\n            "+_vm._s(_vm.mappedData.grey_title)+"\n        ")]):_vm._e(),(_vm.overview && _vm.mappedData.description)?_c('p',{staticClass:"tiny text-grey-6 mb-1 m-xs-only",domProps:{"innerHTML":_vm._s(_vm.mappedData.description)}},[_vm._v("\n            "+_vm._s(_vm.mappedData.description)+"\n        ")]):_vm._e(),(!_vm.is_search)?_c('p',{staticClass:"x-tiny font-compressed text-grey-3 text-truncate uppercase hide-md-up"},_vm._l((_vm.mappedData.column_data),function(column_data,i){return _c('span',{key:((_vm.item.id) + "-mappedData-" + i)},[(i > 0)?_c('span',{staticClass:"bullet"},[_vm._v("-")]):_vm._e(),_vm._v("\n\n                "+_vm._s(column_data)+"\n            ")])}),0):_vm._e()]),(_vm.mappedData.sheet_music && !_vm.is_search)?_c('div',{staticClass:"flex flex-column sheet-music-col ph-1 hide-xs-only"},[_c('img',{attrs:{"src":_vm.mappedData.sheet_music}})]):_vm._e(),_vm._l((_vm.mappedData.column_data),function(column_data,i){return (!_vm.is_search)?_c('div',{key:((_vm.item.id) + "-mappedData-" + i),staticClass:"flex flex-column uppercase align-center basic-col text-center x-tiny font-compressed hide-sm-down",attrs:{"data-test":column_data}},[_vm._v("\n        "+_vm._s(column_data)+"\n    ")]):_vm._e()}),(_vm.is_search)?_c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-center x-tiny hide-sm-down"},[_vm._v("\n        "+_vm._s(_vm.item.type.replace('bundle-', '').replace(/-/g, ' '))+"\n    ")]):_vm._e(),(_vm.is_search)?_c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-center x-tiny hide-sm-down"},[_vm._v("\n        "+_vm._s(_vm.releaseDate)+"\n    ")]):_vm._e(),(_vm.displayUserInteractions && _vm.item.type !== 'learning-path')?_c('div',{staticClass:"flex flex-column icon-col align-v-center",class:_vm.is_search ? '' : 'hide-xs-only'},[(_vm.resetProgress)?_c('div',{staticClass:"body"},[_c('i',{staticClass:"fas fa-undo flex-center text-grey-2 hover-text-black reset",attrs:{"title":"Reset Progress"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.progressReset($event)}}})]):_c('div',{staticClass:"body"},[_c('i',{staticClass:"add-to-list fas fa-plus flex-center hover-text-black",class:_vm.is_added ? 'is-added ' + _vm.themeTextClass : 'text-grey-2',attrs:{"title":_vm.is_added ? 'Remove from list' : 'Add to list'},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.addToList($event)}}})])]):_vm._e(),(_vm.is_search && _vm.item.type === 'learning-path')?_c('div',{staticClass:"flex flex-column icon-col align-v-center"}):_vm._e(),_c('div',{staticClass:"flex flex-column icon-col align-v-center",class:_vm.is_search || _vm.overview ? 'hide-xs-only' : ''},[(_vm.noAccess)?_c('div',{staticClass:"body text-grey-2 hover-text-black",attrs:{"title":"Add to Calendar","data-open-modal":"addToCalendarModal"},on:{"click":_vm.addEvent}},[_c('i',{staticClass:"fas flex-center rounded",class:_vm.isReleased ? 'fa-lock' : 'fa-calendar-plus'})]):_c('div',{staticClass:"body"},[(_vm.item.started || _vm.item.completed)?_c('i',{staticClass:"fas flex-center rounded hover-text-black",class:[_vm.item.completed ? _vm.completedIcon : 'fa-adjust', _vm.themeTextClass]}):_c('i',{staticClass:"fas flex-center text-grey-2 rounded hover-text-black",class:['course', 'learning-path', 'pack', 'pack-bundle'].indexOf(_vm.item.type) !== -1 ?
                     'fa-arrow-circle-right' : 'fa-play-circle'})])])],2)}
 var _CatalogueListItemvue_type_template_id_45f903ae_staticRenderFns = []
@@ -35164,14 +34203,14 @@ var _CatalogueListItem_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CatalogueListItem = (_CatalogueListItem_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddEvent/AddEventModal.vue?vue&type=template&id=7b622847&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddEvent/AddEventModal.vue?vue&type=template&id=7b622847&
 var AddEventModalvue_type_template_id_7b622847_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modal small",attrs:{"id":_vm.modalId}},[_c('div',{staticClass:"flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible"},[_c('h1',{staticClass:"subheading text-center mb-2"},[_vm._v("\n            Subscribe to Calendar\n        ")]),_c('p',{staticClass:"tiny text-center mb-2"},[_vm._v("\n            Here you can subscribe to "+_vm._s(_vm.toCapitalCase(_vm.brand))+"'s Lesson Calendar - Apple Calendar, Google Calendar, Outlook, and Yahoo Calendar are all supported.\n        ")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.subscriptionCalendarId),expression:"subscriptionCalendarId"}],staticClass:"relative",staticStyle:{"width":"100%"}},[_c('button',{staticClass:"btn mb-1",on:{"click":function($event){$event.stopPropagation();_vm.subscriptionCalendarDropdown = !_vm.subscriptionCalendarDropdown}}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_c('i',{staticClass:"fas fa-calendar-plus mr-1"}),_vm._v("\n                    Subscribe to calendar\n                ")])]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('add-event-dropdown',{directives:[{name:"show",rawName:"v-show",value:(_vm.subscriptionCalendarDropdown),expression:"subscriptionCalendarDropdown"}],key:"subscriptionCalendar",attrs:{"subscription-calendar-id":_vm.subscriptionCalendarId,"is-subscription":true}})],1)],1),_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.subscriptionCalendarId),expression:"subscriptionCalendarId"}],staticClass:"x-tiny font-italic text-center mb-2"},[_vm._v("\n            Any upcoming releases will automatically show up in this calendar as they are scheduled by the "+_vm._s(_vm.toCapitalCase(_vm.brand))+" Team.\n        ")]),_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasSingleEvent),expression:"hasSingleEvent"}],staticClass:"tiny text-center mb-2"},[_vm._v("\n            Or you can subscribe to this event only by clicking the button below.\n        ")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasSingleEvent),expression:"hasSingleEvent"}],staticClass:"tiny pointer relative",staticStyle:{"width":"100%"}},[_c('button',{staticClass:"btn mb-1",on:{"click":function($event){$event.stopPropagation();_vm.singleEventDropdown = !_vm.singleEventDropdown}}},[_c('span',{staticClass:"inverted",class:[_vm.themeTextClass, _vm.themeBgClass]},[_c('i',{staticClass:"fas fa-calendar-plus mr-1"}),_vm._v("\n                    Subscribe to this event only\n                ")])]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('add-event-dropdown',{directives:[{name:"show",rawName:"v-show",value:(_vm.singleEventDropdown),expression:"singleEventDropdown"}],key:"singleEvent",attrs:{"single-event":_vm.singleEvent}})],1)],1),_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasSingleEvent),expression:"hasSingleEvent"}],staticClass:"x-tiny font-italic text-center mb-2"},[_vm._v("\n            "+_vm._s(_vm.singleEventDescription)+"\n        ")])])])}
 var AddEventModalvue_type_template_id_7b622847_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/components/AddEvent/AddEventModal.vue?vue&type=template&id=7b622847&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddEvent/AddEventDropdown.vue?vue&type=template&id=26d8524b&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AddEvent/AddEventDropdown.vue?vue&type=template&id=26d8524b&
 var AddEventDropdownvue_type_template_id_26d8524b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"add-event-dropdown bg-white"},[(_vm.isSubscription)?_c('div',{staticClass:"flex flex-column bg-white shadow corners-3"},_vm._l((_vm.platforms),function(platform){return _c('a',{staticClass:"text-black pointer bg-white no-decoration",attrs:{"href":'https://www.addevent.com/subscribe/' + _vm.subscriptionCalendarId + '+' + platform.key,"target":"_blank"}},[_c('p',{staticClass:"body pa-1",domProps:{"innerHTML":_vm._s(platform.value)}},[_vm._v("\n                "+_vm._s(platform.value)+"\n            ")])])}),0):_c('div',{staticClass:"flex flex-column bg-white shadow corners-3"},_vm._l((_vm.platforms),function(platform){return _c('div',{key:platform.key,staticClass:"addeventatc pointer",attrs:{"data-styling":"none","data-direct":platform.key}},[_c('p',{staticClass:"body pa-1",domProps:{"innerHTML":_vm._s(platform.value)}},[_vm._v("\n                "+_vm._s(platform.value)+"\n            ")]),_c('span',{staticClass:"start"},[_vm._v(_vm._s(_vm.$_event_date))]),_c('span',{staticClass:"timezone"},[_vm._v("UTC")]),_c('span',{staticClass:"title"},[_vm._v(_vm._s(_vm.$_event_title))])])}),0)])}
 var AddEventDropdownvue_type_template_id_26d8524b_staticRenderFns = []
 
@@ -35698,14 +34737,14 @@ var ListCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var ListCatalogue = (ListCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=51b4f2ae&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=51b4f2ae&
 var _CatalogueFiltersvue_type_template_id_51b4f2ae_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row flex-wrap mb nmh-1"},[_vm._l((_vm.filterableValues.filter(function (item) { return item !== 'progress' && item !== 'event'; })),function(item){return _c('catalogue-filter',{key:item.key,attrs:{"filter-name":item,"filters-labels":_vm.filtersLabels,"item":_vm.filters[item],"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.filterParams[item]},on:{"filterChange":_vm.handleFilterChange}})}),(_vm.hasProgressFilter)?_c('catalogue-filter',{attrs:{"filter-name":"progress","item":_vm.progressOptions,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.user_state},on:{"filterChange":_vm.handleProgressChange}}):_vm._e(),(_vm.hasEventTypeFilter)?_c('catalogue-filter',{attrs:{"filter-name":"event","filters-labels":_vm.filtersLabels,"item":_vm.eventTypeOptions,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.event_type,"short-filter-container":true},on:{"filterChange":_vm.handleEventChange}}):_vm._e()],2)}
 var _CatalogueFiltersvue_type_template_id_51b4f2ae_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/catalogues/_CatalogueFilters.vue?vue&type=template&id=51b4f2ae&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilter.vue?vue&type=template&id=8565e436&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueFilter.vue?vue&type=template&id=8565e436&
 var _CatalogueFiltervue_type_template_id_8565e436_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column ph-1 catalogue-filter",class:{'short-filter-container': _vm.shortFilterContainer}},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],staticClass:"no-label",class:{'is-clearable': _vm.valueInterface},attrs:{"id":_vm.filterName + 'Filter',"disabled":_vm.valueInterface},on:{"keydown":function($event){$event.preventDefault();},"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.valueInterface=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"selected":"","disabled":""},domProps:{"value":null}},[_vm._v("\n                "+_vm._s(_vm.placeholderLabel)+"\n            ")]),_vm._l((_vm.sortedOptions),function(filter){return _c('option',{key:filter.key,domProps:{"value":filter.value}},[_vm._v("\n                "+_vm._s(filter.key)+"\n            ")])})],2),(_vm.valueInterface)?_c('span',{staticClass:"cancel-filter",on:{"click":function($event){$event.stopPropagation();return _vm.cancelFilter($event)}}},[_c('i',{staticClass:"fas fa-times",class:'text-' + _vm.themeColor})]):_vm._e()])])}
 var _CatalogueFiltervue_type_template_id_8565e436_staticRenderFns = []
 
@@ -36090,7 +35129,7 @@ var _CatalogueFilters_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CatalogueFilters = (_CatalogueFilters_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueSearch.vue?vue&type=template&id=7d26118a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueSearch.vue?vue&type=template&id=7d26118a&
 var _CatalogueSearchvue_type_template_id_7d26118a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row flex-wrap mb nmh-1"},[(_vm.includedTypes.length)?_c('div',{staticClass:"flex flex-column xs-12 sm-4"},[_c('catalogue-filter',{attrs:{"filter-name":"type","item":_vm.parsedTypes,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.selectedTypes},on:{"filterChange":_vm.changeFilter}})],1):_vm._e(),_c('div',{staticClass:"flex flex-column xs-12 ph-1",class:_vm.includedTypes.length ? 'sm-8' : ''},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"flex flex-column grow form-group pr-2"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.searchTermInterface),expression:"searchTermInterface"}],staticClass:"no-label",attrs:{"id":"catalogueSearch","type":"text","name":"search","autocomplete":"off","placeholder":"Search..."},domProps:{"value":(_vm.searchTermInterface)},on:{"keydown":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.submitSearch($event)},"input":function($event){if($event.target.composing){ return; }_vm.searchTermInterface=$event.target.value}}})]),_c('div',{staticClass:"flex flex-column search-button-col"},[_c('button',{staticClass:"btn",attrs:{"title":"Search"},on:{"click":_vm.submitSearch}},[_c('span',{staticClass:"text-white",class:("bg-" + _vm.themeColor)},[_c('i',{staticClass:"fas fa-search"})])])])])])]),_c('div',{staticClass:"flex flex-row ph-1 pb-1"},[_c('p',{staticClass:"tiny text-grey-3 font-italic"},[_vm._v("\n            Displaying "),(_vm.totalResults > 0)?_c('span',[_vm._v(_vm._s(_vm.currentResults)+" of")]):_vm._e(),_vm._v(" "+_vm._s(_vm.totalResults)+" results.\n        ")])])])}
 var _CatalogueSearchvue_type_template_id_7d26118a_staticRenderFns = []
 
@@ -36288,7 +35327,7 @@ var _CatalogueSearch_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CatalogueSearch = (_CatalogueSearch_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CataloguePlaylistTabs.vue?vue&type=template&id=85ad5982&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CataloguePlaylistTabs.vue?vue&type=template&id=85ad5982&
 var _CataloguePlaylistTabsvue_type_template_id_85ad5982_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row flex-wrap align-v-center"},[_c('div',{staticClass:"flex flex-column xs-12 sm-8 pv-3"},[_c('div',{staticClass:"flex flex-row flex-wrap filter-tabs align-v-center"},[_c('div',{staticClass:"heading-tab pointer mr-3 flex flex-auto",on:{"click":function($event){return _vm.changeTab('added')}}},[_c('h3',{staticClass:"heading flex-auto hover-text-black",class:_vm.selected_tab === 'added' ? ('text-black bb-' + _vm.themeColor + '-2') : 'text-grey-3 font-regular'},[_vm._v("\n                    Added\n                ")])]),_c('div',{staticClass:"heading-tab pointer mr-3 flex flex-auto",on:{"click":function($event){return _vm.changeTab('started')}}},[_c('h3',{staticClass:"heading flex-auto hover-text-black",class:_vm.selected_tab === 'started' ? ('text-black bb-' + _vm.themeColor + '-2') : 'text-grey-3 font-regular'},[_vm._v("\n                    In Progress\n                ")])]),_c('div',{staticClass:"heading-tab pointer mr-3 flex flex-auto",on:{"click":function($event){return _vm.changeTab('completed')}}},[_c('h3',{staticClass:"heading flex-auto hover-text-black",class:_vm.selected_tab === 'completed' ? ('text-black bb-' + _vm.themeColor + '-2') : 'text-grey-3 font-regular'},[_vm._v("\n                    Complete\n                ")])])])]),_c('div',{staticClass:"flex flex-column xs-12 sm-4 pv-1 align-v-center"},[_c('div',{staticClass:"flex flex-row nmh-1"},[_c('catalogue-filter',{attrs:{"filter-name":"type","item":_vm.parsedTypes,"theme-color":_vm.themeColor,"loading":_vm.loading,"initial-value":_vm.selected_types},on:{"filterChange":_vm.changeFilter}})],1)])])}
 var _CataloguePlaylistTabsvue_type_template_id_85ad5982_staticRenderFns = []
 
@@ -36514,7 +35553,7 @@ var _CataloguePlaylistTabs_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CataloguePlaylistTabs = (_CataloguePlaylistTabs_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=89c563fc&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Pagination.vue?vue&type=template&id=89c563fc&
 var Paginationvue_type_template_id_89c563fc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row pagination align-center"},[_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 1),expression:"currentPage > 1"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.currentPage - 1)}}},[_c('span',{staticClass:"bg-grey-3 flat",class:_vm.themeTextClass},[_c('i',{staticClass:"far fa-chevron-left"})])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 2),expression:"currentPage > 2"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(1)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            1\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage > 3),expression:"currentPage > 3"}],staticClass:"btn short collapse-square page-button",attrs:{"disabled":""}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            ...\n        ")])]),_vm._l((_vm.activePages),function(i){return _c('button',{key:("page-" + i),staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(i)}}},[_c('span',{class:_vm.currentPage === i ? _vm.activeClasses : _vm.inactiveClasses},[_vm._v("\n            "+_vm._s(i)+"\n        ")])])}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages - 2),expression:"currentPage < totalPages - 2"}],staticClass:"btn short collapse-square page-button",attrs:{"disabled":""}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            ...\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages - 1),expression:"currentPage < totalPages - 1"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.totalPages)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_vm._v("\n            "+_vm._s(_vm.totalPages)+"\n        ")])]),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentPage < _vm.totalPages),expression:"currentPage < totalPages"}],staticClass:"btn short collapse-square page-button",on:{"click":function($event){return _vm.goToPage(_vm.currentPage + 1)}}},[_c('span',{staticClass:"flat",class:[_vm.themeTextClass, _vm.themeBgClass]},[_c('i',{staticClass:"far fa-chevron-right"})])])],2)}
 var Paginationvue_type_template_id_89c563fc_staticRenderFns = []
 
@@ -36706,7 +35745,7 @@ var Pagination_component = normalizeComponent(
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 //
 //
@@ -37466,14 +36505,14 @@ var ContentCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var ContentCatalogue = (ContentCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/schedule/Schedule.vue?vue&type=template&id=2fb4cb3c&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/schedule/Schedule.vue?vue&type=template&id=2fb4cb3c&
 var Schedulevue_type_template_id_2fb4cb3c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_vm._l((_vm.content),function(item,i){return _c('schedule-item',{key:'schedule-item-' + item.id,attrs:{"item":item,"timezone":_vm.timezone,"theme-color":_vm.themeColor},on:{"addToList":_vm.addToListEventHandler,"addEvent":_vm.addEventToDropdown}})}),_c('add-event-modal',{attrs:{"modal-id":"scheduleAddToCalendarModal","subscription-calendar-id":_vm.subscriptionCalendarId,"single-event":_vm.singleEvent,"theme-color":_vm.themeColor},on:{"modalClose":_vm.handleModalClose}})],2)}
 var Schedulevue_type_template_id_2fb4cb3c_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/schedule/Schedule.vue?vue&type=template&id=2fb4cb3c&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/schedule/_ScheduleItem.vue?vue&type=template&id=f084652e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/schedule/_ScheduleItem.vue?vue&type=template&id=f084652e&
 var _ScheduleItemvue_type_template_id_f084652e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row content-table-row scheduled bt-grey-1-1 pa-1",class:_vm.month},[_c('div',{staticClass:"month-col body text-white bg-grey-2"},[_vm._v("\n        "+_vm._s(_vm.month)+"\n    ")]),_c('div',{staticClass:"flex flex-column align-v-center thumbnail-col"},[_c('div',{staticClass:"thumb-wrap corners-3 bg-black"},[_c('div',{staticClass:"thumb-img corners-3 widescreen text-center",staticStyle:{"background":"black"}},[_c('div',{staticClass:"release-day"},[_c('p',{staticClass:"tiny text-white font-bold"},[_vm._v("\n                        "+_vm._s(_vm.day)+"\n                    ")]),_c('p',{staticClass:"tiny text-white"},[_vm._v("\n                        "+_vm._s(_vm.time)+"\n                    ")])])])])]),_c('div',{staticClass:"flex flex-column align-v-center ph-1 title-column overflow"},[_c('p',{staticClass:"tiny uppercase text-truncate",class:_vm.themeTextClass},[_vm._v("\n            "+_vm._s(_vm.mappedData.color_title)+"\n        ")]),_c('p',{staticClass:"tiny text-black font-bold item-title"},[_vm._v("\n            "+_vm._s(_vm.mappedData.black_title)+"\n        ")]),_c('p',{staticClass:"x-tiny text-grey-3 text-truncate font-italic uppercase hide-md-up"},_vm._l((_vm.mappedData.column_data),function(item,i){return _c('span',[(i > 0)?_c('span',{staticClass:"bullet"},[_vm._v("-")]):_vm._e(),_vm._v("\n\n                "+_vm._s(item)+"\n            ")])}),0)]),_c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down"},[_vm._v("\n        "+_vm._s(_vm.releaseType)+"\n    ")]),_vm._l((_vm.mappedData.column_data),function(item,i){return _c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down text-center"},[_vm._v("\n        "+_vm._s(item)+"\n    ")])}),_c('div',{staticClass:"flex flex-column icon-col align-v-center hide-xs-only"},[_c('div',{staticClass:"body"},[_c('i',{staticClass:"add-to-list fas fa-plus flex-center pointer",class:_vm.is_added ? 'is-added ' + _vm.themeTextClass : 'text-grey-2',attrs:{"title":_vm.is_added ? 'Remove from list' : 'Add to list'},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.addToList($event)}}})])]),_c('div',{staticClass:"flex flex-column icon-col align-v-center",staticStyle:{"position":"relative"}},[_c('div',{staticClass:"body pointer add-to",attrs:{"title":"Add to Calendar","data-open-modal":"scheduleAddToCalendarModal"},on:{"click":_vm.addEvent}},[_c('i',{staticClass:"fas fa-calendar-plus flex-center text-grey-2 rounded"})])])],2)}
 var _ScheduleItemvue_type_template_id_f084652e_staticRenderFns = []
 
@@ -37781,14 +36820,14 @@ var Schedule_component = normalizeComponent(
 )
 
 /* harmony default export */ var Schedule = (Schedule_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/notifications/NotificationsTable.vue?vue&type=template&id=ec21e84a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/notifications/NotificationsTable.vue?vue&type=template&id=ec21e84a&
 var NotificationsTablevue_type_template_id_ec21e84a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row pv-3 align-v-center flex-wrap"},[_vm._m(0),_c('div',{staticClass:"flex flex-column button-col"},[_c('a',{staticClass:"btn bg-dark inverted short text-grey-3",attrs:{"href":_vm.settingsUrl}},[_c('i',{staticClass:"fas fa-cog mr-1"}),_vm._v("\n                My Settings\n            ")])]),_c('div',{staticClass:"flex flex-column button-col"},[_c('button',{staticClass:"btn",attrs:{"disabled":!_vm.hasUnreadNotifications},on:{"click":function($event){$event.stopPropagation();return _vm.markAllAsRead($event)}}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_c('i',{staticClass:"fas fa-eye mr-1"}),_vm._v("\n                    Mark All As Read\n                ")])])])]),(_vm.notifications.length === 0)?_c('div',{staticClass:"flex flex-row pa-3"},[_c('p',{staticClass:"tiny text-grey-3 font-italic"},[_vm._v("\n            You do not appear to have any notifications at this time.\n        ")])]):_vm._e(),_vm._l((_vm.notificationsArray),function(item,i){return _c('notifications-table-row',_vm._b({key:item.id,on:{"notificationRead":_vm.markAsRead}},'notifications-table-row',item,false))}),(_vm.totalPages > 1)?_c('div',{staticClass:"flex flex-row bg-light pagination-row align-h-right"},[_c('pagination',{attrs:{"current-page":_vm.currentPage,"total-pages":_vm.totalPages},on:{"pageChange":_vm.handlePageChange}})],1):_vm._e()],2)}
 var NotificationsTablevue_type_template_id_ec21e84a_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('h1',{staticClass:"heading"},[_vm._v("\n                Notifications\n            ")])])}]
 
 
 // CONCATENATED MODULE: ./src/views/notifications/NotificationsTable.vue?vue&type=template&id=ec21e84a&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/notifications/_NotificationsTableRow.vue?vue&type=template&id=0f40a6c8&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/notifications/_NotificationsTableRow.vue?vue&type=template&id=0f40a6c8&
 var _NotificationsTableRowvue_type_template_id_0f40a6c8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"content-table-row flex flex-row bt-grey-1-1 pa-1 relative no-decoration",class:{'is-read': _vm.isRead},attrs:{"href":_vm.linkedContent.url},on:{"click":function($event){return _vm.markAsRead(false)}}},[_c('div',{staticClass:"flex flex-column avatar-col align-v-center"},[_c('div',{staticClass:"thumb-img square rounded bg-center"},[_c('img',{staticClass:"rounded",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.userAvatar,"data-ix-fade":"","alt":"User Avatar"}})])]),_c('div',{staticClass:"flex flex-column align-v-center ph-1 title-column overflow"},[_c('p',{staticClass:"tiny text-black item-title"},[_c('span',{staticClass:"font-bold"},[_vm._v(_vm._s(_vm.userName))]),_vm._v("\n\n            "+_vm._s(_vm.notificationTypeString)+"\n\n            "),_c('span',{staticClass:"font-bold"},[_vm._v(_vm._s(_vm.linkedContent.title))])]),_c('p',{staticClass:"tiny text-black mt-1",domProps:{"innerHTML":_vm._s(_vm.subContent)}}),_c('p',{staticClass:"tiny text-grey-3 font-italic mt-1",staticStyle:{"font-size":"8pt"}},[_vm._v("\n            "+_vm._s(_vm.createdOn)+"\n        ")])]),_c('div',{staticClass:"flex flex-column icon-col align-v-center"},[_c('div',{staticClass:"body",attrs:{"title":"Mark as Read"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.markAsRead(true)}}},[_c('i',{staticClass:"far fa-eye flex-center text-grey-2 rounded read-icon"})])]),_vm._m(0)])}
 var _NotificationsTableRowvue_type_template_id_0f40a6c8_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column icon-col align-v-center"},[_c('div',{staticClass:"body"},[_c('i',{staticClass:"fas fa-arrow-circle-right flex-center text-grey-2 rounded"})])])}]
 
@@ -38182,7 +37221,7 @@ var NotificationsTable_component = normalizeComponent(
 )
 
 /* harmony default export */ var NotificationsTable = (NotificationsTable_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/catalogue/CommentsCatalogue.vue?vue&type=template&id=d85b2df4&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/catalogue/CommentsCatalogue.vue?vue&type=template&id=d85b2df4&
 var CommentsCataloguevue_type_template_id_d85b2df4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column bg-white shadow corners-3"},[_c('div',{staticClass:"flex flex-row pa-2 align-v-center bb-grey-1-1"},[_c('h1',{staticClass:"heading grow"},[_vm._v("\n            Comments\n        ")]),_c('button',{staticClass:"btn collapse-square",on:{"click":function($event){_vm.filters = !_vm.filters}}},[_c('span',{class:[_vm.themeBgClass, _vm.filters ? 'text-white' : 'inverted ' + _vm.themeTextClass]},[_c('i',{staticClass:"fas fa-filter"})])])]),_c('transition',{attrs:{"name":"slide-fade"}},[(_vm.filters)?_c('div',{staticClass:"flex flex-row pa-2 bb-grey-1-1"},[_c('div',{staticClass:"flex flex-column"},[_vm._l((_vm.availableTypes),function(contentType){return _c('div',{staticClass:"flex flex-row form-group align-v-center mb-1"},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{attrs:{"id":contentType.key,"name":contentType.key,"v-model":contentType.active,"type":"checkbox"},domProps:{"checked":contentType.active},on:{"change":_vm.handleFilter}}),_c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])]),_c('label',{staticClass:"toggle-label capitalize",attrs:{"for":contentType.key}},[_vm._v("\n                        "+_vm._s(contentType.key.replace(/-/g, ' '))+"\n                    ")])])}),_c('div',{staticClass:"flex flex-row form-group align-v-center mb-1"},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{attrs:{"id":"noRepliedTo","name":"noRepliedTo","v-model":_vm.noRepliedTo,"type":"checkbox"},domProps:{"checked":_vm.noRepliedTo},on:{"change":_vm.removeCommentsWithReplies}}),_c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])]),_c('label',{staticClass:"toggle-label capitalize",attrs:{"for":_vm.noRepliedTo}},[_vm._v("\n                        Dont show comments we've replied to\n                    ")])]),_c('div',{staticClass:"flex flex-row form-group align-v-center mb-1"},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{attrs:{"id":"openOnly","name":"openOnly","v-model":_vm.openOnly,"type":"checkbox"},domProps:{"checked":_vm.openOnly},on:{"change":_vm.changeOpenClosedCommentsOnly}}),_c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])]),_c('label',{staticClass:"toggle-label capitalize",attrs:{"for":_vm.openOnly}},[_vm._v("\n                        Open conversation comments only\n                    ")])]),_c('div',{staticClass:"flex flex-row form-group align-v-center mb-1"},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{attrs:{"id":"closedOnly","name":"closedOnly","v-model":_vm.closedOnly,"type":"checkbox"},domProps:{"checked":_vm.closedOnly},on:{"change":_vm.changeOpenClosedCommentsOnly}}),_c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])]),_c('label',{staticClass:"toggle-label capitalize",attrs:{"for":_vm.closedOnly}},[_vm._v("\n                        Closed conversation comments only\n                    ")])])],2)]):_vm._e()]),_vm._m(0),_vm._m(1),_vm._l((_vm.comments),function(comment){return (!_vm.loading)?_c('div',{staticClass:"comment-item flex flex-row bb-grey-1-1 pointer hover-bg-grey-7",class:[_vm.openCommentId === comment.id ? 'bg-grey-7' : ''],on:{"click":function($event){return _vm.openCommentThread(comment)}}},[_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"comment-data flex flex-row align-v-top pa-2"},[_c('div',{staticClass:"flex flex-column align-center user-name ph-1"},[_c('div',{staticClass:"rounded overflow avatar mb-1 hide-xs-only"},[_c('img',{attrs:{"src":comment.user['fields.profile_picture_image_url']}})]),_c('h6',{staticClass:"tiny font-bold text-center text-truncate"},[_vm._v("\n                        "+_vm._s(comment.user.display_name)+"\n                    ")])]),_c('div',{staticClass:"flex flex-column comment-body tiny ph-1",domProps:{"innerHTML":_vm._s(comment.comment)}},[_vm._v("\n                    "+_vm._s(comment.comment)+"\n                ")]),_c('div',{staticClass:"flex flex-column lesson-title hide-xs-only ph-1"},[(comment.content)?_c('h6',{staticClass:"tiny font-bold"},[_vm._v("\n                        "+_vm._s(comment.content.title)+"\n                    ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column lesson-type hide-xs-only ph-1 align-center"},[(comment.content)?_c('i',{class:[_vm.getContentTypeIcon(comment.content.type), _vm.themeTextClass]}):_vm._e(),(comment.content)?_c('h6',{staticClass:"tiny capitalize text-center"},[_vm._v("\n                        "+_vm._s(comment.content.type.replace(/-/g, ' '))+"\n                    ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column replied-to body ph-1 align-center"},[_c('i',{staticClass:"fas",class:_vm.repliedToClasses(comment)})]),_c('div',{staticClass:"flex flex-column status hide-xs-only ph-1 align-center text-center"},[(comment.conversation_status)?_c('h6',{class:['font-bold', 'body', 'text-center', 'uppercase', comment.conversation_status === 'open' ? 'color-green' : 'color-red']},[_vm._v("\n                        "+_vm._s(comment.conversation_status)+"\n                    ")]):_vm._e(),(comment.conversation_status === 'open')?_c('button',{staticClass:"button btn collapse-250",staticStyle:{"margin-top":"15px"},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();return _vm.markClosed(comment)}}},[_c('span',{staticClass:"text-white background-color-red tiny",staticStyle:{"height":"25px"}},[_vm._v("\n                            Close\n                        ")])]):_vm._e(),(comment.conversation_status === 'closed')?_c('button',{staticClass:"button btn collapse-250",staticStyle:{"margin-top":"15px"},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();return _vm.markOpen(comment)}}},[_c('span',{staticClass:"text-white background-color-green tiny",staticStyle:{"height":"25px"}},[_vm._v("Open")])]):_vm._e()])]),_c('transition',{attrs:{"name":"slide-fade","enter-active-class":"slide-fade-enter-active"}},[(_vm.openCommentId === comment.id)?_c('div',{staticClass:"flex flex-row pa-2 ba-grey-1-1 bg-white corners-3 active-comment"},[_c('div',{staticClass:"flex flex-column"},[_c('comment-post',{attrs:{"comment":comment,"brand":_vm.brand,"current-user":_vm.currentUser,"theme-color":_vm.themeColor,"profile-base-route":_vm.profileBaseRoute,"has-public-profiles":_vm.hasPublicProfiles},on:{"likeComment":_vm.handleCommentLike,"likeReply":_vm.handleReplyLike,"deleteComment":_vm.handleCommentDelete,"deleteReply":_vm.handleReplyDelete,"openLikes":_vm.addLikeUsersToModal}}),_c('a',{staticClass:"btn flat",class:_vm.themeTextClass,attrs:{"href":comment.content.url + '?goToComment=' + comment.id,"target":"_blank"}},[_vm._v("\n                            Go to Lesson\n                        ")])],1)]):_vm._e()])],1)]):_vm._e()}),_c('comment-likes-modal',{attrs:{"theme-color":_vm.themeColor,"comment-id":_vm.currentLikeUsersId,"like-users":_vm.likeUsers,"total-like-users":_vm.totalLikeUsers,"loading-like-users":_vm.loadingLikeUsers,"requesting-like-users":_vm.requestingLikeUsers},on:{"loadMoreLikeUsers":_vm.addLikeUsersToModal}}),_c('div',{staticClass:"flex flex-row pa-3 align-center"},[_c('button',{staticClass:"button btn collapse-250",on:{"click":_vm.loadMore}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[(_vm.loading || _vm.requestingData)?_c('i',{staticClass:"fas fa-spin fa-spinner mr-1"}):_vm._e(),_vm._v("\n                "+_vm._s(_vm.loading || _vm.requestingData ? 'Loading...' : 'Load More')+"\n            ")])])])],2)}
 var CommentsCataloguevue_type_template_id_d85b2df4_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row bb-grey-1-1 pa-2 tiny align-v-center"},[_c('p',{staticClass:"tiny dense mr-3"},[_c('i',{staticClass:"fas fa-check-square text-success mr-1"}),_vm._v(" Replied to (no response)\n        ")]),_c('p',{staticClass:"tiny dense mr-3"},[_c('i',{staticClass:"fas fa-check-square text-warning mr-1"}),_vm._v(" Replied to (has response)\n        ")]),_c('p',{staticClass:"tiny dense mr-3"},[_c('i',{staticClass:"fas fa-times-square text-error mr-1"}),_vm._v(" Not replied to\n        ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row pa-2 bg-grey-7 bb-grey-1-1 comment-data"},[_c('div',{staticClass:"flex flex-column user-name tiny dense font-bold ph-1"},[_vm._v("\n            User\n        ")]),_c('div',{staticClass:"flex flex-column comment-body tiny dense font-bold ph-1"},[_vm._v("\n            Comment Body\n        ")]),_c('div',{staticClass:"flex flex-column lesson-title tiny dense font-bold hide-xs-only ph-1"},[_vm._v("\n            Title\n        ")]),_c('div',{staticClass:"flex flex-column lesson-type tiny dense font-bold hide-xs-only ph-1 text-center"},[_vm._v("\n            Type\n        ")]),_c('div',{staticClass:"flex flex-column replied-to tiny dense font-bold ph-1 text-center"},[_vm._v("\n            Replied\n        ")]),_c('div',{staticClass:"flex flex-column status tiny dense font-bold ph-1 text-center"},[_vm._v("\n            Status\n        ")])])}]
 
@@ -38328,14 +37367,14 @@ if (typeof window !== 'undefined') {
     }).catch(_error_handler);
   }
 });
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentPost.vue?vue&type=template&id=7af72e7d&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentPost.vue?vue&type=template&id=7af72e7d&
 var _CommentPostvue_type_template_id_7af72e7d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row comment-post pv mb-1",class:{'pinned': _vm.pinned},attrs:{"id":_vm.domID}},[_c('div',{staticClass:"flex flex-column avatar-column pr"},[(_vm.hasPublicProfiles)?_c('div',{staticClass:"user-avatar smaller",class:[_vm.avatarClassObject, _vm.brand]},[_c('a',{staticClass:"no-decoration",attrs:{"href":_vm.profileRoute,"target":"_blank"}},[_c('img',{staticClass:"rounded",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.comment.user['fields.profile_picture_image_url'],"data-ix-fade":""}})])]):_vm._e(),(!_vm.hasPublicProfiles)?_c('img',{staticClass:"rounded",attrs:{"src":_vm.comment.user['fields.profile_picture_image_url']}}):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"body dense font-bold uppercase text-center mt-1"},[_vm._v("\n            "+_vm._s(_vm.userExpRank)+"\n        ")]):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"tiny dense text-center font-compressed"},[_vm._v("\n            "+_vm._s(_vm.userExpValue)+" XP\n        ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column grow"},[_c('div',{staticClass:"flex flex-row mb-1 comment-meta"},[_c('div',{staticClass:"flex flex-column grow mr-1"},[_c('h2',{staticClass:"body font-bold break-words"},[(_vm.hasPublicProfiles)?_c('a',{staticClass:"text-black no-decoration",attrs:{"href":_vm.profileRoute,"target":"_blank"}},[_vm._v("\n                        "+_vm._s(_vm.comment.user.display_name)+"\n                    ")]):_c('span',{staticClass:"text-black no-decoration"},[_vm._v("\n                        "+_vm._s(_vm.comment.user.display_name)+"\n                    ")]),_c('span',{staticClass:"x-tiny text-grey-3 font-bold font-italic uppercase ml-1"},[_vm._v("\n                        "+_vm._s(_vm.dateString)+"\n                    ")])])]),_c('div',{staticClass:"flex flex-column align-h-right align-v-center flex-auto"},[_c('div',{staticClass:"flex flex-row"},[((_vm.isUsersPost || _vm.isCurrentUserAdmin))?_c('span',{staticClass:"tiny no-decoration text-grey-3 pointer mr-1"},[_c('i',{staticClass:"fas fa-trash",on:{"click":_vm.deleteComment}})]):_vm._e()])])]),_c('div',{staticClass:"flex flex-row body mb-1"},[_c('div',{staticClass:"flex flex-column post-body grow",domProps:{"innerHTML":_vm._s(_vm.comment.comment)}},[_vm._v("\n                "+_vm._s(_vm.comment.comment)+"\n            ")])]),_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column mb-1"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('p',{staticClass:"tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect",class:_vm.replying ? _vm.themeTextClass : 'text-grey-3',attrs:{"dusk":"reply-button"},on:{"click":_vm.replyToComment}},[_c('i',{staticClass:"fas fa-reply"}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.replying ? 'Replying' : 'Reply')+"\n                        ")])]),(!_vm.isUsersPost)?_c('p',{staticClass:"tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect",class:_vm.comment.is_liked ? _vm.themeTextClass : 'text-grey-3',attrs:{"dusk":"like-button"},on:{"click":_vm.likeComment}},[_c('i',{staticClass:"fas fa-thumbs-up"}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.comment.is_liked ? 'Liked' : 'Like')+"\n                        ")])]):_vm._e(),_c('span',{staticClass:"grow"}),_c('p',{staticClass:"x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect",attrs:{"data-open-modal":_vm.openModalString},on:{"click":_vm.openLikes}},[_c('i',{staticClass:"fas fa-thumbs-up text-white likes-icon",class:_vm.comment.like_count > 0 ? _vm.themeBgClass : 'bg-grey-2'}),_vm._v(" "+_vm._s(_vm.comment.like_count)+"\n                    ")])])])]),_c('transition',{attrs:{"name":"slide-fade","enter-active-class":"slide-fade-enter-active","leave-active-class":""}},[(_vm.replying)?_c('div',{staticClass:"flex flex-row comment-post mv-2"},[_c('div',{staticClass:"flex flex-column avatar-column pr hide-xs-only"},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.currentUser.avatar}})]),_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row"},[_c('text-editor',{ref:"textEditor",attrs:{"toolbar":"bold italic underline | bullist numlist | link","height":150},model:{value:(_vm.replyInterface),callback:function ($$v) {_vm.replyInterface=$$v},expression:"replyInterface"}})],1),_c('div',{staticClass:"flex flex-row align-h-right mv-1"},[_c('a',{staticClass:"btn flat text-black collapse-150 short mr-1",on:{"click":_vm.cancelReply}},[_vm._v("\n                            Cancel\n                        ")]),_c('button',{staticClass:"btn collapse-150",attrs:{"disabled":_vm.loading,"dusk":"submit-reply"},on:{"click":_vm.postReply}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_vm._v("\n                                Reply\n                            ")])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading-reply flex-center"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:_vm.themeTextClass}),_c('p',{staticClass:"x-tiny text-grey-3"},[_vm._v("\n                            loading...\n                        ")])])])]):_vm._e()]),_c('transition-group',{attrs:{"name":"slide-fade","enter-active-class":"slide-fade-enter-active","leave-active-class":"","tag":"div"}},_vm._l((_vm.repliesToShow),function(replyComment){return _c('comment-reply',{key:replyComment.id,attrs:{"comment":replyComment,"brand":_vm.brand,"parent-id":_vm.comment.id,"current-user":_vm.currentUser,"theme-color":_vm.themeColor,"profile-base-route":_vm.profileBaseRoute,"has-public-profiles":_vm.hasPublicProfiles},on:{"likeReply":_vm.likeReply,"deleteReply":_vm.deleteReply,"openLikes":_vm.openLikes,"replyPosted":_vm.replyPosted}})}),1),(_vm.comment.replies && _vm.comment.replies.length > 2)?_c('div',{staticClass:"flex flex-row align-center"},[_c('a',{staticClass:"btn btn-tiny flat text-grey-3 collapse-150",on:{"click":function($event){_vm.showAllReplies = !_vm.showAllReplies}}},[_vm._v("\n                "+_vm._s(_vm.showAllReplies ? 'Hide Replies' : 'Show All Replies')+"\n            ")])]):_vm._e()],1)])}
 var _CommentPostvue_type_template_id_7af72e7d_staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/views/comments/_CommentPost.vue?vue&type=template&id=7af72e7d&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TextEditor/TextEditor.vue?vue&type=template&id=0738e90d&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/TextEditor/TextEditor.vue?vue&type=template&id=0738e90d&
 var TextEditorvue_type_template_id_0738e90d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.contentInterface),expression:"contentInterface"}],attrs:{"type":"hidden","name":_vm.fieldKey},domProps:{"value":(_vm.contentInterface)},on:{"input":function($event){if($event.target.composing){ return; }_vm.contentInterface=$event.target.value}}}),_c('tinymce-editor',{attrs:{"api-key":"g84168rl7b45du7fji2nive374o541mhtmzogyolgqng97xc","init":_vm.initObject},on:{"input":_vm.handleInput},model:{value:(_vm.contentInterface),callback:function ($$v) {_vm.contentInterface=$$v},expression:"contentInterface"}})],1)}
 var TextEditorvue_type_template_id_0738e90d_staticRenderFns = []
 
@@ -38782,7 +37821,7 @@ var TextEditor_component = normalizeComponent(
 )
 
 /* harmony default export */ var TextEditor = (TextEditor_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentReply.vue?vue&type=template&id=27603d8e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentReply.vue?vue&type=template&id=27603d8e&
 var _CommentReplyvue_type_template_id_27603d8e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row comment-post pv mv-1"},[_c('div',{staticClass:"flex flex-column avatar-column pr"},[(_vm.hasPublicProfiles)?_c('div',{staticClass:"user-avatar smaller",class:[_vm.avatarClassObject, _vm.brand]},[_c('a',{staticClass:"no-decoration",attrs:{"href":_vm.profileRoute,"target":"_blank"}},[_c('img',{staticClass:"rounded",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.comment.user['fields.profile_picture_image_url'],"data-ix-fade":""}})])]):_vm._e(),(!_vm.hasPublicProfiles)?_c('img',{staticClass:"rounded",attrs:{"src":_vm.comment.user['fields.profile_picture_image_url']}}):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"body dense font-bold uppercase text-center mt-1"},[_vm._v("\n            "+_vm._s(_vm.userExpRank)+"\n        ")]):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"tiny dense text-center font-compressed"},[_vm._v("\n            "+_vm._s(_vm.userExpValue)+" XP\n        ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column grow"},[_c('div',{staticClass:"flex flex-row align-v-center mb-1 comment-meta"},[_c('div',{staticClass:"flex flex-column grow mr-1"},[_c('h2',{staticClass:"body font-bold break-words"},[(_vm.hasPublicProfiles)?_c('a',{staticClass:"text-black no-decoration",attrs:{"href":_vm.profileRoute,"target":"_blank"}},[_vm._v("\n                        "+_vm._s(_vm.comment.user.display_name)+"\n                    ")]):_c('span',{staticClass:"text-black no-decoration"},[_vm._v("\n                        "+_vm._s(_vm.comment.user.display_name)+"\n                    ")]),_c('span',{staticClass:"x-tiny text-grey-3 font-bold font-italic uppercase ml-1"},[_vm._v("\n                        "+_vm._s(_vm.dateString)+"\n                    ")])])]),_c('div',{staticClass:"flex flex-column align-h-right align-v-center flex-auto"},[_c('div',{staticClass:"flex flex-row"},[((_vm.isUsersPost || _vm.isCurrentUserAdmin))?_c('span',{staticClass:"tiny no-decoration text-grey-3 pointer mr-1"},[_c('i',{staticClass:"fas fa-trash",on:{"click":_vm.deleteComment}})]):_vm._e()])])]),_c('div',{staticClass:"flex flex-row body mb-1"},[_c('div',{staticClass:"flex flex-column post-body grow",domProps:{"innerHTML":_vm._s(_vm.comment.comment)}},[_vm._v("\n                "+_vm._s(_vm.comment.comment)+"\n            ")])]),_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column mb-1"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('p',{staticClass:"tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect",class:_vm.replying ? _vm.themeTextClass : 'text-grey-3',attrs:{"dusk":"reply-button"},on:{"click":_vm.openReply}},[_c('i',{staticClass:"fas fa-reply"}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.replying ? 'Replying' : 'Reply')+"\n                        ")])]),(!_vm.isUsersPost)?_c('p',{staticClass:"tiny mr-3 font-bold uppercase dense pointer reply-like nowrap noselect",class:_vm.comment.is_liked ? _vm.themeTextClass : 'text-grey-3',on:{"click":_vm.likeComment}},[_c('i',{staticClass:"fas fa-thumbs-up"}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.comment.is_liked ? 'Liked' : 'Like')+"\n                        ")])]):_vm._e(),_c('span',{staticClass:"grow"}),_c('p',{staticClass:"x-tiny font-bold text-grey-3 uppercase nowrap pointer noselect",attrs:{"data-open-modal":_vm.openModalString},on:{"click":_vm.openLikes}},[_c('i',{staticClass:"fas fa-thumbs-up text-white likes-icon",class:_vm.comment.like_count > 0 ? _vm.themeBgClass : 'bg-grey-2'}),_vm._v(" "+_vm._s(_vm.comment.like_count)+"\n                    ")])])])]),_c('transition',{attrs:{"name":"slide-fade"}},[(_vm.replying)?_c('div',{staticClass:"flex flex-row comment-post mv-2"},[_c('div',{staticClass:"flex flex-column avatar-column pr hide-xs-only"},[_c('img',{staticClass:"rounded",attrs:{"src":_vm.currentUser.avatar}})]),_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row"},[_c('text-editor',{ref:"textEditor",attrs:{"toolbar":"bold italic underline | bullist numlist | link","height":150},model:{value:(_vm.replyInterface),callback:function ($$v) {_vm.replyInterface=$$v},expression:"replyInterface"}})],1),_c('div',{staticClass:"flex flex-row align-h-right mv-1"},[_c('a',{staticClass:"btn flat text-black collapse-150 short mr-1",on:{"click":function($event){_vm.replying = false}}},[_vm._v("\n                            Cancel\n                        ")]),_c('button',{staticClass:"btn collapse-150",attrs:{"disabled":_vm.loading,"dusk":"submit-reply"},on:{"click":_vm.postReply}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_vm._v("\n                                Reply\n                            ")])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading-reply flex-center"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:_vm.themeTextClass}),_c('p',{staticClass:"x-tiny text-grey-3"},[_vm._v("\n                            loading...\n                        ")])])])]):_vm._e()])],1)])}
 var _CommentReplyvue_type_template_id_27603d8e_staticRenderFns = []
 
@@ -39784,7 +38823,7 @@ var _CommentPost_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CommentPost = (_CommentPost_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentLikesModal.vue?vue&type=template&id=ae074b6e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/_CommentLikesModal.vue?vue&type=template&id=ae074b6e&
 var _CommentLikesModalvue_type_template_id_ae074b6e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modal small",attrs:{"id":_vm.customId || 'likeUsersModal'}},[_c('div',{ref:"likeUsersContainer",staticClass:"flex flex-column bg-white corners-3 shadow",staticStyle:{"max-height":"500px"},attrs:{"id":"likeUsersContainer"}},[(_vm.loadingLikeUsers)?_c('div',{staticClass:"flex flex-column pa-3"},[_c('h1',{staticClass:"heading text-center"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:_vm.themeTextClass})])]):_c('div',{staticClass:"flex flex-column"},[_c('h1',{staticClass:"heading align-v-center pa-3"},[_c('i',{staticClass:"fas fa-thumbs-up rounded text-white mr-1 big likes-icon",class:_vm.themeBgClass}),_vm._v("\n                "+_vm._s(_vm.totalLikeUsers)+" Like"+_vm._s(_vm.totalLikeUsers == 1 ? '' : 's')+"\n            ")]),_vm._l((_vm.likeUsers),function(user){return _c('a',{key:user.id,staticClass:"flex flex-row comment-like-user bt-grey-1-1 no-decoration text-black ph-3 pv-1 align-v-center",attrs:{"href":_vm.baseProfileRoute + user.user_id}},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"flex flex-column avatar-column"},[_c('div',{staticClass:"user-avatar smaller",class:_vm.getUserAvatarClassObject(user)},[_c('img',{staticClass:"rounded",attrs:{"src":user.avatar_url}})])]),_c('div',{staticClass:"flex flex-column pl-2 align-v-center text-truncate"},[_c('p',{staticClass:"body font-bold text-truncate"},[_vm._v("\n                            "+_vm._s(user.display_name)+"\n                        ")])])])])})],2)])])}
 var _CommentLikesModalvue_type_template_id_ae074b6e_staticRenderFns = []
 
@@ -40760,7 +39799,7 @@ var CommentsCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var CommentsCatalogue = (CommentsCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ImageCropper/ImageCropper.vue?vue&type=template&id=187c4a3a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ImageCropper/ImageCropper.vue?vue&type=template&id=187c4a3a&
 var ImageCroppervue_type_template_id_187c4a3a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"image-processor bg-white"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.hasFileToCrop),expression:"!hasFileToCrop"}],ref:"uploader",staticClass:"image-uploader ba-light-1 corners-3 bg-white widescreen"},[_c('div',{staticClass:"uploader-content"},[(_vm.dropZoneError)?_c('p',{staticClass:"body mb-5 text-error"},[_vm._v("\n                "+_vm._s(_vm.dropZoneError)+"\n            ")]):_vm._e(),_vm._m(0),_vm._m(1),_vm._m(2)])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasFileToCrop),expression:"hasFileToCrop"}],staticClass:"image-cropper bg-white"},[_c('div',{staticClass:"widescreen overflow"},[_c('canvas',{ref:"cropper",attrs:{"id":"imgToCrop"}})]),_c('div',{staticClass:"cropper-controls pv-1 bg-grey-2 flex flex-row align-center"},[_c('a',{staticClass:"btn normal bg-dark inverted text-grey-3 short mh-1",on:{"click":_vm.resetCrop}},[_vm._v("\n                Cancel\n            ")]),_c('div',{staticClass:"flex flex-column"}),_c('a',{staticClass:"btn bg-x-dark text-white short mh-1",on:{"click":_vm.zoomOut}},[_c('i',{staticClass:"far fa-search-minus"})]),_c('a',{staticClass:"btn bg-x-dark text-white short mh-1",on:{"click":_vm.zoomIn}},[_c('i',{staticClass:"far fa-search-plus"})]),_c('a',{staticClass:"btn bg-x-dark text-white short mh-1",on:{"click":_vm.rotate}},[_c('i',{staticClass:"fas fa-redo-alt"})]),_c('div',{staticClass:"flex flex-column"}),_c('a',{staticClass:"btn normal text-white short mh-1",class:_vm.themeBgClass,on:{"click":_vm.cropImage}},[_vm._v("\n                Crop\n            ")])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.croppedImage),expression:"croppedImage"}],staticClass:"image-preview bg-white"},[_c('div',{staticClass:"widescreen bg-white"},[_c('img',{staticClass:"shadow",class:_vm.aspectRatio === 1 ? 'rounded' : '',attrs:{"src":_vm.croppedImage}}),(_vm.loading)?_c('span',{staticClass:"loading-element tiny font-italic",class:_vm.themeTextClass},[_c('i',{staticClass:"fas fa-spinner fa-spin"}),_vm._v("\n                    Loading please wait...\n                ")]):_vm._e()]),_c('div',{staticClass:"pa-1 flex flex-row bg-white"},[_c('button',{staticClass:"btn collapse-150 mr-1",attrs:{"disabled":_vm.loading},on:{"click":_vm.cancelCrop}},[_vm._m(3)]),_c('div',{staticClass:"flex flex-column"}),_c('button',{staticClass:"btn collapse-150",attrs:{"disabled":_vm.loading},on:{"click":_vm.uploadImage}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_vm._v("\n                        Save\n                    ")])])])])]),_c('span',{staticClass:"dz-hidden-input"})])}
 var ImageCroppervue_type_template_id_187c4a3a_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"choose btn bg-black text-black inverted collapse-250"},[_c('i',{staticClass:"fas fa-upload mr-1"}),_vm._v("\n                Choose a Photo\n            ")])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"drop btn bg-black text-white collapse-250"},[_c('i',{staticClass:"fas fa-upload mr-1"}),_vm._v("\n                Drop to Upload\n            ")])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p',{staticClass:"tiny font-italic text-grey-3 mt-2"},[_vm._v("\n                Max file size: "),_c('strong',[_vm._v("5MB")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"text-black flat short"},[_c('i',{staticClass:"fas fa-chevron-left mr-1"}),_vm._v(" Back\n                    ")])}]
 
@@ -41149,7 +40188,7 @@ var ImageCropper_component = normalizeComponent(
 )
 
 /* harmony default export */ var ImageCropper = (ImageCropper_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=47197fb1&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=47197fb1&
 var PaymentMethodsvue_type_template_id_47197fb1_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column grow"},[_vm._m(0),_c('ul',{staticClass:"body list-style-none mb-3 flex-column md-6"},[_vm._m(1),_vm._l((_vm.paymentMethodsData.data),function(paymentMethod,i){return _c('li',{key:i,staticClass:"flex flex-row align-v-center",staticStyle:{"border-top":"1px solid #ddd"}},[_c('div',{staticClass:"flex flex-column default-col text-center body hide-xs-only"},[(_vm.isPrimaryPaymentMethod(paymentMethod))?_c('i',{staticClass:"fas fa-check"}):_vm._e()]),(paymentMethod.relationships.method.data.type === 'creditCard')?_c('div',{staticClass:"flex flex-column body"},[_vm._v("\n                "+_vm._s(_vm.getRelatedAttributesByTypeAndId(
                     paymentMethod.relationships.method.data
                 ).attributes.company_name || 'N/A')+"\n                -\n                "+_vm._s(_vm.getRelatedAttributesByTypeAndId(
@@ -41160,7 +40199,7 @@ var PaymentMethodsvue_type_template_id_47197fb1_staticRenderFns = [function () {
 
 // CONCATENATED MODULE: ./src/views/payment-methods/PaymentMethods.vue?vue&type=template&id=47197fb1&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/order-form/_OrderFormPayment.vue?vue&type=template&id=307465dc&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/order-form/_OrderFormPayment.vue?vue&type=template&id=307465dc&
 var _OrderFormPaymentvue_type_template_id_307465dc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column mb-2"},[_c('payment-svg'),_c('div',{staticClass:"flex flex-column bg-white corners-5 pt-1 nmh-1"},[_c('div',{staticClass:"flex flex-row flex-wrap align-v-center"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 pr-2 mb-1"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_paymentMethod),expression:"$_paymentMethod",modifiers:{"lazy":true}}],staticClass:"order-form-input has-input",attrs:{"id":"paymentMethodType"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_paymentMethod=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":"credit_card"}},[_vm._v("\n                            Credit Card\n                        ")]),_c('option',{attrs:{"value":"paypal"}},[_vm._v("\n                            PayPal\n                        ")])]),_c('label',{class:_vm.brand,attrs:{"for":"paymentMethodType"}},[_vm._v("\n                        Payment Method Type\n                    ")])])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 pr-2 mb-1"},[_c('div',{staticClass:"flex flex-row payment-types flex-wrap",class:{ 'payment-selected': _vm.paymentSelected }},_vm._l((_vm.paymentTypes),function(type,i){return _c('div',{key:i,staticClass:"mr-1 payment-type",class:{ 'type-selected': type.selected },on:{"click":function($event){return _vm.selectPaymentType(i)}}},[_c('svg-icon',{attrs:{"icon-name":type.name,"width":"60px"}})],1)}),0)])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.$_paymentMethod === 'credit_card'),expression:"$_paymentMethod === 'credit_card'"}],staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-number"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                        Card Number\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardNumber),function(error,i){return _c('li',{key:'cardNumberError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6"},[_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-expiry"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                                Expiry (MM / YY)\n                            ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardExpiry),function(error,i){return _c('li',{key:'cardExpiryError' + i},[_vm._v("\n                                    "+_vm._s(error || null)+"\n                                ")])}),0)])]),_c('div',{staticClass:"flex flex-column xs-12 sm-6 ph-1 mb-2"},[_c('div',{staticClass:"form-group"},[_c('div',{staticClass:"stripe-element-container order-form-input",attrs:{"id":"card-cvc"}}),_c('label',{class:_vm.brand,attrs:{"for":"card-number"}},[_vm._v("\n                                CVC\n                            ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.cardCvc),function(error,i){return _c('li',{key:'cardCvcError' + i},[_vm._v("\n                                    "+_vm._s(error || null)+"\n                                ")])}),0)])])])])]),_c('div',{staticClass:"flex flex-row flex-wrap mb-2"},[_c('div',{staticClass:"flex flex-column xs-12 ph-1 pb-2",class:_vm.$_billingCountry === 'Canada' ? 'sm-6' : ''},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_billingCountry),expression:"$_billingCountry",modifiers:{"lazy":true}}],class:{ invalid: _vm.errors.billingCountry, 'has-input': _vm.$_billingCountry != null },attrs:{"id":"billingCountry"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_billingCountry=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},_vm._l((_vm.countries),function(country){return _c('option',{key:country,domProps:{"value":country}},[_vm._v("\n                            "+_vm._s(country)+"\n                        ")])}),0),_c('label',{class:_vm.brand,attrs:{"for":"billingCountry"}},[_vm._v("\n                        Country\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.billingCountry),function(error,i){return _c('li',{key:'billingCountryError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]),(_vm.$_billingCountry === 'Canada')?_c('div',{staticClass:"flex flex-column xs-12 ph-1 sm-6"},[_c('div',{staticClass:"form-group"},[_c('select',{directives:[{name:"model",rawName:"v-model.lazy",value:(_vm.$_billingRegion),expression:"$_billingRegion",modifiers:{"lazy":true}}],class:{ invalid: _vm.errors.billingRegion, 'has-input': _vm.$_billingRegion != null },attrs:{"id":"billingRegion","disabled":_vm.$_billingCountry !== 'Canada'},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$_billingRegion=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},_vm._l((_vm.provinces),function(province){return _c('option',{key:province,domProps:{"value":_vm.toCapitalCase(province)}},[_vm._v("\n                            "+_vm._s(_vm.toCapitalCase(province))+"\n                        ")])}),0),_c('label',{class:_vm.brand,attrs:{"for":"billingRegion"}},[_vm._v("\n                        State/Province\n                    ")]),_c('ul',{staticClass:"errors tiny"},_vm._l((_vm.errors.billingRegion),function(error,i){return _c('li',{key:'billingRegionError' + i},[_vm._v("\n                            "+_vm._s(error || null)+"\n                        ")])}),0)])]):_vm._e()]),(_vm.$_paymentMethod === 'paypal')?_c('div',{staticClass:"flex flex-row pa-1"},[_c('h3',{staticClass:"tiny text-grey-3 font-italic"},[_vm._v("\n                * Submitting this form will redirect you to PayPal to complete your order.\n            ")])]):_vm._e(),(!_vm.isOrder)?_c('div',{staticClass:"flex flex-row mb-1"},[_c('div',{staticClass:"flex flex-column ph-1"},[(_vm.hasSubscription)?_c('div',{staticClass:"flex flex-row form-group align-v-center mb-2"},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.paymentDetails.updateActiveSubscriptions),expression:"paymentDetails.updateActiveSubscriptions"}],attrs:{"id":"updateActiveSubscriptions","name":"update-active-subscriptions","type":"checkbox"},domProps:{"checked":Array.isArray(_vm.paymentDetails.updateActiveSubscriptions)?_vm._i(_vm.paymentDetails.updateActiveSubscriptions,null)>-1:(_vm.paymentDetails.updateActiveSubscriptions)},on:{"change":function($event){var $$a=_vm.paymentDetails.updateActiveSubscriptions,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.paymentDetails, "updateActiveSubscriptions", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.paymentDetails, "updateActiveSubscriptions", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.paymentDetails, "updateActiveSubscriptions", $$c)}}}}),_vm._m(0)]),_c('label',{staticClass:"toggle-label font-bold",attrs:{"for":"updateActiveSubscriptions"}},[_vm._v("\n                        Update my existing active subscriptions to use this payment method.\n                    ")])]):_vm._e(),(_vm.hasSubscription && !_vm.isActive)?_c('div',{staticClass:"flex flex-row form-group align-v-center mb-2 pt-2",staticStyle:{"border-top":"1px solid #ddd"}},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.paymentDetails.renewDueSubscription),expression:"paymentDetails.renewDueSubscription"}],attrs:{"id":"renewDueSubscription","name":"renew-due-subscription","type":"checkbox"},domProps:{"checked":Array.isArray(_vm.paymentDetails.renewDueSubscription)?_vm._i(_vm.paymentDetails.renewDueSubscription,null)>-1:(_vm.paymentDetails.renewDueSubscription)},on:{"change":function($event){var $$a=_vm.paymentDetails.renewDueSubscription,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.paymentDetails, "renewDueSubscription", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.paymentDetails, "renewDueSubscription", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.paymentDetails, "renewDueSubscription", $$c)}}}}),_vm._m(1)]),_c('label',{staticClass:"toggle-label font-bold",attrs:{"for":"renewDueSubscription"}},[_vm._v("\n                        Renew my subscription now.\n                    ")])]):_vm._e(),(_vm.paymentDetails.renewDueSubscription && _vm.hasSubscription && !_vm.isActive)?_c('div',[_vm._m(2),_c('div',{staticClass:"flex flex-row flex-wrap"},[_c('div',{staticClass:"flex flex-column xs-12 sm-12 ph-1 align-h-right mb-2"},[(_vm.totals.shipping)?_c('div',{staticClass:"body font-bold"},[_vm._v("\n                                Shipping: $"+_vm._s(_vm.totalShipping)+"\n                            ")]):_vm._e(),_c('div',{staticClass:"body font-bold"},[_vm._v("\n                                Tax: $"+_vm._s(_vm.totalTax)+"\n                            ")]),_c('div',{staticClass:"body font-bold"},[_c('span',{staticClass:"display"},[_vm._v("$"+_vm._s(_vm.totalDue))]),_vm._v(" USD\n                            ")]),_c('div',{staticClass:"body font-bold"},[_vm._v("\n                                Due Today\n                            ")])])])]):_vm._e(),_c('div',{staticClass:"flex flex-row flex-wrap align-h-right align-v-center"},[_c('div',{staticClass:"flex flex-column xs-6 sm-4 mb-2 pr-1"},[_c('button',{staticClass:"btn short close-modal",on:{"click":_vm.cancelForm}},[_c('span',{staticClass:"flat text-grey-4"},[_vm._v("\n                                Cancel\n                            ")])])]),_c('div',{staticClass:"flex flex-column xs-6 sm-4 mb-2 pl-1"},[_c('button',{staticClass:"btn",on:{"click":_vm.submitForm}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("\n                                Submit\n                            ")])])])])])]):_vm._e()])],1)}
 var _OrderFormPaymentvue_type_template_id_307465dc_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row mb-2"},[_c('div',{staticClass:"flex flex-column"},[_c('p',{staticClass:"tiny font-italic text-grey-3"},[_vm._v("\n                                * Submitting this form will create a new default payment method for you.\n                                Your current subscription will be billed to this payment method when it's due.\n                            ")])])])}]
 
@@ -41207,7 +40246,7 @@ var _OrderFormPaymentvue_type_template_id_307465dc_staticRenderFns = [function (
     }
   }
 });
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SVGSprites/_PaymentSVG.vue?vue&type=template&id=373aa618&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SVGSprites/_PaymentSVG.vue?vue&type=template&id=373aa618&
 var _PaymentSVGvue_type_template_id_373aa618_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('svg',{staticStyle:{"display":"none"},attrs:{"aria-hidden":"true","version":"1.1","xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink"}},[_c('defs',[_c('svg',{attrs:{"id":"icon-american-express"}},[_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M30.575 5.906h-29.206c-0.569 0-0.925 0.088-1.119 0.269-0.169 0.206-0.25 0.544-0.25 1.044v17.519c0 0.894 0.463 1.356 1.369 1.356h29.206c0.95 0 1.425-0.462 1.425-1.356v-17.525c0-0.881-0.475-1.306-1.425-1.306z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M28.069 16.506h-1.025c-0.050 0-0.369-0.012-0.719 0.131v-0.131h-2.069c-0.050 0-0.363-0.012-0.706 0.125v-0.125h-3.631v0.119c-0.325-0.137-0.644-0.131-0.762-0.119h-2.475v0.1c-0.306-0.119-0.6-0.113-0.706-0.106h-1.894l-0.606 0.006h-0.256s-0.412 0.444-0.65 0.706c-0.238-0.262-0.65-0.712-0.65-0.712h-3.713v4.281h3.775s0.381-0.413 0.581-0.637c0.2 0.225 0.581 0.637 0.581 0.637h2.313v-1h0.188c0.35 0 0.719-0.031 1.044-0.163v1.169h1.956v-1.081h0.131c0 0.081-0.006 0.494-0.006 0.494v0.587h1.938v-0.006h2.85v-0.006h1.175c0.044 0 0.094 0.006 0.094 0.006 0.231 0 0.475-0.050 0.7-0.137v0.137h1.988c0.044 0 0.094 0.006 0.094 0.006 0.262 0 0.544-0.063 0.794-0.188 0.044-0.019 0.087-0.038 0.125-0.063v0.006c0.1-0.063 0.238-0.181 0.387-0.387v-3.644h-0.844zM4.6 14.863h0.669c0.063 0.144 0.275 0.65 0.275 0.65h2.531v-0.081c0.012 0.031 0.037 0.081 0.037 0.081h1.387s0.019-0.044 0.031-0.069v0.069h6.063v-1.081h0.131c0 0.081-0.006 0.494-0.006 0.494v0.588h1.744v0.012h1.381v-0.275c0.238 0.15 0.481 0.238 0.663 0.262l0.044 0.006h1.669s0.212-0.506 0.275-0.65h0.669c0.063 0.15 0.281 0.65 0.281 0.65h2.519v-0.556c0.038 0.063 0.337 0.556 0.337 0.556h2.006v-4.275h-1.962v0.531c-0.031-0.056-0.325-0.531-0.325-0.531h-2.031v0.5c-0.006-0.012-0.212-0.5-0.212-0.5h-1.881v0.006c-0.038 0-1.094-0.031-1.094-0.031-0.331 0.012-0.656 0.106-0.944 0.287v-0.256h-1.969v0.119c-0.325-0.137-0.644-0.131-0.762-0.119h-6.838s-0.331 0.738-0.488 1.088c-0.156-0.35-0.488-1.088-0.488-1.088h-2.206v0.537c-0.006-0.019-0.225-0.537-0.225-0.537h-1.888l-0.869 2.063v2.213h1.194c0-0.006 0.219-0.512 0.281-0.662z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M16.319 14.931v-0.606s-0.031-0.475-0.525-0.475h-0.769v1.081h-0.787v-3.106h1.913s1-0.119 1 0.912c0 0.537-0.444 0.725-0.444 0.725s0.381 0.181 0.381 0.706v0.769h-0.769zM15.025 13.125h0.813c0.237 0 0.431-0.131 0.431-0.294s-0.194-0.294-0.431-0.294h-0.813v0.588z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M25.625 14.931l-1.25-2.075v2.075h-1.55l-0.281-0.65h-1.444l-0.275 0.65h-1.238s-1.063-0.15-1.063-1.469c0-1.725 1.206-1.656 1.244-1.669l0.975 0.025v0.7l-0.8 0.012s-0.519 0-0.587 0.681c-0.006 0.075-0.012 0.15-0.012 0.219 0 1.050 0.913 0.725 0.944 0.713l0.981-2.319h1.106l1.181 2.819v-2.819h1.131l1.238 2.044v-2.044h0.794v3.106h-1.094zM21.444 13.488h0.769l-0.381-0.925-0.387 0.925z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M10.125 14.931v-2.144l-0.988 2.144h-0.644l-0.994-2.137v2.137h-1.563l-0.275-0.65h-1.438l-0.281 0.65h-0.862l1.306-3.106h1.112l1.2 2.856v-2.856h1.244l0.869 1.931 0.863-1.931h1.244v3.106h-0.794zM4.563 13.488h0.769l-0.388-0.925-0.381 0.925z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M11.363 14.931v-3.106h2.463v0.725h-1.669v0.475h1.625v0.706h-1.625v0.525h1.669v0.675h-2.463z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M17.475 14.944v-3.119h0.794v3.119h-0.794z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M19.363 20.2v-0.606s-0.031-0.475-0.525-0.475h-0.769v1.075h-0.788v-3.106h1.913s1-0.119 1 0.913c0 0.538-0.444 0.725-0.444 0.725s0.381 0.181 0.381 0.706v0.769h-0.769zM18.069 18.394h0.813c0.238 0 0.431-0.131 0.431-0.294s-0.194-0.294-0.431-0.294h-0.813v0.587z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M14.1 20.2h-0.688l-0.838-0.919-0.844 0.919h-2.938v-3.113h2.875l0.906 0.988 0.912-0.981h0.606v-0.006h1.912s1-0.113 1 0.913c0 0.913-0.331 1.2-1.35 1.2h-0.775v1h-0.781zM13.113 18.669l0.981 1.081v-2.163l-0.981 1.081zM9.594 19.525h1.662l0.781-0.856-0.781-0.856h-1.662v0.481h1.619v0.706h-1.619v0.525zM14.881 18.387h0.813c0.238 0 0.431-0.131 0.431-0.294s-0.194-0.294-0.431-0.294h-0.813v0.587z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M24.744 20.194h-1.406v-0.719h1.231s0.444 0.050 0.444-0.244c0-0.281-0.669-0.256-0.669-0.256s-1.087 0.094-1.087-0.925c0-1.012 0.981-0.956 0.981-0.956h1.512v0.719h-1.219s-0.419-0.087-0.419 0.219c0 0.256 0.575 0.219 0.575 0.219s1.206-0.087 1.206 0.85c0 1.006-0.775 1.094-1.050 1.094h-0.1z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M20.519 20.2v-3.106h2.462v0.719h-1.669v0.481h1.625v0.706h-1.625v0.525h1.669v0.675h-2.462z"}}),_c('path',{staticStyle:{"fill":"var(--color1, #0c98bc)"},attrs:{"fill":"#0c98bc","d":"M27.525 20.194h-1.406v-0.719h1.225s0.45 0.050 0.45-0.244c0-0.281-0.669-0.256-0.669-0.256s-1.087 0.094-1.087-0.925c0-1.012 0.981-0.956 0.981-0.956h1.512v0.719h-1.219s-0.419-0.087-0.419 0.219c0 0.256 0.575 0.219 0.575 0.219s1.206-0.087 1.206 0.85c0 1.006-0.775 1.094-1.050 1.094h-0.1z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M28.406 20.594l-0.006 0.006s0.050-0.019 0.131-0.069v-0.006c-0.044 0.025-0.087 0.044-0.125 0.069z"}})]),_c('svg',{attrs:{"id":"icon-discover"}},[_c('path',{staticStyle:{"fill":"var(--color3, #dfdfe0)"},attrs:{"fill":"#dfdfe0","d":"M30.575 5.906h-29.206c-0.569 0-0.925 0.088-1.119 0.269-0.169 0.206-0.25 0.544-0.25 1.044v17.519c0 0.894 0.463 1.356 1.369 1.356h29.206c0.95 0 1.425-0.462 1.425-1.356v-17.525c0-0.881-0.475-1.306-1.425-1.306z"}}),_c('path',{staticStyle:{"fill":"var(--color4, #f58220)"},attrs:{"fill":"#f58220","d":"M30.575 26.094c0.95 0 1.425-0.462 1.425-1.356v-7.506s-8.681 6.125-24.575 8.869h23.15z"}}),_c('path',{staticStyle:{"fill":"var(--color4, #f58220)"},attrs:{"fill":"#f58220","d":"M16.45 10.575c-1.019 0-1.844 0.794-1.844 1.775 0 1.044 0.787 1.825 1.844 1.825 1.025 0 1.837-0.787 1.837-1.8 0-1.006-0.806-1.8-1.837-1.8z"}}),_c('path',{staticStyle:{"fill":"var(--color5, #081a23)"},attrs:{"fill":"#081a23","d":"M5.987 10.637h-0.994v3.456h0.987c0.525 0 0.9-0.125 1.231-0.4 0.394-0.325 0.625-0.819 0.625-1.325 0-1.019-0.763-1.731-1.85-1.731zM6.775 13.238c-0.213 0.194-0.487 0.275-0.925 0.275h-0.181v-2.287h0.181c0.438 0 0.7 0.075 0.925 0.281 0.231 0.206 0.375 0.531 0.375 0.863-0.006 0.331-0.144 0.662-0.375 0.869z"}}),_c('path',{staticStyle:{"fill":"var(--color5, #081a23)"},attrs:{"fill":"#081a23","d":"M8.15 10.637h0.675v3.456h-0.675v-3.456z"}}),_c('path',{staticStyle:{"fill":"var(--color5, #081a23)"},attrs:{"fill":"#081a23","d":"M10.475 11.969c-0.406-0.15-0.525-0.25-0.525-0.438 0-0.219 0.213-0.381 0.5-0.381 0.2 0 0.369 0.081 0.544 0.281l0.35-0.463c-0.287-0.256-0.637-0.381-1.019-0.381-0.613 0-1.075 0.425-1.075 0.988 0 0.475 0.219 0.719 0.85 0.95 0.262 0.094 0.4 0.156 0.469 0.2 0.137 0.088 0.2 0.213 0.2 0.356 0 0.281-0.225 0.488-0.525 0.488-0.319 0-0.581-0.162-0.738-0.463l-0.438 0.419c0.313 0.456 0.681 0.656 1.2 0.656 0.7 0 1.194-0.469 1.194-1.137 0.006-0.55-0.219-0.794-0.988-1.075z"}}),_c('path',{staticStyle:{"fill":"var(--color5, #081a23)"},attrs:{"fill":"#081a23","d":"M11.681 12.369c0 1.019 0.8 1.806 1.825 1.806 0.287 0 0.537-0.056 0.844-0.2v-0.794c-0.269 0.269-0.506 0.381-0.813 0.381-0.681 0-1.162-0.494-1.162-1.194 0-0.662 0.5-1.188 1.131-1.188 0.319 0 0.563 0.113 0.844 0.387v-0.794c-0.294-0.15-0.537-0.213-0.831-0.213-1.019 0-1.838 0.806-1.838 1.806z"}}),_c('path',{staticStyle:{"fill":"var(--color5, #081a23)"},attrs:{"fill":"#081a23","d":"M19.813 12.963l-0.919-2.325h-0.738l1.469 3.55h0.363l1.494-3.55h-0.731z"}}),_c('path',{staticStyle:{"fill":"var(--color5, #081a23)"},attrs:{"fill":"#081a23","d":"M21.788 14.1h1.913v-0.588h-1.238v-0.931h1.188v-0.588h-1.188v-0.769h1.238v-0.588h-1.913z"}}),_c('path',{staticStyle:{"fill":"var(--color5, #081a23)"},attrs:{"fill":"#081a23","d":"M26.369 11.662c0-0.65-0.444-1.019-1.225-1.019h-1v3.456h0.675v-1.387h0.087l0.931 1.387h0.831l-1.087-1.456c0.506-0.106 0.788-0.456 0.788-0.981zM25.012 12.231h-0.194v-1.050h0.206c0.419 0 0.65 0.175 0.65 0.512 0 0.35-0.231 0.537-0.663 0.537z"}}),_c('path',{staticStyle:{"fill":"var(--color6, #231f20)"},attrs:{"fill":"#231f20","d":"M26.844 10.9c0-0.063-0.038-0.094-0.113-0.094h-0.1v0.306h0.075v-0.119l0.087 0.119h0.087l-0.1-0.125c0.038-0.019 0.063-0.050 0.063-0.088zM26.719 10.938h-0.012v-0.081h0.012c0.038 0 0.056 0.012 0.056 0.037-0.006 0.031-0.025 0.044-0.056 0.044z"}}),_c('path',{staticStyle:{"fill":"var(--color6, #231f20)"},attrs:{"fill":"#231f20","d":"M26.744 10.688c-0.15 0-0.269 0.119-0.269 0.269s0.119 0.269 0.269 0.269c0.144 0 0.262-0.119 0.262-0.269 0-0.144-0.119-0.269-0.262-0.269zM26.744 11.175c-0.119 0-0.212-0.1-0.212-0.219s0.094-0.219 0.212-0.219c0.113 0 0.212 0.1 0.212 0.219-0.006 0.119-0.1 0.219-0.212 0.219z"}})]),_c('svg',{attrs:{"id":"icon-mastercard"}},[_c('path',{staticStyle:{"fill":"var(--color3, #dfdfe0)"},attrs:{"fill":"#dfdfe0","d":"M30.575 5.906h-29.206c-0.569 0-0.925 0.088-1.119 0.269-0.169 0.206-0.25 0.544-0.25 1.044v17.519c0 0.894 0.463 1.356 1.369 1.356h29.206c0.95 0 1.425-0.462 1.425-1.356v-17.525c0-0.881-0.475-1.306-1.425-1.306z"}}),_c('path',{staticStyle:{"fill":"var(--color7, #fcb131)"},attrs:{"fill":"#fcb131","d":"M16 21.313c1.262 1.156 2.944 1.856 4.781 1.856 3.938 0 7.125-3.212 7.125-7.169 0-3.963-3.194-7.169-7.125-7.169-1.844 0-3.519 0.7-4.781 1.856-1.438 1.313-2.344 3.206-2.344 5.313s0.906 4.006 2.344 5.313z"}}),_c('path',{staticStyle:{"fill":"var(--color7, #fcb131)"},attrs:{"fill":"#fcb131","d":"M26.962 20c0-0.131 0.106-0.231 0.231-0.231s0.231 0.106 0.231 0.231-0.1 0.231-0.231 0.231-0.231-0.106-0.231-0.231zM27.194 20.175c0.1 0 0.175-0.081 0.175-0.175 0-0.1-0.081-0.175-0.175-0.175s-0.175 0.081-0.175 0.175 0.075 0.175 0.175 0.175zM27.163 20.1h-0.050v-0.206h0.087c0.019 0 0.038 0 0.050 0.012 0.019 0.012 0.025 0.031 0.025 0.050 0 0.025-0.012 0.044-0.038 0.050l0.038 0.087h-0.050l-0.031-0.081h-0.038v0.087-0.113h0.025c0.012 0 0.019 0 0.031-0.006 0.006-0.006 0.012-0.012 0.012-0.025 0-0.006-0.006-0.019-0.012-0.019-0.006-0.006-0.019-0.006-0.031-0.006h-0.025v0.169h0.006z"}}),_c('path',{staticStyle:{"fill":"var(--color8, #ed1b2e)"},attrs:{"fill":"#ed1b2e","d":"M18.306 15.238c-0.025-0.256-0.069-0.512-0.119-0.756h-4.363c0.056-0.256 0.125-0.512 0.206-0.756h3.95c-0.087-0.262-0.188-0.512-0.3-0.762h-3.344c0.125-0.262 0.262-0.512 0.412-0.756h2.525c-0.163-0.262-0.344-0.519-0.544-0.756h-1.438c0.219-0.269 0.463-0.525 0.719-0.756-1.262-1.156-2.944-1.856-4.781-1.856-3.938 0-7.125 3.213-7.125 7.169 0 3.962 3.194 7.169 7.125 7.169 1.844 0 3.519-0.7 4.781-1.856 0.256-0.238 0.5-0.488 0.719-0.756h-1.438c-0.194-0.238-0.375-0.494-0.544-0.756h2.525c0.15-0.244 0.288-0.5 0.413-0.756h-3.344c-0.113-0.244-0.219-0.5-0.306-0.756h3.95c0.081-0.25 0.15-0.5 0.206-0.756 0.056-0.25 0.094-0.5 0.119-0.762 0.025-0.25 0.038-0.5 0.038-0.756-0.006-0.275-0.019-0.531-0.044-0.781z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M26.962 17.663c0-0.125 0.106-0.231 0.231-0.231s0.231 0.106 0.231 0.231-0.1 0.231-0.231 0.231-0.231-0.1-0.231-0.231zM27.194 17.837c0.1 0 0.175-0.081 0.175-0.175 0-0.1-0.081-0.175-0.175-0.175s-0.175 0.081-0.175 0.175c0 0.1 0.075 0.175 0.175 0.175zM27.163 17.762h-0.050v-0.2h0.087c0.019 0 0.038 0 0.050 0.012 0.019 0.012 0.025 0.031 0.025 0.050 0 0.025-0.012 0.044-0.038 0.050l0.038 0.087h-0.050l-0.031-0.081h-0.038v0.081-0.113h0.025c0.012 0 0.019 0 0.031-0.006 0.006-0.006 0.012-0.012 0.012-0.025 0-0.006-0.006-0.019-0.012-0.019-0.006-0.006-0.019-0.006-0.031-0.006h-0.025v0.169h0.006z"}}),_c('path',{staticStyle:{"fill":"var(--color9, #003473)"},attrs:{"fill":"#003473","d":"M13.575 18.069c-0.238 0.069-0.406 0.094-0.581 0.094-0.363 0-0.588-0.231-0.588-0.65 0-0.081 0.006-0.169 0.025-0.262l0.044-0.288 0.037-0.231 0.338-2.019h0.744l-0.088 0.438h0.463l-0.113 0.744h-0.469l-0.2 1.206c-0.006 0.056-0.012 0.094-0.012 0.125 0 0.15 0.081 0.219 0.262 0.219 0.088 0 0.156-0.006 0.238-0.025l-0.1 0.65z"}}),_c('path',{staticStyle:{"fill":"var(--color9, #003473)"},attrs:{"fill":"#003473","d":"M15.969 18.044c-0.262 0.081-0.519 0.119-0.794 0.119-0.825 0-1.313-0.456-1.313-1.325 0-1.012 0.575-1.762 1.35-1.762 0.637 0 1.044 0.419 1.044 1.075 0 0.219-0.025 0.431-0.094 0.731h-1.537c-0.006 0.044-0.006 0.069-0.006 0.094 0 0.344 0.231 0.519 0.681 0.519 0.275 0 0.525-0.056 0.806-0.188l-0.137 0.738zM15.506 16.281c0.006-0.063 0.006-0.113 0.006-0.15 0-0.238-0.137-0.381-0.369-0.381-0.244 0-0.425 0.188-0.494 0.531h0.856z"}}),_c('path',{staticStyle:{"fill":"var(--color9, #003473)"},attrs:{"fill":"#003473","d":"M7.675 18.106h-0.775l0.444-2.794-0.994 2.794h-0.525l-0.063-2.781-0.469 2.781h-0.75l0.606-3.637h1.112l0.031 2.256 0.75-2.256h1.225z"}}),_c('path',{staticStyle:{"fill":"var(--color9, #003473)"},attrs:{"fill":"#003473","d":"M9.531 16.788c-0.081-0.012-0.094-0.012-0.15-0.012-0.438 0-0.662 0.169-0.662 0.45 0 0.181 0.106 0.3 0.275 0.3 0.375 0.006 0.525-0.3 0.537-0.738zM10.144 18.106h-0.669l0.012-0.306c-0.169 0.231-0.4 0.356-0.813 0.356-0.375 0-0.688-0.331-0.688-0.806 0-0.144 0.025-0.269 0.056-0.387 0.125-0.456 0.581-0.744 1.281-0.756 0.088 0 0.225 0 0.338 0.012 0.025-0.1 0.031-0.137 0.031-0.194 0-0.194-0.162-0.256-0.519-0.256-0.219 0-0.469 0.037-0.637 0.088l-0.106 0.031-0.044 0.012 0.106-0.662c0.363-0.113 0.613-0.156 0.9-0.156 0.662 0 1.019 0.3 1.019 0.869 0 0.144 0.012 0.256-0.037 0.587l-0.162 1.050-0.025 0.188-0.031 0.25-0.012 0.081z"}}),_c('path',{staticStyle:{"fill":"var(--color9, #003473)"},attrs:{"fill":"#003473","d":"M19.688 15.175c0.212 0 0.413 0.056 0.694 0.194l0.125-0.787c-0.069-0.031-0.087-0.037-0.188-0.069l-0.319-0.081c-0.1-0.025-0.212-0.037-0.344-0.037-0.381 0-0.606 0.006-0.844 0.15-0.125 0.075-0.281 0.188-0.462 0.387l-0.094-0.031-0.788 0.563 0.038-0.319h-0.819l-0.469 2.956h0.775l0.281-1.594s0.113-0.219 0.163-0.288c0.144-0.194 0.269-0.194 0.431-0.188h0.056c-0.025 0.175-0.038 0.363-0.038 0.563 0 0.969 0.544 1.569 1.381 1.569 0.212 0 0.4-0.031 0.681-0.106l0.137-0.831c-0.256 0.125-0.469 0.188-0.656 0.188-0.45 0-0.719-0.331-0.719-0.887-0.006-0.787 0.4-1.35 0.975-1.35z"}}),_c('path',{staticStyle:{"fill":"var(--color9, #003473)"},attrs:{"fill":"#003473","d":"M26.225 14.469l-0.169 1.037c-0.188-0.281-0.406-0.412-0.706-0.412-0.406 0-0.781 0.231-1.012 0.669v-0.006l-0.494-0.294 0.038-0.319h-0.819l-0.469 2.956h0.775l0.256-1.594s0.2-0.219 0.25-0.288c0.113-0.15 0.238-0.181 0.344-0.188-0.087 0.25-0.144 0.544-0.144 0.881 0 0.738 0.381 1.231 0.944 1.231 0.281 0 0.5-0.1 0.712-0.331l-0.038 0.288h0.731l0.587-3.637h-0.788v0.006zM25.281 17.413c-0.262 0-0.4-0.194-0.4-0.581 0-0.581 0.25-0.994 0.6-0.994 0.269 0 0.413 0.206 0.413 0.581 0 0.581-0.25 0.994-0.613 0.994z"}}),_c('path',{staticStyle:{"fill":"var(--color9, #003473)"},attrs:{"fill":"#003473","d":"M21.719 16.788c-0.081-0.012-0.094-0.012-0.15-0.012-0.438 0-0.663 0.169-0.663 0.45 0 0.181 0.106 0.3 0.275 0.3 0.375 0.006 0.525-0.3 0.538-0.738zM22.331 18.106h-0.669l0.012-0.306c-0.169 0.231-0.4 0.356-0.813 0.356-0.375 0-0.712-0.325-0.712-0.813 0.006-0.7 0.525-1.137 1.363-1.137 0.087 0 0.225 0 0.344 0.012 0.025-0.1 0.031-0.137 0.031-0.194 0-0.194-0.163-0.256-0.519-0.256-0.219 0-0.469 0.037-0.637 0.088l-0.106 0.031-0.044 0.012 0.106-0.662c0.363-0.113 0.613-0.156 0.9-0.156 0.663 0 1.019 0.3 1.019 0.869 0 0.144 0.012 0.256-0.038 0.587l-0.163 1.050-0.025 0.188-0.031 0.25-0.019 0.081z"}}),_c('path',{staticStyle:{"fill":"var(--color9, #003473)"},attrs:{"fill":"#003473","d":"M11.756 15.781c0.15 0 0.356 0.012 0.581 0.044l0.113-0.681c-0.225-0.031-0.512-0.063-0.694-0.063-0.863 0-1.15 0.463-1.15 1.013 0 0.35 0.169 0.619 0.575 0.813 0.313 0.15 0.369 0.175 0.369 0.313 0 0.181-0.162 0.288-0.463 0.288-0.231 0-0.444-0.038-0.694-0.119l-0.088 0.681 0.019 0.006 0.144 0.031c0.044 0.006 0.113 0.019 0.2 0.031 0.181 0.019 0.338 0.025 0.438 0.025 0.856 0 1.213-0.337 1.213-0.988 0-0.406-0.194-0.644-0.581-0.825-0.325-0.15-0.363-0.169-0.363-0.306 0-0.144 0.144-0.262 0.381-0.262z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M20.712 14.356l-0.125 0.787c-0.275-0.137-0.475-0.194-0.694-0.194-0.575 0-0.981 0.563-0.981 1.363 0 0.55 0.275 0.887 0.725 0.887 0.194 0 0.4-0.063 0.656-0.188l-0.137 0.831c-0.288 0.075-0.469 0.106-0.681 0.106-0.831 0-1.35-0.6-1.35-1.569 0-1.3 0.719-2.206 1.744-2.206 0.131 0 0.25 0.012 0.344 0.037l0.319 0.081c0.094 0.025 0.113 0.031 0.181 0.063z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M18.231 14.894c-0.025-0.006-0.050-0.006-0.081-0.006-0.256 0-0.4 0.131-0.637 0.481l0.069-0.45h-0.7l-0.475 2.956h0.781c0.275-1.806 0.35-2.119 0.719-2.119h0.056c0.069-0.356 0.163-0.619 0.294-0.856l-0.025-0.006z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M13.775 17.844c-0.213 0.069-0.375 0.094-0.556 0.094-0.394 0-0.613-0.231-0.613-0.65 0-0.081 0.006-0.169 0.025-0.262l0.050-0.288 0.037-0.231 0.338-2.019h0.769l-0.088 0.438h0.394l-0.106 0.719h-0.394l-0.206 1.231c-0.006 0.056-0.012 0.094-0.012 0.125 0 0.15 0.081 0.219 0.262 0.219 0.088 0 0.156-0.006 0.206-0.025l-0.106 0.65z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M10.8 15.856c0 0.375 0.181 0.631 0.588 0.825 0.313 0.15 0.363 0.194 0.363 0.325 0 0.181-0.137 0.269-0.444 0.269-0.231 0-0.444-0.038-0.694-0.119l-0.106 0.681 0.037 0.006 0.144 0.031c0.044 0.006 0.113 0.019 0.2 0.025 0.181 0.019 0.325 0.025 0.425 0.025 0.813 0 1.194-0.313 1.194-0.988 0-0.406-0.156-0.644-0.544-0.825-0.325-0.15-0.363-0.181-0.363-0.319 0-0.162 0.131-0.244 0.381-0.244 0.15 0 0.356 0.019 0.556 0.044l0.113-0.688c-0.2-0.031-0.506-0.056-0.681-0.056-0.869 0.006-1.169 0.463-1.169 1.006z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M26.619 17.881h-0.731l0.038-0.288c-0.212 0.231-0.431 0.331-0.712 0.331-0.563 0-0.938-0.488-0.938-1.231 0-0.981 0.575-1.813 1.256-1.813 0.3 0 0.531 0.125 0.744 0.406l0.169-1.037h0.762l-0.587 3.631zM25.481 17.181c0.363 0 0.613-0.413 0.613-1 0-0.375-0.144-0.581-0.413-0.581-0.35 0-0.6 0.413-0.6 0.994 0 0.394 0.137 0.587 0.4 0.587z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M16.137 17.813c-0.262 0.081-0.519 0.119-0.794 0.119-0.863 0-1.313-0.456-1.313-1.325 0-1.019 0.575-1.762 1.35-1.762 0.638 0 1.044 0.419 1.044 1.075 0 0.219-0.025 0.431-0.094 0.731h-1.537c-0.006 0.044-0.006 0.069-0.006 0.094 0 0.344 0.231 0.519 0.681 0.519 0.275 0 0.525-0.056 0.8-0.188l-0.131 0.738zM15.706 16.056c0.006-0.063 0.006-0.113 0.006-0.15 0-0.238-0.137-0.381-0.369-0.381-0.244 0-0.425 0.188-0.494 0.531h0.856z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M7.869 17.881h-0.775l0.444-2.8-0.987 2.8h-0.531l-0.063-2.781-0.469 2.781h-0.719l0.6-3.637h1.112l0.031 2.25 0.75-2.25h1.206z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M9.775 16.563c-0.081-0.006-0.119-0.012-0.175-0.012-0.438 0-0.662 0.15-0.662 0.45 0 0.181 0.106 0.3 0.275 0.3 0.319 0 0.55-0.3 0.563-0.738zM10.338 17.881h-0.644l0.012-0.306c-0.194 0.244-0.456 0.356-0.813 0.356-0.419 0-0.706-0.331-0.706-0.806 0-0.719 0.5-1.137 1.356-1.137 0.088 0 0.2 0.006 0.313 0.025 0.025-0.1 0.031-0.137 0.031-0.194 0-0.194-0.137-0.269-0.494-0.269-0.219 0-0.469 0.031-0.644 0.081l-0.106 0.031-0.069 0.019 0.106-0.662c0.387-0.113 0.637-0.156 0.925-0.156 0.662 0 1.019 0.3 1.019 0.869 0 0.144-0.012 0.256-0.063 0.588l-0.162 1.050-0.025 0.188-0.031 0.25-0.006 0.075z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M21.962 16.563c-0.081-0.006-0.119-0.012-0.175-0.012-0.438 0-0.663 0.15-0.663 0.45 0 0.181 0.106 0.3 0.275 0.3 0.325 0 0.55-0.3 0.563-0.738zM22.525 17.881h-0.644l0.012-0.306c-0.194 0.244-0.456 0.356-0.813 0.356-0.419 0-0.706-0.331-0.706-0.806 0-0.719 0.5-1.137 1.356-1.137 0.087 0 0.2 0.006 0.313 0.025 0.025-0.1 0.031-0.137 0.031-0.194 0-0.194-0.137-0.269-0.494-0.269-0.219 0-0.469 0.031-0.644 0.081l-0.106 0.031-0.069 0.019 0.106-0.662c0.387-0.113 0.637-0.156 0.925-0.156 0.663 0 1.019 0.3 1.019 0.869 0 0.144-0.012 0.256-0.063 0.588l-0.163 1.050-0.025 0.188-0.031 0.25-0.006 0.075z"}}),_c('path',{staticStyle:{"fill":"var(--color2, #fff)"},attrs:{"fill":"#fff","d":"M24.6 14.894c-0.025-0.006-0.050-0.006-0.075-0.006-0.256 0-0.4 0.131-0.637 0.481l0.069-0.45h-0.7l-0.469 2.956h0.775c0.275-1.806 0.35-2.119 0.719-2.119h0.056c0.069-0.356 0.163-0.619 0.294-0.856l-0.031-0.006z"}})]),_c('svg',{attrs:{"id":"icon-paypal"}},[_c('path',{staticStyle:{"fill":"var(--color3, #dfdfe0)"},attrs:{"fill":"#dfdfe0","d":"M30.575 5.906h-29.206c-0.569 0-0.925 0.088-1.119 0.269-0.169 0.206-0.25 0.544-0.25 1.044v17.519c0 0.894 0.463 1.356 1.369 1.356h29.206c0.95 0 1.425-0.462 1.425-1.356v-17.525c0-0.881-0.475-1.306-1.425-1.306z"}}),_c('path',{staticStyle:{"fill":"var(--color10, #253d80)"},attrs:{"fill":"#253d80","d":"M12.963 15.601c-0.080 0.501-0.465 0.501-0.835 0.501h-0.211l0.145-0.944c0.007-0.058 0.058-0.102 0.116-0.102h0.094c0.254 0 0.494 0 0.617 0.145 0.080 0.094 0.102 0.225 0.073 0.399zM12.803 14.286h-1.402c-0.094 0-0.174 0.073-0.196 0.167l-0.567 3.603c-0.015 0.073 0.044 0.138 0.116 0.138h0.668c0.094 0 0.174-0.073 0.196-0.167l0.153-0.973c0.015-0.094 0.094-0.167 0.196-0.167h0.443c0.922 0 1.46-0.45 1.598-1.337 0.065-0.385 0-0.69-0.182-0.908-0.203-0.232-0.559-0.356-1.024-0.356z"}}),_c('path',{staticStyle:{"fill":"var(--color10, #253d80)"},attrs:{"fill":"#253d80","d":"M16.057 16.894c-0.065 0.385-0.37 0.639-0.755 0.639-0.196 0-0.349-0.065-0.45-0.182s-0.138-0.283-0.109-0.472c0.058-0.378 0.37-0.646 0.755-0.646 0.189 0 0.349 0.065 0.45 0.182 0.102 0.123 0.138 0.298 0.109 0.479zM16.994 15.586h-0.676c-0.058 0-0.109 0.044-0.116 0.102l-0.029 0.189-0.044-0.065c-0.145-0.211-0.472-0.283-0.792-0.283-0.741 0-1.38 0.559-1.504 1.351-0.065 0.392 0.029 0.77 0.247 1.031 0.203 0.24 0.501 0.341 0.85 0.341 0.596 0 0.93-0.385 0.93-0.385l-0.029 0.189c-0.015 0.073 0.044 0.138 0.116 0.138h0.603c0.094 0 0.174-0.073 0.196-0.167l0.363-2.303c0.015-0.073-0.044-0.138-0.116-0.138z"}}),_c('path',{staticStyle:{"fill":"var(--color10, #253d80)"},attrs:{"fill":"#253d80","d":"M20.575 15.586h-0.676c-0.065 0-0.123 0.029-0.16 0.087l-0.93 1.373-0.392-1.322c-0.022-0.080-0.102-0.138-0.189-0.138h-0.661c-0.080 0-0.138 0.080-0.109 0.153l0.741 2.186-0.697 0.988c-0.058 0.080 0 0.182 0.094 0.182h0.676c0.065 0 0.123-0.029 0.16-0.087l2.244-3.247c0.051-0.065-0.007-0.174-0.102-0.174z"}}),_c('path',{staticStyle:{"fill":"var(--color11, #189bd7)"},attrs:{"fill":"#189bd7","d":"M22.98 15.601c-0.080 0.501-0.465 0.501-0.835 0.501h-0.211l0.153-0.944c0.007-0.058 0.058-0.102 0.116-0.102h0.094c0.254 0 0.494 0 0.617 0.145 0.065 0.094 0.087 0.225 0.065 0.399zM22.813 14.286h-1.402c-0.094 0-0.174 0.073-0.189 0.167l-0.567 3.603c-0.015 0.073 0.044 0.138 0.116 0.138h0.719c0.065 0 0.123-0.051 0.138-0.116l0.16-1.017c0.015-0.094 0.094-0.167 0.196-0.167h0.443c0.922 0 1.46-0.45 1.598-1.337 0.065-0.385 0-0.69-0.182-0.908-0.203-0.24-0.559-0.363-1.031-0.363z"}}),_c('path',{staticStyle:{"fill":"var(--color11, #189bd7)"},attrs:{"fill":"#189bd7","d":"M26.074 16.894c-0.065 0.385-0.37 0.639-0.755 0.639-0.196 0-0.349-0.065-0.45-0.182s-0.138-0.283-0.109-0.472c0.058-0.378 0.37-0.646 0.755-0.646 0.189 0 0.349 0.065 0.45 0.182 0.094 0.123 0.138 0.298 0.109 0.479zM27.011 15.586h-0.668c-0.058 0-0.109 0.044-0.116 0.102l-0.029 0.189-0.051-0.065c-0.145-0.211-0.472-0.283-0.792-0.283-0.741 0-1.38 0.559-1.504 1.351-0.065 0.392 0.029 0.77 0.247 1.031 0.203 0.24 0.501 0.341 0.85 0.341 0.596 0 0.93-0.385 0.93-0.385l-0.029 0.189c-0.015 0.073 0.044 0.138 0.116 0.138h0.603c0.094 0 0.174-0.073 0.189-0.167l0.363-2.303c0.015-0.073-0.036-0.138-0.109-0.138z"}}),_c('path',{staticStyle:{"fill":"var(--color11, #189bd7)"},attrs:{"fill":"#189bd7","d":"M27.803 14.388l-0.574 3.668c-0.015 0.073 0.044 0.138 0.116 0.138h0.581c0.094 0 0.174-0.073 0.196-0.167l0.567-3.603c0.015-0.073-0.044-0.138-0.116-0.138h-0.646c-0.065 0-0.116 0.044-0.123 0.102z"}}),_c('path',{staticStyle:{"fill":"var(--color10, #253d80)"},attrs:{"fill":"#253d80","d":"M4.806 18.884l0.109-0.683-0.24-0.007h-1.14l0.792-5.027c0-0.015 0.007-0.029 0.022-0.036s0.029-0.015 0.044-0.015h1.925c0.639 0 1.082 0.131 1.307 0.392 0.109 0.123 0.174 0.254 0.211 0.392 0.036 0.145 0.036 0.327 0 0.545v0.153l0.109 0.058c0.094 0.051 0.16 0.102 0.218 0.167 0.094 0.109 0.153 0.24 0.174 0.399 0.029 0.16 0.015 0.356-0.022 0.574-0.051 0.254-0.131 0.472-0.24 0.654-0.102 0.167-0.225 0.305-0.378 0.414-0.145 0.102-0.312 0.182-0.501 0.225-0.189 0.051-0.399 0.073-0.632 0.073h-0.153c-0.109 0-0.211 0.036-0.291 0.109s-0.138 0.167-0.153 0.276l-0.015 0.058-0.189 1.199-0.007 0.044c0 0.015-0.007 0.022-0.015 0.029s-0.015 0.007-0.022 0.007h-0.915z"}}),_c('path',{staticStyle:{"fill":"var(--color11, #189bd7)"},attrs:{"fill":"#189bd7","d":"M8.045 14.475c-0.007 0.036-0.015 0.073-0.022 0.116-0.254 1.3-1.126 1.751-2.23 1.751h-0.567c-0.138 0-0.247 0.102-0.269 0.232l-0.291 1.838-0.080 0.523c-0.015 0.087 0.051 0.167 0.145 0.167h1.002c0.116 0 0.218-0.087 0.24-0.203l0.007-0.051 0.189-1.199 0.015-0.065c0.022-0.116 0.116-0.203 0.24-0.203h0.153c0.973 0 1.729-0.392 1.954-1.533 0.094-0.479 0.044-0.872-0.203-1.155-0.080-0.087-0.174-0.16-0.283-0.218z"}}),_c('path',{staticStyle:{"fill":"var(--color12, #242f65)"},attrs:{"fill":"#242f65","d":"M7.777 14.373c-0.036-0.015-0.080-0.022-0.123-0.029s-0.087-0.015-0.123-0.022c-0.153-0.022-0.32-0.036-0.501-0.036h-1.511c-0.036 0-0.073 0.007-0.102 0.022-0.073 0.036-0.123 0.102-0.131 0.182l-0.32 2.034-0.007 0.058c0.022-0.131 0.138-0.232 0.269-0.232h0.567c1.111 0 1.976-0.45 2.23-1.751 0.007-0.036 0.015-0.073 0.022-0.116-0.065-0.036-0.131-0.065-0.211-0.087-0.015-0.015-0.036-0.022-0.058-0.022z"}}),_c('path',{staticStyle:{"fill":"var(--color10, #253d80)"},attrs:{"fill":"#253d80","d":"M5.285 14.482c0.015-0.080 0.065-0.145 0.131-0.182 0.029-0.015 0.065-0.022 0.102-0.022h1.511c0.182 0 0.349 0.015 0.501 0.036 0.044 0.007 0.087 0.015 0.123 0.022 0.044 0.007 0.080 0.022 0.123 0.029 0.022 0.007 0.036 0.015 0.058 0.015 0.073 0.022 0.145 0.051 0.211 0.087 0.073-0.479 0-0.806-0.261-1.104-0.291-0.327-0.806-0.465-1.467-0.465h-1.925c-0.138 0-0.254 0.102-0.269 0.232l-0.799 5.085c-0.015 0.102 0.058 0.189 0.16 0.189h1.184l0.298-1.896 0.32-2.027z"}})]),_c('svg',{attrs:{"id":"icon-visa"}},[_c('path',{staticStyle:{"fill":"var(--color3, #dfdfe0)"},attrs:{"fill":"#dfdfe0","d":"M30.575 5.906h-29.206c-0.569 0-0.925 0.088-1.119 0.269-0.169 0.206-0.25 0.544-0.25 1.044v17.519c0 0.894 0.463 1.356 1.369 1.356h29.206c0.95 0 1.425-0.462 1.425-1.356v-17.525c0-0.881-0.475-1.306-1.425-1.306z"}}),_c('path',{staticStyle:{"fill":"var(--color13, #f6ab1b)"},attrs:{"fill":"#f6ab1b","d":"M6.119 22.375c4.719-2.025 11.338-3.856 20.106-2.019l0.094-2.225c-9.25-1.012-15.887 1.938-20.2 4.025v0.219z"}}),_c('path',{staticStyle:{"fill":"var(--color14, #005696)"},attrs:{"fill":"#005696","d":"M11.050 16.512l2.044-6.744h1.825l-2.044 6.744z"}}),_c('path',{staticStyle:{"fill":"var(--color14, #005696)"},attrs:{"fill":"#005696","d":"M10.238 9.775l-1.644 2.856c-0.419 0.75-0.662 1.125-0.781 1.6h-0.025c0.031-0.6-0.056-1.338-0.063-1.75l-0.181-2.706h-3.069l-0.031 0.181c0.787 0 1.256 0.394 1.388 1.206l0.6 5.35h1.888l3.825-6.744h-1.906v0.006z"}}),_c('path',{staticStyle:{"fill":"var(--color14, #005696)"},attrs:{"fill":"#005696","d":"M24.425 16.512l-0.050-1h-2.281l-0.469 1.006h-1.981l3.594-6.731h2.431l0.606 6.731h-1.85v-0.006zM24.219 12.537c-0.019-0.5-0.038-1.175-0.006-1.581h-0.025c-0.113 0.338-0.587 1.338-0.8 1.838l-0.681 1.475h1.6l-0.087-1.731z"}}),_c('path',{staticStyle:{"fill":"var(--color14, #005696)"},attrs:{"fill":"#005696","d":"M16.837 16.706c-1.287 0-2.144-0.406-2.756-0.775l0.869-1.325c0.55 0.306 0.975 0.662 1.969 0.662 0.319 0 0.625-0.081 0.8-0.381 0.256-0.438-0.056-0.675-0.769-1.075l-0.35-0.231c-1.056-0.725-1.512-1.406-1.019-2.606 0.319-0.769 1.156-1.344 2.544-1.344 0.956 0 1.85 0.412 2.375 0.819l-1 1.175c-0.512-0.412-0.931-0.619-1.413-0.619-0.387 0-0.675 0.15-0.781 0.35-0.188 0.375 0.063 0.631 0.619 0.975l0.419 0.269c1.281 0.806 1.587 1.656 1.269 2.45-0.563 1.35-1.644 1.656-2.775 1.656z"}}),_c('path',{staticStyle:{"fill":"var(--color14, #005696)"},attrs:{"fill":"#005696","d":"M26.781 10.813h-0.119v-0.731h0.275c0.175 0 0.269 0.063 0.269 0.213 0 0.131-0.081 0.188-0.188 0.2l0.206 0.319h-0.137l-0.188-0.313h-0.113v0.313h-0.006zM26.913 10.4c0.087 0 0.169-0.006 0.169-0.113 0-0.088-0.087-0.1-0.156-0.1h-0.144v0.213h0.131zM26.913 11.094c-0.381 0-0.65-0.281-0.65-0.662 0-0.4 0.3-0.662 0.65-0.662 0.344 0 0.644 0.262 0.644 0.662s-0.3 0.662-0.644 0.662zM26.913 9.887c-0.288 0-0.506 0.225-0.506 0.544 0 0.3 0.194 0.544 0.506 0.544 0.281 0 0.506-0.225 0.506-0.544s-0.225-0.544-0.506-0.544z"}})])])])}
 var _PaymentSVGvue_type_template_id_373aa618_staticRenderFns = []
 
@@ -41323,7 +40362,7 @@ var _PaymentSVG_component = normalizeComponent(
 )
 
 /* harmony default export */ var _PaymentSVG = (_PaymentSVG_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SVGIcon/_SVGIcon.vue?vue&type=template&id=0dcfaa63&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SVGIcon/_SVGIcon.vue?vue&type=template&id=0dcfaa63&scoped=true&
 var _SVGIconvue_type_template_id_0dcfaa63_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('svg',{attrs:{"xmlns":"http://www.w3.org/2000/svg","aria-labelledby":_vm.iconName,"version":"1.1","width":_vm.width,"height":_vm.height,"viewBox":_vm.viewBox}},[_c('title',{attrs:{"lang":"en"}},[_vm._v(_vm._s(_vm.iconName))]),_c('use',{attrs:{"xlink:href":_vm.iconID,"x":"0","y":"0"}})])}
 var _SVGIconvue_type_template_id_0dcfaa63_scoped_true_staticRenderFns = []
 
@@ -42264,7 +41303,7 @@ var _OrderFormPayment_component = normalizeComponent(
     }).catch(_error_handler);
   }
 });
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LoadingAnimation/LoadingAnimation.vue?vue&type=template&id=9248c988&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LoadingAnimation/LoadingAnimation.vue?vue&type=template&id=9248c988&
 var LoadingAnimationvue_type_template_id_9248c988_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"spin-wrapper"},[_c('div',{staticClass:"spinner",style:(("border-top-color:" + _vm.colorCode + ";"))})])}
 var LoadingAnimationvue_type_template_id_9248c988_staticRenderFns = []
 
@@ -42836,7 +41875,7 @@ var PaymentMethods_component = normalizeComponent(
 )
 
 /* harmony default export */ var PaymentMethods = (PaymentMethods_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/Comments.vue?vue&type=template&id=ff478f7e&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/comments/Comments.vue?vue&type=template&id=ff478f7e&
 var Commentsvue_type_template_id_ff478f7e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column grow",attrs:{"id":"commentsSection"}},[_c('div',{staticClass:"flex flex-row flex-wrap pt-3 align-v-center"},[_c('div',{staticClass:"flex flex-column xs-12 sm-9 mb-3"},[_c('h1',{staticClass:"heading"},[_vm._v("\n                "+_vm._s(_vm.totalCommentsAndReplies)+" Comments\n            ")])]),_c('div',{staticClass:"flex flex-column xs-12 sm-4 md-3 mb-3"},[_c('div',{staticClass:"form-group xs-12",staticStyle:{"width":"100%"}},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.sortInterface),expression:"sortInterface"}],attrs:{"id":"commentSort"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.sortInterface=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":"-like_count"}},[_vm._v("\n                        Popular\n                    ")]),_c('option',{attrs:{"value":"-created_on"}},[_vm._v("\n                        Latest\n                    ")]),_c('option',{attrs:{"value":"created_on"}},[_vm._v("\n                        Oldest\n                    ")]),_c('option',{attrs:{"value":"-mine"}},[_vm._v("\n                        My Comments\n                    ")])]),_c('label',{class:_vm.themeColor,attrs:{"for":"commentSort"}},[_vm._v("Sort By")])])])]),_c('div',{staticClass:"flex flex-row comment-post mv-3",attrs:{"id":"postComment"}},[_c('div',{staticClass:"flex flex-column avatar-column pr hide-xs-only"},[_c('div',{staticClass:"user-avatar smaller",class:_vm.avatarClassObject},[_c('img',{staticClass:"rounded",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.currentUser.avatar,"data-ix-fade":""}})]),(_vm.showUserExp)?_c('p',{staticClass:"x-tiny dense font-bold uppercase text-center mt-1"},[_vm._v("\n                "+_vm._s(_vm.userExpRank)+"\n            ")]):_vm._e(),(_vm.showUserExp)?_c('p',{staticClass:"x-tiny dense text-center font-compressed"},[_vm._v("\n                "+_vm._s(_vm.userExpValue)+" XP\n            ")]):_vm._e()]),_c('div',{staticClass:"flex flex-column"},[_c('text-editor',{ref:"textEditor",attrs:{"toolbar":"bold italic underline | bullist numlist | link","height":150},model:{value:(_vm.commentInterface),callback:function ($$v) {_vm.commentInterface=$$v},expression:"commentInterface"}}),_c('div',{staticClass:"flex flex-row align-h-right mv-1"},[_c('button',{staticClass:"btn collapse-150",attrs:{"disabled":_vm.loading,"dusk":"submit-comment"},on:{"click":_vm.postComment}},[_c('span',{staticClass:"text-white short",class:_vm.themeBgClass},[_vm._v("\n                        Comment\n                    ")])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],staticClass:"loading-reply flex-center"},[_c('i',{staticClass:"fas fa-spinner fa-spin",class:_vm.themeTextClass}),_c('p',{staticClass:"x-tiny text-grey-3"},[_vm._v("\n                    loading...\n                ")])])],1)]),(_vm.pinnedComment != null)?_c('comment-post',{attrs:{"comment":_vm.pinnedComment,"brand":_vm.brand,"current-user":_vm.currentUser,"pinned":true,"theme-color":_vm.themeColor,"profile-base-route":_vm.profileBaseRoute,"has-public-profiles":_vm.hasPublicProfiles},on:{"likeComment":_vm.handleCommentLike,"likeReply":_vm.handleReplyLike,"deleteComment":_vm.handleCommentDelete,"deleteReply":_vm.handleReplyDelete,"openLikes":_vm.addLikeUsersToModal}}):_vm._e(),_vm._l((_vm.comments),function(comment,i){return _c('comment-post',{key:i,attrs:{"comment":comment,"brand":_vm.brand,"current-user":_vm.currentUser,"theme-color":_vm.themeColor,"profile-base-route":_vm.profileBaseRoute,"has-public-profiles":_vm.hasPublicProfiles},on:{"likeComment":_vm.handleCommentLike,"likeReply":_vm.handleReplyLike,"deleteComment":_vm.handleCommentDelete,"deleteReply":_vm.handleReplyDelete,"openLikes":_vm.addLikeUsersToModal}})}),_c('comment-likes-modal',{attrs:{"theme-color":_vm.themeColor,"brand":_vm.brand,"comment-id":_vm.currentLikeUsersId,"like-users":_vm.likeUsers,"total-like-users":_vm.totalLikeUsers,"loading-like-users":_vm.loadingLikeUsers,"requesting-like-users":_vm.requestingLikeUsers},on:{"loadMoreLikeUsers":_vm.addLikeUsersToModal}})],2)}
 var Commentsvue_type_template_id_ff478f7e_staticRenderFns = []
 
@@ -43255,7 +42294,7 @@ var Comments_component = normalizeComponent(
 )
 
 /* harmony default export */ var Comments = (Comments_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContentAssignment/ContentAssignment.vue?vue&type=template&id=f730f168&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContentAssignment/ContentAssignment.vue?vue&type=template&id=f730f168&
 var ContentAssignmentvue_type_template_id_f730f168_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column assignment-component bb-grey-1-1"},[_c('div',{staticClass:"flex flex-row align-v-center flex-wrap pv-3"},[_c('div',{staticClass:"flex flex-column xs-12 md-8"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column arrow-column hide-xs-only"},[_c('button',{staticClass:"btn collapse-square",on:{"click":_vm.openAssignment}},[_c('span',{staticClass:"bg-grey-3",class:_vm.accordionButtonClasses},[_c('i',{staticClass:"fas",class:_vm.accordionButtonIconClasses})])])]),_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row align-v-center"},[_c('div',{staticClass:"flex flex-column pointer",on:{"click":_vm.openAssignment}},[_c('h3',{staticClass:"title noselect"},[_vm._v("\n                                "+_vm._s(_vm.title)+"\n                            ")])]),(_vm.timecode != 0)?_c('div',{staticClass:"flex flex-column flex-auto"},[_c('a',{staticClass:"flex flex-column flex-auto tiny font-bold font-underline hide-xs-only ph-2",class:'text-' + _vm.themeColor,attrs:{"data-jump-to-time":_vm.timecode}},[_vm._v("\n                                "+_vm._s(_vm.formattedTimecode)+"\n                            ")])]):_vm._e()])]),_c('div',{staticClass:"flex flex-column flex-auto body ph-2 hide-sm-up pointer",on:{"click":_vm.openAssignment}},[_c('i',{staticClass:"fas",class:_vm.accordionButtonIconClasses})])])]),_c('div',{staticClass:"flex flex-column xs-12 md-4 complete-column"},[_c('div',{staticClass:"flex flex-row"},[(_vm.soundsliceSlug)?_c('button',{staticClass:"btn mr-1",on:{"click":_vm.openExercise}},[_vm._m(0)]):_vm._e(),_c('button',{staticClass:"btn",attrs:{"disabled":_vm.isRequesting},on:{"click":function($event){$event.stopPropagation();return _vm.markAsComplete($event)}}},[_c('span',{class:_vm.completeButtonClasses},[_c('i',{staticClass:"fas fa-check mr-1"}),_vm._v("\n                        "+_vm._s(_vm.isComplete ? 'Completed' : 'Complete')+"\n                    ")])])])])]),_c('transition',{attrs:{"name":"slide-down-fade"}},[(_vm.accordionActive && _vm.thisAssignment != null)?_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.accordionLoading),expression:"!accordionLoading"}],staticClass:"flex flex-column"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.$_description.length > 0),expression:"$_description.length > 0"}],staticClass:"flex flex-row mb-3 pa-3"},[_c('div',{staticClass:"body",domProps:{"innerHTML":_vm._s(_vm.$_description)}},[_vm._v("\n                    "+_vm._s(_vm.$_description)+"\n                ")])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.$_totalPages > 0),expression:"$_totalPages > 0"}],staticClass:"flex flex-row pa-3"},[_c('div',{ref:"carouselWrap",staticClass:"flex flex-column grow"},[_c('div',{staticClass:"flex flex-column"},[_c('div',{ref:"carouselContainer",staticClass:"flex flex-row carousel bg-white overflow mv pb-3"},[_c('div',{staticClass:"flex flex-row"},_vm._l((_vm.$_sheet_music_pages),function(page,i){return _c('div',{key:'page' + (i + 1),staticClass:"flex flex-column xs-12 grow page",style:(_vm.pageScrollPosition)},[_c('img',{staticClass:"sheet-music-image",attrs:{"src":page}})])}),0),(_vm.currentPage > 1)?_c('div',{staticClass:"side-button prev flex-center",on:{"click":function($event){return _vm.scrollToPage(_vm.currentPage - 1)}}},[_c('i',{staticClass:"fas fa-chevron-left"})]):_vm._e(),(_vm.currentPage < _vm.$_totalPages)?_c('div',{staticClass:"side-button next flex-center",on:{"click":function($event){return _vm.scrollToPage(_vm.currentPage + 1)}}},[_c('i',{staticClass:"fas fa-chevron-right"})]):_vm._e(),(_vm.$_totalPages > 1)?_c('div',{staticClass:"page-buttons"},_vm._l((_vm.pages),function(page,i){return _c('div',{key:'pageButton' + (i + 1),staticClass:"page-button mh-1 rounded bg-black",class:_vm.currentPageClass(i + 1),on:{"click":function($event){return _vm.scrollToPage(i + 1)}}})}),0):_vm._e()]),(_vm.timecode != 0)?_c('div',{staticClass:"flex flex-row hide-sm-up"},[_c('a',{staticClass:"tiny font-bold font-underline",class:'text-' + _vm.themeColor,attrs:{"data-jump-to-time":_vm.timecode}},[_vm._v("\n                                "+_vm._s(_vm.formattedTimecode)+"\n                            ")])]):_vm._e()])]),_c('div',{staticClass:"flex flex-column pa-2 sm-3 hide-xs-only",class:_vm.imageTypeSpacerClass})])]):_vm._e()]),_c('transition',{attrs:{"name":"show-from-bottom"}},[(_vm.open)?_c('div',{staticClass:"bg-white",attrs:{"id":"practiceOverlay"}},[_c('div',{staticClass:"flex flex-column embed-column"},[_c('div',{staticClass:"flex flex-row align-v-center flex-auto bb-grey-4-1 bg-grey-5 ph"},[_c('div',{staticClass:"flex flex-column"},[_c('h2',{staticClass:"title text-white text-truncate-2-lines"},[_vm._v("\n                            "+_vm._s(_vm.title)+"\n                        ")])]),_c('div',{staticClass:"flex flex-column close-exercise uppercase text-white align-v-center pv-1 pointer flex-auto",on:{"click":_vm.closeExercise}},[_c('div',{staticClass:"flex flex-row tiny align-v-center"},[_vm._v("\n                            Close "),_c('i',{staticClass:"fas fa-times ml-1"})])])]),_c('div',{staticClass:"flex flex-row grow"},[_c('div',{staticClass:"flex flex-column relative"},[_c('iframe',{attrs:{"id":"ssEmbed","src":'https://www.soundslice.com/' + _vm.scoreOrSlice() + '/' + _vm.soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&u=' + _vm.userId,"frameBorder":"0","allowfullscreen":""},on:{"load":function($event){_vm.loading = false}}})])])]),(_vm.loading)?_c('div',{staticClass:"loading-exercise heading ph-4 pv-2"},[_c('loading-animation',{attrs:{"theme-color":_vm.themeColor}})],1):_vm._e()]):_vm._e()])],1)}
 var ContentAssignmentvue_type_template_id_f730f168_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"text-white bg-grey-3 inverted text-grey-3"},[_c('i',{staticClass:"fas fa-play mr-1"}),_vm._v(" Practice\n                    ")])}]
 
@@ -43271,7 +42310,9 @@ var es6_promise = __webpack_require__("551c");
 
 
 
-var progress_tracker_ProgressTracker = /*#__PURE__*/function () {
+var progress_tracker_ProgressTracker =
+/*#__PURE__*/
+function () {
   function ProgressTracker() {
     _classCallCheck(this, ProgressTracker);
 
@@ -44068,7 +43109,7 @@ var ContentAssignment_component = normalizeComponent(
 )
 
 /* harmony default export */ var ContentAssignment = (ContentAssignment_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LegacyLoops/LegacyLoops.vue?vue&type=template&id=499d886a&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LegacyLoops/LegacyLoops.vue?vue&type=template&id=499d886a&
 var LegacyLoopsvue_type_template_id_499d886a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_vm._l((_vm.loopTitles),function(loop){return _c('div',{key:loop,staticClass:"flex flex-row"},[_c('div',{staticClass:"flex flex-column pa-1"},[_c('div',{staticClass:"flex flex-row"},[_c('h1',{staticClass:"title"},[_vm._v("\n                    "+_vm._s(loop)+"\n                ")])]),_c('div',{staticClass:"flex flex-row flex-wrap"},_vm._l((_vm.loops[loop].tempos),function(tempo){return _c('div',{key:(loop + "-" + tempo),staticClass:"flex flex-column loop-play-button"},[_c('button',{staticClass:"btn short",on:{"click":function($event){return _vm.selectLoop(loop, tempo)}}},[_c('span',{staticClass:"bg-drumeo",class:_vm.isCurrentLoop(loop, tempo) ? 'text-white' : 'flat text-drumeo'},[_vm._v("\n                            "+_vm._s(tempo)+" BPM\n                        ")])])])}),0)])])}),_c('div',{staticClass:"flex flex-row pa-1 loops-audio-player"},[(_vm.clickTrack)?_c('div',{staticClass:"flex flex-column icon-col"},[_c('button',{staticClass:"btn",on:{"click":_vm.enableClick}},[_c('span',{staticClass:"bg-drumeo",class:_vm.click ? 'text-white' : 'inverted text-drumeo'},[_c('i',{staticClass:"icon-metronome"})])])]):_vm._e(),_c('div',{staticClass:"flex flex-column",class:_vm.clickTrack ? 'pl-1' : ''},[_c('audio',{ref:"audioPlayer",staticStyle:{"width":"100%","height":"50px","outline":"none"},attrs:{"id":_vm.audioPlayerId,"controls":"","loop":"","src":_vm.currentSource}})])])],2)}
 var LegacyLoopsvue_type_template_id_499d886a_staticRenderFns = []
 
@@ -44254,7 +43295,7 @@ var LegacyLoops_component = normalizeComponent(
 )
 
 /* harmony default export */ var LegacyLoops = (LegacyLoops_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VideoResources/VideoResources.vue?vue&type=template&id=08286b60&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VideoResources/VideoResources.vue?vue&type=template&id=08286b60&
 var VideoResourcesvue_type_template_id_08286b60_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row flex-wrap align-v-center pv-2"},[_c('div',{staticClass:"flex flex-column xs-12 sm-5 md-7 text-white"},[_c('h1',{staticClass:"heading"},[_vm._v("\n            "+_vm._s(_vm.title)+"\n        ")]),_c('h4',{staticClass:"body text-grey-3",domProps:{"innerHTML":_vm._s(_vm.subtitle)}})]),_c('div',{staticClass:"flex flex-column pv-2 xs-12 sm-7 md-5"},[_c('div',{staticClass:"flex flex-row nmh-1 flex-wrap resource-buttons"},[_c('div',{staticClass:"flex flex-column resource-button ph-1"},[_c('button',{staticClass:"btn stacked",on:{"click":_vm.likeContent}},[_c('span',{class:_vm.hasLiked ? _vm.themeTextClass : 'text-grey-3',staticStyle:{"padding":"0 8px"}},[_c('i',{staticClass:"fa-thumbs-up mb-1",class:_vm.hasLiked ? 'fas' : 'fal'}),_vm._v("\n                        "+_vm._s(_vm.totalLikes)+"\n                    ")])])]),_vm._m(0),(_vm.resources.length > 0)?_c('div',{staticClass:"flex flex-column resource-button ph-1 relative"},[_c('button',{staticClass:"btn open-resources stacked",on:{"click":function($event){_vm.resourceDropdown = !_vm.resourceDropdown}}},[_c('span',{class:_vm.resourceDropdown ? _vm.themeTextClass : 'text-grey-3',staticStyle:{"padding":"0 8px"}},[_c('i',{staticClass:"fas fa-download mb-1"}),_vm._v("\n                        Downloads\n                    ")])]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.resourceDropdown),expression:"resourceDropdown"}],staticClass:"download-dropdown"},[_c('div',{staticClass:"flex flex-column bg-white corners-3 shadow"},_vm._l((_vm.resources),function(resource){return _c('a',{key:resource.resource_name,staticClass:"flex flex-row pa-1 tiny no-decoration text-black\n                                       hover-bg-grey-1 align-v-center nowrap",attrs:{"href":resource.resource_url,"aria-label":("Download " + (resource.resource_name)),"target":"_blank","download":""}},[_c('i',{staticClass:"fas mr-1",class:_vm.getResourceIcon(resource.resource_url),staticStyle:{"font-size":"16px"}}),_vm._v("\n                                "+_vm._s(resource.resource_name)+"\n                            ")])}),0)])])],1):_vm._e(),_c('div',{staticClass:"flex flex-column resource-button ph-1"},[_c('button',{staticClass:"btn stacked",on:{"click":_vm.addToList}},[_c('span',{class:_vm.hasAdded ? _vm.themeTextClass : 'text-grey-3',staticStyle:{"padding":"0 8px"}},[_c('i',{staticClass:"fas mb-1",class:_vm.hasAdded ? 'fa-times' : 'fa-plus'}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.hasAdded ? 'Added' : 'Add to List')+"\n                        ")]),_c('span',{staticClass:"hide-sm-up"},[_vm._v("\n                            "+_vm._s(_vm.hasAdded ? 'Added' : 'Add')+"\n                        ")])])])])])]),_c('div',{staticClass:"modal",attrs:{"id":"shareVideoModal"}},[_c('div',{staticClass:"flex flex-column bg-white corners-3 shadow pa-3"},[_c('h1',{staticClass:"heading mb-2"},[_vm._v("\n                Share Video Link\n            ")]),_c('div',{staticClass:"form-group mb-2"},[_c('input',{staticClass:"no-label mb-2",attrs:{"id":"shareableUrlInput","type":"text"},domProps:{"value":_vm.shareUrl}}),_c('button',{staticClass:"btn",attrs:{"id":"copyUrlButton"},on:{"click":_vm.copyTimecodeToClipboard}},[_c('span',{staticClass:"text-white bg-grey-3"},[_vm._v("\n                        Copy\n                    ")])])]),_c('div',{staticClass:"form-group mb-2"},[_c('div',{staticClass:"flex flex-row form-group align-v-center"},[_c('span',{staticClass:"toggle-input mr-1"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.useTimecode),expression:"useTimecode"}],attrs:{"id":"includeTimecode","type":"checkbox","readonly":""},domProps:{"checked":Array.isArray(_vm.useTimecode)?_vm._i(_vm.useTimecode,null)>-1:(_vm.useTimecode)},on:{"change":function($event){var $$a=_vm.useTimecode,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.useTimecode=$$a.concat([$$v]))}else{$$i>-1&&(_vm.useTimecode=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.useTimecode=$$c}}}}),_vm._m(1)]),_c('label',{staticClass:"toggle-label pointer dense uppercase font-bold tiny",attrs:{"for":"includeTimecode"}},[_vm._v("\n                        Start at Current Time\n                    ")])])]),_c('p',{staticClass:"tiny font-italic text-grey-3"},[_vm._v("\n                This link is only accessible by "+_vm._s(_vm.toCapitalCase(_vm.brand))+" Members.\n            ")])])])])}
 var VideoResourcesvue_type_template_id_08286b60_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column resource-button ph-1"},[_c('button',{staticClass:"btn stacked",attrs:{"data-open-modal":"shareVideoModal"}},[_c('span',{staticClass:"text-grey-3",staticStyle:{"padding":"0 8px"}},[_c('i',{staticClass:"fas fa-share mb-1"}),_vm._v("\n                        Share\n                    ")])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"toggle"},[_c('span',{staticClass:"handle"})])}]
 
@@ -44647,7 +43688,7 @@ var VideoResources_component = normalizeComponent(
 )
 
 /* harmony default export */ var VideoResources = (VideoResources_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VideoResources/ContentLessonActionButtons.vue?vue&type=template&id=6123ad82&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VideoResources/ContentLessonActionButtons.vue?vue&type=template&id=6123ad82&
 var ContentLessonActionButtonsvue_type_template_id_6123ad82_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row flex-wrap align-v-center pv-2"},[_c('div',{staticClass:"flex flex-column pv-2 xs-12"},[_c('div',{staticClass:"flex flex-row nmh-1 flex-wrap resource-buttons"},[_c('div',{staticClass:"flex flex-column resource-button ph-1"},[_c('button',{staticClass:"btn stacked",on:{"click":_vm.likeContent}},[_c('span',{class:_vm.hasLiked ? _vm.themeTextClass : 'text-grey-3',staticStyle:{"padding":"0 8px","border":"none","box-shadow":"none"}},[_c('i',{staticClass:"fa-thumbs-up mb-1",class:_vm.hasLiked ? 'fas' : 'fal'}),_vm._v("\n                        "+_vm._s(_vm.totalLikes)+"\n                    ")])])]),_vm._m(0),(_vm.resources.length > 0)?_c('div',{staticClass:"flex flex-column resource-button ph-1 relative"},[_c('button',{staticClass:"btn open-resources stacked",on:{"click":function($event){_vm.resourceDropdown = !_vm.resourceDropdown}}},[_c('span',{class:_vm.resourceDropdown ? _vm.themeTextClass : 'text-grey-3',staticStyle:{"padding":"0 8px","box-shadow":"none"}},[_c('i',{staticClass:"fas fa-download mb-1"}),_vm._v("\n                        Downloads\n                    ")])]),_c('transition',{attrs:{"name":"grow-fade"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.resourceDropdown),expression:"resourceDropdown"}],staticClass:"download-dropdown"},[_c('div',{staticClass:"flex flex-column bg-white corners-3 shadow"},_vm._l((_vm.resources),function(resource){return _c('a',{key:resource.resource_name,staticClass:"flex flex-row pa-1 tiny no-decoration text-black\n                                       hover-bg-grey-1 align-v-center nowrap",attrs:{"href":resource.resource_url,"aria-label":("Download " + (resource.resource_name)),"target":"_blank","download":""}},[_c('i',{staticClass:"fas mr-1",class:_vm.getResourceIcon(resource.resource_url),staticStyle:{"font-size":"16px"}}),_vm._v("\n                                "+_vm._s(resource.resource_name)+"\n                            ")])}),0)])])],1):_vm._e(),_c('div',{staticClass:"flex flex-column resource-button ph-1"},[_c('button',{staticClass:"btn stacked",on:{"click":_vm.addToList}},[_c('span',{class:_vm.hasAdded ? _vm.themeTextClass : 'text-grey-3',staticStyle:{"padding":"0 8px","box-shadow":"none"}},[_c('i',{staticClass:"fas mb-1",class:_vm.hasAdded ? 'fa-times' : 'fa-plus'}),_c('span',{staticClass:"hide-xs-only"},[_vm._v("\n                            "+_vm._s(_vm.hasAdded ? 'Added' : 'Add to List')+"\n                        ")]),_c('span',{staticClass:"hide-sm-up"},[_vm._v("\n                            "+_vm._s(_vm.hasAdded ? 'Added' : 'Add')+"\n                        ")])])])])])]),_c('div',{staticClass:"modal",attrs:{"id":"shareVideoModal"}},[_c('div',{staticClass:"flex flex-column bg-white corners-3 shadow pa-3"},[_c('h1',{staticClass:"heading mb-2"},[_vm._v("\n                Share Video Link\n            ")]),_c('div',{staticClass:"form-group mb-2"},[_c('input',{staticClass:"no-label mb-2",attrs:{"id":"shareableUrlInput","type":"text"},domProps:{"value":_vm.shareUrl}}),_c('button',{staticClass:"btn",attrs:{"id":"copyUrlButton"},on:{"click":_vm.copyTimecodeToClipboard}},[_c('span',{staticClass:"text-white bg-grey-3"},[_vm._v("\n                        Copy\n                    ")])])]),_c('p',{staticClass:"tiny font-italic text-grey-3"},[_vm._v("\n                This link is only accessible by "+_vm._s(_vm.toCapitalCase(_vm.brand))+" Members.\n            ")])])])])}
 var ContentLessonActionButtonsvue_type_template_id_6123ad82_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column resource-button ph-1"},[_c('button',{staticClass:"btn stacked",attrs:{"data-open-modal":"shareVideoModal"}},[_c('span',{staticClass:"text-grey-3",staticStyle:{"padding":"0 8px","box-shadow":"none"}},[_c('i',{staticClass:"fas fa-share mb-1"}),_vm._v("\n                        Share\n                    ")])])])}]
 
@@ -45002,7 +44043,7 @@ var ContentLessonActionButtons_component = normalizeComponent(
 )
 
 /* harmony default export */ var ContentLessonActionButtons = (ContentLessonActionButtons_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/YoutubePlayer/YoutubePlayer.vue?vue&type=template&id=7193d9bf&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/YoutubePlayer/YoutubePlayer.vue?vue&type=template&id=7193d9bf&
 var YoutubePlayervue_type_template_id_7193d9bf_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"videoWrap",staticClass:"video-wrap",class:{'picture-in-picture': _vm.isPipEnabled}},[_c('div',{staticClass:"widescreen"},[_c('div',{ref:"youtubeIframe",staticClass:"iframe"})])])}
 var YoutubePlayervue_type_template_id_7193d9bf_staticRenderFns = []
 
@@ -45250,7 +44291,7 @@ var YoutubePlayervue_type_template_id_7193d9bf_staticRenderFns = []
 
 function YoutubePlayervue_type_script_lang_js_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function YoutubePlayervue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { YoutubePlayervue_type_script_lang_js_ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { YoutubePlayervue_type_script_lang_js_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function YoutubePlayervue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { YoutubePlayervue_type_script_lang_js_ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { YoutubePlayervue_type_script_lang_js_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 //
 //
@@ -45392,7 +44433,7 @@ function YoutubePlayervue_type_script_lang_js_objectSpread(target) { for (var i 
           },
           onStateChange: function onStateChange(event) {
             if (event.data === 1) {
-              vm.$emit('play', YoutubePlayervue_type_script_lang_js_objectSpread(YoutubePlayervue_type_script_lang_js_objectSpread({}, event), {}, {
+              vm.$emit('play', YoutubePlayervue_type_script_lang_js_objectSpread({}, event, {
                 contentId: vm.contentId,
                 progressState: vm.progressState,
                 isYoutube: true
@@ -45400,7 +44441,7 @@ function YoutubePlayervue_type_script_lang_js_objectSpread(target) { for (var i 
             }
 
             if (event.data === 2) {
-              vm.$emit('pause', YoutubePlayervue_type_script_lang_js_objectSpread(YoutubePlayervue_type_script_lang_js_objectSpread({}, event), {}, {
+              vm.$emit('pause', YoutubePlayervue_type_script_lang_js_objectSpread({}, event, {
                 contentId: vm.contentId
               }));
             }
@@ -45447,7 +44488,7 @@ var YoutubePlayer_component = normalizeComponent(
 )
 
 /* harmony default export */ var YoutubePlayer = (YoutubePlayer_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Coaches/CoachEvent.vue?vue&type=template&id=03f4e823&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"11be18f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Coaches/CoachEvent.vue?vue&type=template&id=03f4e823&
 var CoachEventvue_type_template_id_03f4e823_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event container mv-2"},[(_vm.content)?_c('div',{staticClass:"flex flex-row flex-wrap-md"},[(!_vm.eventIsLive)?_c('a',{staticClass:"coach-event-image flex flex-column align-v-center",attrs:{"href":_vm.eventCoachProfileUrl}},[_c('div',{staticClass:"relative"},[_c('img',{attrs:{"src":'http://cdn.musora.com/image/fetch/w_915,q_515,q_auto:best/' + (_vm.content.thumbnail_url ? _vm.content.thumbnail_url : _vm.instructor.header_image_url)}}),(!_vm.eventIsLive)?_c('div',{staticClass:"coach-event-upcoming uppercase dense font-bold text-white"},[_vm._v("upcoming event")]):_vm._e(),(!_vm.eventIsLive)?_c('div',{staticClass:"coach-event-counter flex flex-row align-v-bottom"},[_c('div',{staticClass:"coach-event-counter-inner text-white flex flex-row align-center"},[_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v(_vm._s(_vm.$_hours))])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("hours")])])]),_vm._m(0),_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v(_vm._s(_vm.$_minutes))])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("minutes")])])]),_vm._m(1),_c('div',{staticClass:"ph-1"},[_c('div',{staticClass:"flex flex-column align-center"},[_c('div',{staticClass:"event-counter-number dense font-bold"},[_c('span',[_vm._v(_vm._s(_vm.$_seconds))])]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v("seconds")])])])])]):_vm._e()])]):_vm._e(),(_vm.eventIsLive)?_c('div',{staticClass:"coach-event-video flex flex-column"},[_c('div',{staticStyle:{"width":"100%","padding-bottom":"56.25%","position":"relative"}},[_c('iframe',{attrs:{"id":"player","frameborder":"0","allowfullscreen":"1","allow":"autoplay; encrypted-media","title":"YouTube video player","src":_vm.$_iframeSource}})])]):_vm._e(),_c('div',{staticClass:"coach-event-data flex flex-column align-v-center"},[(_vm.eventIsLive)?_c('div',{staticClass:"mb-2"},[_vm._m(2)]):_vm._e(),_c('div',{staticClass:"mv-2"},[_c('a',{staticClass:"flex flex-row align-v-center font-no-underline",attrs:{"href":_vm.eventCoachProfileUrl}},[_c('div',{staticClass:"coach-avatar"},[_c('img',{staticClass:"bg-grey-2 rounded drumeo",attrs:{"src":'http://cdn.musora.com/image/fetch/w_150,h_150,q_auto:best,c_fill,g_face/' + (_vm.instructor.head_shot_picture_url ? _vm.instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')}})]),_c('h4',{staticClass:"sans coach-name font-bold text-drumeo uppercase"},[_vm._v(_vm._s(_vm.instructor.name))])])]),_c('div',{staticClass:"coach-event-details mv-2"},[_c('h3',{staticClass:"heading sans font-bold capitalize"},[_vm._v(_vm._s(_vm.content.title))]),_c('div',{staticClass:"coach-event-description mv-2",domProps:{"innerHTML":_vm._s(_vm.content.description)}})]),(_vm.eventIsLive || _vm.showWatch)?_c('div',{class:{'mt-2': _vm.eventIsLive}},[_c('div',{staticClass:"flex flex-row flex-wrap-md"},[_vm._m(3),(_vm.eventIsLive)?_c('div',{staticClass:"coach-event-cta my-list"},[_c('button',{staticClass:"btn",on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.toggleMyList($event)}}},[_c('span',{staticClass:"text-drumeo bg-drumeo inverted",class:_vm.is_added ? 'is-added' : ''},[_c('i',{staticClass:"fal fa-plus"}),_vm._v("\n                                My List\n                            ")])])]):_vm._e()])]):_vm._e(),(!_vm.eventIsLive)?_c('div',{staticClass:"coach-event-subscribe",class:{'pt-2': _vm.showWatch}},[_c('div',[_c('button',{staticClass:"btn",attrs:{"data-open-modal":"scheduleAddToCalendarModal"}},[_c('span',{staticClass:"text-white bg-drumeo"},[_c('i',{staticClass:"fas fa-calendar-plus mr-1"}),_vm._v("\n                            Subscribe to "+_vm._s(_vm.instructor.name.split(' ')[0])+"'s Calendar\n                        ")])])]),_c('content-schedule',{attrs:{"subscription-calendar-id":_vm.subscriptionCalendarId,"theme-color":_vm.brand}})],1):_vm._e()])]):_vm._e()])}
 var CoachEventvue_type_template_id_03f4e823_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"event-counter-number dense font-bold"},[_vm._v(":")]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v(" ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"event-counter-number dense font-bold"},[_vm._v(":")]),_c('div',{staticClass:"event-counter-label sans font-bold uppercase"},[_vm._v(" ")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"flex-center corners-5 bg-live text-white uppercase live-badge sans"},[_c('span',[_vm._v("live")])])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"coach-event-cta"},[_c('a',{attrs:{"href":"/members/live"}},[_c('button',{staticClass:"btn"},[_c('span',{staticClass:"text-white bg-drumeo uppercase"},[_vm._v("\n                                    watch\n                                ")])])])])}]
 
@@ -45829,7 +44870,7 @@ var Components = {
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingAnimation_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("b850");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingAnimation_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingAnimation_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
-
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingAnimation_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
