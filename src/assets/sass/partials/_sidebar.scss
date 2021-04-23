@@ -52,7 +52,7 @@ body {
   display: none;
   position: fixed;
   top: 50px;
-  height: calc(100% - 65px);
+  height: calc(100% - 50px);
   left: 0;
   width: 250px;
   z-index: 99;
@@ -63,16 +63,14 @@ body {
 
   @include medium {
     display: block;
-  }
-
-  @include large {
-    top: 65px;
+    height: calc(100% - 56px);
+    top: 56px;
   }
 
   .sidebar-header {
     display: none;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 12px;
+    padding-bottom: 11px;
 
     #sidebar-close {
       font-size: 22px;
@@ -83,7 +81,7 @@ body {
     }
 
     .sidebar-header-inner {
-      width: 125px;
+      width: 110px;
     }
   }
 

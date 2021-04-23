@@ -152,6 +152,16 @@ export default {
             type: String,
             default: () => '/mailora/public/send',
         },
+
+        enableEvent: {
+            type: Boolean,
+            default: () => false,
+        },
+
+        eventName: {
+            type: String,
+            default: () => 'emailFom',
+        },
     },
     data() {
         return {
@@ -183,12 +193,19 @@ export default {
     methods: {
         submitForm() {
             if (this.value) {
+                const text = this.value;
                 this.loading = true;
+
+                if (this.enableEvent) {
+                    this.$root.$emit(this.eventName, { text });
+                }
+
+                this.valueInterface = '';
 
                 UserService.sendEmail({
                     type: this.emailType,
                     subject: this.emailSubject,
-                    lines: [this.value],
+                    lines: [text],
                     callToAction: this.callToAction,
                     alert: this.emailAlert,
                     brand: this.brand,
@@ -206,7 +223,6 @@ export default {
                             });
 
                             this.$emit('formSuccess');
-                            this.valueInterface = '';
 
                             window.closeAllModals();
                         }

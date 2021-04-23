@@ -1,6 +1,6 @@
 {
   "name": "vuesora",
-  "version": "0.16.89",
+  "version": "0.16.95",
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
@@ -73,5 +73,9 @@
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.5.21",
     "vuepress": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   }
 }

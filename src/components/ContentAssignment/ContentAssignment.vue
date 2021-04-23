@@ -647,8 +647,8 @@ export default {
         bottom:0;
         z-index:97;
 
-        @include large {
-            top:65px;
+        @include medium {
+            top:56px;
         }
 
         .loading-exercise {
