@@ -1,128 +1,53 @@
 <template>
+
     <div class="flex flex-column grow content-table">
-        <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
-            <div class="flex flex-column mb-3 align-v-center">
-                <div class="flex flex-row">
-                    <a
-                        href="/members/forums"
-                        class="no-decoration mr-3"
-                        :class="!isFollowedSection ? tabSelectedClasses : 'text-grey-2'"
-                    >
-                        <h1 class="heading pointer">
-                            All Forums
-                        </h1>
-                    </a>
-                    <a
-                        href="/members/forums?followed=true"
-                        class="no-decoration"
-                        :class="[isFollowedSection ? tabSelectedClasses : 'text-grey-2', {'hide': searching}]"
-                    >
-                        <h1 class="heading pointer">
-                            Followed
-                        </h1>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-row flex-wrap ph-1 align-v-center">
-            <div class="flex flex-column mb-2 search-box">
-                <div class="flex flex-row">
-                    <div class="flex flex-column form-group pr-1">
-                        <input
-                            id="threadSearch"
-                            ref="searchInput"
-                            v-model.lazy="searchInterface"
-                            type="text"
-                        >
-                        <label
-                            for="threadSearch"
-                            :class="themeColor"
-                        >Search</label>
 
-                        <span
-                            v-if="searching"
-                            id="clearSearch"
-                            class="body pointer"
-                            @click="clearSearch"
-                        >
-                            <i class="fas fa-times"></i>
-                        </span>
-                    </div>
-                    <div class="flex flex-column search-icon-col">
-                        <button
-                            class="btn collapse-square"
-                            @click="$refs.searchInput.blur()"
-                        >
-                            <span class="bg-white text-black flat">
-                                <i class="fas fa-search"></i>
-                            </span>
-                        </button>
-                    </div>
-                </div>
+        <!-- Forum Search -->
+        <!-- <forum-search
+            :isFollowedSection = "isFollowedSection"
+            :searching = "searching"
+        /> -->
 
-                <p
-                    v-if="searching"
-                    class="tiny font-italic text-grey-4"
-                >
-                    Showing results for <span class="font-bold text-black">"{{ searchInterface }}"</span> in All Forums.
-                </p>
-            </div>
-            <div
-                v-if="!searching && brand !== 'pianote'"
-                class="flex flex-column mb-3 form-group topic-col"
-            >
-                <div
-                    class="form-group xs-12"
-                    style="width:100%;"
-                >
-                    <select
-                        id="commentSort"
-                        v-model="filterInterface"
-                        class="has-input"
-                    >
-                        <option
-                            v-for="option in filterOptions"
-                            :key="option.label"
-                            :value="option.value"
-                        >
-                            {{ option.label }}
-                        </option>
-                    </select>
-                    <label
-                        for="commentSort"
-                        :class="themeColor"
-                    >Select a Topic</label>
-                </div>
-            </div>
+        <div class="tw-mb-12">
+            <forum-discussion-item 
+                v-for="discussion in discussionsArray"
+                :key="discussion.id"
+                :discussion="discussion"
+                :theme-color="themeColor"
+                :brand="brand"
+            />
         </div>
+
+        <!-- Thread Tables -->
+        <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
 
         <forum-threads-table-item
             v-for="thread in pinnedThreads"
-            v-if="!searching"
+            :searching = "searching"
             :key="'pinned' + thread.id"
             :thread="thread"
             :theme-color="themeColor"
             :brand="brand"
-        ></forum-threads-table-item>
+        />
 
         <forum-threads-table-item
             v-for="thread in threadsArray"
-            v-if="!searching"
+            :searching = "searching"
             :key="thread.id"
             :thread="thread"
             :theme-color="themeColor"
             :brand="brand"
-        ></forum-threads-table-item>
+        />
 
         <forum-search-result
             v-for="item in searchResults"
-            v-if="searching"
+            :searching = "searching"
             :key="item.id"
             :item="item"
             :theme-color="themeColor"
             :brand="brand"
             :term="searchInterface"
-        ></forum-search-result>
+        />
 
         <div
             v-if="searching && searchResults.length === 0"
@@ -167,9 +92,13 @@
         </div>
     </div>
 </template>
+
 <script>
+
 import * as QueryString from 'query-string';
 import ForumThreadsTableItem from './_ForumThreadsTableItem';
+import ForumDiscussionItem from './_ForumDiscussionItem.vue';
+import ForumSearch from './_ForumSearch.vue';
 import ForumSearchResult from './_ForumSearchResult.vue';
 import Pagination from '../../components/Pagination.vue';
 import ClearableFilter from '../../components/ClearableFilter.vue';
@@ -180,9 +109,11 @@ export default {
     name: 'ForumThreadsTable',
     components: {
         'forum-threads-table-item': ForumThreadsTableItem,
+        'forum-discussion-item': ForumDiscussionItem,
+        'forum-search': ForumSearch,
         'forum-search-result': ForumSearchResult,
-        pagination: Pagination,
         'clearable-filter': ClearableFilter,
+        pagination: Pagination,
     },
     mixins: [ThemeClasses],
     props: {
@@ -194,9 +125,13 @@ export default {
             type: Array,
             default: () => [],
         },
+        discussions: {
+            type: Array,
+            default: () => [],
+        },
         brand: {
             type: String,
-            default: () => 'recordeo',
+            default: () => '',
         },
         threadCount: {
             type: Number | String,
@@ -205,6 +140,7 @@ export default {
     },
     data() {
         return {
+            discussionsArray: this.discussions,
             threadsArray: this.threads,
             searchTerm: '',
             filter: 'all',
@@ -237,8 +173,7 @@ export default {
             searchResults: [],
             searchResultsCount: 0,
             searchResultsPage: 1,
-            searchResultsPageLength: 10,
-            tabSelectedClasses: `bb-${this.themeColor}-1 text-black`,
+            searchResultsPageLength: 10
         };
     },
     computed: {
@@ -250,11 +185,9 @@ export default {
         },
         currentFilter() {
             const urlParams = QueryString.parse(location.search);
-
             if (urlParams['category_ids[]'] != null) {
                 return urlParams['category_ids[]'];
             }
-
             return '0';
         },
         searchInterface: {
@@ -394,32 +327,4 @@ export default {
     },
 };
 </script>
-<style lang="scss">
-    @import '../../assets/sass/partials/_variables.scss';
 
-    .search-box {
-        @include xSmallOnly {
-            margin-bottom: $gutterWidth / 2;
-        }
-    }
-
-    #clearSearch {
-        position:absolute;
-        top:50%;
-        right:0;
-        transform:translateY(-50%);
-        height:50px;
-        width:50px;
-        @include flexCenter();
-    }
-
-    .search-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-
-    .search-icon-col {
-        flex:0 0 50px;
-    }
-</style>

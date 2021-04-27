@@ -25,11 +25,11 @@
                 {{ thread.title }}
             </p>
 
-            <p class="x-tiny text-grey-3 uppercase font-italic">
+            <p class="x-tiny text-grey-3 uppercase">
                 last post <strong>{{ thread.lastPostDate }}</strong> by <strong>{{ thread.authorUsername }}</strong>
             </p>
 
-            <p class="x-tiny text-grey-3 text-truncate font-italic hide-md-up capitalize">
+            <p class="x-tiny text-grey-3 text-truncate hide-md-up capitalize">
 
                 {{ thread.topic }}
                 <span class="bullet">&#x25CF;</span>
@@ -49,12 +49,11 @@
             </span>
         </div>
 
-        <div class="flex flex-column align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down uppercase">
-            {{ topicIdMap }}
-        </div>
-
-        <div class="flex flex-column align-center basic-col text-grey-3 font-italic x-tiny hide-sm-down uppercase">
-            {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
+        <div class="tw-flex tw-items-center tw-text-gray-400 tw-ml-auto tw-mr-12 tw-flex-shrink-0">
+            <h6 class="tw-text-sm tw-font-bold">
+                <i class="fas fa-comment tw-mr-1"></i>
+                {{ (thread.replyAmount - 1) }}
+            </h6>
         </div>
 
         <div class="flex flex-column icon-col align-v-center">
