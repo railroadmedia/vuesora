@@ -26,9 +26,8 @@
             </p>
 
             <p class="x-tiny text-grey-3 uppercase">
-                last post <strong>{{ thread.lastPostDate }}</strong> by <strong>{{ thread.authorUsername }}</strong>
+                Created by <strong>{{ thread.authorUsername }}</strong>, <strong>{{ thread.createdOn }}</strong> - Last post <strong>{{ thread.lastPostDate }}</strong>
             </p>
-
             <p class="x-tiny text-grey-3 text-truncate hide-md-up capitalize">
 
                 {{ thread.topic }}
