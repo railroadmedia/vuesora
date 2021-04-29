@@ -1,6 +1,6 @@
 <template>
 
-    <div class="flex flex-column grow content-table">
+    <div class="tw-flex tw-flex-col tw-flex-grow">
 
         <!-- Forum Search -->
         <!-- <forum-search
@@ -49,29 +49,27 @@
             :term="searchInterface"
         />
 
-        <div
-            v-if="searching && searchResults.length === 0"
-            class="flex flex-row content-table-row"
+        <!-- <div v-if="searching && searchResults.length === 0"
+                 class="tw-flex"
         >
-            <div class="flex flex-column pv-3 align-center">
-                <i
-                    v-if="loading"
-                    class="fas fa-spin fa-circle-notch"
+            <div class="tw-flex tw-flex-col tw-py-3 tw-items-center">
+                <i v-if="loading"
+                   class="fas fa-spin fa-circle-notch"
                     :class="themeTextClass"
                     style="font-size:32px;"
                 ></i>
-                <p
-                    v-else
-                    class="body font-italic"
+                <p v-else
+                   class="body tw-italic"
                 >
                     No results were found matching that query, please try again.
                 </p>
             </div>
-        </div>
+        </div> -->
 
+        <!-- Pagination -->
         <div
             v-if="!searching && totalPages > 1"
-            class="flex flex-row pagination-row align-h-right"
+            class="tw-flex tw-py-4"
         >
             <pagination
                 :current-page="currentPage"
@@ -80,16 +78,16 @@
             ></pagination>
         </div>
 
-        <div
+        <!-- <div
             v-if="searching && totalSearchPages > 1"
-            class="flex flex-row pagination-row align-h-right"
+            class="tw-flex tw-py-3"
         >
             <pagination
                 :current-page="searchResultsPage"
                 :total-pages="totalSearchPages"
                 @pageChange="handleSearchPageChange"
             ></pagination>
-        </div>
+        </div> -->
     </div>
 </template>
 
