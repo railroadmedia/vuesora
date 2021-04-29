@@ -72,6 +72,9 @@
                 >
                     {{ post.postBody }}
                 </div>
+              <div>
+                {{post.authorSignature}}
+              </div>
 
                 <div
                     v-if="editing"

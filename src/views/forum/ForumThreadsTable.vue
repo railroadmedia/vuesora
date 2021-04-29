@@ -8,7 +8,7 @@
             :searching = "searching"
         /> -->
 
-        <div class="tw-mb-12">
+        <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
             <forum-discussion-item 
                 v-for="discussion in discussionsArray"
                 :key="discussion.id"

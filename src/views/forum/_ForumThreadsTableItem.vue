@@ -20,8 +20,13 @@
                 <i v-if="thread.isLocked" class="fas fa-lock"></i>
                 {{ thread.title }}
             </p>
-            <p class="tw-text-xs text-grey-3">
-                Created <strong>{{ thread.createdOn }}</strong> by&nbsp;<strong>{{ thread.authorUsername }}</strong>
+            <p class="tw-text-xs tw-text-gray-400">
+                Created <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong>
+            </p>
+            <p class="tw-text-xs text-grey-3 text-truncate hide-md-up capitalize">
+                {{ thread.topic }}
+                <span class="bullet">&#x25CF;</span>
+                {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
             </p>
         </div>
 
