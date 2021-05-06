@@ -72,9 +72,6 @@
                 >
                     {{ post.postBody }}
                 </div>
-              <div>
-                {{post.authorSignature}}
-              </div>
 
                 <div
                     v-if="editing"
@@ -114,6 +111,10 @@
                     </form>
                 </div>
             </div>
+
+          <div class="flex flex-row body mv-2">
+            {{post.authorSignature}}
+          </div>
 
             <div class="flex flex-row flex-wrap">
                 <div class="flex flex-column mb-1">

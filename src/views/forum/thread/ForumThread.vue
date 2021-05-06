@@ -151,6 +151,12 @@
                             :value="this.thread.id"
                         >
 
+                      <input
+                          type="hidden"
+                          name="parent_ids[]"
+                          :value="this.currentPost"
+                      >
+
                         <div class="flex flex-row align-h-right mt-2">
                             <button
                                 class="btn collapse-250 thread-reply-button"
@@ -230,6 +236,7 @@ export default {
             isLocked: this.thread.isLocked,
             isPinned: this.thread.isPinned,
             postReplyBody: '',
+            currentPost:null,
             formDisabled: false,
             currentLikeUsersId: 0,
             likeUsers: [],
@@ -320,13 +327,14 @@ export default {
             const blockQuoteHtmlString = `${'<blockquote>'
                     + '<span class="post-id">'}${payload.id}</span>`
                     + `<p class="quote-heading"><strong>${payload.userName}</strong>`
-                    + `<em> - ${payload.createdOn}</em></p><br>${ 
-                        payload.postBody 
+                    + `<em> - ${payload.createdOn}</em></p><br>${
+                        payload.postBody
                     }</blockquote>`
                     + '<br><p></p>';
 
             this.scrollToReply();
             this.postReplyInterface += blockQuoteHtmlString;
+            this.currentPost = payload.id;
         },
 
         handleInput(payload) {

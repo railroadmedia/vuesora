@@ -21,7 +21,7 @@
                 {{ thread.title }}
             </p>
             <p class="tw-text-xs tw-text-gray-400">
-                Created <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong>
+                Created by <strong>{{ thread.authorUsername }}</strong>, <strong>{{ thread.createdOn }}</strong> - Last post <strong>{{ thread.lastPostDate }}</strong>
             </p>
             <p class="tw-text-xs text-grey-3 text-truncate hide-md-up capitalize">
                 {{ thread.topic }}
