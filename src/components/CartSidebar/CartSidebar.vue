@@ -436,6 +436,9 @@ export default {
                 &.pianote {
                     color: #ff383f;
                 }
+                &.guitareo {
+                    color: #00C9AC;;
+                }
             }
             span {
                 padding-left: 3px;
@@ -497,6 +500,12 @@ export default {
                 background: #FF383F;
                 &:hover {
                     background: #FF6B70;
+                }
+            }
+            &.guitareo {
+                background: #00C9AC;
+                &:hover {
+                    background: #00FCB8;
                 }
             }
             i {
