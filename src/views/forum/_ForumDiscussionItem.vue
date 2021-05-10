@@ -6,7 +6,9 @@
         <!-- Avatar -->
         <div class="tw-h-14 tw-w-14 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-relative tw-mr-6 tw-flex-shrink-0" 
              :class="[bgColor]">
-            <i class="tw-text-2xl tw-text-white fas" :class="discussion.icon"></i>
+            <i class="tw-text-2xl tw-text-white" 
+               :class="[discussion.icon, (discussion.icon === 'fa-cube')?'fal':'fas' ]">
+            </i>
         </div>
 
         <!-- Title & Description -->
