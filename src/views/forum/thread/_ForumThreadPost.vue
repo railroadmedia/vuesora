@@ -112,78 +112,79 @@
                 </div>
             </div>
 
+          <div class="flex flex-row flex-wrap">
+            <div class="flex flex-column mb-1">
+              <div class="flex flex-row align-v-center">
+                <p
+                    class="tiny mr-1 font-bold uppercase dense pointer reply-like noselect"
+                    :class="post.isLiked ? themeTextClass : 'text-grey-3'"
+                    @click="likePost"
+                >
+                  <i
+                      class="fa-thumbs-up"
+                      :class="post.isLiked ? 'fas' : 'fal'"
+                  ></i>
+                </p>
+                <p
+                    class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
+                    :class="post.isLiked ? themeTextClass : 'text-grey-3'"
+                    @click="openLikes"
+                >
+                  {{ post.totalLikes }}
+                </p>
+
+                <p
+                    v-if="!post.isLocked"
+                    class="tiny text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
+                    @click="replyToPost"
+                >
+                  Reply
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-column mb-1">
+              <div class="flex flex-row align-v-center align-h-right">
+                <p
+                    class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                    @click="reportPost"
+                >
+                  Report
+                </p>
+
+                <!--<p v-if="currentUser.isAdmin" class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"-->
+                <!--@click="hidePost">-->
+                <!--Hide-->
+                <!--</p>-->
+
+                <p
+                    v-if="index !== 0 && canEdit"
+                    class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                    @click="deletePost"
+                >
+                  Delete
+                </p>
+
+                <p
+                    v-if="canEdit"
+                    class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"
+                    @click="editing = !editing"
+                >
+                  Edit
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div class="flex flex-row body mv-2">
             <div
-                v-if="!editing"
-                class="flex flex-column post-body grow"
+                v-if="post.authorSignature"
+                class="flex flex-column post-body grow bt-grey-1-1 tiny text-grey-3"
                 v-html="post.authorSignature"
             >
               {{ post.authorSignature }}
             </div>
           </div>
 
-            <div class="flex flex-row flex-wrap">
-                <div class="flex flex-column mb-1">
-                    <div class="flex flex-row align-v-center">
-                        <p
-                            class="tiny mr-1 font-bold uppercase dense pointer reply-like noselect"
-                            :class="post.isLiked ? themeTextClass : 'text-grey-3'"
-                            @click="likePost"
-                        >
-                            <i
-                                class="fa-thumbs-up"
-                                :class="post.isLiked ? 'fas' : 'fal'"
-                            ></i>
-                        </p>
-                        <p
-                            class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                            :class="post.isLiked ? themeTextClass : 'text-grey-3'"
-                            @click="openLikes"
-                        >
-                            {{ post.totalLikes }}
-                        </p>
-
-                        <p
-                            v-if="!post.isLocked"
-                            class="tiny text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
-                            @click="replyToPost"
-                        >
-                            Reply
-                        </p>
-                    </div>
-                </div>
-                <div class="flex flex-column mb-1">
-                    <div class="flex flex-row align-v-center align-h-right">
-                        <p
-                            class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
-                            @click="reportPost"
-                        >
-                            Report
-                        </p>
-
-                        <!--<p v-if="currentUser.isAdmin" class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"-->
-                        <!--@click="hidePost">-->
-                        <!--Hide-->
-                        <!--</p>-->
-
-                        <p
-                            v-if="index !== 0 && canEdit"
-                            class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
-                            @click="deletePost"
-                        >
-                            Delete
-                        </p>
-
-                        <p
-                            v-if="canEdit"
-                            class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"
-                            @click="editing = !editing"
-                        >
-                            Edit
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
