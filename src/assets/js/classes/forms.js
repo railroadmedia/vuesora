@@ -118,17 +118,15 @@ export default class Forms {
     }
 
     static checkErrorsInModalForms() {
-        const erroredInputs = document.querySelectorAll('input.has-error, select.has-error');
+        var erroredInputs = document.querySelectorAll('input.has-error, select.has-error');
 
         if (erroredInputs.length > 0) {
-            let parentModal = erroredInputs[0].parentElement;
 
-            while (parentModal != null && !parentModal.classList.contains('modal')) {
-                parentModal = parentModal.parentElement;
-            }
+            let parentModal = erroredInputs[0].closest('.modal');
+            console.log(parentModal)
 
             if (parentModal) {
-                parentModal.classList.add('active');
+                parentModal.classList.add('active','displayed');
                 document.body.classList.add('no-scroll');
                 window.appendBackgroundOverlay();
             }
