@@ -113,7 +113,13 @@
             </div>
 
           <div class="flex flex-row body mv-2">
-            {{post.authorSignature}}
+            <div
+                v-if="!editing"
+                class="flex flex-column post-body grow"
+                v-html="post.authorSignature"
+            >
+              {{ post.authorSignature }}
+            </div>
           </div>
 
             <div class="flex flex-row flex-wrap">
