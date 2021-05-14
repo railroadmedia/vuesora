@@ -500,6 +500,24 @@ module.exports.f = function getOwnPropertyNames(it) {
 
 /***/ }),
 
+/***/ "044b":
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+
+/***/ }),
+
 /***/ "061b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10807,16 +10825,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "3e67":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
-
-
-/***/ }),
-
 /***/ "40c3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12154,6 +12162,16 @@ module.exports = $export;
 
 /***/ }),
 
+/***/ "6453":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`);
+
+
+/***/ }),
+
 /***/ "64d5":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12360,7 +12378,7 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-const strictUriEncode = __webpack_require__("3e67");
+const strictUriEncode = __webpack_require__("6453");
 const decodeComponent = __webpack_require__("f234");
 const splitOnFirst = __webpack_require__("f32c");
 const filterObject = __webpack_require__("7348");
@@ -24746,7 +24764,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 var bind = __webpack_require__("1d2b");
-var isBuffer = __webpack_require__("c7ce");
+var isBuffer = __webpack_require__("044b");
 
 /*global toString:true*/
 
@@ -25140,24 +25158,6 @@ if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
 module.exports = !__webpack_require__("9e1e") && !__webpack_require__("79e5")(function () {
   return Object.defineProperty(__webpack_require__("230e")('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
-
-
-/***/ }),
-
-/***/ "c7ce":
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-module.exports = function isBuffer (obj) {
-  return obj != null && obj.constructor != null &&
-    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
 
 
 /***/ }),
