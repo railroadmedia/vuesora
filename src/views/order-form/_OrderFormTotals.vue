@@ -49,6 +49,15 @@
                 </p>
             </div>
 
+            <div class="flex flex-row mb-1" v-if="totals.shipping_taxes > 0 && cartData.number_of_payments > 1">
+                <p class="flex flex-column body text-left">
+                    Shipping Tax
+                </p>
+                <p class="flex flex-column body text-right">
+                    {{ totals.shipping_taxes }}
+                </p>
+            </div>
+
             <div class="flex flex-row mb-1" v-if="financeLabel">
                 <p class="flex flex-column body text-left">
                     Finance Charges
@@ -73,11 +82,12 @@
                 </p>
                 <p class="flex flex-column title font-bold text-right">
                     USD ${{ parseTotal(totals.due) }}
-                    <br>
-                    <!-- todo: add condition for block below -->
-                    <span class="x-tiny font-regular text-grey-3">
-                        Shipping included
-                    </span>
+                    <template v-if="totals.shipping > 0">
+                        <br>
+                        <span class="x-tiny font-regular text-grey-3">
+                            Shipping included
+                        </span>
+                    </template>
                 </p>
             </div>
 
