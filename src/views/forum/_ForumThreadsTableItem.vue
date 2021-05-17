@@ -49,8 +49,8 @@
 
         <!-- Post Date -->
         <div class="tw-flex tw-flex-col tw-justify-center tw-mr-12 tw-text-gray-600 tw-flex-shrink-0">
-            <h6 class="tw-text-xs tw-font-bold">{{ thread.lastPostDate }}</h6>
-            <p class="tw-text-xs"><span class="tw-font-bold">By:</span> {{ thread.authorUsername }}</p>
+            <h6 class="tw-text-xs tw-font-bold">{{ thread.latestPost ? thread.latestPost.created_at_diff : ''}}</h6>
+            <p class="tw-text-xs"><span class="tw-font-bold">By:</span> {{  thread.latestPost ? thread.latestPost.author_display_name : '' }}</p>
         </div>
 
         <!-- Arrow -->

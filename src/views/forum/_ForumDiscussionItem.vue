@@ -29,9 +29,9 @@
 
         <!-- Post Date -->
         <div class="tw-flex tw-flex-col tw-justify-center tw-text-gray-600 tw-flex-shrink-0">
-            <h6 class="tw-text-xs tw-font-bold">{{ discussion.lastPostDate }}</h6>
+            <h6 class="tw-text-xs tw-font-bold">{{ discussion.latestPost ? discussion.latestPost.created_at_diff : '' }}</h6>
             <!-- <p class="tw-text-xs"><span class="tw-font-bold">In:</span> </p> -->
-            <p class="tw-text-xs"><span class="tw-font-bold">By:</span> {{ discussion.authorUsername }}</p>
+            <p class="tw-text-xs"><span class="tw-font-bold">By:</span> {{ discussion.latestPost ? discussion.latestPost.author_display_name : '' }}</p>
         </div>
     </a>
 </template>
