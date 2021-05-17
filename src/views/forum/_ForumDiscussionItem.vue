@@ -14,14 +14,14 @@
         <!-- Title & Description -->
         <div class="tw-flex tw-flex-col tw-justify-center tw-w-full tw-max-w-lg tw-min-w-0 tw-pr-10">
             <h4 class="tw-text-lg tw-font-bold">{{ discussion.title }}</h4>
-            <p class="tw-text-xsZ tw-truncate tw-w-full">
+            <p class="tw-text-xs tw-truncate tw-w-full">
                 {{ discussion.description }}
             </p>
         </div>
 
         <!-- Reply Amount -->
         <div class="tw-flex tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-12 tw-flex-shrink-0">
-            <h6 class="tw-text-xsZ tw-font-bold">
+            <h6 class="tw-text-xs tw-font-bold">
                 <i class="fas fa-comment-lines tw-mr-1"></i>
                 {{ discussion.replyAmount }}
             </h6>
@@ -29,7 +29,7 @@
 
         <!-- Post Date -->
         <div class="tw-flex tw-flex-col tw-justify-center tw-text-gray-600 tw-flex-shrink-0">
-            <h6 class="tw-text-xsZ tw-font-bold">{{ discussion.latestPost ? discussion.latestPost.created_at_diff : '' }}</h6>
+            <h6 class="tw-text-xs tw-font-bold">{{ discussion.latestPost ? discussion.latestPost.created_at_diff : '' }}</h6>
             <!-- <p class="tw-text-xs"><span class="tw-font-bold">In:</spanZ> </p> -->
             <p class="tw-text-xs"><span class="tw-font-bold">By:</span> {{ discussion.latestPost ? discussion.latestPost.author_display_name : '' }}</p>
         </div>
