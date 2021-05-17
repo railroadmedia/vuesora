@@ -20,10 +20,10 @@
                 <i v-if="thread.isLocked" class="fas fa-lock"></i>
                 {{ thread.title }}
             </p>
-            <p class="tw-text-xs tw-text-gray-400">
-                Created by <strong>{{ thread.authorUsername }}</strong>, <strong>{{ thread.createdOn }}</strong> - Last post <strong>{{ thread.lastPostDate }}</strong>
+            <p class="tw-text-xs tw-text-gray-600">
+                Started on <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong> 
             </p>
-            <p class="tw-text-xs text-grey-3 text-truncate hide-md-up capitalize">
+            <p class="tw-text-xs tw-text-gray-600 text-truncate hide-md-up capitalize">
                 {{ thread.topic }}
                 <span class="bullet">&#x25CF;</span>
                 {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
@@ -40,11 +40,17 @@
         </div>
 
         <!-- Reply Count -->
-        <div class="tw-flex tw-items-center tw-text-gray-400 tw-ml-auto tw-mr-12 tw-flex-shrink-0">
-            <h6 class="tw-text-sm tw-font-bold">
-                <i class="fas fa-comment tw-mr-1"></i>
+        <div class="tw-flex tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-12 tw-flex-shrink-0">
+            <h6 class="tw-text-xs tw-font-bold">
+                <i class="fas fa-comment-lines tw-mr-1"></i>
                 {{ (thread.replyAmount - 1) }}
             </h6>
+        </div>
+
+        <!-- Post Date -->
+        <div class="tw-flex tw-flex-col tw-justify-center tw-mr-12 tw-text-gray-600 tw-flex-shrink-0">
+            <h6 class="tw-text-xs tw-font-bold">{{ thread.lastPostDate }}</h6>
+            <p class="tw-text-xs"><span class="tw-font-bold">By:</span> {{ thread.authorUsername }}</p>
         </div>
 
         <!-- Arrow -->
