@@ -130,7 +130,7 @@
                 >
                     <form
                         method="post"
-                        action="/post/store"
+                        :action="formUrl"
                         @submit="formDisabled = !formDisabled"
                     >
                         <text-editor
@@ -151,11 +151,11 @@
                             :value="this.thread.id"
                         >
 
-                      <input
-                          type="hidden"
-                          name="parent_ids[]"
-                          :value="this.currentPost"
-                      >
+<!--                      <input-->
+<!--                          type="hidden"-->
+<!--                          name="parent_ids[]"-->
+<!--                          :value="this.currentPost"-->
+<!--                      >-->
 
                         <div class="flex flex-row align-h-right mt-2">
                             <button
@@ -226,6 +226,10 @@ export default {
                 isAdmin: false,
             }),
         },
+      formUrl: {
+        type: String,
+        default: () => '/post/store',
+      },
     },
     data() {
         return {
@@ -236,7 +240,7 @@ export default {
             isLocked: this.thread.isLocked,
             isPinned: this.thread.isPinned,
             postReplyBody: '',
-            currentPost:null,
+            currentPost:[],
             formDisabled: false,
             currentLikeUsersId: 0,
             likeUsers: [],
