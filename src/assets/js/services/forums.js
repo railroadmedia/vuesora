@@ -74,7 +74,7 @@ export default {
      * @returns {Promise} resolved promise with the response.data object
      */
     reportForumPost(id) {
-        return axios.put(`/forums/post/report/${id}`)
+        return axios.put(`${endpointPrefix}/forums/post/report/${id}`)
             .then(response => response.data)
             .catch(ErrorHandler);
     },

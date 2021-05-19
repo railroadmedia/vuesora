@@ -78,7 +78,7 @@
                     class="flex flex-column mb-1"
                 >
                     <form
-                        :action="'/post/update/' + this.post.id"
+                        :action="updatePostRoute"
                         method="post"
                     >
                         <input
@@ -236,6 +236,10 @@ export default {
             type: String,
             default: '/members/profile/',
         },
+      updatePostBaseRoute: {
+        type: String,
+        default: '/post/update/',
+      },
     },
     data() {
         return {
@@ -282,6 +286,9 @@ export default {
         showUserExp() {
             return this.userExpValue != null && (['team', 'pack', 'admin'].indexOf(this.post.access_level) === -1);
         },
+      updatePostRoute() {
+        return this.updatePostBaseRoute.replaceAll('#####', this.post.id);
+      },
     },
     methods: {
         replyToPost() {

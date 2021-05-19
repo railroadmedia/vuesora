@@ -95,6 +95,7 @@
                 :current-user="currentUser"
                 :is-locked="thread.isLocked"
                 :theme-color="themeColor"
+                :update-post-base-route="updatePostBaseRoute"
                 @likePost="handlePostLike"
                 @openLikes="addLikeUsersToModal"
                 @deletePost="handlePostDelete"
@@ -130,7 +131,7 @@
                 >
                     <form
                         method="post"
-                        :action="formUrl"
+                        :action="postStoreFormUrl"
                         @submit="formDisabled = !formDisabled"
                     >
                         <text-editor
@@ -226,9 +227,13 @@ export default {
                 isAdmin: false,
             }),
         },
-      formUrl: {
+      postStoreFormUrl: {
         type: String,
         default: () => '/post/store',
+      },
+      updatePostBaseRoute: {
+        type: String,
+        default: '/post/update/',
       },
     },
     data() {
