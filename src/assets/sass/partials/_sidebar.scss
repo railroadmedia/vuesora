@@ -146,6 +146,10 @@ body {
       padding-top: 8px;
       height: 45px;
     }
+    &.singeo {
+      padding-top: 8px;
+      height: 45px;
+    }
 
     &:hover {
       &.drumeo {
@@ -157,6 +161,9 @@ body {
         background-color: #F2F3F3;
       }
       &.guitareo {
+        background-color: #F2F3F3;
+      }
+      &.singeo {
         background-color: #F2F3F3;
       }
       &.pianote svg {
@@ -184,6 +191,10 @@ body {
       }
       &.guitareo {
         color: $guitareoGreen;
+        background-color: #CCD0D3;
+      }
+      &.singeo {
+        color: $singeoPurple;
         background-color: #CCD0D3;
       }
       &.guitareo svg {
@@ -215,6 +226,10 @@ body {
     }
 
     &.guitareo {
+      width: 100px;
+    }
+
+    &.singeo {
       width: 100px;
     }
 
