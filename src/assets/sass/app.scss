@@ -638,6 +638,10 @@ ul {
   &.pianote {
     background: linear-gradient(180deg,hsla(0, 0%, 0%, 0.05) 45%,transparentize(darken($pianoteRed, 10%), 0.3) 100%);
   }
+
+  &.singeo {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 12.82%, rgba(131, 0, 233, 0.25) 89.64%);
+  }
 }
 
 [data-open-course] {
