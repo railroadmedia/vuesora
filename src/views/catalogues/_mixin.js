@@ -149,6 +149,7 @@ export default {
                     'pack-bundle', 'semester-pack'],
                 guitareo: ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
                 pianote: ['course', 'learning-path', 'pack', 'chord-and-scale'],
+                singeo: ['course', 'learning-path', 'pack', 'chord-and-scale'], // todo - update
             };
 
             if (this.noAccess) {
@@ -185,6 +186,7 @@ export default {
                 drumeo: ['song', 'learning-path-level'],
                 guitareo: ['song', 'chord-and-scale'],
                 pianote: ['song', 'unit', 'learning-path-level'],
+                singeo: ['song', 'unit', 'learning-path-level'], // todo - update
             }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
         },
     },

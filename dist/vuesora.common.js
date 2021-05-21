@@ -32843,7 +32843,9 @@ var _default_ContentModel = /*#__PURE__*/function () {
       var defaults = {
         drumeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg',
         pianote: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg',
-        guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg'
+        guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg',
+        singeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg' // todo - update
+
       };
       var originalThumb = this.getPostDatum('original_thumbnail_url');
       var thumb = originalThumb === 'TBD' ? this.getPostDatum('thumbnail_url') : originalThumb;
@@ -34433,7 +34435,9 @@ var _model_ContentTypeModel = function ContentTypeModel(type, _ref) {
       var contentWithHierarchy = {
         drumeo: ['course', 'learning-path', 'learning-path-level', 'learning-path-course', 'pack', 'pack-bundle', 'semester-pack'],
         guitareo: ['course', 'song', 'play-along', 'learning-path', 'pack', 'pack-bundle', 'semester-pack'],
-        pianote: ['course', 'learning-path', 'pack', 'chord-and-scale']
+        pianote: ['course', 'learning-path', 'pack', 'chord-and-scale'],
+        singeo: ['course', 'learning-path', 'pack', 'chord-and-scale'] // todo - update
+
       };
 
       if (this.noAccess) {
@@ -34467,7 +34471,9 @@ var _model_ContentTypeModel = function ContentTypeModel(type, _ref) {
       return {
         drumeo: ['song', 'learning-path-level'],
         guitareo: ['song', 'chord-and-scale'],
-        pianote: ['song', 'unit', 'learning-path-level']
+        pianote: ['song', 'unit', 'learning-path-level'],
+        singeo: ['song', 'unit', 'learning-path-level'] // todo - update
+
       }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
     }
   },
