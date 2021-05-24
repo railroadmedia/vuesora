@@ -381,6 +381,10 @@
     &.pianote {
       @include topToBottomGradient(transparent, transparentize($pianoteRed, .7));
     }
+
+    &.singeo {
+      @include topToBottomGradient(transparent, transparentize($singeoPurple, .7));
+    }
   }
 }
 
