@@ -106,7 +106,6 @@
                         ref="player"
                         playsinline
                         preload="metadata"
-                        crossorigin="anonymous"
                         :poster="poster"
                     >
 

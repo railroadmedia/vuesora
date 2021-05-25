@@ -142,6 +142,10 @@ body {
       padding-top: 8px;
       height: 45px;
     }
+    &.guitareo {
+      padding-top: 8px;
+      height: 45px;
+    }
 
     &:hover {
       &.drumeo {
@@ -150,6 +154,9 @@ body {
       &.drumeo svg {
       }
       &.pianote {
+        background-color: #F2F3F3;
+      }
+      &.guitareo {
         background-color: #F2F3F3;
       }
       &.pianote svg {
@@ -175,6 +182,13 @@ body {
       &.pianote svg {
         fill: $pianoteRed;
       }
+      &.guitareo {
+        color: $guitareoGreen;
+        background-color: #CCD0D3;
+      }
+      &.guitareo svg {
+        fill: $guitareoGreen;
+      }
 
       .sidebar-link-title {
         font-weight: 550;
@@ -197,6 +211,10 @@ body {
     width: 83px;
 
     &.pianote {
+      width: 100px;
+    }
+
+    &.guitareo {
       width: 100px;
     }
 
