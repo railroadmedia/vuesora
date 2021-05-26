@@ -1,7 +1,8 @@
 <template>
     <a
         :href="discussion.url"
-        class="tw-relative tw-flex tw-flex-row tw-items-center tw-p-4 tw-pl-0 tw-text-black tw-no-underline tw-border-0 tw-border-b tw-border-solid tw-border-gray-200 hover:tw-bg-red-50"
+        class="tw-relative tw-flex tw-flex-row tw-items-center tw-py-4 tw-px-2 tw-text-black tw-no-underline tw-border-0 tw-border-b tw-border-solid tw-border-gray-200"
+        :class="[brandHoverColor]"
     >
         <!-- Avatar -->
         <div class="tw-h-14 tw-w-14 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-relative tw-mr-6 tw-flex-shrink-0" 
@@ -54,6 +55,9 @@
         computed: {
             bgColor() {
                 return 'tw-bg-'+this.brand;
+            },
+            brandHoverColor() {
+                return 'hover:tw-bg-'+this.brand+'-lightest'
             }
         }
     }

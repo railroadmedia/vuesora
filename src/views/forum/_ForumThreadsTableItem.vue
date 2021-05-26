@@ -1,14 +1,15 @@
 <template>
     <a
         :href="thread.url"
-        class="tw-relative tw-flex tw-flex-row tw-items-center tw-p-4 tw-pl-0 tw-text-black tw-no-underline tw-border-0 tw-border-b tw-border-solid tw-border-gray-200 hover:tw-bg-red-50"
+        class="tw-relative tw-flex tw-flex-row tw-items-center tw-py-4 tw-px-2 tw-text-black tw-no-underline tw-border-0 tw-border-b tw-border-solid tw-border-gray-200"
+        :class="[brandHoverColor]"
     >
         <!-- Avatar -->
         <div class="tw-h-14 tw-w-14 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-relative tw-mr-6 tw-flex-shrink-0">
-            <div class="tw-h-full tw-w-full tw-rounded-full tw-absolute tw-top-0 tw-left-0 tw-bg-contain tw-flex tw-justify-center tw-items-center"
-                 :class="themeBgColor"
-                 :style="'background-image:url(' + thread.authorAvatar + ');'"
+            <div class="user-avatar"
+                 :class="[avatarClassObject, themeColor]"    
             >
+                <img :src="thread.authorAvatar" class="tw-rounded-full tw-border-3">
                 <i v-if="!thread.authorAvatar" class="tw-text-2xl tw-text-white fas fa-comments"></i>
             </div>
         </div>
@@ -94,6 +95,20 @@ export default {
             };
             return topics[this.thread.topic];
         },
+        avatarClassObject() {
+            return {
+                subscriber: ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.thread.access_level) !== -1,
+                edge: this.thread.access_level === 'edge',
+                pack: this.thread.access_level === 'pack',
+                team: ['team', 'admin'].indexOf(this.thread.access_level) !== -1,
+                guitar: this.thread.access_level === 'guitar',
+                piano: this.thread.access_level === 'piano',
+                lifetime: this.thread.access_level === 'lifetime',
+            };
+        },
+        brandHoverColor() {
+            return 'hover:tw-bg-'+this.brand+'-lightest'
+        }
     },
 };
 </script>

@@ -1,70 +1,48 @@
 <template>
-    <div class="flex flex-row ph pv-3 bb-grey-1-1">
+    <div class="tw-flex tw-flex-col tw-py-7 tw-px-14 tw-mb-7 tw-bg-white tw-rounded-2xl">
         <a
             :id="'post' + post.id"
             style="position:relative;top:-75px;"
         ></a>
-        <div class="flex flex-column avatar-column">
-            <div
-                class="user-avatar smaller"
-                :class="[avatarClassObject, brand]"
-            >
-                <a
-                    :href="profileRoute"
-                    target="_blank"
-                    class="no-decoration"
-                >
-                    <img
-                        :src="post.authorAvatar"
-                        class="rounded"
+
+        <!-- Post Header -->
+        <div class="tw-flex tw-items-center">
+            <!-- Avatar -->
+            <div class="tw-w-20 tw-h-20 tw-mr-4"> 
+                <div class="user-avatar tw-w-20 tw-h-20"
+                    :class="[avatarClassObject, brand]">
+                    <a :href="profileRoute"
+                        target="_blank"
+                        class="no-decoration"
                     >
-                </a>
-            </div>
-
-            <p
-                v-if="showUserExp"
-                class="x-tiny dense font-bold uppercase text-center mt-1"
-            >
-                {{ userExpRank }}
-            </p>
-            <p
-                v-if="showUserExp"
-                class="x-tiny dense text-center font-compressed"
-            >
-                {{ userExpValue }} XP
-            </p>
-          <p
-              class="x-tiny dense text-center font-bold"
-          >
-            Total Forums Posts {{ post.authorTotalPosts }}
-          </p>
-          <p
-              class="x-tiny dense text-center font-bold"
-          >
-            Days as a Member {{ post.authorDaysAsMember }}
-          </p>
-        </div>
-        <div class="flex flex-column ph">
-            <div class="flex flex-row align-v-center mb-1">
-                <div class="flex flex-column">
-                    <h2 class="title">
-                        {{ post.authorUsername }}
-                    </h2>
+                        <img class="rounded" :src="post.authorAvatar">
+                    </a>
                 </div>
+            </div>
+            <div class="tw-flex tw-flex-col tw-flex-grow">
+                <!-- Name -->
+                <h2 class="tw-mb-2">
+                    {{ post.authorUsername }}
+                </h2>
 
-                <div class="flex flex-column align-h-right">
-                    <div class="flex flex-row">
-                        <p class="x-tiny text-grey-3 font-bold font-italic uppercase mr-2">
-                            {{ post.createdOn }}
-                        </p>
-                        <p class="x-tiny text-grey-3 font-bold font-italic uppercase">
-                            #{{ postNumber }}
-                        </p>
+                <div class="tw-flex">
+                    <div class="tw-text-xs tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed">
+                        <span class="">{{ post.authorTotalPosts }} Posts</span> -
+                        <span class="">{{ userExpValue }}</span> -
+                         <span class="">Level {{ post.progressLevel }}</span>
+                    </div>
+                    <div class="tw-text-xs tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-ml-auto">
+                        <span class="tw-mb-4">{{ post.createdOn }}</span>
+                        <span class="">#{{ postNumber }}</span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="flex flex-row body mv-2">
+        <!-- Post Content -->
+        <div class="flex flex-column">
+            <!-- Body -->
+            <div class="flex flex-row body tw-my-6">
                 <div
                     v-if="!editing"
                     class="flex flex-column post-body grow"
@@ -112,80 +90,79 @@
                 </div>
             </div>
 
-          <div class="flex flex-row flex-wrap">
-            <div class="flex flex-column mb-1">
-              <div class="flex flex-row align-v-center">
-                <p
-                    class="tiny mr-1 font-bold uppercase dense pointer reply-like noselect"
-                    :class="post.isLiked ? themeTextClass : 'text-grey-3'"
-                    @click="likePost"
-                >
-                  <i
-                      class="fa-thumbs-up"
-                      :class="post.isLiked ? 'fas' : 'fal'"
-                  ></i>
-                </p>
-                <p
-                    class="tiny mr-3 font-bold uppercase dense pointer reply-like noselect"
-                    :class="post.isLiked ? themeTextClass : 'text-grey-3'"
-                    @click="openLikes"
-                >
-                  {{ post.totalLikes }}
-                </p>
+            <!-- Actions -->
+            <div class="flex flex-row flex-wrap">
+                <div class="flex flex-column mb-1">
+                <div class="flex flex-row align-v-center">
+                    <p
+                        class="tw-text-xs tw-mr-1 font-bold uppercase dense pointer reply-like noselect"
+                        :class="post.isLiked ? themeTextClass : 'text-grey-3'"
+                        @click="likePost"
+                    >
+                    <i
+                        class=" fas fa-thumbs-up"
+                        :class="post.isLiked ? 'fas' : 'fal'"
+                    ></i>
+                    </p>
+                    <p
+                        class="tw-text-xs tw-mr-2 font-bold uppercase dense pointer reply-like noselect"
+                        :class="post.isLiked ? themeTextClass : 'text-grey-3'"
+                        @click="openLikes"
+                    >
+                    {{ post.totalLikes }}
+                    </p>
 
-                <p
-                    v-if="!post.isLocked"
-                    class="tiny text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
-                    @click="replyToPost"
-                >
-                  Reply
-                </p>
-              </div>
+                    <p
+                        v-if="!post.isLocked"
+                        class="tw-text-xs text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        @click="replyToPost"
+                    >
+                    Reply
+                    </p>
+                </div>
+                </div>
+                <div class="flex flex-column mb-1">
+                <div class="flex flex-row align-v-center align-h-right">
+                    <p
+                        class="tw-text-xs text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        @click="reportPost"
+                    >
+                    Report
+                    </p>
+                    <!--<p v-if="currentUser.isAdmin" class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"-->
+                    <!--@click="hidePost">-->
+                    <!--Hide-->
+                    <!--</p>-->
+                    <p
+                        v-if="index !== 0 && canEdit"
+                        class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        @click="deletePost"
+                    >
+                    Delete
+                    </p>
+                    <p
+                        v-if="canEdit"
+                        class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"
+                        @click="editing = !editing"
+                    >
+                    Edit
+                    </p>
+                </div>
+                </div>
             </div>
-            <div class="flex flex-column mb-1">
-              <div class="flex flex-row align-v-center align-h-right">
-                <p
-                    class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
-                    @click="reportPost"
+            
+            <!-- Signature -->
+            <div class="flex flex-row body mv-2">
+                <div
+                    v-if="post.authorSignature"
+                    class="flex flex-column post-body grow bt-grey-1-1 tiny text-grey-3"
+                    v-html="post.authorSignature"
                 >
-                  Report
-                </p>
-
-                <!--<p v-if="currentUser.isAdmin" class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"-->
-                <!--@click="hidePost">-->
-                <!--Hide-->
-                <!--</p>-->
-
-                <p
-                    v-if="index !== 0 && canEdit"
-                    class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
-                    @click="deletePost"
-                >
-                  Delete
-                </p>
-
-                <p
-                    v-if="canEdit"
-                    class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"
-                    @click="editing = !editing"
-                >
-                  Edit
-                </p>
-              </div>
+                {{ post.authorSignature }}
+                </div>
             </div>
-          </div>
-
-          <div class="flex flex-row body mv-2">
-            <div
-                v-if="post.authorSignature"
-                class="flex flex-column post-body grow bt-grey-1-1 tiny text-grey-3"
-                v-html="post.authorSignature"
-            >
-              {{ post.authorSignature }}
-            </div>
-          </div>
-
         </div>
+
     </div>
 </template>
 <script>
@@ -225,10 +202,14 @@ export default {
         currentUser: {
             type: Object,
             default: () => ({
-                name: '',
+                access_level: '',
                 avatar: '',
                 id: 0,
                 isAdmin: false,
+                name: '',
+                totalPosts: '0',
+                userExpRank: 'Casual',
+                progressLevel: '2',
             }),
         },
 

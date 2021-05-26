@@ -1,21 +1,17 @@
 <template>
-    <div class="container mv-3 forum-post">
+    <div class="container forum-post tw-px-4 tw-py-12">
         <div class="flex flex-column">
-            <div class="flex flex-row pa-3 flex-wrap align-v-center">
-                <div class="flex flex-column mb-1 xs-12 sm-6">
-                    <h1 class="heading thread-title">
-                        <a
-                            href="/members/forums"
-                            class="no-decoration mr-1 back-arrow"
-                        >
-                            <i class="fas fa-arrow-circle-left text-grey-2"></i>
-                        </a>
 
+            <div class="flex flex-row flex-wrap align-v-center tw-mb-8">
+                <div class="tw-flex xs-12 sm-6 tw-items-center">
+                    <a href="/members/forums" class="no-decoration mr-1 back-arrow">
+                        <i class="fas fa-arrow-circle-left text-grey-2 tw-text-4xl"></i>
+                    </a>
+                    <h1 class="heading thread-title">
                         {{ thread.title }}
                     </h1>
                 </div>
-
-                <div class="flex flex-column mb-1 xs-12 sm-6">
+                <div class="flex flex-column xs-12 sm-6">
                     <div class="flex flex-row align-h-right">
                         <button
                             v-if="currentUser.isAdmin"
@@ -76,7 +72,7 @@
 
             <div
                 v-if="totalPages > 1"
-                class="flex flex-row pagination-row align-h-right"
+                class="flex flex-row pagination-row align-h-right tw-mb-8"
             >
                 <pagination
                     :current-page="currentPage"
@@ -113,21 +109,30 @@
                 ></pagination>
             </div>
 
-            <div
-                v-if="!thread.isLocked"
+            <!-- Thread Reply Section -->
+            <section v-if="!thread.isLocked"
                 class="flex flex-row ph pv-3"
             >
-                <div class="flex flex-column avatar-column hide-xs-only">
-                    <div class="square">
+                <div class="tw-inline-flex tw-flex-col tw-mr-4 hide-xs-only">
+                    <!-- Avatar -->
+                    <div class="user-avatar tw-w-20 tw-h-20 tw-mb-2"
+                         :class="[userAvatarClassObject, brand]"
+                    >
                         <img
                             class="rounded"
                             :src="currentUser.avatar"
-                        >
+                        >               
+                    </div>
+                    <!-- User Info -->
+                    <div class="tw-font-roboto-condensed tw-uppercase tw-text-center">
+                        <p class="tw-text-base tw-font-bold tw-mb-1">{{ currentUser.userExpVal }}</p>
+                        <p class="tw-text-sm  tw-mb-0.5">Level {{ currentUser.progressLevel }}</p>
+                        <p class="tw-text-xs  tw-font-bold tw-text-gray-400">{{ currentUser.totalPosts }} Posts</p>
                     </div>
                 </div>
-                <div
-                    id="replyContainer"
-                    class="flex flex-column ph"
+
+                <div id="replyContainer"
+                     class="flex flex-column ph"
                 >
                     <form
                         method="post"
@@ -174,7 +179,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </section>
 
             <comment-likes-modal
                 :theme-color="themeColor"
@@ -221,10 +226,14 @@ export default {
         currentUser: {
             type: Object,
             default: () => ({
-                name: '',
+                access_level: '',
                 avatar: '',
                 id: 0,
                 isAdmin: false,
+                name: '',
+                totalPosts: '0',
+                userExpRank: 'Casual',
+                progressLevel: '2',
             }),
         },
       postStoreFormUrl: {
@@ -264,6 +273,18 @@ export default {
                 this.postReplyBody = val;
                 this.$refs.textEditor.contentInterface = this.postReplyBody;
             },
+        },
+
+        userAvatarClassObject() {
+            return {
+                subscriber: ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.currentUser.access_level) !== -1,
+                edge: this.currentUser.access_level === 'edge',
+                pack: this.currentUser.access_level === 'pack',
+                team: ['team', 'admin'].indexOf(this.currentUser.access_level) !== -1,
+                guitar: this.currentUser.access_level === 'guitar',
+                piano: this.currentUser.access_level === 'piano',
+                lifetime: this.currentUser.access_level === 'lifetime',
+            };
         },
     },
 
