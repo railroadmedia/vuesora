@@ -2,7 +2,8 @@
     <div class="">
 
         <!-- Forums Tabs -->
-        <div class="flex flex-row flex-wrap ph pt-3 align-v-center">
+        <div v-if="!onlyFollowed" 
+             class="flex flex-row flex-wrap ph pt-3 align-v-center">
             <div class="flex flex-column mb-3 align-v-center">
                 <div class="flex flex-row">
                     <a
@@ -72,7 +73,7 @@
                 </p>
             </div>
 
-            <div
+            <!-- <div
                 v-if="!searching && brand !== 'pianote'"
                 class="flex flex-column mb-3 form-group topic-col"
             >
@@ -98,7 +99,7 @@
                         :class="themeColor"
                     >Select a Topic</label>
                 </div>
-            </div>
+            </div> -->
         </div>  
     
     </div>
@@ -107,6 +108,10 @@
     export default {
         name: 'ForumSearch',
         props: {
+            onlyFollowed: {
+                type: Boolean,
+                default: () => false,
+            },
             isFollowedSection: {
                 type: Boolean,
                 default: () => false,
@@ -114,6 +119,14 @@
             searching: {
                 type: Boolean,
                 default: () => false,
+            },
+            searchInterface: {
+                type: String,
+                default: () => ''
+            },
+            themeColor: {
+                type: String,
+                default: () => 'drumeo',
             },
         }
     }

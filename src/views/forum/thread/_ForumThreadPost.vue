@@ -152,10 +152,10 @@
             </div>
             
             <!-- Signature -->
-            <div class="flex flex-row body mv-2">
+            <div class="flex flex-row body">
                 <div
                     v-if="post.authorSignature"
-                    class="flex flex-column post-body grow bt-grey-1-1 tiny text-grey-3"
+                    class="tw-flex tw-flex-col post-body grow bt-grey-1-1 tiny text-grey-3 tw-pt-7 tw-mt-7"
                     v-html="post.authorSignature"
                 >
                 {{ post.authorSignature }}

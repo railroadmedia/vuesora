@@ -3,10 +3,13 @@
     <div class="tw-flex tw-flex-col tw-flex-grow">
 
         <!-- Forum Search -->
-        <!-- <forum-search
+        <forum-search
             :isFollowedSection = "isFollowedSection"
-            :searching = "searching"
-        /> -->
+            :only-followed="onlyFollowed"
+            :searching="searching"
+            :searchTerm="searchTerm"
+            :theme-color="themeColor"
+        />
 
         <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
             <forum-discussion-item 
@@ -17,9 +20,6 @@
                 :brand="brand"
             />
         </div>
-
-        <!-- Thread Tables -->
-        <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
 
         <forum-threads-table-item
             v-for="thread in pinnedThreads"
@@ -135,12 +135,17 @@ export default {
             type: Number | String,
             default: () => 0,
         },
+        onlyFollowed: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {
             discussionsArray: this.discussions,
             threadsArray: this.threads,
             searchTerm: '',
+            showTabs: false,
             filter: 'all',
             timeout: null,
             followed: false,
