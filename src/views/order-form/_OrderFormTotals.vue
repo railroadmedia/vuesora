@@ -98,10 +98,10 @@
                     :class="{'bt-grey-1-1 pt-1': i === 0}"
                 >
                     <p class="flex flex-column body text-left">
-                        {{ monthlyPayment.month }} Payment
+                        {{ monthlyPayment.month }}
                     </p>
                     <p class="flex flex-column body text-right">
-                        USD ${{ monthlyPayment.payment }}
+                        USD ${{ parseTotal(monthlyPayment.payment) }}
                     </p>
                 </div>
             </template>
