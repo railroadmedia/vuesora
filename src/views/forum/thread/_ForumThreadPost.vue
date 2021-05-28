@@ -207,9 +207,9 @@ export default {
                 id: 0,
                 isAdmin: false,
                 name: '',
-                totalPosts: '0',
-                userExpRank: 'Casual',
-                progressLevel: '2',
+                total_posts: '0',
+                xp_rank: 'Casual',
+                progress_level: '1.0',
             }),
         },
 

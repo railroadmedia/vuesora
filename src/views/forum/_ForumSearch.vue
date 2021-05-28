@@ -3,22 +3,22 @@
 
         <!-- Forums Tabs -->
         <div v-if="!onlyFollowed" 
-             class="flex flex-row flex-wrap ph pt-3 align-v-center">
+             class="flex flex-row flex-wrap ph align-v-center tw-mt-4">
             <div class="flex flex-column mb-3 align-v-center">
                 <div class="flex flex-row">
                     <a
-                        href="/members/forums"
+                        :href="currentUrl"
                         class="no-decoration mr-3"
-                        :class="!isFollowedSection ? 'tw-text-black' : 'text-grey-2'"
+                        :class="[!isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
                     >
                         <h1 class="heading pointer">
                             All Forums
                         </h1>
                     </a>
                     <a
-                        href="/members/forums?followed=true"
+                        :href=" currentUrl + '?followed=true' "
                         class="no-decoration"
-                        :class="[isFollowedSection ? 'tw-text-black' : 'text-grey-2', {'hide': searching}]"
+                        :class="[isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor, {'hide': searching}]"
                     >
                         <h1 class="heading pointer">
                             Followed
@@ -30,7 +30,7 @@
 
         <!-- Search Bar -->
         <div class="flex flex-row flex-wrap ph-1 align-v-center">
-            <div class="flex flex-column mb-2 search-box">
+            <div class="flex flex-column tw-mb-6 search-box">
                 <div class="flex flex-row">
                     <div class="flex flex-column form-group pr-1">
                         <input
@@ -41,7 +41,7 @@
                         >
                         <label
                             for="threadSearch"
-                            :class="themeColor"
+                            :class="brand"
                         >Search</label>
 
                         <span
@@ -96,7 +96,7 @@
                     </select>
                     <label
                         for="commentSort"
-                        :class="themeColor"
+                        :class="brand"
                     >Select a Topic</label>
                 </div>
             </div> -->
@@ -124,10 +124,18 @@
                 type: String,
                 default: () => ''
             },
-            themeColor: {
+            brand: {
                 type: String,
                 default: () => 'drumeo',
             },
+        },
+        computed: {
+            brandBorderColor() {
+                return 'tw-border-'+this.brand;
+            },
+            currentUrl(){
+                return location.href.replace(location.search, '');
+            }
         }
     }
 </script>

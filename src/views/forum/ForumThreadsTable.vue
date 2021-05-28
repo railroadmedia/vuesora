@@ -8,7 +8,7 @@
             :only-followed="onlyFollowed"
             :searching="searching"
             :searchTerm="searchTerm"
-            :theme-color="themeColor"
+            :brand="brand"
         />
 
         <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
@@ -19,6 +19,11 @@
                 :theme-color="themeColor"
                 :brand="brand"
             />
+        </div>
+
+        <!-- Thread Tables -->
+        <div v-if="onlyFollowed">
+            <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
         </div>
 
         <forum-threads-table-item

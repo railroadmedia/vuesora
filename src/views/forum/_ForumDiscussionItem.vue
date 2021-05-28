@@ -58,6 +58,9 @@
             },
             brandHoverColor() {
                 return 'hover:tw-bg-'+this.brand+'-lightest'
+            },
+            borderBrandColor() {
+                return 'tw-border-'+this.brand;
             }
         }
     }

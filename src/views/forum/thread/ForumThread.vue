@@ -112,22 +112,24 @@
             <!-- Thread Reply Section -->
             <section v-if="!thread.isLocked"
                 class="flex flex-row ph pv-3"
-            >
-                <div class="tw-inline-flex tw-flex-col tw-mr-4 hide-xs-only">
+            >   
+                <div class="tw-inline-flex tw-items-center tw-flex-col hide-xs-only">
                     <!-- Avatar -->
-                    <div class="user-avatar tw-w-20 tw-h-20 tw-mb-2"
-                         :class="[userAvatarClassObject, brand]"
-                    >
-                        <img
-                            class="rounded"
-                            :src="currentUser.avatar"
-                        >               
+                    <div class="tw-inline-flex tw-flex-col">
+                        <div class="user-avatar tw-w-20 tw-h-20 tw-mb-2"
+                            :class="[userAvatarClassObject, brand]"
+                        >
+                            <img
+                                class="rounded"
+                                :src="currentUser.avatar"
+                            >               
+                        </div>
                     </div>
                     <!-- User Info -->
                     <div class="tw-font-roboto-condensed tw-uppercase tw-text-center">
                         <p class="tw-text-base tw-font-bold tw-mb-1">{{ currentUser.userExpVal }}</p>
                         <p class="tw-text-sm  tw-mb-0.5">Level {{ currentUser.progressLevel }}</p>
-                        <p class="tw-text-xs  tw-font-bold tw-text-gray-400">{{ currentUser.totalPosts }} Posts</p>
+                        <p class="tw-text-xs  tw-font-bold tw-text-gray-400">{{ currentUser.total_posts }} Posts</p>
                     </div>
                 </div>
 
@@ -232,8 +234,8 @@ export default {
                 isAdmin: false,
                 name: '',
                 totalPosts: '0',
-                userExpRank: 'Casual',
-                progressLevel: '2',
+                userExpVal: 'Casual',
+                progressLevel: '1.0',
             }),
         },
       postStoreFormUrl: {
