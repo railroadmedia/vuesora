@@ -129,7 +129,7 @@
                     <div class="tw-font-roboto-condensed tw-uppercase tw-text-center">
                         <p class="tw-text-base tw-font-bold tw-mb-1">{{ currentUser.userExpVal }}</p>
                         <p class="tw-text-sm  tw-mb-0.5">Level {{ currentUser.progressLevel }}</p>
-                        <p class="tw-text-xs  tw-font-bold tw-text-gray-400">{{ currentUser.total_posts }} Posts</p>
+                        <p class="tw-text-xs  tw-font-bold tw-text-gray-400">{{ currentUser.totalPosts }} Posts</p>
                     </div>
                 </div>
 
