@@ -10,19 +10,17 @@
                 class="flex flex-row flex-wrap ph align-v-center tw-mt-4">
                 <div class="flex flex-column mb-3 align-v-center">
                     <div class="flex flex-row">
-                        <a
-                            :href="currentUrl"
-                            class="no-decoration mr-3"
-                            :class="[!isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
+                        <a class="no-decoration mr-3"
+                           :href="currentUrl"
+                           :class="[!isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
                         >
                             <h1 class="heading pointer">
                                 All Forums
                             </h1>
                         </a>
-                        <a
-                            :href=" currentUrl + '?followed=true' "
-                            class="no-decoration"
-                            :class="[isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor, {'hide': searching}]"
+                        <a class="no-decoration"
+                           :href=" currentUrl + '?followed=true' "
+                           :class="[isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor, {'hide': searching}]"
                         >
                             <h1 class="heading pointer">
                                 Followed
@@ -80,39 +78,40 @@
         
         </div>
 
-        <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
-            <forum-discussion-item 
-                v-for="discussion in discussionsArray"
-                :key="discussion.id"
-                :discussion="discussion"
+        <template v-if="!searching">
+            <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
+                <forum-discussion-item 
+                    v-for="discussion in discussionsArray"
+                    :key="discussion.id"
+                    :discussion="discussion"
+                    :theme-color="themeColor"
+                    :brand="brand"
+                />
+            </div>
+        </template>
+
+        <template v-if="!searching">
+            <!-- Thread Tables -->
+            <div v-if="onlyFollowed">
+                <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
+            </div>
+            
+            <forum-threads-table-item
+                v-for="thread in pinnedThreads"
+                :key="'pinned' + thread.id"
+                :thread="thread"
                 :theme-color="themeColor"
                 :brand="brand"
             />
-        </div>
 
-        <!-- Thread Tables -->
-        <div v-if="onlyFollowed">
-            <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
-        </div>
-
-        
-        <forum-threads-table-item
-            v-for="thread in pinnedThreads"
-            :searching = "searching"
-            :key="'pinned' + thread.id"
-            :thread="thread"
-            :theme-color="themeColor"
-            :brand="brand"
-        />
-
-        <forum-threads-table-item
-            v-for="thread in threadsArray"
-            :searching = "searching"
-            :key="thread.id"
-            :thread="thread"
-            :theme-color="themeColor"
-            :brand="brand"
-        />
+            <forum-threads-table-item
+                v-for="thread in threadsArray"
+                :key="thread.id"
+                :thread="thread"
+                :theme-color="themeColor"
+                :brand="brand"
+            />
+        </template>
 
         <forum-search-result
             v-for="item in searchResults"

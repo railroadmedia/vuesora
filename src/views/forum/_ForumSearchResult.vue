@@ -2,6 +2,7 @@
     <a
         :href="item.url"
         class="content-table-row flex flex-row bt-grey-1-1 no-decoration pa-1"
+        :class="[brandHoverColor]"
     >
         <div class="flex flex-column avatar-col align-v-center">
             <div
@@ -61,6 +62,11 @@ export default {
             type: String,
             default: () => '',
         },
+
+        brand: {
+            type: String,
+            default: () => '',
+        },
     },
     computed: {
         postBodyHighlighted() {
@@ -98,6 +104,10 @@ export default {
 
             return topics[this.item.thread.topic];
         },
+
+        brandHoverColor() {
+            return 'hover:tw-bg-'+this.brand+'-lightest'
+        }
     },
     mounted() {
 
