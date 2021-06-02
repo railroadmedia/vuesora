@@ -153,6 +153,21 @@ export default {
     },
 
     /**
+     * Hide Thread Signatures
+     *
+     * @param {number} id - thread id
+     * @param {boolean} locked
+     * @returns {Promise} resolved promise with the response.data object
+     */
+     hideThreadSignatures(id, signatures_hidden) {
+        return axios.patch(`${endpointPrefix}/forums/thread/update/${id}`, {
+            signatures_hidden,
+        })
+            .then(response => response.data)
+            .catch(ErrorHandler);
+    },
+
+    /**
      * Delete a Forum thread
      *
      * @param {number} id - thread id

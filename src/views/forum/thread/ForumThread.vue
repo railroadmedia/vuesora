@@ -13,6 +13,8 @@
                 </div>
                 <div class="flex flex-column xs-12 sm-6">
                     <div class="flex flex-row align-h-right">
+                        
+                        <!-- Edit or delete the thread -->
                         <button
                             v-if="currentUser.isAdmin"
                             class="btn collapse-square short mr-1"
@@ -26,6 +28,7 @@
                             </span>
                         </button>
 
+                        <!-- Pins the post to the top of the thread index list -->
                         <button
                             v-if="currentUser.isAdmin"
                             class="btn collapse-square short mr-1"
@@ -36,6 +39,7 @@
                             </span>
                         </button>
 
+                        <!-- Disables the option to reply to the post -->
                         <button
                             v-if="currentUser.isAdmin"
                             class="btn collapse-square short mr-1"
@@ -43,6 +47,17 @@
                         >
                             <span :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
                                 <i class="fas fa-lock"></i>
+                            </span>
+                        </button>
+
+                        <!-- Hide Signatures -->
+                        <button
+                            v-if="currentUser.isAdmin"
+                            class="btn collapse-square short mr-1"
+                            @click="hideSignatures"
+                        >
+                            <span :class="[themeBgClass, signaturesHidden ? 'text-white' : 'inverted ' + themeTextClass]">
+                                <i class="fas fa-eye"></i>
                             </span>
                         </button>
 
@@ -90,6 +105,7 @@
                 :current-page="currentPage"
                 :current-user="currentUser"
                 :is-locked="thread.isLocked"
+                :signatures-hidden="thread.signaturesHidden"
                 :theme-color="themeColor"
                 :update-post-base-route="updatePostBaseRoute"
                 @likePost="handlePostLike"
@@ -255,6 +271,7 @@ export default {
             isFollowed: this.thread.isFollowed,
             isLocked: this.thread.isLocked,
             isPinned: this.thread.isPinned,
+            signaturesHidden: this.thread.signaturesHidden,
             postReplyBody: '',
             currentPost:[],
             formDisabled: false,
@@ -387,6 +404,12 @@ export default {
             this.isLocked = !this.isLocked;
         },
 
+        hideSignatures() {
+            ForumService.hideThreadSignatures(this.thread.id, !this.signaturesHidden)
+                .then(resolved => resolved);
+            this.signaturesHidden = !this.signaturesHidden;
+        },
+
         followPost() {
             ForumService.followForumsThread(this.thread.id, this.isFollowed)
                 .then(resolved => resolved);
@@ -468,5 +491,9 @@ export default {
 
     p iframe {
         max-width:100%;
+    }
+
+    .btn.collapse-square.short {
+        max-width: 36px;
     }
 </style>

@@ -154,7 +154,7 @@
             <!-- Signature -->
             <div class="flex flex-row body">
                 <div
-                    v-if="post.authorSignature"
+                    v-if="post.authorSignature && !post.signaturesHidden"
                     class="tw-flex tw-flex-col post-body grow bt-grey-1-1 tiny text-grey-3 tw-pt-7 tw-mt-7"
                     v-html="post.authorSignature"
                 >
