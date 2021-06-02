@@ -3,13 +3,82 @@
     <div class="tw-flex tw-flex-col tw-flex-grow">
 
         <!-- Forum Search -->
-        <forum-search
-            :isFollowedSection = "isFollowedSection"
-            :only-followed="onlyFollowed"
-            :searching="searching"
-            :searchTerm="searchTerm"
-            :brand="brand"
-        />
+        <div class="">
+
+            <!-- Forums Tabs -->
+            <div v-if="!onlyFollowed" 
+                class="flex flex-row flex-wrap ph align-v-center tw-mt-4">
+                <div class="flex flex-column mb-3 align-v-center">
+                    <div class="flex flex-row">
+                        <a
+                            :href="currentUrl"
+                            class="no-decoration mr-3"
+                            :class="[!isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
+                        >
+                            <h1 class="heading pointer">
+                                All Forums
+                            </h1>
+                        </a>
+                        <a
+                            :href=" currentUrl + '?followed=true' "
+                            class="no-decoration"
+                            :class="[isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor, {'hide': searching}]"
+                        >
+                            <h1 class="heading pointer">
+                                Followed
+                            </h1>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="flex flex-row flex-wrap ph-1 align-v-center">
+                <div class="flex flex-column tw-mb-6 search-box">
+                    <div class="flex flex-row">
+                        <div class="flex flex-column form-group pr-1">
+                            <input
+                                id="threadSearch"
+                                ref="searchInput"
+                                v-model.lazy="searchInterface"
+                                type="text"
+                            >
+                            <label
+                                for="threadSearch"
+                                :class="brand"
+                            >Search</label>
+
+                            <span
+                                v-if="searching"
+                                id="clearSearch"
+                                class="body pointer"
+                                @click="clearSearch"
+                            >
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </div>
+                        <div class="flex flex-column search-icon-col">
+                            <button
+                                class="btn collapse-square"
+                                @click="$refs.searchInput.blur()"
+                            >
+                                <span class="bg-white text-black flat">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <p
+                        v-if="searching"
+                        class="tiny font-italic text-grey-4 tw-mt-2 tw-ml-6"
+                    >
+                        Showing results for <span class="font-bold text-black">"{{ searchInterface }}"</span> in All Forums.
+                    </p>
+                </div>
+            </div>  
+        
+        </div>
 
         <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
             <forum-discussion-item 
@@ -26,6 +95,7 @@
             <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
         </div>
 
+        
         <forum-threads-table-item
             v-for="thread in pinnedThreads"
             :searching = "searching"
@@ -54,23 +124,6 @@
             :term="searchInterface"
         />
 
-        <!-- <div v-if="searching && searchResults.length === 0"
-                 class="tw-flex"
-        >
-            <div class="tw-flex tw-flex-col tw-py-3 tw-items-center">
-                <i v-if="loading"
-                   class="fas fa-spin fa-circle-notch"
-                    :class="themeTextClass"
-                    style="font-size:32px;"
-                ></i>
-                <p v-else
-                   class="body tw-italic"
-                >
-                    No results were found matching that query, please try again.
-                </p>
-            </div>
-        </div> -->
-
         <!-- Pagination -->
         <div
             v-if="!searching && totalPages > 1"
@@ -83,16 +136,6 @@
             ></pagination>
         </div>
 
-        <!-- <div
-            v-if="searching && totalSearchPages > 1"
-            class="tw-flex tw-py-3"
-        >
-            <pagination
-                :current-page="searchResultsPage"
-                :total-pages="totalSearchPages"
-                @pageChange="handleSearchPageChange"
-            ></pagination>
-        </div> -->
     </div>
 </template>
 
@@ -101,7 +144,6 @@
 import * as QueryString from 'query-string';
 import ForumThreadsTableItem from './_ForumThreadsTableItem';
 import ForumDiscussionItem from './_ForumDiscussionItem.vue';
-import ForumSearch from './_ForumSearch.vue';
 import ForumSearchResult from './_ForumSearchResult.vue';
 import Pagination from '../../components/Pagination.vue';
 import ClearableFilter from '../../components/ClearableFilter.vue';
@@ -113,7 +155,6 @@ export default {
     components: {
         'forum-threads-table-item': ForumThreadsTableItem,
         'forum-discussion-item': ForumDiscussionItem,
-        'forum-search': ForumSearch,
         'forum-search-result': ForumSearchResult,
         'clearable-filter': ClearableFilter,
         pagination: Pagination,
@@ -185,6 +226,12 @@ export default {
         };
     },
     computed: {
+        brandBorderColor() {
+            return 'tw-border-'+this.brand;
+        },
+        currentUrl(){
+            return location.href.replace(location.search, '');
+        },
         totalPages() {
             return Math.ceil(this.threadCount / 20);
         },
@@ -335,4 +382,30 @@ export default {
     },
 };
 </script>
+<style lang="scss">
+    @import '../../assets/sass/partials/_variables.scss';
+
+    .search-box {
+        @include xSmallOnly {
+            margin-bottom: $gutterWidth / 2;
+        }
+    }
+    #clearSearch {
+        position:absolute;
+        top:50%;
+        right:0;
+        transform:translateY(-50%);
+        height:50px;
+        width:50px;
+        @include flexCenter();
+    }
+    .search-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    .search-icon-col {
+        flex:0 0 50px;
+    }
+</style>
 
