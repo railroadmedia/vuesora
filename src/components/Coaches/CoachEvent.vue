@@ -169,7 +169,6 @@ export default {
         }
     },
     mounted() {
-        console.log("CoachEvent::mounted eventCoachProfileUrl: %s", JSON.stringify(this.eventCoachProfileUrl));
         if (this.preloadedContent && this.preloadedContent.data && this.preloadedContent.data[0]) {
 
             this.content = ContentHelpers.flattenContentObject(this.preloadedContent.data[0], true);
