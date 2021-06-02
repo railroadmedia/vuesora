@@ -249,6 +249,8 @@ export default {
                 return this.searchTerm;
             },
             set(val) {
+                console.log('ORIGIN '+window.location.origin, window.location.pathname);
+
                 clearTimeout(this.timeout);
 
                 this.searchTerm = val;

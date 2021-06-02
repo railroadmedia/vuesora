@@ -26,12 +26,19 @@ export default {
             limit: limit || 10,
             sort: sort || 'score',
         };
+        let endpoint;
+
+        if ( window.location.origin === "https://dev.drumeo.com" ) {
+            endpoint = "/laravel/public/members/forums/search";
+        } else {
+            endpoint = '/members/forums/search';
+        }
 
         if (type) {
             params.type = type;
         }
 
-        return axios.get('/members/forums/search', {
+        return axios.get(endpoint, {
             params,
         })
             .then(response => response.data)
