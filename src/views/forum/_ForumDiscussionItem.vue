@@ -8,7 +8,7 @@
         <div class="tw-h-14 tw-w-14 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-relative tw-mr-6 tw-flex-shrink-0" 
              :class="[bgColor]">
             <i class="tw-text-2xl tw-text-white" 
-               :class="[discussion.icon, (discussion.icon === 'fa-cube')?'fal':'fas' ]">
+               :class="[discussionIcon, (discussion.icon === 'fa-cube')?'fal':'fas' ]">
             </i>
         </div>
 
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Reply Amount -->
-        <div class="tw-flex tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-12 tw-flex-shrink-0">
+        <div class="tw-flex tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-6 md:tw-mr-12 tw-flex-shrink-0 tw-w-16 tw-text-left">
             <h6 class="tw-text-xs tw-font-bold">
                 <i class="fas fa-comment-lines tw-mr-1"></i>
                 {{ discussion.replyAmount }}
@@ -29,10 +29,13 @@
         </div>
 
         <!-- Post Date -->
-        <div class="tw-flex tw-flex-col tw-justify-center tw-text-gray-600 tw-flex-shrink-0">
+        <div class="tw-flex tw-flex-col tw-justify-center tw-text-gray-600 tw-flex-shrink-0 tw-w-28">
             <h6 class="tw-text-xs tw-font-bold">{{ discussion.latestPost ? discussion.latestPost.created_at_diff : '' }}</h6>
             <!-- <p class="tw-text-xs"><span class="tw-font-bold">In:</spanZ> </p> -->
-            <p class="tw-text-xs"><span class="tw-font-bold">By:</span> {{ discussion.latestPost ? discussion.latestPost.author_display_name : '' }}</p>
+            <p class="tw-text-xs tw-truncate">
+                <span class="tw-font-bold">By:</span> 
+                <span class="">{{ discussion.latestPost ? discussion.latestPost.author_display_name : '' }}</span>    
+            </p>
         </div>
     </a>
 </template>
@@ -59,8 +62,8 @@
             brandHoverColor() {
                 return 'hover:tw-bg-'+this.brand+'-lightest'
             },
-            borderBrandColor() {
-                return 'tw-border-'+this.brand;
+            discussionIcon() {
+                return this.discussion.icon || 'fa-comments'
             }
         }
     }

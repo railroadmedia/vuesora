@@ -1,6 +1,6 @@
 <template>
 
-    <div class="tw-flex tw-flex-col tw-flex-grow">
+    <div class="tw-flex tw-flex-col tw-flex-grow tw-w-full">
 
         <!-- Forum Search -->
         <div class="">
@@ -249,8 +249,6 @@ export default {
                 return this.searchTerm;
             },
             set(val) {
-                console.log('ORIGIN '+window.location.origin, window.location.pathname);
-
                 clearTimeout(this.timeout);
 
                 this.searchTerm = val;

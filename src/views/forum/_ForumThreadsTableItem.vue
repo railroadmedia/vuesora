@@ -24,16 +24,16 @@
             <p class="tw-text-xs tw-text-gray-600">
                 Started on <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong> 
             </p>
-            <p class="tw-text-xs tw-text-gray-600 text-truncate hide-md-up capitalize">
+            <!-- <p class="tw-text-xs tw-text-gray-600 text-truncate hide-md-up capitalize">
                 {{ thread.topic }}
                 <span class="bullet">&#x25CF;</span>
                 {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
-            </p>
+            </p> -->
         </div>
 
         <!-- New Badge-->
         <div v-if="thread.isNew"
-             class="tw-flex-col tw-hidden tw-ml-4 sm:tw-flex">
+             class="tw-flex-col tw-hidden tw-ml-4 sm:tw-flex tw-mr-2">
             <span class="tw-text-white tw-rounded-sm tw-uppercase tw-flex tw-p-0.5 tw-pr-1 tw-text-xs tw-items-center tw-font-bold"
                  :class="themeBgColor">
                 <i class="fas fa-star tw-mr-0.5"></i> New
@@ -41,7 +41,7 @@
         </div>
 
         <!-- Reply Count -->
-        <div class="tw-flex tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-12 tw-flex-shrink-0">
+        <div class="tw-flex tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-4 md:tw-mr-12 tw-flex-shrink-0 tw-w-16 tw-text-left">
             <h6 class="tw-text-xs tw-font-bold">
                 <i class="fas fa-comment-lines tw-mr-1"></i>
                 {{ (thread.replyAmount - 1) }}
@@ -49,9 +49,12 @@
         </div>
 
         <!-- Post Date -->
-        <div class="tw-flex tw-flex-col tw-justify-center tw-mr-12 tw-text-gray-600 tw-flex-shrink-0">
+        <div class="tw-flex tw-flex-col tw-justify-center tw-mr-6 tw-text-gray-600 tw-flex-shrink-0 tw-w-28">
             <h6 class="tw-text-xs tw-font-bold">{{ thread.latestPost ? thread.latestPost.created_at_diff : ''}}</h6>
-            <p class="tw-text-xs"><span class="tw-font-bold">By:</span> {{  thread.latestPost ? thread.latestPost.author_display_name : '' }}</p>
+            <p class="tw-text-xs tw-truncate">
+                <span class="tw-font-bold">By:</span> 
+                <span>{{  thread.latestPost ? thread.latestPost.author_display_name : '' }}</span>
+            </p>
         </div>
 
         <!-- Arrow -->

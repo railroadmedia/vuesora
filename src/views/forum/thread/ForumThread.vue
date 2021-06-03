@@ -4,7 +4,7 @@
 
             <div class="flex flex-row flex-wrap align-v-center tw-mb-8">
                 <div class="tw-flex xs-12 sm-6 tw-items-center">
-                    <a href="/members/forums" class="no-decoration mr-1 back-arrow">
+                    <a :href="previousPage" class="no-decoration mr-1 back-arrow">
                         <i class="fas fa-arrow-circle-left text-grey-2 tw-text-4xl"></i>
                     </a>
                     <h1 class="heading thread-title">
@@ -266,6 +266,7 @@ export default {
     data() {
         return {
             posts: this.thread.posts,
+            previousPage: document.referrer,
             currentPage: Number(this.thread.currentPage),
             totalPages: Number(this.thread.totalPages),
             isFollowed: this.thread.isFollowed,
