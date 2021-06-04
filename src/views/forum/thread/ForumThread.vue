@@ -312,7 +312,7 @@ export default {
 
     beforeMount() {
         //check if signature cookie exists 
-        let signatureCookie = document.cookie.match('(^|;)\\s*' + 'signaturesHidden' + '\\s*=\\s*([^;]+)')?.pop() || false;
+        let signatureCookie = this.getCookie('signaturesHidden');
         let signaturesValue = JSON.parse(signatureCookie);
         //If signaturesValue is true set signaturesHidden to true else accept default false
         if( signaturesValue ) {
@@ -338,6 +338,10 @@ export default {
                 .then((data) => {
                     this.posts = data;
                 });
+        },
+
+        getCookie(name) {
+            return document.cookie.match('(^|;)\\s*'+ name +'\\s*=\\s*([^;]+)')?.pop() || false;
         },
 
         handlePageChange(payload) {
