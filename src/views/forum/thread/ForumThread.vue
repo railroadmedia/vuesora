@@ -177,12 +177,6 @@
                             :value="this.thread.id"
                         >
 
-<!--                      <input-->
-<!--                          type="hidden"-->
-<!--                          name="parent_ids[]"-->
-<!--                          :value="this.currentPost"-->
-<!--                      >-->
-
                         <div class="flex flex-row align-h-right mt-2">
                             <button
                                 class="btn collapse-250 thread-reply-button"

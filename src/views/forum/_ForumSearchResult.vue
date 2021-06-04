@@ -1,48 +1,48 @@
 <template>
     <a
         :href="item.url"
-        class="content-table-row flex flex-row bt-grey-1-1 no-decoration pa-1"
+        class="content-table-row tw-flex bt-grey-1-1 tw-no-underline tw-px-4 tw-py-5"
         :class="[brandHoverColor]"
     >
-        <div class="flex flex-column avatar-col align-v-center">
-            <div
-                class="thumb-img square rounded bg-center"
-                :style="'background-image:url(' + item.authorAvatar + ');'"
-            ></div>
+        <!-- Avatar -->
+        <div class="tw-h-14 tw-w-14 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-relative tw-mr-3 tw-flex-shrink-0">
+            <div class="user-avatar"
+                 :class="[avatarClassObject, brand]"    
+            >
+                <img :src="item.authorAvatar" class="tw-rounded-full tw-border-3">
+                <i v-if="!item.authorAvatar" class="tw-text-2xl tw-text-white fas fa-comments"></i>
+            </div>
         </div>
 
-        <div class="flex flex-column align-v-center pl-1 title-column overflow">
-
+        <div class="tw-flex tw-flex-col tw-text-black tw-mr-10">
             <p
-                class="body text-black font-bold item-title"
+                class="tw-font-bold tw-mb-1"
                 v-html="item.thread.title"
             >
             </p>
+            <p
+                class="tw-text-sm tw-mb-1"
+                v-html="postBodyHighlighted"
+            ></p>
 
-            <div class="pl search-result-post">
-                <p
-                    class="tiny text-grey-4 font-italic"
-                    v-html="postBodyHighlighted"
-                ></p>
-
-                <p class="x-tiny text-dark uppercase font-italic">
-                    replied <strong>{{ item.createdOn }}</strong> by <strong>{{ item.authorUsername }}</strong>
-                </p>
-            </div>
+            <p class="tw-text-xs tw-text-gray-500 tw-italic">
+                Replied <strong>{{ item.createdOn }}</strong> by <strong>{{ item.authorUsername }}</strong>
+            </p>
         </div>
 
-        <div class="flex flex-column align-center basic-col text-dark font-italic x-tiny hide-sm-down uppercase">
+        <div class="tw-flex tw-justify-center tw-items-center tw-text-gray-600 tw-italic tw-text-xs hide-sm-down tw-uppercase basic-col">
+            <i class="fa fa-comment tw-mr-1"></i> 
+            <strong>{{ (item.thread.replyAmount - 1) }}</strong>
+            
+        </div>
+
+        <div class="tw-flex tw-flex-col tw-justify-center tw-text-gray-600 tw-italic tw-text-xs hide-sm-down basic-col tw-capitalize">
             {{ topicIdMap }}
         </div>
 
-        <div class="flex flex-column align-center basic-col text-dark font-italic x-tiny hide-sm-down uppercase">
-            {{ (item.thread.replyAmount - 1) }} {{ (item.thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
-        </div>
 
-        <div class="flex flex-column icon-col align-v-center">
-            <div class="square body">
-                <i class="fas fa-arrow-circle-right flex-center rounded text-light"></i>
-            </div>
+        <div class="tw-flex tw-flex-col tw-justify-center icon-col">
+            <i class="fas fa-arrow-circle-right flex-center rounded text-light tw-p-2"></i>
         </div>
     </a>
 </template>
@@ -87,7 +87,7 @@ export default {
                     // insert closing span tag
                     bodyString = `${this.item.postBody.substr(0, end)}</span>${this.item.postBody.substr(end)}`;
                     // insert opening span tag
-                    bodyString = `${bodyString.substr(0, start)}<span class="font-bold text-black">${bodyString.substr(start)}`;
+                    bodyString = `${bodyString.substr(0, start)}<span class="tw-font-bold tw-text-black">${bodyString.substr(start)}`;
                 });
             }
 
@@ -107,10 +107,19 @@ export default {
 
         brandHoverColor() {
             return 'hover:tw-bg-'+this.brand+'-lightest'
-        }
-    },
-    mounted() {
+        },
 
+        avatarClassObject() {
+            return {
+                subscriber: ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.item.access_level) !== -1,
+                edge: this.item.access_level === 'edge',
+                pack: this.item.access_level === 'pack',
+                team: ['team', 'admin'].indexOf(this.item.access_level) !== -1,
+                guitar: this.item.access_level === 'guitar',
+                piano: this.item.access_level === 'piano',
+                lifetime: this.item.access_level === 'lifetime',
+            };
+        },
     },
 };
 </script>

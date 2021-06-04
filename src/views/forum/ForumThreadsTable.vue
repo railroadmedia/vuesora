@@ -2,96 +2,92 @@
 
     <div class="tw-flex tw-flex-col tw-flex-grow tw-w-full">
 
-        <!-- Forum Search -->
-        <div class="">
-
-            <!-- Forums Tabs -->
-            <div v-if="!onlyFollowed" 
-                class="flex flex-row flex-wrap ph align-v-center tw-mt-4">
-                <div class="flex flex-column mb-3 align-v-center">
-                    <div class="flex flex-row">
-                        <a class="no-decoration mr-3"
-                           :href="currentUrl"
-                           :class="[!isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
-                        >
-                            <h1 class="heading pointer">
-                                All Forums
-                            </h1>
-                        </a>
-                        <a class="no-decoration"
-                           :href=" currentUrl + '?followed=true' "
-                           :class="[isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor, {'hide': searching}]"
-                        >
-                            <h1 class="heading pointer">
-                                Followed
-                            </h1>
-                        </a>
-                    </div>
+        <!-- Forums Tabs -->
+        <div v-if="!onlyFollowed" 
+            class="tw-flex tw-px-4 tw-mt-4">
+            <div class="tw-flex tw-flex-col tw-mb-6">
+                <div class="tw-flex">
+                    <a class="tw-no-underline tw-mr-6"
+                        :href="currentUrl"
+                        :class="[!isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
+                    >
+                        <h3 class="tw-text-3xl tw-cursor-pointer">
+                            All Forums
+                        </h3>
+                    </a>
+                    <a class="tw-no-underline"
+                        :href=" currentUrl + '?followed=true' "
+                        :class="[isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor, {'hide': searching}]"
+                    >
+                        <h3 class="tw-text-3xl tw-cursor-pointer">
+                            Followed
+                        </h3>
+                    </a>
                 </div>
             </div>
-
-            <!-- Search Bar -->
-            <div class="flex flex-row flex-wrap ph-1 align-v-center">
-                <div class="flex flex-column tw-mb-6 search-box">
-                    <div class="flex flex-row">
-                        <div class="flex flex-column form-group pr-1">
-                            <input
-                                id="threadSearch"
-                                ref="searchInput"
-                                v-model.lazy="searchInterface"
-                                type="text"
-                            >
-                            <label
-                                for="threadSearch"
-                                :class="brand"
-                            >Search</label>
-
-                            <span
-                                v-if="searching"
-                                id="clearSearch"
-                                class="body pointer"
-                                @click="clearSearch"
-                            >
-                                <i class="fas fa-times"></i>
-                            </span>
-                        </div>
-                        <div class="flex flex-column search-icon-col">
-                            <button
-                                class="btn collapse-square"
-                                @click="$refs.searchInput.blur()"
-                            >
-                                <span class="bg-white text-black flat">
-                                    <i class="fas fa-search"></i>
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <p
-                        v-if="searching"
-                        class="tiny font-italic text-grey-4 tw-mt-2 tw-ml-6"
-                    >
-                        Showing results for <span class="font-bold text-black">"{{ searchInterface }}"</span> in All Forums.
-                    </p>
-                </div>
-            </div>  
-        
         </div>
 
+        <!-- Search Bar -->
+        <div class="tw-flex tw-px-3 ">
+            <div class="tw-flex tw-flex-col tw-mb-6 tw-w-full">
+                <div class="tw-flex">
+                    <div class="tw-flex tw-flex-col tw-w-full tw-mr-3 form-group">
+                        <input
+                            id="threadSearch"
+                            ref="searchInput"
+                            v-model.lazy="searchInterface"
+                            type="text"
+                        >
+                        <label
+                            for="threadSearch"
+                            :class="brand"
+                        >Search</label>
+
+                        <span
+                            v-if="searching"
+                            id="clearSearch"
+                            class="tw-p-4 tw-cursor-pointer tw-absolute tw-right-0"
+                            @click="clearSearch"
+                        >
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </div>
+                    <div class="tw-flex tw-flex-col">
+                        <button
+                            class="btn btn tw-w-12 tw-h-12"
+                            @click="$refs.searchInput.blur()"
+                        >
+                            <span class="tw-bg-white tw-text-black tw-border-none tw-shadow-none">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <p
+                    v-if="searching"
+                    class="tiny font-italic text-grey-4 tw-mt-2 tw-ml-6"
+                >
+                    Showing results for <span class="font-bold text-black">"{{ searchInterface }}"</span> in All Forums.
+                </p>
+            </div>
+        </div>  
+
+        <!-- Discussion Items | Hide when viewing Search Results -->
         <template v-if="!searching">
             <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
                 <forum-discussion-item 
                     v-for="discussion in discussionsArray"
                     :key="discussion.id"
                     :discussion="discussion"
-                    :theme-color="themeColor"
                     :brand="brand"
                 />
             </div>
         </template>
 
+        <!-- Thread Items | Hide when viewing Search Results -->
         <template v-if="!searching">
-            <!-- Thread Tables -->
+            
             <div v-if="onlyFollowed">
                 <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
             </div>
@@ -100,7 +96,6 @@
                 v-for="thread in pinnedThreads"
                 :key="'pinned' + thread.id"
                 :thread="thread"
-                :theme-color="themeColor"
                 :brand="brand"
             />
 
@@ -108,7 +103,6 @@
                 v-for="thread in threadsArray"
                 :key="thread.id"
                 :thread="thread"
-                :theme-color="themeColor"
                 :brand="brand"
             />
         </template>
@@ -118,7 +112,6 @@
             :searching = "searching"
             :key="item.id"
             :item="item"
-            :theme-color="themeColor"
             :brand="brand"
             :term="searchInterface"
         />
@@ -147,7 +140,6 @@ import ForumSearchResult from './_ForumSearchResult.vue';
 import Pagination from '../../components/Pagination.vue';
 import ClearableFilter from '../../components/ClearableFilter.vue';
 import ForumService from '../../assets/js/services/forums';
-import ThemeClasses from '../../mixins/ThemeClasses';
 
 export default {
     name: 'ForumThreadsTable',
@@ -158,7 +150,6 @@ export default {
         'clearable-filter': ClearableFilter,
         pagination: Pagination,
     },
-    mixins: [ThemeClasses],
     props: {
         pinnedThreads: {
             type: Array,
@@ -381,30 +372,3 @@ export default {
     },
 };
 </script>
-<style lang="scss">
-    @import '../../assets/sass/partials/_variables.scss';
-
-    .search-box {
-        @include xSmallOnly {
-            margin-bottom: $gutterWidth / 2;
-        }
-    }
-    #clearSearch {
-        position:absolute;
-        top:50%;
-        right:0;
-        transform:translateY(-50%);
-        height:50px;
-        width:50px;
-        @include flexCenter();
-    }
-    .search-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-    .search-icon-col {
-        flex:0 0 50px;
-    }
-</style>
-

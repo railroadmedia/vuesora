@@ -40,19 +40,18 @@
     </a>
 </template>
 <script>
-    import ThemeClasses from '../../mixins/ThemeClasses.js';
-
     export default {
         name: 'ForumDiscussionItem',
-        mixins: [ThemeClasses],
         props: {
             brand: {
                 type: String,
-                default: () => '',
+                default: () => 'drumeo',
+                require: true
             },
             discussion: {
                 type: Object,
                 default: () => {},
+                require: true
             },
         },
         computed: {

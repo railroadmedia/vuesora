@@ -7,7 +7,7 @@
         <!-- Avatar -->
         <div class="tw-h-14 tw-w-14 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-relative tw-mr-6 tw-flex-shrink-0">
             <div class="user-avatar"
-                 :class="[avatarClassObject, themeColor]"    
+                 :class="[avatarClassObject, brand]"    
             >
                 <img :src="thread.authorAvatar" class="tw-rounded-full tw-border-3">
                 <i v-if="!thread.authorAvatar" class="tw-text-2xl tw-text-white fas fa-comments"></i>
@@ -24,18 +24,13 @@
             <p class="tw-text-xs tw-text-gray-600">
                 Started on <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong> 
             </p>
-            <!-- <p class="tw-text-xs tw-text-gray-600 text-truncate hide-md-up capitalize">
-                {{ thread.topic }}
-                <span class="bullet">&#x25CF;</span>
-                {{ (thread.replyAmount - 1) }} {{ (thread.replyAmount - 1) === 1 ? 'reply' : 'replies' }}
-            </p> -->
         </div>
 
         <!-- New Badge-->
         <div v-if="thread.isNew"
              class="tw-flex-col tw-hidden tw-ml-4 sm:tw-flex tw-mr-2">
             <span class="tw-text-white tw-rounded-sm tw-uppercase tw-flex tw-p-0.5 tw-pr-1 tw-text-xs tw-items-center tw-font-bold"
-                 :class="themeBgColor">
+                 :class="brandBgColor">
                 <i class="fas fa-star tw-mr-0.5"></i> New
             </span>
         </div>
@@ -60,7 +55,7 @@
         <!-- Arrow -->
         <div class="tw-flex tw-flex-col tw-items-center tw-justify-center">
             <i class="fas fa-arrow-circle-right tw-rounded-full tw-text-3xl"
-               :class="thread.isRead ? 'tw-text-gray-300' : themeTextColor"
+               :class="thread.isRead ? 'tw-text-gray-300' : brandTextColor"
             ></i>
         </div>
     </a>
@@ -69,25 +64,26 @@
 export default {
     name: 'ForumThreadsTableItem',
     props: {
-        themeColor: {
-            type: String,
-            default: () => 'drumeo',
-        },
         brand: {
             type: String,
             default: () => '',
+            require: true
         },
         thread: {
             type: Object,
             default: () => {},
+            require: true
         },
     },
     computed: {
-        themeBgColor() {
+        brandBgColor() {
             return 'tw-bg-' + this.brand;
         },
-        themeTextColor() {
+        brandTextColor() {
             return 'tw-text-'+ this.brand;
+        },
+        brandHoverColor() {
+            return 'hover:tw-bg-'+this.brand+'-lightest'
         },
         topicIdMap() {
             const topics = {
@@ -109,9 +105,6 @@ export default {
                 lifetime: this.thread.access_level === 'lifetime',
             };
         },
-        brandHoverColor() {
-            return 'hover:tw-bg-'+this.brand+'-lightest'
-        }
     },
 };
 </script>
