@@ -21,7 +21,7 @@
         </div>
 
         <!-- Reply Amount -->
-        <div class="tw-flex tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-6 md:tw-mr-12 tw-flex-shrink-0 tw-w-16 tw-text-left">
+        <div class="tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-6 md:tw-mr-12 tw-flex-shrink-0 tw-w-16 tw-text-left tw-hidden md:tw-flex">
             <h6 class="tw-text-xs tw-font-bold">
                 <i class="fas fa-comment-lines tw-mr-1"></i>
                 {{ discussion.replyAmount }}
@@ -29,7 +29,7 @@
         </div>
 
         <!-- Post Date -->
-        <div class="tw-flex tw-flex-col tw-justify-center tw-text-gray-600 tw-flex-shrink-0 tw-w-28">
+        <div class="tw-flex-col tw-justify-center tw-text-gray-600 tw-flex-shrink-0 tw-w-28 tw-hidden md:tw-flex">
             <h6 class="tw-text-xs tw-font-bold">{{ discussion.latestPost ? discussion.latestPost.created_at_diff : '' }}</h6>
             <!-- <p class="tw-text-xs"><span class="tw-font-bold">In:</spanZ> </p> -->
             <p class="tw-text-xs tw-truncate">

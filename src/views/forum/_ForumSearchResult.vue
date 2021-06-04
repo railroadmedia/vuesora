@@ -13,7 +13,7 @@
                 <i v-if="!item.authorAvatar" class="tw-text-2xl tw-text-white fas fa-comments"></i>
             </div>
         </div>
-
+        <!-- Result Body -->
         <div class="tw-flex tw-flex-col tw-text-black tw-mr-10">
             <p
                 class="tw-font-bold tw-mb-1"
@@ -24,34 +24,30 @@
                 class="tw-text-sm tw-mb-1"
                 v-html="postBodyHighlighted"
             ></p>
-
+            <!-- Reply Date -->
             <p class="tw-text-xs tw-text-gray-500 tw-italic">
                 Replied <strong>{{ item.createdOn }}</strong> by <strong>{{ item.authorUsername }}</strong>
             </p>
         </div>
-
-        <div class="tw-flex tw-justify-center tw-items-center tw-text-gray-600 tw-italic tw-text-xs hide-sm-down tw-uppercase basic-col">
-            <i class="fa fa-comment tw-mr-1"></i> 
+        <!-- Repy Count -->
+        <div class="tw-justify-center tw-items-center tw-text-gray-600 tw-italic tw-text-xs hide-sm-down tw-uppercase basic-col tw-hidden md:tw-flex">
+            <i class="fa fa-comment-lines tw-mr-1"></i> 
             <strong>{{ (item.thread.replyAmount - 1) }}</strong>
             
         </div>
-
-        <div class="tw-flex tw-flex-col tw-justify-center tw-text-gray-600 tw-italic tw-text-xs hide-sm-down basic-col tw-capitalize">
+        <!-- Topic/Category -->
+        <div class="tw-flex-col tw-justify-center tw-text-gray-600 tw-italic tw-text-xs hide-sm-down basic-col tw-capitalize tw-hidden md:tw-flex">
             {{ topicIdMap }}
         </div>
-
-
+        <!-- Arrow -->
         <div class="tw-flex tw-flex-col tw-justify-center icon-col">
             <i class="fas fa-arrow-circle-right flex-center rounded text-light tw-p-2"></i>
         </div>
     </a>
 </template>
 <script>
-import ThemeClasses from '../../mixins/ThemeClasses';
-
 export default {
     name: 'ForumSearchResult',
-    mixins: [ThemeClasses],
     props: {
         item: {
             type: Object,
