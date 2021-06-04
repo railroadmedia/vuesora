@@ -61,6 +61,7 @@
                             </span>
                         </button>
 
+                        <!-- Follow -->
                         <button
                             class="btn collapse-150 short mr-1"
                             @click="followPost"
@@ -70,6 +71,7 @@
                             </span>
                         </button>
 
+                        <!-- Reply -->
                         <button
                             class="btn collapse-150 short"
                             @click="scrollToReply"
@@ -105,7 +107,7 @@
                 :current-page="currentPage"
                 :current-user="currentUser"
                 :is-locked="thread.isLocked"
-                :signatures-hidden="thread.signaturesHidden"
+                :signatures-hidden="signaturesHidden"
                 :theme-color="themeColor"
                 :update-post-base-route="updatePostBaseRoute"
                 @likePost="handlePostLike"
@@ -272,7 +274,7 @@ export default {
             isFollowed: this.thread.isFollowed,
             isLocked: this.thread.isLocked,
             isPinned: this.thread.isPinned,
-            signaturesHidden: this.thread.signaturesHidden,
+            signaturesHidden: false,
             postReplyBody: '',
             currentPost:[],
             formDisabled: false,
@@ -306,6 +308,16 @@ export default {
                 lifetime: this.currentUser.access_level === 'lifetime',
             };
         },
+    },
+
+    beforeMount() {
+        //check if signature cookie exists 
+        let signatureCookie = document.cookie.match('(^|;)\\s*' + 'signaturesHidden' + '\\s*=\\s*([^;]+)')?.pop() || false;
+        let signaturesValue = JSON.parse(signatureCookie);
+        //If signaturesValue is true set signaturesHidden to true else accept default false
+        if( signaturesValue ) {
+            this.signaturesHidden = signaturesValue;
+        }
     },
 
     mounted() {
@@ -406,9 +418,18 @@ export default {
         },
 
         hideSignatures() {
-            ForumService.hideThreadSignatures(this.thread.id, !this.signaturesHidden)
-                .then(resolved => resolved);
-            this.signaturesHidden = !this.signaturesHidden;
+            //add or remove from cookie based on value of signaturesHidden
+            if(!this.signaturesHidden) {
+                //Set Cookie    
+                document.cookie = "signaturesHidden=true;"
+                //Set Value to true
+                this.signaturesHidden = true;
+            } else {
+                //Set Cookie to false
+                document.cookie = "signaturesHidden=false;"
+                //set value to false
+                this.signaturesHidden = false;
+            }
         },
 
         followPost() {
