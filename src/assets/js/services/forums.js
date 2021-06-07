@@ -28,7 +28,7 @@ export default {
         };
         let endpoint;
 
-        if ( window.location.origin === "https://dev.drumeo.com" ) {
+        if ( window.location.origin.includes("drumeo.com") ) {
             endpoint = "/laravel/public/members/forums/search";
         } else {
             endpoint = '/members/forums/search';

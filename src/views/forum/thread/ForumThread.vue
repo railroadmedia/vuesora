@@ -50,7 +50,7 @@
                             </span>
                         </button>
 
-                        <!-- Hide Signatures -->
+                        <!-- Hides Signatures -->
                         <button
                             v-if="currentUser.isAdmin"
                             class="btn collapse-square short mr-1"
