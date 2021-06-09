@@ -124,11 +124,11 @@
             />
 
             <!-- Results Pagination -->
-            <div v-if="searchResultsCount > 1"
+            <div v-if="totalSearchPages > 1"
                  class="tw-flex tw-py-4">
                 <pagination
                     :current-page="currentPage"
-                    :total-pages="searchResultsCount"
+                    :total-pages="totalSearchPages"
                     @pageChange="handleSearchPageChange"
                 ></pagination>
             </div>
