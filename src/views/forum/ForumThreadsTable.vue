@@ -73,8 +73,8 @@
             </div>
         </div>  
 
-        <!-- Discussion Items | Hide when viewing Search Results -->
         <template v-if="!searching">
+            <!-- Discussion Items -->
             <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
                 <forum-discussion-item 
                     v-for="discussion in discussionsArray"
@@ -83,50 +83,56 @@
                     :brand="brand"
                 />
             </div>
-        </template>
 
-        <!-- Thread Items | Hide when viewing Search Results -->
-        <template v-if="!searching">
-            
+            <!-- Thread Items -->
             <div v-if="onlyFollowed">
                 <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
             </div>
-            
             <forum-threads-table-item
                 v-for="thread in pinnedThreads"
                 :key="'pinned' + thread.id"
                 :thread="thread"
                 :brand="brand"
             />
-
             <forum-threads-table-item
                 v-for="thread in threadsArray"
                 :key="thread.id"
                 :thread="thread"
                 :brand="brand"
             />
+
+            <!-- Thread Pagination -->
+            <div v-if="totalPages > 1"
+                 class="tw-flex tw-py-4">
+                <pagination
+                    :current-page="currentPage"
+                    :total-pages="totalPages"
+                    @pageChange="handlePageChange"
+                ></pagination>
+            </div>
         </template>
 
-        <forum-search-result
-            v-for="item in searchResults"
-            :searching = "searching"
-            :key="item.id"
-            :item="item"
-            :brand="brand"
-            :term="searchInterface"
-        />
+        <template v-if="searching">
+            <!-- Search Results -->
+            <forum-search-result
+                v-for="item in searchResults"
+                :searching = "searching"
+                :key="item.id"
+                :item="item"
+                :brand="brand"
+                :term="searchInterface"
+            />
 
-        <!-- Pagination -->
-        <div
-            v-if="!searching && totalPages > 1"
-            class="tw-flex tw-py-4"
-        >
-            <pagination
-                :current-page="currentPage"
-                :total-pages="totalPages"
-                @pageChange="handlePageChange"
-            ></pagination>
-        </div>
+            <!-- Results Pagination -->
+            <div v-if="searchResultsCount > 1"
+                 class="tw-flex tw-py-4">
+                <pagination
+                    :current-page="currentPage"
+                    :total-pages="searchResultsCount"
+                    @pageChange="handleSearchPageChange"
+                ></pagination>
+            </div>
+        </template>
 
     </div>
 </template>
@@ -212,7 +218,7 @@ export default {
             searchResults: [],
             searchResultsCount: 0,
             searchResultsPage: 1,
-            searchResultsPageLength: 10
+            searchResultsPageLength: 8
         };
     },
     computed: {
@@ -273,12 +279,14 @@ export default {
         },
         currentPage() {
             const urlParams = QueryString.parse(location.search);
-
-            if (urlParams.page != null) {
-                return Number(urlParams.page);
+            if(!this.searching) {
+                if (urlParams.page != null) {
+                    return Number(urlParams.page);
+                }
+                return 1;
+            } else {
+                return this.searchResultsPage;
             }
-
-            return 1;
         },
         topicIdMap() {
             const topics = {

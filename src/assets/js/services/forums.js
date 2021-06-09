@@ -23,7 +23,7 @@ export default {
         const params = {
             term,
             page: page || 1,
-            limit: limit || 10,
+            limit: limit || 8,
             sort: sort || 'score',
         };
         let endpoint;
