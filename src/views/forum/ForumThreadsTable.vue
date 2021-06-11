@@ -2,7 +2,7 @@
 
     <div class="tw-flex tw-flex-col tw-flex-grow tw-w-full">
 
-        <!-- Forums Tabs -->
+        <!-- Forum Tabs -->
         <div v-if="!onlyFollowed" 
             class="tw-flex tw-px-4 tw-mt-4">
             <div class="tw-flex tw-flex-col tw-mb-6">
@@ -12,7 +12,7 @@
                         :class="[!isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
                     >
                         <h3 class="tw-text-3xl tw-cursor-pointer">
-                            All Forums
+                            All Threads
                         </h3>
                     </a>
                     <a class="tw-no-underline"
@@ -74,12 +74,12 @@
         </div>  
 
         <template v-if="!searching">
-            <!-- Discussion Items -->
-            <div v-if="discussionsArray.length !== 0" class="tw-mb-12">
-                <forum-discussion-item 
-                    v-for="discussion in discussionsArray"
-                    :key="discussion.id"
-                    :discussion="discussion"
+            <!-- Forum Items -->
+            <div v-if="forumsArray.length !== 0" class="tw-mb-12">
+                <forum-item 
+                    v-for="forum in forumsArray"
+                    :key="forum.id"
+                    :forum="forum"
                     :brand="brand"
                 />
             </div>
@@ -141,7 +141,7 @@
 
 import * as QueryString from 'query-string';
 import ForumThreadsTableItem from './_ForumThreadsTableItem';
-import ForumDiscussionItem from './_ForumDiscussionItem.vue';
+import ForumItem from './_ForumItem.vue';
 import ForumSearchResult from './_ForumSearchResult.vue';
 import Pagination from '../../components/Pagination.vue';
 import ClearableFilter from '../../components/ClearableFilter.vue';
@@ -151,7 +151,7 @@ export default {
     name: 'ForumThreadsTable',
     components: {
         'forum-threads-table-item': ForumThreadsTableItem,
-        'forum-discussion-item': ForumDiscussionItem,
+        'forum-item': ForumItem,
         'forum-search-result': ForumSearchResult,
         'clearable-filter': ClearableFilter,
         pagination: Pagination,
@@ -165,7 +165,7 @@ export default {
             type: Array,
             default: () => [],
         },
-        discussions: {
+        forums: {
             type: Array,
             default: () => [],
         },
@@ -184,7 +184,7 @@ export default {
     },
     data() {
         return {
-            discussionsArray: this.discussions,
+            forumsArray: this.forums,
             threadsArray: this.threads,
             searchTerm: '',
             showTabs: false,

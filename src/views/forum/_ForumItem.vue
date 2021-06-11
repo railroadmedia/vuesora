@@ -1,0 +1,69 @@
+<template>
+    <a
+        :href="forum.url"
+        class="tw-relative tw-flex tw-flex-row tw-items-center tw-py-4 tw-px-2 tw-text-black tw-no-underline tw-border-0 tw-border-b tw-border-solid tw-border-gray-200"
+        :class="[brandHoverColor]"
+    >
+        <!-- Avatar -->
+        <div class="tw-h-14 tw-w-14 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-relative tw-mr-6 tw-flex-shrink-0" 
+             :class="[bgColor]">
+            <i class="tw-text-2xl tw-text-white" 
+               :class="[forumIcon, (forum.icon === 'fa-cube')?'fal':'fas' ]">
+            </i>
+        </div>
+
+        <!-- Title & Description -->
+        <div class="tw-flex tw-flex-col tw-justify-center tw-w-full tw-max-w-lg tw-min-w-0 tw-pr-10">
+            <h4 class="tw-text-lg tw-font-bold">{{ forum.title }}</h4>
+            <p class="tw-text-xs tw-truncate tw-w-full">
+                {{ forum.description }}
+            </p>
+        </div>
+
+        <!-- Reply Amount -->
+        <div class="tw-items-center tw-text-gray-600 tw-ml-auto tw-mr-6 md:tw-mr-12 tw-flex-shrink-0 tw-w-16 tw-text-left tw-hidden md:tw-flex">
+            <h6 class="tw-text-xs tw-font-bold">
+                <i class="fas fa-comment-lines tw-mr-1"></i>
+                {{ forum.replyAmount }}
+            </h6>
+        </div>
+
+        <!-- Post Date -->
+        <div class="tw-flex-col tw-justify-center tw-text-gray-600 tw-flex-shrink-0 tw-w-28 tw-hidden md:tw-flex">
+            <h6 class="tw-text-xs tw-font-bold">{{ forum.latestPost ? forum.latestPost.created_at_diff : '' }}</h6>
+            <!-- <p class="tw-text-xs"><span class="tw-font-bold">In:</spanZ> </p> -->
+            <p class="tw-text-xs tw-truncate">
+                <span class="tw-font-bold">By:</span> 
+                <span class="">{{ forum.latestPost ? forum.latestPost.author_display_name : '' }}</span>    
+            </p>
+        </div>
+    </a>
+</template>
+<script>
+    export default {
+        name: 'ForumItem',
+        props: {
+            brand: {
+                type: String,
+                default: () => 'drumeo',
+                require: true
+            },
+            forum: {
+                type: Object,
+                default: () => {},
+                require: true
+            },
+        },
+        computed: {
+            bgColor() {
+                return 'tw-bg-'+this.brand;
+            },
+            brandHoverColor() {
+                return 'hover:tw-bg-'+this.brand+'-lightest'
+            },
+            forumIcon() {
+                return this.forum.icon || 'fa-comments'
+            }
+        }
+    }
+</script>
