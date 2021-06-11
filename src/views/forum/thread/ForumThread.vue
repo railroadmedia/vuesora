@@ -16,7 +16,7 @@
                         
                         <!-- Edit or delete the thread -->
                         <button
-                            v-if="currentUser.isAdmin"
+                            v-if="currentUser.isAdmin || currentUser.isOwner"
                             class="btn collapse-square short mr-1"
                             @click="update"
                         >
@@ -52,7 +52,6 @@
 
                         <!-- Hides Signatures -->
                         <button
-                            v-if="currentUser.isAdmin"
                             class="btn collapse-square short mr-1"
                             @click="hideSignatures"
                         >
@@ -244,6 +243,7 @@ export default {
                 avatar: '',
                 id: 0,
                 isAdmin: false,
+                isOwner: false,
                 name: '',
                 totalPosts: '0',
                 userExpVal: 'Casual',
