@@ -338,6 +338,32 @@
             v-if="isPipEnabled"
             class="widescreen bg-black"
         ></div>
+
+        <div class="flex flex-row nmh-1 mt-3" style="justify-content: space-between;">
+            <div class="flex flex-column ph-1" style="max-width: 250px">
+                <a
+                    href="#"
+                    class="btn uppercase"
+                    :class="rangeButtonClasses()"
+                ><i class="fas fa-arrow-up"></i><span class="ml-1">low range</span></a>
+            </div>
+
+            <div class="flex flex-column ph-1" style="max-width: 250px">
+                <a
+                    href="#"
+                    class="btn uppercase"
+                    :class="currentRangeButtonClasses()"
+                >original range</a>
+            </div>
+
+            <div class="flex flex-column ph-1" style="max-width: 250px">
+                <a
+                    href="#"
+                    class="btn uppercase"
+                    :class="rangeButtonClasses()"
+                ><i class="fas fa-arrow-down"></i><span class="ml-1">high range</span></a>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -451,6 +477,16 @@ export default {
             type: Boolean,
             default: () => false,
         },
+
+        ranges: {
+            type: Object,
+            default: () => ({}),
+        },
+
+        showRangeButtons: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {
@@ -525,6 +561,14 @@ export default {
             },
         },
 
+        currentRange: {
+            cache: false,
+            get() {
+                // todo - update with localStorage
+                return 'original';
+            },
+        },
+
         playbackQualities: {
             cache: false,
             get() {
@@ -537,7 +581,7 @@ export default {
                 //     label: PlayerUtils.getQualityLabelByHeight(source.height),
                 // }));
 
-                const qualities = this.sources.map(source => ({
+                const qualities = this.$_sources.map(source => ({
                     ...source,
                     label: PlayerUtils.getQualityLabelByHeight(source.height),
                 }));
@@ -562,6 +606,21 @@ export default {
             cache: false,
             get() {
                 return this.mediaElement ? this.mediaElement.src : '';
+            },
+        },
+
+        $_sources: {
+            cache: false,
+            get() {
+                let sources;
+
+                if (this.sources.length) {
+                    sources = this.sources;
+                } else if (this.ranges[this.currentRange] && this.ranges[this.currentRange].length) {
+                    sources = this.ranges[this.currentRange];
+                }
+
+                return sources;
             },
         },
 
@@ -760,6 +819,14 @@ export default {
         this.shakaPlayer.destroy();
     },
     methods: {
+        rangeButtonClasses() {
+            return `text-${this.themeColor} bg-${this.themeColor} inverted`;
+        },
+
+        currentRangeButtonClasses() {
+            return `text-white bg-${this.themeColor}`;
+        },
+
         getSource(source) {
             if (source) {
                 this.source = source;
