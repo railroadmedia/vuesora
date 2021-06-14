@@ -258,11 +258,14 @@ export default {
         type: String,
         default: '/post/update/',
       },
+      previousPage: {
+        type: String,
+        default: () => document.referrer,
+      },
     },
     data() {
         return {
             posts: this.thread.posts,
-            previousPage: document.referrer,
             currentPage: Number(this.thread.currentPage),
             totalPages: Number(this.thread.totalPages),
             isFollowed: this.thread.isFollowed,
