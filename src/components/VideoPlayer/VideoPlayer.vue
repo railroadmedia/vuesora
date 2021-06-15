@@ -339,31 +339,13 @@
             class="widescreen bg-black"
         ></div>
 
-        <div class="flex flex-row nmh-1 mt-3" style="justify-content: space-between;">
-            <div class="flex flex-column ph-1" style="max-width: 250px">
-                <a
-                    href="#"
-                    class="btn uppercase"
-                    :class="rangeButtonClasses()"
-                ><i class="fas fa-arrow-up"></i><span class="ml-1">low range</span></a>
-            </div>
-
-            <div class="flex flex-column ph-1" style="max-width: 250px">
-                <a
-                    href="#"
-                    class="btn uppercase"
-                    :class="currentRangeButtonClasses()"
-                >original range</a>
-            </div>
-
-            <div class="flex flex-column ph-1" style="max-width: 250px">
-                <a
-                    href="#"
-                    class="btn uppercase"
-                    :class="rangeButtonClasses()"
-                ><i class="fas fa-arrow-down"></i><span class="ml-1">high range</span></a>
-            </div>
-        </div>
+        <PlayerRanges
+            v-if="showRangeButtons"
+            :theme-color="themeColor"
+            :current-range="currentRange"
+            :ranges="Object.keys(ranges)"
+            @setRange="setRange"
+        ></PlayerRanges>
     </div>
 </template>
 <script>
@@ -383,6 +365,7 @@ import EventHandlers from './event-handlers';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
 import PlayerShortcuts from './_PlayerShortcuts.vue';
 import PlayerError from './_PlayerError.vue';
+import PlayerRanges from './_PlayerRanges.vue';
 import Intercom from '../../assets/js/services/intercom';
 // import PlayerStats from './_PlayerStats.vue';
 
@@ -397,6 +380,7 @@ export default {
         LoadingAnimation,
         PlayerShortcuts,
         PlayerError,
+        PlayerRanges,
         // PlayerStats,
     },
     mixins: [ThemeClasses, EventHandlers],
@@ -536,6 +520,7 @@ export default {
                 isTransitioning: null,
             },
             isTransitioning: false,
+            currentRange: 'original',
         };
     },
     computed: {
@@ -558,14 +543,6 @@ export default {
                 // return abr ? abr.enabled : false;
 
                 return false;
-            },
-        },
-
-        currentRange: {
-            cache: false,
-            get() {
-                // todo - update with localStorage
-                return 'original';
             },
         },
 
@@ -702,6 +679,10 @@ export default {
         const { player, videoWrap } = this.$refs;
         const supportsMSE = false;
 
+        this.currentRange = window.localStorage.getItem('currentRange') || 'original';
+
+        console.log("::mounted videoId: %s", JSON.stringify(this.videoId));
+
         /*
         * Mux.js is required to mux TS streams into Mp4 on the fly, Shaka requires the
         * window.muxjs object to exist is order to accomplish this.
@@ -819,12 +800,21 @@ export default {
         this.shakaPlayer.destroy();
     },
     methods: {
-        rangeButtonClasses() {
-            return `text-${this.themeColor} bg-${this.themeColor} inverted`;
-        },
 
-        currentRangeButtonClasses() {
-            return `text-white bg-${this.themeColor}`;
+        setRange({ range }) {
+            if (this.ranges[range] && this.ranges[range].length) {
+                this.currentRange = range;
+                window.localStorage.setItem('currentRange', range);
+
+                const { currentTime } = this.mediaElement;
+
+                this.loadSource()
+                    .then(() => {
+                        setTimeout(() => {
+                            this.seek(currentTime);
+                        }, 200);
+                    });
+            }
         },
 
         getSource(source) {
@@ -917,6 +907,13 @@ export default {
         initializePlayer(time) {
             const urlParams = new URLSearchParams(window.location.search);
             const timeToSeekTo = time || (urlParams.get('time') || window.localStorage.getItem(`${this.videoId}_currentTime`) || this.currentSecond);
+
+            console.log(
+                "::initializePlayer time: %s, timeToSeekTo: %s, currentTime: %s",
+                JSON.stringify(time),
+                JSON.stringify(timeToSeekTo),
+                JSON.stringify(this.currentTime)
+            );
 
             if (parseInt(timeToSeekTo) !== parseInt(this.currentTime)) {
                 this.seek(timeToSeekTo);
