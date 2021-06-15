@@ -15,7 +15,7 @@
         <!-- Title & Description -->
         <div class="tw-flex tw-flex-col tw-justify-center tw-w-full tw-max-w-lg tw-min-w-0 tw-pr-10">
             <h4 class="tw-text-lg tw-font-bold">{{ forum.title }}</h4>
-            <p class="tw-text-xs tw-truncate tw-w-full">
+            <p class="tw-text-xs tw-w-full">
                 {{ forum.description }}
             </p>
         </div>
