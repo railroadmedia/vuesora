@@ -467,6 +467,11 @@ export default {
             default: () => ({}),
         },
 
+        rangesVideoIds: {
+            type: Object,
+            default: () => ({}),
+        },
+
         showRangeButtons: {
             type: Boolean,
             default: () => false,
@@ -601,6 +606,29 @@ export default {
             },
         },
 
+        contentCurrentTimeStorageKey() {
+            if (this.sources.length) {
+                return this.videoId;
+            } else {
+                return this.contentId;
+            }
+        },
+
+        $_videoId: {
+            cache: false,
+            get() {
+                let videoId;
+
+                if (this.sources.length) {
+                    videoId = this.videoId;
+                } else if (this.rangesVideoIds[this.currentRange] && this.rangesVideoIds[this.currentRange].length) {
+                    videoId = this.rangesVideoIds[this.currentRange];
+                }
+
+                return videoId;
+            },
+        },
+
         bufferedTimeRanges: {
             cache: false,
             get() {
@@ -680,8 +708,6 @@ export default {
         const supportsMSE = false;
 
         this.currentRange = window.localStorage.getItem('currentRange') || 'original';
-
-        console.log("::mounted videoId: %s", JSON.stringify(this.videoId));
 
         /*
         * Mux.js is required to mux TS streams into Mp4 on the fly, Shaka requires the
@@ -887,7 +913,7 @@ export default {
             } else {
                 this.loading = true;
 
-                ContentService.getVimeoUrlByVimeoId(this.videoId)
+                ContentService.getVimeoUrlByVimeoId(this.$_videoId)
                     .then((response) => {
                         if (response) {
                             const hlsManifest = response.data.files.find(
@@ -906,14 +932,7 @@ export default {
 
         initializePlayer(time) {
             const urlParams = new URLSearchParams(window.location.search);
-            const timeToSeekTo = time || (urlParams.get('time') || window.localStorage.getItem(`${this.videoId}_currentTime`) || this.currentSecond);
-
-            console.log(
-                "::initializePlayer time: %s, timeToSeekTo: %s, currentTime: %s",
-                JSON.stringify(time),
-                JSON.stringify(timeToSeekTo),
-                JSON.stringify(this.currentTime)
-            );
+            const timeToSeekTo = time || (urlParams.get('time') || window.localStorage.getItem(`${this.contentCurrentTimeStorageKey}_currentTime`) || this.currentSecond);
 
             if (parseInt(timeToSeekTo) !== parseInt(this.currentTime)) {
                 this.seek(timeToSeekTo);
@@ -957,7 +976,7 @@ export default {
             }, 100);
 
             setInterval(() => {
-                window.localStorage.setItem(`${this.videoId}_currentTime`, this.currentTime);
+                window.localStorage.setItem(`${this.contentCurrentTimeStorageKey}_currentTime`, this.currentTime);
             }, 2500);
         },
 
