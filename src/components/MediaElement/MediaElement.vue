@@ -1,67 +1,52 @@
 <template>
-    <div>
-        <div class="flex flex-column">
-            <div class="widescreen">
-                <div
-                    :id="themeColor + 'Theme'"
-                    class="media-element"
+    <div class="flex flex-column">
+        <div class="widescreen">
+            <div
+                :id="themeColor + 'Theme'"
+                class="media-element"
+            >
+                <video
+                    v-if="sortedSourcesArray.length"
+                    :id="elementId"
+                    :poster="poster"
+                    :data-cast-title="castTitle"
+                    :data-cast-description="castDescription"
+                    :data-cast-poster="poster"
+                    class="mejs__player"
+                    playsinline
                 >
-                    <video
-                        v-if="sortedSourcesArray.length"
-                        :id="elementId"
-                        :poster="poster"
-                        :data-cast-title="castTitle"
-                        :data-cast-description="castDescription"
-                        :data-cast-poster="poster"
-                        class="mejs__player"
-                        playsinline
-                    >
 
-                        <source
-                            v-for="(source, i) in sortedSourcesArray"
-                            :key="getSourceKey(i)"
-                            :src="source.file"
-                            :data-quality="sourceQualityLabel(source.height)"
-                            type="video/mp4"
+                    <source
+                        v-for="(source, i) in sortedSourcesArray"
+                        :key="i"
+                        :src="source.file"
+                        :data-quality="sourceQualityLabel(source.height)"
+                        type="video/mp4"
+                    >
+                </video>
+
+                <div
+                    v-else
+                    id="errorContainer"
+                    class="flex flex-row pv-5"
+                >
+                    <div class="flex flex-column align-center text-center">
+                        <img
+                            src="https://dmmior4id2ysr.cloudfront.net/icons/emoji-doh.svg"
+                            class="error-icon mb-2"
                         >
-                    </video>
-
-                    <div
-                        v-else
-                        id="errorContainer"
-                        class="flex flex-row pv-5"
-                    >
-                        <div class="flex flex-column align-center text-center">
-                            <img
-                                src="https://dmmior4id2ysr.cloudfront.net/icons/emoji-doh.svg"
-                                class="error-icon mb-2"
-                            >
-                            <h1 class="title text-white">
-                                Oops, something went wrong!<br>
-                                Please refresh or contact support.
-                            </h1>
-                            <h6 class="tiny text-white">
-                                to contact support click the chat widget on the bottom of your screen,<br>
-                                or send an email to
-                                <a :href="'mailto:support@' + brand + '.com'" class="text-white">support@{{ brand }}.com</a>.
-                            </h6>
-                        </div>
+                        <h1 class="title text-white">
+                            Oops, something went wrong!<br>
+                            Please refresh or contact support.
+                        </h1>
+                        <h6 class="tiny text-white">
+                            to contact support click the chat widget on the bottom of your screen,<br>
+                            or send an email to
+                            <a :href="'mailto:support@' + brand + '.com'" class="text-white">support@{{ brand }}.com</a>.
+                        </h6>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <PlayerRanges
-            v-if="showRangeButtons"
-            :theme-color="themeColor"
-            :current-range="currentRange"
-            :ranges="Object.keys(ranges)"
-            @setRange="setRange"
-        ></PlayerRanges>
-
-        <div class="tiny text-white">
-            <!-- todo: remove -->
-            <p v-for="(source, i) in sortedSourcesArray">key: {{ getSourceKey(i) }} <code>{{ source }}</code></p>
         </div>
     </div>
 </template>
@@ -83,13 +68,9 @@ import 'mediaelement-plugins/src/airplay/airplay.css';
 import * as QueryString from 'query-string';
 import Utils from '../../assets/js/classes/utils';
 import Toasts from '../../assets/js/classes/toasts';
-import PlayerRanges from '../VideoPlayer/_PlayerRanges.vue';
 
 export default {
     name: 'VideoMediaElement',
-    components: {
-        PlayerRanges,
-    },
     props: {
         elementId: {
             type: String,
@@ -163,18 +144,6 @@ export default {
             type: [String, Number],
             default: () => null,
         },
-        ranges: {
-            type: Object,
-            default: () => ({}),
-        },
-        rangesVideoIds: {
-            type: Object,
-            default: () => ({}),
-        },
-        showRangeButtons: {
-            type: Boolean,
-            default: () => false,
-        },
     },
     data() {
         return {
@@ -196,29 +165,12 @@ export default {
             ],
             contextMenu: false,
             currentTimeInSeconds: 0,
-            currentRange: 'original',
         };
     },
     computed: {
-
-        $_sources: {
-            cache: false,
-            get() {
-                let sources;
-
-                if (this.sources.length) {
-                    sources = this.sources;
-                } else if (this.ranges[this.currentRange] && this.ranges[this.currentRange].length) {
-                    sources = this.ranges[this.currentRange];
-                }
-
-                return sources;
-            },
-        },
-
         sortedSourcesArray() {
-            if (this.$_sources.length) {
-                return this.$_sources.sort(
+            if (this.sources.length) {
+                return this.sources.sort(
                     Utils.dynamicSort('-height'),
                 );
             }
@@ -310,9 +262,6 @@ export default {
         },
     },
     mounted() {
-
-        this.currentRange = window.localStorage.getItem('currentRange') || 'original';
-
         window[this.elementId] = this.initializeVideoPlayer();
 
         if (this.elementId === 'lessonPlayer') {
@@ -329,47 +278,6 @@ export default {
         vm.removeMediaElementEventListeners(vm.mediaElement);
     },
     methods: {
-
-        setRange({ range }) {
-            if (this.ranges[range] && this.ranges[range].length) {
-                this.currentRange = range;
-                window.localStorage.setItem('currentRange', range);
-                
-                console.log("::setRange initial src: %s", JSON.stringify(this.mediaElement.getCurrentSrc()));
-
-                let sources = this.ranges[this.currentRange].map(source => {
-                    return {
-                        'src': source.file,
-                        'dataQuality': this.sourceQualityLabel(source.height),
-                        'type': 'video/mp4',
-                    };
-                });
-
-                console.log("::setRange new sources: %s", JSON.stringify(sources));
-
-                this.mediaElement.pause();
-                this.mediaElement.setSrc(sources);
-                this.mediaElement.load();
-                // this.mediaElement.play();
-
-                setTimeout(() => {
-                    console.log("::setRange after 2 sec src: %s", JSON.stringify(this.mediaElement.getCurrentSrc()));
-                }, 2000);
-
-                // const { currentTime } = this.mediaElement;
-
-                // this.loadSource()
-                //     .then(() => {
-                //         setTimeout(() => {
-                //             this.seek(currentTime);
-                //         }, 200);
-                //     });
-            }
-        },
-
-        getSourceKey(index) {
-            return `rk-${this.currentRange}-${index}`;
-        },
 
         playVideo() {
             this.mediaElement.play();
@@ -446,6 +354,10 @@ export default {
                 title: 'SHARE THE LOVE!',
                 message: 'This URL has been copied, and is ready to share!',
             });
+        },
+
+        getCurrentTime() {
+            return this.mediaElement.getCurrentTime();
         },
 
         jumpToTime(timeInSeconds, play = false) {
