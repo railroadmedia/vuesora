@@ -17,7 +17,7 @@
                         <!-- Edit or delete the thread -->
                         <button
                             v-if="currentUser.isAdmin || currentUser.isOwner"
-                            class="btn collapse-square short mr-1"
+                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
                             @click="update"
                         >
                             <span
@@ -26,38 +26,58 @@
                             >
                                 <i class="fas fa-edit"></i>
                             </span>
+
+                            <!-- Tool Tip -->
+                            <div class="tw-tooltip tw-tooltip-dark">
+                                Edit
+                            </div>
                         </button>
 
                         <!-- Pins the post to the top of the thread index list -->
                         <button
                             v-if="currentUser.isAdmin"
-                            class="btn collapse-square short mr-1"
+                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
                             @click="pinPost"
                         >
                             <span :class="[themeBgClass, isPinned ? 'text-white' : 'inverted ' + themeTextClass]">
                                 <i class="fas fa-thumbtack"></i>
                             </span>
+
+                            <!-- Tool Tip -->
+                            <div class="tw-tooltip tw-tooltip-dark">
+                                Pin
+                            </div>
                         </button>
 
                         <!-- Disables the option to reply to the post -->
                         <button
                             v-if="currentUser.isAdmin"
-                            class="btn collapse-square short mr-1"
+                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
                             @click="lockPost"
                         >
                             <span :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
                                 <i class="fas fa-lock"></i>
                             </span>
+
+                            <!-- Tool Tip -->
+                            <div class="tw-tooltip tw-tooltip-dark">
+                                Lock
+                            </div>
                         </button>
 
                         <!-- Hides Signatures -->
                         <button
-                            class="btn collapse-square short mr-1"
+                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
                             @click="hideSignatures"
                         >
                             <span :class="[themeBgClass, signaturesHidden ? 'text-white' : 'inverted ' + themeTextClass]">
                                 <i class="fas fa-eye"></i>
                             </span>
+
+                            <!-- Tool Tip -->
+                            <div class="tw-tooltip tw-tooltip-dark">
+                                Hide All Signatures
+                            </div>
                         </button>
 
                         <!-- Follow -->
