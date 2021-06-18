@@ -17,7 +17,6 @@
             :like-count="likeCount"
             :is-liked="isLiked"
             :check-for-timecode="checkForTimecode"
-            @timeupdate="handleEvent"
             :range="$_range.range"
             :key="$_range.range"
         >
@@ -142,6 +141,9 @@ export default {
     mounted() {
         this.currentRange = window.localStorage.getItem('currentRange') || 'original';
         this.currentTime = this.currentSecond || 0;
+        setTimeout(() => {
+            this.attachEventBubbling();
+        }, 300);
     },
     methods: {
 
@@ -149,19 +151,48 @@ export default {
             if (this.ranges[range] && this.ranges[range].length) {
 
                 this.currentTime = this.$refs.mediaElementVueInstance.getCurrentTime();
+                this.$refs.mediaElementVueInstance.pauseVideo();
+                this.detachEventBubbling();
                 this.currentRange = range;
 
                 window.localStorage.setItem('currentRange', range);
 
                 setTimeout(() => {
                     this.$refs.mediaElementVueInstance.playVideo();
+                    this.attachEventBubbling();
                 }, 300);
             }
         },
 
-        handleEvent(event) {
+        attachEventBubbling() {
+            let eventHandler = this.handleEvent;
+
+            this.$refs.mediaElementVueInstance.events.forEach((eventType) => {
+                this.$refs.mediaElementVueInstance.$on(
+                    eventType,
+                    (eventData) => {
+                        eventHandler({ type: eventType, event: eventData});
+                    }
+                );
+            });
+        },
+
+        detachEventBubbling() {
+            let eventHandler = this.handleEvent;
+
+            this.$refs.mediaElementVueInstance.events.forEach((eventType) => {
+                this.$refs.mediaElementVueInstance.$off(
+                    eventType,
+                    (eventData) => {
+                        eventHandler({ type: eventType, event: eventData});
+                    }
+                );
+            });
+        },
+
+        handleEvent({ type, event }) {
             // todo - add event bubbling logic
-            // console.log("::handleEvent event: %s", JSON.stringify(event));
+            console.log("RangeMediaElement::handleEvent event type: %s, keys: %s", type, JSON.stringify(Object.keys(event)));
         },
     },
 }
