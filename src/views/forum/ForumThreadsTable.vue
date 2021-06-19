@@ -11,7 +11,7 @@
                         :href="currentUrl"
                         :class="[!isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
                     >
-                        <h3 class="tw-text-3xl tw-cursor-pointer">
+                        <h3 class="tw-text-2xl tw-cursor-pointer">
                             All Threads
                         </h3>
                     </a>
@@ -19,7 +19,7 @@
                         :href=" currentUrl + '?followed=true' "
                         :class="[isFollowedSection ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor, {'hide': searching}]"
                     >
-                        <h3 class="tw-text-3xl tw-cursor-pointer">
+                        <h3 class="tw-text-2xl tw-cursor-pointer">
                             Followed
                         </h3>
                     </a>
@@ -86,7 +86,7 @@
 
             <!-- Thread Items -->
             <div v-if="onlyFollowed">
-                <h2 class="tw-text-4xl tw-mb-6">Followed Threads</h2>
+                <h2 class="tw-text-32 tw-mb-6">Followed Threads</h2>
             </div>
             <forum-threads-table-item
                 v-for="thread in pinnedThreads"

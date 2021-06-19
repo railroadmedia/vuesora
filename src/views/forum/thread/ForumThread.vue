@@ -2,8 +2,9 @@
     <div class="container forum-post tw-px-4 tw-py-12">
         <div class="flex flex-column">
 
-            <div class="flex flex-row flex-wrap align-v-center tw-mb-8">
-                <div class="tw-flex xs-12 sm-6 tw-items-center">
+            <div class="tw-flex flex-wrap align-v-center tw-mb-8 tw-flex-col md:tw-flex-row">
+                
+                <div class="tw-flex tw-w-full tw-mb-6 tw-justify-center md:tw-justify-start tw-items-center md:tw-mb-0 md:tw-w-1/2">
                     <a :href="previousPage" class="no-decoration mr-1 back-arrow">
                         <i class="fas fa-arrow-circle-left text-grey-2 tw-text-4xl"></i>
                     </a>
@@ -11,8 +12,10 @@
                         {{ thread.title }}
                     </h1>
                 </div>
-                <div class="flex flex-column xs-12 sm-6">
-                    <div class="flex flex-row align-h-right">
+                
+                <div class="tw-flex tw-w-full tw-flex-col md:tw-w-1/2 md:tw-flex-row">
+
+                    <div class="tw-flex tw-justify-center tw-mb-3 md:tw-mb-0 md:tw-w-1/2 md:tw-justify-end">
                         
                         <!-- Edit or delete the thread -->
                         <button
@@ -79,7 +82,9 @@
                                 Hide All Signatures
                             </div>
                         </button>
+                    </div>
 
+                    <div class="tw-flex tw-justify-center md:tw-w-1/2">
                         <!-- Follow -->
                         <button
                             class="btn collapse-150 short mr-1"
@@ -103,6 +108,7 @@
                             </span>
                         </button>
                     </div>
+                    
                 </div>
             </div>
 
@@ -150,7 +156,7 @@
             <section v-if="!thread.isLocked"
                 class="flex flex-row ph pv-3"
             >   
-                <div class="tw-inline-flex tw-items-center tw-flex-col hide-xs-only">
+                <div class="tw-items-center tw-flex-col tw-hidden sm:tw-inline-flex ">
                     <!-- Avatar -->
                     <div class="tw-inline-flex tw-flex-col">
                         <div class="user-avatar tw-w-20 tw-h-20 tw-mb-2"
@@ -166,7 +172,7 @@
                     <div class="tw-font-roboto-condensed tw-uppercase tw-text-center">
                         <p class="tw-text-base tw-font-bold tw-mb-1">{{ currentUser.userExpVal }}</p>
                         <p class="tw-text-sm  tw-mb-0.5">Level {{ currentUser.progressLevel }}</p>
-                        <p class="tw-text-xs  tw-font-bold tw-text-gray-400">{{ currentUser.totalPosts }} Posts</p>
+                        <p class="tw-text-13  tw-font-bold tw-text-gray-400">{{ currentUser.totalPosts }} Posts</p>
                     </div>
                 </div>
 

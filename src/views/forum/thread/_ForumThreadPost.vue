@@ -1,5 +1,5 @@
 <template>
-    <div class="tw-flex tw-flex-col tw-py-7 tw-px-14 tw-mb-7 tw-bg-white tw-rounded-2xl">
+    <div class="tw-flex tw-flex-col tw-py-7 tw-px-4 sm:tw-px-14 tw-mb-7 tw-bg-white tw-rounded-2xl tw-overflow-hidden">
         <a
             :id="'post' + post.id"
             style="position:relative;top:-75px;"
@@ -19,22 +19,19 @@
                     </a>
                 </div>
             </div>
-            <div class="tw-flex tw-flex-col tw-flex-grow">
+            <div class="tw-flex tw-flex-wrap tw-flex-grow">
                 <!-- Name -->
-                <h2 class="tw-mb-2">
+                <h2 class="tw-mb-2 tw-w-3/4 tw-break-all md:tw-break-normal md:tw-w-full">
                     {{ post.authorUsername }}
                 </h2>
-
-                <div class="tw-flex">
-                    <div class="tw-text-xs tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed">
-                        <span class="">{{ post.authorTotalPosts }} Posts</span> -
-                        <span class="">{{ userExpValue }}</span> -
-                         <span class="">Level {{ post.progressLevel }}</span>
-                    </div>
-                    <div class="tw-text-xs tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-ml-auto">
-                        <span class="tw-mb-4">{{ post.createdOn }}</span>
-                        <span class="">#{{ postNumber }}</span>
-                    </div>
+                <div class="tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-w-full tw-order-3 md:tw-order-2 md:tw-w-1/2">
+                    <span class="">{{ post.authorTotalPosts }} Posts</span> -
+                    <span class="">{{ userExpValue }}</span> -
+                        <span class="">Level {{ post.progressLevel }}</span>
+                </div>
+                <div class="tw-inline-flex tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-justify-end md:tw-order-last tw-w-1/4 md:tw-w-1/2">
+                    <span class="tw-mb-4">{{ post.createdOn }}</span>
+                    <span class="">#{{ postNumber }}</span>
                 </div>
             </div>
         </div>
@@ -95,7 +92,7 @@
                 <div class="flex flex-column mb-1">
                 <div class="flex flex-row align-v-center">
                     <p
-                        class="tw-text-xs tw-mr-1 font-bold uppercase dense pointer reply-like noselect"
+                        class="tw-text-13 tw-mr-1 font-bold uppercase dense pointer reply-like noselect"
                         :class="post.isLiked ? themeTextClass : 'text-grey-3'"
                         @click="likePost"
                     >
@@ -105,7 +102,7 @@
                     ></i>
                     </p>
                     <p
-                        class="tw-text-xs tw-mr-2 font-bold uppercase dense pointer reply-like noselect"
+                        class="tw-text-13 tw-mr-2 font-bold uppercase dense pointer reply-like noselect"
                         :class="post.isLiked ? themeTextClass : 'text-grey-3'"
                         @click="openLikes"
                     >
@@ -114,7 +111,7 @@
 
                     <p
                         v-if="!post.isLocked"
-                        class="tw-text-xs text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        class="tw-text-13 text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
                         @click="replyToPost"
                     >
                     Reply
@@ -124,7 +121,7 @@
                 <div class="flex flex-column mb-1">
                 <div class="flex flex-row align-v-center align-h-right">
                     <p
-                        class="tw-text-xs text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        class="tw-text-13 text-light ml-3 font-bold font-italic uppercase dense pointer"
                         @click="reportPost"
                     >
                     Report
