@@ -30,8 +30,8 @@
                         <span class="">Level {{ post.progressLevel }}</span>
                 </div>
                 <div class="tw-inline-flex tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-justify-end md:tw-order-last tw-w-1/4 md:tw-w-1/2">
-                    <span class="tw-mb-4">{{ post.createdOn }}</span>
-                    <span class="">#{{ postNumber }}</span>
+                    <span class="tw-mb-4">{{ post.createdOn }} </span>
+                    <span class="">- #{{ postNumber }}</span>
                 </div>
             </div>
         </div>
