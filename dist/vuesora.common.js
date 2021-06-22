@@ -34820,14 +34820,22 @@ var RoutinesCataloguevue_type_template_id_2a96e97a_staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/views/catalogues/RoutinesCatalogue.vue?vue&type=template&id=2a96e97a&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=template&id=42888832&
-var _CatalogueRoutineCardvue_type_template_id_42888832_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column pa-1 catalogue-card",class:_vm.class_object},[_c('a',{staticClass:"no-decoration flex",class:_vm.displayInline ? 'flex-row' : 'flex-column',attrs:{"href":_vm.renderLink ? _vm.item.url : false}},[_c('div',{staticClass:"flex flex-column",class:[{'thumbnail-col': _vm.displayInline}, _vm.item.type + '-thumbnail']},[_c('div',{staticClass:"card-media bg-grey-2 active corners-10",class:[_vm.thumbnailType, {'mb-1': !_vm.displayInline}]},[_c('img',{staticClass:"bg-grey-2",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":""}}),_c('div',{staticClass:"lesson-progress overflow"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),_vm._m(0)])]),_vm._m(1)])])}
-var _CatalogueRoutineCardvue_type_template_id_42888832_staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column align-v-center pl-3",staticStyle:{"z-index":"2","position":"absolute","top":"0","left":"0","width":"100%","height":"100%","padding-right":"30%"}},[_c('div',{staticClass:"subtitle font-bold uppercase text-white"},[_vm._v("routine")]),_c('div',{staticClass:"subheading font-bold uppercase text-white font-bold"},[_vm._v("this is the routine title")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"card-info flex flex-column"},[_c('p',{staticClass:"tiny text-black mb-1"},[_vm._v("Want feedback on your playing? Submit a video for student review. We will watch tour submission and the provide.")])])}]
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"276ee804-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=template&id=0374f3b3&
+var _CatalogueRoutineCardvue_type_template_id_0374f3b3_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column pa-1 catalogue-card",class:_vm.class_object},[_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-column",class:[_vm.item.type + '-thumbnail']},[_c('div',{staticClass:"card-media bg-grey-2 active corners-10",class:[_vm.thumbnailType]},[_c('img',{staticClass:"bg-grey-2",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":""}}),_c('div',{staticClass:"lesson-progress overflow"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),_c('div',{staticClass:"routine-actions flex flex-column align-v-center ph-3"},[_c('div',{staticClass:"routine-label tiny text-white text-center pb-2"},[_vm._v("Choose your preferred vocal range:")]),_c('div',{},[_c('div',{staticClass:"flex flex-row"},[_c('button',{staticClass:"btn routine-high",attrs:{"dusk":"routine-high"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();}}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("high")])]),_c('button',{staticClass:"btn routine-low",attrs:{"dusk":"routine-low"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();}}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("low")])])])])])])]),_c('div',{staticClass:"card-info flex flex-column"},[_c('p',{staticClass:"tiny text-black mb-1"},[_vm._v(_vm._s(_vm.mappedData.description))])])])])}
+var _CatalogueRoutineCardvue_type_template_id_0374f3b3_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=template&id=42888832&
+// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=template&id=0374f3b3&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -34884,20 +34892,6 @@ var _CatalogueRoutineCardvue_type_template_id_42888832_staticRenderFns = [functi
 /* harmony default export */ var _CatalogueRoutineCardvue_type_script_lang_js_ = ({
   name: 'CatalogueRoutineCard',
   mixins: [_mixin, ThemeClasses],
-  props: {
-    sixWide: {
-      type: Boolean,
-      default: function _default() {
-        return false;
-      }
-    },
-    displayInline: {
-      type: Boolean,
-      default: function _default() {
-        return false;
-      }
-    }
-  },
   computed: {
     mappedData: function mappedData() {
       return this.contentModel.card;
@@ -34905,23 +34899,8 @@ var _CatalogueRoutineCardvue_type_template_id_42888832_staticRenderFns = [functi
     class_object: function class_object() {
       return {
         'no-access': this.noAccess,
-        completed: this.item.completed,
-        'six-wide': this.sixWide,
-        'bb-grey-1-1': this.displayInline,
-        'display-inline': this.displayInline
+        completed: this.item.completed
       };
-    },
-    is_added: {
-      cache: false,
-      get: function get() {
-        return this.item.is_added_to_primary_playlist;
-      }
-    },
-    showTrophy: function showTrophy() {
-      return this.item.type === 'pack-bundle' && this.item.completed === true;
-    },
-    isGuitareoChordAndScale: function isGuitareoChordAndScale() {
-      return this.brand === 'guitareo' && this.item.type === 'chord-and-scale';
     }
   },
   beforeDestroy: function beforeDestroy() {
@@ -34943,8 +34922,8 @@ var _CatalogueRoutineCardvue_type_template_id_42888832_staticRenderFns = [functi
 
 var _CatalogueRoutineCard_component = normalizeComponent(
   catalogues_CatalogueRoutineCardvue_type_script_lang_js_,
-  _CatalogueRoutineCardvue_type_template_id_42888832_render,
-  _CatalogueRoutineCardvue_type_template_id_42888832_staticRenderFns,
+  _CatalogueRoutineCardvue_type_template_id_0374f3b3_render,
+  _CatalogueRoutineCardvue_type_template_id_0374f3b3_staticRenderFns,
   false,
   null,
   null,
