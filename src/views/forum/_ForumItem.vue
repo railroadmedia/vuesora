@@ -12,17 +12,17 @@
             </i>
         </div>
        
-        <div class="tw-flex tw-flex-wrap tw-justify-center tw-w-full tw-min-w-0 md:tw-pr-10">
+        <div class="tw-grid tw-grid-cols-6 tw-grid-rows-2 tw-grid-flow-col tw-w-full tw-min-w-0 tw-pr-0 lg:tw-pr-10">
              <!-- Title -->
-            <h4 class="tw-text-lg tw-w-3/4 md:tw-w-full tw-font-bold">{{ forum.title }}</h4>
+            <h4 class="tw-leading-6 tw-col-span-5 tw-text-lg tw-font-bold tw-inline-flex tw-items-center">{{ forum.title }}</h4>
             
              <!-- Description -->
-            <p class="tw-text-13 tw-w-full tw-order-last md:tw-order-2 md:tw-w-3/4">
+            <p class="tw-row-span-1 tw-col-span-6 md:tw-col-span-5  tw-text-13">
                 {{ forum.description }}
             </p>
 
             <!-- Reply Amount -->
-            <div class="tw-inline-flex md:tw-items-start tw-text-gray-600 tw-flex-shrink-0 tw-w-1/4 tw-text-left tw-justify-end tw-px-4 md:tw-order-last">
+            <div class="tw-text-gray-600 tw-text-left tw-px-4 tw-row-span-1 md:tw-row-span-2 tw-inline-flex tw-justify-center">
                 <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top">
                     <i class="fas fa-comment-lines tw-mr-1"></i>
                     {{ forum.replyAmount }}
