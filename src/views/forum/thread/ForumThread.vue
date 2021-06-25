@@ -132,6 +132,7 @@
                 :current-page="currentPage"
                 :current-user="currentUser"
                 :is-locked="thread.isLocked"
+                :profileBaseRoute="baseProfileRoute"
                 :signatures-hidden="signaturesHidden"
                 :theme-color="themeColor"
                 :update-post-base-route="updatePostBaseRoute"
@@ -319,6 +320,16 @@ export default {
                 this.$refs.textEditor.contentInterface = this.postReplyBody;
             },
         },
+
+        baseProfileRoute() {
+            if (this.brand === 'guitareo') {
+                return '/members/account/';
+            }
+            if (this.brand === 'pianote') {
+                return '/members/profile/';
+            }
+            return '/laravel/public/members/profile/';
+        },   
 
         userAvatarClassObject() {
             return {

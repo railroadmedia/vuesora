@@ -220,10 +220,11 @@ export default {
             type: String,
             default: '/members/profile/',
         },
-      updatePostBaseRoute: {
-        type: String,
-        default: '/post/update/',
-      },
+
+        updatePostBaseRoute: {
+            type: String,
+            default: '/post/update/',
+        },
     },
     data() {
         return {

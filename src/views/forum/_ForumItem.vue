@@ -14,10 +14,11 @@
        
         <div class="tw-grid tw-grid-cols-6 tw-grid-rows-2 tw-grid-flow-col tw-w-full tw-min-w-0 tw-pr-0 lg:tw-pr-10">
              <!-- Title -->
-            <h4 class="tw-leading-6 tw-col-span-5 tw-text-lg tw-font-bold tw-inline-flex tw-items-center">{{ forum.title }}</h4>
+            <h4 class="tw-leading-6 tw-col-span-5 tw-text-lg tw-font-bold tw-inline-flex tw-items-center tw-row-span-1 "
+                :class="{ 'md:tw-row-span-2': !forum.description }">{{ forum.title }}</h4>
             
              <!-- Description -->
-            <p class="tw-row-span-1 tw-col-span-6 md:tw-col-span-5  tw-text-13">
+            <p v-if="forum.description" class="tw-row-span-1 tw-col-span-6 md:tw-col-span-5  tw-text-13">
                 {{ forum.description }}
             </p>
 
