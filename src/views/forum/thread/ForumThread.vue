@@ -322,13 +322,13 @@ export default {
         },
 
         baseProfileRoute() {
+            if (this.brand === 'drumeo') {
+                return '/laravel/public/members/profile/';
+            }
             if (this.brand === 'guitareo') {
                 return '/members/account/';
             }
-            if (this.brand === 'pianote') {
-                return '/members/profile/';
-            }
-            return '/laravel/public/members/profile/';
+            return '/members/profile/';
         },   
 
         userAvatarClassObject() {

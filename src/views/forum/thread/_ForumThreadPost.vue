@@ -12,7 +12,6 @@
                 <div class="user-avatar tw-w-20 tw-h-20"
                     :class="[avatarClassObject, brand]">
                     <a :href="profileRoute"
-                        target="_blank"
                         class="no-decoration"
                     >
                         <img class="rounded" :src="post.authorAvatar">
@@ -25,13 +24,13 @@
                     {{ post.authorUsername }}
                 </h2>
                 <div class="tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-w-full tw-order-3 md:tw-order-2 md:tw-w-1/2">
-                    <span class="">{{ post.authorTotalPosts }} Posts</span> -
-                    <span class="">{{ userExpValue }}</span> -
-                        <span class="">Level {{ post.progressLevel }}</span>
+                    <span>{{ post.authorTotalPosts }} Posts</span> -
+                    <span>{{ userExpValue }}</span> -
+                        <span>Level {{ post.progressLevel }}</span>
                 </div>
                 <div class="tw-inline-flex tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-justify-end md:tw-order-last tw-w-1/4 md:tw-w-1/2">
                     <span class="tw-mb-4">{{ post.createdOn }}</span>
-                    <span class="">&nbsp;- #{{ postNumber }}</span>
+                    <span>&nbsp;- #{{ postNumber }}</span>
                 </div>
             </div>
         </div>
