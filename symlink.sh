@@ -2,7 +2,7 @@
 
 # Ask the user which app they want to Symlink with
 echo Which application would you like to create a symlink for?
-options=("drumeo" "pianote" "guitareo")
+options=("drumeo" "pianote" "guitareo" "singeo")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -19,6 +19,10 @@ do
         "guitareo")
             echo "Symlinking Vuesora with Guitareo!"
             yarn install; yarn lib:watch & yarn link; cd /app/guitareo; yarn link vuesora; yarn watch;
+            ;;
+        "singeo")
+            echo "Symlinking Vuesora with Singeo!"
+            yarn install; yarn lib:watch & yarn link; cd /app/singeo; yarn link vuesora; yarn watch;
             ;;
         *)
           echo "Invalid option $REPLY"
