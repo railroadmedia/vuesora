@@ -115,6 +115,8 @@ body {
     width: 100%;
     display: inline-block;
     color:$sidebarLink;
+    padding-top: 8px;
+    height: 45px;
 
     svg {
       fill:$sidebarLink;
@@ -134,31 +136,9 @@ body {
       line-height: 1em;
     }
 
-    &.pianote {
-      padding-top: 8px;
-      height: 45px;
-    }
-    &.drumeo {
-      padding-top: 8px;
-      height: 45px;
-    }
-    &.guitareo {
-      padding-top: 8px;
-      height: 45px;
-    }
-
     &:hover {
-      &.drumeo {
-        background-color: #F2F3F3;
-      }
-      &.drumeo svg {
-      }
-      &.pianote {
-        background-color: #F2F3F3;
-      }
-      &.guitareo {
-        background-color: #F2F3F3;
-      }
+      background-color: #F2F3F3;
+      
       &.pianote svg {
       }
 
@@ -168,26 +148,31 @@ body {
     }
 
     &.active {
+      background-color: #CCD0D3;
+
       &.drumeo {
         color: $drumeoBlue;
-        background-color: #CCD0D3;
       }
       &.drumeo svg {
         fill: $drumeoBlue;
       }
       &.pianote {
         color: $pianoteRed;
-        background-color: #CCD0D3;
       }
       &.pianote svg {
         fill: $pianoteRed;
       }
       &.guitareo {
         color: $guitareoGreen;
-        background-color: #CCD0D3;
       }
       &.guitareo svg {
         fill: $guitareoGreen;
+      }
+      &.singeo {
+        color: $singeoPurple;
+      }
+      &.singeo svg {
+        fill: $singeoPurple;
       }
 
       .sidebar-link-title {
@@ -208,16 +193,12 @@ body {
   }
 
   &.sidebar-collapsed {
-    width: 83px;
+    width: 100px;
 
-    &.pianote {
-      width: 100px;
+    &.drumeo {
+      width: 83px;
     }
-
-    &.guitareo {
-      width: 100px;
-    }
-
+    
     .sidebar-section {
       border-bottom: none;
 
