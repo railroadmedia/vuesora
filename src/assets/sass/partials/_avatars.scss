@@ -114,5 +114,14 @@
         background-color:$pianoteRed;
       }
     }
+
+    &.singeo {
+      background-color:$singeoPurple;
+
+      img {
+        border-color: $singeoPurple;
+        background-color: $singeoPurple;
+      }
+    }
   }
 }
