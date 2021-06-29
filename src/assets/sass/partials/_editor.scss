@@ -69,7 +69,7 @@
     box-sizing: inherit!important;
   }
 
-  &.mce-floatpanel {
+  &.mce-floatpanel:not(.mce-popover) {
     width:calc(100% - #{$gutterWidth / 2})!important;
     max-width:640px!important;
     height:auto!important;
