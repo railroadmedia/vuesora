@@ -15,7 +15,7 @@
                 
                 <div class="tw-flex tw-w-full tw-flex-col md:tw-w-1/2 md:tw-flex-row">
 
-                    <div class="tw-flex tw-justify-center tw-mb-3 md:tw-mb-0 md:tw-w-1/2 md:tw-justify-end">
+                    <div class="tw-flex tw-justify-center tw-mb-3 md:tw-mb-0 md:tw-w-1/2 md:tw-justify-end xl:tw-w-2/3">
                         
                         <!-- Edit or delete the thread -->
                         <button
@@ -84,7 +84,7 @@
                         </button>
                     </div>
 
-                    <div class="tw-flex tw-justify-center md:tw-w-1/2">
+                    <div class="tw-flex tw-justify-center md:tw-w-1/2 xl:tw-w-1/3">
                         <!-- Follow -->
                         <button
                             class="btn collapse-150 short mr-1"
