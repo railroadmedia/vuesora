@@ -60,6 +60,13 @@
       border-color:darken($guitareoGreen, 12%);
     }
   }
+  &.singeo {
+    background-color:darken($singeoPurple, 12%);
+
+    .progress-border {
+      border-color:darken($singeoPurple, 12%);
+    }
+  }
 
   @include xSmallOnly {
     margin-right:0;

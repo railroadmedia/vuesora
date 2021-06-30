@@ -442,6 +442,20 @@ body {
             border: 3px solid $pianoteRed;
           }
         }
+        &.guitareo {
+          border: 2px solid $guitareoGreen;
+
+          &:hover {
+            border: 3px solid $guitareoGreen;
+          }
+        }
+        &.singeo {
+          border: 2px solid $singeoPurple;
+
+          &:hover {
+            border: 3px solid $singeoPurple;
+          }
+        }
       }
     }
 
