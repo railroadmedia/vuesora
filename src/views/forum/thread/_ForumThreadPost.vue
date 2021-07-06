@@ -41,7 +41,7 @@
             <div class="flex flex-row body tw-my-6">
                 <div
                     v-if="!editing"
-                    class="flex flex-column post-body grow"
+                    :class="['flex', 'flex-column', 'post-body', 'grow', brand]"
                     v-html="post.postBody"
                 >
                     {{ post.postBody }}
