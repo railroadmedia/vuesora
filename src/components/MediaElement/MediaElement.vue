@@ -288,13 +288,6 @@ export default {
         },
 
         emitEvent(event) {
-            console.log(
-                "VideoMediaElement::handleEvent event keys: %s, event.type: %s, hasOwnProperty type: %s",
-                JSON.stringify(Object.keys(event)),
-                JSON.stringify(event.type),
-                JSON.stringify(event.hasOwnProperty('type'))
-            );
-
             if (event.type === 'timeupdate') {
                 this.currentTimeInSeconds = this.mediaElement.getCurrentTime();
             }

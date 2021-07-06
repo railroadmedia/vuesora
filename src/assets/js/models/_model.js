@@ -12,6 +12,7 @@ import PackBundleLessonModel from './pack-bundle-lesson';
 import PlayAlongModel from './play-along';
 import PlayAlongPartModel from './play-along-part';
 import RecordingModel from './recording';
+import RoutineModel from './routine';
 import RudimentModel from './rudiment';
 import SemesterPackModel from './semester-pack';
 import SemesterPackLessonModel from './semester-pack-lesson';
@@ -52,6 +53,7 @@ export default class ContentTypeModel {
         case 'play-along': return new PlayAlongModel({ brand, post });
         case 'play-along-part': return new PlayAlongPartModel({ brand, post });
         case 'recording': return new RecordingModel({ brand, post });
+        case 'routine': return new RoutineModel({ brand, post });
         case 'rudiment': return new RudimentModel({ brand, post });
         case 'semester-pack': return new SemesterPackModel({ brand, post });
         case 'semester-pack-lesson': return new SemesterPackLessonModel({ brand, post });

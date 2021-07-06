@@ -34,14 +34,14 @@
                                 <button
                                     class="btn routine-high"
                                     dusk="routine-high"
-                                    @click.stop.prevent=""
+                                    @click.stop.prevent="showRoutineSoundslice('high')"
                                 >
                                     <span class="text-white" :class="themeBgClass">high</span>
                                 </button>
                                 <button
                                     class="btn routine-low"
                                     dusk="routine-low"
-                                    @click.stop.prevent=""
+                                    @click.stop.prevent="showRoutineSoundslice('low')"
                                 >
                                     <span class="text-white" :class="themeBgClass">low</span>
                                 </button>
@@ -79,8 +79,12 @@ export default {
     beforeDestroy() {
         this.mappedData = null;
     },
-    mounted() {
-        console.log("CatalogueRoutineCard::mounted mappedData: %s", JSON.stringify(this.mappedData));
+    methods: {
+        showRoutineSoundslice(type) {
+            let soundSliceSlug = this.contentModel[`${type}_soundslice_slug`];
+
+            this.$emit('showRoutineSoundslice', { soundSliceSlug, title: 'Lorem ipsum dolor sit amet' });
+        },
     },
 };
 </script>

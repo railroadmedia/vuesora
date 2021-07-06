@@ -19,17 +19,27 @@
             :six-wide="sixWide"
             :display-inline="displayInline"
             @addToList="emitAddToList"
+            @showRoutineSoundslice="showRoutineSoundslice"
         ></catalogue-routine-card>
+        <sound-slice
+            :sound-slice-slug="soundSliceSlug"
+            :theme-color="themeColor"
+            :title="soundSliceTitle"
+            :user-id="userId"
+            @soundSliceClosed="soundSliceClosed"
+        ></sound-slice>
     </div>
 </template>
 <script>
 import CatalogueRoutineCard from './_CatalogueRoutineCard.vue';
+import SoundSlice from '../../components/SoundSlice/SoundSlice.vue';
 import UserCatalogueEvents from '../../mixins/UserCatalogueEvents';
 
 export default {
     name: 'RoutinesCatalogue',
     components: {
         'catalogue-routine-card': CatalogueRoutineCard,
+        'sound-slice': SoundSlice,
     },
     mixins: [UserCatalogueEvents],
     props: {
@@ -80,6 +90,23 @@ export default {
         displayInline: {
             type: Boolean,
             default: () => false,
+        },
+    },
+    data() {
+        return {
+            soundSliceSlug: '',
+            soundSliceTitle: '',
+        };
+    },
+    methods: {
+        showRoutineSoundslice({ soundSliceSlug, title }) {
+            this.soundSliceSlug = soundSliceSlug;
+            this.soundSliceTitle = title;
+        },
+
+        soundSliceClosed() {
+            this.soundSliceSlug = '';
+            this.soundSliceTitle = '';
         },
     },
 };
