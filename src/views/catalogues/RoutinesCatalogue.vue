@@ -19,12 +19,13 @@
             :six-wide="sixWide"
             :display-inline="displayInline"
             @addToList="emitAddToList"
-            @showRoutineSoundslice="showRoutineSoundslice"
+            @showRoutineSoundSlice="showRoutineSoundSlice"
         ></catalogue-routine-card>
         <sound-slice
             :sound-slice-slug="soundSliceSlug"
             :theme-color="themeColor"
-            :title="soundSliceTitle"
+            :title="routineTitle"
+            :content-id="routineId"
             :user-id="userId"
             @soundSliceClosed="soundSliceClosed"
         ></sound-slice>
@@ -94,19 +95,22 @@ export default {
     },
     data() {
         return {
+            routineId: '',
+            routineTitle: '',
             soundSliceSlug: '',
-            soundSliceTitle: '',
         };
     },
     methods: {
-        showRoutineSoundslice({ soundSliceSlug, title }) {
+        showRoutineSoundSlice({ soundSliceSlug, title, routineId }) {
             this.soundSliceSlug = soundSliceSlug;
-            this.soundSliceTitle = title;
+            this.routineTitle = title;
+            this.routineId = routineId;
         },
 
         soundSliceClosed() {
             this.soundSliceSlug = '';
-            this.soundSliceTitle = '';
+            this.routineTitle = '';
+            this.routineId = '';
         },
     },
 };

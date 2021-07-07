@@ -33588,6 +33588,7 @@ var routine_RoutineContentModel = /*#__PURE__*/function (_ContentModel) {
     });
     _this.low_soundslice_slug = _this.getPostField('low_soundslice_slug');
     _this.high_soundslice_slug = _this.getPostField('high_soundslice_slug');
+    _this.title = _this.getPostField('title');
     return _this;
   }
 
@@ -34860,19 +34861,19 @@ var GridCatalogue_component = normalizeComponent(
 )
 
 /* harmony default export */ var GridCatalogue = (GridCatalogue_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/RoutinesCatalogue.vue?vue&type=template&id=db837e1a&
-var RoutinesCataloguevue_type_template_id_db837e1a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row align-v-top",class:[_vm.noWrap ? 'overflow' : 'flex-wrap', {'nmh-1': !_vm.displayInline}]},[_vm._l((_vm.content),function(item,i){return _c('catalogue-routine-card',{key:'grid' + item.id,attrs:{"item":item,"content-type":item.type,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"user-id":_vm.userId,"is-admin":_vm.isAdmin,"lock-unowned":_vm.lockUnowned,"force-wide-thumbs":_vm.forceWideThumbs,"content-type-override":_vm.contentTypeOverride,"six-wide":_vm.sixWide,"display-inline":_vm.displayInline},on:{"addToList":_vm.emitAddToList,"showRoutineSoundslice":_vm.showRoutineSoundslice}})}),_c('sound-slice',{attrs:{"sound-slice-slug":_vm.soundSliceSlug,"theme-color":_vm.themeColor,"title":_vm.soundSliceTitle,"user-id":_vm.userId},on:{"soundSliceClosed":_vm.soundSliceClosed}})],2)}
-var RoutinesCataloguevue_type_template_id_db837e1a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/RoutinesCatalogue.vue?vue&type=template&id=21c5fb79&
+var RoutinesCataloguevue_type_template_id_21c5fb79_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row align-v-top",class:[_vm.noWrap ? 'overflow' : 'flex-wrap', {'nmh-1': !_vm.displayInline}]},[_vm._l((_vm.content),function(item,i){return _c('catalogue-routine-card',{key:'grid' + item.id,attrs:{"item":item,"content-type":item.type,"brand":_vm.brand,"theme-color":_vm.themeColor,"use-theme-color":_vm.useThemeColor,"user-id":_vm.userId,"is-admin":_vm.isAdmin,"lock-unowned":_vm.lockUnowned,"force-wide-thumbs":_vm.forceWideThumbs,"content-type-override":_vm.contentTypeOverride,"six-wide":_vm.sixWide,"display-inline":_vm.displayInline},on:{"addToList":_vm.emitAddToList,"showRoutineSoundSlice":_vm.showRoutineSoundSlice}})}),_c('sound-slice',{attrs:{"sound-slice-slug":_vm.soundSliceSlug,"theme-color":_vm.themeColor,"title":_vm.routineTitle,"content-id":_vm.routineId,"user-id":_vm.userId},on:{"soundSliceClosed":_vm.soundSliceClosed}})],2)}
+var RoutinesCataloguevue_type_template_id_21c5fb79_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/catalogues/RoutinesCatalogue.vue?vue&type=template&id=db837e1a&
+// CONCATENATED MODULE: ./src/views/catalogues/RoutinesCatalogue.vue?vue&type=template&id=21c5fb79&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=template&id=df6de56a&
-var _CatalogueRoutineCardvue_type_template_id_df6de56a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column pa-1 catalogue-card",class:_vm.class_object},[_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-column",class:[_vm.item.type + '-thumbnail']},[_c('div',{staticClass:"card-media bg-grey-2 active corners-10",class:[_vm.thumbnailType]},[_c('img',{staticClass:"bg-grey-2",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":""}}),_c('div',{staticClass:"lesson-progress overflow"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),_c('div',{staticClass:"routine-actions flex flex-column align-v-center ph-3"},[_c('div',{staticClass:"routine-label tiny text-white text-center pb-2"},[_vm._v("Choose your preferred vocal range:")]),_c('div',{},[_c('div',{staticClass:"flex flex-row"},[_c('button',{staticClass:"btn routine-high",attrs:{"dusk":"routine-high"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.showRoutineSoundslice('high')}}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("high")])]),_c('button',{staticClass:"btn routine-low",attrs:{"dusk":"routine-low"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.showRoutineSoundslice('low')}}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("low")])])])])])])]),_c('div',{staticClass:"card-info flex flex-column"},[_c('p',{staticClass:"tiny text-black mb-1"},[_vm._v(_vm._s(_vm.mappedData.description))])])])])}
-var _CatalogueRoutineCardvue_type_template_id_df6de56a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=template&id=1f6e5e35&
+var _CatalogueRoutineCardvue_type_template_id_1f6e5e35_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column pa-1 catalogue-card routine",class:_vm.class_object},[_c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-column",class:[_vm.item.type + '-thumbnail']},[_c('div',{staticClass:"card-media bg-grey-2 active corners-10",class:[_vm.thumbnailType]},[_c('img',{staticClass:"bg-grey-2",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":""}}),_c('div',{staticClass:"lesson-progress overflow"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),_c('div',{staticClass:"routine-actions flex flex-column align-v-center ph-3"},[_c('div',{staticClass:"routine-label tiny text-white text-center pb-2"},[_vm._v("Choose your preferred vocal range:")]),_c('div',{},[_c('div',{staticClass:"flex flex-row"},[_c('button',{staticClass:"btn routine-high",attrs:{"dusk":"routine-high"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.showRoutineSoundSlice('high')}}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("high")])]),_c('button',{staticClass:"btn routine-low",attrs:{"dusk":"routine-low"},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.showRoutineSoundSlice('low')}}},[_c('span',{staticClass:"text-white",class:_vm.themeBgClass},[_vm._v("low")])])])])])])]),_c('div',{staticClass:"card-info flex flex-column"},[_c('p',{staticClass:"tiny text-black mb-1"},[_vm._v(_vm._s(_vm.mappedData.description))])])])])}
+var _CatalogueRoutineCardvue_type_template_id_1f6e5e35_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=template&id=df6de56a&
+// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=template&id=1f6e5e35&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueRoutineCard.vue?vue&type=script&lang=js&
 //
@@ -34954,11 +34955,12 @@ var _CatalogueRoutineCardvue_type_template_id_df6de56a_staticRenderFns = []
     this.mappedData = null;
   },
   methods: {
-    showRoutineSoundslice: function showRoutineSoundslice(type) {
+    showRoutineSoundSlice: function showRoutineSoundSlice(type) {
       var soundSliceSlug = this.contentModel["".concat(type, "_soundslice_slug")];
-      this.$emit('showRoutineSoundslice', {
+      this.$emit('showRoutineSoundSlice', {
         soundSliceSlug: soundSliceSlug,
-        title: 'Lorem ipsum dolor sit amet'
+        title: this.contentModel.title,
+        routineId: this.contentModel.id
       });
     }
   }
@@ -34975,8 +34977,8 @@ var _CatalogueRoutineCardvue_type_template_id_df6de56a_staticRenderFns = []
 
 var _CatalogueRoutineCard_component = normalizeComponent(
   catalogues_CatalogueRoutineCardvue_type_script_lang_js_,
-  _CatalogueRoutineCardvue_type_template_id_df6de56a_render,
-  _CatalogueRoutineCardvue_type_template_id_df6de56a_staticRenderFns,
+  _CatalogueRoutineCardvue_type_template_id_1f6e5e35_render,
+  _CatalogueRoutineCardvue_type_template_id_1f6e5e35_staticRenderFns,
   false,
   null,
   null,
@@ -34985,12 +34987,12 @@ var _CatalogueRoutineCard_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CatalogueRoutineCard = (_CatalogueRoutineCard_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SoundSlice/SoundSlice.vue?vue&type=template&id=649b2d9f&
-var SoundSlicevue_type_template_id_649b2d9f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"show-from-bottom"}},[(_vm.open)?_c('div',{staticClass:"bg-white",attrs:{"id":"practiceOverlay"}},[_c('div',{staticClass:"flex flex-column embed-column"},[_c('div',{staticClass:"flex flex-row align-v-center flex-auto bb-grey-4-1 bg-grey-5 ph"},[_c('div',{staticClass:"flex flex-column"},[_c('h2',{staticClass:"title text-white text-truncate-2-lines"},[_vm._v("\n                        "+_vm._s(_vm.title)+"\n                    ")])]),_c('div',{staticClass:"flex flex-column close-exercise uppercase text-white align-v-center pv-1 pointer flex-auto",on:{"click":_vm.closeExercise}},[_c('div',{staticClass:"flex flex-row tiny align-v-center"},[_vm._v("\n                        Close "),_c('i',{staticClass:"fas fa-times ml-1"})])]),_c('div',[_vm._v("src: "+_vm._s(_vm.iframeSrc))])]),_c('div',{staticClass:"flex flex-row grow"},[_c('div',{staticClass:"flex flex-column relative"},[_c('iframe',{attrs:{"id":"ssEmbed","src":_vm.iframeSrc,"frameBorder":"0","allowfullscreen":""},on:{"load":function($event){_vm.loading = false}}})])])]),(_vm.loading)?_c('div',{staticClass:"loading-exercise heading ph-4 pv-2"},[_c('loading-animation',{attrs:{"theme-color":_vm.themeColor}})],1):_vm._e()]):_vm._e()])}
-var SoundSlicevue_type_template_id_649b2d9f_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SoundSlice/SoundSlice.vue?vue&type=template&id=43d15a04&
+var SoundSlicevue_type_template_id_43d15a04_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"show-from-bottom"}},[(_vm.open)?_c('div',{staticClass:"bg-white",attrs:{"id":"practiceOverlay"}},[_c('div',{staticClass:"flex flex-column embed-column"},[_c('div',{staticClass:"flex flex-row align-v-center flex-auto bb-grey-4-1 bg-grey-5 ph"},[_c('div',{staticClass:"flex flex-column"},[_c('h2',{staticClass:"title text-white text-truncate-2-lines"},[_vm._v("\n                        "+_vm._s(_vm.title)+"\n                    ")])]),_c('div',{staticClass:"flex flex-column close-exercise uppercase text-white align-v-center pv-1 pointer flex-auto",on:{"click":_vm.closeExercise}},[_c('div',{staticClass:"flex flex-row tiny align-v-center"},[_vm._v("\n                        Close "),_c('i',{staticClass:"fas fa-times ml-1"})])]),_c('div',[_vm._v("src: "+_vm._s(_vm.iframeSrc))])]),_c('div',{staticClass:"flex flex-row grow"},[_c('div',{staticClass:"flex flex-column relative"},[_c('iframe',{attrs:{"id":"ssEmbed","src":_vm.iframeSrc,"frameBorder":"0","allowfullscreen":""},on:{"load":function($event){_vm.loading = false}}})])])]),(_vm.loading)?_c('div',{staticClass:"loading-exercise heading ph-4 pv-2"},[_c('loading-animation',{attrs:{"theme-color":_vm.themeColor}})],1):_vm._e()]):_vm._e()])}
+var SoundSlicevue_type_template_id_43d15a04_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/SoundSlice/SoundSlice.vue?vue&type=template&id=649b2d9f&
+// CONCATENATED MODULE: ./src/components/SoundSlice/SoundSlice.vue?vue&type=template&id=43d15a04&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LoadingAnimation/LoadingAnimation.vue?vue&type=template&id=9248c988&
 var LoadingAnimationvue_type_template_id_9248c988_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"spin-wrapper"},[_c('div',{staticClass:"spinner",style:(("border-top-color:" + _vm.colorCode + ";"))})])}
@@ -35073,6 +35075,186 @@ var LoadingAnimation_component = normalizeComponent(
 )
 
 /* harmony default export */ var LoadingAnimation = (LoadingAnimation_component.exports);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.promise.js
+var es6_promise = __webpack_require__("551c");
+
+// CONCATENATED MODULE: ./src/assets/js/classes/progress-tracker.js
+
+
+
+
+
+var progress_tracker_ProgressTracker = /*#__PURE__*/function () {
+  function ProgressTracker() {
+    _classCallCheck(this, ProgressTracker);
+
+    this.startTime = 0;
+    this.endTime = 0;
+    this.secondsWatched = 0;
+    this.running = false;
+    this.endpointPrefix = window.ENDPOINT_PREFIX || '';
+  }
+  /**
+   * Start the timer
+   */
+
+
+  _createClass(ProgressTracker, [{
+    key: "start",
+    value: function start() {
+      this.startTime = performance.now();
+      this.running = true; //console.log(this.startTime + ' (this.startTime in start)');
+    }
+    /**
+     * Stop the timer
+     */
+
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.calculateSecondsWatched();
+    }
+  }, {
+    key: "calculateSecondsWatched",
+    value: function calculateSecondsWatched() {
+      this.endTime = performance.now();
+      this.running = false;
+      var millisecondsToAddToSecondsWatched = this.endTime - this.startTime;
+      var secondsToAddToSecondsWatched = millisecondsToAddToSecondsWatched / 1000;
+      this.secondsWatched = this.secondsWatched + secondsToAddToSecondsWatched; //console.log(this.endTime + ' (this.endTime in calculateSecondsWatched)');
+      //console.log(secondsToAddToSecondsWatched + '(secondsToAddToSecondsWatched in calculateSecondsWatched)');
+      //console.log(this.secondsWatched + ' (this.secondsWatched in calculateSecondsWatched)');
+    }
+    /**
+     * Reset the timer
+     */
+
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.secondsWatched = 0;
+    }
+    /**
+     * Send a navigator beacon with a FormData object containing progress data
+     *
+     * @param {string} endpoint - the endpoint to send data to
+     * @param {string|number} mediaId - The Media ID you wish to track progress for
+     * @param {string} mediaType - Type type of media (video/assignment)
+     * @param {string} mediaCategory - (vimeo/youtube or soundslice)
+     * @param {string|number} watchPosition - Current watch position of the media
+     * @param {string|number} totalDuration
+     * @param {string} sessionToken - used to validate the current user
+     */
+
+  }, {
+    key: "send",
+    value: function send(_ref) {
+      var _ref$endpoint = _ref.endpoint,
+          endpoint = _ref$endpoint === void 0 ? "".concat(this.endpointPrefix, "/railtracker/media-playback-session") : _ref$endpoint,
+          mediaId = _ref.mediaId,
+          mediaType = _ref.mediaType,
+          mediaCategory = _ref.mediaCategory,
+          watchPosition = _ref.watchPosition,
+          totalDuration = _ref.totalDuration,
+          sessionToken = _ref.sessionToken;
+      var data = new FormData();
+
+      if (this.running) {
+        this.calculateSecondsWatched();
+      }
+
+      this.secondsWatched = Math.round(this.secondsWatched);
+      data.append('seconds_played', this.secondsWatched);
+      data.append('media_id', mediaId);
+      data.append('media_type', mediaType);
+      data.append('media_category', mediaCategory);
+      data.append('session_id', sessionToken);
+
+      if (watchPosition && totalDuration) {
+        data.append('current_second', watchPosition);
+        data.append('media_length_seconds', totalDuration);
+      }
+
+      navigator.sendBeacon(endpoint, data);
+    }
+    /**
+     * Send an async tracking request on demand
+     *
+     * @param {string} endpoint - the endpoint to send data to
+     * @param {string|number} mediaId - The Media ID you wish to track progress for
+     * @param {string} mediaType - Type type of media (video/assignment)
+     * @param {string} mediaCategory - (vimeo/youtube or soundslice)
+     * @param {string|number} watchPosition - Current watch position of the media
+     * @param {string|number} totalDuration
+     * @param {string} sessionToken - used to validate the current user
+     * @returns {Promise}
+     */
+
+  }, {
+    key: "sendAsync",
+    value: function sendAsync(_ref2) {
+      var _ref2$endpoint = _ref2.endpoint,
+          endpoint = _ref2$endpoint === void 0 ? "".concat(this.endpointPrefix, "/railtracker/media-playback-session") : _ref2$endpoint,
+          mediaId = _ref2.mediaId,
+          mediaType = _ref2.mediaType,
+          mediaCategory = _ref2.mediaCategory,
+          watchPosition = _ref2.watchPosition,
+          totalDuration = _ref2.totalDuration,
+          sessionToken = _ref2.sessionToken;
+
+      if (this.secondsWatched == null) {
+        return new Promise.resolve(false);
+      }
+
+      if (this.running) {
+        this.calculateSecondsWatched();
+      }
+
+      this.secondsWatched = Math.round(this.secondsWatched);
+      return axios_default.a.post(endpoint, {
+        seconds_played: this.secondsWatched,
+        media_id: mediaId,
+        media_type: mediaType,
+        media_category: mediaCategory,
+        current_second: watchPosition,
+        media_length_seconds: totalDuration,
+        session_id: sessionToken
+      }).then(function (response) {
+        return response;
+      }).catch(function (error) {
+        console.error(error);
+      });
+    }
+  }]);
+
+  return ProgressTracker;
+}();
+
+
+// CONCATENATED MODULE: ./src/assets/js/services/intercom.js
+/* harmony default export */ var intercom = ({
+  /**
+   * Hide the intercom widget.
+   */
+  hideWidget: function hideWidget() {
+    var elements = document.getElementsByClassName('intercom-launcher');
+
+    if (elements[0]) {
+      elements[0].style.display = 'none';
+    }
+  },
+
+  /**
+   * Show the intercom widget.
+   */
+  showWidget: function showWidget() {
+    var elements = document.getElementsByClassName('intercom-launcher');
+
+    if (elements[0]) {
+      elements[0].style.display = 'block';
+    }
+  }
+});
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SoundSlice/SoundSlice.vue?vue&type=script&lang=js&
 
 //
@@ -35124,12 +35306,20 @@ var LoadingAnimation_component = normalizeComponent(
 //
 //
 
+
+
 /* harmony default export */ var SoundSlicevue_type_script_lang_js_ = ({
   name: 'SoundSlice',
   components: {
     'loading-animation': LoadingAnimation
   },
   props: {
+    contentId: {
+      type: [Number, String],
+      default: function _default() {
+        return 0;
+      }
+    },
     soundSliceSlug: {
       type: String,
       default: function _default() {
@@ -35173,20 +35363,114 @@ var LoadingAnimation_component = normalizeComponent(
     soundSliceSlug: function soundSliceSlug(val) {
       if (val) {
         this.loading = true;
-        document.body.classList.add('no-scroll', 'dim-sidebar');
+        this.soundSliceOpened();
       } else {
-        document.body.classList.remove('no-scroll', 'dim-sidebar');
+        this.soundSliceClosed();
+      }
+    },
+    contentId: function contentId(val) {
+      var _this = this;
+
+      if (val) {
+        this.$nextTick(function () {
+          _this.setLastContentId();
+        });
       }
     }
   },
   data: function data() {
     return {
-      loading: true
+      loading: true,
+      isPlaying: false,
+      progressTracker: null,
+      progressTrackerEventListener: false,
+      lastContentId: ''
     };
   },
   methods: {
     closeExercise: function closeExercise() {
       this.$emit('soundSliceClosed', {});
+    },
+    setLastContentId: function setLastContentId() {
+      this.lastContentId = this.contentId;
+    },
+    soundSliceOpened: function soundSliceOpened() {
+      intercom.hideWidget();
+      this.progressTracker = new progress_tracker_ProgressTracker();
+      window.addEventListener('message', this.handleSoundSliceEvent);
+      document.addEventListener('keyup', this.spacebarToPlayPause);
+      document.body.classList.add('no-scroll', 'dim-sidebar');
+    },
+    soundSliceClosed: function soundSliceClosed() {
+      var _this2 = this;
+
+      intercom.showWidget();
+      this.progressTracker.sendAsync({
+        mediaId: this.lastContentId,
+        mediaType: 'assignment',
+        mediaCategory: 'soundslice'
+      });
+      this.progressTracker = null;
+
+      if (this.progressTrackerEventListener) {
+        window.removeEventListener('unload', function () {
+          return _this2.sendProgressTracking;
+        });
+      }
+
+      window.removeEventListener('message', this.handleSoundSliceEvent);
+      document.removeEventListener('keyup', this.spacebarToPlayPause);
+      intercom.showWidget();
+      document.body.classList.remove('no-scroll', 'dim-sidebar');
+    },
+    sendProgressTracking: function sendProgressTracking() {
+      this.progressTracker.send({
+        mediaId: this.lastContentId,
+        mediaType: 'assignment',
+        mediaCategory: 'soundslice'
+      });
+    },
+    handlePlay: function handlePlay() {
+      this.isPlaying = true;
+      this.progressTracker.start();
+
+      if (!this.progressTrackerEventListener) {
+        this.progressTrackerEventListener = true;
+        window.addEventListener('unload', this.sendProgressTracking);
+      }
+    },
+    handlePause: function handlePause() {
+      this.isPlaying = false;
+      this.progressTracker.stop();
+    },
+    handleSoundSliceEvent: function handleSoundSliceEvent(event) {
+      var vm = this;
+
+      if (event.origin === 'https://www.soundslice.com') {
+        var cmd = JSON.parse(event.data);
+
+        switch (cmd.method) {
+          case 'ssPlay':
+            vm.handlePlay();
+            break;
+
+          case 'ssPause':
+            vm.handlePause();
+            break;
+        }
+      }
+    },
+    spacebarToPlayPause: function spacebarToPlayPause(event) {
+      if (event.keyCode === 32) {
+        var embeddedPlayer = document.getElementById('ssEmbed').contentWindow;
+        event.preventDefault();
+
+        if (this.isPlaying) {
+          embeddedPlayer.postMessage('{"method": "pause"}', 'https://www.soundslice.com');
+        } else {
+          embeddedPlayer.postMessage('{"method": "play"}', 'https://www.soundslice.com');
+        }
+      }
     }
   }
 });
@@ -35202,8 +35486,8 @@ var LoadingAnimation_component = normalizeComponent(
 
 var SoundSlice_component = normalizeComponent(
   SoundSlice_SoundSlicevue_type_script_lang_js_,
-  SoundSlicevue_type_template_id_649b2d9f_render,
-  SoundSlicevue_type_template_id_649b2d9f_staticRenderFns,
+  SoundSlicevue_type_template_id_43d15a04_render,
+  SoundSlicevue_type_template_id_43d15a04_staticRenderFns,
   false,
   null,
   null,
@@ -35213,6 +35497,7 @@ var SoundSlice_component = normalizeComponent(
 
 /* harmony default export */ var SoundSlice = (SoundSlice_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/RoutinesCatalogue.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -35331,20 +35616,24 @@ var SoundSlice_component = normalizeComponent(
   },
   data: function data() {
     return {
-      soundSliceSlug: '',
-      soundSliceTitle: ''
+      routineId: '',
+      routineTitle: '',
+      soundSliceSlug: ''
     };
   },
   methods: {
-    showRoutineSoundslice: function showRoutineSoundslice(_ref) {
+    showRoutineSoundSlice: function showRoutineSoundSlice(_ref) {
       var soundSliceSlug = _ref.soundSliceSlug,
-          title = _ref.title;
+          title = _ref.title,
+          routineId = _ref.routineId;
       this.soundSliceSlug = soundSliceSlug;
-      this.soundSliceTitle = title;
+      this.routineTitle = title;
+      this.routineId = routineId;
     },
     soundSliceClosed: function soundSliceClosed() {
       this.soundSliceSlug = '';
-      this.soundSliceTitle = '';
+      this.routineTitle = '';
+      this.routineId = '';
     }
   }
 });
@@ -35360,8 +35649,8 @@ var SoundSlice_component = normalizeComponent(
 
 var RoutinesCatalogue_component = normalizeComponent(
   catalogues_RoutinesCataloguevue_type_script_lang_js_,
-  RoutinesCataloguevue_type_template_id_db837e1a_render,
-  RoutinesCataloguevue_type_template_id_db837e1a_staticRenderFns,
+  RoutinesCataloguevue_type_template_id_21c5fb79_render,
+  RoutinesCataloguevue_type_template_id_21c5fb79_staticRenderFns,
   false,
   null,
   null,
@@ -43763,186 +44052,6 @@ var ContentAssignmentvue_type_template_id_f730f168_staticRenderFns = [function (
 
 // CONCATENATED MODULE: ./src/components/ContentAssignment/ContentAssignment.vue?vue&type=template&id=f730f168&
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.promise.js
-var es6_promise = __webpack_require__("551c");
-
-// CONCATENATED MODULE: ./src/assets/js/classes/progress-tracker.js
-
-
-
-
-
-var progress_tracker_ProgressTracker = /*#__PURE__*/function () {
-  function ProgressTracker() {
-    _classCallCheck(this, ProgressTracker);
-
-    this.startTime = 0;
-    this.endTime = 0;
-    this.secondsWatched = 0;
-    this.running = false;
-    this.endpointPrefix = window.ENDPOINT_PREFIX || '';
-  }
-  /**
-   * Start the timer
-   */
-
-
-  _createClass(ProgressTracker, [{
-    key: "start",
-    value: function start() {
-      this.startTime = performance.now();
-      this.running = true; //console.log(this.startTime + ' (this.startTime in start)');
-    }
-    /**
-     * Stop the timer
-     */
-
-  }, {
-    key: "stop",
-    value: function stop() {
-      this.calculateSecondsWatched();
-    }
-  }, {
-    key: "calculateSecondsWatched",
-    value: function calculateSecondsWatched() {
-      this.endTime = performance.now();
-      this.running = false;
-      var millisecondsToAddToSecondsWatched = this.endTime - this.startTime;
-      var secondsToAddToSecondsWatched = millisecondsToAddToSecondsWatched / 1000;
-      this.secondsWatched = this.secondsWatched + secondsToAddToSecondsWatched; //console.log(this.endTime + ' (this.endTime in calculateSecondsWatched)');
-      //console.log(secondsToAddToSecondsWatched + '(secondsToAddToSecondsWatched in calculateSecondsWatched)');
-      //console.log(this.secondsWatched + ' (this.secondsWatched in calculateSecondsWatched)');
-    }
-    /**
-     * Reset the timer
-     */
-
-  }, {
-    key: "reset",
-    value: function reset() {
-      this.secondsWatched = 0;
-    }
-    /**
-     * Send a navigator beacon with a FormData object containing progress data
-     *
-     * @param {string} endpoint - the endpoint to send data to
-     * @param {string|number} mediaId - The Media ID you wish to track progress for
-     * @param {string} mediaType - Type type of media (video/assignment)
-     * @param {string} mediaCategory - (vimeo/youtube or soundslice)
-     * @param {string|number} watchPosition - Current watch position of the media
-     * @param {string|number} totalDuration
-     * @param {string} sessionToken - used to validate the current user
-     */
-
-  }, {
-    key: "send",
-    value: function send(_ref) {
-      var _ref$endpoint = _ref.endpoint,
-          endpoint = _ref$endpoint === void 0 ? "".concat(this.endpointPrefix, "/railtracker/media-playback-session") : _ref$endpoint,
-          mediaId = _ref.mediaId,
-          mediaType = _ref.mediaType,
-          mediaCategory = _ref.mediaCategory,
-          watchPosition = _ref.watchPosition,
-          totalDuration = _ref.totalDuration,
-          sessionToken = _ref.sessionToken;
-      var data = new FormData();
-
-      if (this.running) {
-        this.calculateSecondsWatched();
-      }
-
-      this.secondsWatched = Math.round(this.secondsWatched);
-      data.append('seconds_played', this.secondsWatched);
-      data.append('media_id', mediaId);
-      data.append('media_type', mediaType);
-      data.append('media_category', mediaCategory);
-      data.append('session_id', sessionToken);
-
-      if (watchPosition && totalDuration) {
-        data.append('current_second', watchPosition);
-        data.append('media_length_seconds', totalDuration);
-      }
-
-      navigator.sendBeacon(endpoint, data);
-    }
-    /**
-     * Send an async tracking request on demand
-     *
-     * @param {string} endpoint - the endpoint to send data to
-     * @param {string|number} mediaId - The Media ID you wish to track progress for
-     * @param {string} mediaType - Type type of media (video/assignment)
-     * @param {string} mediaCategory - (vimeo/youtube or soundslice)
-     * @param {string|number} watchPosition - Current watch position of the media
-     * @param {string|number} totalDuration
-     * @param {string} sessionToken - used to validate the current user
-     * @returns {Promise}
-     */
-
-  }, {
-    key: "sendAsync",
-    value: function sendAsync(_ref2) {
-      var _ref2$endpoint = _ref2.endpoint,
-          endpoint = _ref2$endpoint === void 0 ? "".concat(this.endpointPrefix, "/railtracker/media-playback-session") : _ref2$endpoint,
-          mediaId = _ref2.mediaId,
-          mediaType = _ref2.mediaType,
-          mediaCategory = _ref2.mediaCategory,
-          watchPosition = _ref2.watchPosition,
-          totalDuration = _ref2.totalDuration,
-          sessionToken = _ref2.sessionToken;
-
-      if (this.secondsWatched == null) {
-        return new Promise.resolve(false);
-      }
-
-      if (this.running) {
-        this.calculateSecondsWatched();
-      }
-
-      this.secondsWatched = Math.round(this.secondsWatched);
-      return axios_default.a.post(endpoint, {
-        seconds_played: this.secondsWatched,
-        media_id: mediaId,
-        media_type: mediaType,
-        media_category: mediaCategory,
-        current_second: watchPosition,
-        media_length_seconds: totalDuration,
-        session_id: sessionToken
-      }).then(function (response) {
-        return response;
-      }).catch(function (error) {
-        console.error(error);
-      });
-    }
-  }]);
-
-  return ProgressTracker;
-}();
-
-
-// CONCATENATED MODULE: ./src/assets/js/services/intercom.js
-/* harmony default export */ var intercom = ({
-  /**
-   * Hide the intercom widget.
-   */
-  hideWidget: function hideWidget() {
-    var elements = document.getElementsByClassName('intercom-launcher');
-
-    if (elements[0]) {
-      elements[0].style.display = 'none';
-    }
-  },
-
-  /**
-   * Show the intercom widget.
-   */
-  showWidget: function showWidget() {
-    var elements = document.getElementsByClassName('intercom-launcher');
-
-    if (elements[0]) {
-      elements[0].style.display = 'block';
-    }
-  }
-});
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContentAssignment/ContentAssignment.vue?vue&type=script&lang=js&
 
 //

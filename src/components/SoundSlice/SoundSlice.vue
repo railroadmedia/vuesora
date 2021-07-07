@@ -48,6 +48,8 @@
 
 <script>
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+import ProgressTracker from '../../assets/js/classes/progress-tracker';
+import Intercom from '../../assets/js/services/intercom';
 
 export default {
     name: 'SoundSlice',
@@ -55,6 +57,10 @@ export default {
         'loading-animation': LoadingAnimation,
     },
     props: {
+        contentId: {
+            type: [Number, String],
+            default: () => 0,
+        },
         soundSliceSlug: {
             type: String,
             default: () => '',
@@ -91,21 +97,128 @@ export default {
         soundSliceSlug(val) {
             if (val) {
                 this.loading = true;
-                document.body.classList.add('no-scroll', 'dim-sidebar');
+                this.soundSliceOpened();
             } else {
-                document.body.classList.remove('no-scroll', 'dim-sidebar');
+                this.soundSliceClosed();
+            }
+        },
+
+        contentId(val) {
+            if (val) {
+                this.$nextTick(() => {
+                    this.setLastContentId();
+                });
             }
         },
     },
     data() {
         return {
             loading: true,
+            isPlaying: false,
+            progressTracker: null,
+            progressTrackerEventListener: false,
+            lastContentId: '',
         };
     },
     methods: {
         closeExercise() {
             this.$emit('soundSliceClosed', {});
-        }
+        },
+
+        setLastContentId() {
+            this.lastContentId = this.contentId;
+        },
+
+        soundSliceOpened() {
+            Intercom.hideWidget();
+
+            this.progressTracker = new ProgressTracker();
+
+            window.addEventListener('message', this.handleSoundSliceEvent);
+            document.addEventListener('keyup', this.spacebarToPlayPause);
+
+            document.body.classList.add('no-scroll', 'dim-sidebar');
+        },
+
+        soundSliceClosed() {
+            Intercom.showWidget();
+
+            this.progressTracker.sendAsync({
+                mediaId: this.lastContentId,
+                mediaType: 'assignment',
+                mediaCategory: 'soundslice',
+            });
+
+            this.progressTracker = null;
+
+            if (this.progressTrackerEventListener) {
+                window.removeEventListener('unload', () => this.sendProgressTracking);
+            }
+
+            window.removeEventListener('message', this.handleSoundSliceEvent);
+            document.removeEventListener('keyup', this.spacebarToPlayPause);
+
+            Intercom.showWidget();
+
+            document.body.classList.remove('no-scroll', 'dim-sidebar');
+        },
+
+        sendProgressTracking() {
+            this.progressTracker.send({
+                mediaId: this.lastContentId,
+                mediaType: 'assignment',
+                mediaCategory: 'soundslice',
+            });
+        },
+
+        handlePlay() {
+            this.isPlaying = true;
+
+            this.progressTracker.start();
+
+            if (!this.progressTrackerEventListener) {
+                this.progressTrackerEventListener = true;
+
+                window.addEventListener('unload', this.sendProgressTracking);
+            }
+        },
+
+        handlePause() {
+            this.isPlaying = false;
+
+            this.progressTracker.stop();
+        },
+
+        handleSoundSliceEvent(event) {
+            const vm  = this;
+
+            if (event.origin === 'https://www.soundslice.com') {
+                const cmd = JSON.parse(event.data);
+
+                switch (cmd.method) {
+                    case 'ssPlay':
+                        vm.handlePlay();
+                        break;
+                    case 'ssPause':
+                        vm.handlePause();
+                        break;
+                }
+            }
+        },
+
+        spacebarToPlayPause(event) {
+            if (event.keyCode === 32) {
+                const embeddedPlayer = document.getElementById('ssEmbed').contentWindow;
+
+                event.preventDefault();
+
+                if (this.isPlaying) {
+                    embeddedPlayer.postMessage('{"method": "pause"}', 'https://www.soundslice.com');
+                } else {
+                    embeddedPlayer.postMessage('{"method": "play"}', 'https://www.soundslice.com');
+                }
+            }
+        },
     },
 }
 </script>

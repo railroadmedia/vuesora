@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-column pa-1 catalogue-card"
+        class="flex flex-column pa-1 catalogue-card routine"
         :class="class_object"
     >
         <div class="flex flex-column">
@@ -34,14 +34,14 @@
                                 <button
                                     class="btn routine-high"
                                     dusk="routine-high"
-                                    @click.stop.prevent="showRoutineSoundslice('high')"
+                                    @click.stop.prevent="showRoutineSoundSlice('high')"
                                 >
                                     <span class="text-white" :class="themeBgClass">high</span>
                                 </button>
                                 <button
                                     class="btn routine-low"
                                     dusk="routine-low"
-                                    @click.stop.prevent="showRoutineSoundslice('low')"
+                                    @click.stop.prevent="showRoutineSoundSlice('low')"
                                 >
                                     <span class="text-white" :class="themeBgClass">low</span>
                                 </button>
@@ -80,10 +80,10 @@ export default {
         this.mappedData = null;
     },
     methods: {
-        showRoutineSoundslice(type) {
+        showRoutineSoundSlice(type) {
             let soundSliceSlug = this.contentModel[`${type}_soundslice_slug`];
 
-            this.$emit('showRoutineSoundslice', { soundSliceSlug, title: 'Lorem ipsum dolor sit amet' });
+            this.$emit('showRoutineSoundSlice', { soundSliceSlug, title: this.contentModel.title, routineId: this.contentModel.id });
         },
     },
 };
