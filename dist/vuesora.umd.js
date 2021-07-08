@@ -34996,12 +34996,12 @@ var _CatalogueRoutineCard_component = normalizeComponent(
 )
 
 /* harmony default export */ var _CatalogueRoutineCard = (_CatalogueRoutineCard_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SoundSlice/SoundSlice.vue?vue&type=template&id=43d15a04&
-var SoundSlicevue_type_template_id_43d15a04_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"show-from-bottom"}},[(_vm.open)?_c('div',{staticClass:"bg-white",attrs:{"id":"practiceOverlay"}},[_c('div',{staticClass:"flex flex-column embed-column"},[_c('div',{staticClass:"flex flex-row align-v-center flex-auto bb-grey-4-1 bg-grey-5 ph"},[_c('div',{staticClass:"flex flex-column"},[_c('h2',{staticClass:"title text-white text-truncate-2-lines"},[_vm._v("\n                        "+_vm._s(_vm.title)+"\n                    ")])]),_c('div',{staticClass:"flex flex-column close-exercise uppercase text-white align-v-center pv-1 pointer flex-auto",on:{"click":_vm.closeExercise}},[_c('div',{staticClass:"flex flex-row tiny align-v-center"},[_vm._v("\n                        Close "),_c('i',{staticClass:"fas fa-times ml-1"})])]),_c('div',[_vm._v("src: "+_vm._s(_vm.iframeSrc))])]),_c('div',{staticClass:"flex flex-row grow"},[_c('div',{staticClass:"flex flex-column relative"},[_c('iframe',{attrs:{"id":"ssEmbed","src":_vm.iframeSrc,"frameBorder":"0","allowfullscreen":""},on:{"load":function($event){_vm.loading = false}}})])])]),(_vm.loading)?_c('div',{staticClass:"loading-exercise heading ph-4 pv-2"},[_c('loading-animation',{attrs:{"theme-color":_vm.themeColor}})],1):_vm._e()]):_vm._e()])}
-var SoundSlicevue_type_template_id_43d15a04_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SoundSlice/SoundSlice.vue?vue&type=template&id=68ceba0e&
+var SoundSlicevue_type_template_id_68ceba0e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('transition',{attrs:{"name":"show-from-bottom"}},[(_vm.open)?_c('div',{staticClass:"bg-white",attrs:{"id":"practiceOverlay"}},[_c('div',{staticClass:"flex flex-column embed-column"},[_c('div',{staticClass:"flex flex-row align-v-center flex-auto bb-grey-4-1 bg-grey-5 ph"},[_c('div',{staticClass:"flex flex-column"},[_c('h2',{staticClass:"title text-white text-truncate-2-lines"},[_vm._v("\n                        "+_vm._s(_vm.title)+"\n                    ")])]),_c('div',{staticClass:"flex flex-column close-exercise uppercase text-white align-v-center pv-1 pointer flex-auto",on:{"click":_vm.closeExercise}},[_c('div',{staticClass:"flex flex-row tiny align-v-center"},[_vm._v("\n                        Close "),_c('i',{staticClass:"fas fa-times ml-1"})])]),_c('div',[_vm._v("src: "+_vm._s(_vm.iframeSrc))])]),_c('div',{staticClass:"flex flex-row grow"},[_c('div',{staticClass:"flex flex-column relative"},[_c('iframe',{attrs:{"id":"ssEmbed","src":_vm.iframeSrc,"frameBorder":"0","allowfullscreen":""},on:{"load":function($event){_vm.loading = false}}})])])]),(_vm.loading)?_c('div',{staticClass:"loading-exercise heading ph-4 pv-2"},[_c('loading-animation',{attrs:{"theme-color":_vm.themeColor}})],1):_vm._e()]):_vm._e()])}
+var SoundSlicevue_type_template_id_68ceba0e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/SoundSlice/SoundSlice.vue?vue&type=template&id=43d15a04&
+// CONCATENATED MODULE: ./src/components/SoundSlice/SoundSlice.vue?vue&type=template&id=68ceba0e&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9abc1b42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LoadingAnimation/LoadingAnimation.vue?vue&type=template&id=9248c988&
 var LoadingAnimationvue_type_template_id_9248c988_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"spin-wrapper"},[_c('div',{staticClass:"spinner",style:(("border-top-color:" + _vm.colorCode + ";"))})])}
@@ -35317,6 +35317,7 @@ var progress_tracker_ProgressTracker = /*#__PURE__*/function () {
 
 
 
+
 /* harmony default export */ var SoundSlicevue_type_script_lang_js_ = ({
   name: 'SoundSlice',
   components: {
@@ -35442,6 +35443,7 @@ var progress_tracker_ProgressTracker = /*#__PURE__*/function () {
     handlePlay: function handlePlay() {
       this.isPlaying = true;
       this.progressTracker.start();
+      services_content.markContentAsStarted(this.contentId);
 
       if (!this.progressTrackerEventListener) {
         this.progressTrackerEventListener = true;
@@ -35495,8 +35497,8 @@ var progress_tracker_ProgressTracker = /*#__PURE__*/function () {
 
 var SoundSlice_component = normalizeComponent(
   SoundSlice_SoundSlicevue_type_script_lang_js_,
-  SoundSlicevue_type_template_id_43d15a04_render,
-  SoundSlicevue_type_template_id_43d15a04_staticRenderFns,
+  SoundSlicevue_type_template_id_68ceba0e_render,
+  SoundSlicevue_type_template_id_68ceba0e_staticRenderFns,
   false,
   null,
   null,

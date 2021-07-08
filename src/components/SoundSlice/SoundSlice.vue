@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import ContentService from '../../assets/js/services/content';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import ProgressTracker from '../../assets/js/classes/progress-tracker';
 import Intercom from '../../assets/js/services/intercom';
@@ -175,6 +176,8 @@ export default {
             this.isPlaying = true;
 
             this.progressTracker.start();
+
+            ContentService.markContentAsStarted(this.contentId);
 
             if (!this.progressTrackerEventListener) {
                 this.progressTrackerEventListener = true;
