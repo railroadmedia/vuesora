@@ -15,18 +15,18 @@
         <div class="tw-grid tw-grid-cols-7 tw-grid-rows-2 tw-w-full tw-min-w-0 tw-pr-0 lg:tw-pr-10"
              :class="[ (forum.description)? 'tw-grid-flow-col': 'tw-grid-flow-row' ]">
              <!-- Title -->
-            <h4 class="tw-leading-6 tw-col-span-6 tw-text-lg tw-font-bold tw-inline-flex tw-items-center tw-row-span-1 "
+            <h4 class="tw-leading-6 tw-col-span-5 tw-text-lg tw-font-bold tw-inline-flex tw-items-start md:tw-items-center tw-row-span-1 "
                 :class="{ 'tw-row-span-2': !forum.description }">{{ forum.title }}</h4>
             
              <!-- Description -->
-            <p v-if="forum.description" class=" tw-col-span-6 md:tw-col-span-5  tw-text-13">
+            <p v-if="forum.description" class=" tw-col-span-7 md:tw-col-span-5  tw-text-13">
                 {{ forum.description }}
             </p>
 
             <!-- Reply Amount -->
-            <div class="tw-text-gray-600 tw-text-left tw-px-4 md:tw-row-span-2 tw-inline-flex"
+            <div class="tw-text-gray-600 tw-text-left tw-px-4 tw-col-span-2 md:tw-row-span-2 tw-inline-flex tw-mt-1 tw-items-start md:tw-items-center"
                  :class="[ (forum.description)? 'tw-row-span-1': 'tw-row-span-2' ]">
-                <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top">
+                <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top tw-ml-auto">
                     <i class="fas fa-comment-lines tw-mr-1"></i>
                     {{ forum.replyAmount }}
 
