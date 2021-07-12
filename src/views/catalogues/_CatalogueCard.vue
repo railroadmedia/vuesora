@@ -30,7 +30,7 @@
                     >
 
                     <i
-                        v-if="item.type !== 'pack-bundle'"
+                        v-if="item.type !== 'pack-bundle' && showMyListAction"
                         class="add-to-list fas fa-plus"
                         :class="is_added ? 'is-added ' + themeTextClass : 'text-white'"
                         :title="is_added ? 'Remove from list' : 'Add to list'"
@@ -129,9 +129,19 @@ export default {
             default: () => false,
         },
 
+        fiveWide: {
+            type: Boolean,
+            default: () => false,
+        },
+
         displayInline: {
             type: Boolean,
             default: () => false,
+        },
+
+        showMyListAction: {
+            type: Boolean,
+            default: () => true,
         },
     },
     computed: {
@@ -144,6 +154,7 @@ export default {
                 'no-access': this.noAccess,
                 completed: this.item.completed,
                 'six-wide': this.sixWide,
+                'five-wide': this.fiveWide,
                 'bb-grey-1-1': this.displayInline,
                 'display-inline': this.displayInline,
             };

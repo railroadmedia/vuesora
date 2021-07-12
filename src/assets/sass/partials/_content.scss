@@ -403,6 +403,13 @@
     min-width:100%;
   }
 
+  &.five-wide {
+    @include large(){
+      flex:0 0 20%;
+      max-width:20%;
+    }
+  }
+
   &.six-wide {
     flex:0 0 100%;
     max-width:100%;

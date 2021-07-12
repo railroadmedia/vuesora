@@ -17,6 +17,8 @@
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
             :six-wide="sixWide"
+            :five-wide="fiveWide"
+            :show-my-list-action="showMyListAction"
             :display-inline="displayInline"
             @addToList="emitAddToList"
         ></catalogue-card>
@@ -77,9 +79,17 @@ export default {
             type: Boolean,
             default: () => false,
         },
+        fiveWide: {
+            type: Boolean,
+            default: () => false,
+        },
         displayInline: {
             type: Boolean,
             default: () => false,
+        },
+        showMyListAction: {
+            type: Boolean,
+            default: () => true,
         },
     },
 };
