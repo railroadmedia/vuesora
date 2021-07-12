@@ -21,6 +21,10 @@ export default class LearningPathLevelContentModel extends ContentModel {
     }
 
     get postChildLessonCount() {
+        if (this.brand === 'singeo') {
+            return this.post.lesson_count ? `${this.post.lesson_count} Lessons` : 'TBD';
+        }
+
         return this.post.lesson_count ? `${this.post.lesson_count} Courses` : 'TBD';
     }
 
