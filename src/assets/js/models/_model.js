@@ -23,6 +23,7 @@ import StudentReviewModel from './student-review';
 import QnaModel from './question-and-answer';
 import UnitContentModel from './unit';
 import UnitPartModel from './unit-part';
+import SongPdfContentModel from './song-pdf';
 import ContentModel from './_default';
 
 /**
@@ -64,6 +65,7 @@ export default class ContentTypeModel {
         case 'unit': return new UnitContentModel({ brand, post });
         case 'unit-part': return new UnitPartModel({ brand, post });
         case 'coach-stream': return new CoachStreamModel({ brand, post });
+        case 'song-pdf': return new SongPdfContentModel({ brand, post });
         default: return new ContentModel({ brand, post });
         }
     }
