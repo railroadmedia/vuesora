@@ -71,6 +71,23 @@
             @addToList="addToListEventHandler"
         ></grid-catalogue>
 
+        <routines-catalogue
+            v-if="catalogue_type === 'routines'"
+            :content="content"
+            :brand="brand"
+            :theme-color="themeColor"
+            :use-theme-color="useThemeColor"
+            :no-wrap="noWrapGrid"
+            :user-id="userId"
+            :is-admin="isAdmin"
+            :lock-unowned="lockUnowned"
+            :force-wide-thumbs="forceWideThumbs"
+            :content-type-override="contentTypeOverride"
+            :six-wide="sixWide"
+            :display-inline="displayInline"
+            @addToList="addToListEventHandler"
+        ></routines-catalogue>
+
         <list-catalogue
             v-if="catalogue_type === 'list'"
             :content="content"
@@ -130,6 +147,7 @@ import axios from 'axios';
 import * as QueryString from 'query-string';
 import { Content as ContentHelpers } from '@musora/helper-functions';
 import GridCatalogue from './GridCatalogue.vue';
+import RoutinesCatalogue from './RoutinesCatalogue.vue';
 import ListCatalogue from './ListCatalogue.vue';
 import CatalogueFilters from './_CatalogueFilters.vue';
 import CatalogueSearch from './_CatalogueSearch.vue';
@@ -143,6 +161,7 @@ export default {
     name: 'ContentCatalogue',
     components: {
         'grid-catalogue': GridCatalogue,
+        'routines-catalogue': RoutinesCatalogue,
         'list-catalogue': ListCatalogue,
         pagination: Pagination,
         'catalogue-filters': CatalogueFilters,

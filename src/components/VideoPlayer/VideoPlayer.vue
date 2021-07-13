@@ -338,6 +338,14 @@
             v-if="isPipEnabled"
             class="widescreen bg-black"
         ></div>
+
+        <PlayerRanges
+            v-if="showRangeButtons"
+            :theme-color="themeColor"
+            :current-range="currentRange"
+            :ranges="Object.keys(ranges)"
+            @setRange="setRange"
+        ></PlayerRanges>
     </div>
 </template>
 <script>
@@ -357,6 +365,7 @@ import EventHandlers from './event-handlers';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation.vue';
 import PlayerShortcuts from './_PlayerShortcuts.vue';
 import PlayerError from './_PlayerError.vue';
+import PlayerRanges from './_PlayerRanges.vue';
 import Intercom from '../../assets/js/services/intercom';
 // import PlayerStats from './_PlayerStats.vue';
 
@@ -371,6 +380,7 @@ export default {
         LoadingAnimation,
         PlayerShortcuts,
         PlayerError,
+        PlayerRanges,
         // PlayerStats,
     },
     mixins: [ThemeClasses, EventHandlers],
@@ -451,6 +461,21 @@ export default {
             type: Boolean,
             default: () => false,
         },
+
+        ranges: {
+            type: Object,
+            default: () => ({}),
+        },
+
+        rangesVideoIds: {
+            type: Object,
+            default: () => ({}),
+        },
+
+        showRangeButtons: {
+            type: Boolean,
+            default: () => false,
+        },
     },
     data() {
         return {
@@ -500,6 +525,7 @@ export default {
                 isTransitioning: null,
             },
             isTransitioning: false,
+            currentRange: 'original',
         };
     },
     computed: {
@@ -537,7 +563,7 @@ export default {
                 //     label: PlayerUtils.getQualityLabelByHeight(source.height),
                 // }));
 
-                const qualities = this.sources.map(source => ({
+                const qualities = this.$_sources.map(source => ({
                     ...source,
                     label: PlayerUtils.getQualityLabelByHeight(source.height),
                 }));
@@ -562,6 +588,44 @@ export default {
             cache: false,
             get() {
                 return this.mediaElement ? this.mediaElement.src : '';
+            },
+        },
+
+        $_sources: {
+            cache: false,
+            get() {
+                let sources;
+
+                if (this.sources.length) {
+                    sources = this.sources;
+                } else if (this.ranges[this.currentRange] && this.ranges[this.currentRange].length) {
+                    sources = this.ranges[this.currentRange];
+                }
+
+                return sources;
+            },
+        },
+
+        contentCurrentTimeStorageKey() {
+            if (this.sources.length) {
+                return this.videoId;
+            } else {
+                return this.contentId;
+            }
+        },
+
+        $_videoId: {
+            cache: false,
+            get() {
+                let videoId;
+
+                if (this.sources.length) {
+                    videoId = this.videoId;
+                } else if (this.rangesVideoIds[this.currentRange] && this.rangesVideoIds[this.currentRange].length) {
+                    videoId = this.rangesVideoIds[this.currentRange];
+                }
+
+                return videoId;
             },
         },
 
@@ -642,6 +706,8 @@ export default {
     mounted() {
         const { player, videoWrap } = this.$refs;
         const supportsMSE = false;
+
+        this.currentRange = window.localStorage.getItem('currentRange') || 'original';
 
         /*
         * Mux.js is required to mux TS streams into Mp4 on the fly, Shaka requires the
@@ -760,6 +826,23 @@ export default {
         this.shakaPlayer.destroy();
     },
     methods: {
+
+        setRange({ range }) {
+            if (this.ranges[range] && this.ranges[range].length) {
+                this.currentRange = range;
+                window.localStorage.setItem('currentRange', range);
+
+                const { currentTime } = this.mediaElement;
+
+                this.loadSource()
+                    .then(() => {
+                        setTimeout(() => {
+                            this.seek(currentTime);
+                        }, 200);
+                    });
+            }
+        },
+
         getSource(source) {
             if (source) {
                 this.source = source;
@@ -830,7 +913,7 @@ export default {
             } else {
                 this.loading = true;
 
-                ContentService.getVimeoUrlByVimeoId(this.videoId)
+                ContentService.getVimeoUrlByVimeoId(this.$_videoId)
                     .then((response) => {
                         if (response) {
                             const hlsManifest = response.data.files.find(
@@ -849,7 +932,7 @@ export default {
 
         initializePlayer(time) {
             const urlParams = new URLSearchParams(window.location.search);
-            const timeToSeekTo = time || (urlParams.get('time') || window.localStorage.getItem(`${this.videoId}_currentTime`) || this.currentSecond);
+            const timeToSeekTo = time || (urlParams.get('time') || window.localStorage.getItem(`${this.contentCurrentTimeStorageKey}_currentTime`) || this.currentSecond);
 
             if (parseInt(timeToSeekTo) !== parseInt(this.currentTime)) {
                 this.seek(timeToSeekTo);
@@ -893,7 +976,7 @@ export default {
             }, 100);
 
             setInterval(() => {
-                window.localStorage.setItem(`${this.videoId}_currentTime`, this.currentTime);
+                window.localStorage.setItem(`${this.contentCurrentTimeStorageKey}_currentTime`, this.currentTime);
             }, 2500);
         },
 
