@@ -20,6 +20,8 @@ export default (function () {
         const subNavWrap = document.getElementById('subNavWrap');
         const scrollSubNavRight = document.getElementById('scrollSubNavRight');
         const scrollSubNavLeft = document.getElementById('scrollSubNavLeft');
+        const platformDropdownTrigger = document.getElementById('platformDropdownTrigger');
+        const platformDropdown = document.getElementById('platformDropdown');
 
         let currentSubNavScrollPosition = 0;
         const backgroundOverlay = document.getElementById('backgroundOverlay');
@@ -67,6 +69,22 @@ export default (function () {
                     }
                 }
             );
+        }
+        
+        // Platform Dropdown
+        if (platformDropdownTrigger && platformDropdown) {
+            document.addEventListener('click', function(e){   
+                //Open/Close Dropdown
+                if (platformDropdownTrigger.contains(e.target)){
+                    platformDropdownTrigger.classList.toggle('tw--rotate-180');
+                    platformDropdown.classList.toggle('tw-max-h-60');
+                }
+                //Ensure Dropdown closes when clicking away
+                if ( !platformDropdownTrigger.contains(e.target) && !platformDropdown.contains(e.target) ) {
+                    platformDropdownTrigger.classList.remove('tw--rotate-180');
+                    platformDropdown.classList.remove('tw-max-h-60');
+                }
+            })
         }
 
         if (searchInput && toggledSearchInput && searchInputClear) {
