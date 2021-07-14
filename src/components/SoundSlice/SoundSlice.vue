@@ -51,6 +51,7 @@ import ContentService from '../../assets/js/services/content';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import ProgressTracker from '../../assets/js/classes/progress-tracker';
 import Intercom from '../../assets/js/services/intercom';
+import Helpscout from '../../assets/js/services/helpscout';
 
 export default {
     name: 'SoundSlice',
@@ -132,6 +133,7 @@ export default {
 
         soundSliceOpened() {
             Intercom.hideWidget();
+            Helpscout.hideWidget();
 
             this.progressTracker = new ProgressTracker();
 
@@ -143,6 +145,7 @@ export default {
 
         soundSliceClosed() {
             Intercom.showWidget();
+            Helpscout.showWidget();
 
             this.progressTracker.sendAsync({
                 mediaId: this.lastContentId,
@@ -160,6 +163,7 @@ export default {
             document.removeEventListener('keyup', this.spacebarToPlayPause);
 
             Intercom.showWidget();
+            Helpscout.showWidget();
 
             document.body.classList.remove('no-scroll', 'dim-sidebar');
         },

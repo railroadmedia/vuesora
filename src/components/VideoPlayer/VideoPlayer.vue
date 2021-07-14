@@ -367,6 +367,7 @@ import PlayerShortcuts from './_PlayerShortcuts.vue';
 import PlayerError from './_PlayerError.vue';
 import PlayerRanges from './_PlayerRanges.vue';
 import Intercom from '../../assets/js/services/intercom';
+import Helpscout from '../../assets/js/services/helpscout';
 // import PlayerStats from './_PlayerStats.vue';
 
 export default {
@@ -689,8 +690,10 @@ export default {
         isMobileDrawerOpen() {
             if ((this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom) {
                 Intercom.hideWidget();
+                Helpscout.hideWidget();
             } else {
                 Intercom.showWidget();
+                Helpscout.showWidget();
             }
 
             return (this.settingsDrawer || this.captionsDrawer) && this.drawersShouldOpenFromBottom;

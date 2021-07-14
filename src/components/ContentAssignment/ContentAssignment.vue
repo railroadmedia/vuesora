@@ -231,6 +231,7 @@ import Toasts from '../../assets/js/classes/toasts';
 import ProgressTracker from '../../assets/js/classes/progress-tracker';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import Intercom from "../../assets/js/services/intercom"
+import Helpscout from "../../assets/js/services/helpscout"
 
 export default {
     name: 'ContentAssignment',
@@ -462,6 +463,7 @@ export default {
                 this.accordionActive = !this.accordionActive;
             }
 
+            Helpscout.hideWidget();
             Intercom.hideWidget();
         },
 
@@ -474,6 +476,7 @@ export default {
             window.addEventListener('message', this.handleSoundsliceEvent);
             document.addEventListener('keyup', this.spacebarToPlayPause);
 
+            Helpscout.hideWidget();
             Intercom.hideWidget();
         },
 
@@ -494,6 +497,7 @@ export default {
             window.removeEventListener('message', this.handleSoundsliceEvent);
             document.removeEventListener('keyup', this.spacebarToPlayPause);
 
+            Helpscout.showWidget();
             Intercom.showWidget();
         },
 
