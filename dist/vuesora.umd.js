@@ -32234,12 +32234,12 @@ var DownloadsCataloguevue_type_template_id_1494bfec_staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/views/catalogues/DownloadsCatalogue.vue?vue&type=template&id=1494bfec&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"67ecdf29-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueDownloadsItem.vue?vue&type=template&id=0ad1432e&
-var _CatalogueDownloadsItemvue_type_template_id_0ad1432e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-row bb-grey-1-1 no-decoration hover-bg-grey-7 relative text-grey-3 hover-text-black content-table-row pv-1"},[_c('div',{staticClass:"flex flex-column align-v-center",class:[_vm.themeColor],staticStyle:{"flex":"0 0 100px"}},[_c('div',{staticClass:"thumb-wrap corners-10"},[_c('div',{staticClass:"thumb-img corners-10 square"},[_c('img',{attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":"","alt":"Lesson Thumbnail"}})])])]),_c('div',{staticClass:"flex flex-column align-v-center title-column overflow pl-2"},[_c('h3',{staticClass:"font-regular uppercase",class:[_vm.themeTextClass],staticStyle:{"font-size":"13px"}},[_vm._v(_vm._s(_vm.contentModel.artist))]),_c('h3',{staticClass:"font-bold text-black",staticStyle:{"font-size":"14px"}},[_vm._v(_vm._s(_vm.contentModel.title))])]),_c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-center",staticStyle:{"flex":"0 0 150px"}},[_c('a',{staticClass:"btn",staticStyle:{"height":"35px","font-size":"13px"},attrs:{"href":_vm.contentModel.pdf_in_g}},[_c('span',{staticClass:"text-grey-3 bg-gray-3 inverted"},[_vm._v("key of g")]),_c('i',{staticClass:"text-grey-3 fas fa-file-pdf ml-1"})])]),_c('div',{staticClass:"flex flex-column uppercase align-center basic-col text-center ml-1",staticStyle:{"flex":"0 0 150px"}},[_c('a',{staticClass:"btn",staticStyle:{"height":"35px","font-size":"13px"},attrs:{"href":_vm.contentModel.pdf}},[_c('span',{staticClass:"text-grey-3 bg-gray-3 inverted"},[_vm._v("original key")]),_c('i',{staticClass:"text-grey-3 fas fa-file-pdf ml-1"})])])])}
-var _CatalogueDownloadsItemvue_type_template_id_0ad1432e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"67ecdf29-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CatalogueDownloadsItem.vue?vue&type=template&id=13d20399&
+var _CatalogueDownloadsItemvue_type_template_id_13d20399_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"downloads-item flex flex-row bb-grey-1-1 no-decoration hover-bg-grey-7 relative text-grey-3 hover-text-black pv-1"},[_c('div',{staticClass:"flex flex-column align-v-center downloads-item-thumb",class:[_vm.themeColor]},[_c('div',{staticClass:"thumb-wrap corners-10"},[_c('div',{staticClass:"thumb-img corners-10 square"},[_c('img',{attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":"","alt":"Lesson Thumbnail"}})])])]),_c('div',{staticClass:"item-details flex flex-row pl-2"},[_c('div',{staticClass:"flex flex-column align-v-center title-column overflow"},[_c('h3',{staticClass:"item-artist font-regular uppercase",class:[_vm.themeTextClass]},[_vm._v(_vm._s(_vm.contentModel.artist))]),_c('h3',{staticClass:"item-title font-bold text-black"},[_vm._v(_vm._s(_vm.contentModel.title))])]),_c('div',{staticClass:"item-actions flex flex-row align-h-right"},[_c('div',{staticClass:"item-action flex flex-column uppercase align-center basic-col text-center"},[_c('a',{staticClass:"btn",attrs:{"href":_vm.contentModel.pdf_in_g}},[_c('span',{staticClass:"text-grey-3 bg-gray-3 inverted"},[_vm._v("key of g")]),_c('i',{staticClass:"text-grey-3 fas fa-file-pdf ml-1 hide-xs-only"})])]),_c('div',{staticClass:"item-action flex flex-column uppercase align-center basic-col text-center ml-1"},[_c('a',{staticClass:"btn",attrs:{"href":_vm.contentModel.pdf}},[_c('span',{staticClass:"text-grey-3 bg-gray-3 inverted"},[_vm._v("original key")]),_c('i',{staticClass:"text-grey-3 fas fa-file-pdf ml-1 hide-xs-only"})])])])])])}
+var _CatalogueDownloadsItemvue_type_template_id_13d20399_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueDownloadsItem.vue?vue&type=template&id=0ad1432e&
+// CONCATENATED MODULE: ./src/views/catalogues/_CatalogueDownloadsItem.vue?vue&type=template&id=13d20399&
 
 // EXTERNAL MODULE: ./node_modules/luxon/build/cjs-browser/luxon.js
 var luxon = __webpack_require__("1315");
@@ -34618,9 +34618,6 @@ var _model_ContentTypeModel = function ContentTypeModel(type, _ref) {
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ var _CatalogueDownloadsItemvue_type_script_lang_js_ = ({
@@ -34647,8 +34644,8 @@ var _model_ContentTypeModel = function ContentTypeModel(type, _ref) {
 
 var _CatalogueDownloadsItem_component = normalizeComponent(
   catalogues_CatalogueDownloadsItemvue_type_script_lang_js_,
-  _CatalogueDownloadsItemvue_type_template_id_0ad1432e_render,
-  _CatalogueDownloadsItemvue_type_template_id_0ad1432e_staticRenderFns,
+  _CatalogueDownloadsItemvue_type_template_id_13d20399_render,
+  _CatalogueDownloadsItemvue_type_template_id_13d20399_staticRenderFns,
   false,
   null,
   null,
