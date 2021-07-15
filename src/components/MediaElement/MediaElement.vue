@@ -278,6 +278,7 @@ export default {
         vm.removeMediaElementEventListeners(vm.mediaElement);
     },
     methods: {
+
         playVideo() {
             this.mediaElement.play();
         },
@@ -353,6 +354,10 @@ export default {
                 title: 'SHARE THE LOVE!',
                 message: 'This URL has been copied, and is ready to share!',
             });
+        },
+
+        getCurrentTime() {
+            return this.mediaElement.getCurrentTime();
         },
 
         jumpToTime(timeInSeconds, play = false) {

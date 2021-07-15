@@ -88,7 +88,7 @@
                     </transition>
                 </div>
 
-                <div class="flex flex-column resource-button ph-1">
+                <div class="flex flex-column resource-button ph-1" v-if="showAddToList">
                     <button
                         class="btn stacked"
                         @click="addToList"
@@ -213,6 +213,11 @@ export default {
         isAdded: {
             type: Boolean,
             default: () => false,
+        },
+
+        showAddToList: {
+            type: Boolean,
+            default: () => true,
         },
 
         likeCount: {

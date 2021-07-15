@@ -142,6 +142,7 @@ export default class ContentModel {
             drumeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/drumeo_fallback_thumb.jpg',
             pianote: 'https://dmmior4id2ysr.cloudfront.net/assets/images/pianote_fallback_thumb.jpg',
             guitareo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/guitareo_fallback_thumb.jpg',
+            singeo: 'https://dmmior4id2ysr.cloudfront.net/assets/images/singeo_fallback_thumb.jpg',
         };
         const originalThumb = this.getPostDatum('original_thumbnail_url');
         let thumb = originalThumb === 'TBD' ? this.getPostDatum('thumbnail_url') : originalThumb;

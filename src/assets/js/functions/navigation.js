@@ -54,7 +54,7 @@ export default (function () {
             sidebarClose.addEventListener('click', toggleSideBar);
         }
 
-        if (colapseButton && sideBar) {
+        if (colapseButton && sideBar && !sideBar.classList.contains('no-collapse')) {
             colapseButton.addEventListener(
                 'click',
                 function(event) {
