@@ -54,16 +54,18 @@ body {
   .logo {
     position:relative;
     z-index:8;
-    flex:0 0 110px;
-
-    @include medium {
-      flex:0 0 140px;
+    flex:0 0 127px;
+    @include large {
+      flex:0 0 152px;
     }
 
     img {
-      width:100%;
-      height:auto;
+      width:auto;
       min-height:1px;
+      height:40px;
+      @include large {
+        height:46px;
+      }
     }
   }
 
