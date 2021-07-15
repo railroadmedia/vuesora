@@ -771,3 +771,35 @@
 content-catalogue, transition {
   width:100%;
 }
+
+.lessons-pack-card {
+  flex:0 0 100%;
+
+  @include small {
+    flex:0 0 50%;
+  }
+
+  @include medium {
+    flex:0 0 33.33%;
+  }
+
+  @include xLarge {
+    flex:0 0 25%;
+  }
+}
+
+.lessons-topics-card {
+  flex:0 0 100%;
+
+  @include small {
+    flex:0 0 50%;
+  }
+
+  @include medium {
+    flex:0 0 33.33%;
+  }
+
+  @include xLarge {
+    flex:0 0 25%;
+  }
+}

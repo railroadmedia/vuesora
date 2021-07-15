@@ -241,6 +241,14 @@
   display:none!important;
 }
 
+.flex-xs-only {
+  display: flex;
+
+  @include small {
+    display:none;
+  }
+}
+
 @include xSmallOnly{
   .hide-xs-only,
   .hide-xs-up,
