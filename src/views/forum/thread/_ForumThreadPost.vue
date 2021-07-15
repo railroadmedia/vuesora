@@ -42,9 +42,9 @@
                 <div
                     v-if="!editing"
                     :class="['flex', 'flex-column', 'post-body', 'grow', brand]"
-                    v-html="post.postBody"
+                    v-html="convertVideoLinksToEmbeds(post.postBody)"
                 >
-                    {{ post.postBody }}
+                    {{ convertVideoLinksToEmbeds(post.postBody) }}
                 </div>
 
                 <div
@@ -228,6 +228,7 @@ export default {
     data() {
         return {
             editing: false,
+            ytEmbedCount: 0,
         };
     },
     computed: {
@@ -275,6 +276,48 @@ export default {
       },
     },
     methods: {
+        convertVideoLinksToEmbeds(postContent) {
+          const vm = this;
+          var temp = document.createElement('div');
+
+          // set the content with the string
+          temp.innerHTML = postContent;
+
+          Array.from(temp.querySelectorAll('a')).slice(0, 5).forEach(function(ele) {
+            var url = ele.getAttribute('href');
+
+            // max of 5 embeds per post
+            if (!url.includes('yout')) {
+                return;
+            }
+
+            var ytId = vm.getYouTubeId(url);
+
+            var youtubeIframeHtml = '<iframe width="720" ' +
+                'height="480" src="https://www.youtube-nocookie.com/embed/' +
+                 ytId + '" ' +
+                'title="YouTube video player" frameborder="0" ' +
+                'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+                'allowfullscreen></iframe>';
+
+            var iframeDiv = document.createElement('div');
+            iframeDiv.classList.add('youtube-video-wrapper');
+
+            iframeDiv.innerHTML = youtubeIframeHtml;
+            ele.parentNode.insertBefore(iframeDiv, ele.nextSibling);
+            ele.remove();
+
+            console.log(vm.ytEmbedCount);
+          });
+
+          return temp.innerHTML;
+        },
+
+        getYouTubeId(url) {
+            url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+            return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+        },
+
         replyToPost() {
             this.$emit('replyToPost', {
                 id: this.post.id,
