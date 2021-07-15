@@ -67,6 +67,8 @@
             :force-wide-thumbs="forceWideThumbs"
             :content-type-override="contentTypeOverride"
             :six-wide="sixWide"
+            :five-wide="fiveWide"
+            :show-my-list-action="showMyListAction"
             :display-inline="displayInline"
             @addToList="addToListEventHandler"
         ></grid-catalogue>
@@ -112,6 +114,30 @@
             @progressReset="resetProgressEventHandler"
         ></list-catalogue>
 
+        <downloads-catalogue
+            v-if="catalogue_type === 'downloads'"
+            :content="content"
+            :brand="brand"
+            :theme-color="themeColor"
+            :use-theme-color="useThemeColor"
+            :card_type="catalogueType"
+            :user-id="userId"
+            :is-admin="isAdmin"
+            :display-items-as-overview="displayItemsAsOverview"
+            :display-user-interactions="displayUserInteractions"
+            :content-type-override="contentTypeOverride"
+            :lock-unowned="lockUnowned"
+            :show-numbers="showNumbers"
+            :is_search="searchBar || isPlaylists"
+            :reset-progress="resetProgress"
+            :force-wide-thumbs="forceWideThumbs"
+            :destroy-on-list-removal="destroyOnListRemoval"
+            :compact-layout="compactLayout"
+            :subscription-calendar-id="subscriptionCalendarId"
+            @addToList="addToListEventHandler"
+            @progressReset="resetProgressEventHandler"
+        ></downloads-catalogue>
+
         <div
             v-if="paginate && total_pages > 1 && !infiniteScroll"
             class="flex flex-row pagination-row align-h-right"
@@ -146,6 +172,7 @@
 import axios from 'axios';
 import * as QueryString from 'query-string';
 import { Content as ContentHelpers } from '@musora/helper-functions';
+import DownloadsCatalogue from './DownloadsCatalogue.vue';
 import GridCatalogue from './GridCatalogue.vue';
 import RoutinesCatalogue from './RoutinesCatalogue.vue';
 import ListCatalogue from './ListCatalogue.vue';
@@ -163,6 +190,7 @@ export default {
         'grid-catalogue': GridCatalogue,
         'routines-catalogue': RoutinesCatalogue,
         'list-catalogue': ListCatalogue,
+        'downloads-catalogue': DownloadsCatalogue,
         pagination: Pagination,
         'catalogue-filters': CatalogueFilters,
         'catalogue-search': CatalogueSearch,
@@ -330,9 +358,17 @@ export default {
             type: Boolean,
             default: () => false,
         },
+        fiveWide: {
+            type: Boolean,
+            default: () => false,
+        },
         displayInline: {
             type: Boolean,
             default: () => false,
+        },
+        showMyListAction: {
+            type: Boolean,
+            default: () => true,
         },
     },
     data() {

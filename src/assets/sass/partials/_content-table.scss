@@ -345,6 +345,45 @@
   }
 }
 
+.downloads-item {
+  .downloads-item-thumb {
+    flex: 0 0 100px;
+  }
+
+  .item-details {
+    @include xSmallOnly {
+      flex-direction: column;
+    }
+  }
+
+  .item-artist {
+    font-size: 13px;
+  }
+
+  .item-title {
+    font-size: 14px;
+  }
+
+  .item-actions {
+    @include xSmallOnly {
+      justify-content: flex-start;
+    }
+  }
+
+  .item-action {
+    flex: 0 0 125px;
+
+    @include medium {
+      flex: 0 0 150px;
+    }
+
+    .btn {
+      height: 35px;
+      font-size: 13px;
+    }
+  }
+}
+
 .thumb-img {
   background-size:cover;
   background-position:center 16%;
