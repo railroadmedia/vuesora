@@ -42,9 +42,9 @@
                 <div
                     v-if="!editing"
                     :class="['flex', 'flex-column', 'post-body', 'grow', brand]"
-                    v-html="convertVideoLinksToEmbeds(post.postBody)"
+                    v-html="post.postBody"
                 >
-                    {{ convertVideoLinksToEmbeds(post.postBody) }}
+                    {{ post.postBody }}
                 </div>
 
                 <div
