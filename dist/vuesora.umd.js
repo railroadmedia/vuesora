@@ -33251,6 +33251,10 @@ var learning_path_level_LearningPathLevelContentModel = /*#__PURE__*/function (_
   }, {
     key: "getThumbLogo",
     value: function getThumbLogo() {
+      if (this.brand === 'singeo') {
+        return 'https://d2vyvo0tyx8ig5.cloudfront.net/logo/singeo-method.png';
+      }
+
       if (this.brand === 'pianote') {
         return 'https://d2vyvo0tyx8ig5.cloudfront.net/icons/pianote-method.png';
       }
