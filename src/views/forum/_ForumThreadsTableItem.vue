@@ -27,7 +27,7 @@
             <!-- Responsive version (could not reorder with flex) -->
             <p class="tw-text-13 tw-text-gray-600 lg:tw-hidden">
                 <span class="tw-text-13 tw-font-bold">{{ thread.latestPost ? thread.latestPost.created_at_diff : ''}}</span>
-                <span>By: {{  thread.latestPost ? thread.latestPost.author_display_name : '' }}</span>
+                <span>By: <span class="tw-font-bold">{{  thread.latestPost ? thread.latestPost.author_display_name : '' }}</span></span>
             </p>
         </div>
 
@@ -57,8 +57,8 @@
         <div class="tw-flex-col tw-justify-center tw-mr-6 tw-text-gray-600 tw-flex-shrink-0 tw-w-28 tw-hidden lg:tw-flex">
             <h6 class="tw-text-13 tw-font-bold">{{ thread.latestPost ? thread.latestPost.created_at_diff : ''}}</h6>
             <p class="tw-text-13 tw-truncate">
-                <span class="tw-font-bold">By:</span> 
-                <span>{{  thread.latestPost ? thread.latestPost.author_display_name : '' }}</span>
+                <span class="">By:</span>
+                <span class="tw-font-bold">{{  thread.latestPost ? thread.latestPost.author_display_name : '' }}</span>
             </p>
         </div>
 

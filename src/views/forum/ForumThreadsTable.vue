@@ -28,7 +28,7 @@
         </div>
 
         <!-- Search Bar -->
-        <div class="tw-flex tw-px-3 ">
+        <div class="tw-flex tw-px-2 ">
             <div class="tw-flex tw-flex-col tw-mb-6 tw-w-full">
                 <div class="tw-flex">
                     <div class="tw-flex tw-flex-col tw-w-full tw-mr-3 form-group">
