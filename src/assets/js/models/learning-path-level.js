@@ -33,6 +33,10 @@ export default class LearningPathLevelContentModel extends ContentModel {
     }
 
     getThumbLogo() {
+        if (this.brand === 'singeo') {
+            return 'https://d2vyvo0tyx8ig5.cloudfront.net/logo/singeo-method.png';
+        }
+
         if (this.brand === 'pianote') {
             return 'https://d2vyvo0tyx8ig5.cloudfront.net/icons/pianote-method.png';
         }
