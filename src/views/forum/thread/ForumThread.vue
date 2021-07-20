@@ -493,32 +493,28 @@ export default {
                 this.likeUsersPage = 1;
             }
 
-            // ForumService.getForumPostById(payload.id)
-            //     .then(response => {
-            //         console.log(response);
-            //     });
+            ForumService.getPostLikeUsers({
+                  id: payload.id,
+                  page: this.likeUsersPage
+              })
+                .then(response => {
 
-            // CommentService.getCommentLikeUsers({
-            //     id: payload.id,
-            //     page: this.likeUsersPage
-            // })
-            //     .then(response => {
-            //         if(response){
-            //             if(isSameComment){
-            //                 this.likeUsers = [...this.likeUsers, ...response.data.data];
-            //             }
-            //             else {
-            //                 this.likeUsers = response.data.data;
-            //             }
-            //
-            //             this.requestingLikeUsers = false;
-            //             this.currentLikeUsersId = payload.id;
-            //
-            //             // window.modalSimpleBar.recalculate();
-            //         }
-            //
-            //         this.loadingLikeUsers = false;
-            //     });
+                  if(response){
+                                if(isSameComment){
+                                    this.likeUsers = [...this.likeUsers, ...response.data];
+                                }
+                                else {
+                                    this.likeUsers = response.data;
+                                }
+
+                                this.requestingLikeUsers = false;
+                                this.currentLikeUsersId = payload.id;
+
+                                // window.modalSimpleBar.recalculate();
+                            }
+
+                            this.loadingLikeUsers = false;
+                });
         },
     },
 };

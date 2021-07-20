@@ -74,6 +74,17 @@ export default {
             .catch(ErrorHandler);
     },
 
+    getPostLikeUsers({ id, page = 1, limit = 10 }) {
+        return axios.get(`${endpointPrefix}/forums/post-likes/${id}`, {
+            params: {
+                page,
+                limit,
+            },
+        })
+            .then(response => response)
+            .catch(ErrorHandler);
+    },
+
     /**
      * Report a forum post
      *

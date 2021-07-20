@@ -35,7 +35,7 @@ export default {
         },
         toolbar: {
             type: String,
-            default: () => 'bold italic underline | bullist numlist | link image media | emoticons',
+            default: () => 'bold italic underline | bullist numlist | link image media | forecolor backcolor | emoticons',
         },
         imageUploadEndpoint: {
             type: String,
@@ -70,7 +70,7 @@ export default {
                 height: this.height,
                 autoresize_min_height: this.height,
                 toolbar: this.toolbar,
-                plugins: 'lists link image media autolink autoresize imagetools paste',
+                plugins: 'lists link image media autolink autoresize imagetools paste textcolor colorpicker',
                 branding: false,
                 elementpath: false,
                 statusbar: false,

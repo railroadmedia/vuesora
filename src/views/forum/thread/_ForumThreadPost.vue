@@ -103,6 +103,7 @@
                     <p
                         class="tw-text-13 tw-mr-2 font-bold uppercase dense pointer reply-like noselect"
                         :class="post.isLiked ? themeTextClass : 'text-grey-3'"
+                        :data-open-modal="openModalString"
                         @click="openLikes"
                     >
                     {{ post.totalLikes }}
@@ -273,6 +274,10 @@ export default {
         },
       updatePostRoute() {
         return this.updatePostBaseRoute.replaceAll('#####', this.post.id);
+      },
+
+      openModalString() {
+        return this.post.totalLikes > 0 ? 'likeUsersModal' : '';
       },
     },
     methods: {
