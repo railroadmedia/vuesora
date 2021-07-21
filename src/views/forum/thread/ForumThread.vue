@@ -424,13 +424,16 @@ export default {
         },
 
         handleReplyToPost(payload) {
-            const blockQuoteHtmlString = `${'<blockquote>'
-                    + '<span class="post-id">'}${payload.id}</span>`
-                    + `<p class="quote-heading"><strong>${payload.userName}</strong>`
-                    + `<em> - ${payload.createdOn}</em></p><br>${
-                        payload.postBody
-                    }</blockquote>`
-                    + '<br><p></p>';
+            const blockQuoteHtmlString = `
+                <blockquote class="${this.brand}">
+                    <span class="post-id">${payload.id}</span>
+                    <p class="quote-heading">
+                        <strong>${payload.userName}</strong>
+                        <em> - ${payload.createdOn}</em>
+                    </p><br>
+                    ${ payload.postBody }
+                </blockquote>
+                <br><p></p>`;;
 
             this.scrollToReply();
             this.postReplyInterface += blockQuoteHtmlString;
