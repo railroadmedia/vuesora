@@ -75,7 +75,7 @@
                 return this.forum.icon || 'fa-comments'
             },
             replyCount() {
-                return (this.forum.replyAmount - 1).toLocaleString("en-US");
+                return (this.forum.replyAmount).toLocaleString("en-US");
             }
         }
     }
