@@ -102,7 +102,7 @@
                     </p>
                     <p
                         class="tw-text-13 tw-mr-2 font-bold uppercase dense pointer reply-like noselect"
-                        :class="post.isLiked ? themeTextClass : 'text-grey-3'"
+                        :class="post.isLiked ? themeTextClass : 'tw-text-gray-500'"
                         :data-open-modal="openModalString"
                         @click="openLikes"
                     >
@@ -111,7 +111,7 @@
 
                     <p
                         v-if="!post.isLocked"
-                        class="tw-text-13 text-grey-3 mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        class="tw-text-13 tw-text-gray-500 mr-3 font-bold uppercase dense pointer reply-like noselect"
                         @click="replyToPost"
                     >
                     Reply
@@ -121,7 +121,7 @@
                 <div class="flex flex-column mb-1">
                 <div class="flex flex-row align-v-center align-h-right">
                     <p
-                        class="tw-text-13 text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        class="tw-text-xs tw-text-gray-500 ml-3 font-bold font-italic uppercase dense pointer"
                         @click="reportPost"
                     >
                     Report
@@ -132,14 +132,14 @@
                     <!--</p>-->
                     <p
                         v-if="index !== 0 && canEdit"
-                        class="x-tiny text-light ml-3 font-bold font-italic uppercase dense pointer"
+                        class="tw-text-xs tw-text-gray-500 ml-3 font-bold font-italic uppercase dense pointer"
                         @click="deletePost"
                     >
                     Delete
                     </p>
                     <p
                         v-if="canEdit"
-                        class="x-tiny text-grey-2 ml-3 font-bold font-italic uppercase dense pointer"
+                        class="tw-text-xs tw-text-gray-500 ml-3 font-bold font-italic uppercase dense pointer"
                         @click="editing = !editing"
                     >
                     Edit

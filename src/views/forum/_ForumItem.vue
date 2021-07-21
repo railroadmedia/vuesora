@@ -28,7 +28,7 @@
                  :class="[ (forum.description)? 'tw-row-span-1': 'tw-row-span-2' ]">
                 <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top tw-ml-auto">
                     <i class="fas fa-comment-lines tw-mr-1"></i>
-                    {{ forum.replyAmount }}
+                    {{ replyCount }}
 
                     <!-- Tool Tip -->
                     <div class="tw-tooltip tw-tooltip-dark">
@@ -73,6 +73,9 @@
             },
             forumIcon() {
                 return this.forum.icon || 'fa-comments'
+            },
+            replyCount() {
+                return (this.forum.replyAmount - 1).toLocaleString("en-US");
             }
         }
     }
