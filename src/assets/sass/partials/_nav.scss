@@ -62,9 +62,9 @@ body {
     img {
       width:auto;
       min-height:1px;
-      height:40px;
+      max-height:40px;
       @include large {
-        height:46px;
+        max-height:46px;
       }
     }
   }
