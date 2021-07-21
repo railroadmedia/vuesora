@@ -87,7 +87,12 @@
             <!-- Thread Items -->
             <div v-if="onlyFollowed">
                 <h2 class="tw-text-32 tw-mb-6">Followed Threads</h2>
+
+                <template v-if="pinnedThreads.length === 0 && threadsArray.length === 0">
+                    <p class="tw-text-base">Any thread you reply to or follow will appear here.</p>
+                </template>
             </div>
+
             <forum-threads-table-item
                 v-for="thread in pinnedThreads"
                 :key="'pinned' + thread.id"

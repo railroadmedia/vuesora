@@ -44,7 +44,7 @@
         <div class="tw-items-center tw-text-gray-600 tw-mr-4 lg:tw-mr-12 tw-flex-shrink-0 tw-w-16 tw-text-left tw-hidden md:tw-flex">
             <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top">
                 <i class="fas fa-comment-lines tw-mr-1"></i>
-                {{ (thread.replyAmount - 1) }}
+                {{ replyCount }}
 
                 <!-- Tool Tip -->
                 <div class="tw-tooltip tw-tooltip-dark">
@@ -115,6 +115,9 @@ export default {
                 lifetime: this.thread.access_level === 'lifetime',
             };
         },
+        replyCount() {
+            return (this.thread.replyAmount - 1).toLocaleString("en-US");
+        }
     },
 };
 </script>
