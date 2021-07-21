@@ -1,5 +1,5 @@
 <template>
-    <div class="tw-flex tw-flex-col tw-py-7 tw-px-4 sm:tw-px-14 tw-mb-7 tw-bg-white tw-rounded-2xl tw-overflow-hidden">
+    <div class="tw-flex tw-flex-col tw-py-5 tw-px-4 sm:tw-px-14 tw-mb-4 tw-bg-white tw-rounded-2xl tw-overflow-hidden">
         <a
             :id="'post' + post.id"
             style="position:relative;top:-75px;"
@@ -38,7 +38,7 @@
         <!-- Post Content -->
         <div class="flex flex-column">
             <!-- Body -->
-            <div class="flex flex-row body tw-my-6">
+            <div class="flex flex-row body tw-mt-6 tw-mb-4 tw-pb-6">
                 <div
                     v-if="!editing"
                     :class="['flex', 'flex-column', 'post-body', 'grow', brand]"
@@ -152,7 +152,7 @@
             <div class="flex flex-row body">
                 <div
                     v-if="post.authorSignature && !signaturesHidden"
-                    class="tw-flex tw-flex-col post-body grow bt-grey-1-1 tiny text-grey-3 tw-pt-7 tw-mt-7"
+                    class="tw-flex tw-flex-col post-body grow bt-grey-1-1 tiny text-grey-3 tw-pt-4 tw-mt-0"
                     v-html="post.authorSignature"
                 >
                 {{ post.authorSignature }}
