@@ -93,7 +93,7 @@ export default {
             return 'tw-text-'+ this.brand;
         },
         brandHoverColor() {
-            return 'hover:tw-bg-'+this.brand+'-lightest'
+            return 'hover:tw-bg-'+this.brand+'-100'
         },
         topicIdMap() {
             const topics = {

@@ -102,7 +102,7 @@ export default {
         },
 
         brandHoverColor() {
-            return 'hover:tw-bg-'+this.brand+'-lightest'
+            return 'hover:tw-bg-'+this.brand+'-100'
         },
 
         avatarClassObject() {

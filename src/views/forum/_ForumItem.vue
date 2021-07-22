@@ -69,7 +69,7 @@
                 return 'tw-bg-'+this.brand;
             },
             brandHoverColor() {
-                return 'hover:tw-bg-'+this.brand+'-lightest'
+                return 'hover:tw-bg-'+this.brand+'-100'
             },
             forumIcon() {
                 return this.forum.icon || 'fa-comments'
