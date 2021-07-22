@@ -20,7 +20,7 @@
             </div>
             <div class="tw-flex tw-flex-wrap tw-w-9/12 sm:tw-w-full">
                 <!-- Name -->
-                <h2 class="tw-mb-1 tw-text-2xl tw-truncate tw-w-full sm:tw-break-all sm:tw-whitespace-normal">
+                <h2 class="tw-mb-2 tw-text-2xl tw-truncate tw-w-full sm:tw-break-all sm:tw-whitespace-normal">
                     {{ post.authorUsername }}
                 </h2>
                 <div class="tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-w-full tw-order-3 md:tw-order-2 md:tw-w-1/2">
