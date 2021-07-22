@@ -18,9 +18,9 @@
                     </a>
                 </div>
             </div>
-            <div class="tw-flex tw-flex-wrap tw-flex-grow">
+            <div class="tw-flex tw-flex-wrap tw-w-9/12 sm:tw-w-full">
                 <!-- Name -->
-                <h2 class="tw-mb-2 tw-w-3/4 tw-break-all md:tw-break-normal md:tw-w-full">
+                <h2 class="tw-mb-1 tw-text-2xl tw-truncate tw-w-full sm:tw-break-all sm:tw-whitespace-normal">
                     {{ post.authorUsername }}
                 </h2>
                 <div class="tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-w-full tw-order-3 md:tw-order-2 md:tw-w-1/2">
@@ -28,8 +28,8 @@
                     <span>{{ userExpValue }}</span> -
                         <span>Level {{ post.progressLevel }}</span>
                 </div>
-                <div class="tw-inline-flex tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-justify-end md:tw-order-last tw-w-1/4 md:tw-w-1/2">
-                    <span class="tw-mb-4">{{ post.createdOn }}</span>
+                <div class="tw-inline-flex tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed md:tw-order-last tw-w-full md:tw-w-1/2 md:tw-justify-end">
+                    <span class="tw-mb-1 md:tw-mb-4">{{ post.createdOn }}</span>
                     <span>&nbsp;- #{{ postNumber }}</span>
                 </div>
             </div>
