@@ -243,7 +243,7 @@
                         <h2 class="tw-text-lg tw-font-bold tw-mb-2">Share Link</h2>
                             <p v-if="shareLinkCopied" class="tw-text-sm tw-text-green-400 tw-mb-3">Link copied successfully. You are good to go!</p>
                             <p v-else class="tw-text-sm tw-text-gray-400 tw-mb-3">Click on the button to copy the link to your clipboard.</p>
-                        <div class="tw-w-full tw-flex tw-rounded-l-full tw-bg-gray-100">
+                        <div class="tw-w-full tw-flex tw-rounded-full tw-bg-gray-100">
                             <input class="tw-text-base tw-flex-grow tw-border-0 tw-bg-transparent tw-text-gray-400 tw-pl-5 focus:tw-outline-none" 
                                    :value="sharePostLink" 
                                    ref="postLinkInput"
