@@ -20,10 +20,10 @@
             </div>
             <div class="tw-flex tw-flex-wrap tw-w-9/12 sm:tw-w-full">
                 <!-- Name -->
-                <h2 class="tw-mb-2 tw-text-2xl tw-truncate tw-w-full sm:tw-break-all sm:tw-whitespace-normal">
+                <h2 class="tw-mb-1 tw-text-2xl tw-truncate tw-w-full sm:tw-break-all sm:tw-whitespace-normal">
                     {{ post.authorUsername }}
                 </h2>
-                <div class="tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed tw-w-full tw-order-3 md:tw-order-2 md:tw-w-1/2">
+                <div class="tw-text-13 tw-text-gray-500 tw-font-medium tw-uppercase tw-font-roboto-condensed tw-w-full tw-order-3 md:tw-order-2 md:tw-w-1/2">
                     <span>{{ post.authorTotalPosts }} Posts</span> -
                     <span>{{ userExpValue }}</span> -
                         <span>Level {{ post.progressLevel }}</span>
@@ -111,11 +111,20 @@
 
                     <p
                         v-if="!post.isLocked"
-                        class="tw-text-13 tw-text-gray-500 mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        class="tw-text-13 tw-text-gray-500 tw-mr-3 font-bold uppercase dense pointer reply-like noselect"
                         @click="replyToPost"
                     >
                     Reply
                     </p>
+                    <button
+                        class="tw-text-13 tw-text-gray-500 mr-3 font-bold uppercase dense pointer reply-like noselect tw-border-none tw-bg-transparent tw-p-0"
+                        data-open-modal="sharePostModal"
+                        title="Share this post"
+                        @click="$emit('updateCurrentPostID', post.id)"
+                    >
+                    <i class="fas fa-share"></i>
+                    Share
+                    </button>
                 </div>
                 </div>
                 <div class="flex flex-column mb-1">

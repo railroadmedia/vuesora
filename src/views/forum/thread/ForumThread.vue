@@ -140,6 +140,7 @@
                 @openLikes="addLikeUsersToModal"
                 @deletePost="handlePostDelete"
                 @replyToPost="handleReplyToPost"
+                @updateCurrentPostID="changeCurrentPostID"
             ></forum-thread-post>
 
             <div
@@ -231,6 +232,35 @@
                 :requesting-like-users="requestingLikeUsers"
                 @loadMoreLikeUsers="addLikeUsersToModal"
             ></comment-likes-modal>
+
+            <!-- Share Post Modal -->
+            <div
+                id="sharePostModal"
+                class="modal"
+            >
+                <div class="flex flex-column bg-white corners-3 shadow ph-2 tw-max-w-md tw-rounded-lg">
+                    <div class="tw-flex tw-flex-col mb-2 pv-3">
+                        <h2 class="tw-text-lg tw-font-bold tw-mb-2">Share Link</h2>
+                            <p v-if="shareLinkCopied" class="tw-text-sm tw-text-green-400 tw-mb-3">Link copied successfully. You are good to go!</p>
+                            <p v-else class="tw-text-sm tw-text-gray-400 tw-mb-3">Click on the button to copy the link to your clipboard.</p>
+                        <div class="tw-w-full tw-flex tw-rounded-l-full tw-bg-gray-100">
+                            <input class="tw-text-base tw-flex-grow tw-border-0 tw-bg-transparent tw-text-gray-400 tw-pl-5 focus:tw-outline-none" 
+                                   :value="sharePostLink" 
+                                   ref="postLinkInput"
+                                   readonly
+                            >
+                            <button class="tw-btn-primary tw-px-10" 
+                                    :class="[brandBgColor]"
+                                    role="button" 
+                                    title="copy link to clipboard"
+                                    @click="copyShareLink()">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -308,9 +338,19 @@ export default {
             requestingLikeUsers: true,
             totalLikeUsers: 0,
             likeUsersPage: 1,
+            currentPostID: '',
+            shareLinkCopied: false
         };
     },
     computed: {
+        brandBgColor() {
+            return `tw-bg-${this.brand}`;
+        },
+
+        sharePostLink() {
+            return `${window.location.protocol }//${window.location.host}/members/forums/jump-to-post/${this.currentPostID}`;
+        },
+
         postReplyInterface: {
             get() {
                 return this.postReplyBody;
@@ -363,6 +403,21 @@ export default {
         });
     },
     methods: {
+        copyShareLink() {
+            //Select the text
+            this.$refs.postLinkInput.select();
+            this.$refs.postLinkInput.setSelectionRange(0, 99999); /* For mobile devices */
+            //Copy to Clipboard
+            document.execCommand("copy");
+            //Success Message
+            this.shareLinkCopied = true;
+        },
+
+        changeCurrentPostID(id) {
+            this.shareLinkCopied = false;
+            this.currentPostID = id;
+        },
+
         update() {
             window.location.href = this.thread.update;
         },
@@ -524,6 +579,11 @@ export default {
 </script>
 <style lang="scss">
     @import '../../../assets/sass/partials/variables';
+
+    //remove the highlight from share post modal
+    #sharePostModal input::selection {
+        background-color: transparent;
+    }
 
     .thread-title {
         @include xSmallOnly {
