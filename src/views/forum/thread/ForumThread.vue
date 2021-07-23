@@ -581,9 +581,9 @@ export default {
     @import '../../../assets/sass/partials/variables';
 
     //remove the highlight from share post modal
-    #sharePostModal input::selection {
-        background-color: transparent;
-    }
+    // #sharePostModal input::selection {
+    //     background-color: transparent;
+    // }
 
     .thread-title {
         @include xSmallOnly {
