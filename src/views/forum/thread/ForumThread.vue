@@ -2,12 +2,9 @@
     <div class="container forum-post tw-px-4 tw-py-12">
         <div class="flex flex-column">
 
-            <div class="tw-flex flex-wrap align-v-center tw-mb-8 tw-flex-col md:tw-flex-row">
+            <div class="tw-flex flex-wrap align-v-center tw-mb-5 sm:tw-mb-8 tw-flex-col md:tw-flex-row">
                 
                 <div class="tw-flex tw-w-full tw-mb-6 tw-justify-center md:tw-justify-start tw-items-center md:tw-mb-0 md:tw-w-1/2">
-                    <a :href="previousPage" class="no-decoration mr-1 back-arrow">
-                        <i class="fas fa-arrow-circle-left text-grey-2 tw-text-4xl"></i>
-                    </a>
                     <h1 class="heading thread-title">
                         {{ thread.title }}
                     </h1>
@@ -112,15 +109,22 @@
                 </div>
             </div>
 
-            <div
-                v-if="totalPages > 1"
-                class="flex flex-row pagination-row align-h-right tw-mb-8"
-            >
-                <pagination
-                    :current-page="currentPage"
-                    :total-pages="totalPages"
-                    @pageChange="handlePageChange"
-                ></pagination>
+            <div class="tw-flex tw-flex-row tw-mb-8 tw-flex-wrap">
+                <div class="tw-w-full tw-inline-flex tw-justify-center tw-mb-4 sm:tw-mb-0 sm:tw-justify-start sm:tw-w-auto">
+                    <a :href="previousPage" 
+                        class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
+                    >
+                        <i class="fas fa-arrow-circle-left tw-text-4xl tw-mr-2"></i>
+                        <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forums</span>
+                    </a>
+                </div>
+                <div class="tw-flex-grow tw-w-full sm:tw-w-auto" v-if="totalPages > 1">
+                    <pagination
+                        :current-page="currentPage"
+                        :total-pages="totalPages"
+                        @pageChange="handlePageChange"
+                    ></pagination>
+                </div>
             </div>
 
             <forum-thread-post
@@ -143,15 +147,22 @@
                 @updateCurrentPostID="changeCurrentPostID"
             ></forum-thread-post>
 
-            <div
-                v-if="totalPages > 1"
-                class="flex flex-row pagination-row align-h-right"
-            >
-                <pagination
-                    :current-page="currentPage"
-                    :total-pages="totalPages"
-                    @pageChange="handlePageChange"
-                ></pagination>
+            <div class="tw-flex tw-flex-row tw-mb-8 tw-flex-wrap">
+                <div class="tw-w-full tw-inline-flex tw-justify-center tw-mb-4 sm:tw-mb-0 sm:tw-justify-start sm:tw-w-auto">
+                    <a :href="previousPage" 
+                        class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
+                    >
+                        <i class="fas fa-arrow-circle-left tw-text-4xl tw-mr-2"></i>
+                        <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forums</span>
+                    </a>
+                </div>
+                <div class="tw-flex-grow tw-w-full sm:tw-w-auto" v-if="totalPages > 1">
+                    <pagination
+                        :current-page="currentPage"
+                        :total-pages="totalPages"
+                        @pageChange="handlePageChange"
+                    ></pagination>
+                </div>
             </div>
 
             <!-- Thread Reply Section -->

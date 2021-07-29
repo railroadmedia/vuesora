@@ -23,12 +23,12 @@
                 <h2 class="tw-mb-1 tw-text-2xl tw-truncate tw-w-full sm:tw-break-all sm:tw-whitespace-normal">
                     {{ post.authorUsername }}
                 </h2>
-                <div class="tw-text-13 tw-text-gray-500 tw-font-medium tw-uppercase tw-font-roboto-condensed tw-w-full tw-order-3 md:tw-order-2 md:tw-w-1/2">
+                <div class="tw-text-sm tw-text-gray-500 tw-font-medium tw-uppercase tw-font-roboto-condensed tw-w-full tw-order-3 md:tw-order-2 md:tw-w-1/2">
                     <span>{{ post.authorTotalPosts }} Posts</span> -
                     <span>{{ userExpValue }}</span> -
                         <span>Level {{ post.progressLevel }}</span>
                 </div>
-                <div class="tw-inline-flex tw-text-13 tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed md:tw-order-last tw-w-full md:tw-w-1/2 md:tw-justify-end">
+                <div class="tw-inline-flex tw-text-sm tw-text-gray-500 tw-italic tw-font-medium tw-uppercase tw-font-roboto-condensed md:tw-order-last tw-w-full md:tw-w-1/2 md:tw-justify-end">
                     <span class="tw-mb-1 md:tw-mb-4">{{ post.createdOn }}</span>
                     <span>&nbsp;- #{{ postNumber }}</span>
                 </div>
@@ -91,7 +91,7 @@
                 <div class="flex flex-column mb-1">
                 <div class="flex flex-row align-v-center">
                     <p
-                        class="tw-text-13 tw-mr-1 font-bold uppercase dense pointer reply-like noselect"
+                        class="tw-text-sm tw-mr-1 font-bold uppercase dense pointer reply-like noselect"
                         :class="post.isLiked ? themeTextClass : 'text-grey-3'"
                         @click="likePost"
                     >
@@ -101,7 +101,7 @@
                     ></i>
                     </p>
                     <p
-                        class="tw-text-13 tw-mr-2 font-bold uppercase dense pointer reply-like noselect"
+                        class="tw-text-sm tw-mr-2 font-bold uppercase dense pointer reply-like noselect"
                         :class="post.isLiked ? themeTextClass : 'tw-text-gray-500'"
                         :data-open-modal="openModalString"
                         @click="openLikes"
@@ -111,13 +111,13 @@
 
                     <p
                         v-if="!post.isLocked"
-                        class="tw-text-13 tw-text-gray-500 tw-mr-3 font-bold uppercase dense pointer reply-like noselect"
+                        class="tw-text-sm tw-text-gray-500 tw-mr-3 font-bold uppercase dense pointer reply-like noselect"
                         @click="replyToPost"
                     >
                     Reply
                     </p>
                     <button
-                        class="tw-text-13 tw-text-gray-500 mr-3 font-bold uppercase dense pointer reply-like noselect tw-border-none tw-bg-transparent tw-p-0"
+                        class="tw-text-sm tw-text-gray-500 mr-3 font-bold uppercase dense pointer reply-like noselect tw-border-none tw-bg-transparent tw-p-0"
                         data-open-modal="sharePostModal"
                         title="Share this post"
                         @click="$emit('updateCurrentPostID', post.id)"
