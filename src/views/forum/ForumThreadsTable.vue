@@ -54,12 +54,12 @@
                     </div>
                     <div class="tw-flex tw-flex-col">
                         <button
-                            class="btn btn tw-w-12 tw-h-12"
+                            class="tw-btn-primary tw-px-5 sm:tw-px-12"
+                            :class="[brandBGColor]"
                             @click="$refs.searchInput.blur()"
                         >
-                            <span class="tw-bg-white tw-text-black tw-border-none tw-shadow-none">
-                                <i class="fas fa-search"></i>
-                            </span>
+                            <i class="fas fa-search tw-mr-1 tw-text-sm"></i>
+                            <span>Search</span>
                         </button>
                     </div>
                 </div>
@@ -228,7 +228,10 @@ export default {
     },
     computed: {
         brandBorderColor() {
-            return 'tw-border-'+this.brand;
+            return 'tw-border-' + this.brand;
+        },
+        brandBGColor() {
+            return 'tw-bg-'+ this.brand;
         },
         currentUrl(){
             return location.href.replace(location.search, '');
