@@ -397,7 +397,7 @@ export default {
         handleFilterChange(value) {
             if (value != 0) {
                 window.location.href = `${location.protocol}//${location.host 
-                }${location.pathname}?category_ids[]=${value}`;
+                }${location.pathname}?sortby_val=${value}`;
             } else {
                 window.location.href = `${location.protocol}//${location.host 
                 }${location.pathname}`;
