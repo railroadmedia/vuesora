@@ -27,40 +27,72 @@
             </div>
         </div>
 
-        <!-- Search Bar -->
+
+        <!-- Search -->
         <div class="tw-flex tw-px-2 ">
             <div class="tw-flex tw-flex-col tw-mb-6 tw-w-full">
-                <div class="tw-flex">
-                    <div class="tw-flex tw-flex-col tw-w-full tw-mr-3 form-group">
-                        <input
-                            id="threadSearch"
-                            ref="searchInput"
-                            v-model.lazy="searchInterface"
-                            type="text"
+                <div class="tw-flex tw-flex-wrap">
+                    <!-- Filter -->
+                    <div v-if="!searching"
+                         class="flex tw-ml-0 form-group tw-w-full md:tw-w-1/3 md:tw-pr-10"
+                    >
+                        <div
+                            class="form-group xs-12"
+                            style="width:100%;"
                         >
-                        <label
-                            for="threadSearch"
-                            :class="brand"
-                        >Search</label>
-
-                        <span
-                            v-if="searching"
-                            id="clearSearch"
-                            class="tw-p-4 tw-cursor-pointer tw-absolute tw-right-0"
-                            @click="clearSearch"
-                        >
-                            <i class="fas fa-times"></i>
-                        </span>
+                            <select
+                                id="commentSort"
+                                v-model="filterInterface"
+                                class="has-input tw-bg-white"
+                            >
+                                <option
+                                    v-for="option in filterOptions"
+                                    :key="option.label"
+                                    :value="option.value"
+                                >
+                                    {{ option.label }}
+                                </option>
+                            </select>
+                            <label
+                                for="commentSort"
+                                :class="themeColor"
+                            >Sort By... </label>
+                        </div>
                     </div>
-                    <div class="tw-flex tw-flex-col">
-                        <button
-                            class="tw-btn-primary tw-px-5 sm:tw-px-12"
-                            :class="[brandBGColor]"
-                            @click="$refs.searchInput.blur()"
-                        >
-                            <i class="fas fa-search tw-mr-1 tw-text-sm"></i>
-                            <span>Search</span>
-                        </button>
+                    <!-- Search Bar -->
+                    <div class="tw-flex tw-w-full md:tw-w-2/3 tw-mb-4 tw-order-first md:tw-order-last">
+                        <div class="tw-flex tw-flex-col tw-w-full tw-w-full tw-mr-3 form-group">
+                            <input
+                                id="threadSearch"
+                                ref="searchInput"
+                                v-model.lazy="searchInterface"
+                                type="text"
+                            >
+                            <label
+                                for="threadSearch"
+                                :class="brand"
+                            >Search</label>
+
+                            <span
+                                v-if="searching"
+                                id="clearSearch"
+                                class="tw-p-4 tw-cursor-pointer tw-absolute tw-right-0"
+                                @click="clearSearch"
+                            >
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="tw-flex tw-flex-col">
+                            <button
+                                class="tw-btn-primary tw-px-5 sm:tw-px-12"
+                                :class="[brandBGColor]"
+                                @click="$refs.searchInput.blur()"
+                            >
+                                <i class="fas fa-search tw-mr-1 tw-text-sm"></i>
+                                <span>Search</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -202,21 +234,17 @@ export default {
                     value: '0',
                 },
                 {
-                    label: 'General',
+                    label: 'Latest',
                     value: '1',
                 },
                 {
-                    label: 'Gear',
+                    label: 'Oldest',
                     value: '2',
                 },
                 {
-                    label: 'Website Feedback',
+                    label: 'My Threads',
                     value: '3',
-                },
-                {
-                    label: 'Off Topic',
-                    value: '4',
-                },
+                }
             ],
             loading: false,
             searching: false,
