@@ -32,35 +32,42 @@
         <div class="tw-flex tw-px-2 ">
             <div class="tw-flex tw-flex-col tw-mb-6 tw-w-full">
                 <div class="tw-flex tw-flex-wrap">
-                    <!-- Filter -->
-                    <div v-if="!searching"
-                         class="flex tw-ml-0 form-group tw-w-full md:tw-w-1/3 md:tw-pr-10"
-                    >
-                        <div
-                            class="form-group xs-12"
-                            style="width:100%;"
+
+                    <template v-if="!onlyFollowed">
+                        <!-- Filter -->
+                        <div v-if="!searching"
+                            class="flex tw-ml-0 form-group tw-w-full md:tw-w-1/3 md:tw-pr-10"
                         >
-                            <select
-                                id="commentSort"
-                                v-model="filterInterface"
-                                class="has-input tw-bg-white"
+                            <div
+                                class="form-group xs-12"
+                                style="width:100%;"
                             >
-                                <option
-                                    v-for="option in filterOptions"
-                                    :key="option.label"
-                                    :value="option.value"
+                                <select
+                                    id="threadSort"
+                                    v-model="filterInterface"
+                                    class="has-input tw-bg-white"
                                 >
-                                    {{ option.label }}
-                                </option>
-                            </select>
-                            <label
-                                for="commentSort"
-                                :class="themeColor"
-                            >Sort By... </label>
+                                    <option
+                                        v-for="option in filterOptions"
+                                        :key="option.label"
+                                        :value="option.value"
+                                        :selected="option.selected === sortByValue"
+                                    >
+                                        {{ option.label }}
+                                    </option>
+                                </select>
+                                <label
+                                    for="threadSort"
+                                    :class="brand"
+                                >Sort By... </label>
+                            </div>
                         </div>
-                    </div>
+                    </template>
+
                     <!-- Search Bar -->
-                    <div class="tw-flex tw-w-full md:tw-w-2/3 tw-mb-4 tw-order-first md:tw-order-last">
+                    <div class="tw-flex tw-w-full tw-mb-4 tw-order-first md:tw-order-last"
+                        :class="[!onlyFollowed ? 'md:tw-w-2/3' : '']"
+                    >
                         <div class="tw-flex tw-flex-col tw-w-full tw-w-full tw-mr-3 form-group">
                             <input
                                 id="threadSearch"
@@ -228,22 +235,27 @@ export default {
             filter: 'all',
             timeout: null,
             followed: false,
+            sortByValue: '0',
             filterOptions: [
                 {
                     label: 'All',
                     value: '0',
+                    selected: 'false'
                 },
                 {
                     label: 'Latest',
                     value: '1',
+                    selected: 'false'
                 },
                 {
                     label: 'Oldest',
                     value: '2',
+                    selected: 'false'
                 },
                 {
                     label: 'My Threads',
                     value: '3',
+                    selected: 'false'
                 }
             ],
             loading: false,
@@ -270,12 +282,17 @@ export default {
         totalSearchPages() {
             return Math.ceil(this.searchResultsCount / this.searchResultsPageLength);
         },
-        currentFilter() {
-            const urlParams = QueryString.parse(location.search);
-            if (urlParams['category_ids[]'] != null) {
-                return urlParams['category_ids[]'];
-            }
-            return '0';
+        currentFilter: {
+            get() {
+                const urlParams = QueryString.parse(location.search);
+                if (urlParams['sortby_val'] != null) {
+                    return urlParams['sortby_val'];
+                }
+                return '0';
+            },
+            set(val) {
+                return val;
+            }  
         },
         searchInterface: {
             get() {
