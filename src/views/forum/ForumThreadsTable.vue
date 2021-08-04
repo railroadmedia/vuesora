@@ -51,7 +51,6 @@
                                         v-for="option in filterOptions"
                                         :key="option.label"
                                         :value="option.value"
-                                        :selected="option.selected === sortByValue"
                                     >
                                         {{ option.label }}
                                     </option>
@@ -235,27 +234,22 @@ export default {
             filter: 'all',
             timeout: null,
             followed: false,
-            sortByValue: '0',
             filterOptions: [
                 {
                     label: 'All',
-                    value: '0',
-                    selected: 'false'
+                    value: '0'
                 },
                 {
                     label: 'Latest',
-                    value: '1',
-                    selected: 'false'
+                    value: '1'
                 },
                 {
                     label: 'Oldest',
-                    value: '2',
-                    selected: 'false'
+                    value: '2'
                 },
                 {
                     label: 'My Threads',
-                    value: '3',
-                    selected: 'false'
+                    value: '3'
                 }
             ],
             loading: false,

@@ -110,6 +110,7 @@
             </div>
 
             <div class="tw-flex tw-flex-row tw-mb-8 tw-flex-wrap">
+                <!-- Previous Button -->
                 <div class="tw-w-full tw-inline-flex tw-justify-center tw-mb-4 sm:tw-mb-0 sm:tw-justify-start sm:tw-w-auto">
                     <a :href="previousPage" 
                         class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
@@ -118,12 +119,39 @@
                         <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forums</span>
                     </a>
                 </div>
+                <!-- Pagination -->
                 <div class="tw-flex-grow tw-w-full sm:tw-w-auto" v-if="totalPages > 1">
                     <pagination
+                        class="sm:tw-justify-end md:tw-justify-center"
                         :current-page="currentPage"
                         :total-pages="totalPages"
                         @pageChange="handlePageChange"
                     ></pagination>
+                </div>
+                <!-- Filter -->
+                <div class="form-group tw-w-full tw-mt-6 md:tw-mt-0 md:tw-w-80 md:tw-pl-10">
+                    <div
+                        class="form-group xs-12"
+                        style="width:100%;"
+                    >
+                        <select
+                            id="postSort"
+                            v-model="filterInterface"
+                            class="has-input tw-bg-white"
+                        >
+                            <option
+                                v-for="option in filterOptions"
+                                :key="option.label"
+                                :value="option.value"
+                            >
+                                {{ option.label }}
+                            </option>
+                        </select>
+                        <label
+                            for="postSort"
+                            :class="brand"
+                        >Sort By... </label>
+                    </div>
                 </div>
             </div>
 
@@ -350,7 +378,25 @@ export default {
             totalLikeUsers: 0,
             likeUsersPage: 1,
             currentPostID: '',
-            shareLinkCopied: false
+            shareLinkCopied: false,
+            filterOptions: [
+                {
+                    label: 'All',
+                    value: '0'
+                },
+                {
+                    label: 'Latest',
+                    value: '1'
+                },
+                {
+                    label: 'Oldest',
+                    value: '2'
+                },
+                {
+                    label: 'My Posts',
+                    value: '3'
+                }
+            ],
         };
     },
     computed: {
@@ -393,6 +439,28 @@ export default {
                 lifetime: this.currentUser.access_level === 'lifetime',
             };
         },
+        currentFilter: {
+            get() {
+                const urlParams = QueryString.parse(location.search);
+                if (urlParams['postSort_val'] != null) {
+                    return urlParams['postSort_val'];
+                }
+                return '0';
+            },
+            set(val) {
+                return val;
+            }  
+        },
+        filterInterface: {
+            get() {
+                return this.filterOptions.filter(option => option.value === this.currentFilter)[0].value;
+            },
+            set(value) {
+                this.currentFilter = value;
+
+                this.handleFilterChange(value);
+            },
+        },
     },
 
     beforeMount() {
@@ -414,6 +482,16 @@ export default {
         });
     },
     methods: {
+        handleFilterChange(value) {
+            if (value != 0) {
+                window.location.href = `${location.protocol}//${location.host 
+                }${location.pathname}?postSort_val=${value}`;
+            } else {
+                window.location.href = `${location.protocol}//${location.host 
+                }${location.pathname}`;
+            }
+        },
+
         copyShareLink() {
             //Select the text
             this.$refs.postLinkInput.select();
