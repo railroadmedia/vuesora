@@ -124,6 +124,11 @@
 
             <!-- Thread Items -->
             <div v-if="onlyFollowed">
+                <!-- Latest Thread Button -->
+                <div class="tw-mb-6 tw-flex tw-justify-center ">
+                    <a href="/" class="tw-btn-primary" :class="[brandBGColor]">View All Latest Threads</a>
+                </div>
+
                 <h2 class="tw-text-32 tw-mb-6">Followed Threads</h2>
 
                 <template v-if="pinnedThreads.length === 0 && threadsArray.length === 0">
@@ -237,15 +242,15 @@ export default {
             filterOptions: [
                 {
                     label: 'Most Recent',
-                    value: '0'
+                    value: '-published_on'
                 },
                 {
                     label: 'Oldest',
-                    value: '1'
+                    value: 'published_on'
                 },
                 {
-                    label: 'My Threads',
-                    value: '2'
+                    label: 'My Posts',
+                    value: 'mine'
                 }
             ],
             loading: false,
@@ -272,18 +277,6 @@ export default {
         totalSearchPages() {
             return Math.ceil(this.searchResultsCount / this.searchResultsPageLength);
         },
-        currentFilter: {
-            get() {
-                const urlParams = QueryString.parse(location.search);
-                if (urlParams['sortby_val'] != null) {
-                    return urlParams['sortby_val'];
-                }
-                return '0';
-            },
-            set(val) {
-                return val;
-            }  
-        },
         searchInterface: {
             get() {
                 return this.searchTerm;
@@ -305,16 +298,6 @@ export default {
                 } else {
                     this.searching = false;
                 }
-            },
-        },
-        filterInterface: {
-            get() {
-                return this.filterOptions.filter(option => option.value === this.currentFilter)[0].value;
-            },
-            set(value) {
-                this.currentFilter = value;
-
-                this.handleFilterChange(value);
             },
         },
         isFollowedSection() {
@@ -346,6 +329,27 @@ export default {
             }
 
             return '0';
+        },
+        currentFilter: {
+            get() {
+                const urlParams = QueryString.parse(location.search);
+                if (urlParams['sortby_val'] != null) {
+                    return urlParams['sortby_val'];
+                }
+                return '-published_on';
+            },
+            set(val) {
+                return val;
+            }  
+        },
+        filterInterface: {
+            get() {
+                return this.filterOptions.filter(option => option.value === this.currentFilter)[0].value;
+            },
+            set(value) {
+                this.currentFilter = value;
+                this.handleFilterChange(value);
+            },
         },
 
     },

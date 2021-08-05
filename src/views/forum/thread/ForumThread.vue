@@ -389,7 +389,7 @@ export default {
                     value: 'published_on'
                 },
                 {
-                    label: 'My Posts',
+                    label: 'My Threads',
                     value: 'mine'
                 }
             ],
