@@ -236,20 +236,16 @@ export default {
             followed: false,
             filterOptions: [
                 {
-                    label: 'All',
+                    label: 'Most Recent',
                     value: '0'
                 },
                 {
-                    label: 'Latest',
+                    label: 'Oldest',
                     value: '1'
                 },
                 {
-                    label: 'Oldest',
-                    value: '2'
-                },
-                {
                     label: 'My Threads',
-                    value: '3'
+                    value: '2'
                 }
             ],
             loading: false,

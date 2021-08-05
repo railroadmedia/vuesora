@@ -381,20 +381,16 @@ export default {
             shareLinkCopied: false,
             filterOptions: [
                 {
-                    label: 'All',
+                    label: 'Most Recent',
                     value: '0'
                 },
                 {
-                    label: 'Latest',
+                    label: 'Oldest',
                     value: '1'
                 },
                 {
-                    label: 'Oldest',
-                    value: '2'
-                },
-                {
                     label: 'My Posts',
-                    value: '3'
+                    value: '2'
                 }
             ],
         };
