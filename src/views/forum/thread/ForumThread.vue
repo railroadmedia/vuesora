@@ -382,15 +382,15 @@ export default {
             filterOptions: [
                 {
                     label: 'Most Recent',
-                    value: '0'
+                    value: '-published_on'
                 },
                 {
                     label: 'Oldest',
-                    value: '1'
+                    value: 'published_on'
                 },
                 {
                     label: 'My Posts',
-                    value: '2'
+                    value: 'mine'
                 }
             ],
         };
@@ -438,10 +438,10 @@ export default {
         currentFilter: {
             get() {
                 const urlParams = QueryString.parse(location.search);
-                if (urlParams['postSort_val'] != null) {
-                    return urlParams['postSort_val'];
+                if (urlParams['sortby_val'] != null) {
+                    return urlParams['sortby_val'];
                 }
-                return '0';
+                return '-published_on';
             },
             set(val) {
                 return val;
@@ -453,7 +453,6 @@ export default {
             },
             set(value) {
                 this.currentFilter = value;
-
                 this.handleFilterChange(value);
             },
         },
@@ -481,7 +480,7 @@ export default {
         handleFilterChange(value) {
             if (value != 0) {
                 window.location.href = `${location.protocol}//${location.host 
-                }${location.pathname}?postSort_val=${value}`;
+                }${location.pathname}?sortby_val=${value}`;
             } else {
                 window.location.href = `${location.protocol}//${location.host 
                 }${location.pathname}`;
