@@ -129,7 +129,7 @@
                     ></pagination>
                 </div>
                 <!-- Filter -->
-                <div class="form-group tw-w-full tw-mt-6 md:tw-mt-0 md:tw-w-80 md:tw-pl-10">
+                <div class="form-group tw-w-full tw-mt-6 md:tw-ml-auto md:tw-mt-0 md:tw-w-80 md:tw-pl-10">
                     <div
                         class="form-group xs-12"
                         style="width:100%;"

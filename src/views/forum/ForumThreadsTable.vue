@@ -3,7 +3,7 @@
     <div class="tw-flex tw-flex-col tw-flex-grow tw-w-full">
 
         <!-- Forum Tabs -->
-        <div v-if="showTabs" 
+        <div v-if="!onlyFollowed && showTabs" 
             class="tw-flex tw-px-4 tw-mt-4">
             <div class="tw-flex tw-flex-col tw-mb-6">
                 <div class="tw-flex">
@@ -27,6 +27,20 @@
             </div>
         </div>
 
+        <!-- All Threads -->
+        <div v-if="!showTabs && !onlyFollowed"
+             class="tw-flex tw-px-4 tw-mt-4"
+        >
+            <div class="tw-flex tw-flex-col tw-mb-6">
+                <div class="tw-no-underline tw-mr-6 tw-text-black tw-border-0 tw-border-solid tw-border-b-2"
+                        :class="[ brandBorderColor ]"
+                >
+                    <h3 class="tw-text-2xl tw-cursor-pointer">
+                        All New Threads
+                    </h3>
+                </div>
+            </div>   
+        </div>
 
         <!-- Search -->
         <div class="tw-flex tw-px-2 ">
@@ -243,7 +257,6 @@ export default {
             forumsArray: this.forums,
             threadsArray: this.threads,
             searchTerm: '',
-            showTabs: true,
             filter: 'all',
             timeout: null,
             followed: false,
