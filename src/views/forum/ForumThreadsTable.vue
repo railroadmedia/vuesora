@@ -3,7 +3,7 @@
     <div class="tw-flex tw-flex-col tw-flex-grow tw-w-full">
 
         <!-- Forum Tabs -->
-        <div v-if="!onlyFollowed" 
+        <div v-if="showTabs" 
             class="tw-flex tw-px-4 tw-mt-4">
             <div class="tw-flex tw-flex-col tw-mb-6">
                 <div class="tw-flex">
@@ -126,7 +126,7 @@
             <div v-if="onlyFollowed">
                 <!-- Latest Thread Button -->
                 <div class="tw-mb-6 tw-flex tw-justify-center ">
-                    <a href="/" class="tw-btn-primary" :class="[brandBGColor]">View All Latest Threads</a>
+                    <a :href="latestThreadsUrl" class="tw-btn-primary" :class="[brandBGColor]">View All Latest Threads</a>
                 </div>
 
                 <h2 class="tw-text-32 tw-mb-6">Followed Threads</h2>
@@ -229,27 +229,35 @@ export default {
             type: Boolean,
             default: () => false,
         },
+        showTabs: {
+            type: Boolean,
+            default: () => true,
+        },
+      latestThreadsUrl: {
+        type: String,
+        default: () => '/threads/latest',
+      },
     },
     data() {
         return {
             forumsArray: this.forums,
             threadsArray: this.threads,
             searchTerm: '',
-            showTabs: false,
+            showTabs: true,
             filter: 'all',
             timeout: null,
             followed: false,
             filterOptions: [
                 {
-                    label: 'Most Recent',
-                    value: '-published_on'
+                    label: 'Most recent',
+                    value: '-last_post_published_on'
                 },
                 {
                     label: 'Oldest',
-                    value: 'published_on'
+                    value: 'last_post_published_on'
                 },
                 {
-                    label: 'My Posts',
+                    label: 'My threads',
                     value: 'mine'
                 }
             ],
@@ -336,11 +344,11 @@ export default {
                 if (urlParams['sortby_val'] != null) {
                     return urlParams['sortby_val'];
                 }
-                return '-published_on';
+                return '-last_post_published_on';
             },
             set(val) {
                 return val;
-            }  
+            }
         },
         filterInterface: {
             get() {
@@ -396,7 +404,7 @@ export default {
 
             urlParams.page = payload.page;
 
-            window.location.href = `${location.protocol}//${location.host 
+            window.location.href = `${location.protocol}//${location.host
             }${location.pathname}?${QueryString.stringify(urlParams)}`;
         },
 
@@ -407,10 +415,10 @@ export default {
 
         handleFilterChange(value) {
             if (value != 0) {
-                window.location.href = `${location.protocol}//${location.host 
+                window.location.href = `${location.protocol}//${location.host
                 }${location.pathname}?sortby_val=${value}`;
             } else {
-                window.location.href = `${location.protocol}//${location.host 
+                window.location.href = `${location.protocol}//${location.host
                 }${location.pathname}`;
             }
         },

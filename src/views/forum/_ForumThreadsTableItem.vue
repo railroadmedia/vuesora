@@ -31,6 +31,14 @@
             </p>
         </div>
 
+      <!-- Forum column for latest threads-->
+      <div v-if="thread.category"
+           class="tw-flex-col tw-hidden tw-ml-6 tw-mr-10 tw-hidden md:tw-flex">
+        <p class="tw-text-13 tw-text-black tw-font-bold">
+           {{ thread.category }}
+        </p>
+      </div>
+
         <!-- New Badge-->
         <div v-if="thread.isNew"
              class="tw-flex-col tw-hidden tw-ml-6 tw-mr-10 tw-hidden md:tw-flex">

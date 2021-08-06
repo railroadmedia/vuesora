@@ -381,7 +381,7 @@ export default {
             shareLinkCopied: false,
             filterOptions: [
                 {
-                    label: 'Most Recent',
+                    label: 'Most recent',
                     value: '-published_on'
                 },
                 {
@@ -389,7 +389,7 @@ export default {
                     value: 'published_on'
                 },
                 {
-                    label: 'My Threads',
+                    label: 'My posts',
                     value: 'mine'
                 }
             ],
