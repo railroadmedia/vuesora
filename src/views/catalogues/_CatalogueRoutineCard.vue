@@ -1,11 +1,11 @@
 <template>
     <div
-        class="flex flex-column pa-1 catalogue-card routine"
+        class="tw-flex tw-flex-col pa-1 tw-border-box tw-w-full sm:tw-w-1/2 md:tw-w-1/3 xl:tw-w-1/4"
         :class="class_object"
     >
-        <div class="flex flex-column">
+        <div class="tw-flex tw-flex-col">
             <div
-                class="flex flex-column"
+                class="tw-flex tw-flex-col tw-rounded-lg tw-overflow-hidden"
                 :class="[item.type + '-thumbnail']"
             >
                 <div
@@ -27,10 +27,10 @@
                         ></span>
                     </div>
 
-                    <div class="routine-actions flex flex-column align-v-center ph-3">
-                        <div class="routine-label tiny text-white text-center pb-2">Choose your preferred vocal range:</div>
+                    <div class="routine-actions tw-flex tw-flex-col tw-justify-center tw-px-4">
+                        <div class="tw-text-white tw-text-center pb-2 tw-text-sm sm:tw-text-xs lg:tw-text-sm">Choose your preferred vocal range:</div>
                         <div class="">
-                            <div class="flex flex-row">
+                            <div class="tw-flex tw-flex-row">
                                 <button
                                     class="btn routine-high"
                                     dusk="routine-high"
@@ -51,8 +51,8 @@
                 </div>
             </div>
 
-            <div class="card-info flex flex-column">
-                <p class="tiny text-black mb-1 mt-1">{{ mappedData.description }}</p>
+            <div class="card-info tw-flex tw-flex-col">
+                <p class="tiny tw-text-black mb-1 mt-1">{{ mappedData.description }}</p>
             </div>
         </div>
     </div>
