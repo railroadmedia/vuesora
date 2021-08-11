@@ -8,9 +8,9 @@
         </div>
 
         <div class="flex flex-column align-v-center thumbnail-col">
-            <div class="thumb-wrap corners-3 bg-black">
+            <div class="thumb-wrap corners-10 bg-black">
                 <div
-                    class="thumb-img corners-3 widescreen text-center"
+                    class="thumb-img corners-10 widescreen text-center"
                     style="background:black;"
                 >
                     <div class="release-day">

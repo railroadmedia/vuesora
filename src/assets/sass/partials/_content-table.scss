@@ -317,6 +317,9 @@
 
 .thumbnail-col {
   flex:0 0 75px;
+  @include small {
+    flex:0 0 100px;
+  }
 
   &.large-thumbnail {
     flex:0 0 320px;

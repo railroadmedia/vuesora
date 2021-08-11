@@ -169,7 +169,7 @@
         <transition name="grow-fade">
             <div
                 v-show="loading"
-                class="form-loading bg-white shadow corners-3 overflow pa-3 text-center"
+                class="form-loading bg-white shadow corners-10 overflow pa-3 text-center"
                 @click.stop
             >
                 <div class="square">

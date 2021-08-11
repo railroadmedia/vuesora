@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-column bg-white shadow corners-5 pa-3">
+                <div class="flex flex-column bg-white shadow corners-10 pa-3">
                     <div class="form-group">
                         <input type="email"
                                id="billingEmail"

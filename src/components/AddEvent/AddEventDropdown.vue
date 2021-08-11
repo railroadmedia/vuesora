@@ -2,7 +2,7 @@
     <div class="add-event-dropdown bg-white">
         <div
             v-if="isSubscription"
-            class="flex flex-column bg-white shadow corners-3"
+            class="flex flex-column bg-white shadow corners-10"
         >
             <a
                 v-for="platform in platforms"
@@ -22,7 +22,7 @@
 
         <div
             v-else
-            class="flex flex-column bg-white shadow corners-3"
+            class="flex flex-column bg-white shadow corners-10"
         >
             <div
                 v-for="platform in platforms"

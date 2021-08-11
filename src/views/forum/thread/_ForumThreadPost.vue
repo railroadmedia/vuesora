@@ -75,7 +75,7 @@
                                 type="submit"
                             >
                                 <span
-                                    class="text-white corners-3"
+                                    class="text-white corners-10"
                                     :class="themeBgClass"
                                 >
                                     Save Post

@@ -65,7 +65,7 @@
                             v-show="resourceDropdown"
                             class="download-dropdown"
                         >
-                            <div class="flex flex-column bg-white corners-3 shadow">
+                            <div class="flex flex-column bg-white corners-10 shadow">
                                 <a
                                     v-for="resource in resources"
                                     :key="resource.resource_name"
@@ -119,7 +119,7 @@
             id="shareVideoModal"
             class="modal"
         >
-            <div class="flex flex-column bg-white corners-3 shadow pa-3">
+            <div class="flex flex-column bg-white corners-10 shadow pa-3">
                 <h1 class="heading mb-2">
                     Share Video Link
                 </h1>

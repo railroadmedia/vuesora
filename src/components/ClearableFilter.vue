@@ -2,7 +2,7 @@
     <div class="clearable-filter flex flex-column">
         <label
             :for="elementId"
-            class="capitalize ba-light-1 bg-white corners-3 pa"
+            class="capitalize ba-light-1 bg-white corners-10 pa"
             :class="active ? 'active' : ''"
         >
             <span :class="active ? 'text-recordeo' : 'text-black'">

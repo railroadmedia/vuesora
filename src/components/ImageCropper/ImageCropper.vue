@@ -3,7 +3,7 @@
         <div
             v-show="!hasFileToCrop"
             ref="uploader"
-            class="image-uploader ba-light-1 corners-3 bg-white widescreen"
+            class="image-uploader ba-light-1 corners-10 bg-white widescreen"
         >
             <div class="uploader-content">
                 <p

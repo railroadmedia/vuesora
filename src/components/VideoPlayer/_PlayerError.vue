@@ -1,6 +1,6 @@
 <template>
     <div
-        class="player-error bg-error text-white corners-3 shadow pa-1 text-center"
+        class="player-error bg-error text-white corners-10 shadow pa-1 text-center"
     >
         <p class="body font-bold mb-2">
             Oops! An error occurred on the player and it can't seem to recover.

@@ -7,7 +7,6 @@
                         class=""
                         :src="'http://cdn.musora.com/image/fetch/w_915,q_515,q_auto:best/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
                     >
-                    <div class="coach-event-upcoming uppercase dense font-bold text-white" v-if="!eventIsLive">upcoming event</div>
                     <div class="coach-event-counter flex flex-row align-v-bottom" v-if="!eventIsLive">
                         <div class="coach-event-counter-inner text-white flex flex-row align-center">
                             <div class="ph-1">
@@ -52,7 +51,7 @@
                         <div class="flex-center corners-5 bg-live text-white uppercase live-badge sans"><span>live</span></div>
                     </div>
                 </div>
-                <div class="mv-2">
+                <div>
                     <a :href="eventCoachProfileUrl" class="flex flex-row align-v-center font-no-underline">
                         <div class="coach-avatar">
                             <img
@@ -64,10 +63,10 @@
                     </a>
                 </div>
                 <div class="coach-event-details mv-2">
-                    <h3 class="heading sans font-bold capitalize">{{ content.title }}</h3>
-                    <div class="coach-event-description mv-2" v-html="content.description"></div>
+                    <h3 class="subheading sans font-bold capitalize">{{ content.title }}</h3>
+                    <div class="coach-event-description mt-1" v-html="content.description"></div>
                 </div>
-                <div :class="{'mt-2': eventIsLive}" v-if="eventIsLive || showWatch">
+                <div v-if="eventIsLive || showWatch">
                     <div class="flex flex-row flex-wrap-md">
                         <div class="coach-event-cta">
                             <a href="/members/live">
@@ -426,11 +425,10 @@ export default {
 
             .coach-event-description {
                 font-size: 16px;
-                line-height: 24px;
+                line-height: 1.4em;
 
                 @include small {
-                    font-size: 18px;
-                    line-height: 30px;
+                    font-size: 17px;
                 }
             }
         }

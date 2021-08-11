@@ -6,7 +6,7 @@
         <div
             id="likeUsersContainer"
             ref="likeUsersContainer"
-            class="flex flex-column bg-white corners-3 shadow"
+            class="flex flex-column bg-white corners-10 shadow"
             style="max-height:500px;"
         >
             <div

@@ -12,7 +12,7 @@
         <!-- LESSON NUMBERS -->
         <div
             v-if="showNumbers"
-            class="flex flex-column align-left align-v-center number-col title text-black hide-sm-down"
+            class="flex flex-column align-left align-v-center number-col title text-black hide-xs-only"
         >
             {{ lesson_number }}
         </div>
@@ -88,7 +88,7 @@
                 style="border-radius:50%;"
             >
                 <div
-                    class="thumb-img corners-3 square rounded"
+                    class="thumb-img corners-10 square rounded"
                     :style="'background-image:url( ' + thumbnail + ' );'"
                 >
 

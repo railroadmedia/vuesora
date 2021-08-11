@@ -1,6 +1,6 @@
 <template>
     <div
-        class="player-dialog bg-grey-5 text-white corners-3 shadow pa-1"
+        class="player-dialog bg-grey-5 text-white corners-10 shadow pa-1"
     >
         <span
             class="close-shortcuts body text-grey-3 hover-text-white pointer"

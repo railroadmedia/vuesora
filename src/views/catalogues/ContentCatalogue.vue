@@ -156,7 +156,7 @@
                 class="flex flex-row align-center"
             >
                 <div
-                    class="loading-spinner corners-5 shadow pa flex-center"
+                    class="loading-spinner corners-10 shadow pa flex-center"
                     :class="themeBgClass"
                 >
                     <i class="fas fa-spinner fa-spin text-white"></i>

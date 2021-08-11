@@ -29,7 +29,7 @@
 
                 <div
                     v-if="loading"
-                    class="loading-exercise heading bg-white corners-3 shadow ph-4 pv-2"
+                    class="loading-exercise heading bg-white corners-10 shadow ph-4 pv-2"
                 >
                     <i
                         class="fas fa-spinner fa-spin"

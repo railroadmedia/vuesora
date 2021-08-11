@@ -117,7 +117,7 @@
             id="paymentMethodModal"
             class="modal"
         >
-            <div class="flex flex-column bg-white corners-3 shadow ph-2">
+            <div class="flex flex-column bg-white corners-10 shadow ph-2">
                 <div class="flex flex-row mb-2 pv-3">
                     <h1 class="heading">Add New Payment Method</h1>
                 </div>
@@ -146,7 +146,7 @@
         <transition name="grow-fade">
             <div
                 v-show="loading"
-                class="form-loading bg-white shadow corners-3 overflow pa-3 text-center"
+                class="form-loading bg-white shadow corners-10 overflow pa-3 text-center"
                 @click.stop
             >
                 <div class="square">

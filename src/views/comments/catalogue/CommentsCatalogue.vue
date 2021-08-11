@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column bg-white shadow corners-3">
+    <div class="flex flex-column bg-white shadow corners-10">
         <div class="flex flex-row pa-2 align-v-center bb-grey-1-1">
             <h1 class="heading grow">
                 Comments
@@ -248,7 +248,7 @@
                 >
                     <div
                         v-if="openCommentId === comment.id"
-                        class="flex flex-row pa-2 ba-grey-1-1 bg-white corners-3 active-comment"
+                        class="flex flex-row pa-2 ba-grey-1-1 bg-white corners-10 active-comment"
                     >
                         <div class="flex flex-column">
                             <comment-post

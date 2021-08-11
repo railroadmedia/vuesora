@@ -3,7 +3,7 @@
         :id="modalId"
         class="modal small"
     >
-        <div class="flex flex-column bg-white shadow corners-3 pa-3 align-h-center  overflow-visible">
+        <div class="flex flex-column bg-white shadow corners-10 pa-3 align-h-center  overflow-visible">
             <h1 class="subheading text-center mb-2">
                 Subscribe to Calendar
             </h1>

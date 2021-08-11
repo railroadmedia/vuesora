@@ -9,9 +9,9 @@
             class="flex flex-column align-v-center thumbnail-col hide-xs-only"
             :class="themeColor"
         >
-            <div class="thumb-wrap corners-3">
+            <div class="thumb-wrap corners-10">
                 <div
-                    class="thumb-img corners-3"
+                    class="thumb-img corners-10"
                     :class="thumbnailType"
                     :style="'background-image:url( ' + mappedData.thumbnail + ' );'"
                 >

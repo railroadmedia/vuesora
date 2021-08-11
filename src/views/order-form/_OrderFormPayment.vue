@@ -2,7 +2,7 @@
     <div class="flex flex-column mb-2">
         <payment-svg></payment-svg>
 
-        <div class="flex flex-column bg-white corners-5 pt-1 nmh-1">
+        <div class="flex flex-column bg-white corners-10 pt-1 nmh-1">
             <div class="flex flex-row flex-wrap align-v-center">
                 <div class="flex flex-column xs-12 sm-6 ph-1 pr-2 mb-1">
                     <div class="form-group">
