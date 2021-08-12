@@ -381,12 +381,12 @@ export default {
             shareLinkCopied: false,
             filterOptions: [
                 {
-                    label: 'Most recent',
-                    value: '-published_on'
-                },
-                {
                     label: 'Oldest',
                     value: 'published_on'
+                },
+                {
+                    label: 'Most recent',
+                    value: '-published_on'
                 },
                 {
                     label: 'My posts',
@@ -441,7 +441,7 @@ export default {
                 if (urlParams['sortby_val'] != null) {
                     return urlParams['sortby_val'];
                 }
-                return '-published_on';
+                return 'published_on';
             },
             set(val) {
                 return val;
