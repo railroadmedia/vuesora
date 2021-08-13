@@ -2,17 +2,17 @@
     <div class="container forum-post tw-px-4 tw-py-12">
         <div class="flex flex-column">
 
-            <div class="tw-flex flex-wrap align-v-center tw-mb-5 sm:tw-mb-8 tw-flex-col md:tw-flex-row">
+            <div class="tw-flex flex-wrap align-v-center tw-mb-6 md:tw-mb-8 tw-flex-col md:tw-flex-row">
                 
-                <div class="tw-flex tw-w-full tw-mb-6 tw-justify-center md:tw-justify-start tw-items-center md:tw-mb-0 md:tw-w-1/2">
+                <div class="tw-flex tw-w-full tw-mb-5 tw-justify-center md:tw-justify-start tw-items-center md:tw-mb-0 md:tw-w-1/2">
                     <h1 class="heading thread-title">
                         {{ thread.title }}
                     </h1>
                 </div>
                 
-                <div class="tw-flex tw-w-full tw-flex-col md:tw-w-1/2 md:tw-flex-row">
+                <div class="tw-flex tw-w-full tw-flex-col md:tw-flex-row md:tw-w-1/2">
 
-                    <div class="tw-flex tw-justify-center tw-mb-3 md:tw-mb-0 md:tw-w-1/2 md:tw-justify-end xl:tw-w-2/3">
+                    <div class="tw-flex tw-justify-center tw-mb-5 md:tw-mb-0 md:tw-w-1/2 md:tw-justify-end xl:tw-w-2/3">
                         
                         <!-- Edit or delete the thread -->
                         <button
@@ -81,26 +81,25 @@
                         </button>
                     </div>
 
-                    <div class="tw-flex tw-justify-center md:tw-w-1/2 xl:tw-w-1/3">
+                    <div class="tw-flex tw-justify-center tw-items-center md:tw-w-1/2">
                         <!-- Follow -->
                         <button
-                            class="btn collapse-150 short mr-1"
+                            class="tw-btn-primary tw-btn-small tw-w-full tw-mr-2 bg-drumeo tw-px-4 tw-h-10"
+                            :class="[brandBgColor]"
                             @click="followPost"
                         >
-                            <span :class="[themeBgClass, isFollowed ? 'text-white' : 'inverted ' + themeTextClass]">
+                            <span>
                                 {{ isFollowed ? 'Followed' : 'Follow' }}
                             </span>
                         </button>
 
                         <!-- Reply -->
                         <button
-                            class="btn collapse-150 short"
+                            class="tw-btn-primary tw-btn-small tw-w-full bg-drumeo tw-px-4 tw-h-10"
+                            :class="[brandBgColor]"
                             @click="scrollToReply"
                         >
-                            <span
-                                class="inverted"
-                                :class="[themeTextClass, themeBgClass]"
-                            >
+                            <span>
                                 Add Reply
                             </span>
                         </button>
@@ -109,9 +108,9 @@
                 </div>
             </div>
 
-            <div class="tw-flex tw-flex-row tw-mb-8 tw-flex-wrap">
+            <div class="tw-flex tw-flex-col-reverse md:tw-flex-row tw-mb-8 tw-flex-wrap">
                 <!-- Previous Button -->
-                <div class="tw-w-full tw-inline-flex tw-justify-center tw-mb-4 sm:tw-mb-0 sm:tw-justify-start sm:tw-w-auto">
+                <div class="tw-inline-flex tw-w-full tw-justify-center tw-mb-6 md:tw-mb-0 md:tw-justify-start sm:tw-w-auto">
                     <a :href="previousPage" 
                         class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
                     >
@@ -120,16 +119,16 @@
                     </a>
                 </div>
                 <!-- Pagination -->
-                <div class="tw-flex-grow tw-w-full sm:tw-w-auto" v-if="totalPages > 1">
+                <div class="tw-inline-flex tw-flex-grow tw-w-full tw-order-first md:tw-order-none sm:tw-w-auto" v-if="totalPages > 1">
                     <pagination
-                        class="sm:tw-justify-end md:tw-justify-center"
+                        class="tw-justify-center"
                         :current-page="currentPage"
                         :total-pages="totalPages"
                         @pageChange="handlePageChange"
                     ></pagination>
                 </div>
                 <!-- Filter -->
-                <div class="form-group tw-w-full tw-mt-6 md:tw-ml-auto md:tw-mt-0 md:tw-w-80 md:tw-pl-10">
+                <div class="tw-inline-flex form-group tw-w-full tw-mb-6 md:tw-ml-auto md:tw-mb-0 md:tw-w-80 md:tw-pl-4">
                     <div
                         class="form-group xs-12"
                         style="width:100%;"
