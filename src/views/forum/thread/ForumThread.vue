@@ -242,16 +242,21 @@
                             :value="this.thread.id"
                         >
 
-                        <div class="flex flex-row align-h-right mt-2">
+                        <div class="flex tw-flex-col md:tw-flex-row mt-2 tw-justify-center md:tw-justify-between">
+                            <a :href="signatureURL" 
+                               class="tw-btn-primary tw-text-gray-400 tw-bg-transparent tw-px-4 hover:tw-bg-gray-100 tw-mb-2"
+                            >
+                                <i class="fas fa-file-signature tw-mr-1"></i>
+                                Add Signature
+                            </a>
+                            
                             <button
-                                class="btn collapse-250 thread-reply-button"
+                                class="tw-btn-primary thread-reply-button"
+                                :class="themeBgClass"
                                 type="submit"
                                 :disabled="formDisabled"
                             >
-                                <span
-                                    class="text-white corners-3"
-                                    :class="themeBgClass"
-                                >
+                                <span>
                                     Reply
                                 </span>
                             </button>
@@ -272,9 +277,8 @@
             ></comment-likes-modal>
 
             <!-- Share Post Modal -->
-            <div
-                id="sharePostModal"
-                class="modal"
+            <div id="sharePostModal"
+                 class="modal"
             >
                 <div class="flex flex-column bg-white corners-3 shadow ph-2 tw-max-w-md tw-rounded-lg">
                     <div class="tw-flex tw-flex-col mb-2 pv-3">
@@ -395,6 +399,13 @@ export default {
         };
     },
     computed: {
+        signatureURL() {
+            if(this.brand === "drumeo") {
+                return '/members/settings/profile#signatureForm'
+            }
+            return '/members/account/settings#signatureForm';
+        },
+
         brandBgColor() {
             return `tw-bg-${this.brand}`;
         },
