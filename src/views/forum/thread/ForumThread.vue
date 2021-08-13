@@ -12,73 +12,82 @@
                 
                 <div class="tw-flex tw-w-full tw-flex-col md:tw-flex-row md:tw-w-1/2">
 
-                    <div class="tw-flex tw-justify-center tw-mb-5 md:tw-mb-0 md:tw-w-1/2 md:tw-justify-end xl:tw-w-2/3">
-                        
-                        <!-- Edit or delete the thread -->
-                        <button
-                            v-if="currentUser.isAdmin || currentUser.isOwner"
-                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
-                            @click="update"
+                    <div class="tw-flex tw-items-center tw-w-full tw-mb-5 md:tw-mb-0">
+                        <!-- Mobile Back Button -->
+                        <a :href="previousPage" 
+                            class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400 md:tw-hidden"
                         >
-                            <span
-                                class="inverted"
-                                :class="[themeTextClass, themeBgClass]"
+                            <i class="fas fa-arrow-circle-left tw-text-4xl"></i>
+                        </a>
+
+                        <div class="tw-flex tw-flex-grow tw-justify-center tw-mr-6 md:tw-mr-0 md:tw-w-1/2 md:tw-justify-end xl:tw-w-2/3">
+                            
+                            <!-- Edit or delete the thread -->
+                            <button
+                                v-if="currentUser.isAdmin || currentUser.isOwner"
+                                class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
+                                @click="update"
                             >
-                                <i class="fas fa-edit"></i>
-                            </span>
+                                <span
+                                    class="inverted"
+                                    :class="[themeTextClass, themeBgClass]"
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </span>
 
-                            <!-- Tool Tip -->
-                            <div class="tw-tooltip tw-tooltip-dark">
-                                Edit
-                            </div>
-                        </button>
+                                <!-- Tool Tip -->
+                                <div class="tw-tooltip tw-tooltip-dark">
+                                    Edit
+                                </div>
+                            </button>
 
-                        <!-- Pins the post to the top of the thread index list -->
-                        <button
-                            v-if="currentUser.isAdmin"
-                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
-                            @click="pinPost"
-                        >
-                            <span :class="[themeBgClass, isPinned ? 'text-white' : 'inverted ' + themeTextClass]">
-                                <i class="fas fa-thumbtack"></i>
-                            </span>
+                            <!-- Pins the post to the top of the thread index list -->
+                            <button
+                                v-if="currentUser.isAdmin"
+                                class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
+                                @click="pinPost"
+                            >
+                                <span :class="[themeBgClass, isPinned ? 'text-white' : 'inverted ' + themeTextClass]">
+                                    <i class="fas fa-thumbtack"></i>
+                                </span>
 
-                            <!-- Tool Tip -->
-                            <div class="tw-tooltip tw-tooltip-dark">
-                                Pin
-                            </div>
-                        </button>
+                                <!-- Tool Tip -->
+                                <div class="tw-tooltip tw-tooltip-dark">
+                                    Pin
+                                </div>
+                            </button>
 
-                        <!-- Disables the option to reply to the post -->
-                        <button
-                            v-if="currentUser.isAdmin"
-                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
-                            @click="lockPost"
-                        >
-                            <span :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
-                                <i class="fas fa-lock"></i>
-                            </span>
+                            <!-- Disables the option to reply to the post -->
+                            <button
+                                v-if="currentUser.isAdmin"
+                                class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
+                                @click="lockPost"
+                            >
+                                <span :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
+                                    <i class="fas fa-lock"></i>
+                                </span>
 
-                            <!-- Tool Tip -->
-                            <div class="tw-tooltip tw-tooltip-dark">
-                                Lock
-                            </div>
-                        </button>
+                                <!-- Tool Tip -->
+                                <div class="tw-tooltip tw-tooltip-dark">
+                                    Lock
+                                </div>
+                            </button>
 
-                        <!-- Hides Signatures -->
-                        <button
-                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
-                            @click="hideSignatures"
-                        >
-                            <span :class="[themeBgClass, signaturesHidden ? 'text-white' : 'inverted ' + themeTextClass]">
-                                <i class="fas fa-eye"></i>
-                            </span>
+                            <!-- Hides Signatures -->
+                            <button
+                                class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
+                                @click="hideSignatures"
+                            >
+                                <span :class="[themeBgClass, signaturesHidden ? 'text-white' : 'inverted ' + themeTextClass]">
+                                    <i class="fas fa-eye"></i>
+                                </span>
 
-                            <!-- Tool Tip -->
-                            <div class="tw-tooltip tw-tooltip-dark">
-                                Hide All Signatures
-                            </div>
-                        </button>
+                                <!-- Tool Tip -->
+                                <div class="tw-tooltip tw-tooltip-dark">
+                                    Hide All Signatures
+                                </div>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="tw-flex tw-justify-center tw-items-center md:tw-w-1/2">
@@ -110,7 +119,7 @@
 
             <div class="tw-flex tw-flex-col-reverse md:tw-flex-row tw-mb-8 tw-flex-wrap">
                 <!-- Previous Button -->
-                <div class="tw-inline-flex tw-w-full tw-justify-center tw-mb-6 md:tw-mb-0 md:tw-justify-start sm:tw-w-auto">
+                <div class="tw-hidden tw-w-full tw-justify-center tw-mb-6 md:tw-mb-0 md:tw-justify-start sm:tw-w-auto md:tw-inline-flex">
                     <a :href="previousPage" 
                         class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
                     >
@@ -402,8 +411,11 @@ export default {
         signatureURL() {
             if(this.brand === "drumeo") {
                 return '/members/settings/profile#signatureForm'
+            } else if (this.brand === "guitareo") {
+                return '/members/account/settings#signatureForm';
+            } else {
+                return '/members/profile/settings#signatureForm';
             }
-            return '/members/account/settings#signatureForm';
         },
 
         brandBgColor() {
