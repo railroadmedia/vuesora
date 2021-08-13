@@ -50,14 +50,9 @@
 
         <!-- Reply Count -->
         <div class="tw-items-center tw-text-gray-600 tw-mr-4 lg:tw-mr-12 tw-flex-shrink-0 tw-w-16 tw-text-left tw-hidden md:tw-flex">
-            <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top">
+            <h6 class="tw-text-13 tw-font-bold">
                 <i class="fas fa-comment-lines tw-mr-1"></i>
                 {{ replyCount }}
-
-                <!-- Tool Tip -->
-                <div class="tw-tooltip tw-tooltip-dark">
-                    Total Replies
-                </div>
             </h6>
         </div>
 

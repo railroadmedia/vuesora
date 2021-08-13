@@ -149,6 +149,21 @@
                     <p class="tw-text-base">Any thread you reply to or follow will appear here.</p>
                 </template>
             </div>
+            
+            <!-- Threads Table Header -->
+            <div v-if="pinnedThreads.length !== 0 && threadsArray.length !== 0"
+                class="tw-flex tw-bg-gray-200 tw-h-10 tw-w-full tw-items-center tw-rounded-t-lg"
+            >   
+                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-pl-8 tw-w-9/12">
+                    Thread Details
+                </div>
+                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-w-1/12">
+                    Replies
+                </div>
+                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-w-2/12">
+                    Latest Post
+                </div>
+            </div>
 
             <forum-threads-table-item
                 v-for="thread in pinnedThreads"
