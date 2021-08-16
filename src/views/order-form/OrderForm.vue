@@ -142,6 +142,12 @@
                 :discounts="cartData.discounts"
                 :cartData="cartData"
             />
+
+          <p v-if="showVatMessage" class="tiny disclaimer mb-2 text-grey-3">
+            As of July 1st, the European Union has mandated the collection of VAT on all imported physical goods.
+            Upon delivery of your shipment by the carrier, you will be required to pay VAT as well as a collection fee,
+            ranging from 5-25 EUR, dependant on the value of your delivery.
+          </p>
             <button
                 class="btn"
                 @click.stop="submitForm"
@@ -382,6 +388,47 @@ export default {
 
         isSignedIn() {
             return this.user != null;
+        },
+
+        showVatMessage() {
+            if ((!this.selectedAddress || this.selectedAddress.attributes.country) && (!this.shippingAddress || !this.shippingAddress.country)) {
+                return false;
+            }
+
+            if (!this.cartRequiresShippingAddress) {
+              return false;
+            }
+
+            return [
+              'Austria',
+              'Belgium',
+              'Bulgaria',
+              'Croatia',
+              'Cyprus',
+              'Czechia',
+              'Denmark',
+              'Estonia',
+              'Finland',
+              'France',
+              'Germany',
+              'Greece',
+              'Hungary',
+              'Ireland',
+              'Italy',
+              'Latvia',
+              'Lithuania',
+              'Luxembourg',
+              'Malta',
+              'Netherlands',
+              'Norway',
+              'Poland',
+              'Portugal',
+              'Romania',
+              'Slovakia',
+              'Slovenia',
+              'Spain',
+              'Sweden',
+            ].includes(this.selectedAddress ? this.selectedAddress.attributes.country : this.shippingAddress.country);
         },
     },
 
