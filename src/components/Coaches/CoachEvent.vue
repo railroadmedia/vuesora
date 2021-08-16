@@ -62,7 +62,8 @@
                     </div>
                 </div>
 
-                <div class="coach-name sans uppercase font-bold text-drumeo" v-if="!eventIsLive">
+                <div class="body uppercase mb-2 text-drumeo font-italic" v-if="!eventIsLive">
+                    <span class="font-bold">Starts in:</span>
                     <span>{{ $_hours }}</span> <span>hours</span>
                     <span>{{ $_minutes }}</span> <span>minutes</span>
                     <span>{{ $_seconds }}</span> <span>seconds</span>
