@@ -1,6 +1,6 @@
 <template>
     <a
-        :href="thread.url"
+        :href="thread.url+'?sortby_val=published_on'"
         class="tw-relative tw-flex tw-flex-row tw-items-center tw-py-4 tw-px-2 tw-text-black tw-no-underline tw-border-0 tw-border-b tw-border-solid tw-border-gray-200"
         :class="[brandHoverColor]"
     >

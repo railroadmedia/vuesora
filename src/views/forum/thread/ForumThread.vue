@@ -124,7 +124,7 @@
                         class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
                     >
                         <i class="fas fa-arrow-circle-left tw-text-4xl tw-mr-2"></i>
-                        <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forums</span>
+                        <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forum</span>
                     </a>
                 </div>
                 <!-- Pagination -->
@@ -189,7 +189,7 @@
                         class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
                     >
                         <i class="fas fa-arrow-circle-left tw-text-4xl tw-mr-2"></i>
-                        <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forums</span>
+                        <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forum</span>
                     </a>
                 </div>
                 <div class="tw-flex-grow tw-w-full sm:tw-w-auto" v-if="totalPages > 1">

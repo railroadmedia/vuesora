@@ -277,12 +277,12 @@ export default {
             followed: false,
             filterOptions: [
                 {
-                    label: 'Most recent',
-                    value: '-last_post_published_on'
-                },
-                {
                     label: 'Oldest',
                     value: 'last_post_published_on'
+                },
+                {
+                    label: 'Most recent',
+                    value: '-last_post_published_on'
                 },
                 {
                     label: 'My threads',
@@ -372,7 +372,7 @@ export default {
                 if (urlParams['sortby_val'] != null) {
                     return urlParams['sortby_val'];
                 }
-                return 'last_post_published_on';
+                return '-last_post_published_on';
             },
             set(val) {
                 return val;
