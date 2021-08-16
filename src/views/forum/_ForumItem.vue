@@ -1,6 +1,6 @@
 <template>
     <a
-        :href="forum.url+'?sortby_val=last_post_published_on'"
+        :href="forum.url"
         class="tw-relative tw-flex tw-flex-row tw-items-center tw-py-4 tw-px-2 tw-text-black tw-no-underline tw-border-0 tw-border-b tw-border-solid tw-border-gray-200"
         :class="[brandHoverColor]"
     >

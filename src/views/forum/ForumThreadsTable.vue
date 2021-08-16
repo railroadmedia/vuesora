@@ -372,7 +372,7 @@ export default {
                 if (urlParams['sortby_val'] != null) {
                     return urlParams['sortby_val'];
                 }
-                return 'last_post_published_on';
+                return '-last_post_published_on';
             },
             set(val) {
                 return val;
