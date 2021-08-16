@@ -120,7 +120,7 @@
             <div class="tw-flex tw-flex-col-reverse md:tw-flex-row tw-mb-8 tw-flex-wrap">
                 <!-- Previous Button -->
                 <div class="tw-hidden tw-w-full tw-justify-center tw-mb-6 md:tw-mb-0 md:tw-justify-start sm:tw-w-auto md:tw-inline-flex">
-                    <a :href="previousPage" 
+                    <a :href="forumsUrl"
                         class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
                     >
                         <i class="fas fa-arrow-circle-left tw-text-4xl tw-mr-2"></i>
@@ -185,7 +185,7 @@
 
             <div class="tw-flex tw-flex-row tw-mb-8 tw-flex-wrap">
                 <div class="tw-w-full tw-inline-flex tw-justify-center tw-mb-4 sm:tw-mb-0 sm:tw-justify-start sm:tw-w-auto">
-                    <a :href="previousPage" 
+                    <a :href="forumsUrl"
                         class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
                     >
                         <i class="fas fa-arrow-circle-left tw-text-4xl tw-mr-2"></i>
@@ -365,6 +365,10 @@ export default {
       updatePostBaseRoute: {
         type: String,
         default: '/post/update/',
+      },
+      forumsUrl: {
+        type: String,
+        default: () => '/forums',
       },
       previousPage: {
         type: String,
