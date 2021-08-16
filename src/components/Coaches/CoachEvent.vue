@@ -4,39 +4,9 @@
             <a :href="eventCoachProfileUrl" class="coach-event-image flex flex-column align-v-center" v-if="!eventIsLive">
                 <div class="relative">
                     <img
-                        class=""
+                        class="corners-10"
                         :src="'http://cdn.musora.com/image/fetch/w_915,q_515,q_auto:best/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
                     >
-                    <div class="coach-event-counter flex flex-row align-v-bottom" v-if="!eventIsLive">
-                        <div class="coach-event-counter-inner text-white flex flex-row align-center">
-                            <div class="ph-1">
-                                <div class="flex flex-column align-center">
-                                    <div class="event-counter-number dense font-bold"><span>{{ $_hours }}</span></div>
-                                    <div class="event-counter-label sans font-bold uppercase">hours</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="event-counter-number dense font-bold">:</div>
-                                <div class="event-counter-label sans font-bold uppercase">&nbsp;</div>
-                            </div>
-                            <div class="ph-1">
-                                <div class="flex flex-column align-center">
-                                    <div class="event-counter-number dense font-bold"><span>{{ $_minutes }}</span></div>
-                                    <div class="event-counter-label sans font-bold uppercase">minutes</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="event-counter-number dense font-bold">:</div>
-                                <div class="event-counter-label sans font-bold uppercase">&nbsp;</div>
-                            </div>
-                            <div class="ph-1">
-                                <div class="flex flex-column align-center">
-                                    <div class="event-counter-number dense font-bold"><span>{{ $_seconds }}</span></div>
-                                    <div class="event-counter-label sans font-bold uppercase">seconds</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </a>
             <div class="coach-event-video flex flex-column" v-if="eventIsLive">
@@ -46,12 +16,12 @@
                 </div>
             </div>
             <div class="coach-event-data flex flex-column align-v-center">
-                <div class="mb-2" v-if="eventIsLive">
+                <div class="mt-2" v-if="eventIsLive">
                     <div class="flex flex-row">
                         <div class="flex-center corners-5 bg-live text-white uppercase live-badge sans"><span>live</span></div>
                     </div>
                 </div>
-                <div>
+                <div class="mv-2">
                     <a :href="eventCoachProfileUrl" class="flex flex-row align-v-center font-no-underline">
                         <div class="coach-avatar">
                             <img
@@ -62,7 +32,7 @@
                         <h4 class="sans coach-name font-bold text-drumeo uppercase">{{ instructor.name }}</h4>
                     </a>
                 </div>
-                <div class="coach-event-details mv-2">
+                <div class="coach-event-details mb-2">
                     <h3 class="subheading sans font-bold capitalize">{{ content.title }}</h3>
                     <div class="coach-event-description mt-1" v-html="content.description"></div>
                 </div>
@@ -90,6 +60,12 @@
                             </button>
                         </div>
                     </div>
+                </div>
+
+                <div class="coach-name sans uppercase font-bold text-drumeo" v-if="!eventIsLive">
+                    <span>{{ $_hours }}</span> <span>hours</span>
+                    <span>{{ $_minutes }}</span> <span>minutes</span>
+                    <span>{{ $_seconds }}</span> <span>seconds</span>
                 </div>
                 <div
                     class="coach-event-subscribe"
@@ -441,7 +417,8 @@ export default {
             }
 
             &> div {
-                width: 300px;
+                width: 100%;
+                max-width: 340px;
             }
         }
 
