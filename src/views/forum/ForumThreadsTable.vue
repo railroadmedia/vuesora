@@ -151,7 +151,7 @@
             </div>
             
             <!-- Threads Table Header -->
-            <div v-if="pinnedThreads.length !== 0 && threadsArray.length !== 0"
+            <div v-if="pinnedThreads.length !== 0 || threadsArray.length !== 0"
                 class="tw-flex tw-bg-gray-200 tw-h-10 tw-w-full tw-items-center tw-rounded-t-lg"
             >   
                 <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-pl-8 tw-w-full lg:tw-w-9/12">
