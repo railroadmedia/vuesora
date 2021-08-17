@@ -47,11 +47,9 @@
             <div class="tw-flex tw-flex-col tw-mb-6 tw-w-full">
                 <div class="tw-flex tw-flex-wrap">
 
-                    <template v-if="!onlyFollowed">
+                    <template v-if="!onlyFollowed && !searching">
                         <!-- Filter -->
-                        <div v-if="!searching"
-                            class="flex tw-ml-0 form-group tw-w-full md:tw-w-1/3 md:tw-pr-10"
-                        >
+                        <div class="flex tw-ml-0 form-group tw-w-full md:tw-w-1/3 md:tw-pr-10">
                             <div
                                 class="form-group xs-12"
                                 style="width:100%;"
@@ -79,7 +77,7 @@
 
                     <!-- Search Bar -->
                     <div class="tw-flex tw-w-full tw-mb-4 tw-order-first md:tw-order-last"
-                        :class="[!onlyFollowed ? 'md:tw-w-2/3' : '']"
+                        :class="[!onlyFollowed && !searching ? 'md:tw-w-2/3' : '']"
                     >
                         <div class="tw-flex tw-flex-col tw-w-full tw-w-full tw-mr-3 form-group">
                             <input
