@@ -39,7 +39,7 @@
                 </h6>
             </div>
         </a>
-        <a href="#" class="tw-bg-gray-50 tw-transition-colors hover:tw-bg-gray-100 tw-py-6 tw-inline-flex tw-items-center tw-no-underline tw-h-full tw-px-4 sm:tw-px-8 sm:tw-w-28 lg:tw-w-full lg:tw-max-w-xs">            
+        <a :href="thread.latestPost ? thread.latestPost.url : '#'" class="tw-bg-gray-50 tw-transition-colors hover:tw-bg-gray-100 tw-py-6 tw-inline-flex tw-items-center tw-no-underline tw-h-full tw-px-4 sm:tw-px-8 sm:tw-w-28 lg:tw-w-full lg:tw-max-w-xs">
             <!-- Post Date -->
             <div class="tw-flex-col tw-justify-center tw-mr-6 tw-text-gray-600 tw-flex-shrink-0 tw-w-28 tw-hidden lg:tw-flex">
                 <h6 class="tw-text-13 tw-font-bold">{{ thread.latestPost ? thread.latestPost.created_at_diff : ''}}</h6>
