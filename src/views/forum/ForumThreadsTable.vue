@@ -154,13 +154,13 @@
             <div v-if="pinnedThreads.length !== 0 && threadsArray.length !== 0"
                 class="tw-flex tw-bg-gray-200 tw-h-10 tw-w-full tw-items-center tw-rounded-t-lg"
             >   
-                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-pl-8 tw-w-9/12">
+                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-pl-8 tw-w-full lg:tw-w-9/12">
                     Thread Details
                 </div>
-                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-w-1/12">
+                <div class="tw-uppercase tw-pr-2 tw-text-gray-500 tw-text-sm tw-font-bold tw-hidden sm:tw-inline-flex tw-flex-shrink-0 tw-w-24">
                     Replies
                 </div>
-                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-w-2/12">
+                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-inline-flex tw-px-2 tw-flex-shrink-0 tw-w-28 lg:tw-px-8 lg:tw-w-full lg:tw-max-w-xs">
                     Latest Post
                 </div>
             </div>
