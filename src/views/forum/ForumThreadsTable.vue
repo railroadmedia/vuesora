@@ -155,6 +155,10 @@
                 <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-pl-8 tw-w-full lg:tw-w-9/12">
                     Thread Details
                 </div>
+                <div v-if="!showTabs && !onlyFollowed" 
+                     class="tw-uppercase tw-mx-6 tw-w-52 tw-text-gray-500 tw-text-sm tw-font-bold tw-hidden tw-flex-shrink-0 xl:tw-inline-flex">
+                    Forum
+                </div>
                 <div class="tw-uppercase tw-pr-2 tw-text-gray-500 tw-text-sm tw-font-bold tw-hidden sm:tw-inline-flex tw-flex-shrink-0 tw-w-24">
                     Replies
                 </div>

@@ -31,6 +31,14 @@
                 </p>
             </div>
 
+            <!-- Thread Category -->
+            <div v-if="thread.category"
+                class="tw-hidden tw-mx-6 tw-w-52 tw-items-center tw-flex-shrink-0 xl:tw-flex">
+                <p class="tw-text-13 tw-text-black tw-font-bold">
+                    {{ thread.category }}
+                </p>
+            </div>
+
             <!-- Reply Count -->
             <div class="tw-items-center tw-text-gray-600 tw-flex-shrink-0 tw-flex-shrink-0 tw-w-24 tw-text-left tw-hidden tw-pr-2 sm:tw-inline-flex">
                 <h6 class="tw-text-13 tw-font-bold">
