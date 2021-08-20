@@ -36,8 +36,13 @@
                     <h3 class="subheading sans font-bold capitalize">{{ content.title }}</h3>
                     <div class="coach-event-description mt-1" v-html="content.description"></div>
                 </div>
+
+                <div class="body mb-2 text-drumeo font-italic" v-if="!eventIsLive">
+                  <span class="font-bold">Starts in:&nbsp;</span><span>{{ $_hours }}</span><span>&nbsp;Hours&nbsp;-&nbsp;</span><span>{{ $_minutes }}</span><span>&nbsp;Minutes&nbsp;-&nbsp;</span><span>{{ $_seconds }}</span><span>&nbsp;Seconds</span>
+                </div>
+
                 <div v-if="eventIsLive || showWatch">
-                    <div class="flex flex-row flex-wrap-md">
+                    <div class="flex flex-row flex-wrap-md mt-2">
                         <div class="coach-event-cta">
                             <a href="/members/live">
                                 <button class="btn">
@@ -62,9 +67,6 @@
                     </div>
                 </div>
 
-                <div class="body mb-2 text-drumeo font-italic" v-if="!eventIsLive">
-                    <span class="font-bold">Starts in:&nbsp;</span><span>{{ $_hours }}</span><span>&nbsp;Hours&nbsp;-&nbsp;</span><span>{{ $_minutes }}</span><span>&nbsp;Minutes&nbsp;-&nbsp;</span><span>{{ $_seconds }}</span><span>&nbsp;Seconds</span>
-                </div>
                 <div
                     class="coach-event-subscribe"
                     :class="{'pt-2': showWatch}"
