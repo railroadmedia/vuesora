@@ -1,83 +1,103 @@
 <template>
-    <div class="coach-event container mv-2">
-        <div class="flex flex-row flex-wrap-md" v-if="content">
-            <a :href="eventCoachProfileUrl" class="coach-event-image flex flex-column align-v-center" v-if="!eventIsLive">
-                <div class="relative">
+    <div class="container tw-my-3">
+        <div class="tw-flex tw-flex-row tw-flex-wrap md:tw-flex-nowrap " v-if="content">
+            
+            <!-- Live Event Image -->
+            <a :href="eventCoachProfileUrl" class="tw-w-full tw-max-w-7xl tw-cursor-pointer tw-flex tw-flex-col" v-if="!eventIsLive">
+                <div class="tw-relative">
                     <img
-                        class="corners-10"
+                        class="tw-rounded-lg tw-w-full"
                         :src="'http://cdn.musora.com/image/fetch/w_915,q_515,q_auto:best/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
                     >
                 </div>
             </a>
-            <div class="coach-event-video flex flex-column" v-if="eventIsLive">
-                <div style="width: 100%; padding-bottom: 56.25%; position: relative;">
+
+            <!-- Video -->
+            <div class="tw-h-full tw-w-full tw-flex tw-flex-col tw-max-w-7xl tw-mx-auto" v-if="eventIsLive">
+                <div class="tw-w-full tw-relative" style="padding-bottom: 56.25%;">
                     <iframe id="player"
-                            frameborder="0" allowfullscreen="1" allow="autoplay; encrypted-media" title="YouTube video player" :src="$_iframeSource"></iframe>
+                            frameborder="0" 
+                            class="tw-h-full tw-w-full tw-absolute tw-top-0 tw-left-0"
+                            allowfullscreen="1" 
+                            allow="autoplay; encrypted-media" 
+                            title="YouTube video player" 
+                            :src="$_iframeSource">
+                    </iframe>
                 </div>
             </div>
-            <div class="coach-event-data flex flex-column align-v-center">
-                <div class="mt-2" v-if="eventIsLive">
-                    <div class="flex flex-row">
-                        <div class="flex-center corners-5 bg-live text-white uppercase live-badge sans"><span>live</span></div>
+
+            <!-- Event Details -->
+            <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 tw-ml-0 md:tw-mt-0 md:tw-mx-5 xl:tw-mx-10">
+                
+                <!-- Live Badge -->
+                <div class="tw-mt-2"  v-if="eventIsLive">
+                    <div class="tw-flex flex-row">
+                        <div class="flex-center tw-text-white tw-uppercase tw-rounded-sm tw-bg-red-500 tw-text-sm tw-font-bold tw-py-0.5 tw-px-2"><span>live</span></div>
                     </div>
                 </div>
-                <div class="mv-2">
-                    <a :href="eventCoachProfileUrl" class="flex flex-row align-v-center font-no-underline">
-                        <div class="coach-avatar">
+
+                <!-- Coach -->
+                <div class="tw-my-3">
+                    <a :href="eventCoachProfileUrl" class="tw-flex tw-flex-row tw-items-center tw-no-underline">
+                        <div>
                             <img
-                                class="bg-grey-2 rounded drumeo"
+                                class="tw-rounded-full tw-border-3 tw-border-solid tw-w-16 tw-h-16"
+                                :class="[brandBorderColor]"
                                 :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,q_auto:best,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
                             >
                         </div>
-                        <h4 class="sans coach-name font-bold text-drumeo uppercase">{{ instructor.name }}</h4>
+                        <h4 class="tw-ml-3 tw-text-2xl lg:tw-text-32 tw-font-bold tw-uppercase"
+                            :class="[brandTextColor]"
+                        >{{ instructor.name }}</h4>
                     </a>
                 </div>
-                <div class="coach-event-details mb-2">
-                    <h3 class="subheading sans font-bold capitalize">{{ content.title }}</h3>
-                    <div class="coach-event-description mt-1" v-html="content.description"></div>
+
+                <!-- Event Title & Desc -->
+                <div class="tw-mb-3">
+                    <h3 class="tw-font-bold tw-capitalize">{{ content.title }}</h3>
+                    <div class="tw-mt-2" v-html="content.description"></div>
                 </div>
 
-                <div class="body mb-2 text-drumeo font-italic" v-if="!eventIsLive">
+                <!-- Countdown -->
+                <div class="tw-mb-3 lg:tw-mb-6 tw-italic" 
+                     :class="[brandTextColor]"
+                     v-if="!eventIsLive">
                   <span class="font-bold">Starts in:&nbsp;</span><span>{{ $_hours }}</span><span>&nbsp;Hours&nbsp;-&nbsp;</span><span>{{ $_minutes }}</span><span>&nbsp;Minutes&nbsp;-&nbsp;</span><span>{{ $_seconds }}</span><span>&nbsp;Seconds</span>
                 </div>
 
-                <div v-if="eventIsLive || showWatch">
-                    <div class="flex flex-row flex-wrap-md mt-2">
-                        <div class="coach-event-cta">
-                            <a href="/members/live">
-                                <button class="btn">
-                                    <span class="text-white bg-drumeo uppercase">
-                                        watch
-                                    </span>
-                                </button>
+                <!-- Event CTAs -->
+                <div class="tw-mb-3" v-if="eventIsLive || showWatch">
+                    <div class="tw-flex tw-flex-row tw-flex-wrap-md tw-mt-2">
+                        <div>
+                            <a href="/members/live" 
+                               class="tw-btn-primary tw-w-full" 
+                               :class="[brandBGColor]"
+                            >
+                                watch
                             </a>
                         </div>
 
-                        <div class="coach-event-cta my-list" v-if="eventIsLive">
-                            <button class="btn" @click.stop.prevent="toggleMyList">
-                                <span
-                                    class="text-drumeo bg-drumeo inverted"
-                                    :class="is_added ? 'is-added' : ''"
-                                >
-                                    <i class="fal fa-plus"></i>
-                                    My List
-                                </span>
+                        <div class=" tw-ml-3" v-if="eventIsLive">
+                            <button @click.stop.prevent="toggleMyList" 
+                                    :class="[is_added ? 'is-added tw-btn-primary ' + brandBGColor : 'tw-btn-secondary ' + brandTextColor ]"
+                            >
+                                <i class="fal fa-plus tw-mr-1"></i>
+                                My List
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div
-                    class="coach-event-subscribe"
-                    :class="{'pt-2': showWatch}"
-                    v-if="!eventIsLive"
+                <div :class="{'tw-pt-3': showWatch}"
+                     v-if="!eventIsLive"
                 >
                     <div>
-                        <button class="btn" data-open-modal="scheduleAddToCalendarModal">
-                            <span class="text-white bg-drumeo">
-                                <i class="fas fa-calendar-plus mr-1"></i>
-                                Subscribe to {{ instructor.name.split(' ')[0] }}'s Calendar
-                            </span>
+                        <button class="tw-btn-primary" 
+                                data-open-modal="scheduleAddToCalendarModal"
+                                :class="[brandBGColor]"
+                        >
+                            <i class="fas fa-calendar-plus tw-mr-1"></i>
+                            Subscribe to {{ instructor.name.split(' ')[0] }}'s Calendar
                         </button>
                     </div>
 
@@ -198,6 +218,15 @@ export default {
                 return this.content.is_added_to_primary_playlist;
             },
         },
+        brandBGColor() {
+            return 'tw-bg-' + this.brand;
+        },
+        brandBorderColor() {
+            return 'tw-border-' + this.brand;
+        },
+        brandTextColor() {
+            return 'tw-text-' + this.brand;
+        }
     },
     methods: {
         startCounter() {
@@ -235,213 +264,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss">
-@import '../../assets/sass/partials/variables';
-
-.coach-event {
-    margin-bottom: 100px;
-
-    #player {
-        width: 100%;
-    }
-
-    .coach-event-video {
-        max-width: 915px;
-        height: 100%;
-
-        iframe {
-            height: 100%;
-            position:absolute;
-            top:0;
-            left:0;
-        }
-
-        @include medium {
-            flex: 0 0 60%;
-        }
-
-        width: 100%;
-    }
-
-    .coach-event-image {
-        max-width: 915px;
-        cursor: pointer;
-
-        @include medium {
-            flex: 0 0 60%;
-        }
-
-        .coach-event-upcoming {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            font-size: 13px;
-            padding: 15px 90px 15px 15px;
-            background: -webkit-gradient(linear, right top, left top, from(transparent), to(rgba(8, 85, 160, 1)));
-            background: linear-gradient(to left, transparent 0%, rgba(8, 85, 160, 1) 100%);
-
-            @include small {
-                font-size: 17px;
-            }
-
-            @include medium {
-                font-size: 20px;
-            }
-
-            @include large {
-                font-size: 24px;
-            }
-        }
-
-        .coach-event-counter {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-
-            @include xLarge {
-                margin-bottom: 25px;
-            }
-
-            .coach-event-counter-inner {
-                background-color: rgba(0, 0, 0, 0.5);
-                padding: 10px;
-            }
-
-            .event-counter-number {
-                font-size: 18px;
-
-                @include small {
-                    font-size: 22px;
-                }
-
-                @include medium {
-                    font-size: 30px;
-                }
-
-                @include large {
-                    font-size: 50px;
-                }
-            }
-
-            .event-counter-label {
-                font-size: 9px;
-
-                @include small {
-                    font-size: 10px;
-                }
-
-                @include medium {
-                    font-size: 11px;
-                }
-
-                @include large {
-                    font-size: 12px;
-                }
-            }
-        }
-    }
-
-    .coach-event-data {
-        @include small {
-            margin-top: 25px;
-        }
-
-        @include medium {
-            margin-left: 50px;
-            margin-top: 0px;
-        }
-
-        .live-badge,
-        .viewer-count {
-            font-size: 15px;
-            line-height: 15px;
-            font-weight: 600;
-            height: 25px;
-            border-radius: 5px;
-        }
-
-        .live-badge {
-            width: 48px;
-        }
-
-        .viewer-count {
-            max-width: 54px;
-            width: 54px;
-
-            i {
-                margin-right: 3px;
-            }
-        }
-
-        .coach-avatar {
-            max-width: 50px;
-            max-height: 50px;
-
-            img.drumeo {
-                border: 3px solid #0B76DB;
-            }
-        }
-
-        .coach-name {
-            font-size: 18px;
-            margin-left: 10px;
-
-            @include small {
-                font-size: 24px;
-            }
-        }
-
-        .coach-event-details {
-            @include xSmallOnly {
-                margin-top: 0;
-            }
-
-            .coach-event-description {
-                font-size: 16px;
-                line-height: 1.4em;
-
-                @include small {
-                    font-size: 17px;
-                }
-            }
-        }
-
-        .coach-event-subscribe {
-            margin: 0 auto;
-
-            @include medium {
-                margin: 0;
-            }
-
-            &> div {
-                width: 100%;
-                max-width: 340px;
-            }
-        }
-
-        .coach-event-cta {
-            width: 40%;
-            min-width: 145px;
-
-            &.my-list {
-                span i {
-                    transition: transform .1s ease-in-out;
-                    margin-right: 5px;
-                    font-size: 18px;
-                }
-
-                span.is-added i {
-                    transform: rotate(45deg);
-                }
-            }
-        }
-
-        .coach-event-cta + .coach-event-cta {
-            margin-left: 20px;
-        }
-    }
-}
-</style>
