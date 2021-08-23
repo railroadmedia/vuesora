@@ -1,18 +1,11 @@
 <template>
     <a
-        :href="item.url"
+        :href="item.url+'?sortby_val=published_on'"
         class="content-table-row tw-flex bt-grey-1-1 tw-no-underline tw-px-4 tw-py-5"
         :class="[brandHoverColor]"
     >
         <!-- Avatar -->
-        <div class="tw-h-14 tw-w-14 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-relative tw-mr-3 tw-flex-shrink-0">
-            <div class="user-avatar"
-                 :class="[avatarClassObject, brand]"    
-            >
-                <img :src="item.authorAvatar" class="tw-rounded-full tw-border-3">
-                <i v-if="!item.authorAvatar" class="tw-text-2xl tw-text-white fas fa-comments"></i>
-            </div>
-        </div>
+
         <!-- Result Body -->
         <div class="tw-flex tw-flex-col tw-text-black tw-mr-10">
             <p
@@ -102,7 +95,7 @@ export default {
         },
 
         brandHoverColor() {
-            return 'hover:tw-bg-'+this.brand+'-lightest'
+            return 'hover:tw-bg-'+this.brand+'-100'
         },
 
         avatarClassObject() {

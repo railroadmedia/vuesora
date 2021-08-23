@@ -12,30 +12,46 @@
             </i>
         </div>
        
-        <div class="tw-grid tw-grid-cols-7 tw-grid-rows-2 tw-w-full tw-min-w-0 tw-pr-0 lg:tw-pr-10"
-             :class="[ (forum.description)? 'tw-grid-flow-col': 'tw-grid-flow-row' ]">
-             <!-- Title -->
-            <h4 class="tw-leading-6 tw-col-span-5 tw-text-lg tw-font-bold tw-inline-flex tw-items-start md:tw-items-center tw-row-span-1 "
-                :class="{ 'tw-row-span-2': !forum.description }">{{ forum.title }}</h4>
+        <div class="tw-w-full tw-min-w-0 tw-pr-0"
+        >
+            <div class="tw-flex">
+                <!-- Title -->
+                <h4 class="tw-leading-6 tw-text-lg tw-font-bold tw-inline-flex tw-items-start md:tw-items-center tw-row-span-1 tw-pr-3">
+                    {{ forum.title }}
+                </h4>
+
+                <!-- Reply Amount MOBILE ONLY -->
+                <div class="tw-ml-auto tw-items-start tw-text-gray-600 tw-mt-1 tw-mr-4 tw-flex-shrink-0 tw-w-16 tw-text-left tw-flex md:tw-hidden">
+                    <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top tw-ml-auto sm:tw-ml-0 sm:tw-mr-auto">
+                        <i class="fas fa-comment-lines tw-mr-1"></i>
+                        {{ replyCount }}
+
+                        <!-- Tool Tip -->
+                        <div class="tw-tooltip tw-tooltip-dark">
+                            Total Threads
+                        </div>
+                    </h6>
+                </div>
+
+            </div>
             
-             <!-- Description -->
-            <p v-if="forum.description" class=" tw-col-span-7 md:tw-col-span-5  tw-text-13">
+            <!-- Description -->
+            <p v-if="forum.description" class=" md:tw-pr-10 tw-text-13  tw-mt-2">
                 {{ forum.description }}
             </p>
+        </div>
 
-            <!-- Reply Amount -->
-            <div class="tw-text-gray-600 tw-text-left tw-px-4 tw-col-span-2 md:tw-row-span-2 tw-inline-flex tw-mt-1 tw-items-start md:tw-items-center"
-                 :class="[ (forum.description)? 'tw-row-span-1': 'tw-row-span-2' ]">
-                <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top tw-ml-auto">
-                    <i class="fas fa-comment-lines tw-mr-1"></i>
-                    {{ replyCount }}
+        <!-- Reply Amount -->
+        <div class="tw-items-center tw-text-gray-600 tw-mr-4 lg:tw-mr-12 tw-flex-shrink-0 tw-w-16 tw-text-left tw-hidden md:tw-flex">
+            <h6 class="tw-text-13 tw-font-bold tw-with-tooltip tw-tooltip-center tw-tooltip-top tw-ml-auto sm:tw-ml-0 sm:tw-mr-auto">
+                <i class="fas fa-comment-lines tw-mr-1"></i>
+                {{ replyCount }}
 
-                    <!-- Tool Tip -->
-                    <div class="tw-tooltip tw-tooltip-dark">
-                        Total Threads
-                    </div>
-                </h6>
-            </div>
+                <!-- Tool Tip -->
+                <div class="tw-tooltip tw-tooltip-dark">
+                    Total Threads
+                </div>
+            </h6>
         </div>
 
         <!-- Post Date -->
@@ -69,7 +85,7 @@
                 return 'tw-bg-'+this.brand;
             },
             brandHoverColor() {
-                return 'hover:tw-bg-'+this.brand+'-lightest'
+                return 'hover:tw-bg-'+this.brand+'-100'
             },
             forumIcon() {
                 return this.forum.icon || 'fa-comments'
