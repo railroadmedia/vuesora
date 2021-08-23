@@ -2,108 +2,113 @@
     <div class="container forum-post tw-px-4 tw-py-12">
         <div class="flex flex-column">
 
-            <div class="tw-flex flex-wrap align-v-center tw-mb-8 tw-flex-col md:tw-flex-row">
+            <div class="tw-flex flex-wrap align-v-center tw-mb-6 md:tw-mb-8 tw-flex-col md:tw-flex-row">
                 
-                <div class="tw-flex tw-w-full tw-mb-6 tw-justify-center md:tw-justify-start tw-items-center md:tw-mb-0 md:tw-w-1/2">
-                    <a :href="previousPage" class="no-decoration mr-1 back-arrow">
-                        <i class="fas fa-arrow-circle-left text-grey-2 tw-text-4xl"></i>
-                    </a>
+                <div class="tw-flex tw-w-full tw-mb-5 tw-justify-center md:tw-justify-start tw-items-center md:tw-mb-0 md:tw-w-1/2">
                     <h1 class="heading thread-title">
                         {{ thread.title }}
                     </h1>
                 </div>
                 
-                <div class="tw-flex tw-w-full tw-flex-col md:tw-w-1/2 md:tw-flex-row">
+                <div class="tw-flex tw-w-full tw-flex-col md:tw-flex-row md:tw-w-1/2">
 
-                    <div class="tw-flex tw-justify-center tw-mb-3 md:tw-mb-0 md:tw-w-1/2 md:tw-justify-end xl:tw-w-2/3">
-                        
-                        <!-- Edit or delete the thread -->
-                        <button
-                            v-if="currentUser.isAdmin || currentUser.isOwner"
-                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
-                            @click="update"
+                    <div class="tw-flex tw-items-center tw-w-full tw-mb-5 md:tw-mb-0">
+                        <!-- Mobile Back Button -->
+                        <a :href="previousPage" 
+                            class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400 md:tw-hidden"
                         >
-                            <span
-                                class="inverted"
-                                :class="[themeTextClass, themeBgClass]"
+                            <i class="fas fa-arrow-circle-left tw-text-4xl"></i>
+                        </a>
+
+                        <div class="tw-flex tw-flex-grow tw-justify-center tw-mr-6 md:tw-mr-0 md:tw-w-1/2 md:tw-justify-end xl:tw-w-2/3">
+                            
+                            <!-- Edit or delete the thread -->
+                            <button
+                                v-if="currentUser.isAdmin || currentUser.isOwner"
+                                class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
+                                @click="update"
                             >
-                                <i class="fas fa-edit"></i>
-                            </span>
+                                <span
+                                    class="inverted"
+                                    :class="[themeTextClass, themeBgClass]"
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </span>
 
-                            <!-- Tool Tip -->
-                            <div class="tw-tooltip tw-tooltip-dark">
-                                Edit
-                            </div>
-                        </button>
+                                <!-- Tool Tip -->
+                                <div class="tw-tooltip tw-tooltip-dark">
+                                    Edit
+                                </div>
+                            </button>
 
-                        <!-- Pins the post to the top of the thread index list -->
-                        <button
-                            v-if="currentUser.isAdmin"
-                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
-                            @click="pinPost"
-                        >
-                            <span :class="[themeBgClass, isPinned ? 'text-white' : 'inverted ' + themeTextClass]">
-                                <i class="fas fa-thumbtack"></i>
-                            </span>
+                            <!-- Pins the post to the top of the thread index list -->
+                            <button
+                                v-if="currentUser.isAdmin"
+                                class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
+                                @click="pinPost"
+                            >
+                                <span :class="[themeBgClass, isPinned ? 'text-white' : 'inverted ' + themeTextClass]">
+                                    <i class="fas fa-thumbtack"></i>
+                                </span>
 
-                            <!-- Tool Tip -->
-                            <div class="tw-tooltip tw-tooltip-dark">
-                                Pin
-                            </div>
-                        </button>
+                                <!-- Tool Tip -->
+                                <div class="tw-tooltip tw-tooltip-dark">
+                                    Pin
+                                </div>
+                            </button>
 
-                        <!-- Disables the option to reply to the post -->
-                        <button
-                            v-if="currentUser.isAdmin"
-                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
-                            @click="lockPost"
-                        >
-                            <span :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
-                                <i class="fas fa-lock"></i>
-                            </span>
+                            <!-- Disables the option to reply to the post -->
+                            <button
+                                v-if="currentUser.isAdmin"
+                                class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
+                                @click="lockPost"
+                            >
+                                <span :class="[themeBgClass, isLocked ? 'text-white' : 'inverted ' + themeTextClass]">
+                                    <i class="fas fa-lock"></i>
+                                </span>
 
-                            <!-- Tool Tip -->
-                            <div class="tw-tooltip tw-tooltip-dark">
-                                Lock
-                            </div>
-                        </button>
+                                <!-- Tool Tip -->
+                                <div class="tw-tooltip tw-tooltip-dark">
+                                    Lock
+                                </div>
+                            </button>
 
-                        <!-- Hides Signatures -->
-                        <button
-                            class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
-                            @click="hideSignatures"
-                        >
-                            <span :class="[themeBgClass, signaturesHidden ? 'text-white' : 'inverted ' + themeTextClass]">
-                                <i class="fas fa-eye"></i>
-                            </span>
+                            <!-- Hides Signatures -->
+                            <button
+                                class="btn collapse-square short mr-1 tw-with-tooltip tw-tooltip-center"
+                                @click="hideSignatures"
+                            >
+                                <span :class="[themeBgClass, signaturesHidden ? 'text-white' : 'inverted ' + themeTextClass]">
+                                    <i class="fas fa-eye"></i>
+                                </span>
 
-                            <!-- Tool Tip -->
-                            <div class="tw-tooltip tw-tooltip-dark">
-                                Hide All Signatures
-                            </div>
-                        </button>
+                                <!-- Tool Tip -->
+                                <div class="tw-tooltip tw-tooltip-dark">
+                                    Hide All Signatures
+                                </div>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="tw-flex tw-justify-center md:tw-w-1/2 xl:tw-w-1/3">
+                    <div class="tw-flex tw-justify-center tw-items-center md:tw-w-1/2">
                         <!-- Follow -->
                         <button
-                            class="btn collapse-150 short mr-1"
+                            class="tw-btn-primary tw-btn-small tw-w-full tw-mr-2 bg-drumeo tw-px-4 tw-h-10"
+                            :class="[brandBgColor]"
                             @click="followPost"
                         >
-                            <span :class="[themeBgClass, isFollowed ? 'text-white' : 'inverted ' + themeTextClass]">
+                            <span>
                                 {{ isFollowed ? 'Followed' : 'Follow' }}
                             </span>
                         </button>
 
                         <!-- Reply -->
                         <button
-                            class="btn collapse-150 short"
+                            class="tw-btn-primary tw-btn-small tw-w-full bg-drumeo tw-px-4 tw-h-10"
+                            :class="[brandBgColor]"
                             @click="scrollToReply"
                         >
-                            <span
-                                class="inverted"
-                                :class="[themeTextClass, themeBgClass]"
-                            >
+                            <span>
                                 Add Reply
                             </span>
                         </button>
@@ -112,15 +117,50 @@
                 </div>
             </div>
 
-            <div
-                v-if="totalPages > 1"
-                class="flex flex-row pagination-row align-h-right tw-mb-8"
-            >
-                <pagination
-                    :current-page="currentPage"
-                    :total-pages="totalPages"
-                    @pageChange="handlePageChange"
-                ></pagination>
+            <div class="tw-flex tw-flex-col-reverse md:tw-flex-row tw-mb-8 tw-flex-wrap">
+                <!-- Previous Button -->
+                <div class="tw-hidden tw-w-full tw-justify-center tw-mb-6 md:tw-mb-0 md:tw-justify-start sm:tw-w-auto md:tw-inline-flex">
+                    <a :href="previousPage"
+                        class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
+                    >
+                        <i class="fas fa-arrow-circle-left tw-text-4xl tw-mr-2"></i>
+                        <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forum</span>
+                    </a>
+                </div>
+                <!-- Pagination -->
+                <div class="tw-inline-flex tw-flex-grow tw-w-full tw-order-first md:tw-order-none sm:tw-w-auto" v-if="totalPages > 1">
+                    <pagination
+                        class="tw-justify-center"
+                        :current-page="currentPage"
+                        :total-pages="totalPages"
+                        @pageChange="handlePageChange"
+                    ></pagination>
+                </div>
+                <!-- Filter -->
+                <div class="tw-inline-flex form-group tw-w-full tw-mb-6 md:tw-ml-auto md:tw-mb-0 md:tw-w-80 md:tw-pl-4">
+                    <div
+                        class="form-group xs-12"
+                        style="width:100%;"
+                    >
+                        <select
+                            id="postSort"
+                            v-model="filterInterface"
+                            class="has-input tw-bg-white"
+                        >
+                            <option
+                                v-for="option in filterOptions"
+                                :key="option.label"
+                                :value="option.value"
+                            >
+                                {{ option.label }}
+                            </option>
+                        </select>
+                        <label
+                            for="postSort"
+                            :class="brand"
+                        >Sort By... </label>
+                    </div>
+                </div>
             </div>
 
             <forum-thread-post
@@ -140,17 +180,25 @@
                 @openLikes="addLikeUsersToModal"
                 @deletePost="handlePostDelete"
                 @replyToPost="handleReplyToPost"
+                @updateCurrentPostID="changeCurrentPostID"
             ></forum-thread-post>
 
-            <div
-                v-if="totalPages > 1"
-                class="flex flex-row pagination-row align-h-right"
-            >
-                <pagination
-                    :current-page="currentPage"
-                    :total-pages="totalPages"
-                    @pageChange="handlePageChange"
-                ></pagination>
+            <div class="tw-flex tw-flex-row tw-mb-8 tw-flex-wrap">
+                <div class="tw-w-full tw-inline-flex tw-justify-center tw-mb-4 sm:tw-mb-0 sm:tw-justify-start sm:tw-w-auto">
+                    <a :href="previousPage"
+                        class="tw-no-underline tw-transition tw-inline-flex tw-text-gray-300 tw-items-center hover:tw-text-gray-400"
+                    >
+                        <i class="fas fa-arrow-circle-left tw-text-4xl tw-mr-2"></i>
+                        <span class="tw-font-roboto-condensed tw-font-bold tw-text-sm tw-uppercase">Back To Forum</span>
+                    </a>
+                </div>
+                <div class="tw-flex-grow tw-w-full sm:tw-w-auto" v-if="totalPages > 1">
+                    <pagination
+                        :current-page="currentPage"
+                        :total-pages="totalPages"
+                        @pageChange="handlePageChange"
+                    ></pagination>
+                </div>
             </div>
 
             <!-- Thread Reply Section -->
@@ -203,16 +251,21 @@
                             :value="this.thread.id"
                         >
 
-                        <div class="flex flex-row align-h-right mt-2">
+                        <div class="flex tw-flex-col md:tw-flex-row mt-2 tw-justify-center md:tw-justify-between">
+                            <a :href="signatureURL" 
+                               class="tw-btn-primary tw-text-gray-400 tw-bg-transparent tw-px-4 hover:tw-bg-gray-100 tw-mb-2"
+                            >
+                                <i class="fas fa-file-signature tw-mr-1"></i>
+                                Add Signature
+                            </a>
+                            
                             <button
-                                class="btn collapse-250 thread-reply-button"
+                                class="tw-btn-primary thread-reply-button"
+                                :class="themeBgClass"
                                 type="submit"
                                 :disabled="formDisabled"
                             >
-                                <span
-                                    class="text-white corners-10"
-                                    :class="themeBgClass"
-                                >
+                                <span>
                                     Reply
                                 </span>
                             </button>
@@ -231,6 +284,34 @@
                 :requesting-like-users="requestingLikeUsers"
                 @loadMoreLikeUsers="addLikeUsersToModal"
             ></comment-likes-modal>
+
+            <!-- Share Post Modal -->
+            <div id="sharePostModal"
+                 class="modal"
+            >
+                <div class="flex flex-column bg-white corners-3 shadow ph-2 tw-max-w-md tw-rounded-lg">
+                    <div class="tw-flex tw-flex-col mb-2 pv-3">
+                        <h2 class="tw-text-lg tw-font-bold tw-mb-2">Share Link</h2>
+                            <p v-if="shareLinkCopied" class="tw-text-sm tw-text-green-400 tw-mb-3">Link copied successfully. You are good to go!</p>
+                            <p v-else class="tw-text-sm tw-text-gray-400 tw-mb-3">Click on the button to copy the link to your clipboard.</p>
+                        <div class="tw-w-full tw-flex tw-rounded-full tw-bg-gray-100">
+                            <input class="tw-text-base tw-flex-grow tw-border-0 tw-bg-transparent tw-text-gray-400 tw-pl-5 focus:tw-outline-none" 
+                                   :value="sharePostLink" 
+                                   ref="postLinkInput"
+                                   readonly
+                            >
+                            <button class="tw-btn-primary tw-px-10" 
+                                    :class="[brandBgColor]"
+                                    role="button" 
+                                    title="copy link to clipboard"
+                                    @click="copyShareLink()">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -308,9 +389,43 @@ export default {
             requestingLikeUsers: true,
             totalLikeUsers: 0,
             likeUsersPage: 1,
+            currentPostID: '',
+            shareLinkCopied: false,
+            filterOptions: [
+                {
+                    label: 'Oldest',
+                    value: 'published_on'
+                },
+                {
+                    label: 'Most recent',
+                    value: '-published_on'
+                },
+                {
+                    label: 'My posts',
+                    value: 'mine'
+                }
+            ],
         };
     },
     computed: {
+        signatureURL() {
+            if(this.brand === "drumeo") {
+                return '/members/settings/profile#signatureForm'
+            } else if (this.brand === "guitareo") {
+                return '/members/account/settings#signatureForm';
+            } else {
+                return '/members/profile/settings#signatureForm';
+            }
+        },
+
+        brandBgColor() {
+            return `tw-bg-${this.brand}`;
+        },
+
+        sharePostLink() {
+            return `${window.location.protocol }//${window.location.host}/members/forums/jump-to-post/${this.currentPostID}`;
+        },
+
         postReplyInterface: {
             get() {
                 return this.postReplyBody;
@@ -342,6 +457,27 @@ export default {
                 lifetime: this.currentUser.access_level === 'lifetime',
             };
         },
+        currentFilter: {
+            get() {
+                const urlParams = QueryString.parse(location.search);
+                if (urlParams['sortby_val'] != null) {
+                    return urlParams['sortby_val'];
+                }
+                return 'published_on';
+            },
+            set(val) {
+                return val;
+            }  
+        },
+        filterInterface: {
+            get() {
+                return this.filterOptions.filter(option => option.value === this.currentFilter)[0].value;
+            },
+            set(value) {
+                this.currentFilter = value;
+                this.handleFilterChange(value);
+            },
+        },
     },
 
     beforeMount() {
@@ -363,6 +499,31 @@ export default {
         });
     },
     methods: {
+        handleFilterChange(value) {
+            if (value != 0) {
+                window.location.href = `${location.protocol}//${location.host 
+                }${location.pathname}?sortby_val=${value}`;
+            } else {
+                window.location.href = `${location.protocol}//${location.host 
+                }${location.pathname}`;
+            }
+        },
+
+        copyShareLink() {
+            //Select the text
+            this.$refs.postLinkInput.select();
+            this.$refs.postLinkInput.setSelectionRange(0, 99999); /* For mobile devices */
+            //Copy to Clipboard
+            document.execCommand("copy");
+            //Success Message
+            this.shareLinkCopied = true;
+        },
+
+        changeCurrentPostID(id) {
+            this.shareLinkCopied = false;
+            this.currentPostID = id;
+        },
+
         update() {
             window.location.href = this.thread.update;
         },
@@ -524,6 +685,11 @@ export default {
 </script>
 <style lang="scss">
     @import '../../../assets/sass/partials/variables';
+
+    //remove the highlight from share post modal
+    // #sharePostModal input::selection {
+    //     background-color: transparent;
+    // }
 
     .thread-title {
         @include xSmallOnly {

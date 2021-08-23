@@ -1,50 +1,61 @@
 @import './_variables.scss';
 
-.forum-post, .comment-post {
+.post-body {
+  word-break:break-word;
+  word-wrap:break-word;
+}
 
-  .post-body {
-    word-break:break-word;
-    word-wrap:break-word;
+span.post-id {
+  display:none;
+}
 
-    span.post-id {
-      display:none;
-    }
+blockquote { 
+  margin: 0 0 0 10px; 
+  padding: 10px; 
+  border-radius: 7px; 
+  border-left: 3px solid;
 
-    blockquote {
-      border:1px solid #d1d1d1;
-      border-right:none;
-      border-bottom:none;
-      margin:0 0 0 1em;
-      padding:1em;
-      border-radius:3px 3px 0 0;
-    }
-
-    .quote-heading {
-      background:#f3f9ff;
-      padding:6px 15px;
-      margin:-1em;
-
-      strong {
-        font-size:13px;
-      }
-      em {
-        font-size:10px;
-        font-style:italic;
-        text-transform:uppercase;
-        color:#a8a8a8;
-      }
-    }
+  &.drumeo, .drumeo & {
+    border-color: $drumeoBlue; 
+    background-color: rgba($drumeoBlue, .05); 
+  }
+  &.pianote, .pianote & {
+    border-color: $pianoteRed; 
+    background-color: rgba($pianoteRed, .05);
+  }
+  &.guitareo, .guitareo & {
+    border-color: $guitareoGreen; 
+    background-color: rgba($guitareoGreen, .05);
+  }
+  &.singeo, .singeo & {
+    border-color: $singeoPurple; 
+    background-color: rgba($singeoPurple, .05);
   }
 
-  .post-body.guitareo {
-    p {
-      margin-top: 14px;
-    }
+  @media (min-width: 640px) {
+    margin: 0 0 0 1em; 
+    padding: 10px 30px;
   }
+} 
 
-  &.pinned {
-    background:transparentize($recordeoYellow, 0.9);
+.quote-heading {
+  strong { font-size:13px; }
+  em { 
+    font-size:10px; 
+    font-style:italic;
+    text-transform:uppercase;
+    color:#5e5e5e; 
+  } 
+}
+
+.post-body.guitareo {
+  p {
+    margin-top: 14px;
   }
+}
+
+.pinned {
+  background:transparentize($recordeoYellow, 0.9);
 }
 
 .forum-post .avatar-column {

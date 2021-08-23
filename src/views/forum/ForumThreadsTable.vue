@@ -3,7 +3,7 @@
     <div class="tw-flex tw-flex-col tw-flex-grow tw-w-full">
 
         <!-- Forum Tabs -->
-        <div v-if="!onlyFollowed" 
+        <div v-if="!onlyFollowed && showTabs" 
             class="tw-flex tw-px-4 tw-mt-4">
             <div class="tw-flex tw-flex-col tw-mb-6">
                 <div class="tw-flex">
@@ -27,40 +27,90 @@
             </div>
         </div>
 
-        <!-- Search Bar -->
+        <!-- All Threads -->
+        <div v-if="!showTabs && !onlyFollowed"
+             class="tw-flex tw-px-4 tw-mt-4"
+        >
+            <div class="tw-flex tw-flex-col tw-mb-6">
+                <div class="tw-no-underline tw-mr-6 tw-text-black tw-border-0 tw-border-solid tw-border-b-2"
+                        :class="[ brandBorderColor ]"
+                >
+                    <h3 class="tw-text-2xl tw-cursor-pointer">
+                        All New Threads
+                    </h3>
+                </div>
+            </div>   
+        </div>
+
+        <!-- Search -->
         <div class="tw-flex tw-px-2 ">
             <div class="tw-flex tw-flex-col tw-mb-6 tw-w-full">
-                <div class="tw-flex">
-                    <div class="tw-flex tw-flex-col tw-w-full tw-mr-3 form-group">
-                        <input
-                            id="threadSearch"
-                            ref="searchInput"
-                            v-model.lazy="searchInterface"
-                            type="text"
-                        >
-                        <label
-                            for="threadSearch"
-                            :class="brand"
-                        >Search</label>
+                <div class="tw-flex tw-flex-wrap">
 
-                        <span
-                            v-if="searching"
-                            id="clearSearch"
-                            class="tw-p-4 tw-cursor-pointer tw-absolute tw-right-0"
-                            @click="clearSearch"
-                        >
-                            <i class="fas fa-times"></i>
-                        </span>
-                    </div>
-                    <div class="tw-flex tw-flex-col">
-                        <button
-                            class="btn btn tw-w-12 tw-h-12"
-                            @click="$refs.searchInput.blur()"
-                        >
-                            <span class="tw-bg-white tw-text-black tw-border-none tw-shadow-none">
-                                <i class="fas fa-search"></i>
+                    <template v-if="!onlyFollowed && !searching">
+                        <!-- Filter -->
+                        <div class="flex tw-ml-0 form-group tw-w-full md:tw-w-1/3 md:tw-pr-10">
+                            <div
+                                class="form-group xs-12"
+                                style="width:100%;"
+                            >
+                                <select
+                                    id="threadSort"
+                                    v-model="filterInterface"
+                                    class="has-input tw-bg-white"
+                                >
+                                    <option
+                                        v-for="option in filterOptions"
+                                        :key="option.label"
+                                        :value="option.value"
+                                    >
+                                        {{ option.label }}
+                                    </option>
+                                </select>
+                                <label
+                                    for="threadSort"
+                                    :class="brand"
+                                >Sort By... </label>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Search Bar -->
+                    <div class="tw-flex tw-w-full tw-mb-4 tw-order-first md:tw-order-last"
+                        :class="[!onlyFollowed && !searching ? 'md:tw-w-2/3' : '']"
+                    >
+                        <div class="tw-flex tw-flex-col tw-w-full tw-w-full tw-mr-3 form-group">
+                            <input
+                                id="threadSearch"
+                                ref="searchInput"
+                                v-model.lazy="searchInterface"
+                                type="text"
+                            >
+                            <label
+                                for="threadSearch"
+                                :class="brand"
+                            >Search</label>
+
+                            <span
+                                v-if="searching"
+                                id="clearSearch"
+                                class="tw-p-4 tw-cursor-pointer tw-absolute tw-right-0"
+                                @click="clearSearch"
+                            >
+                                <i class="fas fa-times"></i>
                             </span>
-                        </button>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="tw-flex tw-flex-col">
+                            <button
+                                class="tw-btn-primary tw-px-5 sm:tw-px-12"
+                                :class="[brandBGColor]"
+                                @click="$refs.searchInput.blur()"
+                            >
+                                <i class="fas fa-search tw-mr-1 tw-text-sm"></i>
+                                <span>Search</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -86,11 +136,35 @@
 
             <!-- Thread Items -->
             <div v-if="onlyFollowed">
+                <!-- Latest Thread Button -->
+                <div class="tw-mb-6 tw-flex tw-justify-center ">
+                    <a :href="latestThreadsUrl" class="tw-btn-primary" :class="[brandBGColor]">View All Latest Threads</a>
+                </div>
+
                 <h2 class="tw-text-32 tw-mb-6">Followed Threads</h2>
 
                 <template v-if="pinnedThreads.length === 0 && threadsArray.length === 0">
                     <p class="tw-text-base">Any thread you reply to or follow will appear here.</p>
                 </template>
+            </div>
+            
+            <!-- Threads Table Header -->
+            <div v-if="pinnedThreads.length !== 0 || threadsArray.length !== 0"
+                class="tw-flex tw-bg-gray-200 tw-h-10 tw-w-full tw-items-center tw-rounded-t-lg"
+            >   
+                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-pl-8 tw-w-full lg:tw-w-9/12">
+                    Thread Details
+                </div>
+                <div v-if="!showTabs && !onlyFollowed" 
+                     class="tw-uppercase tw-mx-6 tw-w-52 tw-text-gray-500 tw-text-sm tw-font-bold tw-hidden tw-flex-shrink-0 xl:tw-inline-flex">
+                    Forum
+                </div>
+                <div class="tw-uppercase tw-pr-2 tw-text-gray-500 tw-text-sm tw-font-bold tw-hidden sm:tw-inline-flex tw-flex-shrink-0 tw-w-24">
+                    Replies
+                </div>
+                <div class="tw-uppercase tw-text-gray-500 tw-text-sm tw-font-bold tw-inline-flex tw-px-2 tw-flex-shrink-0 tw-w-28 lg:tw-px-8 lg:tw-w-full lg:tw-max-w-xs">
+                    Latest Post
+                </div>
             </div>
 
             <forum-threads-table-item
@@ -186,37 +260,36 @@ export default {
             type: Boolean,
             default: () => false,
         },
+        showTabs: {
+            type: Boolean,
+            default: () => true,
+        },
+      latestThreadsUrl: {
+        type: String,
+        default: () => '/threads/latest',
+      },
     },
     data() {
         return {
             forumsArray: this.forums,
             threadsArray: this.threads,
             searchTerm: '',
-            showTabs: false,
             filter: 'all',
             timeout: null,
             followed: false,
             filterOptions: [
                 {
-                    label: 'All',
-                    value: '0',
+                    label: 'Oldest',
+                    value: 'last_post_published_on'
                 },
                 {
-                    label: 'General',
-                    value: '1',
+                    label: 'Most recent',
+                    value: '-last_post_published_on'
                 },
                 {
-                    label: 'Gear',
-                    value: '2',
-                },
-                {
-                    label: 'Website Feedback',
-                    value: '3',
-                },
-                {
-                    label: 'Off Topic',
-                    value: '4',
-                },
+                    label: 'My threads',
+                    value: 'mine'
+                }
             ],
             loading: false,
             searching: false,
@@ -228,7 +301,10 @@ export default {
     },
     computed: {
         brandBorderColor() {
-            return 'tw-border-'+this.brand;
+            return 'tw-border-' + this.brand;
+        },
+        brandBGColor() {
+            return 'tw-bg-'+ this.brand;
         },
         currentUrl(){
             return location.href.replace(location.search, '');
@@ -238,13 +314,6 @@ export default {
         },
         totalSearchPages() {
             return Math.ceil(this.searchResultsCount / this.searchResultsPageLength);
-        },
-        currentFilter() {
-            const urlParams = QueryString.parse(location.search);
-            if (urlParams['category_ids[]'] != null) {
-                return urlParams['category_ids[]'];
-            }
-            return '0';
         },
         searchInterface: {
             get() {
@@ -267,16 +336,6 @@ export default {
                 } else {
                     this.searching = false;
                 }
-            },
-        },
-        filterInterface: {
-            get() {
-                return this.filterOptions.filter(option => option.value === this.currentFilter)[0].value;
-            },
-            set(value) {
-                this.currentFilter = value;
-
-                this.handleFilterChange(value);
             },
         },
         isFollowedSection() {
@@ -308,6 +367,27 @@ export default {
             }
 
             return '0';
+        },
+        currentFilter: {
+            get() {
+                const urlParams = QueryString.parse(location.search);
+                if (urlParams['sortby_val'] != null) {
+                    return urlParams['sortby_val'];
+                }
+                return '-last_post_published_on';
+            },
+            set(val) {
+                return val;
+            }
+        },
+        filterInterface: {
+            get() {
+                return this.filterOptions.filter(option => option.value === this.currentFilter)[0].value;
+            },
+            set(value) {
+                this.currentFilter = value;
+                this.handleFilterChange(value);
+            },
         },
 
     },
@@ -354,7 +434,7 @@ export default {
 
             urlParams.page = payload.page;
 
-            window.location.href = `${location.protocol}//${location.host 
+            window.location.href = `${location.protocol}//${location.host
             }${location.pathname}?${QueryString.stringify(urlParams)}`;
         },
 
@@ -365,10 +445,10 @@ export default {
 
         handleFilterChange(value) {
             if (value != 0) {
-                window.location.href = `${location.protocol}//${location.host 
-                }${location.pathname}?category_ids[]=${value}`;
+                window.location.href = `${location.protocol}//${location.host
+                }${location.pathname}?sortby_val=${value}`;
             } else {
-                window.location.href = `${location.protocol}//${location.host 
+                window.location.href = `${location.protocol}//${location.host
                 }${location.pathname}`;
             }
         },
