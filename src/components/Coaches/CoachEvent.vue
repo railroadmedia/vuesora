@@ -30,9 +30,9 @@
             <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 tw-ml-0 md:tw-mt-0 md:tw-mx-5 xl:tw-mx-10">
                 
                 <!-- Live Badge -->
-                <div class="tw-mt-2"  v-if="eventIsLive">
+                <div class="tw-my-2"  v-if="eventIsLive">
                     <div class="tw-flex flex-row">
-                        <div class="flex-center tw-text-white tw-uppercase tw-rounded-sm tw-bg-red-500 tw-text-sm tw-font-bold tw-py-0.5 tw-px-2"><span>live</span></div>
+                        <div class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-py-0.5 tw-px-2"><span>live</span></div>
                     </div>
                 </div>
 
@@ -46,16 +46,16 @@
                                 :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,q_auto:best,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
                             >
                         </div>
-                        <h4 class="tw-ml-3 tw-text-2xl lg:tw-text-32 tw-font-bold tw-uppercase"
+                        <h4 class="tw-ml-3 tw-text-lg tw-font-bold tw-uppercase"
                             :class="[brandTextColor]"
                         >{{ instructor.name }}</h4>
                     </a>
                 </div>
 
                 <!-- Event Title & Desc -->
-                <div class="tw-mb-3">
-                    <h3 class="tw-font-bold tw-capitalize">{{ content.title }}</h3>
-                    <div class="tw-mt-2" v-html="content.description"></div>
+                <div class="tw-mb-4">
+                    <h3 class="tw-font-bold tw-capitalize tw-text-2xl lg:tw-text-32">{{ content.title }}</h3>
+                    <div class="tw-mt-2 tw-text-base" v-html="content.description"></div>
                 </div>
 
                 <!-- Countdown -->
