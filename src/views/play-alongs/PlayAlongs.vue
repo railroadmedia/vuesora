@@ -573,20 +573,18 @@ export default {
                 `mp3_${this.drums ? 'yes' : 'no'}_drums_${this.click ? 'yes' : 'no'}_click_url`,
             );
 
-            if (this.audioPlayer.src !== trackUrl) {
-                this.updateSource(trackUrl, resume, currentTime);
+            this.updateSource(trackUrl, resume, currentTime);
 
-                if (!resume) {
-                    this.$nextTick(() => {
-                        const domElement = this.$refs[`list${this.activeItem.id}`][0].$el;
+            if (!resume) {
+                this.$nextTick(() => {
+                    const domElement = this.$refs[`list${this.activeItem.id}`][0].$el;
 
-                        window.scrollTo({
-                            top: domElement.offsetTop - 100,
-                            left: 0,
-                            behavior: 'smooth',
-                        });
+                    window.scrollTo({
+                        top: domElement.offsetTop - 100,
+                        left: 0,
+                        behavior: 'smooth',
                     });
-                }
+                });
             }
         },
 
