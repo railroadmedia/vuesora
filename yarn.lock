@@ -1083,12 +1083,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tinymce/tinymce-vue@^1.0.6":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-vue/-/tinymce-vue-1.1.2.tgz#78322742d268b67ad4da5544ad03cd9b7cb30326"
-  integrity sha512-nknWxb5gQv8lYXtJ7S/T8f/S15iUVcIKZfBWPRtvihv7GVrPZu3lDeNfvpdgR5VHG8YZakdhVhg/zvaT5XzPNQ==
-  dependencies:
-    vue "^2.5.17"
+"@tinymce/tinymce-vue@^3":
+  version "3.2.8"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-vue/-/tinymce-vue-3.2.8.tgz#014571b52ec8fa83665a7fa887bf65140207de71"
+  integrity sha512-jEz+NZ0g+FZFz273OEUWz9QkwPMyjc5AJYyxOgu51O1Y5UaJ/6IUddXTX6A20mwCleEv5ebwNYdalviafx4fnA==
 
 "@types/glob@^7.1.1":
   version "7.1.3"
@@ -11427,10 +11425,10 @@ tiny-emitter@^2.0.0:
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
-tinymce@^5.7.1:
-  version "5.8.0"
-  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.8.0.tgz#3ffd1d96da2619153bd0bd2023a382052339bb0a"
-  integrity sha512-1bOI3k+1D76rVjAJC3XkHezXJVghurnKBDREF1STHBLTQUY17XTbaDNJUxNgJqJHa2xg1udd5I1bzdfSd77DGw==
+tinymce@^5.9.1:
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.9.1.tgz#95100cd6748bbe5a5dfaaf8353f129756a0a5372"
+  integrity sha512-GaG15OhQB1zR2L63fywhEAViTxkAlhX5JbA+48+O0zCo1FwDuQ8iUVi/FzaOX9Uo7ULp+Y2gu4r3P4ZNueDVPQ==
 
 tmp@0.1.0:
   version "0.1.0"
@@ -12040,7 +12038,7 @@ vue-toasted@^1.1.28:
   resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.1.28.tgz#dbabb83acc89f7a9e8765815e491d79f0dc65c26"
   integrity sha512-UUzr5LX51UbbiROSGZ49GOgSzFxaMHK6L00JV8fir/CYNJCpIIvNZ5YmS4Qc8Y2+Z/4VVYRpeQL2UO0G800Raw==
 
-vue@^2.5.17, vue@^2.6.10:
+vue@^2.6.10:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==

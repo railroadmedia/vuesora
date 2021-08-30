@@ -203,9 +203,9 @@
 
             <!-- Thread Reply Section -->
             <section v-if="!thread.isLocked"
-                class="flex flex-row ph pv-3"
+                class="flex flex-row pv-3"
             >   
-                <div class="tw-items-center tw-flex-col tw-hidden sm:tw-inline-flex ">
+                <div class="tw-items-center tw-flex-col tw-hidden sm:tw-inline-flex tw-flex-shrink-0">
                     <!-- Avatar -->
                     <div class="tw-inline-flex tw-flex-col">
                         <div class="user-avatar tw-w-20 tw-h-20 tw-mb-2"
@@ -226,7 +226,7 @@
                 </div>
 
                 <div id="replyContainer"
-                     class="flex flex-column ph"
+                     class="tw-flex tw-flex-col tw-w-full sm:tw-pl-4"
                 >
                     <form
                         method="post"
