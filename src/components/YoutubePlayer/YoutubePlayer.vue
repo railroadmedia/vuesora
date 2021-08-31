@@ -10,14 +10,26 @@
                 class="iframe"
             ></div>
         </div>
+
+      <PlayerRanges
+          v-if="ranges"
+          :theme-color="themeColor"
+          :current-range="currentRange"
+          :ranges="ranges"
+          @setRange="setRange"
+      ></PlayerRanges>
     </div>
 </template>
 
 <script>
 import PlayerUtils from "../VideoPlayer/player-utils";
+import PlayerRanges from '../VideoPlayer/_PlayerRanges.vue';
 
 export default {
     name: 'YoutubePlayer',
+    components: {
+      PlayerRanges,
+    },
     props: {
         videoId: {
             type: [String, Number],
@@ -39,6 +51,11 @@ export default {
             default: () => 'unstarted',
         },
 
+        themeColor: {
+            type: String,
+            default: () => 'singeo',
+        },
+
         contentId: {
             type: [String, Number],
             default: () => null,
@@ -48,6 +65,14 @@ export default {
             type: Boolean,
             default: () => false,
         },
+        ranges: {
+          type: Array,
+          default: () => ([]),
+        },
+        rangesVideoIds: {
+          type: Object,
+          default: () => ({}),
+        },
     },
     data() {
         return {
@@ -55,6 +80,7 @@ export default {
             syncInterval: null,
             currentTime: 0,
             isPipEnabled: false,
+            currentRange: 'original',
         };
     },
     computed: {
@@ -87,6 +113,16 @@ export default {
     },
     methods: {
 
+        setRange({ range }) {
+          if (this.rangesVideoIds[range]) {
+            this.currentRange = range;
+
+            this.player.loadVideoById(this.rangesVideoIds[range], this.player.getCurrentTime());
+
+            window.localStorage.setItem('currentRange', range);
+          }
+        },
+
         appendIframeApi() {
             const scriptTag = document.createElement('script');
             const firstScriptTag = document.querySelector('script');
@@ -102,9 +138,16 @@ export default {
             const urlParams = new URLSearchParams(window.location.search);
             const timeToSeekTo = urlParams.get('time') || this.currentSecond;
             const vm = this;
+            var videoId = this.videoId;
+
+            if (window.localStorage.getItem('currentRange') &&
+                this.rangesVideoIds[window.localStorage.getItem('currentRange')]) {
+              videoId = this.rangesVideoIds[window.localStorage.getItem('currentRange')];
+              this.currentRange = window.localStorage.getItem('currentRange');
+            }
 
             this.player = new YT.Player(youtubeIframe, {
-                videoId: this.videoId,
+                videoId: videoId,
                 playerVars: {
                     modestbranding: 1,
                     rel: 0,
@@ -133,7 +176,7 @@ export default {
                         }
 
                         vm.syncInterval = setInterval(() => {
-                            vm.currentTime = vm.player.getCurrentTime();
+                            vm.currentTime = Math.round(vm.player.getCurrentTime());
                         }, 1000);
                     },
                     onStateChange(event) {
