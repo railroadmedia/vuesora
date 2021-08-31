@@ -23,6 +23,10 @@
     padding: 0.9375rem !important;
   }
 
+  .tox-toolbar__primary {
+    background-color: #d1d1d1 !important;
+  }
+
   .tox-toolbar__group {
     height: 40px !important;
     margin-right: 0.9375rem !important;
@@ -34,6 +38,7 @@
     button.tox-tbtn,
     .tox-split-button {
       border-right: 1px solid #a8a8a8 !important;
+      margin: 0 !important;
     }
 
     button.tox-tbtn[aria-pressed='true'] {
