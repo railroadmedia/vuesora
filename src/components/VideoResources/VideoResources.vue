@@ -257,7 +257,11 @@ export default {
                 return `From ${this.parentTitle}`;
             }
 
-            return `With ${this.instructors.join(', ')}`;
+            if (this.instructors.join(', ') !== '') {
+              return `With ${this.instructors.join(', ')}`;
+            }
+
+            return '';
         },
 
         currentTime() {
