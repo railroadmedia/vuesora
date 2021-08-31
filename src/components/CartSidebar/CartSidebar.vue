@@ -151,6 +151,7 @@ export default {
 
             // todo - refactor when drumshop & product pages are created with vue, used for removing page scroll bar on mobiles
             document.body.classList.add('cart-sidebar-active');
+            document.documentElement.classList.add('cart-sidebar-active');
         },
 
         closeCartSidebar() {
@@ -158,6 +159,7 @@ export default {
 
             // todo - refactor when drumshop & product pages are created with vue, used for adding back page scroll bar on mobiles
             document.body.classList.remove('cart-sidebar-active');
+            document.documentElement.classList.remove('cart-sidebar-active');
         },
 
         updateCartData(cartData) {
