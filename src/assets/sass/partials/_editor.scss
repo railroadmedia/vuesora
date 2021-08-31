@@ -13,12 +13,12 @@
 
 .tox {
 
-  .tox-dialog-wrap__backdrop,
-  .tox-toolbar-overlord {
+  .tox-dialog-wrap__backdrop {
     background:rgba(0,0,0,.5)!important;
   }
   
-  .tox-toolbar {
+  .tox-toolbar,
+  .tox-toolbar-overlord {
     background-color: #d1d1d1 !important;
     padding: 0.9375rem !important;
   }
