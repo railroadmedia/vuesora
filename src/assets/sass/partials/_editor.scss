@@ -61,8 +61,13 @@
     width: 40px !important;
   }
 
-  &.tox-tinymce.tox-platform-touch {
-    height: 300px !important;
+  .tox-toolbar, .tox-toolbar__overflow, .tox-toolbar__primary {
+    padding: 0.9375rem !important;
+    background-image: none !important;
   }
   
+}
+
+.tox-tinymce {
+  height: 300px !important;
 }
