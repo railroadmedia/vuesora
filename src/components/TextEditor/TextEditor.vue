@@ -56,7 +56,7 @@ export default {
         contentInterface: {
             get() {
                 return this.currentValue;
-            },
+            },              
             set(val) {
                 this.currentValue = val;
             },
@@ -72,7 +72,7 @@ export default {
                 default_link_target: '_blank',
                 elementpath: false,
                 entity_encoding: 'numeric',
-                emoticons_database: 'emojiimages',
+                emoticons_database: 'emojis',
                 file_picker_types: 'image',
                 height: this.height,
                 image_description: false,
