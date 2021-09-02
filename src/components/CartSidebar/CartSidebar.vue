@@ -526,7 +526,7 @@ export default {
     }
     .recommended-products {
         padding-top: 10px;
-        margin-bottom: 40px;
+        margin-bottom: 60px;
         .recommended-products-wrapper {
             display: flex;
             flex-direction: row;
