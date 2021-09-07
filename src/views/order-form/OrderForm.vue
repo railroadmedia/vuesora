@@ -322,8 +322,8 @@ export default {
         },
 
         membershipsNumberOfFreeDays: {
-            type: Array,
-            default: () => [],
+            type: Object,
+            default: () => {},
         },
 
         lifetimeMembershipProductSkus: {
@@ -440,6 +440,8 @@ export default {
         if (!this.isSignedIn || !this.paymentMethods || this.paymentMethods.data.length === 0) {
             this.newPayment = true;
         }
+
+        console.log("OrderForm::beforeMount");
     },
 
     methods: {
@@ -574,28 +576,82 @@ export default {
                     if (this.paymentStateFactory.methodType === 'paypal') {
                         this.submitOrder();
                     } else {
-                        this.$refs.paymentForm.fetchStripeToken()
-                            .then(({ token, error }) => {
-                                if (error) {
-                                    this.loading = false;
+                        this.startStripePayment();
+                        // this.$refs.paymentForm.fetchStripeToken()
+                        //     .then(({ token, error }) => {
+                        //         if (error) {
+                        //             this.loading = false;
 
-                                    Toasts.push({
-                                        icon: 'sad',
-                                        themeColor: this.themeColor,
-                                        title: 'Payment Error',
-                                        message: error.message,
-                                        timeout: 7500,
-                                    });
+                        //             Toasts.push({
+                        //                 icon: 'sad',
+                        //                 themeColor: this.themeColor,
+                        //                 title: 'Payment Error',
+                        //                 message: error.message,
+                        //                 timeout: 7500,
+                        //             });
                                     
-                                    window.scrollTo({ top: (this.$refs.paymentForm.$el.offsetTop - 100), behavior: 'smooth' });
-                                    return;
-                                }
-                                this.stripeToken = token;
-                                this.submitOrder();
-                            });
+                        //             window.scrollTo({ top: (this.$refs.paymentForm.$el.offsetTop - 100), behavior: 'smooth' });
+                        //             return;
+                        //         }
+                        //         this.stripeToken = token;
+                        //         this.submitOrder();
+                        //     });
                     }
                 }
             }, 250);
+        },
+
+        startStripePayment()
+        {
+            const payload = {};
+
+            if (!this.user) {
+                payload.email = this.accountStateFactory.accountEmail;
+            }
+
+            axios
+                .put('/ecommerce/json/order-form/create-intent', payload)
+                .then(this.confirmStripePayment)
+                .catch(this.createIntentFailure);
+        },
+
+        confirmStripePayment(stripeIntentData) {
+            const { data: { intent_client_secret } } = stripeIntentData;
+
+            this.$refs.paymentForm.confirmStripePayment(intent_client_secret)
+                .then(function(result) {
+                    if (result.error) {
+                        console.log("OrderForm::confirmStripePayment result.error: ", JSON.stringify(result.error));
+                    } else {
+                        console.log("OrderForm::confirmStripePayment result: ", JSON.stringify(result));
+                    }
+                });
+        },
+
+        createIntentFailure(response) {
+            console.log("OrderForm::createIntentFailure response: ", JSON.stringify(response));
+
+            this.formSuccess = false;
+
+            let title = 'Oops, something went wrong';
+            let message = 'Create intent failure';
+
+            if (response?.data?.errors) {
+                title = response.data.errors[0].title;
+                message = response.data.errors[0].detail;
+            }
+
+            Toasts.push({
+                icon: 'sad',
+                themeColor: this.themeColor,
+                title,
+                message,
+                timeout: 7500,
+            });
+
+            setTimeout(() => {
+                this.loading = false;
+            }, 500);
         },
 
         submitOrder() {

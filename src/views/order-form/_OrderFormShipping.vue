@@ -137,8 +137,8 @@
                                       'has-input': $_country != null }"
                         >
                             <option
-                                v-for="country in countries"
-                                :key="country"
+                                v-for="(country, index) in countries"
+                                :key="country + index"
                                 :value="country"
                             >
                                 {{ country }}

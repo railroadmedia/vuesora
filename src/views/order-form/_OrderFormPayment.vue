@@ -143,8 +143,8 @@
                             :class="{ invalid: errors.billingCountry, 'has-input': $_billingCountry != null }"
                         >
                             <option
-                                v-for="country in countries"
-                                :key="country"
+                                v-for="(country, index) in countries"
+                                :key="country + index"
                                 :value="country"
                             >
                                 {{ country }}
@@ -607,6 +607,17 @@ export default {
             return this.stripe.createToken(this.cardNumberElement, {
                 address_country: this.$_billingCountry,
             });
+        },
+
+        confirmStripePayment(clientSecret) {
+            return this.stripe.confirmCardSetup(
+                clientSecret,
+                {
+                    payment_method: {
+                        card: this.cardNumberElement,
+                    },
+                }
+            );
         },
     },
 };
