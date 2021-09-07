@@ -1,6 +1,12 @@
 @import './_variables.scss';
 @import './_animations.scss';
 
+.disable-scroll {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
 body {
   padding-top:50px;
   padding-bottom:120px;
