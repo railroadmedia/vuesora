@@ -609,7 +609,7 @@ export default {
             });
         },
 
-        confirmStripePayment(clientSecret) {
+        confirmStripeCardSetup(clientSecret) {
             return this.stripe.confirmCardSetup(
                 clientSecret,
                 {
@@ -617,6 +617,12 @@ export default {
                         card: this.cardNumberElement,
                     },
                 }
+            );
+        },
+
+        confirmStripeCardAction(clientSecret) {
+            return this.stripe.confirmCardPayment(
+                clientSecret,
             );
         },
     },

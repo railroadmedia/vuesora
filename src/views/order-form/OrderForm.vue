@@ -611,21 +611,68 @@ export default {
 
             axios
                 .put('/ecommerce/json/order-form/create-intent', payload)
-                .then(this.confirmStripePayment)
+                .then(this.confirmStripeIntent)
                 .catch(this.createIntentFailure);
         },
 
-        confirmStripePayment(stripeIntentData) {
+        confirmStripeIntent(stripeIntentData) {
             const { data: { intent_client_secret } } = stripeIntentData;
+            const nextAction = this.initStripePaymentIntent;
 
-            this.$refs.paymentForm.confirmStripePayment(intent_client_secret)
+            this.$refs.paymentForm.confirmStripeCardSetup(intent_client_secret)
                 .then(function(result) {
                     if (result.error) {
-                        console.log("OrderForm::confirmStripePayment result.error: ", JSON.stringify(result.error));
+                        console.log("OrderForm::confirmStripeIntent result.error: ", JSON.stringify(result.error));
                     } else {
-                        console.log("OrderForm::confirmStripePayment result: ", JSON.stringify(result));
+                        nextAction();
                     }
                 });
+        },
+
+        initStripePaymentIntent() {
+            const payload = {};
+
+            if (!this.user) {
+                payload.email = this.accountStateFactory.accountEmail;
+            }
+
+            axios
+                .put('/ecommerce/json/order-form/create-intent-payment', payload)
+                .then(this.confirmStripePaymentIntent)
+                .catch(this.createIntentFailure);
+        },
+
+        confirmStripePaymentIntent(response) {
+            console.log("OrderForm::confirmStripePaymentIntent response: ", JSON.stringify(response));
+
+            const { data: { payment_intent_client_secret } } = response;
+
+            const nextAction = this.StripePaymentIntentConfirmed;
+
+            this.$refs.paymentForm.confirmStripeCardAction(payment_intent_client_secret)
+                .then(function(result) {
+                    if (result.error) {
+                        console.log("OrderForm::confirmStripePaymentIntent result.error: ", JSON.stringify(result.error));
+                    } else {
+                        console.log("OrderForm::confirmStripePaymentIntent result: ", JSON.stringify(result));
+
+                        nextAction();
+                    }
+                });
+        },
+
+        StripePaymentIntentConfirmed() {
+            Toasts.push({
+                icon: 'happy',
+                themeColor: this.themeColor,
+                title: 'It worked!',
+                message: 'Check console for stripe payment id to retrive it later',
+                timeout: 7500,
+            });
+
+            setTimeout(() => {
+                this.loading = false;
+            }, 500);
         },
 
         createIntentFailure(response) {
