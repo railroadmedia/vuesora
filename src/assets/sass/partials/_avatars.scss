@@ -54,6 +54,33 @@
       }
     }
 
+    &.guitar {
+      background-color:$guitareoGreen;
+
+      img {
+        border-color:$guitareoGreen;
+        background-color:$guitareoGreen;
+      }
+    }
+
+    &.piano {
+      background-color:$pianoteRed;
+
+      img {
+        border-color:$pianoteRed;
+        background-color:$pianoteRed;
+      }
+    }
+
+    &.singeo {
+      background-color:$singeoPurple;
+
+      img {
+        border-color: $singeoPurple;
+        background-color: $singeoPurple;
+      }
+    }
+
     &.lifetime {
       background-color: $lifetimeBlue;
 
@@ -80,33 +107,6 @@
       img {
         border-color:$coachYellow;
         background-color:$coachYellow;
-      }
-    }
-
-    &.guitar {
-      background-color:$guitareoGreen;
-
-      img {
-        border-color:$guitareoGreen;
-        background-color:$guitareoGreen;
-      }
-    }
-
-    &.piano {
-      background-color:$pianoteRed;
-
-      img {
-        border-color:$pianoteRed;
-        background-color:$pianoteRed;
-      }
-    }
-
-    &.singeo {
-      background-color:$singeoPurple;
-
-      img {
-        border-color: $singeoPurple;
-        background-color: $singeoPurple;
       }
     }
 

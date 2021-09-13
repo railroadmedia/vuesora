@@ -165,10 +165,14 @@ export default (function () {
                 menuButton.classList.remove('active');
                 sideBar.classList.remove('mobile');
                 backgroundOverlay.classList.remove('active');
+                document.body.classList.remove('disable-scroll');
+                document.documentElement.classList.remove('disable-scroll');
             } else {
                 menuButton.classList.add('active');
                 sideBar.classList.add('mobile');
                 backgroundOverlay.classList.add('active');
+                document.body.classList.add('disable-scroll');
+                document.documentElement.classList.add('disable-scroll');
             }
         }
 
@@ -200,6 +204,8 @@ export default (function () {
             menuButton.classList.remove('active');
             sideBar.classList.remove('mobile');
             backgroundOverlay.classList.remove('active');
+            document.body.classList.remove('disable-scroll');
+            document.documentElement.classList.remove('disable-scroll');
         }
 
         function toggleChildLinks(event) {
