@@ -322,8 +322,8 @@ export default {
         },
 
         membershipsNumberOfFreeDays: {
-            type: Array,
-            default: () => [],
+            type: Object,
+            default: () => ({}),
         },
 
         lifetimeMembershipProductSkus: {
