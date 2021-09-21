@@ -1222,7 +1222,11 @@ export default {
         },
 
         keyboardControlEventHandler(event) {
-            if (this.keyboardEventHandlers[event.code]) {
+            if (
+                !event.ctrlKey
+                && this.keyboardEventHandlers[event.code]
+                && (!this.keyboardEventHandlersShift[event.code] || event.shiftKey)
+            ) {
                 event.stopPropagation();
                 event.preventDefault();
 

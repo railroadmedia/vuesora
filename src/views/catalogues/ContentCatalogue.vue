@@ -366,9 +366,9 @@ export default {
             type: Boolean,
             default: () => false,
         },
-        showMyListAction: {
+        filterDuplicates: {
             type: Boolean,
-            default: () => true,
+            default: () => false,
         },
     },
     data() {
@@ -401,6 +401,7 @@ export default {
                 date: '',
             },
             eventType: null,
+            loadedContentIds: {},
         };
     },
     computed: {
@@ -480,6 +481,12 @@ export default {
 
         if (this.useUrlParams) {
             this.getUrlParams();
+        }
+
+        if (this.filterDuplicates && this.preLoadedContent) {
+            this.preLoadedContent.data.forEach(item => {
+                this.loadedContentIds[item.id] = true;
+            });
         }
     },
     beforeDestroy() {
@@ -613,9 +620,22 @@ export default {
                 // If infinite scroll is enabled:
                 // Just add it to the array, don't replace it
                 if (!replace) {
+                    let newContent;
+
+                    if (this.filterDuplicates) {
+                        newContent = response.data.data.filter(item => {
+                            return !this.loadedContentIds[item.id];
+                        });
+                        newContent.forEach(item => {
+                            this.loadedContentIds[item.id] = true;
+                        });
+                    } else {
+                        newContent = response.data.data;
+                    }
+
                     this.content = [
                         ...this.content,
-                        ...response.data.data,
+                        ...newContent,
                     ];
                 } else {
                     this.content = response.data.data;

@@ -92,7 +92,7 @@
                      v-if="!eventIsLive"
                 >
                     <div>
-                        <button class="tw-btn-primary" 
+                        <button class="tw-btn-primary tw-px-10 md:tw-px-16" 
                                 data-open-modal="scheduleAddToCalendarModal"
                                 :class="[brandBGColor]"
                         >

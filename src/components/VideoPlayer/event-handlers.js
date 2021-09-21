@@ -201,6 +201,7 @@ export default {
 
             keyboardEventHandlers: {
                 Space: () => this.playPause(),
+                KeyK: () => this.playPause(),
                 ArrowLeft: () => this.seek(this.currentTime - 5),
                 ArrowRight: () => this.seek(this.currentTime + 5),
                 Digit1: () => this.seek(this.totalDuration * 0.10),
@@ -215,6 +216,8 @@ export default {
                 Digit0: () => this.seek(0),
                 Home: () => this.seek(0),
                 End: () => this.seek(this.totalDuration),
+                KeyJ: () => this.seek(this.currentTime - 10),
+                KeyL: () => this.seek(this.currentTime + 10),
                 KeyF: () => this.fullscreen(),
                 Escape: () => (this.videojsInstance.isFullscreen ? this.fullscreen() : () => {}),
                 ArrowUp: () => this.changeVolume({ volume: (this.currentVolume * 100) + 5 }),
@@ -230,7 +233,14 @@ export default {
                 },
                 Minus: () => this.setRate({ rate: this.currentPlaybackRate - 0.25 }),
                 Equal: () => this.setRate({ rate: this.currentPlaybackRate + 0.25 }),
+                Period: () => this.setRate({ rate: this.currentPlaybackRate + 0.25 }),
+                Comma: () => this.setRate({ rate: this.currentPlaybackRate - 0.25 }),
             },
+
+            keyboardEventHandlersShift: {
+                Period: true,
+                Comma: true,
+            }
         };
     },
 };

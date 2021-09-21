@@ -370,8 +370,8 @@ export default {
                 },
                 {
                     key: 'student-focus',
-                    brand: ['drumeo'],
-                    value: ['student-focus'],
+                    brand: ['drumeo', 'pianote', 'guitareo', 'singeo'],
+                    value: ['student-focus', 'student-review', 'question-and-answer'],
                     icon: 'icon-student-focus',
                     active: true,
                 },

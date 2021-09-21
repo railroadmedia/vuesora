@@ -45,22 +45,66 @@
                     Tax
                 </p>
                 <p class="flex flex-column body text-right">
-                    ${{ parseTotal(totals.tax) }}
+                    {{ taxLabel }}
+                </p>
+            </div>
+
+            <div class="flex flex-row mb-1" v-if="totals.shipping_taxes > 0 && cartData.number_of_payments > 1">
+                <p class="flex flex-column body text-left">
+                    Shipping Tax
+                </p>
+                <p class="flex flex-column body text-right">
+                    {{ totals.shipping_taxes }}
+                </p>
+            </div>
+
+            <div class="flex flex-row mb-1" v-if="financeLabel">
+                <p class="flex flex-column body text-left">
+                    Finance Charges
+                </p>
+                <p class="flex flex-column body text-right">
+                    {{ financeLabel }}
+                </p>
+            </div>
+
+            <div class="flex flex-row mb-1" v-if="totals.order_total">
+                <p class="flex flex-column body text-left">
+                    Total
+                </p>
+                <p class="flex flex-column body text-right">
+                    USD ${{ totals.order_total }}
                 </p>
             </div>
 
             <div class="flex flex-row mb-1 bt-grey-1-1 pt-1">
                 <p class="flex flex-column title font-bold text-left">
-                    Total
+                    Due Today
                 </p>
                 <p class="flex flex-column title font-bold text-right">
                     USD ${{ parseTotal(totals.due) }}
-                    <br>
-                    <span class="x-tiny font-regular text-grey-3">
-                        Due Today
-                    </span>
+                    <template v-if="totals.shipping > 0">
+                        <br>
+                        <span class="x-tiny font-regular text-grey-3">
+                            Shipping included
+                        </span>
+                    </template>
                 </p>
             </div>
+
+            <template v-if="totals.monthly_payments && totals.monthly_payments.length">
+                <div
+                    class="flex flex-row mb-1"
+                    v-for="(monthlyPayment, i) in totals.monthly_payments"
+                    :class="{'bt-grey-1-1 pt-1': i === 0}"
+                >
+                    <p class="flex flex-column body text-left">
+                        {{ monthlyPayment.month }}
+                    </p>
+                    <p class="flex flex-column body text-right">
+                        USD ${{ parseTotal(monthlyPayment.payment) }}
+                    </p>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -135,16 +179,26 @@ export default {
             return subTotalAfterDiscounts;
         },
 
-        totalDue() {
-            return this.totals.due.toFixed(2);
+        taxLabel() {
+            let label;
+
+            if (this.totals.tax_per_payment && this.cartData.number_of_payments > 1) {
+                label = `${this.cartData.number_of_payments} x $${this.parseTotal(this.totals.tax_per_payment)}`;
+            } else {
+                label = `$${this.parseTotal(this.totals.tax)}`;
+            }
+
+            return label;
         },
 
-        totalShipping() {
-            return this.totals.shipping.toFixed(2);
-        },
+        financeLabel() {
+            let label;
 
-        totalTax() {
-            return this.totals.tax.toFixed(2);
+            if (this.totals.financing_cost_per_payment && this.cartData.number_of_payments > 1) {
+                label = `${this.cartData.number_of_payments} x $${this.parseTotal(this.totals.financing_cost_per_payment)}`;
+            }
+
+            return label;
         },
     },
 
