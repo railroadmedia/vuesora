@@ -90,6 +90,13 @@ export default {
                 return window.matchMedia('(min-width: 641px)').matches === false;
             },
         },
+
+        currentTimeInSeconds: {
+            cache: false,
+            get() {
+                return this.currentTime;
+            },
+        },
     },
     mounted() {
         const youtubeIframeApi = document.getElementById('youtubeIframeApi');

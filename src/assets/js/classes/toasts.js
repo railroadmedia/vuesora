@@ -64,6 +64,7 @@ export default {
             text: '<span class="bg-dark inverted text-grey-3">NO</span>',
             callback: null,
         },
+        closeCallback = null
     }) {
         window.confirmationBox = new Noty({
             layout: 'center',
@@ -97,6 +98,13 @@ export default {
                     },
                 ),
             ],
+            callbacks: {
+                onClose: () => {
+                    if (closeCallback != null) {
+                        closeCallback();
+                    }
+                },
+            }
         }).show();
 
         // Instantiate a click handler to close the modal when the user clicks the overlay

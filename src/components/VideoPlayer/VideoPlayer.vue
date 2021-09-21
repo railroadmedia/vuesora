@@ -705,6 +705,13 @@ export default {
                 return this.isMobileViewport || this.isPipEnabled;
             },
         },
+
+        currentTimeInSeconds: {
+            cache: false,
+            get() {
+                return this.currentTime;
+            },
+        },
     },
     mounted() {
         const { player, videoWrap } = this.$refs;
