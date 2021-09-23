@@ -41433,7 +41433,7 @@ var _CommentLikesModal_component = normalizeComponent(
       var index = this.comments.map(function (comment) {
         return comment.id;
       }).indexOf(payload.id);
-      var likedPost = payload.isPinned ? this.pinnedComment : this.comments[index];
+      var likedPost = payload.pinned ? this.pinnedComment : this.comments[index];
 
       if (payload.isLiked) {
         likedPost.like_count -= 1;
