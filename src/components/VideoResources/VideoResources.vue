@@ -179,6 +179,7 @@
 <script>
 import Utils from '@musora/helper-functions/modules/utils';
 import ThemeClasses from '../../mixins/ThemeClasses';
+import Toasts from '../../assets/js/classes/toasts';
 import ContentService from '../../assets/js/services/content';
 
 export default {
