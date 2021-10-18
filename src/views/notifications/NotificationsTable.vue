@@ -99,6 +99,10 @@ export default {
             type: Number | String,
             default: () => 1,
         },
+        hasUnreadNotifications: {
+            type: Boolean,
+            default: () => false,
+        }
     },
     data() {
         return {
@@ -119,10 +123,6 @@ export default {
             }
 
             return 1;
-        },
-
-        hasUnreadNotifications() {
-            return this.notifications.filter(notification => notification.isRead === false).length > 0;
         },
     },
     methods: {

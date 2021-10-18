@@ -498,6 +498,7 @@ export default {
                 parent_id: this.comment.id,
                 id: payload.id,
                 isLiked: payload.isLiked,
+                isPinned: this.pinned,
             });
         },
 
