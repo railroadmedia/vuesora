@@ -20,7 +20,7 @@
             <div class="flex flex-column button-col">
                 <button
                     class="btn"
-                    :disabled="!hasUnreadNotifications"
+                    :disabled="!hasUnread"
                     @click.stop="markAllAsRead"
                 >
                     <span
@@ -108,7 +108,11 @@ export default {
         return {
             notificationsArray: this.notifications,
             markingAllAsRead: false,
+            hasUnread: false,
         };
+    },
+    mounted() {
+        this.hasUnread = this.hasUnreadNotifications;
     },
     computed: {
         totalPages() {
@@ -137,6 +141,7 @@ export default {
                             this.notifications.forEach((notification) => {
                                 this.$set(notification, 'isRead', true);
                             });
+                            this.hasUnread = false;
                         }
                         this.markingAllAsRead = false;
                     });
@@ -149,11 +154,17 @@ export default {
             if (payload.isRead) {
                 if (payload.canCancel) {
                     UserService.markNotificationAsUnRead(payload.id)
-                        .then(resolved => resolved);
+                        .then(resolved => {
+                            this.hasUnread = true;
+                        });
                 }
             } else {
                 UserService.markNotificationAsRead(payload.id)
-                    .then(resolved => resolved);
+                    .then(response => {
+                        if (response.meta && response.meta.unreadCount) {
+                            this.hasUnread = response.meta.unreadCount > 0;
+                        }
+                    });
             }
 
             if (payload.canCancel) {
