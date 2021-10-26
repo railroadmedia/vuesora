@@ -360,12 +360,14 @@ export default {
 
             //take snapshot
             const message = this.formData.message;
-            const supportOption = this.formData.supportOption; 
-            //convert files to image blobs 
-            const attachments = []
-            this.formData.attachments.forEach(file => {
-                attachments.push(URL.createObjectURL(file));
-            });  
+            const supportOption = this.formData.supportOption;
+            let attachment; 
+            //convert file(s) to image blobs 
+            if(this.formData.attachments[0]) {
+                attachment = URL.createObjectURL(this.formData.attachments[0]);
+            } else {
+                attachment = null;
+            }
 
             if (this.enableEvent) {
                 this.$root.$emit(this.eventName, { text });
@@ -392,7 +394,7 @@ export default {
                 type: this.emailType,
                 subject: this.emailSubject,
                 lines: [supportOption, message], //array of lines to display in the email, new index = new line break
-                files: attachments, //array of files to attach to the email
+                attachment: attachment, //attachment only accepts one file, use 'attachments' to accept more than one
                 callToAction: this.callToAction,
                 alert: this.emailAlert,
                 brand: this.brand,
@@ -410,7 +412,6 @@ export default {
                         });
 
                         this.$emit('formSuccess');
-
                         window.closeAllModals();
                     }
                 });
