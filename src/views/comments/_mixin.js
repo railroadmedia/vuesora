@@ -92,8 +92,6 @@ export default {
             const likedPostReplyIndex = likedPostReplies.map(reply => reply.id).indexOf(payload.id);
             const likedPostReply = likedPostReplies[likedPostReplyIndex];
 
-            console.log(likedPostReplies);
-
             if (payload.isLiked) {
                 likedPostReply.like_count -= 1;
                 likedPostReply.is_liked = false;
