@@ -1,381 +1,314 @@
 <template>
-    <form class="tw-flex tw-flex-col tw-my-4">
+    <form class="tw-flex tw-flex-col tw-my-4"
+          novalidate="true"
+          @submit.prevent="submitForm"
+    >
 
         <!-- Help Dropdown -->
-        <div class="tw-input-field tw-nested-dropdown-field" >
-            <label id="listbox-label" class="tw-label">
-                <span class="tw-text-red-500">*</span>
-                What can we help you with?
-            </label>
-
-            <div class="tw-input-wrapper">
-                <!-- Dropdown Trigger / Label -->
-                <button @click="dropdownMenuOpen = ! dropdownMenuOpen"
-                        type="button"  
-                        aria-haspopup="listbox" 
-                        aria-expanded="true" 
-                        aria-labelledby="listbox-label"
-                        class="focus:tw-border-drumeo tw-text-sm tw-h-12 tw-transition-all tw-pr-12 tw-py-1 tw-leading-4"
-                        :class="selectedOptionTitle ? 'tw-bg-gray-100' : 'tw-bg-white' "
-                >
-                    <span v-text="dropdownText"></span>
-                    <span class="tw-input-icon tw-h-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </button>
-
-                <!-- Clear input -->
-                <button class="tw-h-12 tw-w-12 tw-border tw-border-solid tw-border-gray-300 tw-absolute tw-bg-white tw-top-0 tw-right-0 tw-flex tw-items-center tw-justify-center tw-p-0"
-                        v-if="selectedOptionTitle"
-                        @click="[selectedOptionTitle = '', selectedOption = '']"
-                >
-                    <span :class="themeTextClass" class="tw-h-6 tw-w-6 tw-cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </span>
-                </button>
-
-                <!-- Separate the Dropdown from the Ul's - Make the container full width -->
-                <div v-if="dropdownMenuOpen"
-                     tabindex="-1"
-                     class="tw-w-full tw-absolute tw-h-auto tw-border tw-border-solid tw-border-gray-200 tw-z-10 tw-mt-1 tw-shadow-lg tw-overflow-auto md:tw-border-none md:tw-shadow-none md:tw-h-64 md:tw-overflow-initial md:tw-mt-0"
-                     @mouseleave="[activeOption = '', dropdownMenuOpen = false]"
-                >
-                    <ul class="tw-dropdown tw-text-sm tw-w-full tw-border-none tw-max-h-full tw-relative tw-overflow-initial tw-mt-0 tw-rounded-md md:tw-border md:tw-w-1/2 md:tw-mt-1"  
-                        role="listbox" 
-                        aria-labelledby="listbox-label" 
-                        aria-activedescendant="listbox-option-3">
-
-                        <li v-for="(option,index) in supportOptions" 
-                            :key="option[index]"
-                            class="tw-with-dropdown md:tw-bg-transparent"
-                            :class="activeOption === index ? 'tw-bg-gray-200' : 'tw-bg-transparent'"
-                            role="option"
-                            @mouseover="openOnHover(index)"
-                            @click="openOnClick(index)"
-                        >   
-
-                            <template v-if="option.value">
-                                <input type="radio" :id="`option-${index}`" name="support_option" :value="option.value" v-model="selectedOption">
-                                <label :for="`option-${index}`" 
-                                        class="tw-option" 
-                                        @click="[selectedOptionTitle = option.title]"
-                                >
-                                    <span>{{ option.title }}</span>
-                                </label>
-                            </template>
-                            
-                            <template v-else>
-                                <span class="tw-option" @click="option.isOpen = !option.isOpen">{{ option.title }}</span>
-                                <span class="tw-input-icon tw-h-8">
-                                    <svg xmlns="http://www.w3.org/2000/svg" 
-                                         viewBox="0 0 20 20" 
-                                         fill="currentColor" 
-                                         class="tw-transform tw-rotate-90 md:tw-rotate-0" 
-                                         :class="activeOption === index ? 'tw--rotate-90' : 'tw-rotate-90'">
-                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            </template>
-
-                            <!-- Sub navigation -->
-                            <template v-if="option.subOptions">
-                                <div v-if="activeOption === index" 
-                                     class="tw-relative tw-w-full tw-z-1 md:tw-top-0 md:tw-left-full md:tw-pl-1 md:tw-absolute md:tw-h-auto"
-                                     @mouseleave="closeOnHover()"
-                                >
-                                    <ul class="tw-dropdown tw-mt-0 tw-top-0 tw-text-sm tw-overflow-initial tw-relative tw-shadow-none tw-rounded-none tw-border-none md:tw-border md:tw-shadow-lg md:tw-rounded-md md:tw-ml-1">
-                                        <li v-for="(subOption,index) in option.subOptions"
-                                            :key="subOption[index]"
-                                            role="option"
-                                        >
-                                            <input type="radio" :id="`suboption-${index}`" name="support_option" :value="subOption.value" v-model="selectedOption" class="tw-px-1">
-                                            <label :for="`suboption-${index}`" 
-                                                    class="tw-option" 
-                                                    @click="[selectedOptionTitle = subOption.label]">
-                                                <span>{{ subOption.label }}</span>
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </template>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <multilevel-dropdown 
+            label="What can we help you with?"
+            name="support-options"
+            id="support-listbox"
+            :theme="brand"
+            :required="true"
+            :invalid="formInvalid && selectFieldInvalid"
+            :selectedValue="formData.supportOption"
+            :listData="optionsData"
+            @updateValue="updateSupportOption($event)"
+            placeholder="Please select the option that is closest to your request..."
+            errorMessage="Please select an option that is closest to your request."
+        />
 
         <!-- Description -->
-        <div class="tw-input-field">
-            <label for="questionBox" class="tw-label tw-font-bold tw-text-black tw-pl-0 tw-mb-2">
-                <span class="tw-text-red-500">*</span>
-                Description
-            </label>
-            <div class="tw-input-wrapper">
-                <textarea type="text" 
-                        id="questionBox"
-                        rows="4" 
-                        v-model="messageValue"
-                        class="focus:tw-border-drumeo tw-h-auto tw-text-sm"
-                        :class="{ 'has-input': messageValue.length }"
-                        placeholder="Add message here..."
-                        @keyup="checkForm()"
-                        @blur="checkForm()">
-                </textarea>
-            </div>
-        </div>
+        <textarea-input 
+            name="description"
+            :required="true"
+            :invalid="formInvalid && messageFieldInvalid"
+            :resize="false"
+            :rows="4"
+            :inputValue="formData.message"
+            @update:inputValue="formData.message = $event"
+            id="support-description"
+            placeholder="Add message here..."
+            errorMessage="Please enter the details of your request."
+        />
 
         <div class="tw-flex tw-full tw-flex-col sm:tw-flex-row-reverse">
 
-            <!-- File Upload Button -->
-            <div class="tw-m-0 tw-mb-8 sm:tw-mb-0">
-                <div class="tw-input-field tw-mb-1">
-                    <label for="supportFile" class="tw-btn-secondary tw-text-gray-400 tw-w-full sm:tw-btn-small sm:tw-w-min">
-                        <i class="fal fa-paperclip tw-mr-2"></i>
-                        Attach File
-                    </label>
-                    <input type="file" 
-                           class="tw-hidden" 
-                           id="supportFile" 
-                           accept="video/*,image/*"
-                           :value="selectedFile"
-                           @change="checkUploadedFile($event)">
-                </div>
-                <!-- Message -->
-                <div class="text-center tw-font-roboto-condensed tw-text-base tw-italic">
-                    <p class="tw-w-full sm:tw-w-52">{{ fileMessage }}</p>
-                    <p class="tw-text-gray-400">Max File Size 100MB</p>
-                </div>
+            <div class="sm:tw-w-72">
+                <!-- File Upload Button -->
+                <file-input 
+                    name="attach file"
+                    id="support-file"
+                    :required="false"
+                    :disabled="false"
+                    :multiple="false"
+                    accept="video/*,image/*"
+                    :files="formData.attachments"
+                    message="For security reasons, we only accept image and video files."
+                    :megabiteLimit="100"
+                    @attachFile="attachFile($event)"
+                    @removeFile="removeFile($event)"
+                    @clearFiles="clearFiles()"
+                />
             </div>
 
-            <!-- Submit -->
+            <!-- SUBMIT BUTTON -->
             <button class="tw-btn-primary tw-self-start tw-mr-auto tw-w-full sm:tw-w-min" 
                     type="submit"
                     :disabled="formInvalid"
                     :class="themeBgClass" 
-                    @click="submitForm">
+            >
                     Submit
             </button>
 
         </div>
-
     </form>
 </template>
 
 <script>
 import UserService from '../../assets/js/services/user';
 import Toasts from '../../assets/js/classes/toasts';
+//Form Components
+import TextareaInput from '../FormComponents/TextareaInput.vue'
+import FileInput from '../FormComponents/FileInput.vue'
+import MultiLevelDropdown from '../FormComponents/Dropdowns/MultiLevelDropdown.vue'
 
 export default {
     name: 'SupportEmailForm',
+
+    components: {
+        'textarea-input': TextareaInput,
+        'file-input': FileInput,
+        'multilevel-dropdown': MultiLevelDropdown,
+    },
+
     props: {
         brand: {
             type: String,
             default: () => 'musora',
         },
-
         recipient: {
             type: String,
             default: () => null,
         },
-
         emailType: {
             type: String,
             default: () => 'alert',
         },
-
         emailSubject: {
             type: String,
             default: () => '',
         },
-
         emailLogo: {
             type: String,
             default: () => 'https://dmmior4id2ysr.cloudfront.net/logos/musora-logo-white.png',
         },
-
         emailAlert: {
             type: String,
             default: () => null,
         },
-
         emailCallToActionText: {
             type: String,
             default: () => null,
         },
-
         emailCallToActionUrl: {
             type: String,
             default: () => null,
         },
-
         successMessage: {
             type: String,
             default: () => 'Your email has been sent! Thank you for your input.',
         },
-
         emailEndpoint: {
             type: String,
             default: () => '/mailora/public/send',
         },
-
         enableEvent: {
             type: Boolean,
             default: () => false,
         },
-
         eventName: {
             type: String,
             default: () => 'emailFom',
         },
     },
+    
     data() {
         return {
-            formInvalid: true,
-            selectedFile: '',
-            fileMessage: 'For security reasons, we only accept image and video files.',
-            messageValue: '',
-            dropdownMenuOpen: false,
-            selectedOption: '',
-            selectedOptionTitle: '',
-            activeOption: '',
-            supportOptions: [
+            formInvalid: false,
+            formData: {
+               supportOption: '',
+               message: '',
+               attachments: [],
+            },
+            optionsData: [
                 {
-                    title: "Shipping & Orders",
-                    isOpen: false,
-                    subOptions: [
+                    label: "Shipping & Orders",
+                    selected: false,
+                    options: [
                         {
                             label: 'My shipment tracking inquiry',
-                            value: 'shipping_tracking'
+                            value: 'Shipping & Orders, My shipment tracking inquiry',
+                            checked: false,
                         },
                         {
                             label: 'I received the wrong items',
-                            value: 'shipping_items'
+                            value: 'Shipping & Orders, I received the wrong items',
+                            checked: false,
                         },
                         {
                             label: 'Questions about shipping rates and fees',
-                            value: 'shipping_rates'
+                            value: 'Shipping & Orders, Questions about shipping rates and fees',
+                            checked: false,
                         },
                         {
-                            label: 'Other shipping / orders question',
-                            value: 'shipping_other'
+                            label: 'Other',
+                            value: 'Shipping & Orders, Other',
+                            checked: false,
                         }
                     ]
                 },
                 {
-                    title: "Subscriptions & Membership",
-                    isOpen: false,
-                    subOptions: [
+                    label: "Subscriptions & Membership",
+                    selected: false,
+                    options: [
                         {
                             label: 'Change or set up a subscription/membership',
-                            value: 'subscription_update'
+                            value: 'Subscriptions & Membership, Change or set up a subscription/membership',
+                            checked: false,
                         },
                         {
                             label: 'Subscription or pack inquiry',
-                            value: 'subscription_inquiry'
+                            value: 'Subscriptions & Membership, Subscription or pack inquiry',
+                            checked: false,
                         },
                         {
                             label: 'Cancellation assistance',
-                            value: 'subscription_cancel'
+                            value: 'Subscriptions & Membership, Cancellation assistance',
+                            checked: false,
                         },
                         {
                             label: 'Refund assistance',
-                            value: 'subscription_refund'
+                            value: 'Subscriptions & Membership, Refund assistance',
+                            checked: false,
                         },
                         {
-                            label: 'Other subscription / membership question',
-                            value: 'subscription_other'
+                            label: 'Other',
+                            value: 'Subscriptions & Membership, Other',
+                            checked: false,
                         }
                     ]
                 },
                 {
-                    title: "Billing & Payment",
-                    isOpen: false,
-                    subOptions: [
+                    label: "Billing & Payment",
+                    selected: false,
+                    options: [
                         {
                             label: 'Need assistance changing billing method or schedule',
-                            value: 'billing_change'
+                            value: 'Billing & Payment, Need assistance changing billing method or schedule',
+                            checked: false,
                         },
                         {
                             label: 'Refund assistance',
-                            value: 'billing_refund'
+                            value: 'Billing & Payment, Refund assistance',
+                            checked: false,
                         },
                         {
                             label: 'Cancellation assistance',
-                            value: 'billing_cancel'
+                            value: 'Billing & Payment, Cancellation assistance',
+                            checked: false,
                         },
                         {
-                            label: 'Other billing / payment question',
-                            value: 'billing_other'
+                            label: 'Other',
+                            value: 'Billing & Payment, Other',
+                            checked: false,
                         }
                     ]
                 },
                 {
-                    title: "Account Settings & Login",
-                    isOpen: false,
-                    subOptions: [
+                    label: "Account Settings & Login",
+                    selected: false,
+                    options: [
                         {
                             label: 'Can\'t log in',
-                            value: 'account_login'
+                            value: 'Account Settings & Login, Can\'t log in',
+                            checked: false,
                         },
                         {
-                            label: 'Other account / login question',
-                            value: 'account_other'
+                            label: 'Other',
+                            value: 'Account Settings & Login, Other',
+                            checked: false,
                         }
                     ]
                 },
                 {
-                    title: "Technical Issues",
-                    isOpen: false,
-                    subOptions: [
+                    label: "Technical Issues",
+                    selected: false,
+                    options: [
                         {
                             label: 'Problems with mobile Android or iOS app',
-                            value: 'issues_mobile'
+                            value: 'Technical Issues, Problems with mobile Android or iOS app',
+                            checked: false,
                         },
                         {
                             label: 'Content inaccessible or missing',
-                            value: 'issues_content'
+                            value: 'Technical Issues, Content inaccessible or missing',
+                            checked: false,
                         },
                         {
                             label: 'Video Issues',
-                            value: 'issues_video'
+                            value: 'Technical Issues, Video Issues',
+                            checked: false,
                         },
                         {
-                            label: 'Other technical issues',
-                            value: 'issues_other'
+                            label: 'Other',
+                            value: 'Technical Issues, Other',
+                            checked: false,
                         }
                     ]
                 },
                 {
-                    title: "Site Navigation & Lessons",
-                    isOpen: false,
-                    subOptions: [
+                    label: "Site Navigation & Lessons",
+                    selected: false,
+                    options: [
                         {
                             label: 'Question about a lesson or instrument',
-                            value: 'navigation_content'
+                            value: 'Site Navigation & Lessons, Question about a lesson or instrument',
+                            checked: false,
                         },
                         {
                             label: 'Assistance locating an area of the website',
-                            value: 'navigation_site'
+                            value: 'Site Navigation & Lessons, Assistance locating an area of the website',
+                            checked: false,
                         },
                         {
-                            label: 'Other lessons question',
-                            value: 'navigation_other'
+                            label: 'Other',
+                            value: 'Site Navigation & Lessons, Other',
+                            checked: false,
                         }
                     ]
                 },
                 {
-                    title: "Other",
-                    value: 'other'
+                    label: "Other",
+                    selected: false,
+                    value: "Other"
                 }
             ]
         };
     },
     computed: {
+        messageFieldInvalid() {
+            if(this.formData.message.length === 0 ) {
+                return true;
+            }
+        },
+
+        selectFieldInvalid() {
+            if(this.formData.supportOption.length === 0) {
+                return true;
+            } 
+        },
 
         themeBgClass() {
             return 'tw-bg-'+this.brand;
@@ -383,10 +316,6 @@ export default {
 
         themeTextClass() {
             return 'tw-text-'+this.brand;
-        },
-
-        dropdownText() {
-            return this.selectedOptionTitle || 'Please select the option that is closest to your request...'
         },
 
         callToAction() {
@@ -401,99 +330,104 @@ export default {
         },
     },
     methods: {
-        openOnHover(index) {
-            const medium = '(min-width: 768px)';
-            if(window.matchMedia(medium).matches){
-                this.activeOption = index;
-            }
+        updateSupportOption(val) {
+            this.formData.supportOption = val;
         },
-        closeOnHover() {
-            const medium = '(min-width: 768px)';
-            if(window.matchMedia(medium).matches){
-                this.activeOption = '';
-            }
-        },
-        closeDropdowns() {
-            this.activeOption = '', this.dropdownMenuOpen = false
-        },
-        openOnClick(index) {
-            const small = '(max-width: 767px)';
-            if(window.matchMedia(small).matches){
-                if(this.activeOption === index) {
-                    this.activeOption = '';
-                } else {
-                    this.activeOption = index;
-                } 
-            }
-        },
-        checkUploadedFile(e) {
-            console.log('check uploaded file');
-            const file = e.target.files[0];
-            const limit = 100000000; //100mb
-            const allowedExtensions = /(\.apng|\.avif|\.gif|\.jpg|\.jpeg|\.jfif|\.pjpeg|\.pjp|\.png|\.svg|\.webp|)$/i;
 
-            console.log(this.selectedFile);
-            if (!allowedExtensions.exec(file)) {
-                console.log('wrong format')
-                this.selectedFile = '';
-                this.fileMessage = "For security reasons, we only allow image and video files."
-                return false;
-            } else if( file.size > limit ) {
-                console.log('too large')
-                this.selectedFile = '';
-                this.fileMessage = "Your file size exceeds 100mb."
-                return false;
-            } else {
-                console.log('all good');
-                console.log(this.selectedFile);
-                // this.selectedFile = file;
-                // this.fileMessage = ""
-            }
+        attachFile(file) {     
+            this.formData.attachments.push(file);
         },
+        removeFile(index) {
+            this.formData.attachments.splice(index, 1);
+        },
+        clearFiles() {
+            this.formData.attachments = [];
+        },
+
+
         checkForm() {
-            if(this.messageValue.length !== 0 && this.selectedOption !== '') {
-                this.formInvalid = false;
-            } else {
-                this.formInvalid = true;
-            }
+            this.formInvalid = this.messageFieldInvalid || this.selectFieldInvalid ? true : false;
         },
+
         submitForm() {
-            if (this.messageValue) {
-                const text = this.messageValue;
+            //Check Form First
+            this.checkForm()
 
-                if (this.enableEvent) {
-                    this.$root.$emit(this.eventName, { text });
-                }
-
-                this.messageValue = '';
-
-                UserService.sendEmail({
-                    type: this.emailType,
-                    subject: this.emailSubject,
-                    lines: [text],
-                    callToAction: this.callToAction,
-                    alert: this.emailAlert,
-                    brand: this.brand,
-                    logo: this.emailLogo,
-                    recipient: this.recipient,
-                    endpoint: this.emailEndpoint,
-                })
-                    .then((resolved) => {
-                        if (resolved) {
-                            Toasts.push({
-                                icon: 'happy',
-                                title: 'Woohoo!',
-                                themeColor: this.themeColor,
-                                message: this.successMessage,
-                            });
-
-                            this.$emit('formSuccess');
-
-                            window.closeAllModals();
-                        }
-                    });
+            if(this.formInvalid) {
+                console.log('form is invalid')
+                return
             }
+
+            //take snapshot
+            const message = this.formData.message;
+            const supportOption = this.formData.supportOption; 
+            //convert files to image blobs 
+            const attachments = []
+            this.formData.attachments.forEach(file => {
+                attachments.push(URL.createObjectURL(file));
+            });  
+
+            if (this.enableEvent) {
+                this.$root.$emit(this.eventName, { text });
+            }
+
+            //reset option 
+            this.formData = {
+                supportOption: '',
+                message: '',
+                attachments: [],
+            }
+            //reset options data
+            this.optionsData.forEach(function(category) {
+                category.selected=false;
+                if(category.options) {
+                    category.options.forEach(option => {
+                        option.checked=false;
+                    })
+                }
+            })
+
+
+            UserService.sendEmail({
+                type: this.emailType,
+                subject: this.emailSubject,
+                lines: [supportOption, message], //array of lines to display in the email, new index = new line break
+                files: attachments, //array of files to attach to the email
+                callToAction: this.callToAction,
+                alert: this.emailAlert,
+                brand: this.brand,
+                logo: this.emailLogo,
+                recipient: this.recipient,
+                endpoint: this.emailEndpoint,
+            })
+                .then((resolved) => {
+                    if (resolved) {
+                        Toasts.push({
+                            icon: 'happy',
+                            title: 'Woohoo!',
+                            themeColor: this.themeColor,
+                            message: this.successMessage,
+                        });
+
+                        this.$emit('formSuccess');
+
+                        window.closeAllModals();
+                    }
+                });
+            
         },
     },
+    watch: {
+        selectFieldInvalid: function(invalid) {
+            if(!invalid && !this.messageFieldInvalid) {
+                this.formInvalid = false;
+            }
+        },
+        messageFieldInvalid: function(invalid) {
+            if(!invalid && !this.selectFieldInvalid) {
+                this.formInvalid = false;
+            }
+        }
+    }
 };
 </script>

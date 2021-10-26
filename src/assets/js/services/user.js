@@ -127,6 +127,7 @@ export default {
      * @param {String} type - the type of email to send (action or alert)
      * @param {String} subject
      * @param {Array} lines - array of lines to display in the email, new index = new line break
+     * @param {Array} files - array of files to display in the email
      * @param {Object} callToAction - CTA with 2 keys, text and url
      * @param {String} alert
      * @param {String} brand
@@ -140,6 +141,7 @@ export default {
         type,
         subject,
         lines,
+        files,
         callToAction,
         alert,
         brand,
@@ -151,6 +153,7 @@ export default {
             type,
             subject,
             lines,
+            files,
             callToAction,
             alert,
             brand,
