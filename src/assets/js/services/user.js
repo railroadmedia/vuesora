@@ -150,17 +150,24 @@ export default {
         recipient,
         endpoint,
     }) {
-        return axios.post(endpointPrefix + endpoint, {
-            type,
-            subject,
-            lines,
-            attachment,
-            callToAction,
-            alert,
-            brand,
-            logo,
-            recipient,
-        })
+
+        const formData = new FormData();
+
+        formData.append('type', type);
+        formData.append('subject', subject);
+        formData.append('lines', lines);
+        formData.append('attachment', attachment);
+        formData.append('callToAction', callToAction);
+        formData.append('alert', alert);
+        formData.append('brand', brand);
+        formData.append('logo', logo);
+        formData.append('recipient', recipient);
+
+        return axios.post(endpointPrefix + endpoint, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'}
+            }
+        )
             .then(response => response.data)
             .catch(ErrorHandler);
     },

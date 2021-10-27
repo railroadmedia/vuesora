@@ -364,7 +364,7 @@ export default {
             let attachment; 
             //convert file(s) to image blobs 
             if(this.formData.attachments[0]) {
-                attachment = URL.createObjectURL(this.formData.attachments[0]);
+                attachment = this.formData.attachments[0];
             } else {
                 attachment = null;
             }
