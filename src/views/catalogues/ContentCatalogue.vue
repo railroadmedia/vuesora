@@ -370,6 +370,10 @@ export default {
             type: Boolean,
             default: () => false,
         },
+      includedFields: {
+        type: Array,
+        default: () => [],
+      },
     },
     data() {
         return {
@@ -402,6 +406,7 @@ export default {
             },
             eventType: null,
             loadedContentIds: {},
+            included_fields: this.includedFields || [],
         };
     },
     computed: {
@@ -442,6 +447,7 @@ export default {
                     term: this.search_term,
                     included_types: this.selectedTypes,
                     page: this.page,
+                    included_fields: this.included_fields,
                 };
             }
         },
@@ -514,7 +520,17 @@ export default {
                             this.required_user_states.push(param);
                         });
                     }
-                } else if (key === 'required_fields') {
+                } else if (key === 'included_fields') {
+                // query-string is weird and parses arrays with 1 value as a string
+                if (!Array.isArray(query_object[key])) {
+                  this.included_fields = [query_object[key]];
+                } else {
+                  query_object[key].forEach((param) => {
+                    this.included_fields.push(param);
+                  });
+                }
+              }
+                else if (key === 'required_fields') {
                     if (!Array.isArray(query_object[key])) {
                         let this_val = query_object[key].split(',');
                         let this_key = this_val.shift();
