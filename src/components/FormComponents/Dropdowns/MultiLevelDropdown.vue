@@ -2,7 +2,7 @@
     <div class="tw-input-field" :disabled="disabled">
         <label :id="id" class="tw-label">
             <span v-if="required" class="tw-text-red-500">*</span>
-            {{ name }}
+            {{ label }}
         </label>
 
         <div class="tw-input-wrapper">
@@ -60,38 +60,37 @@
                     aria-activedescendant="listbox-option-3"
                 >
 
-                    <li v-for="(category,catindex) in listData" 
-                        :key="catindex"
+                    <li v-for="(category,i) in listData" 
+                        :key="i"
                         class="tw-with-dropdown md:tw-bg-transparent"
-                        :class="activeCategory === catindex ? 'tw-bg-gray-200' : 'tw-bg-transparent'"
+                        :class="activeCategory === i ? 'tw-bg-gray-200' : 'tw-bg-transparent'"
                     >   
                         <!-- no submenu -->
                         <template v-if="!category.options">
-                            <label :for="`category-${catindex}`" 
+                            <input type="radio" 
+                                   :id="`category-${i}`" 
+                                   :name="name" 
+                                   :value="category.label" 
+                                   :checked="category.selected"
+                                   v-model="selectedCategory"
+                                   @change="selectOption(i)"
+                            >
+
+                            <label :for="`category-${i}`" 
                                     class="tw-option" 
-                                    :class="category.value === selectedCategory ? 'tw-bg-drumeo tw-text-white' : ''"
                                     tabindex="0"
                                     role="option"
                                     @mouseover="activeCategory = ''"
                             >
                                 <span>{{ category.label }}</span>
                             </label>
-                            <input type="radio" 
-                                :id="`category-${catindex}`" 
-                                :name="name" 
-                                :value="category.value" 
-                                :checked="category.value === selectedCategory"
-                                v-model="selectedCategory"
-                                @change="category.value = selectedCategory, selectedOption = ''"
-                            >
                         </template>
                         
                         <template v-else>
                             <div class="tw-option" 
                                  tabindex="0"                        
-                                 @mouseover="openOnHover(catindex)"
-                                 @click="openOnClick(catindex)"
-                                 @keyup.enter="openOnClick(catindex)"
+                                 @mouseover="activeCategory = i"
+                                 @keyup.enter="activeCategory = i"
                             >
                                 <span>{{ category.label }}</span>
                                 <span class="tw-input-icon tw-h-8">
@@ -108,30 +107,29 @@
 
                         <!-- Sub navigation -->
                         <template v-if="category.options">
-                            <div v-if="activeCategory === catindex" 
+                            <div v-if="activeCategory === i" 
                                  class="tw-relative tw-w-full tw-z-1 md:tw-top-0 md:tw-left-full md:tw-pl-1 md:tw-absolute md:tw-h-auto"
                                  @mouseleave="closeOnHover()"
                             >
                                 <ul class="tw-dropdown tw-subdropdown tw-mt-0 tw-top-0 tw-text-sm tw-overflow-initial tw-relative tw-shadow-none tw-rounded-none tw-border-none md:tw-border md:tw-shadow-lg md:tw-rounded-md md:tw-ml-1">
-                                    <li v-for="(option, optindex) in category.options"
-                                        :key="optindex"
+                                    <li v-for="(option, j) in category.options"
+                                        :key="j"
                                     >
-                                        <label :for="`option-${optindex}`" 
+                                        <input type="radio" 
+                                            :id="`option-${j}`" 
+                                            :name="name" 
+                                            :value="option.value"
+                                            :checked="option.checked"
+                                            v-model="selectedOption"
+                                            @change="selectOption(i,j)"
+                                        >
+                                        <label :for="`option-${j}`" 
                                                 class="tw-option" 
-                                                :class="option.value === selectedOption && category.label === selectedCategory ? 'tw-bg-drumeo tw-text-white' : ''"
                                                 tabindex="0"
                                                 role="option"
                                         >
                                             <span>{{ option.label }}</span>
                                         </label>
-                                        <input type="radio" 
-                                            :id="`option-${optindex}`" 
-                                            :name="name" 
-                                            :value="option.value"
-                                            :checked="option.value === selectedOption"
-                                            v-model="selectedOption"
-                                            @change="selectedCategory = category.label, selectedOption = option.value"
-                                        >
                                     </li>
                                 </ul>
                             </div>
@@ -145,7 +143,7 @@
             <p class="tw-input-message">{{ errorMessage }}</p>
         </div>
 
-        
+        <!-- <code class="tw-text-xs"><pre>{{ this.listData }}</pre></code> -->
     </div>
 </template>
 
@@ -215,24 +213,6 @@ export default {
         log(option){
             console.log(option)
         },
-        openOnHover(label) {
-            const medium = '(min-width: 768px)';
-            if(window.matchMedia(medium).matches){
-                this.activeCategory = label;
-            }
-        },
-        openOnClick(label) {
-            const small = '(max-width: 767px)';
-            if(window.matchMedia(small).matches){
-                if(this.activeCategory === label) {
-                    this.activeCategory = '';
-                } else {
-                    this.activeCategory = label;
-                } 
-            } else {
-                this.activeCategory = label;
-            } 
-        },
         closeOnHover() {
             const medium = '(min-width: 768px)';
             if(window.matchMedia(medium).matches){
@@ -246,7 +226,27 @@ export default {
         clearSelectedValue() {
             this.selectedCategory = '';
             this.selectedOption = '';
-        }
+        },
+
+        selectOption(cat_index, opt_index) {
+            this.listData.forEach( function(category,i,catarr) {
+                if(category === catarr[cat_index]) {
+                    category.selected = true;  
+                } else {
+                    category.selected = false;
+                }
+
+                if(category.options) {
+                    category.options.forEach( function(option, j, optarr) {
+                        if(option === optarr[opt_index] && category === catarr[cat_index]) {
+                            option.checked = true;
+                        } else {
+                            option.checked = false;
+                        }
+                    })
+                } 
+            })
+        },
     },
 
     // computed
@@ -267,6 +267,7 @@ export default {
         selectedOption: function(val) {
             this.$emit('updateValue', val);
         },
+        
         selectedValue: function(value) {
             if(!value.length) {
                 this.clearSelectedValue();

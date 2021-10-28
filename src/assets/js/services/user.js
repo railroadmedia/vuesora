@@ -128,7 +128,7 @@ export default {
      * @param {String} subject
      * @param {Array} lines - array of lines to display in the email, new index = new line break
      * @param {Array} attachments - array of files to display in the email
-     * @param {String} attachment - a single url string for the attached file
+     * @param {Object} attachment - a file object of the uploaded file
      * @param {Object} callToAction - CTA with 2 keys, text and url
      * @param {String} alert
      * @param {String} brand

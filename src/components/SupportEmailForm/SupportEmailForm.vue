@@ -350,6 +350,7 @@ export default {
         },
 
         submitForm() {
+            console.log('hello? ', this.formData.attachments[0])
             //Check Form First
             this.checkForm()
 
@@ -364,7 +365,7 @@ export default {
             let attachment; 
             //convert file(s) to image blobs 
             if(this.formData.attachments[0]) {
-                attachment = URL.createObjectURL(this.formData.attachments[0]);
+                attachment = this.formData.attachments[0];
             } else {
                 attachment = null;
             }
@@ -372,23 +373,6 @@ export default {
             if (this.enableEvent) {
                 this.$root.$emit(this.eventName, { text });
             }
-
-            //reset option 
-            this.formData = {
-                supportOption: '',
-                message: '',
-                attachments: [],
-            }
-            //reset options data
-            this.optionsData.forEach(function(category) {
-                category.selected=false;
-                if(category.options) {
-                    category.options.forEach(option => {
-                        option.checked=false;
-                    })
-                }
-            })
-
 
             UserService.sendEmail({
                 type: this.emailType,
@@ -413,11 +397,19 @@ export default {
 
                         this.$emit('formSuccess');
                         window.closeAllModals();
+
+                        //reset option 
+                        this.formData = {
+                            supportOption: '',
+                            message: '',
+                            attachments: [],
+                        }
                     }
                 });
             
         },
     },
+
     watch: {
         selectFieldInvalid: function(invalid) {
             if(!invalid && !this.messageFieldInvalid) {
