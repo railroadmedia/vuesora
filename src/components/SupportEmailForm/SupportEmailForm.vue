@@ -350,7 +350,6 @@ export default {
         },
 
         submitForm() {
-            console.log('hello? ', this.formData.attachments[0])
             //Check Form First
             this.checkForm()
 
