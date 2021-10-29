@@ -53,6 +53,7 @@
             <div v-show="dropdownMenuOpen"
                  tabindex="-1"
                  @mouseleave="closeDropdowns()"
+                 @keyup.esc="closeDropdowns()"
                  class="tw-dropdown-wrapper tw-w-full md:tw-w-auto tw-absolute tw-h-auto tw-border tw-border-solid tw-border-gray-200 tw-z-10 tw-shadow-lg tw-overflow-auto md:tw-border-none md:tw-shadow-none md:tw-h-64 md:tw-overflow-initial md:tw-mt-0"
             >
                 <ul class="tw-dropdown tw-text-sm tw-w-full tw-border-none tw-max-h-full tw-relative tw-overflow-initial tw-mt-0 tw-rounded-md md:tw-border md:tw-w-72"  
