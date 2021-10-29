@@ -94,7 +94,8 @@
                         <template v-else>
                             <div class="tw-option" 
                                  tabindex="0"                        
-                                 @mouseover="activeCategory = i"
+                                 @mouseover="openSubOnHover(i)"
+                                 @click="openSubOnClick(i)"
                                  @keyup.enter="activeCategory = activeCategory === i ? '' : i"
                             >
                                 <span>{{ category.label }}</span>
@@ -231,6 +232,18 @@ export default {
         },
         clearSelectedValue() {
             this.selectedOption = '';
+        },
+        openSubOnHover(i) {
+            const medium = '(min-width: 768px)';
+            if(window.matchMedia(medium).matches){
+                this.activeCategory = i;
+            }
+        },
+        openSubOnClick(i) {
+            const medium = '(max-width: 767px)';
+            if(window.matchMedia(medium).matches){
+                this.activeCategory = this.activeCategory === i ? '' : i;
+            }
         },
 
         selectOption(cat_index, opt_index) {
