@@ -107,7 +107,7 @@
 
                         <!-- Sub navigation -->
                         <template v-if="category.options">
-                            <div v-if="activeCategory === i" 
+                            <div v-show="activeCategory === i" 
                                  class="tw-relative tw-w-full tw-z-1 md:tw-top-0 md:tw-left-full md:tw-pl-1 md:tw-absolute md:tw-h-auto"
                                  @mouseleave="closeOnHover()"
                             >
@@ -116,14 +116,14 @@
                                         :key="j"
                                     >
                                         <input type="radio" 
-                                            :id="`option-${j}`" 
+                                            :id="`option-${j}${i}`" 
                                             :name="name" 
                                             :value="option.value"
                                             :checked="option.checked"
                                             v-model="selectedOption"
                                             @change="selectOption(i,j)"
                                         >
-                                        <label :for="`option-${j}`" 
+                                        <label :for="`option-${j}${i}`" 
                                                 class="tw-option" 
                                                 tabindex="0"
                                                 role="option"
