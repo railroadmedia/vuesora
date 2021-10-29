@@ -8,8 +8,8 @@
         <div class="tw-input-wrapper">
             <!-- Dropdown Trigger / Label -->
             <button type="button"
-                    class="focus:tw-border-drumeo tw-text-sm tw-h-12 tw-transition-all tw-py-1 tw-leading-4"
-                    :class="selectedValue ? 'tw-bg-gray-100' : 'tw-bg-white' "
+                    class="tw-text-sm tw-h-12 tw-transition-all tw-py-1 tw-leading-4"
+                    :class="[themeFocusBorder, selectedValue ? 'tw-bg-gray-100' : 'tw-bg-white']"
                     @click="dropdownMenuOpen = ! dropdownMenuOpen"
                     @keyup.esc="closeDropdowns()"
                     aria-haspopup="listbox" 
@@ -37,7 +37,8 @@
             </button>
 
             <!-- Clear input -->
-            <button class="focus:tw-border-drumeo tw-h-12 tw-w-12 tw-border tw-border-solid tw-border-gray-300 tw-absolute tw-bg-white tw-top-0 tw-right-0 tw-flex tw-items-center tw-justify-center tw-p-0"
+            <button class="tw-h-12 tw-w-12 tw-border tw-border-solid tw-border-gray-300 tw-absolute tw-bg-white tw-top-0 tw-right-0 tw-flex tw-items-center tw-justify-center tw-p-0"
+                    :class="themeFocusBorder"
                     v-if="selectedValue"
                     tabindex="0"
                     @click="clearSelectedValue()"
@@ -80,7 +81,7 @@
 
                             <label :for="`category-${i}`" 
                                     class="tw-option" 
-                                    :class="category.selected ? themeBgClass : ''"
+                                    :class="selectedOption === category.label ? themeBgClass : ''"
                                     tabindex="0"
                                     role="option"
                                     @mouseover="activeCategory = ''"
@@ -129,7 +130,7 @@
                                         >
                                         <label :for="`option-${j}${i}`" 
                                                 class="tw-option" 
-                                                :class="option.checked ? themeBgClass : ''"
+                                                :class="selectedOption === option.value ? themeBgClass : ''"
                                                 tabindex="0"
                                                 role="option"
                                                 @keyup.enter="selectedOption = option.value"
@@ -261,6 +262,9 @@ export default {
         themeTextClass() {
             return 'tw-text-'+this.theme;
         },
+        themeFocusBorder() {
+            return 'focus:tw-border-'+this.theme;
+        }
     },
 
     //watchers
