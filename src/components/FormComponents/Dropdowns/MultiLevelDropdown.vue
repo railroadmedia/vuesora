@@ -78,6 +78,7 @@
 
                             <label :for="`category-${i}`" 
                                     class="tw-option" 
+                                    :class="category.selected ? themeBgClass : ''"
                                     tabindex="0"
                                     role="option"
                                     @mouseover="activeCategory = ''"
@@ -125,6 +126,7 @@
                                         >
                                         <label :for="`option-${j}${i}`" 
                                                 class="tw-option" 
+                                                :class="option.checked ? themeBgClass : ''"
                                                 tabindex="0"
                                                 role="option"
                                         >
@@ -252,10 +254,10 @@ export default {
     // computed
     computed: {
         themeBgClass() {
-            return 'tw-bg-'+this.brand;
+            return 'tw-bg-'+this.theme;
         },
         themeTextClass() {
-            return 'tw-text-'+this.brand;
+            return 'tw-text-'+this.theme;
         },
     },
 
