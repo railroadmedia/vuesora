@@ -11,6 +11,7 @@
                     class="focus:tw-border-drumeo tw-text-sm tw-h-12 tw-transition-all tw-py-1 tw-leading-4"
                     :class="selectedValue ? 'tw-bg-gray-100' : 'tw-bg-white' "
                     @click="dropdownMenuOpen = ! dropdownMenuOpen"
+                    @keyup.esc="closeDropdowns()"
                     aria-haspopup="listbox" 
                     aria-expanded="true" 
                     :aria-labelledby="id"
@@ -72,7 +73,7 @@
                                    :name="name" 
                                    :value="category.label" 
                                    :checked="category.selected"
-                                   v-model="selectedCategory"
+                                   v-model="selectedOption"
                                    @change="selectOption(i)"
                             >
 
@@ -82,6 +83,7 @@
                                     tabindex="0"
                                     role="option"
                                     @mouseover="activeCategory = ''"
+                                    @keyup.enter="selectedOption = category.label"
                             >
                                 <span>{{ category.label }}</span>
                             </label>
@@ -91,7 +93,7 @@
                             <div class="tw-option" 
                                  tabindex="0"                        
                                  @mouseover="activeCategory = i"
-                                 @keyup.enter="activeCategory = i"
+                                 @keyup.enter="activeCategory = activeCategory === i ? '' : i"
                             >
                                 <span>{{ category.label }}</span>
                                 <span class="tw-input-icon tw-h-8">
@@ -99,7 +101,7 @@
                                             viewBox="0 0 20 20" 
                                             fill="currentColor" 
                                             class="tw-transform tw-rotate-90 md:tw-rotate-0" 
-                                            :class="activeCategory === category.label ? 'tw--rotate-90' : 'tw-rotate-90'">
+                                            :class="activeCategory === i ? 'tw--rotate-90' : 'tw-rotate-90'">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                     </svg>
                                 </span>
@@ -129,6 +131,7 @@
                                                 :class="option.checked ? themeBgClass : ''"
                                                 tabindex="0"
                                                 role="option"
+                                                @keyup.enter="selectedOption = option.value"
                                         >
                                             <span>{{ option.label }}</span>
                                         </label>
@@ -205,7 +208,6 @@ export default {
         return {
             dropdownMenuOpen: false,
             activeCategory: '',
-            selectedCategory: '',
             selectedOption: '',
         }
     },
@@ -226,7 +228,6 @@ export default {
             this.activeCategory = '';
         },
         clearSelectedValue() {
-            this.selectedCategory = '';
             this.selectedOption = '';
         },
 
@@ -263,9 +264,6 @@ export default {
 
     //watchers
     watch: {
-        selectedCategory: function(val) {
-            this.$emit('updateValue', val)
-        },
         selectedOption: function(val) {
             this.$emit('updateValue', val);
         },
