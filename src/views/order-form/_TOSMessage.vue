@@ -13,44 +13,38 @@
             <!-- If New Recurring Subscription -->
             <template v-if="isNewRecurringSub">
                 <!-- <b>New Recurring Sub</b><br> -->
-                By completing your order you agree to our <a href="/terms">Terms Of Service</a>, 
-                <a href="/privacy">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will automatically continue your 
-                membership and charge the membership fee (currently ${{ subPrice }}) to your payment plan on 
-                a {{ subInterval }} basis until you cancel. You can cancel your subscription at any time by going 
-                to Settings, Account Details, and then clicking the Cancel Membership button. You have a 90-day 
-                guarantee on your subscription, but following that there are no refunds or credits for partial months. 
+                By completing your order you agree to our <a href="/terms">Terms Of Service</a>,
+                <a href="/privacy">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will automatically continue your
+                membership and charge the membership fee (currently ${{ subPrice }}) to your payment plan on
+                an {{ subInterval }} basis until you cancel. You can cancel your subscription at any time by going
+                to Settings, Account Details, and then clicking the Cancel Membership button. You have a 90-day
+                guarantee on your subscription to make sure you’re happy with your lessons experience.
             </template>
 
             <!-- Else If Lifetime -->
             <template v-else-if="isNewLifeTimeSub">
                 <!-- <b>New Lifetime Sub</b><br> -->
-                By completing your order you agree to our <a href="/terms">Terms Of Service</a>, 
-                <a href="/terms">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will give you lifetime access to this 
-                service, or in situations where the service agreement ends you will have the 
-                option to download all available media including videos and sheet music. You 
-                have a 90-day guarantee on your order, but following that there are no
-                refunds or credits for partial months.
+                By completing your order you agree to our <a href="/terms">Terms Of Service</a>,
+                <a href="/privacy">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will give you lifetime access to this
+                service. You have a 90-day guarantee on your purchase to make sure you’re happy with your lessons experience.
             </template>
 
             <!-- Else If New Trial NOT Recurring -->
             <template v-else-if="isNewTrial">
                 <!-- <b>New Trial</b><br> -->
-                By completing your order you agree to our <a href="/terms">Terms Of Service</a> 
-                and <a href="/terms">Privacy Statement</a>. As a trial user, you will have access for {{ trialDuration }} days. After 
-                that, you will have the option to continue your membership at your own discretion 
+                By completing your order you agree to our <a href="/terms">Terms Of Service</a>
+                and <a href="/privacy">Privacy Statement</a>. As a trial user, you will have access for {{ trialDuration }} days. After
+                that, you will have the option to continue your membership at your own discretion
                 by choosing one of our membership service agreements.
             </template>    
 
             <!-- Else If Pack -->
             <template v-else-if="isPack">
                 <!-- <b>Pack</b><br> -->
-                By completing your order you agree to our <a href="/terms">Terms Of Service</a>, 
-                <a href="/terms">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will give you lifetime access to this 
-                digital product(s), or in situations where the service is terminated you will 
-                have the option to download all available media including videos and sheet music. 
-                You have a 90-day guarantee on your purchase, but following that there are no 
-                refunds or credits given.
-            </template>    
+                By completing your order you agree to our <a href="/terms">Terms Of Service</a>,
+                <a href="/privacy">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will give you lifetime access to this
+                digital product(s). You have a 90-day guarantee on your purchase to make sure you’re happy with your lessons experience.
+            </template>
 
             <!-- Else Fallback --> 
             <template v-else>
