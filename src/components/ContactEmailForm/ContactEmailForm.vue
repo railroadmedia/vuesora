@@ -63,10 +63,10 @@
             :resize="false"
             :rows="4"
             :inputValue="formData.message"
+            @update:messageFieldValid="messageFieldValid = $event"
             @update:inputValue="formData.message = $event"
             id="support-description"
             placeholder="Add message here..."
-            errorMessage="Please enter the details of your request."
         />
 
         <div class="tw-flex tw-full">
@@ -194,6 +194,7 @@ export default {
             emailFieldValid: false,
             textFieldValid: false,
             radioFieldsValid: false,
+            messageFieldValid: false,
             formData: {
                 name: '',
                 email: '',
@@ -368,9 +369,6 @@ export default {
         };
     },
     computed: {
-        messageFieldValid() {
-            return this.formData.message.length !== 0 ? true : false;
-        },
         selectFieldValid() {
             return this.formData.supportOption.length !== 0 ? true : false;
         },

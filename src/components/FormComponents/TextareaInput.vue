@@ -69,22 +69,26 @@ export default {
             type: String,
             default: ''
         },
-        errorMessage: {
-            type: String,
-            default: ''
-        }
     },
 
     // data
     data() {
         return {
-
+            errorMessage: 'Please enter the details of your request.'
         }
     },
 
     // methods
     methods: {
-
+        validateInput: function(input) {
+            if (!input.length) {
+                this.errorMessage = "Please enter the details of your request."
+                this.$emit('update:messageFieldValid', false)
+            } else {
+                this.errorMessage = '';
+                this.$emit('update:messageFieldValid', true)
+            }
+        }
     },
 
     // computed
@@ -96,6 +100,14 @@ export default {
         }
     },
 
+    watch: {
+        inputValue: function(val) {
+            this.validateInput(val);
+        },
+        invalid: function() {
+           this.validateInput(this.inputValue); 
+        }
+    }
     // lifecycle hooks
 }
 </script>

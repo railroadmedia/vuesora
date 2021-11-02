@@ -73,13 +73,14 @@ export default {
     methods: {
         validateEmail: function(email) {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if ( !re.test(email) ) {
-                this.errorMessage = "Please enter a valid email."
-                this.$emit('update:emailFieldValid', false)
-            } else if(!email.length) {
+            if (email.length === 0) {
                 this.errorMessage = "Please enter your email address."
                 this.$emit('update:emailFieldValid', false)
+            } else if(!re.test(email)) {
+                this.errorMessage = "Please enter a valid email."
+                this.$emit('update:emailFieldValid', false)
             } else {
+                console.log('nothing')
                 this.errorMessage = '';
                 this.$emit('update:emailFieldValid', true)
             }
@@ -97,9 +98,12 @@ export default {
 
     // lifecycle hooks
     watch: {
-      inputValue: function(val) {
-        this.validateEmail(val);
-      }
+        inputValue: function(val) {
+            this.validateEmail(val);
+        },
+        invalid: function() {
+           this.validateEmail(this.inputValue); 
+        }
     },
 }
 </script>

@@ -11,7 +11,7 @@
             id="support-listbox"
             :theme="brand"
             :required="true"
-            :invalid="formInvalid && selectFieldInvalid"
+            :invalid="!formValid && !selectFieldValid"
             :selectedValue="formData.supportOption"
             :listData="optionsData"
             @updateValue="updateSupportOption($event)"
@@ -23,14 +23,14 @@
         <textarea-input 
             name="description"
             :required="true"
-            :invalid="formInvalid && messageFieldInvalid"
+            :invalid="!formValid && !messageFieldValid"
             :resize="false"
             :rows="4"
             :inputValue="formData.message"
+            @update:messageFieldValid="messageFieldValid = $event"
             @update:inputValue="formData.message = $event"
             id="support-description"
             placeholder="Add message here..."
-            errorMessage="Please enter the details of your request."
         />
 
         <div class="tw-flex tw-full tw-flex-col sm:tw-flex-row-reverse">
@@ -56,7 +56,7 @@
             <!-- SUBMIT BUTTON -->
             <button class="tw-btn-primary tw-self-start tw-mr-auto tw-w-full sm:tw-w-min" 
                     type="submit"
-                    :disabled="formInvalid"
+                    :disabled="!formValid"
                     :class="themeBgClass" 
             >
                     Submit
@@ -136,7 +136,8 @@ export default {
     
     data() {
         return {
-            formInvalid: false,
+            formValid: true,
+            messageFieldValid: false,
             formData: {
                supportOption: '',
                message: '',
@@ -298,16 +299,12 @@ export default {
         };
     },
     computed: {
-        messageFieldInvalid() {
-            if(this.formData.message.length === 0 ) {
-                return true;
-            }
+        selectFieldValid() {
+            return this.formData.supportOption.length !== 0 ? true : false;
         },
-
-        selectFieldInvalid() {
-            if(this.formData.supportOption.length === 0) {
-                return true;
-            } 
+        
+        formState() {
+            if(this.messageFieldValid && this.selectFieldValid) return true;
         },
 
         themeBgClass() {
@@ -345,15 +342,13 @@ export default {
         },
 
 
-        checkForm() {
-            this.formInvalid = this.messageFieldInvalid || this.selectFieldInvalid ? true : false;
-        },
+
 
         submitForm() {
             //Check Form First
-            this.checkForm()
+            this.formValid = this.formState;
 
-            if(this.formInvalid) {
+            if(!this.formValid) {
                 console.log('form is invalid')
                 return
             }
@@ -410,16 +405,16 @@ export default {
     },
 
     watch: {
-        selectFieldInvalid: function(invalid) {
-            if(!invalid && !this.messageFieldInvalid) {
-                this.formInvalid = false;
+        selectFieldValid: function(valid) {
+            if(this.formState) {
+                this.formValid = true;
             }
         },
-        messageFieldInvalid: function(invalid) {
-            if(!invalid && !this.selectFieldInvalid) {
-                this.formInvalid = false;
+        messageFieldValid: function(valid) {
+            if(this.formState) {
+                this.formValid = true;
             }
-        }
+        },
     }
 };
 </script>

@@ -65,7 +65,7 @@ export default {
     // data
     data() {
         return {
-            errorMessage: 'Please enter your email address.',
+            errorMessage: 'Please enter your name.',
         }
     },
 
@@ -73,7 +73,7 @@ export default {
     methods: {
         validateInput: function(input) {
             if (!input.length) {
-                this.errorMessage = "Please enter your email address."
+                this.errorMessage = "Please enter your name."
                 this.$emit('update:textFieldValid', false)
             } else {
                 this.errorMessage = '';
@@ -93,9 +93,12 @@ export default {
 
     // lifecycle hooks
     watch: {
-      inputValue: function(val) {
-        this.validateInput(val);
-      }
+        inputValue: function(val) {
+            this.validateInput(val);
+        },
+        invalid: function() {
+           this.validateInput(this.inputValue); 
+        }
     },
 
     // lifecycle hooks
