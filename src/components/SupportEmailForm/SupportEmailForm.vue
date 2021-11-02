@@ -404,7 +404,7 @@ export default {
                             attachments: [],
                         }
                     }
-                });
+                })
             
         },
     },

@@ -11,7 +11,7 @@
                     :id="id"
                     :rows="rows" 
                     :placeholder="placeholder"
-                    class="focus:tw-border-drumeo"
+                    class="focus:tw-border-drumeo tw-font-primary"
                     :class="[inputValue.length ? 'has-input' : '', !resize ? 'tw-resize-none' : 'tw-resize-y']"
                     :aria-required="required"
                     :aria-invalid="invalid"
