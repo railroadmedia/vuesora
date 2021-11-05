@@ -12,7 +12,6 @@
 
             <!-- If New Recurring Subscription -->
             <template v-if="isNewRecurringSub">
-                <!--<span v-if="totalPriceAfterDiscounts <= 0">Your credit card will not be charged for this transaction.</span>-->
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a>,
                 <a href="/privacy">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will automatically continue your
                 membership and charge the membership fee (currently ${{ subPrice }}) to your payment plan on
@@ -23,7 +22,7 @@
 
             <!-- Else If Lifetime -->
             <template v-else-if="isNewLifeTimeSub">
-                <!--<span v-if="totalPriceAfterDiscounts <= 0">Your credit card will not be charged for this transaction.</span>-->
+                <span v-if="isZeroDollarOrder" class="text-error">Your credit card will not be charged for this transaction.<br></span>
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a>,
                 <a href="/privacy">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will give you lifetime access to this
                 service. You have a 90-day guarantee on your purchase to make sure you’re happy with your lessons experience.
@@ -31,7 +30,7 @@
 
             <!-- Else If New Trial NOT Recurring -->
             <template v-else-if="isNewTrial">
-                <!--<span v-if="totalPriceAfterDiscounts <= 0">Your credit card will not be charged for this transaction.</span>-->
+                <span v-if="isZeroDollarOrder" class="text-error">Your credit card will not be charged for this transaction.<br></span>
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a>
                 and <a href="/privacy">Privacy Statement</a>. As a trial user, you will have access for {{ trialDuration }} days. After
                 that, you will have the option to continue your membership at your own discretion
@@ -40,7 +39,7 @@
 
             <!-- Else If Pack -->
             <template v-else-if="isPack">
-                <!--<span v-if="totalPriceAfterDiscounts <= 0">Your credit card will not be charged for this transaction.</span>-->
+                <span v-if="isZeroDollarOrder" class="text-error">Your credit card will not be charged for this transaction.<br></span>
                 By completing your order you agree to our <a href="/terms">Terms Of Service</a>,
                 <a href="/privacy">Privacy Statement</a>, and that <span class="tw-capitalize">{{ brand }}</span> will give you lifetime access to this
                 digital product(s). You have a 90-day guarantee on your purchase to make sure you’re happy with your lessons experience.
@@ -111,9 +110,9 @@ export default {
     },
 
     computed: {
-        // totalPriceAfterDiscounts() {
-        //     return Number(this.item.price_after_discounts).toFixed(2);
-        // },
+        isZeroDollarOrder() {
+            return this.cartData.totals.due === 0;
+        },
 
         //Cart has sku in the 'all membership product skus' array --> boolean
         hasMembershipSku() {
