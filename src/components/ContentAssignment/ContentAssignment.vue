@@ -96,24 +96,30 @@
         <transition name="show-from-bottom">
             <div v-if="open" id="practiceOverlay" class="bg-white">
                 <div class="flex flex-column embed-column">
-                    <div class="flex flex-row bb-grey-4-1 bg-grey-5 ph tw-relative tw-h-12 tw-items-center">
-                        <div class="flex flex-column self-start">
-                            <h2 class="title text-white">
+                    <div class="tw-flex tw-flex-row bb-grey-4-1 bg-grey-5 ph tw-relative tw-h-12 tw-items-center">
+                        <div class="self-start">
+                            <button v-if="disablePrev" class="title tw-opacity-50 tw-text-left tw-bg-transparent tw-border-none">
                                 <i class="fas fa-chevron-left ml-1"></i> Previous
-                            </h2>
+                            </button>
+                            <button v-else class="title text-white tw-text-left tw-bg-transparent tw-border-none pointer" @click="goToPrevious">
+                                <i class="fas fa-chevron-left ml-1"></i> Previous
+                            </button>
                         </div>
-                        <div class="flex flex-column self-center tw-text-center">
+                        <div class="tw-tw-flex tw-flex-column self-center tw-text-center tw-flex-grow">
                             <h2 class="title text-white text-truncate-1-line tw-text-center">
                                 {{ title }}
                             </h2>
                         </div>
-                        <div class="flex flex-column text-right self-end tw-mr-12">
-                            <h2 class="title text-white">
+                        <div class="self-end tw-mr-12">
+                            <button v-if="disableNext" class="title tw-opacity-50 tw-text-right tw-bg-transparent tw-border-none">
                                 Next <i class="fas fa-chevron-right tw-mr-2"></i>
-                            </h2>
+                            </button>
+                            <button v-else class="title text-white tw-text-right tw-bg-transparent tw-border-none pointer" @click="goToNext">
+                                Next <i class="fas fa-chevron-right tw-mr-2"></i>
+                            </button>
                         </div>
-                        <div class="flex flex-row close-exercise uppercase text-white align-v-center pointer flex-auto self-end" @click="closeExercise">
-                            <div class="flex flex-row align-v-center title bg-error tw-absolute tw-right-0 tw-w-12 tw-h-12">
+                        <div class="tw-flex tw-flex-row close-exercise uppercase text-white tw-items-center pointer flex-auto self-end" @click="closeExercise">
+                            <div class="tw-flex tw-flex-row tw-items-center title bg-error tw-absolute tw-right-0 tw-top-0 tw-w-12 tw-h-12">
                                 <i class="fas fa-times tw-text-center tw-w-full"></i>
                             </div>
                         </div>
@@ -201,10 +207,29 @@ export default {
             type: Boolean,
             default: false,
         },
+        forceOpen: {
+            type: Boolean,
+            default: false,
+        },
+        disablePrev: {
+            type: Boolean,
+            default: true,
+        },
+        disableNext: {
+            type: Boolean,
+            default: true, 
+        },
         userId: {
             type: [Number, String],
             default: () => 0,
         },
+    },
+    watch: {
+        forceOpen: function (newVal, __oldVal) {
+            if (newVal) {
+                this.openExercise();
+            }
+        }
     },
     data() {
         return {
@@ -321,6 +346,7 @@ export default {
         if (this.position < 3) {
             this.openAssignment();
         }
+
         const vm = this;
 
         window.addEventListener('requesting-completion', this.setIsRequesting);
@@ -386,6 +412,7 @@ export default {
         },
 
         openExercise() {
+            this.$emit('force-current');
             this.open = true;
             document.body.classList.add('no-scroll', 'dim-sidebar');
 
@@ -396,6 +423,16 @@ export default {
 
             Helpscout.hideWidget();
             Intercom.hideWidget();
+        },
+
+        goToPrevious() {
+            this.$emit('force-prev');
+            this.closeExercise();
+        },
+
+        goToNext() {
+            this.$emit('force-next');
+            this.closeExercise();
         },
 
         closeExercise() {
