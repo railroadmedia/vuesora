@@ -44,8 +44,5 @@ export default {
             forceIndex: null,
         };
     },
-    mounted() {
-        console.log(this.assignments)
-    }
 };
 </script>
