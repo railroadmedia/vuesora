@@ -97,7 +97,7 @@
             <div v-if="open" id="practiceOverlay" class="bg-white">
                 <div class="flex flex-column embed-column">
                     <div class="tw-flex tw-flex-row bb-grey-4-1 bg-grey-5 ph tw-relative tw-h-12 tw-items-center">
-                        <div class="self-start">
+                        <div v-if="!disableNext || !disablePrev" class="self-start">
                             <button v-if="disablePrev" class="tw-text-sm sm:tw-text-md tw-text-white  tw-opacity-30 tw-text-left tw-bg-transparent tw-border-none">
                                 <i class="fas fa-chevron-left ml-1"></i> <span class="tw-hidden sm:tw-inline-block tw-pl-2">Previous</span>
                             </button>
@@ -110,7 +110,7 @@
                                 {{ title }}
                             </h2>
                         </div>
-                        <div class="self-end tw-mr-12">
+                        <div v-if="!disableNext || !disablePrev" class="self-end tw-mr-12">
                             <button v-if="disableNext" class="tw-text-sm sm:tw-text-md tw-text-white tw-opacity-30 tw-text-right tw-bg-transparent tw-border-none">
                                 <span class="tw-hidden sm:tw-inline-block tw-pr-2">Next</span> <i class="fas fa-chevron-right tw-mr-2"></i>
                             </button>
