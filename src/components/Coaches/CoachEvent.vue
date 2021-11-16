@@ -32,10 +32,8 @@
                     
                     <div class="tw-flex tw-items-center tw-mb-1.5">
                         <!-- Live Badge -->
-                        <div class="tw-my-2"  v-if="eventIsLive">
-                            <div class="tw-flex flex-row">
-                                <div class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-py-0.5 tw-px-2"><span>live</span></div>
-                            </div>
+                        <div class="tw-flex flex-row" v-if="eventIsLive">
+                            <div class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-leading-none tw-p-1.5"><span>live</span></div>
                         </div>
 
                         <!-- Countdown -->
