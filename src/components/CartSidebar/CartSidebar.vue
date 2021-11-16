@@ -386,7 +386,7 @@ export default {
 #cart-sidebar {
     position: fixed;
     top: 0;
-    right: -500px;
+    right: -100%;
     z-index: 2147483006;
     padding-left: 2px;
     -webkit-transition: all 0.1s;
