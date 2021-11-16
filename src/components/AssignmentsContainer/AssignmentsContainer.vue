@@ -13,7 +13,7 @@
                     :position="assignment.index"
                     :force-open="forceIndex === index"
                     :disable-prev="assignments[index - 1] && !assignments[index - 1].soundsliceSlug"
-                    :disable-next="index === assignments.length - 1"
+                    :disable-next="assignments[index + 1] && !assignments[index + 1].soundsliceSlug"
                     v-on:force-prev="forceIndex = forceIndex - 1"
                     v-on:force-next="forceIndex = forceIndex + 1"
                     v-on:force-current="forceIndex = index"
