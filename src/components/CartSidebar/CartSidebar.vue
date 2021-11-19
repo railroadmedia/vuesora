@@ -386,7 +386,7 @@ export default {
 #cart-sidebar {
     position: fixed;
     top: 0;
-    right: -500px;
+    right: -100%;
     z-index: 2147483006;
     padding-left: 2px;
     -webkit-transition: all 0.1s;
@@ -526,7 +526,7 @@ export default {
     }
     .recommended-products {
         padding-top: 10px;
-        margin-bottom: 60px;
+        margin-bottom: 100px;
         .recommended-products-wrapper {
             display: flex;
             flex-direction: row;

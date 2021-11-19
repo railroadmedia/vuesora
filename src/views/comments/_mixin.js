@@ -71,7 +71,7 @@ export default {
     methods: {
         handleCommentLike(payload) {
             const index = this.comments.map(comment => comment.id).indexOf(payload.id);
-            const likedPost = payload.isPinned ? this.pinnedComment : this.comments[index];
+            const likedPost = payload.pinned ? this.pinnedComment : this.comments[index];
 
             if (payload.isLiked) {
                 likedPost.like_count -= 1;
@@ -91,8 +91,6 @@ export default {
             const likedPostReplies = payload.isPinned ? this.pinnedComment.replies : this.comments[index].replies;
             const likedPostReplyIndex = likedPostReplies.map(reply => reply.id).indexOf(payload.id);
             const likedPostReply = likedPostReplies[likedPostReplyIndex];
-
-            console.log(likedPostReplies);
 
             if (payload.isLiked) {
                 likedPostReply.like_count -= 1;

@@ -9,6 +9,7 @@ export default (function () {
         const resetProgressButtons = document.querySelectorAll('.resetProgress');
         let clickTimeout = false;
         let isRequesting = false;
+        let isResetCompleteOpened = false;
 
         window.addEventListener('vue-requesting-completion', (event) => {
             isRequesting = true;
@@ -104,7 +105,8 @@ export default (function () {
             const brand = element.dataset.brand || 'drumeo';
             const icon = element.querySelector('.fas');
 
-            if (!clickTimeout) {
+            if (!clickTimeout && !isResetCompleteOpened) {
+                isResetCompleteOpened = true;
                 Toasts.confirm({
                     title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
                     submitButton: {
@@ -141,6 +143,9 @@ export default (function () {
                     cancelButton: {
                         text: '<span class="bg-grey-3 inverted text-grey-3 short">NO</span>',
                     },
+                    closeCallback: () => {
+                        isResetCompleteOpened = false;
+                    }
                 });
             }
 
@@ -186,36 +191,42 @@ export default (function () {
 
             if (!clickTimeout && !isRequesting) {
                 if (isRemoving) {
-                    Toasts.confirm({
-                        title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
-                        submitButton: {
-                            text: `<span class="bg-${brand} text-white">Reset</span>`,
-                            callback: () => {
-                                element.classList.remove('is-complete');
+                    if (!isResetCompleteOpened) {
+                        isResetCompleteOpened = true;
+                        Toasts.confirm({
+                            title: 'Hold your horses… This will reset all of your progress, are you sure about this?',
+                            submitButton: {
+                                text: `<span class="bg-${brand} text-white">Reset</span>`,
+                                callback: () => {
+                                    element.classList.remove('is-complete');
 
-                                window.recalculateProgress(!isRemoving, true, brand);
+                                    window.recalculateProgress(!isRemoving, true, brand);
 
-                                ContentService.resetContentProgress(contentId)
-                                    .then((resolved) => {
-                                        if (resolved) {
-                                            Toasts.push({
-                                                icon: 'happy',
-                                                title: 'READY TO START AGAIN?',
-                                                themeColor: brand,
-                                                message: 'Your progress has been reset.',
-                                            });
+                                    ContentService.resetContentProgress(contentId)
+                                        .then((resolved) => {
+                                            if (resolved) {
+                                                Toasts.push({
+                                                    icon: 'happy',
+                                                    title: 'READY TO START AGAIN?',
+                                                    themeColor: brand,
+                                                    message: 'Your progress has been reset.',
+                                                });
 
-                                            element.classList.add('remove-request-complete');
-                                        }
+                                                element.classList.add('remove-request-complete');
+                                            }
 
-                                        isRequesting = false;
-                                    });
+                                            isRequesting = false;
+                                        });
+                                },
                             },
-                        },
-                        cancelButton: {
-                            text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>',
-                        },
-                    });
+                            cancelButton: {
+                                text: '<span class="bg-grey-3 inverted text-grey-3">Cancel</span>',
+                            },
+                            closeCallback: () => {
+                                isResetCompleteOpened = false;
+                            }
+                        });
+                    }
                 } else {
                     element.classList.add('is-complete');
 

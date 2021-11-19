@@ -57,9 +57,9 @@
                     <transition name="grow-fade">
                         <div
                             v-show="resourceDropdown"
-                            class="download-dropdown"
+                            class="download-dropdown tw-absolute"
                         >
-                            <div class="flex flex-column bg-white corners-10 shadow">
+                            <div class="tw-flex tw-flex-wrap tw-bg-white tw-rounded-lg tw-shadow-lg tw-overflow-hidden">
                                 <a
                                     v-for="resource in resources"
                                     :key="resource.resource_name"
@@ -148,6 +148,7 @@
 <script>
 import Utils from '@musora/helper-functions/modules/utils';
 import ThemeClasses from '../../mixins/ThemeClasses';
+import Toasts from '../../assets/js/classes/toasts';
 import ContentService from '../../assets/js/services/content';
 
 export default {
