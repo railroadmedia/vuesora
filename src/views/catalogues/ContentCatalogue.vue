@@ -73,6 +73,25 @@
             @addToList="addToListEventHandler"
         ></grid-catalogue>
 
+        <coach-grid-catalogue
+            v-if="catalogue_type === 'coach-grid'"
+            :content="content"
+            :brand="brand"
+            :theme-color="themeColor"
+            :use-theme-color="useThemeColor"
+            :no-wrap="noWrapGrid"
+            :user-id="userId"
+            :is-admin="isAdmin"
+            :lock-unowned="lockUnowned"
+            :force-wide-thumbs="forceWideThumbs"
+            :content-type-override="contentTypeOverride"
+            :six-wide="sixWide"
+            :five-wide="fiveWide"
+            :show-my-list-action="showMyListAction"
+            :display-inline="displayInline"
+            @addToList="addToListEventHandler"
+        ></coach-grid-catalogue>
+
         <routines-catalogue
             v-if="catalogue_type === 'routines'"
             :content="content"
@@ -174,6 +193,7 @@ import * as QueryString from 'query-string';
 import { Content as ContentHelpers } from '@musora/helper-functions';
 import DownloadsCatalogue from './DownloadsCatalogue.vue';
 import GridCatalogue from './GridCatalogue.vue';
+import CoachGridCatalogue from './CoachGridCatalogue.vue';
 import RoutinesCatalogue from './RoutinesCatalogue.vue';
 import ListCatalogue from './ListCatalogue.vue';
 import CatalogueFilters from './_CatalogueFilters.vue';
@@ -188,6 +208,7 @@ export default {
     name: 'ContentCatalogue',
     components: {
         'grid-catalogue': GridCatalogue,
+        'coach-grid-catalogue': GridCatalogue,
         'routines-catalogue': RoutinesCatalogue,
         'list-catalogue': ListCatalogue,
         'downloads-catalogue': DownloadsCatalogue,
