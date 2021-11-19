@@ -100,7 +100,7 @@
 
                     <div class="tw-flex tw-flex-nowrap"
                         :class="{'tw-pt-3': showWatch}"
-                        v-if="!eventIsLive"
+                        v-if="!eventIsLive || !showWatch"
                     >
                         <!-- Add to My List -->
                         <button class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-center tw-border-0 tw-bg-transparent tw-text-3xl tw-mr-6"

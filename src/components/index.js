@@ -13,6 +13,7 @@ import VideoResources from './VideoResources/VideoResources.vue';
 import ContentLessonActionButtons from './VideoResources/ContentLessonActionButtons.vue';
 import YoutubePlayer from './YoutubePlayer/YoutubePlayer.vue';
 import CoachEvent from './Coaches/CoachEvent.vue';
+import FeaturedCoaches from './FeaturedCoaches/FeaturedCoaches.vue';
 
 const Components = {
     EmailForm,
@@ -30,6 +31,7 @@ const Components = {
     ContentLessonActionButtons,
     YoutubePlayer,
     CoachEvent,
+    FeaturedCoaches,
 };
 
 export default Components;
