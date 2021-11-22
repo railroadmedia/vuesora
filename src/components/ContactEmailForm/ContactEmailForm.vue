@@ -69,8 +69,8 @@
             placeholder="Add message here..."
         />
 
-        <div class="tw-flex tw-flex-col-reverse md:tw-flex-row tw-full">
-            <div class="tw-my-4 tw-inline-flex tw-mx-auto md:tw-my-0 md:tw-w-1/2">
+        <div class="tw-flex tw-flex-col-reverse sm:tw-flex-row tw-full">
+            <div class="tw-my-4 tw-inline-flex tw-mx-auto sm:tw-mx-0 sm:tw-my-0 sm:tw-w-1/2">
                 <!-- Recaptcha -->
                 <recaptcha :siteKey="captchakey"
                            @update:verified="formVerified = $event"    
