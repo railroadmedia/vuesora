@@ -98,6 +98,7 @@ export default {
      * @param {String} shippingZip
      * @param paymentMethodId
      * @param shippingAddressId
+     * @param billingAddressId
      * @returns {Promise}
      */
     updateAddressesInSession({
@@ -115,6 +116,7 @@ export default {
         shippingZip,
         paymentMethodId,
         shippingAddressId,
+        billingAddressId,
     }) {
         return axios.put('/ecommerce/session/address', {
             'shipping_address_line_1': shippingAddressLine1,
@@ -131,6 +133,7 @@ export default {
             'billing_email': billingEmail,
             'payment_method_id': paymentMethodId,
             'shipping_address_id': shippingAddressId,
+            'billing_address_id': billingAddressId,
         })
             .then(response => response)
             .catch(ErrorHandler);
