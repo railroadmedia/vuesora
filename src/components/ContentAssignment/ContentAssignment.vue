@@ -1,144 +1,228 @@
 <template>
-    <div class="flex flex-column assignment-component bb-grey-1-1">
+    <div
+        class="flex flex-column assignment-component bb-grey-1-1"
+    >
         <div class="flex flex-row align-v-center flex-wrap pv-3">
             <div class="flex flex-column xs-12 md-8">
                 <div class="flex flex-row align-v-center">
-                    <div class="flex flex-column arrow-column hide-xs-only">
-                        <button class="btn collapse-square" @click="openAssignment">
-                                <span
-                                    class="bg-grey-3"
-                                    :class="accordionButtonClasses"
-                                >
-                                    <i
-                                        class="fas"
-                                        :class="accordionButtonIconClasses"
-                                    ></i>
-                                </span>
-                            </button>
+                    <div
+                        class="flex flex-column arrow-column hide-xs-only"
+                    >
+                        <button
+                            class="btn collapse-square"
+                            @click="openAssignment"
+                        >
+                            <span
+                                class="bg-grey-3"
+                                :class="accordionButtonClasses"
+                            >
+                                <i
+                                    class="fas"
+                                    :class="accordionButtonIconClasses"
+                                ></i>
+                            </span>
+                        </button>
                     </div>
                     <div class="flex flex-column">
                         <div class="flex flex-row align-v-center">
-                            <div class="flex flex-column pointer" @click="openAssignment">
+                            <div
+                                class="flex flex-column pointer"
+                                @click="openAssignment"
+                            >
                                 <h3 class="title noselect">
-                                    {{ title }} 
+                                    {{ title }}
                                 </h3>
                             </div>
-                            <div v-if="timecode != 0" class="flex flex-column flex-auto">
-                                <a class="flex flex-column flex-auto tiny font-bold font-underline hide-xs-only ph-2" :class="'text-' + themeColor" :data-jump-to-time="timecode">
-                                        {{ formattedTimecode }} 
-                                    </a>
+                            <div
+                                v-if="timecode != 0"
+                                class="flex flex-column flex-auto"
+                            >
+                                <a
+                                    class="flex flex-column flex-auto tiny font-bold font-underline hide-xs-only ph-2"
+                                    :class="'text-' + themeColor"
+                                    :data-jump-to-time="timecode"
+                                >
+                                    {{ formattedTimecode }}
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-column flex-auto body ph-2 hide-sm-up pointer" @click="openAssignment">
-                        <i class="fas" :class="accordionButtonIconClasses"></i>
+                    <div
+                        class="flex flex-column flex-auto body ph-2 hide-sm-up pointer"
+                        @click="openAssignment"
+                    >
+                        <i
+                            class="fas"
+                            :class="accordionButtonIconClasses"
+                        ></i>
                     </div>
                 </div>
             </div>
             <div class="flex flex-column xs-12 md-4 complete-column">
                 <div class="flex flex-row">
-                    <button v-if="soundsliceSlug" class="btn mr-1" @click="openExercise">
-                            <span class="text-white bg-grey-3 inverted text-grey-3">
-                                <i class="fas fa-play mr-1"></i> Practice
-                            </span>
-                        </button>
-    
-                    <button class="btn" :disabled="isRequesting" @click.stop="markAsComplete">
-                            <span :class="completeButtonClasses">
-                                <i class="fas fa-check mr-1"></i>
-                                {{ isComplete ? 'Completed' : 'Complete' }}
-                            </span>
-                        </button>
+                    <button
+                        v-if="soundsliceSlug"
+                        class="btn mr-1"
+                        @click="openExercise"
+                    >
+                        <span class="text-white bg-grey-3 inverted text-grey-3">
+                            <i class="fas fa-play mr-1"></i> Practice
+                        </span>
+                    </button>
+
+                    <button
+                        class="btn"
+                        :disabled="isRequesting"
+                        @click.stop="markAsComplete"
+                    >
+                        <span :class="completeButtonClasses">
+                            <i class="fas fa-check mr-1"></i>
+                            {{ isComplete ? 'Completed' : 'Complete' }}
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
         <transition name="slide-down-fade">
-            <div v-if="accordionActive && thisAssignment != null" v-show="!accordionLoading" class="flex flex-column">
-                <div v-show="$_description.length > 0" class="flex flex-row mb-3 pa-3">
-                    <div class="body" v-html="$_description">
+            <div
+                v-if="accordionActive && thisAssignment != null"
+                v-show="!accordionLoading"
+                class="flex flex-column"
+            >
+                <div
+                    v-show="$_description.length > 0"
+                    class="flex flex-row mb-3 pa-3"
+                >
+                    <div
+                        class="body"
+                        v-html="$_description"
+                    >
                         {{ $_description }}
                     </div>
                 </div>
-                <div v-show="$_totalPages > 0" class="flex flex-row pa-3">
-                    <div ref="carouselWrap" class="flex flex-column grow">
+                <div
+                    v-show="$_totalPages > 0"
+                    class="flex flex-row pa-3"
+                >
+                    <div
+                        ref="carouselWrap"
+                        class="flex flex-column grow"
+                    >
                         <div class="flex flex-column">
-                            <div ref="carouselContainer" class="flex flex-row carousel bg-white overflow mv pb-3">
+                            <div
+                                ref="carouselContainer"
+                                class="flex flex-row carousel bg-white overflow mv pb-3"
+                            >
                                 <div class="flex flex-row">
-                                    <div v-for="(page, i) in $_sheet_music_pages" :key="'page' + (i + 1)" class="flex flex-column xs-12 grow page" :style="pageScrollPosition">
-                                        <img class="sheet-music-image" :src="page">
+                                    <div
+                                        v-for="(page, i) in $_sheet_music_pages"
+                                        :key="'page' + (i + 1)"
+                                        class="flex flex-column xs-12 grow page"
+                                        :style="pageScrollPosition"
+                                    >
+                                        <img
+                                            class="sheet-music-image"
+                                            :src="page"
+                                        >
                                     </div>
                                 </div>
-    
-                                <div v-if="currentPage > 1" class="side-button prev flex-center" @click="scrollToPage(currentPage - 1)">
+
+                                <div
+                                    v-if="currentPage > 1"
+                                    class="side-button prev flex-center"
+                                    @click="scrollToPage(currentPage - 1)"
+                                >
                                     <i class="fas fa-chevron-left"></i>
                                 </div>
-                                <div v-if="currentPage < $_totalPages" class="side-button next flex-center" @click="scrollToPage(currentPage + 1)">
+                                <div
+                                    v-if="currentPage < $_totalPages"
+                                    class="side-button next flex-center"
+                                    @click="scrollToPage(currentPage + 1)"
+                                >
                                     <i class="fas fa-chevron-right"></i>
                                 </div>
-    
-                                <div v-if="$_totalPages > 1" class="page-buttons">
-                                    <div v-for="(page, i) in pages" :key="'pageButton' + (i + 1)" class="page-button mh-1 rounded bg-black" :class="currentPageClass(i + 1)" @click="scrollToPage(i + 1)"></div>
+
+                                <div
+                                    v-if="$_totalPages > 1"
+                                    class="page-buttons"
+                                >
+                                    <div
+                                        v-for="(page, i) in pages"
+                                        :key="'pageButton' + (i + 1)"
+                                        class="page-button mh-1 rounded bg-black"
+                                        :class="currentPageClass(i + 1)"
+                                        @click="scrollToPage(i + 1)"
+                                    ></div>
                                 </div>
                             </div>
-                            <div v-if="timecode != 0" class="flex flex-row hide-sm-up">
-                                <a class="tiny font-bold font-underline" :class="'text-' + themeColor" :data-jump-to-time="timecode">
-                                        {{ formattedTimecode }}
-                                    </a>
+                            <div
+                                v-if="timecode != 0"
+                                class="flex flex-row hide-sm-up"
+                            >
+                                <a
+                                    class="tiny font-bold font-underline"
+                                    :class="'text-' + themeColor"
+                                    :data-jump-to-time="timecode"
+                                >
+                                    {{ formattedTimecode }}
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-column pa-2 sm-3 hide-xs-only" :class="imageTypeSpacerClass"></div>
-                    <!--Spacer-->
+                    <div
+                        class="flex flex-column pa-2 sm-3 hide-xs-only"
+                        :class="imageTypeSpacerClass"
+                    ></div> <!--Spacer-->
                 </div>
             </div>
         </transition>
-    
+
         <transition name="show-from-bottom">
-            <div v-if="open" id="practiceOverlay" class="bg-white">
+            <div
+                v-if="open"
+                id="practiceOverlay"
+                class="bg-white"
+            >
                 <div class="flex flex-column embed-column">
-                    <div class="tw-flex tw-flex-row bb-grey-4-1 bg-grey-5 ph tw-relative tw-h-12 tw-items-center">
-                        <div v-if="!disableNext || !disablePrev" class="self-start">
-                            <button v-if="disablePrev" class="tw-text-sm sm:tw-text-md tw-text-white  tw-opacity-30 tw-text-left tw-bg-transparent tw-border-none">
-                                <i class="fas fa-chevron-left ml-1"></i> <span class="tw-hidden sm:tw-inline-block tw-pl-2">Previous</span>
-                            </button>
-                            <button v-else class="tw-text-sm sm:tw-text-md tw-text-white tw-text-left tw-bg-transparent tw-border-none pointer" @click="goToPrevious">
-                                <i class="fas fa-chevron-left ml-1"></i> <span class="tw-hidden sm:tw-inline-block tw-pl-2">Previous</span>
-                            </button>
-                        </div>
-                        <div class="tw-tw-flex tw-flex-column self-center tw-text-center tw-flex-grow">
-                            <h2 class="tw-text-sm sm:tw-text-xl tw-text-white text-truncate-1-line tw-text-center">
+                    <div class="flex flex-row align-v-center flex-auto bb-grey-4-1 bg-grey-5 ph">
+                        <div class="flex flex-column">
+                            <h2 class="title text-white text-truncate-2-lines">
                                 {{ title }}
                             </h2>
                         </div>
-                        <div v-if="!disableNext || !disablePrev" class="self-end tw-mr-12">
-                            <button v-if="disableNext" class="tw-text-sm sm:tw-text-md tw-text-white tw-opacity-30 tw-text-right tw-bg-transparent tw-border-none">
-                                <span class="tw-hidden sm:tw-inline-block tw-pr-2">Next</span> <i class="fas fa-chevron-right tw-mr-2"></i>
-                            </button>
-                            <button v-else class="tw-text-sm sm:tw-text-md tw-text-white tw-text-right tw-bg-transparent tw-border-none pointer" @click="goToNext">
-                                <span class="tw-hidden sm:tw-inline-block tw-pr-2">Next</span> <i class="fas fa-chevron-right tw-mr-2"></i>
-                            </button>
-                        </div>
-                        <div class="tw-flex tw-flex-row close-exercise uppercase tw-text-white tw-items-center pointer flex-auto self-end" @click="closeExercise">
-                            <div class="tw-flex tw-flex-row tw-items-center title bg-error tw-absolute tw-right-0 tw-top-0 tw-w-12 tw-h-full">
-                                <i class="fas fa-times tw-text-center tw-w-full"></i>
+
+                        <div
+                            class="flex flex-column close-exercise uppercase text-white align-v-center pv-1 pointer flex-auto"
+                            @click="closeExercise"
+                        >
+                            <div class="flex flex-row tiny align-v-center">
+                                Close <i class="fas fa-times ml-1"></i>
                             </div>
                         </div>
                     </div>
                     <div class="flex flex-row grow">
                         <div class="flex flex-column relative">
-                            <iframe id="ssEmbed" :src="'https://www.soundslice.com/' + scoreOrSlice() + '/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&top_controls=1&u=' + userId" frameBorder="0" allowfullscreen @load="loading = false"></iframe>
+                            <iframe
+                                id="ssEmbed"
+                                :src="'https://www.soundslice.com/' + scoreOrSlice() + '/' + soundsliceSlug + '/embed/?api=1&scroll_type=2&branding=0&u=' + userId"
+                                frameBorder="0"
+                                allowfullscreen
+                                @load="loading = false"
+                            ></iframe>
                         </div>
                     </div>
                 </div>
-    
-                <div v-if="loading" class="loading-exercise heading ph-4 pv-2">
+
+                <div
+                    v-if="loading"
+                    class="loading-exercise heading ph-4 pv-2"
+                >
                     <loading-animation :theme-color="themeColor" />
                 </div>
             </div>
         </transition>
     </div>
 </template>
-
 <script>
 import { Duration } from 'luxon';
 import ContentService from '../../assets/js/services/content';
@@ -187,14 +271,6 @@ export default {
             type: String,
             default: () => '',
         },
-        nextSoundsliceSlug: {
-            type: String,
-            default: () => '',
-        },
-        prevSoundsliceSlug: {
-            type: String,
-            default: () => '',
-        },
         timecode: {
             type: [Number, String],
             default: () => 0,
@@ -207,29 +283,10 @@ export default {
             type: Boolean,
             default: false,
         },
-        forceOpen: {
-            type: Boolean,
-            default: false,
-        },
-        disablePrev: {
-            type: Boolean,
-            default: true,
-        },
-        disableNext: {
-            type: Boolean,
-            default: true, 
-        },
         userId: {
-            type: [Number, String],
-            default: () => 0,
+          type: [Number, String],
+          default: () => 0,
         },
-    },
-    watch: {
-        forceOpen: function (newVal, __oldVal) {
-            if (newVal) {
-                this.openExercise();
-            }
-        }
     },
     data() {
         return {
@@ -262,9 +319,9 @@ export default {
             const textColor = `text-${this.themeColor}`;
             const bgColor = `bg-${this.themeColor}`;
 
-            return this.isComplete ?
-                `text-white ${bgColor}` :
-                `inverted ${bgColor} ${textColor}`;
+            return this.isComplete
+                ? `text-white ${bgColor}`
+                : `inverted ${bgColor} ${textColor}`;
         },
 
         accordionButtonClasses() {
@@ -346,7 +403,6 @@ export default {
         if (this.position < 3) {
             this.openAssignment();
         }
-
         const vm = this;
 
         window.addEventListener('requesting-completion', this.setIsRequesting);
@@ -412,7 +468,6 @@ export default {
         },
 
         openExercise() {
-            this.$emit('force-current');
             this.open = true;
             document.body.classList.add('no-scroll', 'dim-sidebar');
 
@@ -423,16 +478,6 @@ export default {
 
             Helpscout.hideWidget();
             Intercom.hideWidget();
-        },
-
-        goToPrevious() {
-            this.$emit('force-prev');
-            this.closeExercise();
-        },
-
-        goToNext() {
-            this.$emit('force-next');
-            this.closeExercise();
         },
 
         closeExercise() {
@@ -557,7 +602,7 @@ export default {
         },
 
         handleSoundsliceEvent(event) {
-            const vm = this;
+            const vm  = this;
 
             if (event.origin === 'https://www.soundslice.com') {
                 const cmd = JSON.parse(event.data);
@@ -575,103 +620,116 @@ export default {
     },
 };
 </script>
-
 <style lang="scss">
-@import '../../assets/sass/partials/variables';
-.flex.arrow-column {
-    display: flex;
-    flex: 0 0 60px;
-    padding-right: 10px;
-}
+    @import '../../assets/sass/partials/variables';
 
-.complete-column {
-    margin-top: $gutterWidth / 2;
-    @include medium {
-        margin-top: 0;
+    .flex.arrow-column {
+        display:flex;
+        flex:0 0 60px;
+        padding-right:10px;
     }
-}
 
-.assignment-title {
-    @include small {
-        flex: 0 0 auto;
-    }
-}
+    .complete-column {
+        margin-top:$gutterWidth / 2;
 
-#practiceOverlay {
-    position: fixed;
-    top: 50px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 97;
-    @include medium {
-        top: 56px;
-    }
-    .loading-exercise {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-}
-
-.embed-column {
-    height: 100%;
-}
-
-#ssEmbed {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.carousel {
-    position: relative;
-    .page {
-        transform: translateX(0);
-        will-change: transform;
-        transition: transform .4s ease-in-out;
-        img {
-            width: 100%;
+        @include medium {
+            margin-top:0;
         }
     }
-    .side-button {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        background-color: transparent;
-        will-change: background-color;
-        transition: background-color .2s ease-in-out;
-        cursor: pointer;
-        width: $gutterWidth;
-        i {
-            font-size: 20px;
-        }
-        &:hover {
-            background-color: #f2f2f2;
-        }
-        &.prev {
-            left: 0;
-        }
-        &.next {
-            right: 0;
+
+    .assignment-title {
+        @include small {
+            flex:0 0 auto;
         }
     }
-    .page-buttons {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-        .page-button {
-            height: 12px;
-            width: 12px;
-            display: inline-block;
-            border-width: 2px;
-            cursor: pointer;
+
+    #practiceOverlay {
+        position:fixed;
+        top:50px;
+        left:0;
+        right:0;
+        bottom:0;
+        z-index:97;
+
+        @include medium {
+            top:56px;
+        }
+
+        .loading-exercise {
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
         }
     }
-}
+
+
+    .embed-column {
+        height:100%;
+    }
+
+    #ssEmbed {
+        width:100%;
+        height:100%;
+        position:absolute;
+        top:0;
+        left:0;
+    }
+
+    .carousel {
+        position:relative;
+
+        .page {
+            transform:translateX(0);
+            will-change:transform;
+            transition:transform .4s ease-in-out;
+
+            img {
+                width:100%;
+            }
+        }
+
+        .side-button {
+            position:absolute;
+            top:0;
+            height:100%;
+            background-color:transparent;
+            will-change:background-color;
+            transition:background-color .2s ease-in-out;
+            cursor:pointer;
+            width:$gutterWidth;
+
+            i {
+                font-size:20px;
+            }
+
+            &:hover {
+                background-color:#f2f2f2;
+            }
+
+            &.prev {
+                left:0;
+            }
+
+            &.next {
+                right:0;
+            }
+        }
+
+        .page-buttons {
+            position:absolute;
+            bottom:0;
+            left:50%;
+            transform:translateX(-50%);
+            white-space:nowrap;
+
+            .page-button {
+                height:12px;
+                width:12px;
+                display:inline-block;
+                border-width:2px;
+                cursor:pointer;
+            }
+        }
+    }
 </style>
