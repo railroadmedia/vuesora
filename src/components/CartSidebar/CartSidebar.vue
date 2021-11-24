@@ -8,6 +8,7 @@
                 <a
                     href="#"
                     class="close"
+                    style="font-size: 16px !important;"
                     @click.stop.prevent="closeCartSidebar"
                 ><i class="fal fa-times fa-2x"></i></a>
             </div>
@@ -64,7 +65,7 @@
                             <span v-if="cartTotals">-${{ parseTotal(sumOfDiscounts()) }}</span>
                         </div>
                     </div>
-                    <div class="summary-row">
+                    <div v-if="cartRequiresShippingAddress" class="summary-row">
                         <div class="summary">Shipping</div>
                         <div class="deferred">Calculated at checkout</div>
                     </div>
@@ -144,6 +145,15 @@ export default {
         this.loading = false;
 
         this.attachAddToCartListeners();
+    },
+    computed: {
+        cartRequiresShippingAddress() {
+            if (this.cartItems) {
+                return this.cartItems.filter(item => item.requires_shipping === true).length > 0;
+            }
+
+            return false;
+        },
     },
     methods: {
         openCartSidebar() {
@@ -251,6 +261,17 @@ export default {
 
                 EcommerceService
                     .removeCartItem({productSku: cartItem.sku})
+                    .then(this.handleCartUpdate)
+                    .catch(this.handleError);
+            }
+        },
+
+        clearCart() {
+            if (!this.loading) {
+                this.loading = true;
+
+                EcommerceService
+                    .clearCart()
                     .then(this.handleCartUpdate)
                     .catch(this.handleError);
             }
@@ -559,5 +580,9 @@ export default {
         right: 15px;
         left: 0;
     }
+}
+
+#csb-clear-cart-container {
+  margin-bottom: 20px;
 }
 </style>

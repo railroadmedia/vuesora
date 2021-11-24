@@ -71,6 +71,17 @@ export default {
     },
 
     /**
+     * Clears all cart items.
+     *
+     * @returns {Promise}
+     */
+    clearCart() {
+        return axios.delete(`/ecommerce/json/clear-cart`)
+            .then(response => response)
+            .catch(ErrorHandler);
+    },
+
+    /**
      * Updates the session addresses
      *
      * @param {String} billingEmail
