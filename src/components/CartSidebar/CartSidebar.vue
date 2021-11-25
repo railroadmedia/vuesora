@@ -67,7 +67,7 @@
                     </div>
                     <div v-if="cartRequiresShippingAddress" class="summary-row">
                         <div class="summary">Shipping</div>
-                        <div class="deferred">Calculated at checkout</div>
+                        <div class="deferred">{{shippingCostMessage }}</div>
                     </div>
                     <div class="summary-row">
                         <div class="summary">Tax</div>
@@ -153,6 +153,14 @@ export default {
             }
 
             return false;
+        },
+
+        shippingCostMessage() {
+            if (this.subTotalAfterDiscounts() > 100) { // todo: temporary
+                return 'Free Shipping';
+            }
+
+            return 'Calculated at checkout';
         },
     },
     methods: {
