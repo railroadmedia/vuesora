@@ -45,6 +45,12 @@
                 </div>
                 <div class="border-bottom"></div>
             </div>
+            <div class="csb-remove-all-items" v-show="cartItems" @click.stop.prevent="clearCart">
+              <div>
+                <span>Remove all items from cart</span>
+              </div>
+              <div class="border-bottom"></div>
+            </div>
             <div class="summary-container">
                 <div class="summary-container-inner">
                     <div class="summary-row">
@@ -475,6 +481,31 @@ export default {
                 padding-left: 3px;
                 color: #8B929A;
                 font-size: 12px;
+            }
+        }
+    }
+    .csb-remove-all-items {
+        padding-bottom: 18px;
+        padding-right: 14px;
+        margin-top: 14px;
+
+        .border-bottom {
+            border-bottom: 1px solid #CCD3D3;
+            margin-top: 15px;
+        }
+
+        div {
+            cursor: pointer;
+            line-height: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            span {
+                width: 100%;
+                color: #8B929A;
+                font-size: 12px;
+                text-align: center;
+                text-decoration: underline;
             }
         }
     }
