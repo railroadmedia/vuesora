@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import UserService from '../../assets/js/services/user';
+import SupportService from '../../assets/js/services/support';
 import Toasts from '../../assets/js/classes/toasts';
 //Form Components
 import TextareaInput from '../FormComponents/TextareaInput.vue'
@@ -156,10 +156,6 @@ export default {
         emailLogo: {
             type: String,
             default: () => 'https://dmmior4id2ysr.cloudfront.net/logos/musora-logo-white.png',
-        },
-        emailAlert: {
-            type: String,
-            default: () => null,
         },
         emailCallToActionText: {
             type: String,
@@ -447,13 +443,16 @@ export default {
                 this.$root.$emit(this.eventName, { text });
             }
 
-            UserService.sendEmail({
+          SupportService.sendEmail({
                 type: this.emailType,
                 subject: this.emailSubject,
-                lines: [name, email, supportOption, message], //array of lines to display in the email, new index = new line break
+                studentName: name,
+                studentEmail: email,
+                isMember: this.formData.isMember,
+                supportOption: supportOption,
+                lines: message,
                 attachment: attachment, //attachment only accepts one file, use 'attachments' to accept more than one
                 callToAction: this.callToAction,
-                alert: this.emailAlert,
                 brand: this.brand,
                 logo: this.emailLogo,
                 recipient: this.recipient,
