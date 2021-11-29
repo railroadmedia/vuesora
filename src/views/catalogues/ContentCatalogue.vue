@@ -54,25 +54,6 @@
             </div>
         </div>
 
-        <grid-catalogue
-            v-if="catalogue_type === 'grid'"
-            :content="content"
-            :brand="brand"
-            :theme-color="themeColor"
-            :use-theme-color="useThemeColor"
-            :no-wrap="noWrapGrid"
-            :user-id="userId"
-            :is-admin="isAdmin"
-            :lock-unowned="lockUnowned"
-            :force-wide-thumbs="forceWideThumbs"
-            :content-type-override="contentTypeOverride"
-            :six-wide="sixWide"
-            :five-wide="fiveWide"
-            :show-my-list-action="showMyListAction"
-            :display-inline="displayInline"
-            @addToList="addToListEventHandler"
-        ></grid-catalogue>
-
         <coach-grid-catalogue
             v-if="catalogue_type === 'coach-grid'"
             :content="content"
@@ -91,6 +72,25 @@
             :display-inline="displayInline"
             @addToList="addToListEventHandler"
         ></coach-grid-catalogue>
+
+        <grid-catalogue
+            v-if="catalogue_type === 'grid'"
+            :content="content"
+            :brand="brand"
+            :theme-color="themeColor"
+            :use-theme-color="useThemeColor"
+            :no-wrap="noWrapGrid"
+            :user-id="userId"
+            :is-admin="isAdmin"
+            :lock-unowned="lockUnowned"
+            :force-wide-thumbs="forceWideThumbs"
+            :content-type-override="contentTypeOverride"
+            :six-wide="sixWide"
+            :five-wide="fiveWide"
+            :show-my-list-action="showMyListAction"
+            :display-inline="displayInline"
+            @addToList="addToListEventHandler"
+        ></grid-catalogue>
 
         <routines-catalogue
             v-if="catalogue_type === 'routines'"
@@ -208,7 +208,7 @@ export default {
     name: 'ContentCatalogue',
     components: {
         'grid-catalogue': GridCatalogue,
-        'coach-grid-catalogue': GridCatalogue,
+        'coach-grid-catalogue': CoachGridCatalogue,
         'routines-catalogue': RoutinesCatalogue,
         'list-catalogue': ListCatalogue,
         'downloads-catalogue': DownloadsCatalogue,
@@ -397,6 +397,7 @@ export default {
       },
     },
     data() {
+        console.log(this.catalogueType)
         return {
             page: this.initialPage || 1,
             content: this.preLoadedContent ? this.preLoadedContent.data : [],
