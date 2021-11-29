@@ -7,6 +7,7 @@ import CommentsCatalogue from '../views/comments/catalogue/CommentsCatalogue.vue
 import ImageCropper from './ImageCropper/ImageCropper.vue';
 import PaymentMethods from '../views/payment-methods/PaymentMethods.vue';
 import Comments from '../views/comments/Comments.vue';
+import AssignmentsContainer from './AssignmentsContainer/AssignmentsContainer.vue';
 import ContentAssignment from './ContentAssignment/ContentAssignment.vue';
 import LegacyLoops from './LegacyLoops/LegacyLoops.vue';
 import VideoResources from './VideoResources/VideoResources.vue';
@@ -24,6 +25,7 @@ const Components = {
     ImageCropper,
     PaymentMethods,
     Comments,
+    AssignmentsContainer,
     ContentAssignment,
     LegacyLoops,
     VideoResources,
