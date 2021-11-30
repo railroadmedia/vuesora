@@ -450,7 +450,7 @@ export default {
                 studentEmail: email,
                 isMember: this.formData.isMember,
                 supportOption: supportOption,
-                lines: message,
+                message: message,
                 attachment: attachment, //attachment only accepts one file, use 'attachments' to accept more than one
                 callToAction: this.callToAction,
                 brand: this.brand,
