@@ -7,7 +7,7 @@ export default {
         Vue.component(
             ContentCatalogue.name,
             ContentCatalogue,
-            CoachesCataglogue,
+            CoachesCatalogue,
         );
     },
 };
