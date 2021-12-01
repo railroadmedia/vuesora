@@ -97,12 +97,24 @@
         </div>
 
         <!-- SUBMIT BUTTON -->
-        <button class="tw-btn-primary tw-self-start tw-mr-auto tw-w-full sm:tw-w-min" 
-                type="submit"
-                :disabled="!formVerified || !formValid"
-                :class="themeBgClass" 
-        >
-                Submit
+      <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+      <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+      <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+      <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+      <button class="tw-btn-primary tw-self-start tw-mr-auto tw-w-full sm:tw-w-min"
+              type="submit"
+              :disabled="!formValid"
+              :class="themeBgClass"
+      >
+        <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+        <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+        <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+        <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+        TEST BUTTON DO NOT MERGE THIS CHANGE
+        <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+        <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+        <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
+        <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
         </button>
     </form>
 </template>
