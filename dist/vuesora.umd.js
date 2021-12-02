@@ -32630,13 +32630,82 @@ var SupportEmailForm_component = normalizeComponent(
 )
 
 /* harmony default export */ var SupportEmailForm = (SupportEmailForm_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"572d923c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContactEmailForm/ContactEmailForm.vue?vue&type=template&id=45a55ba8&
-var ContactEmailFormvue_type_template_id_45a55ba8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('form',{staticClass:"tw-flex tw-flex-col tw-my-4",attrs:{"novalidate":"true"},on:{"submit":function($event){$event.preventDefault();return _vm.submitForm($event)}}},[_c('text-input',{attrs:{"name":"name","required":true,"invalid":!_vm.formValid && !_vm.textFieldValid,"inputValue":_vm.formData.name,"id":"customer-name","placeholder":"Enter your name..."},on:{"update:textFieldValid":function($event){_vm.textFieldValid = $event},"update:inputValue":function($event){_vm.formData.name = $event}}}),_c('radio-buttons',{attrs:{"name":"Do you have a membership with us?","groupName":"membership","required":true,"invalid":!_vm.formValid && !_vm.radioFieldsValid,"buttonsList":_vm.buttonsList,"showSelectMessage":_vm.formData.isMember === true,"errorMessage":"Please select an option.","selectMessage":"If your account is under a different email address than noted below, please provide it in your description."},on:{"update:radioFieldsValid":function($event){_vm.radioFieldsValid = $event},"updateValue":function($event){return _vm.updateMembershipStatus($event)}}}),_c('email-input',{attrs:{"name":"Email Address","required":true,"invalid":!_vm.formValid && !_vm.emailFieldValid,"inputValue":_vm.formData.email,"id":"customer-email","placeholder":"Enter your email address..."},on:{"update:emailFieldValid":function($event){_vm.emailFieldValid = $event},"update:inputValue":function($event){_vm.formData.email = $event}}}),_c('multilevel-dropdown',{attrs:{"label":"What can we help you with?","name":"support-options","id":"support-listbox","theme":_vm.brand,"required":true,"invalid":!_vm.formValid && !_vm.selectFieldValid,"selectedValue":_vm.formData.supportOption,"listData":_vm.optionsData,"placeholder":"Please select the option that is closest to your request...","errorMessage":"Please select an option that is closest to your request."},on:{"updateValue":function($event){return _vm.updateSupportOption($event)}}}),_c('textarea-input',{attrs:{"name":"description","required":true,"invalid":!_vm.formValid && !_vm.messageFieldValid,"resize":false,"rows":4,"inputValue":_vm.formData.message,"id":"support-description","placeholder":"Add message here..."},on:{"update:messageFieldValid":function($event){_vm.messageFieldValid = $event},"update:inputValue":function($event){_vm.formData.message = $event}}}),_c('div',{staticClass:"tw-flex tw-flex-col-reverse sm:tw-flex-row tw-full"},[_c('div',{staticClass:"tw-my-4 tw-inline-flex tw-mx-auto sm:tw-mx-0 sm:tw-my-0 sm:tw-w-1/2"},[_c('recaptcha',{attrs:{"siteKey":_vm.captchakey},on:{"update:verified":function($event){_vm.formVerified = $event}}})],1),_c('div',{staticClass:"sm:tw-w-72 sm:tw-ml-auto"},[_c('file-input',{attrs:{"name":"attach file","id":"support-file","required":false,"disabled":false,"multiple":false,"accept":"video/*,image/*","files":_vm.formData.attachments,"message":"For security reasons, we only accept image and video files.","megabiteLimit":100},on:{"attachFile":function($event){return _vm.attachFile($event)},"removeFile":function($event){return _vm.removeFile($event)},"clearFiles":function($event){return _vm.clearFiles()}}})],1)]),_c('button',{staticClass:"tw-btn-primary tw-self-start tw-mr-auto tw-w-full sm:tw-w-min",class:_vm.themeBgClass,attrs:{"type":"submit","disabled":!_vm.formVerified || !_vm.formValid}},[_vm._v("\n            Submit\n    ")])],1)}
-var ContactEmailFormvue_type_template_id_45a55ba8_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"572d923c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContactEmailForm/ContactEmailForm.vue?vue&type=template&id=8f587bea&
+var ContactEmailFormvue_type_template_id_8f587bea_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('form',{staticClass:"tw-flex tw-flex-col tw-my-4",attrs:{"novalidate":"true"},on:{"submit":function($event){$event.preventDefault();return _vm.submitForm($event)}}},[_c('text-input',{attrs:{"name":"name","required":true,"invalid":!_vm.formValid && !_vm.textFieldValid,"inputValue":_vm.formData.name,"id":"customer-name","placeholder":"Enter your name..."},on:{"update:textFieldValid":function($event){_vm.textFieldValid = $event},"update:inputValue":function($event){_vm.formData.name = $event}}}),_c('radio-buttons',{attrs:{"name":"Do you have a membership with us?","groupName":"membership","required":true,"invalid":!_vm.formValid && !_vm.radioFieldsValid,"buttonsList":_vm.buttonsList,"showSelectMessage":_vm.formData.isMember === true,"errorMessage":"Please select an option.","selectMessage":"If your account is under a different email address than noted below, please provide it in your description."},on:{"update:radioFieldsValid":function($event){_vm.radioFieldsValid = $event},"updateValue":function($event){return _vm.updateMembershipStatus($event)}}}),_c('email-input',{attrs:{"name":"Email Address","required":true,"invalid":!_vm.formValid && !_vm.emailFieldValid,"inputValue":_vm.formData.email,"id":"customer-email","placeholder":"Enter your email address..."},on:{"update:emailFieldValid":function($event){_vm.emailFieldValid = $event},"update:inputValue":function($event){_vm.formData.email = $event}}}),_c('multilevel-dropdown',{attrs:{"label":"What can we help you with?","name":"support-options","id":"support-listbox","theme":_vm.brand,"required":true,"invalid":!_vm.formValid && !_vm.selectFieldValid,"selectedValue":_vm.formData.supportOption,"listData":_vm.optionsData,"placeholder":"Please select the option that is closest to your request...","errorMessage":"Please select an option that is closest to your request."},on:{"updateValue":function($event){return _vm.updateSupportOption($event)}}}),_c('textarea-input',{attrs:{"name":"description","required":true,"invalid":!_vm.formValid && !_vm.messageFieldValid,"resize":false,"rows":4,"inputValue":_vm.formData.message,"id":"support-description","placeholder":"Add message here..."},on:{"update:messageFieldValid":function($event){_vm.messageFieldValid = $event},"update:inputValue":function($event){_vm.formData.message = $event}}}),_c('div',{staticClass:"tw-flex tw-flex-col-reverse sm:tw-flex-row tw-full"},[_c('div',{staticClass:"tw-my-4 tw-inline-flex tw-mx-auto sm:tw-mx-0 sm:tw-my-0 sm:tw-w-1/2"},[_c('recaptcha',{attrs:{"siteKey":_vm.captchakey},on:{"update:verified":function($event){_vm.formVerified = $event}}})],1),_c('div',{staticClass:"sm:tw-w-72 sm:tw-ml-auto"},[_c('file-input',{attrs:{"name":"attach file","id":"support-file","required":false,"disabled":false,"multiple":false,"accept":"video/*,image/*","files":_vm.formData.attachments,"message":"For security reasons, we only accept image and video files.","megabiteLimit":100},on:{"attachFile":function($event){return _vm.attachFile($event)},"removeFile":function($event){return _vm.removeFile($event)},"clearFiles":function($event){return _vm.clearFiles()}}})],1)]),_c('button',{staticClass:"tw-btn-primary tw-self-start tw-mr-auto tw-w-full sm:tw-w-min",class:_vm.themeBgClass,attrs:{"type":"submit","disabled":!_vm.formValid}},[_vm._v("\n    TEST BUTTON DO NOT MERGE THIS CHANGE\n    ")])],1)}
+var ContactEmailFormvue_type_template_id_8f587bea_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/ContactEmailForm/ContactEmailForm.vue?vue&type=template&id=45a55ba8&
+// CONCATENATED MODULE: ./src/components/ContactEmailForm/ContactEmailForm.vue?vue&type=template&id=8f587bea&
 
+// CONCATENATED MODULE: ./src/assets/js/services/support.js
+
+
+var support_endpointPrefix;
+
+if (typeof window != 'undefined') {
+  support_endpointPrefix = window.ENDPOINT_PREFIX || '';
+}
+
+/* harmony default export */ var support = ({
+  /**
+   * Send an Email
+   *
+   * @param {String} type - the type of email to send (action or alert)
+   * @param {String} subject
+   * @param {String} studentName
+   * @param {String} studentEmail
+   * @param {String} isMember
+   * @param {String} supportOption
+   * @param {String} message
+   * @param {Array} attachments - array of files to display in the email
+   * @param {Object} attachment - a file object of the uploaded file
+   * @param {Object} callToAction - CTA with 2 keys, text and url
+   * @param {String} alert
+   * @param {String} brand
+   * @param {String} logo
+   * @param {String} view - The laravel dot notated blade template to use
+   * @param {String} recipient
+   * @param {String} endpoint
+   * @returns {Promise} resolved promise with the response.data object
+   */
+  sendEmail: function sendEmail(_ref) {
+    var type = _ref.type,
+        subject = _ref.subject,
+        studentName = _ref.studentName,
+        studentEmail = _ref.studentEmail,
+        isMember = _ref.isMember,
+        supportOption = _ref.supportOption,
+        message = _ref.message,
+        attachment = _ref.attachment,
+        callToAction = _ref.callToAction,
+        alert = _ref.alert,
+        brand = _ref.brand,
+        logo = _ref.logo,
+        recipient = _ref.recipient,
+        endpoint = _ref.endpoint;
+    var formData = new FormData();
+    formData.append('type', type);
+    formData.append('subject', subject);
+    formData.append('studentName', studentName);
+    formData.append('studentEmail', studentEmail);
+    formData.append('isMember', isMember);
+    formData.append('supportOption', supportOption);
+    formData.append('message', message);
+    formData.append('attachment', attachment);
+    formData.append('callToAction', callToAction);
+    formData.append('alert', alert);
+    formData.append('brand', brand);
+    formData.append('logo', logo);
+    formData.append('recipient', recipient);
+    return axios_default.a.post(support_endpointPrefix + endpoint, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(function (response) {
+      return response.data;
+    }).catch(_error_handler);
+  }
+});
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"572d923c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/FormComponents/TextInput.vue?vue&type=template&id=1b83191f&
 var TextInputvue_type_template_id_1b83191f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tw-input-field",attrs:{"disabled":_vm.disabled}},[_c('label',{staticClass:"tw-label",attrs:{"for":_vm.id}},[(_vm.required)?_c('span',{staticClass:"tw-text-red-500"},[_vm._v("*")]):_vm._e(),_vm._v("\n        "+_vm._s(_vm.name)+"\n    ")]),_c('div',{staticClass:"tw-input-wrapper"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.valueInterface),expression:"valueInterface"}],staticClass:"focus:tw-border-drumeo",attrs:{"type":"text","id":_vm.id,"placeholder":_vm.placeholder,"aria-required":_vm.required,"aria-invalid":_vm.invalid,"aria-describedby":""},domProps:{"value":(_vm.valueInterface)},on:{"input":function($event){if($event.target.composing){ return; }_vm.valueInterface=$event.target.value}}}),_c('div',{staticClass:"tw-input-icon"},[_c('svg',{staticClass:"tw-invalid-icon",attrs:{"xmlns":"http://www.w3.org/2000/svg","viewBox":"0 0 20 20","fill":"currentColor","aria-hidden":"true"}},[_c('path',{attrs:{"fill-rule":"evenodd","d":"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z","clip-rule":"evenodd"}})])]),_c('p',{staticClass:"tw-input-message",attrs:{"id":""}},[_vm._v(_vm._s(_vm.errorMessage))])])])}
 var TextInputvue_type_template_id_1b83191f_staticRenderFns = []
@@ -33411,6 +33480,18 @@ var Recaptcha_component = normalizeComponent(
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
  //Form Components
 
@@ -33465,12 +33546,6 @@ var Recaptcha_component = normalizeComponent(
       type: String,
       default: function _default() {
         return 'https://dmmior4id2ysr.cloudfront.net/logos/musora-logo-white.png';
-      }
-    },
-    emailAlert: {
-      type: String,
-      default: function _default() {
-        return null;
       }
     },
     emailCallToActionText: {
@@ -33731,15 +33806,17 @@ var Recaptcha_component = normalizeComponent(
         });
       }
 
-      user.sendEmail({
+      support.sendEmail({
         type: this.emailType,
         subject: this.emailSubject,
-        lines: [name, email, supportOption, message],
-        //array of lines to display in the email, new index = new line break
+        studentName: name,
+        studentEmail: email,
+        isMember: this.formData.isMember,
+        supportOption: supportOption,
+        message: message,
         attachment: attachment,
         //attachment only accepts one file, use 'attachments' to accept more than one
         callToAction: this.callToAction,
-        alert: this.emailAlert,
         brand: this.brand,
         logo: this.emailLogo,
         recipient: this.recipient,
@@ -33809,8 +33886,8 @@ var Recaptcha_component = normalizeComponent(
 
 var ContactEmailForm_component = normalizeComponent(
   ContactEmailForm_ContactEmailFormvue_type_script_lang_js_,
-  ContactEmailFormvue_type_template_id_45a55ba8_render,
-  ContactEmailFormvue_type_template_id_45a55ba8_staticRenderFns,
+  ContactEmailFormvue_type_template_id_8f587bea_render,
+  ContactEmailFormvue_type_template_id_8f587bea_staticRenderFns,
   false,
   null,
   null,
@@ -33819,6 +33896,460 @@ var ContactEmailForm_component = normalizeComponent(
 )
 
 /* harmony default export */ var ContactEmailForm = (ContactEmailForm_component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"572d923c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContactMemberEmailForm/ContactMemberEmailForm.vue?vue&type=template&id=078b50cc&
+var ContactMemberEmailFormvue_type_template_id_078b50cc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('form',{staticClass:"tw-flex tw-flex-col tw-my-4",attrs:{"novalidate":"true"},on:{"submit":function($event){$event.preventDefault();return _vm.submitForm($event)}}},[_c('multilevel-dropdown',{attrs:{"label":"What can we help you with?","name":"support-options","id":"support-listbox","theme":_vm.brand,"required":true,"invalid":!_vm.formValid && !_vm.selectFieldValid,"selectedValue":_vm.formData.supportOption,"listData":_vm.optionsData,"placeholder":"Please select the option that is closest to your request...","errorMessage":"Please select an option that is closest to your request."},on:{"updateValue":function($event){return _vm.updateSupportOption($event)}}}),_c('textarea-input',{attrs:{"name":"description","required":true,"invalid":!_vm.formValid && !_vm.messageFieldValid,"resize":false,"rows":4,"inputValue":_vm.formData.message,"id":"support-description","placeholder":"Add message here..."},on:{"update:messageFieldValid":function($event){_vm.messageFieldValid = $event},"update:inputValue":function($event){_vm.formData.message = $event}}}),_c('div',{staticClass:"tw-flex tw-flex-col-reverse sm:tw-flex-row tw-full"},[_c('div',{staticClass:"sm:tw-w-72 sm:tw-ml-auto"},[_c('file-input',{attrs:{"name":"attach file","id":"support-file","required":false,"disabled":false,"multiple":false,"accept":"video/*,image/*","files":_vm.formData.attachments,"message":"For security reasons, we only accept image and video files.","megabiteLimit":100},on:{"attachFile":function($event){return _vm.attachFile($event)},"removeFile":function($event){return _vm.removeFile($event)},"clearFiles":function($event){return _vm.clearFiles()}}})],1)]),_c('button',{staticClass:"tw-btn-primary tw-self-start tw-mr-auto tw-w-full sm:tw-w-min",class:_vm.themeBgClass,attrs:{"type":"submit","disabled":!_vm.formValid}},[_vm._v("\n            Submit\n    ")])],1)}
+var ContactMemberEmailFormvue_type_template_id_078b50cc_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/ContactMemberEmailForm/ContactMemberEmailForm.vue?vue&type=template&id=078b50cc&
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ContactMemberEmailForm/ContactMemberEmailForm.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+ //Form Components
+
+
+
+
+
+/* harmony default export */ var ContactMemberEmailFormvue_type_script_lang_js_ = ({
+  name: 'ContactMemberEmailForm',
+  components: {
+    'textarea-input': TextareaInput,
+    'file-input': FileInput,
+    'multilevel-dropdown': MultiLevelDropdown,
+    'recaptcha': Recaptcha
+  },
+  props: {
+    brand: {
+      type: String,
+      default: function _default() {
+        return 'musora';
+      }
+    },
+    captchakey: {
+      type: String,
+      required: true
+    },
+    recipient: {
+      type: String,
+      default: function _default() {
+        return null;
+      }
+    },
+    emailType: {
+      type: String,
+      default: function _default() {
+        return 'alert';
+      }
+    },
+    emailSubject: {
+      type: String,
+      default: function _default() {
+        return '';
+      }
+    },
+    emailLogo: {
+      type: String,
+      default: function _default() {
+        return 'https://dmmior4id2ysr.cloudfront.net/logos/musora-logo-white.png';
+      }
+    },
+    emailCallToActionText: {
+      type: String,
+      default: function _default() {
+        return null;
+      }
+    },
+    emailCallToActionUrl: {
+      type: String,
+      default: function _default() {
+        return null;
+      }
+    },
+    successMessage: {
+      type: String,
+      default: function _default() {
+        return 'Your email has been sent! Thank you for your input.';
+      }
+    },
+    emailEndpoint: {
+      type: String,
+      default: function _default() {
+        return '/mailora/public/send';
+      }
+    },
+    enableEvent: {
+      type: Boolean,
+      default: function _default() {
+        return false;
+      }
+    },
+    eventName: {
+      type: String,
+      default: function _default() {
+        return 'emailFom';
+      }
+    }
+  },
+  data: function data() {
+    return {
+      formValid: true,
+      //set true by default
+      messageFieldValid: false,
+      formData: {
+        //name: '', todo: ensure removed
+        //email: '', todo: ensure removed
+        //isMember: null, todo: ensure removed
+        supportOption: '',
+        message: '',
+        attachments: []
+      },
+      buttonsList: [{
+        label: "Yes",
+        value: true
+      }, {
+        label: "No",
+        value: false
+      }],
+      optionsData: [{
+        label: "Shipping & Orders",
+        selected: false,
+        options: [{
+          label: 'My shipment tracking inquiry',
+          value: 'Shipping & Orders, My shipment tracking inquiry',
+          checked: false
+        }, {
+          label: 'I received the wrong items',
+          value: 'Shipping & Orders, I received the wrong items',
+          checked: false
+        }, {
+          label: 'Questions about shipping rates and fees',
+          value: 'Shipping & Orders, Questions about shipping rates and fees',
+          checked: false
+        }, {
+          label: 'Other',
+          value: 'Shipping & Orders, Other',
+          checked: false
+        }]
+      }, {
+        label: "Subscriptions & Membership",
+        selected: false,
+        options: [{
+          label: 'Change or set up a subscription/membership',
+          value: 'Subscriptions & Membership, Change or set up a subscription/membership',
+          checked: false
+        }, {
+          label: 'Subscription or pack inquiry',
+          value: 'Subscriptions & Membership, Subscription or pack inquiry',
+          checked: false
+        }, {
+          label: 'Cancellation assistance',
+          value: 'Subscriptions & Membership, Cancellation assistance',
+          checked: false
+        }, {
+          label: 'Refund assistance',
+          value: 'Subscriptions & Membership, Refund assistance',
+          checked: false
+        }, {
+          label: 'Other',
+          value: 'Subscriptions & Membership, Other',
+          checked: false
+        }]
+      }, {
+        label: "Billing & Payment",
+        selected: false,
+        options: [{
+          label: 'Need assistance changing billing method or schedule',
+          value: 'Billing & Payment, Need assistance changing billing method or schedule',
+          checked: false
+        }, {
+          label: 'Refund assistance',
+          value: 'Billing & Payment, Refund assistance',
+          checked: false
+        }, {
+          label: 'Cancellation assistance',
+          value: 'Billing & Payment, Cancellation assistance',
+          checked: false
+        }, {
+          label: 'Other',
+          value: 'Billing & Payment, Other',
+          checked: false
+        }]
+      }, {
+        label: "Account Settings & Login",
+        selected: false,
+        options: [{
+          label: 'Can\'t log in',
+          value: 'Account Settings & Login, Can\'t log in',
+          checked: false
+        }, {
+          label: 'Other',
+          value: 'Account Settings & Login, Other',
+          checked: false
+        }]
+      }, {
+        label: "Technical Issues",
+        selected: false,
+        options: [{
+          label: 'Problems with mobile Android or iOS app',
+          value: 'Technical Issues, Problems with mobile Android or iOS app',
+          checked: false
+        }, {
+          label: 'Content inaccessible or missing',
+          value: 'Technical Issues, Content inaccessible or missing',
+          checked: false
+        }, {
+          label: 'Video Issues',
+          value: 'Technical Issues, Video Issues',
+          checked: false
+        }, {
+          label: 'Other',
+          value: 'Technical Issues, Other',
+          checked: false
+        }]
+      }, {
+        label: "Site Navigation & Lessons",
+        selected: false,
+        options: [{
+          label: 'Question about a lesson or instrument',
+          value: 'Site Navigation & Lessons, Question about a lesson or instrument',
+          checked: false
+        }, {
+          label: 'Assistance locating an area of the website',
+          value: 'Site Navigation & Lessons, Assistance locating an area of the website',
+          checked: false
+        }, {
+          label: 'Other',
+          value: 'Site Navigation & Lessons, Other',
+          checked: false
+        }]
+      }, {
+        label: "Other",
+        selected: false,
+        value: "Other"
+      }]
+    };
+  },
+  computed: {
+    selectFieldValid: function selectFieldValid() {
+      return this.formData.supportOption.length !== 0 ? true : false;
+    },
+    formState: function formState() {
+      if (this.messageFieldValid && this.selectFieldValid) return true;
+    },
+    themeBgClass: function themeBgClass() {
+      return 'tw-bg-' + this.brand;
+    },
+    themeTextClass: function themeTextClass() {
+      return 'tw-text-' + this.brand;
+    },
+    callToAction: function callToAction() {
+      if (this.emailCallToActionText && this.emailCallToActionUrl) {
+        return {
+          text: this.emailCallToActionText,
+          url: this.emailCallToActionUrl
+        };
+      }
+
+      return null;
+    }
+  },
+  methods: {
+    updateSupportOption: function updateSupportOption(val) {
+      this.formData.supportOption = val;
+    },
+    attachFile: function attachFile(file) {
+      this.formData.attachments.push(file);
+    },
+    removeFile: function removeFile(index) {
+      this.formData.attachments.splice(index, 1);
+    },
+    clearFiles: function clearFiles() {
+      this.formData.attachments = [];
+    },
+    submitForm: function submitForm() {
+      var _this = this;
+
+      //Check Form First
+      this.formValid = this.formState;
+
+      if (!this.formValid) {
+        console.log('form is invalid');
+        return;
+      } //take snapshot
+      // const name = this.formData.name; # todo: ensure all mentions removed
+      // const email = this.formData.email; # todo: ensure all mentions removed
+
+
+      var message = this.formData.message;
+      var supportOption = this.formData.supportOption;
+      var attachment; // let membership; # todo: ensure all mentions removed
+      //convert file(s) to image blobs 
+
+      if (this.formData.attachments[0]) {
+        attachment = this.formData.attachments[0];
+      } else {
+        attachment = null;
+      }
+
+      if (this.enableEvent) {
+        this.$root.$emit(this.eventName, {
+          text: text
+        });
+      }
+
+      support.sendEmail({
+        type: this.emailType,
+        subject: this.emailSubject,
+        // studentName: name,
+        // studentEmail: email,
+        // isMember: this.formData.isMember,
+        supportOption: supportOption,
+        message: message,
+        attachment: attachment,
+        //attachment only accepts one file, use 'attachments' to accept more than one
+        callToAction: this.callToAction,
+        brand: this.brand,
+        logo: this.emailLogo,
+        recipient: this.recipient,
+        endpoint: this.emailEndpoint
+      }).then(function (resolved) {
+        if (resolved) {
+          toasts.push({
+            icon: 'happy',
+            title: 'Woohoo!',
+            themeColor: _this.themeColor,
+            message: _this.successMessage
+          });
+
+          _this.$emit('formSuccess');
+
+          window.closeAllModals(); //reset option 
+
+          _this.formData = {
+            // name: '',
+            // email: '',
+            isMember: null,
+            supportOption: '',
+            message: '',
+            attachments: []
+          };
+        }
+      });
+    }
+  },
+
+  /* * * * * * * * * * * *
+  remove mentions of these
+  ------------------------
+   textFieldValid
+  textField
+   radioFieldsValid
+  radioFields
+   emailFieldValid
+  emailField
+  * * * * * * * * * */
+  watch: {
+    selectFieldValid: function selectFieldValid(valid) {
+      if (this.formState) {
+        this.formValid = true;
+      }
+    },
+    messageFieldValid: function messageFieldValid(valid) {
+      if (this.formState) {
+        this.formValid = true;
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/ContactMemberEmailForm/ContactMemberEmailForm.vue?vue&type=script&lang=js&
+ /* harmony default export */ var ContactMemberEmailForm_ContactMemberEmailFormvue_type_script_lang_js_ = (ContactMemberEmailFormvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/ContactMemberEmailForm/ContactMemberEmailForm.vue
+
+
+
+
+
+/* normalize component */
+
+var ContactMemberEmailForm_component = normalizeComponent(
+  ContactMemberEmailForm_ContactMemberEmailFormvue_type_script_lang_js_,
+  ContactMemberEmailFormvue_type_template_id_078b50cc_render,
+  ContactMemberEmailFormvue_type_template_id_078b50cc_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ContactMemberEmailForm = (ContactMemberEmailForm_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"572d923c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/UserExpBar/UserExpBar.vue?vue&type=template&id=0f624650&
 var UserExpBarvue_type_template_id_0f624650_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column"},[_c('div',{staticClass:"flex flex-row"},[_c('div',{staticClass:"exp-wrap"},[_c('div',{staticClass:"exp flex flex-column align-v-center align-h-right",class:_vm.themeBgClass,style:('width:' + _vm.xpPercentage + '%;')},[_c('p',{staticClass:"body dense font-bold ph-2 nowrap",class:_vm.expBarClassObject},[_vm._v("\n                    "+_vm._s(_vm.formattedXp)+" XP\n                ")])])])]),_c('div',{staticClass:"flex flex-row ph mt-1"},[_c('p',{staticClass:"body dense text-center nowrap font-compressed uppercase"},[_c('strong',[_vm._v(_vm._s(_vm.userExpRank))]),_c('br'),_vm._v(_vm._s(_vm.userExpRankAmount)+" XP\n        ")]),_c('span',{staticClass:"flex flex-column grow"}),_c('p',{staticClass:"body dense text-center nowrap font-compressed uppercase"},[_c('strong',[_vm._v(_vm._s(_vm.nextUserExpRank))]),_c('br'),_vm._v(_vm._s(_vm.nextUserExpRankAmount)+" XP\n        ")])])])}
 var UserExpBarvue_type_template_id_0f624650_staticRenderFns = []
@@ -49451,10 +49982,12 @@ var CoachEvent_component = normalizeComponent(
 
 
 
+
 var Components = {
   SupportEmailForm: SupportEmailForm,
   EmailForm: EmailForm,
   ContactEmailForm: ContactEmailForm,
+  ContactMemberEmailForm: ContactMemberEmailForm,
   UserExpBar: UserExpBar,
   ContentCatalogue: ContentCatalogue,
   ContentSchedule: Schedule,
