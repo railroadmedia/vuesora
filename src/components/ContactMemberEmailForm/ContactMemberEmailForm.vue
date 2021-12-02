@@ -3,43 +3,6 @@
           novalidate="true"
           @submit.prevent="submitForm"
     >
-        <!-- Name -->
-        <text-input 
-            name="name"
-            :required="true"
-            :invalid="!formValid && !textFieldValid"
-            :inputValue="formData.name"
-            @update:textFieldValid="textFieldValid = $event"
-            @update:inputValue="formData.name = $event"
-            id="customer-name"
-            placeholder="Enter your name..."
-        />
-
-        <radio-buttons
-            name="Do you have a membership with us?"
-            groupName="membership"
-            :required="true"
-            :invalid="!formValid && !radioFieldsValid"
-            :buttonsList="buttonsList"
-            @update:radioFieldsValid="radioFieldsValid = $event"
-            @updateValue="updateMembershipStatus($event)"
-            :showSelectMessage="formData.isMember === true"
-            errorMessage="Please select an option."
-            selectMessage="If your account is under a different email address than noted below, please provide it in your description."
-        />
-
-        <!-- Email -->
-        <email-input 
-            name="Email Address"
-            :required="true"
-            :invalid="!formValid && !emailFieldValid"
-            :inputValue="formData.email"
-            @update:emailFieldValid="emailFieldValid = $event"
-            @update:inputValue="formData.email = $event"
-            id="customer-email"
-            placeholder="Enter your email address..."
-        />
-
         <!-- Help Dropdown -->
         <multilevel-dropdown 
             label="What can we help you with?"
@@ -70,12 +33,6 @@
         />
 
         <div class="tw-flex tw-flex-col-reverse sm:tw-flex-row tw-full">
-            <div class="tw-my-4 tw-inline-flex tw-mx-auto sm:tw-mx-0 sm:tw-my-0 sm:tw-w-1/2">
-                <!-- Recaptcha -->
-                <recaptcha :siteKey="captchakey"
-                           @update:verified="formVerified = $event"    
-                />
-            </div>
             <div class="sm:tw-w-72 sm:tw-ml-auto">
                 <!-- File Upload Button -->
                 <file-input 
@@ -99,7 +56,7 @@
         <!-- SUBMIT BUTTON -->
         <button class="tw-btn-primary tw-self-start tw-mr-auto tw-w-full sm:tw-w-min" 
                 type="submit"
-                :disabled="!formVerified || !formValid"
+                :disabled="!formValid"
                 :class="themeBgClass" 
         >
                 Submit
@@ -112,20 +69,14 @@ import SupportService from '../../assets/js/services/support';
 import Toasts from '../../assets/js/classes/toasts';
 //Form Components
 import TextareaInput from '../FormComponents/TextareaInput.vue'
-import TextInput from '../FormComponents/TextInput.vue'
-import RadioButtons from '../FormComponents/RadioButtons.vue'
-import EmailInput from '../FormComponents/EmailInput.vue'
 import FileInput from '../FormComponents/FileInput.vue'
 import MultiLevelDropdown from '../FormComponents/Dropdowns/MultiLevelDropdown.vue'
 import Recaptcha from '../FormComponents/Recaptcha.vue'
 
 export default {
-    name: 'ContactEmailForm',
+    name: 'ContactMemberEmailForm',
 
     components: {
-        'text-input': TextInput,
-        'email-input': EmailInput,
-        'radio-buttons': RadioButtons,
         'textarea-input': TextareaInput,
         'file-input': FileInput,
         'multilevel-dropdown': MultiLevelDropdown,
@@ -186,15 +137,11 @@ export default {
     data() {
         return {
             formValid: true, //set true by default
-            formVerified: false,
-            emailFieldValid: false,
-            textFieldValid: false,
-            radioFieldsValid: false,
             messageFieldValid: false,
             formData: {
-                name: '',
-                email: '',
-                isMember: null,
+                //name: '', todo: ensure removed
+                //email: '', todo: ensure removed
+                //isMember: null, todo: ensure removed
                 supportOption: '',
                 message: '',
                 attachments: [],
@@ -370,7 +317,7 @@ export default {
         },
         
         formState() {
-            if(this.messageFieldValid && this.selectFieldValid && this.textFieldValid && this.emailFieldValid && this.radioFieldsValid) return true;
+            if(this.messageFieldValid && this.selectFieldValid) return true;
         },
 
         themeBgClass() {
@@ -396,9 +343,6 @@ export default {
         updateSupportOption(val) {
             this.formData.supportOption = val;
         },
-        updateMembershipStatus(val) {
-            this.formData.isMember = val;
-        },
 
         attachFile(file) {     
             this.formData.attachments.push(file);
@@ -420,23 +364,17 @@ export default {
             }
 
             //take snapshot
-            const name = this.formData.name;
-            const email = this.formData.email;
+            // const name = this.formData.name; # todo: ensure all mentions removed
+            // const email = this.formData.email; # todo: ensure all mentions removed
             const message = this.formData.message;
             const supportOption = this.formData.supportOption;
             let attachment; 
-            let membership;
+            // let membership; # todo: ensure all mentions removed
             //convert file(s) to image blobs 
             if(this.formData.attachments[0]) {
                 attachment = this.formData.attachments[0];
             } else {
                 attachment = null;
-            }
-            //is Member?
-            if(this.formData.isMember === true) {
-                membership = "Is currently a member"
-            } else {
-                membership = "Is not a member"
             }
 
             if (this.enableEvent) {
@@ -446,9 +384,9 @@ export default {
           SupportService.sendEmail({
                 type: this.emailType,
                 subject: this.emailSubject,
-                studentName: name,
-                studentEmail: email,
-                isMember: this.formData.isMember,
+                // studentName: name,
+                // studentEmail: email,
+                // isMember: this.formData.isMember,
                 supportOption: supportOption,
                 message: message,
                 attachment: attachment, //attachment only accepts one file, use 'attachments' to accept more than one
@@ -472,8 +410,8 @@ export default {
 
                         //reset option 
                         this.formData = {
-                            name: '',
-                            email: '',
+                            // name: '',
+                            // email: '',
                             isMember: null,
                             supportOption: '',
                             message: '',
@@ -484,22 +422,21 @@ export default {
         },
     },
 
+  /* * * * * * * * * * * *
+  remove mentions of these
+  ------------------------
+
+  textFieldValid
+  textField
+
+  radioFieldsValid
+  radioFields
+
+  emailFieldValid
+  emailField
+  * * * * * * * * * */
+
     watch: {
-        textFieldValid: function(valid) {
-            if(this.formState) {
-                this.formValid = true;
-            }
-        },
-        radioFieldsValid: function(valid) {
-            if(this.formState) {
-                this.formValid = true;
-            }
-        },
-        emailFieldValid: function(valid) {
-            if(this.formState) {
-                this.formValid = true;
-            }
-        },
         selectFieldValid: function(valid) {
             if(this.formState) {
                 this.formValid = true;
