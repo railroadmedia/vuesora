@@ -1,7 +1,13 @@
 <template>
-  <div class="tw-w-full tw-py-10 tw-flex tw-justify-between tw-items-center">
-    <div class="sm:tw-w-full md:tw-w-3/6 lg:tw-w-2/6">
-      <div class="tw-flex tw-text-gray-600 tw-pr-5">
+  <div
+    class="
+      tw-w-full tw-py-10 tw-flex tw-flex-col
+      sm:tw-flex-row
+      tw-justify-between
+    "
+  >
+    <div class="tw-w-full md:tw-w-3/6 lg:tw-w-2/6">
+      <div class="tw-flex tw-text-gray-600 sm:tw-pr-5 tw-mb-3 ph-1">
         <input
           id="catalogueSearch"
           v-model="searchTermInterface"
@@ -17,7 +23,7 @@
           @keydown.enter="submitSearch"
         />
         <button
-          class="tw-btn-primary tw-btn-circle tw-bg-drumeo w-15"
+          class="tw-btn-primary tw-btn-circle tw-bg-drumeo tw-w-16"
           title="Search"
           @click="submitSearch"
         >
@@ -28,28 +34,31 @@
       </div>
     </div>
 
-    <div class="sm:tw-w-full md:tw-w-3/6 lg:tw-w-2/6">
-      <div class="tw-input-field">
-        <div class="tw-flex tw-items-center tw-justify-end">
-          <div class="tw-input-wrapper tw-flex-grow tw-mx-4">
-            <catalogue-filter
-              filter-name="type"
-              :item="parsedTypes"
-              :theme-color="themeColor"
-              :loading="loading"
-              :initial-value="selectedTypes"
-              @filterChange="changeFilter"
-            ></catalogue-filter>
-          </div>
-          <div class="tw-pr-2">
-            <div class="tw-text-sm tw-text-drumeo">Sort By:</div>
-            <div>
-              <select type="text" name="name" id="name" class="tw-pt-0">
-                <option value="0" class="tw-py-1">Alphabetical</option>
-                <option value="1" class="tw-py-1">Most Recent</option>
-              </select>
-            </div>
-          </div>
+    <div class="tw-w-full md:tw-w-3/6 lg:tw-w-2/6">
+      <div class="tw-flex tw-items-center tw-justify-end">
+        <div class="tw-input-wrapper tw-flex-grow sm:tw-mx-4">
+          <catalogue-filter
+            filter-name="type"
+            :item="parsedTypes"
+            :theme-color="themeColor"
+            :loading="loading"
+            :initial-value="selectedTypes"
+            @filterChange="changeFilter"
+          ></catalogue-filter>
+        </div>
+        <div class="sm:tw-pr-2 tw-mb-3 sm:tw-mb-0 ph-1">
+          <select
+            type="text"
+            name="name"
+            id="name"
+            class="tw-pt-0"
+            placeholder="Sort by"
+            aria-placeholder="Sort By"
+          >
+            <option value="" disabled selected>Sort by</option>
+            <option value="0" class="tw-py-1">Alphabetical</option>
+            <option value="1" class="tw-py-1">Most Recent</option>
+          </select>
         </div>
       </div>
     </div>
