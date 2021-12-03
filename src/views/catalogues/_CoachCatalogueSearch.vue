@@ -7,7 +7,7 @@
     "
   >
     <div class="tw-w-full md:tw-w-3/6 lg:tw-w-2/6">
-      <div class="tw-flex tw-text-gray-600 sm:tw-pr-5 tw-mb-3 ph-1">
+      <div class="tw-flex tw-text-gray-600 sm:tw-pr-5 tw-mb-3 ph-1 sm:tw-pl-0">
         <input
           id="catalogueSearch"
           v-model="searchTermInterface"
@@ -46,7 +46,7 @@
             @filterChange="changeFilter"
           ></catalogue-filter>
         </div>
-        <div class="sm:tw-pr-2 tw-mb-3 sm:tw-mb-0 ph-1">
+        <div class="sm:tw-pr-0 tw-mb-3 sm:tw-mb-0 ph-1">
           <select
             type="text"
             name="name"
