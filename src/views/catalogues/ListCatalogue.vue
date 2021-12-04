@@ -5,6 +5,7 @@
             :key="'list' + item.id"
             :index="item.week || i + 1"
             :item="item"
+            :is-coach="isCoach"
             :content-type="item.type"
             :brand="brand"
             :theme-color="themeColor"
@@ -60,6 +61,10 @@ export default {
         useThemeColor: {
             type: Boolean,
             default: () => true,
+        },
+        isCoach: {
+            type: Boolean,
+            default: () => false,
         },
         userId: {
             type: String,

@@ -117,6 +117,7 @@
 
     <list-catalogue
       v-if="catalogueType === 'list'"
+      :is-coach="isCoach"
       :content="content"
       :brand="brand"
       :theme-color="themeColor"
@@ -342,6 +343,10 @@ export default {
       default: () => false,
     },
     searchBar: {
+      type: Boolean,
+      default: () => false,
+    },
+    isCoach: {
       type: Boolean,
       default: () => false,
     },

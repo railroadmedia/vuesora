@@ -40,6 +40,7 @@
       :paginate="catalogueProps.paginate"
       :four-wide="catalogueProps.fourWide"
       :coach-filters="true"
+      :is-coach="catalogueProps.isCoach"
     >
       <slot></slot>
     </content-catalogue>
