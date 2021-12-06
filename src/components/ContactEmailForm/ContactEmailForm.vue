@@ -134,7 +134,7 @@
             </div>
             <div v-else>
                 <p class="tw-font-bold tw-mb-3">Your message was not sent</p>
-                <p class="tw-mb-2">We could not submit your message to support team due to a servor error. </p>
+                <p class="tw-mb-2">We could not submit your message to the support team due to a servor error. </p>
                 <p class="tw-font-bold tw-mb-2 tw-cursor-pointer" @click="responseMessageVisible = false">Dismiss</p>
             </div>
         </div>
