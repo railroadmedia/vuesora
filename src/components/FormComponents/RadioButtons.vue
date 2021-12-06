@@ -1,5 +1,5 @@
 <template>
-    <fieldset class="tw-fieldset" 
+    <fieldset class="tw-fieldset tw-border-none" 
               :aria-required="required"
               :aria-invalid="invalid" 
               :disabled="disabled"
