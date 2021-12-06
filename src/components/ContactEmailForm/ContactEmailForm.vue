@@ -116,12 +116,33 @@
         <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
         <!-- DO NOT MERGE THIS COMMIT, IT DISABLES THE CAPTCHA. REVERT THIS COMMIT -->
         </button>
+
+        <!-- Response Message -->
+        <div class="tw-flex tw-z-150 tw-fixed tw-rounded-lg tw-left-8 tw-p-6 tw-text-base tw-shadow-lg tw-mr-8 tw-transition-all tw-duration-200 tw-ease-in-out"
+             :class="[responseMessageVisible ? 'tw-bottom-8': 'tw--bottom-44', formSuccessful ? 'tw-bg-green-50 tw-text-green-600' : 'tw-bg-red-50 tw-text-red-600']"
+        >
+            <svg v-if="formSuccessful" xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6 tw-text-green-500 tw-mr-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6 tw-text-red-500 tw-mr-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            <div v-if="formSuccessful">
+                <p class="tw-font-bold tw-mb-3">Your message was successfully sent!</p>
+                <p class="tw-mb-2">Your message has been submitted to the support team and will be reviewed shortly</p>
+                <p class="tw-font-bold tw-mb-2 tw-cursor-pointer" @click="responseMessageVisible = false">Dismiss</p>
+            </div>
+            <div v-else>
+                <p class="tw-font-bold tw-mb-3">Your message was not sent</p>
+                <p class="tw-mb-2">We could not submit your message to support team due to a servor error. </p>
+                <p class="tw-font-bold tw-mb-2 tw-cursor-pointer" @click="responseMessageVisible = false">Dismiss</p>
+            </div>
+        </div>
     </form>
 </template>
 
 <script>
 import SupportService from '../../assets/js/services/support';
-import Toasts from '../../assets/js/classes/toasts';
 //Form Components
 import TextareaInput from '../FormComponents/TextareaInput.vue'
 import TextInput from '../FormComponents/TextInput.vue'
@@ -203,6 +224,8 @@ export default {
             textFieldValid: false,
             radioFieldsValid: false,
             messageFieldValid: false,
+            responseMessageVisible: false,
+            formSuccessful: false,
             formData: {
                 name: '',
                 email: '',
@@ -422,6 +445,12 @@ export default {
             this.formData.attachments = [];
         },
 
+        closeResponseMessage() {
+            setTimeout(() => {
+                this.responseMessageVisible = false;
+            }, 3000);
+        },
+
         submitForm() {
             //Check Form First
             this.formValid = this.formState;
@@ -472,12 +501,10 @@ export default {
             })
                 .then((resolved) => {
                     if (resolved) {
-                        Toasts.push({
-                            icon: 'happy',
-                            title: 'Woohoo!',
-                            themeColor: this.themeColor,
-                            message: this.successMessage,
-                        });
+                        this.formSuccessful = true;
+                        this.responseMessageVisible = true;
+
+                        this.closeResponseMessage();
 
                         this.$emit('formSuccess');
                         window.closeAllModals();
@@ -491,6 +518,11 @@ export default {
                             message: '',
                             attachments: [],
                         }
+                    } else {
+                        this.formSuccessful = false;
+                        this.responseMessageVisible = true;
+
+                        this.closeResponseMessage()
                     }
                 })
         },

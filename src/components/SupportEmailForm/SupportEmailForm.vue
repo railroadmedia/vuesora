@@ -398,6 +398,14 @@ export default {
                             message: '',
                             attachments: [],
                         }
+                    } else {
+                        console.log('nope!')
+                        Toasts.push({
+                            icon: 'sad',
+                            title: 'Whoops',
+                            themeColor: this.themeColor,
+                            message: 'Your form was not sent.',
+                        });
                     }
                 })
             
