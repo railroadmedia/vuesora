@@ -484,7 +484,7 @@ export default {
           required_fields: this.required_fields.concat(this.requiredFields),
           statuses: this.statuses,
           required_user_states: this.required_user_states,
-          term: this.search_term,
+          [this.isCoach ? 'title' : 'term']: this.search_term,
           included_types: this.selectedTypes,
           page: this.page,
           included_fields: this.included_fields,
@@ -501,7 +501,7 @@ export default {
     },
 
     sortBy() {
-      if (this.search_term) {
+      if (this.search_term && !this.isCoach) {
         return "-score";
       }
 
