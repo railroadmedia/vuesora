@@ -39,7 +39,7 @@
       :total-results="catalogueProps.totalResults"
       :paginate="catalogueProps.paginate"
       :four-wide="catalogueProps.fourWide"
-      :coach-filters="true"
+      :coach-id="catalogueProps.coachId"
       :is-coach="catalogueProps.isCoach"
     >
       <slot></slot>

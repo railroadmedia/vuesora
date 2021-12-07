@@ -1,8 +1,9 @@
 <template>
   <div class="flex flex-column grow align-v-center">
     <coach-catalogue-search
-      v-if="coachFilters"
+      v-if="isCoach"
       :theme-color="themeColor"
+      :brand="brand"
       :included-types="includedTypes"
       :selected-types="selected_types"
       :search-term="search_term"
@@ -10,10 +11,11 @@
       :total-results="total_results"
       @typeChange="handleTypeChange"
       @searchChange="handleSearch"
+      @handleContentSort="handleContentSort"
     ></coach-catalogue-search>
 
     <catalogue-search
-      v-if="searchBar && !coachFilters"
+      v-if="searchBar && !isCoach"
       :theme-color="themeColor"
       :included-types="includedTypes"
       :selected-types="selected_types"
@@ -25,13 +27,13 @@
     ></catalogue-search>
 
     <catalogue-playlist-tabs
-      v-if="isPlaylists && !coachFilters"
+      v-if="isPlaylists && !isCoach"
       :theme-color="themeColor"
       :included-types="includedTypes"
     ></catalogue-playlist-tabs>
 
     <catalogue-filters
-      v-if="!coachFilters && filterableValues.length"
+      v-if="!isCoach && filterableValues.length"
       :filters="filters"
       :filterable-values="filterableValues"
       :filters-labels="filtersLabels"
@@ -226,15 +228,15 @@ export default {
   },
   mixins: [UserCatalogueEvents, ThemeClasses],
   props: {
-    coachFilters: {
-      type: Boolean,
-      default: () => false,
-    },
     catalogueType: {
       type: String,
       default: () => "grid",
     },
     userId: {
+      type: String,
+      default: () => "",
+    },
+    coachId: {
       type: String,
       default: () => "",
     },
@@ -447,6 +449,7 @@ export default {
       eventType: null,
       loadedContentIds: {},
       included_fields: this.includedFields || [],
+      sort: null,
     };
   },
   computed: {
@@ -490,7 +493,7 @@ export default {
     },
 
     $_contentEndpoint() {
-      if (this.search_term) {
+      if (this.search_term && !this.isCoach) {
         return this.searchEndpoint;
       }
 
@@ -502,7 +505,7 @@ export default {
         return "-score";
       }
 
-      return this.sortOverride || "-published_on";
+      return this.sort || this.sortOverride || "-published_on";
     },
 
     noResultsMessageWithProgress() {
@@ -537,7 +540,7 @@ export default {
   watch: {
     catalogueType: function () {
       this.getContent();
-    }
+    },
   },
   beforeDestroy() {
     if (this.infiniteScroll && !this.loadMoreButton) {
@@ -545,6 +548,16 @@ export default {
     }
   },
   methods: {
+    handleContentSort(event) {
+      this.sort = event.target.value;
+
+      if (this.useUrlParams) {
+        this.setUrlParams();
+      }
+
+      return this.getContent();
+    },
+
     getUrlParams() {
       const params = window.location.search;
       const query_object = QueryString.parse(params, {
@@ -647,7 +660,7 @@ export default {
             brand: this.brand,
             limit: this.limit,
             statuses: this.statuses,
-            sort: this.sortBy,
+            sort: this.sort || this.sortBy,
             ...this.request_params,
           },
         })

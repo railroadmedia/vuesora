@@ -36,7 +36,7 @@
 
     <div class="tw-w-full md:tw-w-3/6 lg:tw-w-2/6">
       <div class="tw-flex tw-items-center tw-justify-end">
-        <div class="tw-input-wrapper tw-flex-grow sm:tw-mx-4">
+        <div class="tw-input-wrapper tw-flex-grow">
           <catalogue-filter
             filter-name="type"
             :item="parsedTypes"
@@ -47,18 +47,33 @@
           ></catalogue-filter>
         </div>
         <div class="sm:tw-pr-0 tw-mb-3 sm:tw-mb-0 ph-1">
-          <select
-            type="text"
-            name="name"
-            id="name"
-            class="tw-pt-0"
-            placeholder="Sort by"
-            aria-placeholder="Sort By"
-          >
-            <option value="" disabled selected>Sort by</option>
-            <option value="0" class="tw-py-1">Alphabetical</option>
-            <option value="1" class="tw-py-1">Most Recent</option>
-          </select>
+          <div class="flex flex-column form-group mr-1">
+            <select
+              id="sortInput"
+              type="text"
+              class="borderless"
+              @change="handleContentSort($event)"
+              v-model="sort"
+            >
+              <option
+                value="-published_on"
+                :selected="sort === '-published_on'"
+              >
+                Newest First
+              </option>
+              <option value="published_on" :selected="sort === 'published_on'">
+                Oldest First
+              </option>
+              <option value="slug" :selected="sort === 'slug'">
+                Name: A to Z
+              </option>
+              <option value="-slug" :selected="sort === '-slug'">
+                Name: Z to A
+              </option>
+            </select>
+
+            <label for="sortInput" :class="brand"> Sort By: </label>
+          </div>
         </div>
       </div>
     </div>
@@ -73,6 +88,10 @@ export default {
     "catalogue-filter": CatalogueFilter,
   },
   props: {
+    brand: {
+      type: String,
+      default: () => "",
+    },
     themeColor: {
       type: String,
       default: () => "",
@@ -109,6 +128,7 @@ export default {
   data() {
     return {
       search_term: this.searchTerm,
+      sort: "-published_on",
     };
   },
   computed: {
@@ -152,6 +172,10 @@ export default {
         key: item.key,
         value: item.value,
       });
+    },
+
+    handleContentSort(event) {
+      this.$emit("handleContentSort", event);
     },
 
     submitSearch() {
