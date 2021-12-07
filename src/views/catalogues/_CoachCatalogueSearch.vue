@@ -37,7 +37,7 @@
 
     <div class="tw-w-full md:tw-w-3/6 lg:tw-w-2/6">
       <div class="tw-flex tw-items-center tw-justify-end">
-        <div class="tw-input-wrapper tw-flex-grow">
+        <div class="tw-flex-grow">
           <catalogue-filter
             filter-name="type"
             :item="parsedTypes"
