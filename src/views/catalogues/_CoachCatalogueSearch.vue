@@ -23,7 +23,8 @@
           @keydown.enter="submitSearch"
         />
         <button
-          class="tw-btn-primary tw-btn-circle tw-bg-drumeo tw-w-16"
+          class="tw-btn-primary tw-btn-circle tw-w-16"
+          :class="`tw-bg-${themeColor}`"
           title="Search"
           @click="submitSearch"
         >
