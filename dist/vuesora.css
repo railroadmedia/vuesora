@@ -83,6 +83,25 @@
   max-width: 50px;
   min-width: 50px;
 }
+/**
+* Make a horizontal gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+/**
+* Make a vertical gradient with 2 colors
+*
+* @param $primaryColor - the first color at the start of the gradient
+* @param $secondaryColor - the second color at the end of the gradient
+*/
+.search-button-col {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 50px;
+          flex: 0 0 50px;
+  max-width: 50px;
+  min-width: 50px;
+}
 button.btn.page-button {
   margin: 0 3px;
 }

@@ -3,7 +3,7 @@
         <div class="tw-flex tw-flex-col md:tw-flex-row tw-flex-wrap md:tw-flex-nowrap " v-if="content">
             
             <!-- Live Event Image -->
-            <a :href="eventCoachProfileUrl" class="tw-w-full md:tw-w-44 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 md:tw-mr-4">
+            <a :href="eventCoachProfileUrl" class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 md:tw-mr-4">
                 <div class="tw-relative">
                     <img
                         class="tw-rounded-lg tw-w-full"
