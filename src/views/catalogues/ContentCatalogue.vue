@@ -46,6 +46,7 @@
       :brand="brand"
       @filterChange="handleFilterChange"
       @progressChange="handleProgressChange"
+      @handleContentSort="handleContentSort"
     ></catalogue-filters>
 
     <div
