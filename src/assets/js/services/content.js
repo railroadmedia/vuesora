@@ -93,33 +93,20 @@ export default {
     },
 
     /**
-     * Follow to coach
+     * Like content by ID
      *
-     * @param {String|Number} coachId
+     * @param {Boolean} is_liked
+     * @param {String|Number} content_id
+     * @param {String|Number} user_id
+     * @returns {Promise} - resolved promise with the response object
      */
-    followCoach({ coachId }) {
-
+    likeContentById({ is_liked, content_id, user_id }) {
         return axios({
-            url: `${endpointPrefix}/railcontent/follow`,
-            method: 'put',
+            url: `${endpointPrefix}/railcontent/content-like`,
+            method: is_liked ? 'put' : 'delete',
             data: {
-                content_id: coachId,
-            },
-        });
-    },
-
-    /**
-     * Unfollow to coach
-     *
-     * @param {String|Number} coachId
-     */
-    unfollowCoach({ coachId }) {
-
-        return axios({
-            url: `${endpointPrefix}/railcontent/unfollow`,
-            method: 'put',
-            data: {
-                content_id: coachId,
+                content_id,
+                user_id,
             },
         });
     },
