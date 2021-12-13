@@ -1,9 +1,11 @@
 <template>
-  <div class="tw-flex tw-pb-6">
+  <div class="tw-flex tw-w-full tw-pb-6">
     <div
-      v-for="instructor in instructors"
-      :key="instructor.id"
-      class="tw-flex tw-w-full tw-font-normal tw-text-sm"
+      v-for="instructor in instructorList"
+      :key="
+        String(instructor.id) + String(instructor.current_user_is_subscribed)
+      "
+      class="tw-flex tw-font-normal tw-text-sm tw-pr-6"
     >
       <div>
         <div
@@ -49,7 +51,16 @@
           ></div>
         </div>
       </div>
-      <div class="tw-flex tw-flex-col tw-pl-3 tw-text-gray-500 tw-uppercase tw-justify-between">
+      <div
+        class="
+          tw-flex
+          tw-flex-col
+          tw-pl-3
+          tw-text-gray-500
+          tw-uppercase
+          tw-justify-between
+        "
+      >
         <h4>
           <span class="tw-text-base tw-font-normal">
             {{ instructor.name.split(" ")[0] }}
@@ -59,10 +70,10 @@
           </span>
         </h4>
         <button
-          v-if="isSubscribedToCoach(instructor.id)"
+          v-if="!instructor.current_user_is_subscribed"
           v-on:click="followCoach(instructor.id)"
           class="
-            tw-px-0 tw-py-0 tw-text-xs
+            tw-text-left tw-px-0 tw-py-0 tw-text-xs
             sm:tw-text-base
             tw-transition-none
             tw-text-white
@@ -70,18 +81,19 @@
             tw-bg-transparent
             tw-uppercase
             tw-font-bold
+            tw-cursor-pointer
           "
         >
           <span>
             <i aria-hidden="true" class="fa fa-bell"></i>
-            <span class="tw-pl-1">Subscribe</span
-          ></span>
+            <span class="tw-pl-2">Subscribe</span></span
+          >
         </button>
         <button
-          v-if="!isSubscribedToCoach(instructor.id)"
+          v-if="instructor.current_user_is_subscribed"
           v-on:click="unfollowCoach(instructor.id)"
           class="
-            tw-px-0 tw-py-0 tw-text-xs
+            tw-text-left tw-px-0 tw-py-0 tw-text-xs
             sm:tw-text-base
             tw-transition-none
             tw-text-white
@@ -89,11 +101,12 @@
             tw-bg-transparent
             tw-uppercase
             tw-font-bold
+            tw-cursor-pointer
           "
         >
           <span>
             <i aria-hidden="true" class="fa fa-check"></i>
-            <span class="tw-pl-1">Subscribed</span>
+            <span class="tw-pl-2">Subscribed</span>
           </span>
         </button>
       </div>
@@ -135,52 +148,41 @@ export default {
       return this.brandColors[this.brand];
     },
   },
-
   mounted() {
     this.instructorList = [...this.instructors];
   },
   methods: {
-    isSubscribedToCoach(id) {
-      return !!this.instructorList.filter(
-        (instructor) =>
-          instructor.id === id && instructor.current_user_is_subscribed
-      ).length;
-    },
     followCoach(id) {
-                console.log(id)
-
-      ContentService.followCoach({
+      return ContentService.followCoach({
         coachId: id,
       }).then(() => {
         const instructorIndex = this.instructorList.findIndex(
           (instructor) => instructor.id === id
         );
-        console.log(instructorIndex)
         const selectedInstructor = this.instructorList[instructorIndex];
         this.instructorList[instructorIndex] = {
           ...selectedInstructor,
           current_user_is_subscribed:
             !selectedInstructor.current_user_is_subscribed,
         };
+        this.$forceUpdate();
       });
     },
 
     unfollowCoach(id) {
-                console.log(id)
-
-      ContentService.unfollowCoach({
+      return ContentService.unfollowCoach({
         coachId: id,
       }).then(() => {
         const instructorIndex = this.instructorList.findIndex(
           (instructor) => instructor.id === id
         );
-        console.log(instructorIndex)
         const selectedInstructor = this.instructorList[instructorIndex];
         this.instructorList[instructorIndex] = {
           ...selectedInstructor,
           current_user_is_subscribed:
             !selectedInstructor.current_user_is_subscribed,
         };
+        this.$forceUpdate();
       });
     },
   },
