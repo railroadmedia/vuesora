@@ -162,6 +162,7 @@
     <CoachesInLesson
       v-if="instructors.length > 0"
       :instructors="instructors"
+      :brand="brand"
     ></CoachesInLesson>
   </div>
 </template>
