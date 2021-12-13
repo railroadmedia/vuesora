@@ -247,18 +247,6 @@ export default {
   },
 
   computed: {
-    subtitle() {
-      if (this.parentTitle) {
-        return `From ${this.parentTitle}`;
-      }
-
-      if (this.instructors.map((i) => i.name).join(", ") !== "") {
-        return `With ${this.instructors.map((i) => i.name).join(", ")}`;
-      }
-
-      return "";
-    },
-
     currentTime() {
       const { mediaElementVueInstance } = this.$root.$refs;
 
