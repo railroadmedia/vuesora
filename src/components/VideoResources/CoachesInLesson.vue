@@ -1,5 +1,12 @@
 <template>
-  <div class="tw-w-full tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 xl:tw-grid-cols-4 tw-grid-flow-row tw-gap-0">
+  <div
+    class="
+      tw-w-full tw-grid tw-grid-cols-2
+      sm:tw-grid-cols-3
+      xl:tw-grid-cols-4
+      tw-grid-flow-row tw-gap-0
+    "
+  >
     <div
       v-for="instructor in instructorList"
       :key="
@@ -152,20 +159,23 @@ export default {
     this.instructorList = [...this.instructors];
   },
   methods: {
+    updateCoachState(id) {
+      const instructorIndex = this.instructorList.findIndex(
+        (instructor) => instructor.id === id
+      );
+      const selectedInstructor = this.instructorList[instructorIndex];
+      this.instructorList[instructorIndex] = {
+        ...selectedInstructor,
+        current_user_is_subscribed:
+          !selectedInstructor.current_user_is_subscribed,
+      };
+      this.$forceUpdate();
+    },
     followCoach(id) {
       return ContentService.followCoach({
         coachId: id,
       }).then(() => {
-        const instructorIndex = this.instructorList.findIndex(
-          (instructor) => instructor.id === id
-        );
-        const selectedInstructor = this.instructorList[instructorIndex];
-        this.instructorList[instructorIndex] = {
-          ...selectedInstructor,
-          current_user_is_subscribed:
-            !selectedInstructor.current_user_is_subscribed,
-        };
-        this.$forceUpdate();
+        this.updateCoachState(id);
       });
     },
 
@@ -173,16 +183,7 @@ export default {
       return ContentService.unfollowCoach({
         coachId: id,
       }).then(() => {
-        const instructorIndex = this.instructorList.findIndex(
-          (instructor) => instructor.id === id
-        );
-        const selectedInstructor = this.instructorList[instructorIndex];
-        this.instructorList[instructorIndex] = {
-          ...selectedInstructor,
-          current_user_is_subscribed:
-            !selectedInstructor.current_user_is_subscribed,
-        };
-        this.$forceUpdate();
+        this.updateCoachState(id);
       });
     },
   },
