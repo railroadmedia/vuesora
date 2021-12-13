@@ -22,6 +22,8 @@
             tw-h-14
             tw-rounded-full
             tw-bg-contain
+            tw-bg-center
+            tw-bg-no-repeat
             tw-overflow-hidden
             tw-box-border
             tw-p-0
