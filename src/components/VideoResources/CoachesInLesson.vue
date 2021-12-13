@@ -1,11 +1,11 @@
 <template>
-  <div class="tw-flex tw-w-full tw-pb-6">
+  <div class="tw-w-full tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 xl:tw-grid-cols-4 tw-grid-flow-row tw-gap-0">
     <div
       v-for="instructor in instructorList"
       :key="
         String(instructor.id) + String(instructor.current_user_is_subscribed)
       "
-      class="tw-flex tw-font-normal tw-text-sm tw-pr-6"
+      class="tw-flex tw-font-normal tw-text-sm tw-pr-6 tw-mb-6"
     >
       <div>
         <div
@@ -62,10 +62,10 @@
         "
       >
         <h4>
-          <span class="tw-text-base tw-font-normal">
+          <span class="tw-text-xs sm:tw-text-base tw-font-normal">
             {{ instructor.name.split(" ")[0] }}
           </span>
-          <span class="tw-text-base tw-font-bold">
+          <span class="tw-text-xs sm:tw-text-base tw-font-bold">
             {{ instructor.name.split(" ")[1] }}
           </span>
         </h4>

@@ -98,7 +98,6 @@ export default {
      * @param {String|Number} coachId
      */
     followCoach({ coachId }) {
-        console.log(coachId)
 
         return axios({
             url: `${endpointPrefix}/railcontent/follow`,
@@ -115,7 +114,6 @@ export default {
      * @param {String|Number} coachId
      */
     unfollowCoach({ coachId }) {
-        console.log(coachId)
 
         return axios({
             url: `${endpointPrefix}/railcontent/unfollow`,
