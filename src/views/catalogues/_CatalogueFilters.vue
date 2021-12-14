@@ -78,6 +78,7 @@ export default {
                     difficulty: null,
                     instructor: null,
                     style: null,
+                    focus: null,
                     topic: null,
                     key: null,
                     key_pitch_type: null,

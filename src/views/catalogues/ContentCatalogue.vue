@@ -1,5 +1,29 @@
 <template>
   <div class="flex flex-column grow align-v-center">
+
+    <div v-if="isCoachesGrid" 
+         id="coach-section"
+         class="tw-flex tw-flex-col tw-pt-4 tw-mb-6">
+        <div class="tw-flex">
+            <a class="tw-no-underline tw-mr-6"
+               :href="coachIndexUrl"
+               :class="[!isOnlySubscribed ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
+            >
+              <h3 class="tw-text-3xl tw-cursor-pointer">
+                All Coaches
+              </h3>
+            </a>
+            <a class="tw-no-underline"
+               :href="coachIndexUrl + '?only_subscribed=true' "
+               :class="[isOnlySubscribed ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
+            >
+              <h3 class="tw-text-3xl tw-cursor-pointer">
+                  Subscribed Coaches
+              </h3>
+            </a>
+        </div>
+    </div>
+
     <coach-catalogue-search
       v-if="isCoach"
       :theme-color="themeColor"
@@ -12,41 +36,72 @@
       @typeChange="handleTypeChange"
       @searchChange="handleSearch"
       @handleContentSort="handleContentSort"
-    ></coach-catalogue-search>
+    />
 
-    <catalogue-search
-      v-if="searchBar && !isCoach"
-      :theme-color="themeColor"
-      :included-types="includedTypes"
-      :selected-types="selected_types"
-      :search-term="search_term"
-      :current_page="page"
-      :total-results="total_results"
-      @typeChange="handleTypeChange"
-      @searchChange="handleSearch"
-    ></catalogue-search>
+    <div :class="[isCoachesGrid ? 'tw-flex' : '']">
+        <catalogue-search
+            v-if="searchBar && !isCoach"
+            :theme-color="themeColor"
+            :included-types="includedTypes"
+            :selected-types="selected_types"
+            :search-term="search_term"
+            :current_page="page"
+            :isCoachesGrid="isCoachesGrid"
+            :total-results="total_results"
+            :catalogueType="catalogueType"
+            @typeChange="handleTypeChange"
+            @searchChange="handleSearch"
+        />
 
-    <catalogue-playlist-tabs
-      v-if="isPlaylists && !isCoach"
-      :theme-color="themeColor"
-      :included-types="includedTypes"
-    ></catalogue-playlist-tabs>
+        <catalogue-playlist-tabs
+            v-if="isPlaylists && !isCoach"
+            :theme-color="themeColor"
+            :included-types="includedTypes"
+        />
 
-    <catalogue-filters
-      v-if="!isCoach && filterableValues.length"
-      :filters="filters"
-      :filterable-values="filterableValues"
-      :filters-labels="filtersLabels"
-      :required-user-states="required_user_states"
-      :filter-params="filter_params"
-      :event-type="eventType"
-      :loading="loading"
-      :theme-color="themeColor"
-      :content-types="selectedTypes"
-      :brand="brand"
-      @filterChange="handleFilterChange"
-      @progressChange="handleProgressChange"
-    ></catalogue-filters>
+        <catalogue-filters
+            v-if="!isCoach && filterableValues.length"
+            :filters="filters"
+            :filterable-values="filterableValues"
+            :filters-labels="filtersLabels"
+            :required-user-states="required_user_states"
+            :filter-params="filter_params"
+            :event-type="eventType"
+            :loading="loading"
+            :theme-color="themeColor"
+            :content-types="selectedTypes"
+            :brand="brand"
+            @filterChange="handleFilterChange"
+            @progressChange="handleProgressChange"
+        />
+
+        <!-- Coach Sort By -->
+        <div v-if="isCoachesGrid" 
+             class="tw-inline-flex form-group tw-w-full tw-mb-6 md:tw-ml-auto md:tw-mb-0 md:tw-w-64 md:tw-pl-4">
+            <div class="flex tw-ml-0 form-group tw-w-full">
+                <div class="form-group xs-12 tw-w-full">
+                    <select
+                        id="coachSort"
+                        v-model="sortInterface"
+                        class="has-input tw-bg-white"
+                    >
+                        <option
+                            v-for="option in sortOptions"
+                            :key="option.label"
+                            :value="option.value"
+                        >
+                            {{ option.label }}
+                        </option>
+                    </select>
+                    <label
+                        for="coachSort"
+                        :class="themeColor"
+                    >Sort By... </label>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     <div
       v-if="content.length === 0 && noResultsMessage.length > 0"
@@ -79,7 +134,26 @@
       :show-my-list-action="showMyListAction"
       :display-inline="displayInline"
       @addToList="addToListEventHandler"
-    ></coach-grid-catalogue>
+    />
+
+    <coaches-grid-catalogue
+      v-if="isCoachesGrid"
+      :content="content"
+      :brand="brand"
+      :theme-color="themeColor"
+      :use-theme-color="useThemeColor"
+      :no-wrap="noWrapGrid"
+      :user-id="userId"
+      :is-admin="isAdmin"
+      :lock-unowned="lockUnowned"
+      :force-wide-thumbs="forceWideThumbs"
+      :content-type-override="contentTypeOverride"
+      :six-wide="sixWide"
+      :five-wide="fiveWide"
+      :show-my-list-action="showMyListAction"
+      :display-inline="displayInline"
+      @addToList="addToListEventHandler"
+    />
 
     <grid-catalogue
       v-if="catalogueType === 'grid'"
@@ -98,7 +172,7 @@
       :show-my-list-action="showMyListAction"
       :display-inline="displayInline"
       @addToList="addToListEventHandler"
-    ></grid-catalogue>
+    />
 
     <routines-catalogue
       v-if="catalogueType === 'routines'"
@@ -115,7 +189,7 @@
       :six-wide="sixWide"
       :display-inline="displayInline"
       @addToList="addToListEventHandler"
-    ></routines-catalogue>
+    />
 
     <list-catalogue
       v-if="catalogueType === 'list'"
@@ -140,7 +214,7 @@
       :subscription-calendar-id="subscriptionCalendarId"
       @addToList="addToListEventHandler"
       @progressReset="resetProgressEventHandler"
-    ></list-catalogue>
+    />
 
     <downloads-catalogue
       v-if="catalogueType === 'downloads'"
@@ -164,7 +238,7 @@
       :subscription-calendar-id="subscriptionCalendarId"
       @addToList="addToListEventHandler"
       @progressReset="resetProgressEventHandler"
-    ></downloads-catalogue>
+    />
 
     <div
       v-if="paginate && total_pages > 1 && !infiniteScroll"
@@ -174,7 +248,7 @@
         :current-page="Number(page)"
         :total-pages="total_pages"
         @pageChange="handlePageChange"
-      ></pagination>
+      />
     </div>
 
     <transition name="show-from-bottom">
@@ -194,6 +268,7 @@
     </transition>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 import * as QueryString from "query-string";
@@ -201,6 +276,7 @@ import { Content as ContentHelpers } from "@musora/helper-functions";
 import DownloadsCatalogue from "./DownloadsCatalogue.vue";
 import GridCatalogue from "./GridCatalogue.vue";
 import CoachGridCatalogue from "./CoachGridCatalogue.vue";
+import CoachesGridCatalogue from "./CoachesGridCatalogue.vue";
 import RoutinesCatalogue from "./RoutinesCatalogue.vue";
 import ListCatalogue from "./ListCatalogue.vue";
 import CatalogueFilters from "./_CatalogueFilters.vue";
@@ -217,6 +293,7 @@ export default {
   components: {
     "grid-catalogue": GridCatalogue,
     "coach-grid-catalogue": CoachGridCatalogue,
+    "coaches-grid-catalogue": CoachesGridCatalogue,
     "routines-catalogue": RoutinesCatalogue,
     "list-catalogue": ListCatalogue,
     "downloads-catalogue": DownloadsCatalogue,
@@ -412,6 +489,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    showMyListAction: {
+        type: Boolean,
+        default: () => true,
+    },
   },
   data() {
     return {
@@ -450,9 +531,40 @@ export default {
       loadedContentIds: {},
       included_fields: this.includedFields || [],
       sort: null,
+      sortOptions: [
+          {
+              label: 'Alphabetical',
+              value: 'slug'
+          },
+          {
+              label: 'Most recent',
+              value: '-published_on'
+          }
+      ],
     };
   },
   computed: {
+    sortInterface: {
+      get() {
+          return this.sortOptions.filter(option => option.value === this.currentSort)[0].value;
+      },
+      set(value) {
+          this.currentSort = value;
+          this.handleSortChange(value);
+      },
+    },
+    currentSort: {
+      get() {
+          const urlParams = QueryString.parse(location.search);
+          if (urlParams['sort'] != null) {
+              return urlParams['sort'];
+          }
+          return 'slug';
+      },
+      set(val) {
+        return val;
+      }
+    },
     required_fields: {
       cache: false,
       get() {
@@ -468,13 +580,24 @@ export default {
         return includedFields;
       },
     },
-
+    coachIndexUrl() {
+        return location.href.replace(location.search, '');
+    },
+    isOnlySubscribed() {
+       return String(location.search).includes('only_subscribed=true');
+    },
+    isCoachesGrid() {
+      return this.catalogueType === 'coaches-grid';
+    },
     selectedTypes() {
       if (this.searchBar) {
         return this.selected_types ? [this.selected_types] : this.includedTypes;
       }
 
       return this.includedTypes;
+    },
+    brandBorderColor() {
+      return 'tw-border-' + this.themeColor;
     },
 
     request_params: {
@@ -504,7 +627,6 @@ export default {
       if (this.search_term && !this.isCoach) {
         return "-score";
       }
-
       return this.sort || this.sortOverride || "-published_on";
     },
 
@@ -556,6 +678,16 @@ export default {
       }
 
       return this.getContent();
+    },
+
+    handleSortChange(value) {
+        if (value != 0) {
+            window.location.href = `${location.protocol}//${location.host
+            }${location.pathname}?sort=${value}`;
+        } else {
+            window.location.href = `${location.protocol}//${location.host
+            }${location.pathname}`;
+        }
     },
 
     getUrlParams() {
