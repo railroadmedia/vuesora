@@ -8,6 +8,7 @@ export default {
         Vue.component(
             ContentCatalogue.name,
             ContentCatalogue,
+            CoachesCatalogue.name,
             CoachesCatalogue,
             ContentCatalogueContainer.name,
             ContentCatalogueContainer,

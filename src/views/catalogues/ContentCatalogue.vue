@@ -136,6 +136,7 @@
       @addToList="addToListEventHandler"
     />
 
+    <!-- Coach Index Page -->
     <coaches-grid-catalogue
       v-if="isCoachesGrid"
       :content="content"
@@ -148,8 +149,6 @@
       :lock-unowned="lockUnowned"
       :force-wide-thumbs="forceWideThumbs"
       :content-type-override="contentTypeOverride"
-      :six-wide="sixWide"
-      :five-wide="fiveWide"
       :show-my-list-action="showMyListAction"
       :display-inline="displayInline"
       @addToList="addToListEventHandler"
