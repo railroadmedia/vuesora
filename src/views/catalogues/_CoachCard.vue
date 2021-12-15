@@ -70,6 +70,13 @@ export default {
         themeTextClass() {
             return "tw-text-" + this.brand;
         },
+        subscriptionEndpoint() {
+            if(this.brand === "drumeo") {
+                return '/laravel/public/railcontent/follow';
+            } else {
+                return '/railcontent/follow'
+            }
+        }
     },
     beforeMount() {
         if(this.item.current_user_is_subscribed) {
@@ -89,20 +96,19 @@ export default {
     },
     methods: {
         updateCoachSubscription(id) {
-            console.log('coach: ' + id)
             if(!this.isSubscribed) {
-                axios.put('/railcontent/follow', id)
+                axios.put(this.subscriptionEndpoint, { content_id: id } )
                     .then(() => {
-                        console.log('Subscribed')
+                        console.log('Subscribed to: '+ this.coachName)
                         this.isSubscribed = true;
                     })
                     .catch(() => {
                         console.log('Subscribed did not work')
                     })
             } else {
-                axios.put('/railcontent/unfollow', id)
+                axios.put(this.subscriptionEndpoint, { content_id: id } )
                     .then(() => {
-                        console.log('Unsubscribed')
+                        console.log('Unsubscribed to: '+ this.coachName)
                         this.isSubscribed = false;
                     })
                     .catch(() => {
