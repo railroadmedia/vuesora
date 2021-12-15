@@ -306,7 +306,7 @@ export default {
         brandBGColor() {
             return 'tw-bg-'+ this.brand;
         },
-        currentUrl(){
+        currentUrl() {
             return location.href.replace(location.search, '');
         },
         totalPages() {

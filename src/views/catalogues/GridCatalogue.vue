@@ -21,7 +21,7 @@
             :show-my-list-action="showMyListAction"
             :display-inline="displayInline"
             @addToList="emitAddToList"
-        ></catalogue-card>
+        />
     </div>
 </template>
 <script>

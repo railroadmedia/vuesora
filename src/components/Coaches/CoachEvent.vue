@@ -1,9 +1,9 @@
 <template>
-    <div class="container tw-my-3">
-        <div class="tw-flex tw-flex-row tw-flex-wrap md:tw-flex-nowrap " v-if="content">
+    <div class="container tw-my-3 tw-w-full">
+        <div class="tw-flex tw-flex-col md:tw-flex-row tw-flex-wrap md:tw-flex-nowrap " v-if="content">
             
             <!-- Live Event Image -->
-            <a :href="eventCoachProfileUrl" class="tw-w-full tw-max-w-7xl tw-cursor-pointer tw-flex tw-flex-col" v-if="!eventIsLive">
+            <a :href="eventCoachProfileUrl" class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 md:tw-mr-4">
                 <div class="tw-relative">
                     <img
                         class="tw-rounded-lg tw-w-full"
@@ -13,7 +13,7 @@
             </a>
 
             <!-- Video -->
-            <div class="tw-h-full tw-w-full tw-flex tw-flex-col tw-max-w-7xl tw-mx-auto" v-if="eventIsLive">
+            <!-- <div class="tw-h-full tw-w-full tw-flex tw-flex-col tw-max-w-7xl tw-mx-auto" v-if="eventIsLive">
                 <div class="tw-w-full tw-relative" style="padding-bottom: 56.25%;">
                     <iframe id="player"
                             frameborder="0" 
@@ -24,90 +24,126 @@
                             :src="$_iframeSource">
                     </iframe>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- Event Details -->
-            <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 tw-ml-0 md:tw-mt-0 md:tw-mx-5 xl:tw-mx-10">
-                
-                <!-- Live Badge -->
-                <div class="tw-my-2"  v-if="eventIsLive">
-                    <div class="tw-flex flex-row">
-                        <div class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-py-0.5 tw-px-2"><span>live</span></div>
+            <div class="tw-flex tw-w-full">
+                <!-- Event Details -->
+                <div class="tw-flex tw-flex-col tw-justify-center tw-pr-4">
+                    
+                    <div class="tw-flex tw-items-center tw-mb-1.5">
+                        <!-- Live Badge -->
+                        <div class="tw-flex flex-row" v-if="eventIsLive">
+                            <div class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-leading-none tw-p-1.5"><span>live</span></div>
+                        </div>
+
+                        <!-- Countdown -->
+                        <div class="tw-text-white tw-text-sm font-bold tw-p-1.5 tw-leading-none tw-rounded tw-inline-flex tw-mr-2" 
+                            :class="[brandBGColor]"
+                            v-if="!eventIsLive">
+                            <span class="tw-uppercase ">Upcoming:&nbsp;</span>
+                            <span>{{ $_hours }}</span>
+                            <span>&nbsp;hrs&nbsp;-&nbsp;</span>
+                            <span>{{ $_minutes }}</span>
+                            <span>&nbsp;minutes</span>
+                        </div>
+
+                        <!-- Start Date -->
+                        <p class="tw-uppercase tw-leading-none tw-hidden xl:tw-block" v-if="!eventIsLive">
+                            <span>{{ startWeekday }}</span>,
+                            <span>{{ startMonth }}</span>
+                            <span> {{ startDay }}</span>
+                            @
+                            <span>{{ formattedTime }}</span>
+                        </p>
                     </div>
-                </div>
 
-                <!-- Coach -->
-                <div class="tw-my-3">
+                    <!-- Event Title & Desc -->
+                    <div class="tw-mb-1.5">
+                        <h3 class="tw-font-bold tw-capitalize tw-leading-none tw-text-3xl">{{ content.title }}</h3>
+                        <!-- <div class="tw-mt-2 tw-text-base" v-html="content.description"></div> -->
+                    </div>
+
+                    <!-- Coach --> 
                     <a :href="eventCoachProfileUrl" class="tw-flex tw-flex-row tw-items-center tw-no-underline">
-                        <div>
+                        <!-- <div>
                             <img
-                                class="tw-rounded-full tw-border-3 tw-border-solid tw-w-16 tw-h-16"
+                                class="tw-rounded-full tw-border-3 tw-border-solid tw-w-16 tw-h-16 tw-mr-3"
                                 :class="[brandBorderColor]"
                                 :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,q_auto:best,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
                             >
-                        </div>
-                        <h4 class="tw-ml-3 tw-text-lg tw-font-bold tw-uppercase"
+                        </div> -->
+                        <h4 class="tw-leading-none  tw-text-lg tw-uppercase tw-font-normal"
                             :class="[brandTextColor]"
-                        >{{ instructor.name }}</h4>
+                        >
+                            {{ instructor.name.split(' ')[0] }}
+                            <span class="tw-font-bold"> {{ instructor.name.split(' ')[1] }}</span>
+                            <!-- Optional third name -->
+                            <span class="tw-font-bold"> {{ instructor.name.split(' ')[2] }}</span>
+                        </h4>
                     </a>
                 </div>
 
-                <!-- Event Title & Desc -->
-                <div class="tw-mb-4">
-                    <h3 class="tw-font-bold tw-capitalize tw-text-2xl lg:tw-text-32">{{ content.title }}</h3>
-                    <div class="tw-mt-2 tw-text-base" v-html="content.description"></div>
-                </div>
-
-                <!-- Countdown -->
-                <div class="tw-mb-3 lg:tw-mb-6 tw-italic" 
-                     :class="[brandTextColor]"
-                     v-if="!eventIsLive">
-                  <span class="font-bold">Starts in:&nbsp;</span><span>{{ $_hours }}</span><span>&nbsp;Hours&nbsp;-&nbsp;</span><span>{{ $_minutes }}</span><span>&nbsp;Minutes&nbsp;-&nbsp;</span><span>{{ $_seconds }}</span><span>&nbsp;Seconds</span>
-                </div>
-
-                <!-- Event CTAs -->
-                <div class="tw-mb-3" v-if="eventIsLive || showWatch">
-                    <div class="tw-flex tw-flex-row tw-flex-wrap-md tw-mt-2">
-                        <div>
-                            <a href="/members/live" 
-                               class="tw-btn-primary tw-w-full" 
-                               :class="[brandBGColor]"
-                            >
-                                watch
-                            </a>
-                        </div>
-
-                        <div class=" tw-ml-3" v-if="eventIsLive">
-                            <button @click.stop.prevent="toggleMyList" 
-                                    :class="[is_added ? 'is-added tw-btn-primary ' + brandBGColor : 'tw-btn-secondary ' + brandTextColor ]"
-                            >
-                                <i class="fal fa-plus tw-mr-1"></i>
-                                My List
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div :class="{'tw-pt-3': showWatch}"
-                     v-if="!eventIsLive"
-                >
-                    <div>
-                        <button class="tw-btn-primary tw-px-10 md:tw-px-16" 
-                                data-open-modal="scheduleAddToCalendarModal"
+                <!-- Buttons -->
+                <div class="tw-flex tw-flex-col tw-justify-center tw-ml-auto">
+                    <div class="tw-mb-3" v-if="eventIsLive || showWatch">
+                        <div class="tw-flex tw-flex-row tw-flex-wrap-md tw-mt-2">
+                            <div>
+                                <a href="/members/live" 
+                                class="tw-btn-primary tw-w-full" 
                                 :class="[brandBGColor]"
-                        >
-                            <i class="fas fa-calendar-plus tw-mr-1"></i>
-                            Subscribe to {{ instructor.name.split(' ')[0] }}'s Calendar
-                        </button>
+                                >
+                                    watch now
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <content-schedule
-                        :subscription-calendar-id="subscriptionCalendarId"
-                        :theme-color="brand"
-                    ></content-schedule>
+                    <div class="tw-flex tw-flex-nowrap"
+                        :class="{'tw-pt-3': showWatch}"
+                        v-if="!eventIsLive"
+                    >
+                        <!-- Add to My List -->
+                        <button class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-center tw-border-0 tw-bg-transparent tw-text-3xl tw-mr-6"
+                                @click.stop.prevent="toggleMyList" 
+                                :class="[is_added ? 'is-added ' + brandTextColor : 'tw-text-gray-400' ]"
+                        >
+                            <i class="fas fa-plus"></i>
+                            <!-- Tooltip -->
+                            <div role="tooltip" 
+                                class="tw-tooltip tw-tooltip-dark" 
+                                :class="[is_added ? brandBGColor : 'tw-bg-gray-400' ]"
+                                id="tooltip-#"
+                            >
+                                {{ is_added ? 'Added to My List' : 'Add to My List'  }}
+                            </div>
+                        </button>
+
+                        <!-- Subscribe to Calendar -->
+                        <button class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-right tw-border-0 tw-bg-transparent tw-text-3xl" 
+                                data-open-modal="scheduleAddToCalendarModal"
+                                :class="[brandTextColor]"
+                        >
+                            <i class="fas fa-calendar-plus"></i> 
+                            <!-- Tooltip -->
+                            <div role="tooltip" 
+                                class="tw-tooltip tw-tooltip-dark" 
+                                :class="[brandBGColor]"
+                                id="tooltip-#"
+                            >
+                                Subscribe to Calendar
+                            </div>
+                        </button>
+
+                        <content-schedule
+                            :subscription-calendar-id="subscriptionCalendarId"
+                            :theme-color="brand"
+                        ></content-schedule>
+                    </div>
                 </div>
             </div>
+            
         </div>
+
     </div>
 </template>
 
@@ -161,6 +197,12 @@ export default {
             eventIsLive: false,
             showWatch: false,
             showWatchSecondsBeforeLive: 60*15,
+            startTime: '',
+            startDate: '',
+            startDay: '',
+            startWeekday: '',
+            startMonth: '',
+            formattedTime: '',
         }
     },
     mounted() {
@@ -168,15 +210,20 @@ export default {
 
             this.content = ContentHelpers.flattenContentObject(this.preloadedContent.data[0], true);
             this.instructor = this.content.instructor[0];
-
-            let startTime = DateTime
+            
+            this.startTime = DateTime
                                     .fromSQL(this.content.live_event_start_time, { zone: 'UTC' });
+            this.startDate = new Date(this.startTime);
+            this.startWeekday = this.startDate.toLocaleString("en-US", { weekday: "long" });;
+            this.startMonth = this.startDate.toLocaleString("en-US", { month: "long" });
+            this.startDay = this.startDate.getDate();
+            this.formattedTime = this.startDate.toLocaleTimeString([], { timeStyle: 'short' }) +'';
 
-            if (startTime < this.currentDate) {
+            if (this.startTime < this.currentDate) {
                 this.setLiveState();
             } else {
                 this.eventIsLive = false;
-                let secondsToStart = startTime.diff(this.currentDate, 'seconds').toObject().seconds;
+                let secondsToStart = this.startTime.diff(this.currentDate, 'seconds').toObject().seconds;
 
                 if (secondsToStart < this.showWatchSecondsBeforeLive) {
                     this.showWatch = true;

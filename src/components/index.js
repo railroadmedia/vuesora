@@ -4,6 +4,7 @@ import ContactEmailForm from './ContactEmailForm/ContactEmailForm.vue';
 import ContactMemberEmailForm from './ContactMemberEmailForm/ContactMemberEmailForm.vue';
 import UserExpBar from './UserExpBar/UserExpBar.vue';
 import ContentCatalogue from '../views/catalogues/ContentCatalogue.vue';
+import ContentCatalogueContainer from '../views/catalogues/ContentCatalogueContainer.vue';
 import ContentSchedule from '../views/schedule/Schedule.vue';
 import NotificationsTable from '../views/notifications/NotificationsTable.vue';
 import CommentsCatalogue from '../views/comments/catalogue/CommentsCatalogue.vue';
@@ -25,6 +26,7 @@ const Components = {
     ContactMemberEmailForm,
     UserExpBar,
     ContentCatalogue,
+    ContentCatalogueContainer,
     ContentSchedule,
     NotificationsTable,
     CommentsCatalogue,
