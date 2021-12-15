@@ -6,7 +6,7 @@
          class="tw-flex tw-flex-col tw-pt-4 tw-mb-6">
         <div class="tw-flex">
             <a class="tw-no-underline tw-mr-6 tw-transition"
-               :href="coachIndexUrl"
+               :href="coachIndexUrl + '#coach-section'"
                :class="[!isOnlySubscribed ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'tw-text-gray-400 hover:tw-text-gray-500', brandBorderColor ]"
             >
               <h3 class="tw-text-2xl md:tw-text-3xl tw-cursor-pointer">
@@ -14,7 +14,7 @@
               </h3>
             </a>
             <a class="tw-no-underline tw-transition"
-               :href="coachIndexUrl + '?only_subscribed=true' "
+               :href="coachIndexUrl + '?only_subscribed=true#coach-section' "
                :class="[isOnlySubscribed ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'tw-text-gray-400 hover:tw-text-gray-500', brandBorderColor ]"
             >
               <h3 class="tw-text-2xl md:tw-text-3xl tw-cursor-pointer">
@@ -577,7 +577,7 @@ export default {
       },
     },
     coachIndexUrl() {
-        return location.href.replace(location.search, '');
+        return '/members/coaches';
     },
     isOnlySubscribed() {
        return String(location.search).includes('only_subscribed=true');

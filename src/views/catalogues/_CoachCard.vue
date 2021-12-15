@@ -72,7 +72,7 @@ export default {
             }
         }),
         this.item["data"].forEach(coach => {
-            if(coach.key === "coach_featured_image" ) {
+            if(coach.key === "coach_card_image" ) {
                 this.coachImage = coach.value;
             }
         })
