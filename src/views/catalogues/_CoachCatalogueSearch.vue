@@ -57,6 +57,12 @@
               v-model="sort"
             >
               <option
+                  value="-popularity"
+                  :selected="sort === '-popularity'"
+              >
+                Most Popular
+              </option>
+              <option
                 value="-published_on"
                 :selected="sort === '-published_on'"
               >

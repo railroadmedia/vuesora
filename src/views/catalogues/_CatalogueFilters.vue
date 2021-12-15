@@ -36,6 +36,42 @@
             :short-filter-container="true"
             @filterChange="handleEventChange"
         ></catalogue-filter>
+
+      <div class="sm:tw-pr-0 tw-mb-3 sm:tw-mb-0 ph-1">
+        <div class="flex flex-column form-group mr-1">
+          <select
+              id="sortInput"
+              type="text"
+              class="borderless"
+              @change="handleContentSort($event)"
+              v-model="sort"
+          >
+            <option
+                value="-popularity"
+                :selected="sort === '-popularity'"
+            >
+              Most Popular
+            </option>
+            <option
+                value="-published_on"
+                :selected="sort === '-published_on'"
+            >
+              Newest First
+            </option>
+            <option value="published_on" :selected="sort === 'published_on'">
+              Oldest First
+            </option>
+            <option value="slug" :selected="sort === 'slug'">
+              Name: A to Z
+            </option>
+            <option value="-slug" :selected="sort === '-slug'">
+              Name: Z to A
+            </option>
+          </select>
+
+          <label for="sortInput" :class="brand"> Sort By: </label>
+        </div>
+      </div>
     </div>
 </template>
 <script>
@@ -110,6 +146,7 @@ export default {
     data() {
         return {
             eventTypeValue: this.eventType,
+            sort: "-published_on",
         };
     },
     watch: {
@@ -181,6 +218,10 @@ export default {
             };
             this.eventTypeValue = payload.value;
             this.$emit('filterChange', eventChangeData);
+        },
+
+        handleContentSort(event) {
+            this.$emit("handleContentSort", event);
         },
     },
 };
