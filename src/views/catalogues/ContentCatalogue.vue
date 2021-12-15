@@ -5,19 +5,19 @@
          id="coach-section"
          class="tw-flex tw-flex-col tw-pt-4 tw-mb-6">
         <div class="tw-flex">
-            <a class="tw-no-underline tw-mr-6"
+            <a class="tw-no-underline tw-mr-6 tw-transition"
                :href="coachIndexUrl"
-               :class="[!isOnlySubscribed ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
+               :class="[!isOnlySubscribed ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'tw-text-gray-400 hover:tw-text-gray-500', brandBorderColor ]"
             >
-              <h3 class="tw-text-3xl tw-cursor-pointer">
+              <h3 class="tw-text-2xl md:tw-text-3xl tw-cursor-pointer">
                 All Coaches
               </h3>
             </a>
-            <a class="tw-no-underline"
+            <a class="tw-no-underline tw-transition"
                :href="coachIndexUrl + '?only_subscribed=true' "
-               :class="[isOnlySubscribed ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'text-grey-2', brandBorderColor ]"
+               :class="[isOnlySubscribed ? 'tw-text-black tw-border-0 tw-border-solid tw-border-b-2' : 'tw-text-gray-400 hover:tw-text-gray-500', brandBorderColor ]"
             >
-              <h3 class="tw-text-3xl tw-cursor-pointer">
+              <h3 class="tw-text-2xl md:tw-text-3xl tw-cursor-pointer">
                   Subscribed Coaches
               </h3>
             </a>
@@ -38,7 +38,7 @@
       @handleContentSort="handleContentSort"
     />
 
-    <div :class="[isCoachesGrid ? 'tw-flex' : '']">
+    <div :class="{'tw-flex tw-w-full tw-flex-wrap tw-mb-3' : isCoachesGrid }">
         <catalogue-search
             v-if="searchBar && !isCoach"
             :theme-color="themeColor"
@@ -66,6 +66,7 @@
             :filters-labels="filtersLabels"
             :required-user-states="required_user_states"
             :filter-params="filter_params"
+            :isCoachesGrid="isCoachesGrid"
             :event-type="eventType"
             :loading="loading"
             :theme-color="themeColor"
@@ -77,7 +78,7 @@
 
         <!-- Coach Sort By -->
         <div v-if="isCoachesGrid" 
-             class="tw-inline-flex form-group tw-w-full tw-mb-6 md:tw-ml-auto md:tw-mb-0 md:tw-w-64 md:tw-pl-4">
+             class="tw-inline-flex form-group tw-w-full tw-mb-6 md:tw-ml-auto md:tw-mb-0 tw-w-full md:tw-w-1/4 md:tw-pl-4">
             <div class="flex tw-ml-0 form-group tw-w-full">
                 <div class="form-group xs-12 tw-w-full">
                     <select

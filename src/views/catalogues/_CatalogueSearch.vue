@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column"
-         :class="[isCoachesGrid ? 'tw-mr-4' : '']"
+         :class="[isCoachesGrid ? 'tw-mr-4 tw-w-full xl:tw-w-1/4' : '']"
     >
         <div class="flex flex-row flex-wrap mb nmh-1">
             <div

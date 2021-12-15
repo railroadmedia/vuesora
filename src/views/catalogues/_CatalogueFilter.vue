@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-column ph-1 catalogue-filter" :class="{'short-filter-container': shortFilterContainer}">
+    <div class="flex flex-column ph-1 catalogue-filter" 
+         :class="{'short-filter-container': shortFilterContainer, 'tw-w-full md:tw-w-1/4': isCoachesGrid}"
+    >
         <div class="form-group">
             <select
                 :id="filterName + 'Filter'"
@@ -63,6 +65,10 @@ export default {
         initialValue: {
             type: [String, Number],
             default: () => null,
+        },
+        isCoachesGrid: {
+            type: Boolean,
+            default: () => false,
         },
         loading: {
             type: Boolean,

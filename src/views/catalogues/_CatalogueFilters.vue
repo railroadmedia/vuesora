@@ -1,11 +1,14 @@
 <template>
-    <div class="flex flex-row flex-wrap mb nmh-1">
+    <div class="flex flex-row flex-wrap mb nmh-1"
+         :class="{'tw-w-full md:tw-w-4/12 lg:tw-w-5/12 tw-mb-0' : isCoachesGrid}"
+    >
         <catalogue-filter
             v-for="item in filterableValues.filter(item => item !== 'progress' && item !== 'event')"
             :key="item.key"
             :filter-name="item"
             :filters-labels="filtersLabels"
             :item="filters[item]"
+            :is-coaches-grid="isCoachesGrid"
             :theme-color="themeColor"
             :loading="loading"
             :initial-value="filterParams[item]"
@@ -46,6 +49,10 @@ export default {
     },
     props: {
         loading: {
+            type: Boolean,
+            default: () => false,
+        },
+        isCoachesGrid: {
             type: Boolean,
             default: () => false,
         },

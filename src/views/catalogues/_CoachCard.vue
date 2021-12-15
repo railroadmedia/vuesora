@@ -17,7 +17,9 @@
         <!-- hover later-->
         <div class="tw-absolute tw-flex tw-h-full tw-w-full tw-top-0 tw-left-0 tw-bg-black tw-bg-opacity-30 tw-transition tw-opacity-0 hover:tw-opacity-100">
             <!-- Subscribe -->
-            <button class="tw-btn-primary tw-btn-small tw-h-6 tw-w-6 tw-p-0 tw-ml-auto tw-mt-1 tw-mr-1 tw-bg-drumeo">
+            <button class="tw-btn-primary tw-btn-small tw-h-6 tw-w-6 tw-p-0 tw-ml-auto tw-mt-1 tw-mr-1 hover:tw-bg-white"
+                    :class="[themeBgClass, themeTextClass ]"
+            >
                 <i class="fas fa-bell tw-text-sm"></i>
             </button>
         </div>
@@ -43,6 +45,10 @@ export default {
             type: Boolean,
             default: () => true,
         },
+        brand: {
+            type: String,
+            default: () => "drumeo",
+        }
     },
     computed: {
         coachFirstName() {
@@ -51,18 +57,12 @@ export default {
         coachLastName() {
             return this.coachName.substr(this.coachName.indexOf(" ") + 1);
         },
-        mappedData() {
-            return this.contentModel.card;
+        themeBgClass() {
+            return "tw-bg-" + this.brand;
         },
-
-        is_added: {
-            cache: false,
-            get() {
-                return this.item.is_added_to_primary_playlist;
-            },
+        themeTextClass() {
+            return "hover:tw-text-" + this.brand;
         },
-    },
-    methods: {
 
     },
     beforeMount() {
@@ -76,9 +76,6 @@ export default {
                 this.coachImage = coach.value;
             }
         })
-    },
-    beforeDestroy() {
-        this.mappedData = null;
-    },
+    }
 };
 </script>
