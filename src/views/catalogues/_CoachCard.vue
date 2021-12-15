@@ -17,18 +17,25 @@
         <!-- hover later-->
         <div class="tw-absolute tw-flex tw-h-full tw-w-full tw-top-0 tw-left-0 tw-bg-black tw-bg-opacity-30 tw-transition tw-opacity-0 hover:tw-opacity-100">
             <!-- Subscribe -->
-            <button class="tw-btn-primary tw-btn-small tw-h-6 tw-w-6 tw-p-0 tw-ml-auto tw-mt-1 tw-mr-1 hover:tw-bg-white"
-                    :class="[themeBgClass, themeTextClass ]"
+            <button class="tw-btn-primary tw-btn-small tw-h-6 tw-w-6 tw-p-0 tw-ml-auto tw-mt-1 tw-mr-1"
+                    :class="isSubscribed ? 'tw-bg-white ' + themeTextClass : themeBgClass"
+                    @click.prevent="updateCoachSubscription(item.id)"
             >
-                <i class="fas fa-bell tw-text-sm"></i>
+                <i class="fas fa-bell tw-text-base"></i>
+                <span class="tw-sr-only">
+                    <template v-if="isSubscribed" >Unsubscribe From Coach</template>
+                    <template v-else>Subscribe to Coach</template>
+                </span>
             </button>
         </div>
         
     </a>
 </template>
 <script>
+import axios from "axios";
 import Mixin from './_mixin';
 import ThemeClasses from '../../mixins/ThemeClasses';
+import Toasts from "../../assets/js/classes/toasts";
 
 export default {
     name: 'CoachCatalogueCard',
@@ -37,7 +44,7 @@ export default {
         return {
             coachName: '',
             coachImage: '',
-            coachSlug: '',
+            isSubscribed: false,
         }
     },
     props: {
@@ -61,11 +68,21 @@ export default {
             return "tw-bg-" + this.brand;
         },
         themeTextClass() {
-            return "hover:tw-text-" + this.brand;
+            return "tw-text-" + this.brand;
         },
-
+        subscriptionEndpoint() {
+            if(this.brand === "drumeo") {
+                return '/laravel/public/railcontent/follow';
+            } else {
+                return '/railcontent/follow'
+            }
+        }
     },
     beforeMount() {
+        if(this.item.current_user_is_subscribed) {
+            this.isSubscribed = true;
+        }
+        
         this.item["fields"].forEach(field => {
             if(field.key === "name") {
                 this.coachName = field.value;
@@ -76,6 +93,30 @@ export default {
                 this.coachImage = coach.value;
             }
         })
+    },
+    methods: {
+        updateCoachSubscription(id) {
+            if(!this.isSubscribed) {
+                axios.put(this.subscriptionEndpoint, { content_id: id } )
+                    .then(() => {
+                        console.log('Subscribed to: '+ this.coachName)
+                        this.isSubscribed = true;
+                    })
+                    .catch(() => {
+                        console.log('Subscribed did not work')
+                    })
+            } else {
+                axios.put(this.subscriptionEndpoint, { content_id: id } )
+                    .then(() => {
+                        console.log('Unsubscribed to: '+ this.coachName)
+                        this.isSubscribed = false;
+                    })
+                    .catch(() => {
+                        console.log('Unubscribed did not work')
+                    })
+            }
+        }
+
     }
 };
 </script>
