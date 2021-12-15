@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row flex-wrap mb nmh-1"
          :class="{'tw-w-full md:tw-w-4/12 lg:tw-w-5/12 tw-mb-0' : isCoachesGrid}"
-    >
+    >   
         <catalogue-filter
             v-for="item in filterableValues.filter(item => item !== 'progress' && item !== 'event')"
             :key="item.key"

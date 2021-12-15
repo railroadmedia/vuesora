@@ -65,10 +65,10 @@
               <option value="published_on" :selected="sort === 'published_on'">
                 Oldest First
               </option>
-              <option value="slug" :selected="sort === 'slug'">
+              <option value="title" :selected="sort === 'title'">
                 Name: A to Z
               </option>
-              <option value="-slug" :selected="sort === '-slug'">
+              <option value="-title" :selected="sort === '-title'">
                 Name: Z to A
               </option>
             </select>

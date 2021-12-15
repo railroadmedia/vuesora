@@ -22,7 +22,7 @@
     "lib:build": "vue-cli-service build --target lib --name vuesora ./src/index.js; chmod 777 -R ./"
   },
   "dependencies": {
-    "@musora/helper-functions": "^0.1.2",
+    "@musora/helper-functions": "^0.1.21",
     "@musora/icons": "^1.0.3",
     "@tinymce/tinymce-vue": "^3",
     "@vimeo/player": "^2.15.0",
