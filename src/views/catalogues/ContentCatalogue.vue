@@ -74,6 +74,7 @@
             :brand="brand"
             @filterChange="handleFilterChange"
             @progressChange="handleProgressChange"
+            @handleContentSort="handleContentSort"
         />
 
         <!-- Coach Sort By -->
