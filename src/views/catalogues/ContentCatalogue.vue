@@ -77,32 +77,6 @@
             @handleContentSort="handleContentSort"
         />
 
-        <!-- Coach Sort By -->
-        <div v-if="isCoachesGrid" 
-             class="tw-inline-flex form-group tw-w-full tw-mb-6 md:tw-ml-auto md:tw-mb-0 tw-w-full md:tw-w-1/4 md:tw-pl-4">
-            <div class="flex tw-ml-0 form-group tw-w-full">
-                <div class="form-group xs-12 tw-w-full">
-                    <select
-                        id="coachSort"
-                        v-model="sortInterface"
-                        class="has-input tw-bg-white"
-                    >
-                        <option
-                            v-for="option in sortOptions"
-                            :key="option.label"
-                            :value="option.value"
-                        >
-                            {{ option.label }}
-                        </option>
-                    </select>
-                    <label
-                        for="coachSort"
-                        :class="themeColor"
-                    >Sort By... </label>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div
