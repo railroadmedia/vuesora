@@ -55,7 +55,8 @@
             </svg>
           </div>
           <div
-            class="tw-w-full tw-h-full tw-absolute tw-rounded-full"
+            v-on:click="goToCoachProfile(instructor.slug)"
+            class="tw-w-full tw-h-full tw-absolute tw-rounded-full tw-cursor-pointer"
             :style="'border: 2px solid ' + currentBrandColor + ';'"
           ></div>
         </div>
@@ -70,7 +71,7 @@
           tw-justify-between
         "
       >
-        <h4>
+        <h4 v-on:click="goToCoachProfile(instructor.slug)" class="tw-cursor-pointer">
           <span class="tw-text-xs sm:tw-text-base tw-font-normal">
             {{ instructor.name.split(" ")[0] }}
           </span>
@@ -188,6 +189,10 @@ export default {
         this.updateCoachState(id);
       });
     },
+
+    goToCoachProfile(slug) {
+      window.location.href = `${window.location.origin}/members/coaches/${slug}`
+    }
   },
 };
 </script>
