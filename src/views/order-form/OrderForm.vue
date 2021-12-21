@@ -520,6 +520,11 @@ export default {
 
                 if (this.selectedPaymentMethod && !this.newPayment) {
                     payload.paymentMethodId = this.selectedPaymentMethod.id;
+
+                    if (this.selectedPaymentMethod.relationships.billingAddress.data.id) {
+                      payload.billingAddressId = this.selectedPaymentMethod.relationships.billingAddress.data.id;
+                    }
+
                     localStorage.setItem('lastPaymentMethodId', this.selectedPaymentMethod.id);
                 } else {
                     localStorage.setItem('lastPaymentMethodId', 'new');

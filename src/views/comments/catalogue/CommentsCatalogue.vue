@@ -336,15 +336,22 @@ export default {
             closedOnly: false,
             contentTypes: [
                 {
+                    key: 'all',
+                    brand: ['drumeo', 'pianote', 'guitareo', 'singeo'],
+                    value: ['all'],
+                    icon: 'icon-courses',
+                    active: true,
+                },
+                {
                     key: 'course-part',
-                    brand: ['drumeo', 'pianote', 'guitareo'],
+                    brand: ['drumeo', 'pianote', 'guitareo', 'singeo'],
                     value: ['course-part'],
                     icon: 'icon-courses',
                     active: true,
                 },
                 {
                     key: 'song',
-                    brand: ['drumeo', 'pianote', 'guitareo'],
+                    brand: ['drumeo', 'pianote', 'guitareo', 'singeo'],
                     value: ['song', 'song-part'],
                     icon: 'icon-songs',
                     active: true,
@@ -371,14 +378,7 @@ export default {
                 {
                     key: 'student-focus',
                     brand: ['drumeo', 'pianote', 'guitareo', 'singeo'],
-                    value: ['student-focus', 'student-review', 'question-and-answer'],
-                    icon: 'icon-student-focus',
-                    active: true,
-                },
-                {
-                    key: 'student-focus',
-                    brand: ['pianote'],
-                    value: ['quick-tips', 'boot-camps', 'question-and-answer', 'student-review'],
+                    value: ['student-focus', 'student-review', 'question-and-answer', 'boot-camps'],
                     icon: 'icon-student-focus',
                     active: true,
                 },
@@ -398,7 +398,7 @@ export default {
                 },
                 {
                     key: 'pack-bundle-lesson',
-                    brand: ['drumeo', 'guitareo', 'pianote'],
+                    brand: ['drumeo', 'guitareo', 'pianote', 'singeo'],
                     value: ['pack-bundle-lesson'],
                     icon: 'icon-packs',
                     active: true,
@@ -406,7 +406,7 @@ export default {
                 {
                     key: 'learning-path-lesson',
                     brand: ['drumeo', 'pianote'],
-                    value: ['learning-path-lesson'],
+                    value: ['learning-path-lesson', 'singeo'],
                     icon: 'icon-packs',
                     active: true,
                 },
@@ -423,6 +423,13 @@ export default {
                     value: ['entertainment'],
                     icon: 'icon-shows',
                     active: true,
+                },
+                {
+                  key: 'quick-tips',
+                  brand: ['drumeo', 'pianote', 'guitareo', 'singeo'],
+                  value: ['quick-tips'],
+                  icon: 'icon-student-focus',
+                  active: true,
                 },
             ],
         };
@@ -458,6 +465,18 @@ export default {
         this.getComments(true);
     },
     methods: {
+        isAllTypesSelected() {
+          let isActive = false;
+
+          this.contentTypes.forEach((type) => {
+            if (type.key === 'all') {
+              isActive = type.active;
+            }
+          });
+
+          return isActive;
+        },
+
         handleFilter(event) {
             this.contentTypes.forEach((type) => {
                 if (type.key === event.target.name) {
@@ -548,12 +567,18 @@ export default {
                 this.currentPage = 1;
                 this.loading = true;
             }
-                
+
+            let types = this.activeTypes;
+
+            if (this.isAllTypesSelected()) {
+              types = [];
+            }
+
             CommentService.getComments({
                 brand: 'drumeo',
                 limit: 100,
                 sort: this.sortParam,
-                content_type: this.activeTypes,
+                content_type: types,
                 page: this.currentPage,
                 conversation_status: this.openOnly === true ? 'open' : 'closed',
             })
