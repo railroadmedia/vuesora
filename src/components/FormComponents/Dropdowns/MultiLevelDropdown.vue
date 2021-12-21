@@ -130,7 +130,7 @@
                                             @change="selectOption(i,j)"
                                         >
                                         <label :for="`option-${j}${i}`" 
-                                                class="tw-option" 
+                                                class="tw-option tw-pl-6 md:tw-pl-4" 
                                                 :class="selectedOption === option.value ? themeBgClass : ''"
                                                 tabindex="0"
                                                 role="option"
@@ -262,8 +262,9 @@ export default {
                             option.checked = false;
                         }
                     })
-                } 
+                }
             })
+            this.closeDropdowns()
         },
     },
 
