@@ -1,4 +1,7 @@
 import EmailForm from './EmailForm/EmailForm.vue';
+import SupportEmailForm from './SupportEmailForm/SupportEmailForm.vue';
+import ContactEmailForm from './ContactEmailForm/ContactEmailForm.vue';
+import ContactMemberEmailForm from './ContactMemberEmailForm/ContactMemberEmailForm.vue';
 import UserExpBar from './UserExpBar/UserExpBar.vue';
 import ContentCatalogue from '../views/catalogues/ContentCatalogue.vue';
 import ContentSchedule from '../views/schedule/Schedule.vue';
@@ -15,7 +18,10 @@ import YoutubePlayer from './YoutubePlayer/YoutubePlayer.vue';
 import CoachEvent from './Coaches/CoachEvent.vue';
 
 const Components = {
+    SupportEmailForm,
     EmailForm,
+    ContactEmailForm,
+    ContactMemberEmailForm,
     UserExpBar,
     ContentCatalogue,
     ContentSchedule,
