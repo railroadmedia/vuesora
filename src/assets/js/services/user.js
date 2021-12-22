@@ -127,6 +127,8 @@ export default {
      * @param {String} type - the type of email to send (action or alert)
      * @param {String} subject
      * @param {Array} lines - array of lines to display in the email, new index = new line break
+     * @param {Array} attachments - array of files to display in the email
+     * @param {Object} attachment - a file object of the uploaded file
      * @param {Object} callToAction - CTA with 2 keys, text and url
      * @param {String} alert
      * @param {String} brand
@@ -140,6 +142,7 @@ export default {
         type,
         subject,
         lines,
+        attachment,
         callToAction,
         alert,
         brand,
@@ -147,16 +150,24 @@ export default {
         recipient,
         endpoint,
     }) {
-        return axios.post(endpointPrefix + endpoint, {
-            type,
-            subject,
-            lines,
-            callToAction,
-            alert,
-            brand,
-            logo,
-            recipient,
-        })
+
+        const formData = new FormData();
+
+        formData.append('type', type);
+        formData.append('subject', subject);
+        formData.append('lines', lines);
+        formData.append('attachment', attachment);
+        formData.append('callToAction', callToAction);
+        formData.append('alert', alert);
+        formData.append('brand', brand);
+        formData.append('logo', logo);
+        formData.append('recipient', recipient);
+
+        return axios.post(endpointPrefix + endpoint, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'}
+            }
+        )
             .then(response => response.data)
             .catch(ErrorHandler);
     },
