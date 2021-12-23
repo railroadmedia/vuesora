@@ -12,7 +12,7 @@
       :key="
         String(instructor.id) + String(instructor.current_user_is_subscribed)
       "
-      class="tw-flex tw-font-normal tw-text-sm tw-pr-6 tw-mb-6"
+      class="tw-flex tw-font-normal tw-text-sm sm:tw-pr-6 tw-mb-6"
     >
       <div>
         <div
