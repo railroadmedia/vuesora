@@ -476,6 +476,9 @@ export default {
                 &.guitareo {
                     color: #00C9AC;;
                 }
+                &.singeo {
+                    color: #8300E9;;
+                }
             }
             span {
                 padding-left: 3px;
@@ -568,6 +571,12 @@ export default {
                 background: #00C9AC;
                 &:hover {
                     background: #00FCB8;
+                }
+            }
+            &.singeo {
+                background: #8300E9;
+                &:hover {
+                    background: #8300E9;
                 }
             }
             i {
