@@ -8,6 +8,7 @@
                 <a
                     href="#"
                     class="close"
+                    style="font-size: 16px !important;"
                     @click.stop.prevent="closeCartSidebar"
                 ><i class="fal fa-times fa-2x"></i></a>
             </div>
@@ -44,6 +45,12 @@
                 </div>
                 <div class="border-bottom"></div>
             </div>
+            <div class="csb-remove-all-items" v-show="cartItems" @click.stop.prevent="clearCart">
+              <div>
+                <span>Remove all items from cart</span>
+              </div>
+              <div class="border-bottom"></div>
+            </div>
             <div class="summary-container">
                 <div class="summary-container-inner">
                     <div class="summary-row">
@@ -64,9 +71,9 @@
                             <span v-if="cartTotals">-${{ parseTotal(sumOfDiscounts()) }}</span>
                         </div>
                     </div>
-                    <div class="summary-row">
+                    <div v-if="cartRequiresShippingAddress" class="summary-row">
                         <div class="summary">Shipping</div>
-                        <div class="deferred">Calculated at checkout</div>
+                        <div class="deferred">{{shippingCostMessage }}</div>
                     </div>
                     <div class="summary-row">
                         <div class="summary">Tax</div>
@@ -144,6 +151,23 @@ export default {
         this.loading = false;
 
         this.attachAddToCartListeners();
+    },
+    computed: {
+        cartRequiresShippingAddress() {
+            if (this.cartItems) {
+                return this.cartItems.filter(item => item.requires_shipping === true).length > 0;
+            }
+
+            return false;
+        },
+
+        shippingCostMessage() {
+            if (this.subTotalAfterDiscounts() > 100) { // todo: temporary
+                return 'Free Shipping';
+            }
+
+            return 'Calculated at checkout';
+        },
     },
     methods: {
         openCartSidebar() {
@@ -251,6 +275,17 @@ export default {
 
                 EcommerceService
                     .removeCartItem({productSku: cartItem.sku})
+                    .then(this.handleCartUpdate)
+                    .catch(this.handleError);
+            }
+        },
+
+        clearCart() {
+            if (!this.loading) {
+                this.loading = true;
+
+                EcommerceService
+                    .clearCart()
                     .then(this.handleCartUpdate)
                     .catch(this.handleError);
             }
@@ -449,6 +484,31 @@ export default {
             }
         }
     }
+    .csb-remove-all-items {
+        padding-bottom: 18px;
+        padding-right: 14px;
+        margin-top: 14px;
+
+        .border-bottom {
+            border-bottom: 1px solid #CCD3D3;
+            margin-top: 15px;
+        }
+
+        div {
+            cursor: pointer;
+            line-height: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            span {
+                width: 100%;
+                color: #8B929A;
+                font-size: 12px;
+                text-align: center;
+                text-decoration: underline;
+            }
+        }
+    }
     .summary-container {
         padding: 18px 15px 18px 0;
         .summary-container-inner {
@@ -559,5 +619,9 @@ export default {
         right: 15px;
         left: 0;
     }
+}
+
+#csb-clear-cart-container {
+  margin-bottom: 20px;
 }
 </style>

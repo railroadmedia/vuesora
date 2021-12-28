@@ -67,7 +67,7 @@ export default {
   },
   data: function () {
     return {
-      showGrid: false,
+      showGrid: true,
     };
   },
 };

@@ -64,7 +64,7 @@
 
                         <p
                             v-if="!isReleased"
-                            class="tiny text-white font-bold"
+                            class="tw-text-sm text-white font-bold"
                         >
                             {{ releaseDate }}
                         </p>
@@ -81,13 +81,13 @@
                 :class="displayInline ? 'ph-1 align-v-center' : ''"
             >
                 <h5
-                    class="x-tiny text-grey-4 capitalize"
+                    class="tw-text-xs text-grey-4 capitalize tw-font-normal tw-font-normal"
                     v-if="!isGuitareoChordAndScale" v-html="mappedData.grey_title">
                     {{ mappedData.grey_title }} 
                     </h5>
 
                 <h4
-                    class="tiny text-black font-compressed font-bold capitalize mb-1"
+                    class="tw-text-sm text-black font-compressed font-bold capitalize mb-1"
                     :class="{'text-center': isGuitareoChordAndScale}"
                 >
                     {{ mappedData.black_title }}
@@ -95,7 +95,7 @@
 
                 <p
                     v-if="mappedData.show_description"
-                    class="x-tiny font-compressed text-grey-4 pb-1 mb-1 item-description always-truncate"
+                    class="tw-text-xs font-compressed text-grey-4 pb-1 mb-1 item-description always-truncate"
                 >
                     {{ mappedData.description.replace(/<[^>]+>/g, '') }}
                 </p>

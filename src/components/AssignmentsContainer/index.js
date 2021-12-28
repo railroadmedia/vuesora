@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import AssignmentsContainer from './AssignmentsContainer';
+import AssignmentsContainer from './AssignmentsContainer.vue';
 
 export default {
     install(Vue, options) {

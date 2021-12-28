@@ -81,13 +81,13 @@
                 :class="displayInline ? 'ph-1 align-v-center' : ''"
             >
                 <h5
-                    class="x-tiny text-grey-4 uppercase"
+                    class="tw-text-xs tw-font-normal text-grey-4 uppercase"
                     v-if="!isGuitareoChordAndScale" v-html="mappedData.color_title">
                     {{ mappedData.color_title }}
                     </h5>
 
                 <h4
-                    class="tiny text-black font-compressed font-bold capitalize mb-1"
+                    class="tw-text-sm text-black font-compressed font-bold capitalize tw-mb-2"
                     :class="{'text-center': isGuitareoChordAndScale}"
                 >
                     {{ mappedData.black_title }}
@@ -95,13 +95,13 @@
 
                 <p
                     v-if="mappedData.show_description"
-                    class="x-tiny font-compressed text-grey-4 pb-1 mb-1 item-description always-truncate"
+                    class="tw-text-xs font-compressed text-grey-4 pb-1 mb-1 item-description always-truncate"
                 >
                     {{ mappedData.description.replace(/<[^>]+>/g, '') }}
                 </p>
 
                 <h6
-                    class="x-tiny text-grey-3 capitalize"
+                    class="tw-text-xs tw-font-normal text-grey-3 capitalize"
                     :class="{'text-center': isGuitareoChordAndScale}"
                 >
                     <span

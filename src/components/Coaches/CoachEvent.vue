@@ -59,7 +59,7 @@
 
                     <!-- Event Title & Desc -->
                     <div class="tw-mb-1.5">
-                        <h3 class="tw-font-bold tw-capitalize tw-leading-none tw-text-3xl">{{ content.title }}</h3>
+                        <h3 class="tw-font-bold tw-capitalize tw-leading-none tw-text-2xl">{{ content.title }}</h3>
                         <!-- <div class="tw-mt-2 tw-text-base" v-html="content.description"></div> -->
                     </div>
 
@@ -90,7 +90,7 @@
                             <div>
                                 <a href="/members/live" 
                                 class="tw-btn-primary tw-w-full" 
-                                :class="[brandBGColor]"
+                                :class="[brandBGColor, brandHoverColor]"
                                 >
                                     watch now
                                 </a>
@@ -100,7 +100,7 @@
 
                     <div class="tw-flex tw-flex-nowrap"
                         :class="{'tw-pt-3': showWatch}"
-                        v-if="!eventIsLive"
+                        v-if="!eventIsLive && !showWatch"
                     >
                         <!-- Add to My List -->
                         <button class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-center tw-border-0 tw-bg-transparent tw-text-3xl tw-mr-6"
@@ -267,6 +267,9 @@ export default {
         },
         brandBGColor() {
             return 'tw-bg-' + this.brand;
+        },
+        brandHoverColor() {
+            return 'hover:tw-bg-' + this.brand + '-600';
         },
         brandBorderColor() {
             return 'tw-border-' + this.brand;
