@@ -112,6 +112,38 @@ export default {
     },
 
     /**
+     * Follow to coach
+     *
+     * @param {String|Number} coachId
+     */
+     followCoach({ coachId }) {
+
+        return axios({
+            url: `${endpointPrefix}/railcontent/follow`,
+            method: 'put',
+            data: {
+                content_id: coachId,
+            },
+        });
+    },
+
+    /**
+     * Unfollow to coach
+     *
+     * @param {String|Number} coachId
+     */
+    unfollowCoach({ coachId }) {
+
+        return axios({
+            url: `${endpointPrefix}/railcontent/unfollow`,
+            method: 'put',
+            data: {
+                content_id: coachId,
+            },
+        });
+    },
+
+    /**
      * Flag a piece of content as "complete"
      *
      * @param {String|Number} contentId - the content ID

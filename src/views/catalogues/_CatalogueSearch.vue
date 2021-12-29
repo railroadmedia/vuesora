@@ -1,9 +1,12 @@
 <template>
-    <div class="flex flex-column">
+    <div class="flex flex-column"
+         :class="[isCoachesGrid ? 'tw-mr-4 tw-w-full xl:tw-w-1/4' : '']"
+    >
         <div class="flex flex-row flex-wrap mb nmh-1">
             <div
                 v-if="includedTypes.length"
                 class="flex flex-column xs-12 sm-4"
+                :class="[isCoachesGrid ? 'tw-hidden' : '']"
             >
                 <catalogue-filter
                     filter-name="type"
@@ -12,13 +15,10 @@
                     :loading="loading"
                     :initial-value="selectedTypes"
                     @filterChange="changeFilter"
-                ></catalogue-filter>
+                />
             </div>
 
-            <div
-                class="flex flex-column xs-12 ph-1"
-                :class="includedTypes.length ? 'sm-8' : ''"
-            >
+            <div class="flex flex-column ph-1">
                 <div class="flex flex-row">
                     <div class="flex flex-column grow form-group pr-2">
                         <input
@@ -33,25 +33,21 @@
                         >
                     </div>
 
-                    <div class="flex flex-column search-button-col">
-                        <button
-                            class="btn"
-                            title="Search"
-                            @click="submitSearch"
-                        >
-                            <span
-                                class="text-white"
-                                :class="`bg-${themeColor}`"
-                            >
-                                <i class="fas fa-search"></i>
-                            </span>
-                        </button>
-                    </div>
+                    <button
+                        class="tw-btn-primary tw-btn-circle tw-flex-shrink-0"
+                        :class="`tw-bg-${themeColor}`"
+                        title="Search"
+                        @click="submitSearch"
+                    >
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
 
             </div>
         </div>
-        <div class="flex flex-row ph-1 pb-1">
+        <div v-if="catalogueType !== 'coaches-grid'" 
+             class="flex flex-row ph-1 pb-1"
+        >
             <p class="tiny text-grey-3 font-italic">
                 Displaying <span v-if="totalResults > 0">{{ currentResults }} of</span> {{ totalResults }} results.
             </p>
@@ -79,6 +75,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        isCoachesGrid: {
+            type: Boolean,
+            default: () => false,
+        },
         selectedTypes: {
             type: String,
             default: () => null,
@@ -90,6 +90,10 @@ export default {
         currentPage: {
             type: [String, Number],
             default: () => 1,
+        },
+        catalogueType: {
+            type: String,
+            default: () => undefined,
         },
         limit: {
             type: [String, Number],

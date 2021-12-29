@@ -1046,10 +1046,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@musora/helper-functions@^0.1.2":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@musora/helper-functions/-/helper-functions-0.1.10.tgz#be5673eb1c10176309392bf4236d0617de3076ad"
-  integrity sha512-WU7bT7apYblIoDI8hzn+JEmBWdu6t2SKDTjDZ20819Y8fy6hXpVlby1Fy+8GwrYoEFBWg+oB0yXrIGncutII5A==
+"@musora/helper-functions@^0.1.21":
+  version "0.1.21"
+  resolved "https://registry.yarnpkg.com/@musora/helper-functions/-/helper-functions-0.1.21.tgz#d4a3a64fdd5664b60da46877a03c9c2389db8abb"
+  integrity sha512-78PBv2bO7digAn+fu5KpFZZbQtemL/Vz5TaGvxg8IzAQFrcCsDs+ZTozB85l0Y3aLZ0rl+ESbLMFwWrwlo3PbA==
 
 "@musora/icons@^1.0.3":
   version "1.0.5"
