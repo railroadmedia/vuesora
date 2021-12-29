@@ -33,20 +33,14 @@
                         >
                     </div>
 
-                    <div class="flex flex-column search-button-col">
-                        <button
-                            class="btn"
-                            title="Search"
-                            @click="submitSearch"
-                        >
-                            <span
-                                class="text-white"
-                                :class="`bg-${themeColor}`"
-                            >
-                                <i class="fas fa-search"></i>
-                            </span>
-                        </button>
-                    </div>
+                    <button
+                        class="tw-btn-primary tw-btn-circle tw-flex-shrink-0"
+                        :class="`tw-bg-${themeColor}`"
+                        title="Search"
+                        @click="submitSearch"
+                    >
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
 
             </div>
