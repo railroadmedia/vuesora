@@ -79,46 +79,47 @@
             {{ instructor.name.split(" ")[1] }}
           </span>
         </h4>
-        <button
-          v-if="!instructor.current_user_is_subscribed"
-          v-on:click="followCoach(instructor.id)"
-          class="
-            tw-text-left tw-px-0 tw-py-0 tw-text-xs
-            sm:tw-text-base
-            tw-transition-none
-            tw-text-white
-            tw-border-none
-            tw-bg-transparent
-            tw-uppercase
-            tw-font-bold
-            tw-cursor-pointer
-          "
-        >
-          <span>
-            <i aria-hidden="true" class="fa fa-bell"></i>
-            <span class="tw-pl-2">Subscribe</span></span
-          >
-        </button>
-        <button
-          v-if="instructor.current_user_is_subscribed"
-          v-on:click="unfollowCoach(instructor.id)"
-          class="
-            tw-text-left tw-px-0 tw-py-0 tw-text-xs
-            sm:tw-text-base
-            tw-transition-none
-            tw-text-white
-            tw-border-none
-            tw-bg-transparent
-            tw-uppercase
-            tw-font-bold
-            tw-cursor-pointer
-          "
-        >
-          <span>
-            <i aria-hidden="true" class="fa fa-check"></i>
-            <span class="tw-pl-2">Subscribed</span>
-          </span>
-        </button>
+<!-- todo: uncomment for coaches launch -->
+<!--        <button-->
+<!--          v-if="!instructor.current_user_is_subscribed"-->
+<!--          v-on:click="followCoach(instructor.id)"-->
+<!--          class="-->
+<!--            tw-text-left tw-px-0 tw-py-0 tw-text-xs-->
+<!--            sm:tw-text-base-->
+<!--            tw-transition-none-->
+<!--            tw-text-white-->
+<!--            tw-border-none-->
+<!--            tw-bg-transparent-->
+<!--            tw-uppercase-->
+<!--            tw-font-bold-->
+<!--            tw-cursor-pointer-->
+<!--          "-->
+<!--        >-->
+<!--          <span>-->
+<!--            <i aria-hidden="true" class="fa fa-bell"></i>-->
+<!--            <span class="tw-pl-2">Subscribe</span></span-->
+<!--          >-->
+<!--        </button>-->
+<!--        <button-->
+<!--          v-if="instructor.current_user_is_subscribed"-->
+<!--          v-on:click="unfollowCoach(instructor.id)"-->
+<!--          class="-->
+<!--            tw-text-left tw-px-0 tw-py-0 tw-text-xs-->
+<!--            sm:tw-text-base-->
+<!--            tw-transition-none-->
+<!--            tw-text-white-->
+<!--            tw-border-none-->
+<!--            tw-bg-transparent-->
+<!--            tw-uppercase-->
+<!--            tw-font-bold-->
+<!--            tw-cursor-pointer-->
+<!--          "-->
+<!--        >-->
+<!--          <span>-->
+<!--            <i aria-hidden="true" class="fa fa-check"></i>-->
+<!--            <span class="tw-pl-2">Subscribed</span>-->
+<!--          </span>-->
+<!--        </button>-->
       </div>
     </div>
   </div>
