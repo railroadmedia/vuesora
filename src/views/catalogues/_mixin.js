@@ -184,7 +184,7 @@ export default {
 
             return {
                 drumeo: ['song', 'learning-path-level'],
-                guitareo: ['song', 'chord-and-scale'],
+                guitareo: ['song', 'chord-and-scale', 'learning-path-level'],
                 pianote: ['song', 'unit', 'learning-path-level'],
                 singeo: ['song', 'unit', 'learning-path-level'],
             }[this.brand].indexOf(this.item.type) !== -1 ? 'square' : 'widescreen';
