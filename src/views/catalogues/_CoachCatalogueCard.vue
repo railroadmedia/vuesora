@@ -29,6 +29,16 @@
                         class="bg-grey-2"
                     >
 
+                    <!-- this is generally for packs only -->
+                    <div v-if="mappedData.logo_image"
+                         style="width: 100%; height: 50%; position: absolute; z-index: 999999; bottom: 0; text-align: center;">
+
+                        <img v-if="mappedData.logo_image"
+                             style="height: 100%;"
+                             :src="'https://cdn.musora.com/image/fetch/c_fill,w_260,h_146,q_auto:good/' + mappedData.logo_image"
+                             :alt="mappedData.black_title">
+                    </div>
+
                     <i
                         v-if="item.type !== 'pack-bundle' && showMyListAction"
                         class="add-to-list fas fa-plus"
@@ -106,6 +116,7 @@
 <script>
 import Mixin from './_mixin';
 import ThemeClasses from '../../mixins/ThemeClasses';
+
 export default {
     name: 'CoachCatalogueCard',
     mixins: [Mixin, ThemeClasses],

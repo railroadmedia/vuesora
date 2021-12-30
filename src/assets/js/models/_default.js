@@ -9,6 +9,7 @@ export default class ContentModel {
 
         this.card = {
             thumbnail: this.getPostThumbnail(),
+            logo_image: this.getPostLogoImage(),
             color_title: this.postType,
             content_type: this.getTypeWithIcon(),
             black_title: this.getPostField('title'),
@@ -156,6 +157,11 @@ export default class ContentModel {
         }
 
         return thumb !== 'TBD' ? thumb : defaults[this.brand];
+    }
+
+    getPostLogoImage() {
+        let imageUrl = this.getPostDatum('logo_image_url');
+        return imageUrl === 'TBD' ? null : imageUrl;
     }
 
     static mapDifficulty(post) {
