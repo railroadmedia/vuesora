@@ -92,11 +92,13 @@
                         v-if="!eventIsLive && !showWatch"
                     >
                         <!-- Add to My List -->
-                        <button class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-center tw-border-0 tw-bg-transparent tw-text-3xl tw-mr-6"
+                        <button class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-center tw-border-0 tw-bg-transparent tw-transition tw-text-3xl tw-mr-6"
                                 @click.stop.prevent="toggleMyList" 
                                 :class="[is_added ? 'is-added ' + brandTextColor : 'tw-text-gray-400' ]"
                         >
-                            <i class="fas fa-plus"></i>
+                            <i class="fas fa-plus tw-transform tw-transition tw-origin-center" 
+                               :class="[is_added  ? 'tw-rotate-45' : 'tw-rotate-0']">
+                            </i>
                             <!-- Tooltip -->
                             <div role="tooltip" 
                                 class="tw-tooltip tw-tooltip-dark" 
