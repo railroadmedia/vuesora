@@ -8,7 +8,7 @@
                 <div class="tw-relative">
                     <img
                         class="tw-rounded-lg tw-w-full"
-                        :src="'http://cdn.musora.com/image/fetch/w_915,q_515,q_auto:best/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
+                        :src="'https://cdn.musora.com/image/fetch/c_thumb,g_face,w_320,h_180,z_0.75,q_auto:best/' + (content.thumbnail_url ? content.thumbnail_url : instructor.head_shot_picture_url)"
                     >
                 </div>
             </a>
