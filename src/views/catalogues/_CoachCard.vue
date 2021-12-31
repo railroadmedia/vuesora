@@ -15,7 +15,9 @@
             </h3>
         </div>
         <!-- hover later-->
-        <div class="tw-absolute tw-flex tw-h-full tw-w-full tw-top-0 tw-left-0 tw-bg-black tw-bg-opacity-30 tw-transition tw-opacity-0 hover:tw-opacity-100">
+        <div class="tw-absolute tw-flex tw-h-full tw-w-full tw-top-0 tw-left-0 tw-bg-black  tw-transition"
+             :class="isSubscribed ? 'tw-bg-opacity-0 hover:tw-bg-opacity-30' : 'tw-bg-opacity-30 tw-opacity-0 hover:tw-opacity-100' "
+        >
             <!-- Subscribe -->
             <button class="tw-btn-primary tw-btn-small tw-h-6 tw-w-6 tw-p-0 tw-ml-auto tw-mt-1 tw-mr-1"
                     :class="isSubscribed ? 'tw-bg-white ' + themeTextClass : themeBgClass"
