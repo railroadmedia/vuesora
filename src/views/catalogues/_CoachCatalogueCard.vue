@@ -31,11 +31,11 @@
 
                     <!-- this is generally for packs only -->
                     <div v-if="mappedData.logo_image"
-                         style="width: 100%; height: 50%; position: absolute; z-index: 999999; bottom: 0; text-align: center;">
+                         style="width: 100%;height: 40%;position: absolute;z-index: 999999;bottom: 0px;text-align: center;">
 
                         <img v-if="mappedData.logo_image"
-                             style="height: 100%;"
-                             :src="'https://cdn.musora.com/image/fetch/c_fill,w_260,h_146,q_auto:good/' + mappedData.logo_image"
+                             style="height: 100%;object-fit: contain;width: 60%;;"
+                             :src="'https://cdn.musora.com/image/fetch/c_fit,w_360,h_180,q_auto:good/' + mappedData.logo_image"
                              :alt="mappedData.black_title">
                     </div>
 
