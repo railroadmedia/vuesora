@@ -3,7 +3,8 @@
         <div class="tw-flex tw-flex-col md:tw-flex-row tw-flex-wrap md:tw-flex-nowrap " v-if="content">
             
             <!-- Live Event Image -->
-            <a :href="eventCoachProfileUrl" class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 md:tw-mr-4">
+            <a :href="eventIsLive ? '/members/live' : eventCoachProfileUrl" 
+                class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 md:tw-mr-4">
                 <div class="tw-relative">
                     <img
                         class="tw-rounded-lg tw-w-full"
@@ -12,29 +13,15 @@
                 </div>
             </a>
 
-            <!-- Video -->
-            <!-- <div class="tw-h-full tw-w-full tw-flex tw-flex-col tw-max-w-7xl tw-mx-auto" v-if="eventIsLive">
-                <div class="tw-w-full tw-relative" style="padding-bottom: 56.25%;">
-                    <iframe id="player"
-                            frameborder="0" 
-                            class="tw-h-full tw-w-full tw-absolute tw-top-0 tw-left-0"
-                            allowfullscreen="1" 
-                            allow="autoplay; encrypted-media" 
-                            title="YouTube video player" 
-                            :src="$_iframeSource">
-                    </iframe>
-                </div>
-            </div> -->
-
             <div class="tw-flex tw-w-full">
                 <!-- Event Details -->
                 <div class="tw-flex tw-flex-col tw-justify-center tw-pr-4">
                     
                     <div class="tw-flex tw-items-center tw-mb-1.5">
                         <!-- Live Badge -->
-                        <div class="tw-flex flex-row" v-if="eventIsLive">
+                        <a href="/members/live" class="tw-flex tw-no-underline flex-row" v-if="eventIsLive">
                             <div class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-leading-none tw-p-1.5"><span>live</span></div>
-                        </div>
+                        </a>
 
                         <!-- Countdown -->
                         <div class="tw-text-white tw-text-sm font-bold tw-p-1.5 tw-leading-none tw-rounded tw-inline-flex tw-mr-2" 
@@ -59,8 +46,10 @@
 
                     <!-- Event Title & Desc -->
                     <div class="tw-mb-1.5">
-                        <h3 class="tw-font-bold tw-capitalize tw-leading-none tw-text-2xl">{{ content.title }}</h3>
-                        <!-- <div class="tw-mt-2 tw-text-base" v-html="content.description"></div> -->
+                        <a :href="eventIsLive ? '/members/live' : eventCoachProfileUrl"
+                            class="tw-font-bold tw-no-underline tw-text-black tw-capitalize tw-leading-none tw-text-2xl">
+                            {{ content.title }}
+                        </a>
                     </div>
 
                     <!-- Coach --> 
