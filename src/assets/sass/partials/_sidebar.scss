@@ -5,7 +5,7 @@ body {
     @include medium {
       margin-left: 250px;
       &.sidebar-collapsed {
-        margin-left: 83px;
+        margin-left: 120px;
         &.pianote {
           margin-left: 100px;
         }
