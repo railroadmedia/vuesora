@@ -13,7 +13,7 @@
                 </div>
             </a>
 
-            <div class="tw-flex tw-w-full">
+            <div class="tw-flex tw-w-full tw-flex-col sm:tw-flex-row">
                 <!-- Event Details -->
                 <div class="tw-flex tw-flex-col tw-justify-center tw-pr-4">
                     
@@ -54,13 +54,6 @@
 
                     <!-- Coach --> 
                     <a :href="eventCoachProfileUrl" class="tw-flex tw-flex-row tw-items-center tw-no-underline">
-                        <!-- <div>
-                            <img
-                                class="tw-rounded-full tw-border-3 tw-border-solid tw-w-16 tw-h-16 tw-mr-3"
-                                :class="[brandBorderColor]"
-                                :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,q_auto:best,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
-                            >
-                        </div> -->
                         <h4 class="tw-leading-none  tw-text-lg tw-uppercase tw-font-normal"
                             :class="[brandTextColor]"
                         >
@@ -73,7 +66,7 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="tw-flex tw-flex-col tw-justify-center tw-ml-auto">
+                <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 sm:tw-mt-0 sm:tw-ml-auto">
                     <div class="tw-mb-3" v-if="eventIsLive || showWatch">
                         <div class="tw-flex tw-flex-row tw-flex-wrap-md tw-mt-2">
                             <div>

@@ -17,7 +17,6 @@
                         data-ix-fade
                         alt="Lesson Thumbnail"
                     >
-                    </span>
                 </div>
             </div>
         </div>
