@@ -87,7 +87,7 @@
                     </h5>
 
                 <h4
-                    class="tw-text-sm text-black font-compressed font-bold capitalize tw-mb-2"
+                    class="tw-text-sm tw-leading-snug  text-black font-compressed font-bold capitalize tw-mb-2"
                     :class="{'text-center': isGuitareoChordAndScale}"
                 >
                     {{ mappedData.black_title }}

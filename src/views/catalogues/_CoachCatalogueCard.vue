@@ -74,7 +74,7 @@
 
                         <p
                             v-if="!isReleased"
-                            class="tw-text-sm text-white font-bold"
+                            class="tw-text-sm tw-leading-snug text-white font-bold"
                         >
                             {{ releaseDate }}
                         </p>
@@ -97,7 +97,7 @@
                     </h5>
 
                 <h4
-                    class="tw-text-sm text-black font-compressed font-bold capitalize mb-1"
+                    class="tw-text-sm tw-leading-snug text-black font-compressed font-bold capitalize mb-1"
                     :class="{'text-center': isGuitareoChordAndScale}"
                 >
                     {{ mappedData.black_title }}
