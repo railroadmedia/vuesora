@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 sm:tw-mt-0 sm:tw-ml-auto tw-mr-auto">
+                <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 sm:tw-mt-0 sm:tw-ml-auto">
                     <div class="tw-mb-3" v-if="eventIsLive || showWatch">
                         <div class="tw-flex tw-flex-row tw-flex-wrap-md tw-mt-2">
                             <div>
