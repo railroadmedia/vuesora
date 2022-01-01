@@ -1,10 +1,10 @@
 <template>
     <div class="container tw-my-3 tw-w-full">
-        <div class="tw-flex tw-flex-col md:tw-flex-row tw-flex-wrap md:tw-flex-nowrap " v-if="content">
+        <div class="tw-flex tw-flex-row" v-if="content">
             
             <!-- Live Event Image -->
             <a :href="eventIsLive ? '/members/live' : eventCoachProfileUrl" 
-                class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 md:tw-mr-4">
+                class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 tw-mr-4 tw-hidden md:tw-flex">
                 <div class="tw-relative">
                     <img
                         class="tw-rounded-lg tw-w-full"
@@ -13,7 +13,7 @@
                 </div>
             </a>
 
-            <div class="tw-flex tw-w-full tw-flex-col sm:tw-flex-row">
+            <div class="tw-flex tw-w-full tw-flex-row">
                 <!-- Event Details -->
                 <div class="tw-flex tw-flex-col tw-justify-center tw-pr-4">
                     
@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 sm:tw-mt-0 sm:tw-ml-auto">
+                <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 sm:tw-mt-0 tw-ml-auto">
                     <div class="tw-mb-3" v-if="eventIsLive || showWatch">
                         <div class="tw-flex tw-flex-row tw-flex-wrap-md tw-mt-2">
                             <div>
