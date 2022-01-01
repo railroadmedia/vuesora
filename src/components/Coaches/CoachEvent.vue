@@ -13,7 +13,7 @@
                 </div>
             </a>
 
-            <div class="tw-flex tw-w-full tw-flex-row">
+            <div class="tw-flex tw-w-full tw-flex-col sm:tw-flex-row">
                 <!-- Event Details -->
                 <div class="tw-flex tw-flex-col tw-justify-center tw-pr-4">
                     
@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 sm:tw-mt-0 tw-ml-auto">
+                <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 sm:tw-mt-0 sm:tw-ml-auto tw-mr-auto">
                     <div class="tw-mb-3" v-if="eventIsLive || showWatch">
                         <div class="tw-flex tw-flex-row tw-flex-wrap-md tw-mt-2">
                             <div>
