@@ -17,7 +17,7 @@
                 <!-- Event Details -->
                 <div class="tw-flex tw-flex-col tw-justify-center tw-pr-4">
                     
-                    <div class="tw-flex tw-items-center tw-mb-1.5">
+                    <div class="tw-flex tw-items-center tw-mb-1">
                         <!-- Live Badge -->
                         <a href="/members/live" class="tw-flex tw-no-underline flex-row" v-if="eventIsLive">
                             <div class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-leading-none tw-p-1.5"><span>live</span></div>
@@ -47,7 +47,7 @@
                     <!-- Event Title & Desc -->
                     <div class="tw-mb-1.5">
                         <a :href="eventIsLive ? '/members/live' : eventCoachProfileUrl"
-                            class="tw-font-bold tw-no-underline tw-text-black tw-capitalize tw-leading-none tw-text-2xl">
+                            class="tw-font-bold tw-no-underline tw-text-black tw-capitalize tw-leading-tight tw-text-2xl">
                             {{ content.title }}
                         </a>
                     </div>
