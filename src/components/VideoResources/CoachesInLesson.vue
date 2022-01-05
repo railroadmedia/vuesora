@@ -1,8 +1,8 @@
 <template>
   <div
     class="
-      tw-w-full tw-grid tw-grid-cols-2
-      sm:tw-grid-cols-3
+      tw-w-full tw-grid tw-grid-cols-1
+      sm:tw-grid-cols-2
       xl:tw-grid-cols-4
       tw-grid-flow-row tw-gap-0
     "
@@ -34,8 +34,7 @@
           "
         >
           <div
-            class="tw-absolute tw-bottom-0 tw-w-full tw-h-3 tw-p-0 tw-m-0"
-            :class="'bg-' + brand"
+            class="tw-absolute tw-bottom-0 tw-w-full tw-h-3 tw-p-0 tw-m-0 tw-bg-yellow-500"
           >
             <svg
               class="tw-absolute tw-bottom-0 tw-left-0 tw-right-0 tw-mx-auto"
@@ -56,8 +55,8 @@
           </div>
           <div
             v-on:click="goToCoachProfile(instructor.slug)"
-            class="tw-w-full tw-h-full tw-absolute tw-rounded-full tw-cursor-pointer"
-            :style="'border: 2px solid ' + currentBrandColor + ';'"
+            class="tw-w-full tw-h-full tw-absolute tw-rounded-full tw-cursor-pointer tw-border-solid tw-border-yellow-500"
+            :style="'border: 2px solid;'"
           ></div>
         </div>
       </div>
@@ -144,19 +143,7 @@ export default {
   data() {
     return {
       instructorList: [],
-      brandColors: {
-        drumeo: "#0B76DB",
-        guitareo: "#00c9ac",
-        pianote: "#f61a30",
-        singeo: "#8300e9",
-      },
     };
-  },
-
-  computed: {
-    currentBrandColor() {
-      return this.brandColors[this.brand];
-    },
   },
   mounted() {
     this.instructorList = [...this.instructors];
