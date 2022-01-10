@@ -3,7 +3,7 @@
         <div class="tw-flex tw-flex-row" v-if="content">
             
             <!-- Live Event Image -->
-            <a :href="eventIsLive ? '/members/live' : eventCoachProfileUrl" 
+            <a  href="/members/live" 
                 class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 tw-mr-4 tw-hidden md:tw-flex">
                 <div class="tw-relative">
                     <img
@@ -46,7 +46,7 @@
 
                     <!-- Event Title & Desc -->
                     <div class="tw-mb-1.5">
-                        <a :href="eventIsLive ? '/members/live' : eventCoachProfileUrl"
+                        <a href="/members/live"
                             class="tw-font-bold tw-no-underline tw-text-black tw-capitalize tw-leading-tight tw-text-2xl">
                             {{ content.title }}
                         </a>
