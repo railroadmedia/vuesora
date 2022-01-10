@@ -7,6 +7,7 @@
       tw-grid-flow-row tw-gap-0
     "
   >
+  <NotificationToastsContainer />
     <div
       v-for="instructor in instructorList"
       :key="
@@ -125,9 +126,13 @@
 
 <script>
 import ContentService from "../../assets/js/services/content";
+import NotificationToastsContainer from "../NotificationToasts/NotificationToastsContainer.vue"
 
 export default {
   name: "CoachesInLesson",
+  components: {
+    'NotificationToastsContainer': NotificationToastsContainer,
+  },
   props: {
     brand: {
       type: String,
@@ -162,17 +167,19 @@ export default {
       this.$forceUpdate();
     },
     followCoach(id) {
+      this.updateCoachState(id);
       return ContentService.followCoach({
         coachId: id,
-      }).then(() => {
+      }).catch(() => {
         this.updateCoachState(id);
       });
     },
 
     unfollowCoach(id) {
+      this.updateCoachState(id);
       return ContentService.unfollowCoach({
         coachId: id,
-      }).then(() => {
+      }).catch(() => {
         this.updateCoachState(id);
       });
     },
