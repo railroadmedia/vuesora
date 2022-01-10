@@ -24,12 +24,13 @@
                         <input
                             id="catalogueSearch"
                             v-model="searchTermInterface"
+                            ref="searchInput"
                             type="text"
                             name="search"
                             autocomplete="off"
                             placeholder="Search..."
                             class="no-label"
-                            @keydown.enter="submitSearch"
+                            @keydown.enter="submitSearch($event)"
                         >
                     </div>
 
@@ -148,10 +149,15 @@ export default {
             });
         },
 
-        submitSearch() {
+        submitSearch(e) {
             this.$emit('searchChange', {
                 term: this.searchTermInterface,
             });
+            //only blur the input on mobile (up to Tailwind sm breakpoint)
+            let isMobile = window.matchMedia('(max-width: 639px)');
+            if( isMobile.matches ) {
+                e.target.blur()
+            }
         },
     },
 };
