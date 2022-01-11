@@ -1,40 +1,27 @@
 <template>
     <div class="container tw-my-3 tw-w-full">
-        <div class="tw-flex tw-flex-col md:tw-flex-row tw-flex-wrap md:tw-flex-nowrap " v-if="content">
+        <div class="tw-flex tw-flex-row" v-if="content">
             
             <!-- Live Event Image -->
-            <a :href="eventCoachProfileUrl" class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 md:tw-mr-4">
+            <a  href="/members/live" 
+                class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 tw-mr-4 tw-hidden md:tw-flex">
                 <div class="tw-relative">
                     <img
                         class="tw-rounded-lg tw-w-full"
-                        :src="'http://cdn.musora.com/image/fetch/w_915,q_515,q_auto:best/' + (content.thumbnail_url ? content.thumbnail_url : instructor.header_image_url)"
+                        :src="'https://cdn.musora.com/image/fetch/c_thumb,g_face,w_320,h_180,z_0.75,q_auto:best/' + (content.thumbnail_url ? content.thumbnail_url : instructor.head_shot_picture_url)"
                     >
                 </div>
             </a>
 
-            <!-- Video -->
-            <!-- <div class="tw-h-full tw-w-full tw-flex tw-flex-col tw-max-w-7xl tw-mx-auto" v-if="eventIsLive">
-                <div class="tw-w-full tw-relative" style="padding-bottom: 56.25%;">
-                    <iframe id="player"
-                            frameborder="0" 
-                            class="tw-h-full tw-w-full tw-absolute tw-top-0 tw-left-0"
-                            allowfullscreen="1" 
-                            allow="autoplay; encrypted-media" 
-                            title="YouTube video player" 
-                            :src="$_iframeSource">
-                    </iframe>
-                </div>
-            </div> -->
-
-            <div class="tw-flex tw-w-full">
+            <div class="tw-flex tw-w-full tw-flex-col sm:tw-flex-row">
                 <!-- Event Details -->
                 <div class="tw-flex tw-flex-col tw-justify-center tw-pr-4">
                     
-                    <div class="tw-flex tw-items-center tw-mb-1.5">
+                    <div class="tw-flex tw-items-center tw-mb-1">
                         <!-- Live Badge -->
-                        <div class="tw-flex flex-row" v-if="eventIsLive">
+                        <a href="/members/live" class="tw-flex tw-no-underline flex-row" v-if="eventIsLive">
                             <div class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-leading-none tw-p-1.5"><span>live</span></div>
-                        </div>
+                        </a>
 
                         <!-- Countdown -->
                         <div class="tw-text-white tw-text-sm font-bold tw-p-1.5 tw-leading-none tw-rounded tw-inline-flex tw-mr-2" 
@@ -59,19 +46,14 @@
 
                     <!-- Event Title & Desc -->
                     <div class="tw-mb-1.5">
-                        <h3 class="tw-font-bold tw-capitalize tw-leading-none tw-text-2xl">{{ content.title }}</h3>
-                        <!-- <div class="tw-mt-2 tw-text-base" v-html="content.description"></div> -->
+                        <a href="/members/live"
+                            class="tw-font-bold tw-no-underline tw-text-black tw-capitalize tw-leading-tight tw-text-2xl">
+                            {{ content.title }}
+                        </a>
                     </div>
 
                     <!-- Coach --> 
                     <a :href="eventCoachProfileUrl" class="tw-flex tw-flex-row tw-items-center tw-no-underline">
-                        <!-- <div>
-                            <img
-                                class="tw-rounded-full tw-border-3 tw-border-solid tw-w-16 tw-h-16 tw-mr-3"
-                                :class="[brandBorderColor]"
-                                :src=" 'http://cdn.musora.com/image/fetch/w_150,h_150,q_auto:best,c_fill,g_face/' + (instructor.head_shot_picture_url ? instructor.head_shot_picture_url : 'https://s3.amazonaws.com/pianote/defaults/avatar.png')"
-                            >
-                        </div> -->
                         <h4 class="tw-leading-none  tw-text-lg tw-uppercase tw-font-normal"
                             :class="[brandTextColor]"
                         >
@@ -84,7 +66,7 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="tw-flex tw-flex-col tw-justify-center tw-ml-auto">
+                <div class="tw-flex tw-flex-col tw-justify-center tw-mt-3 sm:tw-mt-0 sm:tw-ml-auto">
                     <div class="tw-mb-3" v-if="eventIsLive || showWatch">
                         <div class="tw-flex tw-flex-row tw-flex-wrap-md tw-mt-2">
                             <div>
@@ -103,11 +85,13 @@
                         v-if="!eventIsLive && !showWatch"
                     >
                         <!-- Add to My List -->
-                        <button class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-center tw-border-0 tw-bg-transparent tw-text-3xl tw-mr-6"
+                        <button class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-center tw-border-0 tw-bg-transparent tw-transition tw-text-3xl tw-mr-6"
                                 @click.stop.prevent="toggleMyList" 
                                 :class="[is_added ? 'is-added ' + brandTextColor : 'tw-text-gray-400' ]"
                         >
-                            <i class="fas fa-plus"></i>
+                            <i class="fas fa-plus tw-transform tw-transition tw-origin-center" 
+                               :class="[is_added  ? 'tw-rotate-45' : 'tw-rotate-0']">
+                            </i>
                             <!-- Tooltip -->
                             <div role="tooltip" 
                                 class="tw-tooltip tw-tooltip-dark" 

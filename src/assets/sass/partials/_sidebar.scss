@@ -5,7 +5,7 @@ body {
     @include medium {
       margin-left: 250px;
       &.sidebar-collapsed {
-        margin-left: 83px;
+        margin-left: 100px;
         &.pianote {
           margin-left: 100px;
         }
@@ -194,10 +194,6 @@ body {
 
   &.sidebar-collapsed {
     width: 100px;
-
-    &.guitareo {
-      width: 120px;
-    }
     
     .sidebar-section {
       border-bottom: none;

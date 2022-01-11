@@ -29,6 +29,16 @@
                         class="bg-grey-2"
                     >
 
+                    <!-- this is generally for packs only -->
+                    <div v-if="mappedData.logo_image"
+                         style="width: 100%;height: 40%;position: absolute;z-index: 999999;bottom: 0px;text-align: center;">
+
+                        <img v-if="mappedData.logo_image"
+                             style="height: 100%;object-fit: contain;width: 60%;;"
+                             :src="'https://cdn.musora.com/image/fetch/c_fit,w_360,h_180,q_auto:good/' + mappedData.logo_image"
+                             :alt="mappedData.black_title">
+                    </div>
+
                     <i
                         v-if="item.type !== 'pack-bundle' && showMyListAction"
                         class="add-to-list fas fa-plus"
@@ -64,7 +74,7 @@
 
                         <p
                             v-if="!isReleased"
-                            class="tw-text-sm text-white font-bold"
+                            class="tw-text-sm tw-leading-snug text-white font-bold"
                         >
                             {{ releaseDate }}
                         </p>
@@ -87,7 +97,7 @@
                     </h5>
 
                 <h4
-                    class="tw-text-sm text-black font-compressed font-bold capitalize mb-1"
+                    class="tw-text-sm tw-leading-snug text-black font-compressed font-bold capitalize mb-1"
                     :class="{'text-center': isGuitareoChordAndScale}"
                 >
                     {{ mappedData.black_title }}
@@ -106,6 +116,7 @@
 <script>
 import Mixin from './_mixin';
 import ThemeClasses from '../../mixins/ThemeClasses';
+
 export default {
     name: 'CoachCatalogueCard',
     mixins: [Mixin, ThemeClasses],

@@ -21,7 +21,7 @@ export default class LearningPathLevelContentModel extends ContentModel {
     }
 
     get postChildLessonCount() {
-        if (this.brand === 'singeo') {
+        if (this.brand === 'singeo' || this.brand === 'guitareo') {
             return this.post.lesson_count ? `${this.post.lesson_count} Lessons` : 'TBD';
         }
 
@@ -35,6 +35,10 @@ export default class LearningPathLevelContentModel extends ContentModel {
     getThumbLogo() {
         if (this.brand === 'singeo') {
             return 'https://d2vyvo0tyx8ig5.cloudfront.net/logo/singeo-method.png';
+        }
+
+        if (this.brand === 'guitareo') {
+            return 'https://musora-ui.s3.amazonaws.com/logos/guitareo_method_logo.svg';
         }
 
         if (this.brand === 'pianote') {

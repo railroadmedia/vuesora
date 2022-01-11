@@ -1,6 +1,10 @@
 {
   "name": "vuesora",
+<<<<<<< HEAD
   "version": "0.20.7-staging.1",
+=======
+  "version": "0.20.41",
+>>>>>>> coaches-updates
   "description": "Vue Component library for Musora members area pages.",
   "author": {
     "name": "Curtis Conway",
