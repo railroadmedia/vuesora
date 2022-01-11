@@ -7,7 +7,7 @@
       tw-grid-flow-row tw-gap-0
     "
   >
-  <NotificationToastsContainer />
+  <NotificationToasts :icon="toast.icon" :text="toast.text" :isError="toast.showErrorMessage"/>
     <div
       v-for="instructor in instructorList"
       :key="
@@ -126,12 +126,12 @@
 
 <script>
 import ContentService from "../../assets/js/services/content";
-import NotificationToastsContainer from "../NotificationToasts/NotificationToastsContainer.vue"
+import NotificationToasts from "../NotificationToasts/NotificationToasts.vue"
 
 export default {
   name: "CoachesInLesson",
   components: {
-    'NotificationToastsContainer': NotificationToastsContainer,
+    'NotificationToasts': NotificationToasts,
   },
   props: {
     brand: {
@@ -148,16 +148,38 @@ export default {
   data() {
     return {
       instructorList: [],
+      toast: {
+        icon: '',
+        text: '',
+        showErrorMessage: false,
+      },
     };
   },
   mounted() {
     this.instructorList = [...this.instructors];
   },
   methods: {
-    updateCoachState(id) {
-      const instructorIndex = this.instructorList.findIndex(
+    showNotificationToast({ icon, text, error }) {
+      if (error) {
+        this.toast.showErrorMessage = true;
+        this.toast.icon = '';
+        this.toast.text = '';
+      } else {
+        this.toast.icon = icon;
+        this.toast.text = text;
+      }
+    },
+    getInstructorIndex(id) {
+      return this.instructorList.findIndex(
         (instructor) => instructor.id === id
       );
+    },
+    getSelectedInstructor(id) {
+      const instructorIndex = this.getInstructorIndex(id);
+      return this.instructorList[instructorIndex];
+    },
+    updateCoachState(id) {
+      const instructorIndex = this.getInstructorIndex(id);
       const selectedInstructor = this.instructorList[instructorIndex];
       this.instructorList[instructorIndex] = {
         ...selectedInstructor,
@@ -167,19 +189,33 @@ export default {
       this.$forceUpdate();
     },
     followCoach(id) {
+      this.toast.showErrorMessage = false;
       this.updateCoachState(id);
       return ContentService.followCoach({
         coachId: id,
+      }).then(() => {
+        const selectedInstructor = this.getSelectedInstructor(id);
+        const firstName = selectedInstructor.name.split(' ')[0];
+        const text = `You will now receive updates when ${firstName} releases new content!`;
+        this.showNotificationToast({ text, icon: 'fa-envelope' });
       }).catch(() => {
+        this.showNotificationToast({ error: true });
         this.updateCoachState(id);
       });
     },
 
     unfollowCoach(id) {
+      this.toast.showErrorMessage = false;
       this.updateCoachState(id);
       return ContentService.unfollowCoach({
         coachId: id,
+      }).then(() => {
+        const selectedInstructor = this.getSelectedInstructor(id);
+        const firstName = selectedInstructor.name.split(' ')[0];
+        const text = `You will no longer receive updates when ${firstName} releases new content!`;
+        this.showNotificationToast({ text, icon: 'fa-bell-slash' });
       }).catch(() => {
+        this.showNotificationToast({ error: true });
         this.updateCoachState(id);
       });
     },
