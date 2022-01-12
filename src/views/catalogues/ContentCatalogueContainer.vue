@@ -3,7 +3,7 @@
     <div class="tw-flex tw-justify-between tw-items-center">
       <h1 class="tw-text-4xl tw-font-bold">All Lessons</h1>
       <button
-        v-on:click="showGrid = !showGrid"
+        v-on:click="changeGridState"
         class="tw-bg-transparent tw-border-none tw-cursor-pointer"
         :class="{
           [`tw-text-${brand}`]: brand,
@@ -39,7 +39,7 @@
       :total-results="catalogueProps.totalResults"
       :paginate="catalogueProps.paginate"
       :four-wide="catalogueProps.fourWide"
-      :coach-id="catalogueProps.coachId"
+      :coach-id="String(catalogueProps.coachId)"
       :is-coach="catalogueProps.isCoach"
     >
       <slot></slot>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { getCookie, setCookie } from "../../assets/js/functions/cookies";
 import ContentCatalogue from "./ContentCatalogue.vue";
 
 export default {
@@ -69,6 +70,25 @@ export default {
     return {
       showGrid: true,
     };
+  },
+  mounted: function () {
+    const userPrefersGridMode = getCookie("userPrefersGridMode");
+    console.log(userPrefersGridMode)
+    if (userPrefersGridMode === "YES") {
+      this.showGrid = true;
+    } else if (userPrefersGridMode === "NOPE") {
+      this.showGrid = false;
+    }
+  },
+  methods: {
+    changeGridState() {
+      this.showGrid = !this.showGrid;
+      if (this.showGrid) {
+        setCookie("userPrefersGridMode", "YES", 365);
+      } else {
+        setCookie("userPrefersGridMode", "NOPE", 365);
+      }
+    },
   },
 };
 </script>
