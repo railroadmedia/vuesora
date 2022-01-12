@@ -86,10 +86,9 @@
   </a>
 </template>
 <script>
-import axios from "axios";
 import Mixin from "./_mixin";
 import ThemeClasses from "../../mixins/ThemeClasses";
-import Toasts from "../../assets/js/classes/toasts";
+import ContentService from "../../assets/js/services/content";
 
 export default {
   name: "CoachCatalogueCard",
@@ -122,13 +121,6 @@ export default {
     themeTextClass() {
       return "tw-text-" + this.brand;
     },
-    subscriptionEndpoint() {
-      if (this.brand === "drumeo") {
-        return "/laravel/public/railcontent/follow";
-      } else {
-        return "/railcontent/follow";
-      }
-    },
   },
   //Get name before mounting
   beforeMount() {
@@ -150,8 +142,7 @@ export default {
     updateCoachSubscription(id) {
       if (!this.item.current_user_is_subscribed) {
         this.item.current_user_is_subscribed = true;
-        axios
-          .put(this.subscriptionEndpoint, { content_id: id })
+        ContentService.followCoach({ coachId: id })
           .then(() => {
             const text = `You will now receive updates when ${this.coachFirstName} releases new content!`;
             this.$emit("onShowNotification", {
@@ -169,8 +160,7 @@ export default {
           });
       } else {
         this.item.current_user_is_subscribed = false;
-        axios
-          .put(this.subscriptionEndpoint, { content_id: id })
+        ContentService.unfollowCoach({ coachId: id })
           .then(() => {
             const text = `You will no longer receive updates when ${this.coachFirstName} releases new content!`;
             this.$emit("onShowNotification", {
