@@ -73,7 +73,6 @@ export default {
   },
   mounted: function () {
     const userPrefersGridMode = getCookie("userPrefersGridMode");
-    console.log(userPrefersGridMode)
     if (userPrefersGridMode === "YES") {
       this.showGrid = true;
     } else if (userPrefersGridMode === "NOPE") {
