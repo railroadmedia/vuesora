@@ -4,6 +4,7 @@
       :icon="toast.icon"
       :text="toast.text"
       :isError="toast.showErrorMessage"
+      :brandName="brand"
     />
     <div class="tw-flex tw-flex-row" v-if="content">
       <!-- Live Event Image -->

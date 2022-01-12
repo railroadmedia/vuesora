@@ -7,7 +7,7 @@
       tw-grid-flow-row tw-gap-0
     "
   >
-  <NotificationToasts :icon="toast.icon" :text="toast.text" :isError="toast.showErrorMessage"/>
+  <NotificationToasts :icon="toast.icon" :text="toast.text" :isError="toast.showErrorMessage" :brandName="brand"/>
     <div
       v-for="instructor in instructorList"
       :key="

@@ -9,7 +9,7 @@
       tw-mb-4
     "
   >
-    <NotificationToasts :icon="toast.icon" :text="toast.text" :isError="toast.showErrorMessage"/>
+    <NotificationToasts :icon="toast.icon" :text="toast.text" :isError="toast.showErrorMessage" :brandName="brand"/>
     <!-- Loop through Cards -->
     <coach-card
       v-for="(item, i) in content"
