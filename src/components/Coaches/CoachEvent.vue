@@ -10,14 +10,7 @@
       <!-- Live Event Image -->
       <a
         href="/members/live"
-        class="
-          tw-w-full
-          md:tw-w-52
-          tw-cursor-pointer tw-flex tw-flex-col tw-mb-2
-          md:tw-mb-0
-          tw-mr-4 tw-hidden
-          md:tw-flex
-        "
+        class="tw-w-full md:tw-w-52 tw-cursor-pointer tw-flex tw-flex-col tw-mb-2 md:tw-mb-0 tw-mr-4 tw-hidden md:tw-flex"
       >
         <div class="tw-relative">
           <img
@@ -43,17 +36,7 @@
               v-if="eventIsLive"
             >
               <div
-                class="
-                  flex-center
-                  tw-text-white
-                  tw-uppercase
-                  tw-rounded
-                  tw-bg-red-500
-                  tw-text-sm
-                  tw-font-bold
-                  tw-leading-none
-                  tw-p-1.5
-                "
+                class="flex-center tw-text-white tw-uppercase tw-rounded tw-bg-red-500 tw-text-sm tw-font-bold tw-leading-none tw-p-1.5"
               >
                 <span>live</span>
               </div>
@@ -61,11 +44,7 @@
 
             <!-- Countdown -->
             <div
-              class="
-                tw-text-white tw-text-sm
-                font-bold
-                tw-p-1.5 tw-leading-none tw-rounded tw-inline-flex tw-mr-2
-              "
+              class="tw-text-white tw-text-sm font-bold tw-p-1.5 tw-leading-none tw-rounded tw-inline-flex tw-mr-2"
               :class="[brandBGColor]"
               v-if="!eventIsLive"
             >
@@ -94,14 +73,7 @@
           <div class="tw-mb-1.5">
             <a
               href="/members/live"
-              class="
-                tw-font-bold
-                tw-no-underline
-                tw-text-black
-                tw-capitalize
-                tw-leading-tight
-                tw-text-2xl
-              "
+              class="tw-font-bold tw-no-underline tw-text-black tw-capitalize tw-leading-tight tw-text-2xl"
             >
               {{ content.title }}
             </a>
@@ -156,17 +128,7 @@
           >
             <!-- Add to My List -->
             <button
-              class="
-                tw-cursor-pointer
-                tw-with-tooltip
-                tw-tooltip-top
-                tw-tooltip-center
-                tw-border-0
-                tw-bg-transparent
-                tw-transition
-                tw-text-3xl
-                tw-mr-6
-              "
+              class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-center tw-border-0 tw-bg-transparent tw-transition tw-text-3xl tw-mr-6"
               @click.stop.prevent="toggleMyList"
               :class="[
                 is_added ? 'is-added ' + brandTextColor : 'tw-text-gray-400',
@@ -190,15 +152,7 @@
 
             <!-- Subscribe to Calendar -->
             <button
-              class="
-                tw-cursor-pointer
-                tw-with-tooltip
-                tw-tooltip-top
-                tw-tooltip-right
-                tw-border-0
-                tw-bg-transparent
-                tw-text-3xl
-              "
+              class="tw-cursor-pointer tw-with-tooltip tw-tooltip-top tw-tooltip-right tw-border-0 tw-bg-transparent tw-text-3xl"
               data-open-modal="scheduleAddToCalendarModal"
               :class="[brandTextColor]"
             >
