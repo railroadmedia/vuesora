@@ -80,13 +80,13 @@ body {
     z-index:10;
     background-color: #00101D;
     flex:0 0 50px;
-    max-width:50px;
-    max-height:49px;
+    width:50px;
+    height:49px;
 
     @include medium {
       flex:0 0 55px;
-      max-width:55px;
-      max-height:55px;
+      width:55px;
+      height:55px;
     }
 
     &.live-button {
@@ -98,51 +98,42 @@ body {
     }
   }
 
+  @media only screen and (min-width: 100px) and (max-width: 345px) {
+    // Galaxy fold looks bad without hiding the referral button here
+    .referral-btn {
+      display: none;
+    }
+  }
+
   .search-column {
     flex:0 1 100%;
-    max-width:35px;
     transition:all .1s;
     z-index:9;
     max-height:49px;
 
-    @include medium {
-      max-width:55px;
-      max-height:55px;
+    .search-btn-close {
+      display: none;
+    }
+
+    #searchBox {
+      display: none;
     }
 
     &.active {
-
       .search-row {
-        width:calc(100vw - 135px);
-        transform:translateX(calc(-#{100%} + 45px));
+        position:absolute;
+      }
 
-        @include small {
-          width:calc(100vw - 260px);
-          transform:translateX(calc(-#{100%} + 45px));
-        }
+      .search-btn-close {
+        display: flex;
+      }
 
-        @include medium {
-          transform:translateX(calc(-#{100%} + 127px + 50px));
-        }
-
-        @include large {
-          transform:translateX(calc(-#{$large} + 127px + 50px));
-        }
-
-        @include xLarge {
-          transform:translateX(calc(-#{$xLarge} + 127px + 50px));
-        }
-
-        @media only screen and (min-width: 640px) and (max-width: 767px) {
-          // Added due to inconsistent breakpoints between tailwind and vuesora
-          width:calc(100vw - 135px);
-          transform:translateX(calc(-#{100%} + 45px));
-        }
+      #searchBox {
+        display: flex;
       }
     }
 
     .search-row {
-      position:absolute;
       top:0;
       left:0;
       bottom:0;
@@ -150,7 +141,7 @@ body {
       transform:translateX(0);
       //transition:transform .2s ease-in-out;
       will-change:transform;
-      width:calc(100vw - 260px);
+      width: 100%;
       background-color: #00101D;
 
       input {
