@@ -10,7 +10,7 @@
       style="background: linear-gradient(180deg, rgba(1, 5, 15, 0) 0%, #01050F 100%);"
     >
       <h3
-        class="tw-uppercase tw-mt-auto tw-mb-4 tw-text-center"
+        class="tw-uppercase tw-font-roboto-condensed tw-text-2xl tw-leading-tight tw-mt-auto tw-mb-4 tw-text-center"
         style="hyphens: auto"
       >
         <span>{{ coachFirstName }}</span
