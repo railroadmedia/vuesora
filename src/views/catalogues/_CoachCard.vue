@@ -1,54 +1,27 @@
 <template>
   <a
     :href="item.url"
-    class="
-      tw-flex
-      tw-bg-cover
-      tw-bg-top
-      tw-h-64
-      tw-relative
-      tw-bg-gray-200
-      tw-overflow-hidden
-      tw-rounded-xl
-      tw-no-underline
-      tw-text-white
-    "
+    class="tw-flex tw-bg-cover tw-bg-top tw-h-64 tw-relative tw-bg-gray-200 tw-overflow-hidden tw-rounded-lg lg:tw-rounded-xl tw-no-underline tw-text-white"
     :style="'background-image: url(' + item.coach_card_image + ');'"
   >
     <!-- Coach Details -->
     <div
-      class="
-        tw-flex tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-2/3
-      "
-      style="
-        background-image: linear-gradient(
-          180deg,
-          rgba(0, 0, 23, 0) 17.28%,
-          #000017 100%
-        );
-      "
+      class="tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-2/3 tw-px-2 tw-text-center"
+      style="background: linear-gradient(180deg, rgba(1, 5, 15, 0) 0%, #01050F 100%);"
     >
       <h3
-        class="tw-uppercase tw-mt-auto tw-mb-6 tw-px-2 tw-text-center"
+        class="tw-uppercase tw-mt-auto tw-mb-4 tw-text-center"
         style="hyphens: auto"
       >
-        <span class="tw-font-normal">{{ coachFirstName }}</span
+        <span>{{ coachFirstName }}</span
         ><br />
         <span>{{ coachLastName }}</span>
       </h3>
+      <p class="tw-text-yellow-400 tw-text-xs tw-mb-4 md:tw-mb-6 tw-uppercase">{{ coachFocus }}</p>
     </div>
     <!-- hover -->
     <div
-      class="
-        tw-absolute
-        tw-flex
-        tw-h-full
-        tw-w-full
-        tw-top-0
-        tw-left-0
-        tw-bg-black
-        tw-transition
-      "
+      class="tw-absolute tw-flex tw-h-full tw-w-full tw-top-0 tw-left-0 tw-bg-black tw-transition"
       :class="
         item.current_user_is_subscribed
           ? 'tw-bg-opacity-0 hover:tw-bg-opacity-30'
@@ -57,16 +30,7 @@
     >
       <!-- Subscribe -->
       <button
-        class="
-          tw-btn-primary
-          tw-btn-small
-          tw-h-6
-          tw-w-6
-          tw-p-0
-          tw-ml-auto
-          tw-mt-1
-          tw-mr-1
-        "
+        class="tw-btn-primary tw-btn-small tw-h-6 tw-w-6 tw-p-0 tw-ml-auto tw-mt-1 tw-mr-1"
         :class="
           item.current_user_is_subscribed
             ? 'tw-bg-white ' + themeTextClass
@@ -96,6 +60,7 @@ export default {
   data() {
     return {
       coachName: "",
+      coachFocus: ""
     };
   },
   props: {
@@ -129,6 +94,12 @@ export default {
         this.coachName = field.value;
       }
     });
+
+    this.item["data"].forEach((obj) => {
+      if (obj.key === "focus_text") {
+        this.coachFocus = obj.value;
+      }
+    })
   },
   //Get new name when updated
   beforeUpdate() {
@@ -137,6 +108,12 @@ export default {
         this.coachName = field.value;
       }
     });
+
+    this.item["data"].forEach((obj) => {
+      if (obj.key === "focus_text") {
+        this.coachFocus = obj.value;
+      }
+    })
   },
   methods: {
     updateCoachSubscription(id) {
