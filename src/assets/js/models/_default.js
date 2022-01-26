@@ -10,7 +10,7 @@ export default class ContentModel {
         this.card = {
             thumbnail: this.getPostThumbnail(),
             logo_image: this.getPostLogoImage(),
-            color_title: this.postType,
+            color_title: this.postInstructor,
             content_type: this.getTypeWithIcon(),
             black_title: this.getPostField('title'),
             description: this.getPostDatum('description'),
