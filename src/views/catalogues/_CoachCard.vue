@@ -10,14 +10,13 @@
       style="background: linear-gradient(180deg, rgba(1, 5, 15, 0) 0%, #01050F 100%);"
     >
       <h3
-        class="tw-uppercase tw-font-roboto-condensed tw-text-2xl tw-leading-tight tw-mt-auto tw-mb-4 tw-text-center"
-        style="hyphens: auto"
+        class="tw-uppercase tw-font-roboto-condensed tw-fluid-text-2xl-base tw-break-all tw-leading-tight tw-mt-auto tw-mb-4 tw-text-center"
       >
         <span>{{ coachFirstName }}</span
         ><br />
         <span>{{ coachLastName }}</span>
       </h3>
-      <p class="tw-text-yellow-400 tw-text-xs tw-mb-4 md:tw-mb-6 tw-uppercase">{{ coachFocus }}</p>
+      <p class="tw-text-yellow-400 tw-fluid-text-sm-xs tw-mb-4 md:tw-mb-6 tw-uppercase">{{ coachFocus }}</p>
     </div>
     <!-- hover -->
     <div
