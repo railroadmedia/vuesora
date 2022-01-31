@@ -6,7 +6,7 @@
     <img :src="item.coach_card_image" :alt="coachName" class="tw-w-full" />
     <!-- Coach Details -->
     <div
-      class="tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-2/3 tw-px-2 tw-text-center tw-absolute tw-w-full tw-bottom-0 tw-z-10 tw-left-0"
+      class="tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-2/3 tw-px-2 tw-text-center tw-absolute tw-w-full tw-bottom-0 tw-left-0"
       style="background: linear-gradient(180deg, rgba(1, 5, 15, 0) 0%, #01050F 100%);"
     >
       <h3
