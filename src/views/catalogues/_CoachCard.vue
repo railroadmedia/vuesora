@@ -1,12 +1,12 @@
 <template>
   <a
     :href="item.url"
-    class="tw-flex tw-bg-cover tw-bg-top tw-h-64 tw-relative tw-bg-gray-200 tw-overflow-hidden tw-rounded-lg lg:tw-rounded-xl tw-no-underline tw-text-white"
-    :style="'background-image: url(' + item.coach_card_image + ');'"
+    class="tw-relative tw-flex tw-bg-cover tw-bg-toptw-bg-gray-200 tw-overflow-hidden tw-rounded-lg lg:tw-rounded-xl tw-no-underline tw-text-white"
   >
+    <img :src="item.coach_card_image" :alt="coachName" class="tw-w-full" />
     <!-- Coach Details -->
     <div
-      class="tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-2/3 tw-px-2 tw-text-center"
+      class="tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-2/3 tw-px-2 tw-text-center tw-absolute tw-w-full tw-bottom-0 tw-z-10 tw-left-0"
       style="background: linear-gradient(180deg, rgba(1, 5, 15, 0) 0%, #01050F 100%);"
     >
       <h3
@@ -18,6 +18,7 @@
       </h3>
       <p class="tw-text-yellow-400 tw-fluid-text-sm-xs tw-mb-4 md:tw-mb-6 tw-uppercase">{{ coachFocus }}</p>
     </div>
+
     <!-- hover -->
     <div
       class="tw-absolute tw-flex tw-h-full tw-w-full tw-top-0 tw-left-0 tw-bg-black tw-transition"
