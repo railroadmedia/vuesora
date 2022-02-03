@@ -22,7 +22,7 @@
                     {{ thread.title }}
                 </p>
                 <p class="tw-text-13 tw-text-gray-600">
-                    Started on <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong> 
+                    Started <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong> 
                 </p>
                 <!-- Responsive version (could not reorder with flex) -->
                 <p class="tw-text-13 tw-text-gray-600 lg:tw-hidden">
