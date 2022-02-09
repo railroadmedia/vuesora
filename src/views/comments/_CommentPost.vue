@@ -303,6 +303,7 @@ export default {
             return {
                 subscriber: ['coach', 'edge', 'lifetime', 'team', 'guitar', 'piano'].indexOf(this.comment.user.access_level) !== -1,
                 coach: this.comment.user.access_level === 'coach',
+                'house-coach': this.comment.user.access_level === 'house-coach',
                 edge: this.comment.user.access_level === 'edge',
                 pack: this.comment.user.access_level === 'pack',
                 team: this.comment.user.access_level === 'team',

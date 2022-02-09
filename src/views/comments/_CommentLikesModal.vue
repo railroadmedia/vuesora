@@ -133,6 +133,8 @@ export default {
             return {
                 subscriber: ['edge', 'lifetime', 'team'].indexOf(user.access_level) !== -1,
                 edge: user.access_level === 'edge',
+                coach: user.access_level === 'coach',
+                'house-coach': user.access_level === 'house-coach',
                 pack: user.access_level === 'pack',
                 team: user.access_level === 'team',
                 lifetime: user.access_level === 'lifetime',

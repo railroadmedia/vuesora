@@ -451,6 +451,8 @@ export default {
                 subscriber: ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.currentUser.access_level) !== -1,
                 edge: this.currentUser.access_level === 'edge',
                 pack: this.currentUser.access_level === 'pack',
+                coach: this.currentUser.access_level === 'coach',
+                'house-coach': this.currentUser.access_level === 'house-coach',
                 team: ['team', 'admin'].indexOf(this.currentUser.access_level) !== -1,
                 guitar: this.currentUser.access_level === 'guitar',
                 piano: this.currentUser.access_level === 'piano',

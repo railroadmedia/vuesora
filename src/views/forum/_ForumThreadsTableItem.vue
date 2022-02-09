@@ -114,6 +114,8 @@ export default {
                 subscriber: ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.thread.access_level) !== -1,
                 edge: this.thread.access_level === 'edge',
                 pack: this.thread.access_level === 'pack',
+                coach: this.thread.access_level === 'coach', 
+                'house-coach': this.thread.access_level === 'house-coach', 
                 team: ['team', 'admin'].indexOf(this.thread.access_level) !== -1,
                 guitar: this.thread.access_level === 'guitar',
                 piano: this.thread.access_level === 'piano',
