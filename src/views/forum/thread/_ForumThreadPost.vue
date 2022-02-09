@@ -11,7 +11,7 @@
             <div class="tw-w-20 tw-h-20 tw-mr-4"> 
                 <div class="user-avatar tw-w-20 tw-h-20"
                     :class="[avatarClassObject, brand]">
-                    <a :href="profileRoute"
+                    <a :href="post.authorProfileUrl"
                         class="no-decoration"
                     >
                         <img class="rounded" :src="post.authorAvatar">
@@ -225,11 +225,6 @@ export default {
             }),
         },
 
-        profileBaseRoute: {
-            type: String,
-            default: '/members/profile/',
-        },
-
         updatePostBaseRoute: {
             type: String,
             default: '/post/update/',
@@ -249,6 +244,8 @@ export default {
         avatarClassObject() {
             return {
                 subscriber: ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.post.access_level) !== -1,
+                coach: this.post.access_level === 'coach',
+                'house-coach': this.post.access_level === 'house-coach',
                 edge: this.post.access_level === 'edge',
                 pack: this.post.access_level === 'pack',
                 team: ['team', 'admin'].indexOf(this.post.access_level) !== -1,
@@ -272,10 +269,6 @@ export default {
 
         postNumber() {
             return ((this.currentPage - 1) * 15) + (this.index + 1);
-        },
-
-        profileRoute() {
-            return this.profileBaseRoute + this.post.authorId;
         },
 
         showUserExp() {

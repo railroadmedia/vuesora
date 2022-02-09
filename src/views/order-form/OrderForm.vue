@@ -144,7 +144,7 @@
             />
 
           <p v-if="showVatMessage" class="tiny disclaimer mb-2 text-grey-3">
-            As of July 1st, the European Union has mandated the collection of VAT on all imported physical goods.
+            As of July 1st 2021, the European Union has mandated the collection of VAT on all imported physical goods.
             Upon delivery of your shipment by the carrier, you will be required to pay VAT as well as a collection fee,
             ranging from 5-25 EUR, dependant on the value of your delivery.
           </p>

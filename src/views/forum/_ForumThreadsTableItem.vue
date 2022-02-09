@@ -22,7 +22,7 @@
                     {{ thread.title }}
                 </p>
                 <p class="tw-text-13 tw-text-gray-600">
-                    Started on <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong> 
+                    Started <strong>{{ thread.createdOn }}</strong> by <strong>{{ thread.authorUsername }}</strong> 
                 </p>
                 <!-- Responsive version (could not reorder with flex) -->
                 <p class="tw-text-13 tw-text-gray-600 lg:tw-hidden">
@@ -114,6 +114,8 @@ export default {
                 subscriber: ['edge', 'lifetime', 'team', 'admin', 'guitar', 'piano'].indexOf(this.thread.access_level) !== -1,
                 edge: this.thread.access_level === 'edge',
                 pack: this.thread.access_level === 'pack',
+                coach: this.thread.access_level === 'coach', 
+                'house-coach': this.thread.access_level === 'house-coach', 
                 team: ['team', 'admin'].indexOf(this.thread.access_level) !== -1,
                 guitar: this.thread.access_level === 'guitar',
                 piano: this.thread.access_level === 'piano',

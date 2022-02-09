@@ -16,12 +16,6 @@
                     class="card-media bg-grey-2 active corners-10"
                     :class="[thumbnailType, {'mb-1': !displayInline}]"
                 >
-<!--                    <div-->
-<!--                        v-lazy:background-image="mappedData.thumbnail"-->
-<!--                        class="thumb-img bg-center"-->
-<!--                        :class="item.type === 'chord-and-scale' ? 'no-bg' : ''"-->
-<!--                    ></div>-->
-
                     <img
                         src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
                         :data-ix-src="mappedData.thumbnail"
@@ -82,10 +76,6 @@
                 </div>
             </div>
 
-            <!--            <img-->
-            <!--                v-if="mappedData.sheet_music"-->
-            <!--                :src="mappedData.sheet_music"-->
-            <!--            >-->
             <div
                 class="card-info flex flex-column"
                 :class="displayInline ? 'ph-1 align-v-center' : ''"
@@ -139,8 +129,13 @@ export default {
         },
     },
     computed: {
-        mappedData() {
-            return this.contentModel.card;
+        mappedData: {
+            get() {
+                return this.contentModel.card;
+            },
+            set(value) {
+                this.contentModel.card = value;
+            }
         },
         class_object() {
             return {

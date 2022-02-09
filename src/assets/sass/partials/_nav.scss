@@ -113,22 +113,30 @@ body {
     &.active {
 
       .search-row {
+        width:calc(100vw - 135px);
         transform:translateX(calc(-#{100%} + 45px));
 
         @include small {
-          transform:translateX(calc(-#{100%} - 5px));
+          width:calc(100vw - 260px);
+          transform:translateX(calc(-#{100%} + 45px));
         }
 
         @include medium {
-          transform:translateX(calc(-#{$medium} + 127px));
+          transform:translateX(calc(-#{100%} + 127px + 50px));
         }
 
         @include large {
-          transform:translateX(calc(-#{$large} + 127px));
+          transform:translateX(calc(-#{$large} + 127px + 50px));
         }
 
         @include xLarge {
-          transform:translateX(calc(-#{$xLarge} + 127px));
+          transform:translateX(calc(-#{$xLarge} + 127px + 50px));
+        }
+
+        @media only screen and (min-width: 640px) and (max-width: 767px) {
+          // Added due to inconsistent breakpoints between tailwind and vuesora
+          width:calc(100vw - 135px);
+          transform:translateX(calc(-#{100%} + 45px));
         }
       }
     }
@@ -142,7 +150,7 @@ body {
       transform:translateX(0);
       //transition:transform .2s ease-in-out;
       will-change:transform;
-      width:calc(100vw - 100px);
+      width:calc(100vw - 260px);
       background-color: #00101D;
 
       input {

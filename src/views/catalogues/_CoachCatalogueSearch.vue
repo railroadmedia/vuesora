@@ -1,10 +1,6 @@
 <template>
   <div
-    class="
-      tw-w-full tw-py-10 tw-flex tw-flex-col
-      sm:tw-flex-row
-      tw-justify-between
-    "
+    class="tw-w-full tw-py-10 tw-flex tw-flex-col sm:tw-flex-row tw-justify-between"
   >
     <div class="tw-w-full md:tw-w-3/6 lg:tw-w-2/6">
       <div class="tw-flex tw-text-gray-600 sm:tw-pr-5 tw-mb-3 ph-1 sm:tw-pl-0">
@@ -15,11 +11,7 @@
           name="search"
           autocomplete="off"
           placeholder="Search..."
-          class="
-            tw-bg-white tw-py-3 tw-px-4 tw-mr-5 tw-rounded-full tw-w-full
-            focus:outline-none
-            tw-border-2
-          "
+          class="tw-bg-white tw-py-3 tw-px-4 tw-mr-5 tw-rounded-full tw-w-full focus:outline-none tw-border-2"
           @keydown.enter="submitSearch"
         />
         <button
