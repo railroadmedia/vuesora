@@ -36,7 +36,7 @@
     "mediaelement-plugins": "^2.5.0",
     "moment-timezone": "^0.5.21",
     "mux.js": "^5.5.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "normalize.css": "^8.0.0",
     "noty": "^3.2.0-beta",
     "query-string": "^6.1.0",
