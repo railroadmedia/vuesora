@@ -6,17 +6,21 @@
     <img :src="item.coach_card_image" :alt="coachName" class="tw-w-full" />
     <!-- Coach Details -->
     <div
-      class="tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-2/3 tw-px-2 tw-text-center tw-absolute tw-w-full tw-bottom-0 tw-left-0"
+      class="tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-3/4 tw-px-2 tw-text-center tw-absolute tw-w-full tw-bottom-0 tw-left-0"
       style="background: linear-gradient(180deg, rgba(1, 5, 15, 0) 0%, #01050F 100%);"
     >
       <h3
-        class="tw-uppercase tw-font-roboto-condensed tw-fluid-text-2xl-base tw-break-all tw-leading-tight tw-mt-auto tw-mb-4 tw-text-center"
+        class="tw-uppercase tw-font-roboto-condensed tw-fluid-text-2xl-base tw-break-all tw-leading-tight md:tw-leading-none tw-mt-auto tw-mb-4 tw-text-center"
       >
         <span>{{ coachFirstName }}</span
         ><br />
         <span>{{ coachLastName }}</span>
       </h3>
-      <p class="tw-text-yellow-400 tw-fluid-text-sm-xs tw-mb-4 md:tw-mb-6 tw-uppercase">{{ coachFocus }}</p>
+      <p class="tw-text-yellow-400 tw-fluid-text-sm-xs tw-h-8 tw-leading-snug tw-mb-8 tw-uppercase">{{ coachFocus }}</p>
+      <div v-if="item.is_house_coach" class="tw-text-white tw-text-xs tw-font-roboto-condensed tw-font-bold tw-absolute tw-bottom-0 tw-w-full tw-flex tw-mb-2 tw-justify-center tw-items-center">
+        <svg width="11" height="11" fill="#ffffff" class="tw-mr-1" aria-hidden="true" focusable="false"><use xlink:href="#whistle"></use></svg>
+        HOUSE
+      </div>
     </div>
 
     <!-- hover -->
