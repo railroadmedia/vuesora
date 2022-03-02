@@ -6,7 +6,7 @@
             </h4>
         </div>
 
-        <ul class="body list-style-none mb-3 flex-column md-6">
+        <ul class="body list-style-none mb-3 flex-column">
             <li class="flex flex-row align-v-center mb-2">
                 <div class="flex flex-column default-col text-center hide-xs-only">
                     <h6 class="tiny font-bold dense">
