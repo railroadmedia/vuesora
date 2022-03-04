@@ -38643,14 +38643,20 @@ var CoachesGridCataloguevue_type_template_id_0ec4f335_staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/views/catalogues/CoachesGridCatalogue.vue?vue&type=template&id=0ec4f335&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"142d9f14-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CoachCard.vue?vue&type=template&id=69dd04c3&
-var _CoachCardvue_type_template_id_69dd04c3_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flex flex-column pa-1 catalogue-card",class:_vm.class_object},[_c('a',{staticClass:"no-decoration flex",class:_vm.displayInline ? 'flex-row' : 'flex-column',attrs:{"href":_vm.renderLink ? _vm.item.url : false}},[_c('div',{staticClass:"flex flex-column",class:[{'thumbnail-col': _vm.displayInline}, _vm.item.type + '-thumbnail']},[_c('div',{staticClass:"card-media bg-grey-2 active corners-10",class:[_vm.thumbnailType, {'mb-1': !_vm.displayInline}]},[_c('img',{staticClass:"bg-grey-2",attrs:{"src":"https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg","data-ix-src":_vm.mappedData.thumbnail,"data-ix-fade":""}}),(_vm.mappedData.logo_image)?_c('div',{staticStyle:{"width":"100%","height":"40%","position":"absolute","z-index":"999999","bottom":"0px","text-align":"center"}},[(_vm.mappedData.logo_image)?_c('img',{staticStyle:{"height":"100%","object-fit":"contain","width":"60%"},attrs:{"src":'https://cdn.musora.com/image/fetch/c_fit,w_360,h_180,q_auto:good/' + _vm.mappedData.logo_image,"alt":_vm.mappedData.black_title}}):_vm._e()]):_vm._e(),(_vm.item.type !== 'pack-bundle' && _vm.showMyListAction)?_c('i',{staticClass:"add-to-list fas fa-plus",class:_vm.is_added ? 'is-added ' + _vm.themeTextClass : 'text-white',attrs:{"title":_vm.is_added ? 'Remove from list' : 'Add to list',"data-content-id":_vm.item.id,"data-content-type":_vm.item.type},on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.addToList($event)}}}):_vm._e(),_c('div',{staticClass:"lesson-progress overflow"},[_c('span',{staticClass:"progress",class:_vm.themeBgClass,style:('width:' + _vm.progress_percent + '%')})]),(_vm.showTrophy)?_c('span',{staticClass:"bundle-complete flex-center"},[_c('i',{staticClass:"fas fa-trophy"})]):_c('span',{staticClass:"thumb-hover flex-center"},[_c('i',{staticClass:"fas",class:_vm.thumbnailIcon}),(!_vm.isReleased)?_c('p',{staticClass:"tw-text-sm tw-leading-snug text-white font-bold"},[_vm._v("\n                        "+_vm._s(_vm.releaseDate)+"\n                    ")]):_vm._e()])])]),_c('div',{staticClass:"card-info flex flex-column",class:_vm.displayInline ? 'ph-1 align-v-center' : ''},[(!_vm.isGuitareoChordAndScale)?_c('h5',{staticClass:"tw-text-xs text-grey-4 capitalize tw-font-normal tw-font-normal",domProps:{"innerHTML":_vm._s(_vm.mappedData.grey_title)}},[_vm._v("\n                "+_vm._s(_vm.mappedData.grey_title)+" \n                ")]):_vm._e(),_c('h4',{staticClass:"tw-text-sm tw-leading-snug text-black font-compressed font-bold capitalize mb-1",class:{'text-center': _vm.isGuitareoChordAndScale}},[_vm._v("\n                "+_vm._s(_vm.mappedData.black_title)+"\n            ")]),(_vm.mappedData.show_description)?_c('p',{staticClass:"tw-text-xs font-compressed text-grey-4 pb-1 mb-1 item-description always-truncate"},[_vm._v("\n                "+_vm._s(_vm.mappedData.description.replace(/<[^>]+>/g, ''))+"\n            ")]):_vm._e()])])])}
-var _CoachCardvue_type_template_id_69dd04c3_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"142d9f14-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CoachCard.vue?vue&type=template&id=00858344&
+var _CoachCardvue_type_template_id_00858344_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('a',{staticClass:"tw-relative tw-flex tw-bg-cover tw-bg-toptw-bg-gray-200 tw-overflow-hidden tw-rounded-lg lg:tw-rounded-xl tw-no-underline tw-text-white",attrs:{"href":_vm.item.url}},[_c('img',{staticClass:"tw-w-full",attrs:{"src":_vm.item.coach_card_image,"alt":_vm.coachName}}),_c('div',{staticClass:"tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-3/4 tw-px-2 tw-text-center tw-absolute tw-w-full tw-bottom-0 tw-left-0",staticStyle:{"background":"linear-gradient(180deg, rgba(1, 5, 15, 0) 0%, #01050F 100%)"}},[_c('h3',{staticClass:"tw-uppercase tw-font-roboto-condensed tw-fluid-text-2xl-base tw-break-all tw-leading-tight md:tw-leading-none tw-mt-auto tw-mb-4 tw-text-center"},[_c('span',[_vm._v(_vm._s(_vm.coachFirstName))]),_c('br'),(_vm.hasLastName)?_c('span',[_vm._v(_vm._s(_vm.coachLastName))]):_vm._e()]),_c('p',{staticClass:"tw-text-yellow-400 tw-fluid-text-sm-xs tw-h-8 tw-leading-snug tw-mb-8 tw-uppercase"},[_vm._v(_vm._s(_vm.coachFocus))]),(_vm.item.is_house_coach)?_c('div',{staticClass:"tw-text-white tw-text-xs tw-font-roboto-condensed tw-font-bold tw-absolute tw-bottom-0 tw-w-full tw-flex tw-mb-2 tw-justify-center tw-items-center"},[_c('svg',{staticClass:"tw-mr-1",attrs:{"width":"11","height":"11","fill":"#ffffff","aria-hidden":"true","focusable":"false"}},[_c('use',{attrs:{"xlink:href":"#whistle"}})]),_vm._v("\n      HOUSE\n    ")]):_vm._e()]),_c('div',{staticClass:"tw-absolute tw-flex tw-h-full tw-w-full tw-top-0 tw-left-0 tw-bg-black tw-transition",class:_vm.item.current_user_is_subscribed
+        ? 'tw-bg-opacity-0 hover:tw-bg-opacity-30'
+        : 'tw-bg-opacity-30 tw-opacity-0 hover:tw-opacity-100'},[_c('button',{staticClass:"tw-btn-primary tw-btn-small tw-h-6 tw-w-6 tw-p-0 tw-ml-auto tw-mt-1 tw-mr-1",class:_vm.item.current_user_is_subscribed
+          ? 'tw-bg-white ' + _vm.themeTextClass
+          : _vm.themeBgClass,on:{"click":function($event){$event.preventDefault();return _vm.updateCoachSubscription(_vm.item.id)}}},[_c('i',{staticClass:"fas fa-bell tw-text-base"}),_c('span',{staticClass:"tw-sr-only"},[(_vm.item.current_user_is_subscribed)?[_vm._v("Unsubscribe From Coach")]:[_vm._v("Subscribe to Coach")]],2)])])])}
+var _CoachCardvue_type_template_id_00858344_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/catalogues/_CoachCard.vue?vue&type=template&id=69dd04c3&
+// CONCATENATED MODULE: ./src/views/catalogues/_CoachCard.vue?vue&type=template&id=00858344&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/catalogues/_CoachCard.vue?vue&type=script&lang=js&
+
+
 //
 //
 //
@@ -38706,121 +38712,129 @@ var _CoachCardvue_type_template_id_69dd04c3_staticRenderFns = []
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 /* harmony default export */ var _CoachCardvue_type_script_lang_js_ = ({
-  name: 'CoachCatalogueCard',
+  name: "CoachCatalogueCard",
   mixins: [_mixin, ThemeClasses],
+  data: function data() {
+    return {
+      coachName: "",
+      coachFocus: ""
+    };
+  },
   props: {
-    sixWide: {
-      type: Boolean,
-      default: function _default() {
-        return false;
-      }
-    },
-    fiveWide: {
-      type: Boolean,
-      default: function _default() {
-        return false;
-      }
-    },
-    displayInline: {
-      type: Boolean,
-      default: function _default() {
-        return false;
-      }
-    },
     showMyListAction: {
       type: Boolean,
       default: function _default() {
         return true;
       }
+    },
+    brand: {
+      type: String,
+      default: function _default() {
+        return "drumeo";
+      }
     }
   },
   computed: {
-    mappedData: {
-      get: function get() {
-        return this.contentModel.card;
-      },
-      set: function set(value) {
-        this.contentModel.card = value;
-      }
+    coachFirstName: function coachFirstName() {
+      return this.coachName.split(" ")[0];
     },
-    class_object: function class_object() {
-      return {
-        'no-access': this.noAccess,
-        completed: this.item.completed,
-        'six-wide': this.sixWide,
-        'five-wide': this.fiveWide,
-        'bb-grey-1-1': this.displayInline,
-        'display-inline': this.displayInline
-      };
+    hasLastName: function hasLastName() {
+      return this.coachName.split(" ").length > 1;
     },
-    is_added: {
-      cache: false,
-      get: function get() {
-        return this.item.is_added_to_primary_playlist;
-      }
+    coachLastName: function coachLastName() {
+      return this.coachName.substr(this.coachName.indexOf(" ") + 1);
     },
-    showTrophy: function showTrophy() {
-      return this.item.type === 'pack-bundle' && this.item.completed === true;
+    themeBgClass: function themeBgClass() {
+      return "tw-bg-" + this.brand;
     },
-    isGuitareoChordAndScale: function isGuitareoChordAndScale() {
-      return this.brand === 'guitareo' && this.item.type === 'chord-and-scale';
+    themeTextClass: function themeTextClass() {
+      return "tw-text-" + this.brand;
     }
   },
-  beforeDestroy: function beforeDestroy() {
-    this.mappedData = null;
+  //Get name before mounting
+  beforeMount: function beforeMount() {
+    var _this = this;
+
+    this.item["fields"].forEach(function (field) {
+      if (field.key === "name") {
+        _this.coachName = field.value;
+      }
+    });
+    this.item["data"].forEach(function (obj) {
+      if (obj.key === "focus_text") {
+        _this.coachFocus = obj.value;
+      }
+    });
+  },
+  //Get new name when updated
+  beforeUpdate: function beforeUpdate() {
+    var _this2 = this;
+
+    this.item["fields"].forEach(function (field) {
+      if (field.key === "name") {
+        _this2.coachName = field.value;
+      }
+    });
+    this.item["data"].forEach(function (obj) {
+      if (obj.key === "focus_text") {
+        _this2.coachFocus = obj.value;
+      }
+    });
+  },
+  methods: {
+    updateCoachSubscription: function updateCoachSubscription(id) {
+      var _this3 = this;
+
+      if (!this.item.current_user_is_subscribed) {
+        this.item.current_user_is_subscribed = true;
+        services_content.followCoach({
+          coachId: id
+        }).then(function () {
+          var text = "You will now receive updates when ".concat(_this3.coachFirstName, " releases new content!");
+
+          _this3.$emit("onShowNotification", {
+            text: text,
+            icon: "fa-envelope"
+          });
+
+          console.log("Subscribed to: " + _this3.coachName);
+        }).catch(function () {
+          _this3.item.current_user_is_subscribed = false;
+
+          _this3.$emit("onShowNotification", {
+            error: true
+          });
+
+          console.log("Subscribed did not work");
+        });
+      } else {
+        this.item.current_user_is_subscribed = false;
+        services_content.unfollowCoach({
+          coachId: id
+        }).then(function () {
+          var text = "You will no longer receive updates when ".concat(_this3.coachFirstName, " releases new content!");
+
+          _this3.$emit("onShowNotification", {
+            text: text,
+            icon: "fa-bell-slash"
+          });
+
+          console.log("Unsubscribed to: " + _this3.coachName);
+        }).catch(function () {
+          _this3.item.current_user_is_subscribed = true;
+
+          _this3.$emit("onShowNotification", {
+            error: true
+          });
+
+          console.log("Unubscribed did not work");
+        });
+      }
+    }
   }
 });
 // CONCATENATED MODULE: ./src/views/catalogues/_CoachCard.vue?vue&type=script&lang=js&
@@ -38835,8 +38849,8 @@ var _CoachCardvue_type_template_id_69dd04c3_staticRenderFns = []
 
 var _CoachCard_component = normalizeComponent(
   catalogues_CoachCardvue_type_script_lang_js_,
-  _CoachCardvue_type_template_id_69dd04c3_render,
-  _CoachCardvue_type_template_id_69dd04c3_staticRenderFns,
+  _CoachCardvue_type_template_id_00858344_render,
+  _CoachCardvue_type_template_id_00858344_staticRenderFns,
   false,
   null,
   null,
