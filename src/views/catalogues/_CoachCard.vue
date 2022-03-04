@@ -1,164 +1,167 @@
 <template>
-  <a
-    :href="item.url"
-    class="tw-relative tw-flex tw-bg-cover tw-bg-toptw-bg-gray-200 tw-overflow-hidden tw-rounded-lg lg:tw-rounded-xl tw-no-underline tw-text-white"
-  >
-    <img :src="item.coach_card_image" :alt="coachName" class="tw-w-full" />
-    <!-- Coach Details -->
     <div
-      class="tw-flex tw-flex-col tw-mt-auto tw-w-full tw-items-center tw-justify-center tw-h-3/4 tw-px-2 tw-text-center tw-absolute tw-w-full tw-bottom-0 tw-left-0"
-      style="background: linear-gradient(180deg, rgba(1, 5, 15, 0) 0%, #01050F 100%);"
+        class="flex flex-column pa-1 catalogue-card"
+        :class="class_object"
     >
-      <h3
-        class="tw-uppercase tw-font-roboto-condensed tw-fluid-text-2xl-base tw-break-all tw-leading-tight md:tw-leading-none tw-mt-auto tw-mb-4 tw-text-center"
-      >
-        <span>{{ coachFirstName }}</span
-        ><br />
-        <span>{{ coachLastName }}</span>
-      </h3>
-      <p class="tw-text-yellow-400 tw-fluid-text-sm-xs tw-h-8 tw-leading-snug tw-mb-8 tw-uppercase">{{ coachFocus }}</p>
-      <div v-if="item.is_house_coach" class="tw-text-white tw-text-xs tw-font-roboto-condensed tw-font-bold tw-absolute tw-bottom-0 tw-w-full tw-flex tw-mb-2 tw-justify-center tw-items-center">
-        <svg width="11" height="11" fill="#ffffff" class="tw-mr-1" aria-hidden="true" focusable="false"><use xlink:href="#whistle"></use></svg>
-        HOUSE
-      </div>
-    </div>
+        <a
+            :href="renderLink ? item.url : false"
+            class="no-decoration flex"
+            :class="displayInline ? 'flex-row' : 'flex-column'"
+        >
+            <div
+                class="flex flex-column"
+                :class="[{'thumbnail-col': displayInline}, item.type + '-thumbnail']"
+            >
+                <div
+                    class="card-media bg-grey-2 active corners-10"
+                    :class="[thumbnailType, {'mb-1': !displayInline}]"
+                >
+                    <img
+                        src="https://dmmior4id2ysr.cloudfront.net/assets/images/image-loader.svg"
+                        :data-ix-src="mappedData.thumbnail"
+                        data-ix-fade
+                        class="bg-grey-2"
+                    >
 
-    <!-- hover -->
-    <div
-      class="tw-absolute tw-flex tw-h-full tw-w-full tw-top-0 tw-left-0 tw-bg-black tw-transition"
-      :class="
-        item.current_user_is_subscribed
-          ? 'tw-bg-opacity-0 hover:tw-bg-opacity-30'
-          : 'tw-bg-opacity-30 tw-opacity-0 hover:tw-opacity-100'
-      "
-    >
-      <!-- Subscribe -->
-      <button
-        class="tw-btn-primary tw-btn-small tw-h-6 tw-w-6 tw-p-0 tw-ml-auto tw-mt-1 tw-mr-1"
-        :class="
-          item.current_user_is_subscribed
-            ? 'tw-bg-white ' + themeTextClass
-            : themeBgClass
-        "
-        @click.prevent="updateCoachSubscription(item.id)"
-      >
-        <i class="fas fa-bell tw-text-base"></i>
-        <span class="tw-sr-only">
-          <template v-if="item.current_user_is_subscribed"
-            >Unsubscribe From Coach</template
-          >
-          <template v-else>Subscribe to Coach</template>
-        </span>
-      </button>
+                    <!-- this is generally for packs only -->
+                    <div v-if="mappedData.logo_image"
+                         style="width: 100%;height: 40%;position: absolute;z-index: 999999;bottom: 0px;text-align: center;">
+
+                        <img v-if="mappedData.logo_image"
+                             style="height: 100%;object-fit: contain;width: 60%;;"
+                             :src="'https://cdn.musora.com/image/fetch/c_fit,w_360,h_180,q_auto:good/' + mappedData.logo_image"
+                             :alt="mappedData.black_title">
+                    </div>
+
+                    <i
+                        v-if="item.type !== 'pack-bundle' && showMyListAction"
+                        class="add-to-list fas fa-plus"
+                        :class="is_added ? 'is-added ' + themeTextClass : 'text-white'"
+                        :title="is_added ? 'Remove from list' : 'Add to list'"
+                        :data-content-id="item.id"
+                        :data-content-type="item.type"
+                        @click.stop.prevent="addToList"
+                    ></i>
+
+                    <div class="lesson-progress overflow">
+                        <span
+                            class="progress"
+                            :class="themeBgClass"
+                            :style="'width:' + progress_percent + '%'"
+                        ></span>
+                    </div>
+
+                    <span
+                        v-if="showTrophy"
+                        class="bundle-complete flex-center"
+                    >
+                        <i class="fas fa-trophy"></i>
+                    </span>
+                    <span
+                        v-else
+                        class="thumb-hover flex-center"
+                    >
+                        <i
+                            class="fas"
+                            :class="thumbnailIcon"
+                        ></i>
+
+                        <p
+                            v-if="!isReleased"
+                            class="tw-text-sm tw-leading-snug text-white font-bold"
+                        >
+                            {{ releaseDate }}
+                        </p>
+                    </span>
+                </div>
+            </div>
+
+            <div
+                class="card-info flex flex-column"
+                :class="displayInline ? 'ph-1 align-v-center' : ''"
+            >
+                <h5
+                    class="tw-text-xs text-grey-4 capitalize tw-font-normal tw-font-normal"
+                    v-if="!isGuitareoChordAndScale" v-html="mappedData.grey_title">
+                    {{ mappedData.grey_title }} 
+                    </h5>
+
+                <h4
+                    class="tw-text-sm tw-leading-snug text-black font-compressed font-bold capitalize mb-1"
+                    :class="{'text-center': isGuitareoChordAndScale}"
+                >
+                    {{ mappedData.black_title }}
+                </h4>
+
+                <p
+                    v-if="mappedData.show_description"
+                    class="tw-text-xs font-compressed text-grey-4 pb-1 mb-1 item-description always-truncate"
+                >
+                    {{ mappedData.description.replace(/<[^>]+>/g, '') }}
+                </p>
+            </div>
+        </a>
     </div>
-  </a>
 </template>
 <script>
-import Mixin from "./_mixin";
-import ThemeClasses from "../../mixins/ThemeClasses";
-import ContentService from "../../assets/js/services/content";
+import Mixin from './_mixin';
+import ThemeClasses from '../../mixins/ThemeClasses';
 
 export default {
-  name: "CoachCatalogueCard",
-  mixins: [Mixin, ThemeClasses],
-  data() {
-    return {
-      coachName: "",
-      coachFocus: ""
-    };
-  },
-  props: {
-    showMyListAction: {
-      type: Boolean,
-      default: () => true,
+    name: 'CoachCatalogueCard',
+    mixins: [Mixin, ThemeClasses],
+    props: {
+        sixWide: {
+            type: Boolean,
+            default: () => false,
+        },
+        fiveWide: {
+            type: Boolean,
+            default: () => false,
+        },
+        displayInline: {
+            type: Boolean,
+            default: () => false,
+        },
+        showMyListAction: {
+            type: Boolean,
+            default: () => true,
+        },
     },
-    brand: {
-      type: String,
-      default: () => "drumeo",
+    computed: {
+        mappedData: {
+            get() {
+                return this.contentModel.card;
+            },
+            set(value) {
+                this.contentModel.card = value;
+            }
+        },
+        class_object() {
+            return {
+                'no-access': this.noAccess,
+                completed: this.item.completed,
+                'six-wide': this.sixWide,
+                'five-wide': this.fiveWide,
+                'bb-grey-1-1': this.displayInline,
+                'display-inline': this.displayInline,
+            };
+        },
+        is_added: {
+            cache: false,
+            get() {
+                return this.item.is_added_to_primary_playlist;
+            },
+        },
+        showTrophy() {
+            return this.item.type === 'pack-bundle' && this.item.completed === true;
+        },
+        isGuitareoChordAndScale() {
+            return this.brand === 'guitareo' && this.item.type === 'chord-and-scale';
+        },
     },
-  },
-  computed: {
-    coachFirstName() {
-      return this.coachName.split(" ")[0];
+    beforeDestroy() {
+        this.mappedData = null;
     },
-    coachLastName() {
-      return this.coachName.substr(this.coachName.indexOf(" ") + 1);
-    },
-    themeBgClass() {
-      return "tw-bg-" + this.brand;
-    },
-    themeTextClass() {
-      return "tw-text-" + this.brand;
-    },
-  },
-  //Get name before mounting
-  beforeMount() {
-    this.item["fields"].forEach((field) => {
-      if (field.key === "name") {
-        this.coachName = field.value;
-      }
-    });
-
-    this.item["data"].forEach((obj) => {
-      if (obj.key === "focus_text") {
-        this.coachFocus = obj.value;
-      }
-    })
-  },
-  //Get new name when updated
-  beforeUpdate() {
-    this.item["fields"].forEach((field) => {
-      if (field.key === "name") {
-        this.coachName = field.value;
-      }
-    });
-
-    this.item["data"].forEach((obj) => {
-      if (obj.key === "focus_text") {
-        this.coachFocus = obj.value;
-      }
-    })
-  },
-  methods: {
-    updateCoachSubscription(id) {
-      if (!this.item.current_user_is_subscribed) {
-        this.item.current_user_is_subscribed = true;
-        ContentService.followCoach({ coachId: id })
-          .then(() => {
-            const text = `You will now receive updates when ${this.coachFirstName} releases new content!`;
-            this.$emit("onShowNotification", {
-              text,
-              icon: "fa-envelope",
-            });
-            console.log("Subscribed to: " + this.coachName);
-          })
-          .catch(() => {
-            this.item.current_user_is_subscribed = false;
-            this.$emit("onShowNotification", {
-              error: true,
-            });
-            console.log("Subscribed did not work");
-          });
-      } else {
-        this.item.current_user_is_subscribed = false;
-        ContentService.unfollowCoach({ coachId: id })
-          .then(() => {
-            const text = `You will no longer receive updates when ${this.coachFirstName} releases new content!`;
-            this.$emit("onShowNotification", {
-              text,
-              icon: "fa-bell-slash",
-            });
-            console.log("Unsubscribed to: " + this.coachName);
-          })
-          .catch(() => {
-            this.item.current_user_is_subscribed = true;
-            this.$emit("onShowNotification", {
-              error: true,
-            });
-            console.log("Unubscribed did not work");
-          });
-      }
-    },
-  },
 };
 </script>
