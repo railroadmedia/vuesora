@@ -83,7 +83,6 @@
                         >
                             ${{ totalPriceAfterDiscounts }}
                         </h2>
-
                         <h2
                             v-if="totalPriceAfterDiscounts <= 0"
                             class="title font-bold"
@@ -96,11 +95,14 @@
                     <h3
                         v-if="item.subscription_interval_type && totalPriceAfterDiscounts > 0"
                         class="tiny"
+                        v-bind:class="{'text-grey-3': this.item.discount_aux }"
                     >
+                        <span v-if="this.item.discount_aux">
+                            {{ discountNrOfMonths }}
+                        </span>
                         <span v-if="item.subscription_renewal_price != totalPriceAfterDiscounts">
                             then ${{ Number(item.subscription_renewal_price).toFixed(2)}}
                         </span>
-
                         {{ intervalString }}
                     </h3>
                 </div>
@@ -166,6 +168,16 @@ export default {
 
             return `per ${ this.item.subscription_interval_count } ${ this.item.subscription_interval_type }s`
         },
+
+        discountNrOfMonths() {
+            if (this.item.discount_aux === 1) {
+                return 'for the first month, ';
+            } else if (this.item.discount_aux === 12) {
+                return 'for the first year, '
+            }
+
+            return `for the first ${this.item.discount_aux} months, `
+        }
     },
     mounted() {
     },
