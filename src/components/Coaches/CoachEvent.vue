@@ -16,10 +16,10 @@
           <img
             class="tw-rounded-lg tw-w-full"
             :src="
-              'https://cdn.musora.com/image/fetch/c_thumb,g_face,w_320,h_180,z_0.75,q_auto:best/' +
+              'https://cdn.musora.com/image/fetch/c_thumb,w_320,h_180,z_0.75,q_auto:best/' +
               (content.thumbnail_url
                 ? content.thumbnail_url
-                : instructor.head_shot_picture_url)
+                : instructors[0].head_shot_picture_url)
             "
           />
         </div>
@@ -79,25 +79,27 @@
             </a>
           </div>
 
-          <!-- Coach -->
-          <a
-            :href="eventCoachProfileUrl"
-            class="tw-flex tw-flex-row tw-items-center tw-no-underline"
-          >
-            <h4
-              class="tw-leading-none tw-text-lg tw-uppercase tw-font-normal"
-              :class="[brandTextColor]"
+          <!-- Coaches -->
+          <div class="tw-flex">
+            <div class="tw-inline-flex"
+                v-for="(coach, i) in instructors" 
+                :key="i"
             >
-              {{ instructor.name.split(" ")[0] }}
-              <span class="tw-font-bold">
-                {{ instructor.name.split(" ")[1] }}</span
+              <a :href="`/members/coaches/${coach.slug}`"
+                 class="tw-no-underline tw-mr-1.5 tw-block hover:tw-underline"
+                 :class="[brandTextColor]"
               >
-              <!-- Optional third name -->
-              <span class="tw-font-bold">
-                {{ instructor.name.split(" ")[2] }}</span
-              >
-            </h4>
-          </a>
+                <h4 class="tw-leading-none tw-text-lg tw-uppercase tw-font-normal">
+                  <span class="tw-mr-1">{{ coach.name.split(" ")[0] }}</span>
+                  <span class="tw-font-bold">{{ coach.name.split(" ")[1] }}</span>
+                  <!-- Optional third name -->
+                  <span class="tw-font-bold">{{ coach.name.split(" ")[2] }}</span>
+                </h4>
+              </a>
+              <span v-if="i+1 < instructors.length" class="tw-leading-none tw-font-bold tw-text-lg tw-mr-1.5" :class="[brandTextColor]" >&</span>
+            </div>
+          </div>
+
         </div>
 
         <!-- Buttons -->
@@ -217,15 +219,11 @@ export default {
       type: String,
       default: () => "",
     },
-    eventCoachProfileUrl: {
-      type: String,
-      default: () => "",
-    },
   },
   data() {
     return {
       content: null,
-      instructor: null,
+      instructors: null,
       currentDate: DateTime.fromSQL(this.currentDateString, { zone: "UTC" }),
       counterValue: 0,
       eventIsLive: false,
@@ -254,7 +252,8 @@ export default {
         this.preloadedContent.data[0],
         true
       );
-      this.instructor = this.content.instructor[0];
+      this.instructors = this.content.instructor;
+      console.log(this.instructors);
 
       this.startTime = DateTime.fromSQL(this.content.live_event_start_time, {
         zone: "UTC",
