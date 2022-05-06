@@ -222,7 +222,7 @@
                         v-if="hasSubscription"
                         class="flex flex-row form-group align-v-center mb-2"
                     >
-                        <span class="toggle-input mr-1">
+                        <span class="mr-1">
                             <input
                                 id="updateActiveSubscriptions"
                                 v-model="paymentDetails.updateActiveSubscriptions"
@@ -248,7 +248,7 @@
                         class="flex flex-row form-group align-v-center mb-2 pt-2"
                         style="border-top: 1px solid #ddd;"
                     >
-                        <span class="toggle-input mr-1">
+                        <span class="mr-1">
                             <input
                                 id="renewDueSubscription"
                                 v-model="paymentDetails.renewDueSubscription"
