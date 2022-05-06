@@ -239,7 +239,7 @@
                             for="updateActiveSubscriptions"
                             class="toggle-label font-bold"
                         >
-                            Update my existing active subscriptions to use this payment method.
+                          Add this payment method to my Subscription Plan/Payment Plan
                         </label>
                     </div>
 
@@ -265,7 +265,7 @@
                             for="renewDueSubscription"
                             class="toggle-label font-bold"
                         >
-                            Renew my subscription now.
+                          Process Renewal/Payment now
                         </label>
                     </div>
 
