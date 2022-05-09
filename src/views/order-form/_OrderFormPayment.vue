@@ -294,13 +294,14 @@
                                     Shipping: ${{ totalShipping }}
                                 </div>
 
-                                <div class="body font-bold">
-                                    Tax: ${{ totalTax }}
-                                </div>
 
-                                <div class="body font-bold">
-                                    <span class="display">${{ totalDue }}</span> USD
-                                </div>
+                              <div class="body font-bold">
+                                Tax: ${{ displayOverrideTax ? displayOverrideTax : totalTax }}
+                              </div>
+
+                              <div class="body font-bold">
+                                  <span class="display">${{ displayOverridePrice ? displayOverridePrice : totalDue }}</span> USD
+                              </div>
 
                                 <div class="body font-bold">
                                     Due Today
@@ -412,6 +413,16 @@ export default {
         isActive: {
             type: Boolean,
             default: () => true,
+        },
+
+        displayOverridePrice: {
+            type: [String, Boolean],
+            default: () => false,
+        },
+
+        displayOverrideTax: {
+            type: [String, Boolean],
+            default: () => false,
         },
     },
     data() {
