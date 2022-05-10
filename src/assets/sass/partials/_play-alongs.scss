@@ -49,13 +49,17 @@ body.play-alongs-player-open {
   position:fixed;
   font-size:0;
   bottom:0;
-  left:0;
+  left: 250px;
   right:0;
   z-index:97;
   transform:translateY(0);
   transition:.2s transform ease-in-out;
   will-change:transform;
   touch-action: manipulation;
+
+  @media (max-width: 1024px) {
+    left: 0 !important;
+  }
 
   &.collapsed-down {
     transform:translateY(calc(100% - 10px));
@@ -132,6 +136,10 @@ body.play-alongs-player-open {
       }
     }
   }
+}
+
+body.sidebar-collapsed #playAlongsPlayer {
+  left: 100px;
 }
 
 .show-mobile-filters {

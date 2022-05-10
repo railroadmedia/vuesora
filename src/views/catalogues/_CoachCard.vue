@@ -14,7 +14,7 @@
       >
         <span>{{ coachFirstName }}</span
         ><br />
-        <span>{{ coachLastName }}</span>
+        <span v-if="hasLastName">{{ coachLastName }}</span>
       </h3>
       <p class="tw-text-yellow-400 tw-fluid-text-sm-xs tw-h-8 tw-leading-snug tw-mb-8 tw-uppercase">{{ coachFocus }}</p>
       <div v-if="item.is_house_coach" class="tw-text-white tw-text-xs tw-font-roboto-condensed tw-font-bold tw-absolute tw-bottom-0 tw-w-full tw-flex tw-mb-2 tw-justify-center tw-items-center">
@@ -80,6 +80,9 @@ export default {
   computed: {
     coachFirstName() {
       return this.coachName.split(" ")[0];
+    },
+    hasLastName() {
+      return this.coachName.split(" ").length > 1;
     },
     coachLastName() {
       return this.coachName.substr(this.coachName.indexOf(" ") + 1);

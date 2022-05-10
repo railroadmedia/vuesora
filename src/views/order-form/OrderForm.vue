@@ -445,10 +445,12 @@ export default {
     methods: {
         updateSelectedPayment(method) {
             this.selectedPaymentMethod = method;
+            this.updateAddressesInSession();
         },
 
         updateSelectedAddress(address) {
             this.selectedAddress = address;
+            this.updateAddressesInSession();
         },
 
         selectAddress(address) {
