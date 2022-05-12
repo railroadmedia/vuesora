@@ -124,6 +124,8 @@
 
                 <order-form-payment
                     ref="paymentForm"
+                    :display-override-price="displayOverridePrice"
+                    :display-override-tax="displayOverrideTax"
                     :theme-color="themeColor"
                     :brand="brand"
                     :payment-details="editingPaymentMethod"
@@ -244,6 +246,16 @@ export default {
                     tax: 0,
                 },
             }),
+        },
+
+        displayOverridePrice: {
+            type: [String, Boolean],
+            default: () => false,
+        },
+
+        displayOverrideTax: {
+          type: [String, Boolean],
+          default: () => false,
         },
     },
     data() {

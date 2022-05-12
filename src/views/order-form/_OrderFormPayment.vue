@@ -222,7 +222,7 @@
                         v-if="hasSubscription"
                         class="flex flex-row form-group align-v-center mb-2"
                     >
-                        <span class="toggle-input mr-1">
+                        <span class="mr-1">
                             <input
                                 id="updateActiveSubscriptions"
                                 v-model="paymentDetails.updateActiveSubscriptions"
@@ -239,7 +239,7 @@
                             for="updateActiveSubscriptions"
                             class="toggle-label font-bold"
                         >
-                            Update my existing active subscriptions to use this payment method.
+                          Add this payment method to my Subscription Plan/Payment Plan
                         </label>
                     </div>
 
@@ -248,7 +248,7 @@
                         class="flex flex-row form-group align-v-center mb-2 pt-2"
                         style="border-top: 1px solid #ddd;"
                     >
-                        <span class="toggle-input mr-1">
+                        <span class="mr-1">
                             <input
                                 id="renewDueSubscription"
                                 v-model="paymentDetails.renewDueSubscription"
@@ -265,7 +265,7 @@
                             for="renewDueSubscription"
                             class="toggle-label font-bold"
                         >
-                            Renew my subscription now.
+                          Process Renewal/Payment now
                         </label>
                     </div>
 
@@ -294,13 +294,14 @@
                                     Shipping: ${{ totalShipping }}
                                 </div>
 
-                                <div class="body font-bold">
-                                    Tax: ${{ totalTax }}
-                                </div>
 
-                                <div class="body font-bold">
-                                    <span class="display">${{ totalDue }}</span> USD
-                                </div>
+                              <div class="body font-bold">
+                                Tax: ${{ displayOverrideTax ? displayOverrideTax : totalTax }}
+                              </div>
+
+                              <div class="body font-bold">
+                                  <span class="display">${{ displayOverridePrice ? displayOverridePrice : totalDue }}</span> USD
+                              </div>
 
                                 <div class="body font-bold">
                                     Due Today
@@ -412,6 +413,16 @@ export default {
         isActive: {
             type: Boolean,
             default: () => true,
+        },
+
+        displayOverridePrice: {
+            type: [String, Boolean],
+            default: () => false,
+        },
+
+        displayOverrideTax: {
+            type: [String, Boolean],
+            default: () => false,
         },
     },
     data() {
