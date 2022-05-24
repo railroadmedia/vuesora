@@ -401,6 +401,10 @@ export default {
                     value: '-published_on'
                 },
                 {
+                    label: 'Most Popular',
+                    value: '-like_count'
+                },
+                {
                     label: 'My posts',
                     value: 'mine'
                 }
