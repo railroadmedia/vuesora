@@ -397,7 +397,7 @@ export default {
                     value: 'published_on'
                 },
                 {
-                    label: 'Most recent',
+                    label: 'Most Recent',
                     value: '-published_on'
                 },
                 {
@@ -405,7 +405,7 @@ export default {
                     value: '-like_count'
                 },
                 {
-                    label: 'My posts',
+                    label: 'My Posts',
                     value: 'mine'
                 }
             ],
