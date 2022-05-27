@@ -1,6 +1,6 @@
 <template>
     <div class="tw-relative tw-flex tw-flex-row tw-items-center tw-text-black tw-border-0 tw-border-b tw-border-solid tw-border-gray-200">
-        <a :href="thread.url+'?sortby_val=published_on'" 
+        <a :href="thread.url+'?sortby_val=-published_on'" 
            :class="[brandHoverColor]"
            class="tw-py-4 tw-pl-2 tw-transition-colors tw-inline-flex tw-no-underline tw-w-full" 
         >

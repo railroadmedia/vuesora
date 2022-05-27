@@ -469,7 +469,7 @@ export default {
                 if (urlParams['sortby_val'] != null) {
                     return urlParams['sortby_val'];
                 }
-                return 'published_on';
+                return '-published_on';
             },
             set(val) {
                 return val;
