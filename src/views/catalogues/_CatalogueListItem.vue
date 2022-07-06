@@ -10,7 +10,6 @@
     :class="[class_object, isBranchPath ? [branchPathBG, branchPathText]: 'hover-bg-grey-7 hover-text-black']"
     :href="renderLink ? item.url : false"
   >
-  <p>New is {{ item.is_New }}</p>
     <!--        <div v-if="mappedData.sheet_music && !is_search"-->
     <!--             class="flex flex-column xs-12 pv hide-sm-up">-->
     <!--            <img :src="mappedData.sheet_music" style="width:100%;">-->
@@ -249,7 +248,7 @@
       <div v-else class="body">
         <i
           class="add-to-list fas fa-plus flex-center"
-          :class="[is_added ? 'is-added ' + themeTextClass : '', isBranchPath ? branchPathText: 'text-grey-2 hover-text-black']"
+          :class="[is_added ? 'is-added ' + themeTextClass : '', isBranchPath ? branchPathText: 'text-grey-2 hover-text-black' ]"
           :title="is_added ? 'Remove from list' : 'Add to list'"
           @click.stop.prevent="addToList"
         ></i>
@@ -386,6 +385,7 @@ export default {
   },
 };
 </script>
+<<<<<<< HEAD
 <style  lang="scss">
   /* Temporary */
   .tw-bg-\[\#FCB8BF\] {
@@ -401,3 +401,5 @@ export default {
     background-color: #FCB8BF;
   }
 </style>
+=======
+>>>>>>> feature-classical-method
