@@ -1,32 +1,65 @@
 <template>
     <div class="flex flex-column">
-        <catalogue-list-item
-            v-for="(item, i) in content"
-            :key="'list' + item.id"
-            :index="item.week || i + 1"
-            :item="item"
-            :is-coach="isCoach"
-            :content-type="item.type"
-            :brand="brand"
-            :theme-color="themeColor"
-            :use-theme-color="useThemeColor"
-            :overview="displayItemsAsOverview"
-            :user-id="userId"
-            :is-admin="isAdmin"
-            :display-user-interactions="displayUserInteractions"
-            :content-type-override="contentTypeOverride"
-            :show-numbers="showNumbers"
-            :no-link="lockUnowned && item.is_owned === false"
-            :lock-unowned="lockUnowned"
-            :is_search="is_search"
-            :force-wide-thumbs="forceWideThumbs"
-            :reset-progress="resetProgress"
-            :destroy-on-list-removal="destroyOnListRemoval"
-            :compact-layout="compactLayout"
-            @addToList="emitAddToList"
-            @progressReset="emitResetProgress"
-            @addEvent="addEventToDropdown"
-        ></catalogue-list-item>
+        <template v-for="(item, i) in content"
+        >
+            <catalogue-list-item
+                :key="'list' + item.id"
+                :index="item.week || i + 1"
+                :item="item"
+                :is-coach="isCoach"
+                :content-type="item.type"
+                :brand="brand"
+                :theme-color="themeColor"
+                :use-theme-color="useThemeColor"
+                :overview="displayItemsAsOverview"
+                :user-id="userId"
+                :is-admin="isAdmin"
+                :display-user-interactions="displayUserInteractions"
+                :content-type-override="contentTypeOverride"
+                :show-numbers="showNumbers"
+                :no-link="lockUnowned && item.is_owned === false"
+                :lock-unowned="lockUnowned"
+                :is_search="is_search"
+                :force-wide-thumbs="forceWideThumbs"
+                :reset-progress="resetProgress"
+                :destroy-on-list-removal="destroyOnListRemoval"
+                :compact-layout="compactLayout"
+                @addToList="emitAddToList"
+                @progressReset="emitResetProgress"
+                @addEvent="addEventToDropdown"
+            />
+
+            <div id="branch-paths" :key="'branch' + item.id" v-if="branchPathIndex === i && branchPathContent.data.length > 0" >
+                <catalogue-list-item
+                    v-for="(branchItem, j) in branchPathContent.data"
+                    :key="'branch' + branchItem.id"
+                    :index="branchItem.week || j + 1"
+                    :item="branchItem"
+                    :is-coach="isCoach"
+                    :is-branch-path="true"
+                    :content-type="branchItem.type"
+                    :brand="brand"
+                    :theme-color="themeColor"
+                    :use-theme-color="useThemeColor"
+                    :overview="displayItemsAsOverview"
+                    :user-id="userId"
+                    :is-admin="isAdmin"
+                    :display-user-interactions="displayUserInteractions"
+                    :content-type-override="contentTypeOverride"
+                    :show-numbers="showNumbers"
+                    :no-link="lockUnowned && branchItem.is_owned === false"
+                    :lock-unowned="lockUnowned"
+                    :is_search="is_search"
+                    :force-wide-thumbs="forceWideThumbs"
+                    :reset-progress="resetProgress"
+                    :destroy-on-list-removal="destroyOnListRemoval"
+                    :compact-layout="compactLayout"
+                    @addToList="emitAddToList"
+                    @progressReset="emitResetProgress"
+                    @addEvent="addEventToDropdown"
+                />  
+            </div>
+        </template>
 
         <add-event-modal
             :single-event="singleEvent"
@@ -130,6 +163,15 @@ export default {
             type: Boolean,
             default: () => false,
         },
+        //Branch Paths
+        branchPathIndex: {
+            type: Number,
+            default: () => 0,
+        },
+        branchPathContent: {
+            type: Object,
+            default: () => ({}),
+        }
     },
     data() {
         return {
