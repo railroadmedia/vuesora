@@ -386,7 +386,7 @@ export default {
   },
 };
 </script>
-<style>
+<style  lang="scss">
   /* Temporary */
   .tw-bg-\[\#FCB8BF\] {
     background-color: rgba(252, 184, 191, 0.5);;
