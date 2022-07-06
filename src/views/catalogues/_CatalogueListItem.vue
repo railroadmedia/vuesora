@@ -386,7 +386,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
   /* Temporary */
   .tw-bg-\[\#FCB8BF\] {
     background-color: rgba(252, 184, 191, 0.5);;
