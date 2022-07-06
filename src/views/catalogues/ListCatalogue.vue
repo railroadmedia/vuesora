@@ -29,7 +29,7 @@
                 @addEvent="addEventToDropdown"
             />
 
-            <div id="branch-paths" :key="'branch' + item.id" v-if="branchPathIndex === i && branchPathContent.data.length > 0" >
+            <div id="branch-paths" :key="'branch' + item.id" v-if="branchPathIndex === i" >
                 <catalogue-list-item
                     v-for="(branchItem, j) in branchPathContent.data"
                     :key="'branch' + branchItem.id"
