@@ -296,11 +296,19 @@
 
 
                               <div class="body font-bold">
+<<<<<<< HEAD
                                 Tax: ${{ displayOverrideTax ? displayOverrideTax : totalTax }}
                               </div>
 
                               <div class="body font-bold">
                                   <span class="display">${{ displayOverridePrice ? displayOverridePrice : totalDue }}</span> USD
+=======
+                                Tax: ${{ totalTax }}
+                              </div>
+
+                              <div class="body font-bold">
+                                  <span class="display">${{ totalDue }}</span> USD
+>>>>>>> v0.17-
                               </div>
 
                                 <div class="body font-bold">

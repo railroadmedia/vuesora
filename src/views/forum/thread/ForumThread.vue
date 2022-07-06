@@ -397,11 +397,15 @@ export default {
                     value: 'published_on'
                 },
                 {
-                    label: 'Most recent',
+                    label: 'Most Recent',
                     value: '-published_on'
                 },
                 {
-                    label: 'My posts',
+                    label: 'Most Popular',
+                    value: '-like_count'
+                },
+                {
+                    label: 'My Posts',
                     value: 'mine'
                 }
             ],
@@ -465,7 +469,7 @@ export default {
                 if (urlParams['sortby_val'] != null) {
                     return urlParams['sortby_val'];
                 }
-                return 'published_on';
+                return '-published_on';
             },
             set(val) {
                 return val;
