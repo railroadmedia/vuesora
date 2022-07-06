@@ -29,13 +29,14 @@
                 @addEvent="addEventToDropdown"
             />
 
-            <div :key="'branch' + item.id" v-if="branchPathIndex === i" >
+            <div id="branch-paths" :key="'branch' + item.id" v-if="branchPathIndex === i && branchPathContent.data.length > 0" >
                 <catalogue-list-item
                     v-for="(branchItem, j) in branchPathContent.data"
                     :key="'branch' + branchItem.id"
                     :index="branchItem.week || j + 1"
                     :item="branchItem"
                     :is-coach="isCoach"
+                    :is-branch-path="true"
                     :content-type="branchItem.type"
                     :brand="brand"
                     :theme-color="themeColor"
