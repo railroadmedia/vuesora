@@ -4,12 +4,10 @@
       flex flex-row
       bb-grey-1-1
       no-decoration
-      hover-bg-grey-7
       relative
       text-grey-3
-      hover-text-black
     "
-    :class="class_object"
+    :class="[class_object, isBranchPath ? [branchPathBG, branchPathText]: 'hover-bg-grey-7 hover-text-black']"
     :href="renderLink ? item.url : false"
   >
     <!--        <div v-if="mappedData.sheet_music && !is_search"-->
@@ -112,6 +110,15 @@
 
     <!-- TITLES AND COLUMN DATA (on mobile) -->
     <div class="flex flex-column align-v-center title-column overflow">
+      
+      <!-- Is New -->
+      <div v-if="isBranchPath" 
+           class="tw-font-roboto-condensed tw-font-bold tw-leading-none tw-w-fit tw-mb-2 tw-text-sm tw-uppercase tw-text-white tw-bg-pianote tw-p-1 tw-rounded"
+           style="width: fit-content;"
+      >
+           New Method Path
+      </div>
+
       <p
         v-if="brand !== 'guitareo' && !isCoach"
         class="tiny font-compressed uppercase text-truncate"
@@ -232,15 +239,16 @@
     >
       <div v-if="resetProgress" class="body">
         <i
-          class="fas fa-undo flex-center text-grey-2 hover-text-black reset"
+          class="fas fa-undo flex-center reset"
+          :class="isBranchPath ? branchPathText: 'text-grey-2 hover-text-black'"
           title="Reset Progress"
           @click.stop.prevent="progressReset"
         ></i>
       </div>
       <div v-else class="body">
         <i
-          class="add-to-list fas fa-plus flex-center hover-text-black"
-          :class="is_added ? 'is-added ' + themeTextClass : 'text-grey-2'"
+          class="add-to-list fas fa-plus flex-center"
+          :class="[is_added ? 'is-added ' + themeTextClass : '', isBranchPath ? branchPathText: 'text-grey-2 hover-text-black' ]"
           :title="is_added ? 'Remove from list' : 'Add to list'"
           @click.stop.prevent="addToList"
         ></i>
@@ -260,7 +268,8 @@
       <!-- LOCK ICON OR ADD TO CALENDAR -->
       <div
         v-if="noAccess"
-        class="body text-grey-2 hover-text-black"
+        class="body"
+        :class="isBranchPath ? branchPathText: 'text-grey-2 hover-text-black'"
         title="Add to Calendar"
         data-open-modal="addToCalendarModal"
         @click="addEvent"
@@ -284,15 +293,14 @@
 
         <i
           v-else
-          class="fas flex-center text-grey-2 rounded hover-text-black"
-          :class="
-            ['course', 'learning-path', 'pack', 'pack-bundle'].indexOf(
-              item.type
-            ) !== -1
-              ? 'fa-arrow-circle-right'
-              : 'fa-play-circle'
+          class="fas flex-center rounded"
+          :class="[
+            ['course', 'learning-path', 'pack', 'pack-bundle'].indexOf(item.type) !== -1 ? 'fa-arrow-circle-right' : 'fa-play-circle',
+              isBranchPath ? branchPathText: 'text-grey-2 hover-text-black'
+            ]
           "
         ></i>
+
       </div>
     </div>
   </a>
@@ -309,6 +317,10 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    isBranchPath: {
+      type: Boolean,
+      default: () => false,
+    }
   },
   computed: {
     mappedData() {
@@ -329,6 +341,18 @@ export default {
         "start-learning-path":
           this.contentTypeOverride === "learning-path-part",
       };
+    },
+
+    branchPathBG() {
+      if(this.themeColor === 'pianote') {
+        return 'tw-bg-[#FCB8BF] dark:tw-bg-[#55171D]'
+      }
+    },
+
+    branchPathText() {
+      if(this.themeColor === 'pianote') {
+        return 'tw-text-[#55171D] dark:tw-text-[#FCB8BF]'
+      }
     },
 
     showStudentReviewThumbsAsAvatar() {
