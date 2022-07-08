@@ -71,20 +71,37 @@ export default {
 
         // Used to handle the event when bussed to the top level parent
         addToListEventHandler(payload) {
-            const post_index = this.content.map(post => post.id).indexOf(payload.content_id);
+            if (this.branchPathContent.data.map(post => post.id).indexOf(payload.content_id) !== -1) {
+                const post_index = this.branchPathContent.data.map(post => post.id).indexOf(payload.content_id);
+                this.branchPathContent.data[post_index].is_added_to_primary_playlist =
+                    !this.branchPathContent.data[post_index].is_added_to_primary_playlist;
 
-            this.content[post_index].is_added_to_primary_playlist = !this.content[post_index].is_added_to_primary_playlist;
+                if (payload.is_added && this.destroyOnListRemoval) {
+                    this.branchPathContent.data.splice(post_index, 1);
+                }
 
-            if (payload.is_added && this.destroyOnListRemoval) {
-                this.content.splice(post_index, 1);
+                ContentService.addOrRemoveContentFromList(payload.content_id, payload.is_added)
+                    .then((response) => {
+                        if (!response) {
+                            this.branchPathContent.data[post_index].is_added_to_primary_playlist =
+                                !this.branchPathContent.data[post_index].is_added_to_primary_playlist;
+                        }
+                    });
+            } else {
+                const post_index = this.content.map(post => post.id).indexOf(payload.content_id);
+                this.content[post_index].is_added_to_primary_playlist = !this.content[post_index].is_added_to_primary_playlist;
+
+                if (payload.is_added && this.destroyOnListRemoval) {
+                    this.content.splice(post_index, 1);
+                }
+
+                ContentService.addOrRemoveContentFromList(payload.content_id, payload.is_added)
+                    .then((response) => {
+                        if (!response) {
+                            this.content[post_index].is_added_to_primary_playlist = !this.content[post_index].is_added_to_primary_playlist;
+                        }
+                    });
             }
-
-            ContentService.addOrRemoveContentFromList(payload.content_id, payload.is_added)
-                .then((response) => {
-                    if (!response) {
-                        this.content[post_index].is_added_to_primary_playlist = !this.content[post_index].is_added_to_primary_playlist;
-                    }
-                });
         },
 
         resetProgressEventHandler(payload) {
