@@ -71,7 +71,9 @@ export default {
 
         // Used to handle the event when bussed to the top level parent
         addToListEventHandler(payload) {
-            if (this.branchPathContent.data.map(post => post.id).indexOf(payload.content_id) !== -1) {
+            if (this.branchPathContent &&
+                this.branchPathContent.data && 
+                this.branchPathContent.data.map(post => post.id).indexOf(payload.content_id) !== -1) {
                 const post_index = this.branchPathContent.data.map(post => post.id).indexOf(payload.content_id);
                 this.branchPathContent.data[post_index].is_added_to_primary_playlist =
                     !this.branchPathContent.data[post_index].is_added_to_primary_playlist;
