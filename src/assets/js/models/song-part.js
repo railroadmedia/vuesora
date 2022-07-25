@@ -14,7 +14,7 @@ export default class SongPartContentModel extends ContentModel {
         ];
 
         if (this.brand === 'guitareo' || this.brand === 'pianote') {
-            this.card.color_title = this.getTypeWithIcon;
+            this.card.color_title = this.getTypeWithIcon();
 
             this.list.color_title = null;
         }
