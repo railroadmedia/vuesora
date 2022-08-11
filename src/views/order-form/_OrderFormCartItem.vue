@@ -113,6 +113,7 @@ import EcommerceService from '../../assets/js/services/ecommerce.js';
 import ThemeClasses from '../../mixins/ThemeClasses';
 import Toasts from '../../assets/js/classes/toasts';
 import CartEvents from './_events';
+import ErrorHandler from '../../assets/js/services/_error-handler';
 
 
 export default {
@@ -177,7 +178,8 @@ export default {
                 productSku: this.item.sku,
                 quantity,
             })
-                .then(this.handleResponse);
+                .then(this.handleResponse)
+                .catch(ErrorHandler);
         },
 
         removeCartItem() {
@@ -193,6 +195,7 @@ export default {
             if (response) {
                 this.emitUpdateCartItem(response.data);
             } else {
+                console.log('IS THIS THE TOAST BEING SHOWN?')
                 Toasts.push({
                     icon: 'disappointed',
                     title: 'Something went wrong!',

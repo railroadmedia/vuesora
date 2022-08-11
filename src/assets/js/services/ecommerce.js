@@ -53,8 +53,6 @@ export default {
         quantity,
     }) {
         return axios.patch(`/ecommerce/json/update-product-quantity/${productSku}/${quantity}`)
-            .then(response => response)
-            .catch(ErrorHandler);
     },
 
     /**

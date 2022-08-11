@@ -235,11 +235,10 @@ export default {
                             let promoCode = element.hasAttribute('data-promocode') ? element.getAttribute('data-promocode') : null;
                             let lockedCart = element.hasAttribute('data-locked-cart') ? element.getAttribute('data-locked-cart') : null;
 
-                            this
-                                .addToCart(productsObject, promoCode, lockedCart)
+                            this.addToCart(productsObject, promoCode, lockedCart)
                                 .then(() => {
                                     element.classList.remove('loading');
-                                });
+                                }).catch(e => e);
                         }
                     });
                 });
@@ -292,6 +291,7 @@ export default {
         },
 
         updateCartItemQuantity({cartItem, quantity}) {
+            console.log('update cart item quantity cartsidebar')
             if (!this.loading) {
                 this.loading = true;
 
@@ -303,7 +303,8 @@ export default {
         },
 
         handleCartUpdate(response) {
-            this.updateCartData(response.data);
+            console.log('handleCartUpdate', response)
+            response.data ? this.updateCartData(response.data) : '';
             this.$root.$emit('updateCartData', response.data);
 
             this.loading = false;
@@ -367,14 +368,24 @@ export default {
             return subTotalAfterDiscounts;
         },
 
-        handleError() {
+        handleError(e) {
             this.loading = false;
-            this.$toasted.error(
-                'Something went wrong! Please try again or contact support using the chat widget at the bottom of the page.',
-                {
-                    icon: 'fal fa-meh-rolling-eyes fa-3x toasted-icon',
-                }
-            );
+
+            if (e?.response?.data?.meta?.cart?.errors) {
+                this.$toasted.error(
+                    e.response.data.meta.cart.errors[0],
+                    {
+                        icon: 'fal fa-meh-rolling-eyes fa-3x toasted-icon',
+                    }
+                );
+            } else {
+                this.$toasted.error(
+                    'Something went wrong! Please try again or contact support using the chat widget at the bottom of the page.',
+                    {
+                        icon: 'fal fa-meh-rolling-eyes fa-3x toasted-icon',
+                    }
+                );
+            }
         }
     },
 }
