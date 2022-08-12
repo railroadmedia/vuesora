@@ -291,7 +291,6 @@ export default {
         },
 
         updateCartItemQuantity({cartItem, quantity}) {
-            console.log('update cart item quantity cartsidebar')
             if (!this.loading) {
                 this.loading = true;
 
@@ -303,7 +302,6 @@ export default {
         },
 
         handleCartUpdate(response) {
-            console.log('handleCartUpdate', response)
             response.data ? this.updateCartData(response.data) : '';
             this.$root.$emit('updateCartData', response.data);
 
