@@ -195,7 +195,6 @@ export default {
             if (response) {
                 this.emitUpdateCartItem(response.data);
             } else {
-                console.log('IS THIS THE TOAST BEING SHOWN?')
                 Toasts.push({
                     icon: 'disappointed',
                     title: 'Something went wrong!',
