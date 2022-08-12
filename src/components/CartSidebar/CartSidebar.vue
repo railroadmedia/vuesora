@@ -141,9 +141,7 @@ export default {
         };
     },
     mounted() {
-        let cartData = JSON.parse(this.cartData);
-
-        this.updateCartData(cartData);
+        this.buildInitialCartData();
 
         this.$root.$on('openCartSidebar', this.openCartSidebar);
 
@@ -170,6 +168,11 @@ export default {
         },
     },
     methods: {
+        buildInitialCartData() {
+            const cartData = JSON.parse(this.cartData);
+
+            this.updateCartData(cartData);
+        },
         openCartSidebar() {
             this.active = true;
 
@@ -235,11 +238,10 @@ export default {
                             let promoCode = element.hasAttribute('data-promocode') ? element.getAttribute('data-promocode') : null;
                             let lockedCart = element.hasAttribute('data-locked-cart') ? element.getAttribute('data-locked-cart') : null;
 
-                            this
-                                .addToCart(productsObject, promoCode, lockedCart)
+                            this.addToCart(productsObject, promoCode, lockedCart)
                                 .then(() => {
                                     element.classList.remove('loading');
-                                });
+                                }).catch(e => e);
                         }
                     });
                 });
@@ -298,12 +300,15 @@ export default {
                 EcommerceService
                     .updateCartItemQuantity({productSku: cartItem.sku, quantity})
                     .then(this.handleCartUpdate)
-                    .catch(this.handleError);
+                    .catch((e) => {
+                        this.buildInitialCartData();
+                        this.handleError(e);
+                    });
             }
         },
 
         handleCartUpdate(response) {
-            this.updateCartData(response.data);
+            response.data ? this.updateCartData(response.data) : '';
             this.$root.$emit('updateCartData', response.data);
 
             this.loading = false;
@@ -367,14 +372,24 @@ export default {
             return subTotalAfterDiscounts;
         },
 
-        handleError() {
+        handleError(e) {
             this.loading = false;
-            this.$toasted.error(
-                'Something went wrong! Please try again or contact support using the chat widget at the bottom of the page.',
-                {
-                    icon: 'fal fa-meh-rolling-eyes fa-3x toasted-icon',
-                }
-            );
+
+            if (e?.response?.data?.meta?.cart?.errors) {
+                this.$toasted.error(
+                    e.response.data.meta.cart.errors[0],
+                    {
+                        icon: 'fal fa-meh-rolling-eyes fa-3x toasted-icon',
+                    }
+                );
+            } else {
+                this.$toasted.error(
+                    'Something went wrong! Please try again or contact support using the chat widget at the bottom of the page.',
+                    {
+                        icon: 'fal fa-meh-rolling-eyes fa-3x toasted-icon',
+                    }
+                );
+            }
         }
     },
 }
