@@ -418,7 +418,7 @@ export default {
             } else if (this.brand === "guitareo") {
                 return '/members/account/settings#signatureForm';
             } else {
-                return '/members/profile/settings#signatureForm';
+                return '/members/settings/profile#signatureForm';
             }
         },
 
