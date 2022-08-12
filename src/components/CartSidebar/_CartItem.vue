@@ -27,6 +27,15 @@
                 <div class="csb-size" v-if="item.size">Size: {{ item.size }}</div>
                 <div>
                     <product-price :item="item" :brand="brand"></product-price>
+                    <div
+                        v-show="loading"
+                        class="flex flex-column flex-auto body csb-product-price"
+                    >
+                        <i
+                            class="fas fa-spin fa-spinner"
+                            :class="themeTextClass"
+                        ></i>
+                    </div>
                 </div>
             </div>
             <div class="item-remove" v-if="!isBonus && !locked"><a href="#" @click.stop.prevent="remove">Remove</a></div>

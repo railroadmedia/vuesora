@@ -141,9 +141,7 @@ export default {
         };
     },
     mounted() {
-        let cartData = JSON.parse(this.cartData);
-
-        this.updateCartData(cartData);
+        this.buildInitialCartData();
 
         this.$root.$on('openCartSidebar', this.openCartSidebar);
 
@@ -170,6 +168,11 @@ export default {
         },
     },
     methods: {
+        buildInitialCartData() {
+            const cartData = JSON.parse(this.cartData);
+
+            this.updateCartData(cartData);
+        },
         openCartSidebar() {
             this.active = true;
 
@@ -297,7 +300,10 @@ export default {
                 EcommerceService
                     .updateCartItemQuantity({productSku: cartItem.sku, quantity})
                     .then(this.handleCartUpdate)
-                    .catch(this.handleError);
+                    .catch((e) => {
+                        this.buildInitialCartData();
+                        this.handleError(e);
+                    });
             }
         },
 
