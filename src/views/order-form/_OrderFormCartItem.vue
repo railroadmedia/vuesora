@@ -98,10 +98,10 @@
                         class="tiny"
                     >
                         <span v-if="item.subscription_renewal_price != totalPriceAfterDiscounts">
-                            then ${{ Number(item.subscription_renewal_price).toFixed(2)}}
+                            for your first
                         </span>
 
-                        {{ intervalString }}
+                        {{ intervalStringOnlyPeriod }}
                     </h3>
                 </div>
             </div>
@@ -166,6 +166,14 @@ export default {
             }
 
             return `per ${ this.item.subscription_interval_count } ${ this.item.subscription_interval_type }s`
+        },
+
+        intervalStringOnlyPeriod() {
+            if(this.item.subscription_interval_count === 1){
+                return `${ this.item.subscription_interval_type }`;
+            }
+
+            return `${ this.item.subscription_interval_count } ${ this.item.subscription_interval_type }s`
         },
     },
     mounted() {
