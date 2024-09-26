@@ -265,7 +265,7 @@ export default {
                 billingCountry: this.cart.billing_address ? this.cart.billing_address.country : null,
                 billingRegion: this.cart.billing_address ? this.cart.billing_address.state : null,
                 renewDueSubscription: !this.isActive && this.hasSubscription,
-                updateActiveSubscriptions: true,
+                updateActiveSubscriptions: this.hasSubscription,
             };
         },
 
